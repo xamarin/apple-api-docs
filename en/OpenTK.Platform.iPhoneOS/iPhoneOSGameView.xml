@@ -1,0 +1,2178 @@
+<Type Name="iPhoneOSGameView" FullName="OpenTK.Platform.iPhoneOS.iPhoneOSGameView">
+  <TypeSignature Language="C#" Value="public class iPhoneOSGameView : MonoTouch.UIKit.UIView, IDisposable, OpenTK.Platform.IGameWindow" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit iPhoneOSGameView extends MonoTouch.UIKit.UIView implements class OpenTK.INativeWindow, class OpenTK.Platform.IGameWindow, class System.IDisposable" />
+  <AssemblyInfo>
+    <AssemblyName>OpenTK</AssemblyName>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>MonoTouch.UIKit.UIView</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>OpenTK.Platform.IGameWindow</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>System.IDisposable</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Docs>
+    <summary>
+      Methods to create and managed an OpenGL window.
+    </summary>
+    <remarks>
+      <para>
+        <c>iPhoneOSGameView</c> provides two (largely unrelated) sets of
+        methods.  Specifically, using this class does not require use of the
+        run loop processing methods.  The groups are:
+      </para>
+      <list type="bullet">
+        <item>
+          <term>
+          OpenGL context creation and disposal methods:
+          <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.ConfigureLayer(MonoTouch.CoreAnimation.CAEAGLLayer)" />,
+          <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.CreateFrameBuffer" />,
+          <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.DestroyFrameBuffer" />,
+          <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.GetLayerClass" />,
+          <see cref="P:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.LayerColorFormat" />, and
+          <see cref="P:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.LayerRetainsBacking" />.
+        </term>
+        </item>
+        <item>
+          <term>
+          Run loop processing:
+          <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Load" />,
+          <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.OnLoad(System.EventArgs)" />,
+          <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.OnRenderFrame(OpenTK.FrameEventArgs)" />,
+          <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.OnUnload(System.EventArgs)" />,
+          <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.OnUpdateFrame(OpenTK.FrameEventArgs)" />,
+          <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.RenderFrame" />,
+          <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Run" />,
+          <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Run(System.Double)" />,
+          <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Stop" />,
+          <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Unload" />, and
+          <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.UpdateFrame" />.
+        </term>
+        </item>
+      </list>
+      <para>
+        All other members are ancillary to the above two major groupings.
+      </para>
+      <block subset="none" type="overrides">
+        <para>
+          All subclasses must provide a method that provides the class-level
+          <c>layerClass</c> selector (so that CocoaTouch will provide the
+          correct <see cref="T:MonoTouch.CoreAnimation.CAEAGLLayer" />
+          background layer).  Consequently, all subclasses must provide the
+          following method (the method name can change, but the
+          <see cref="T:MonoTouch.Foundation.ExportAttribute" /> must be
+          unchanged, as well as the implementation):
+        </para>
+        <code lang="C#">[Export("layerClass")]
+public static Class GetLayerClass()
+{
+    return iPhoneOSGameView.GetLayerClass();
+}</code>
+      </block>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public iPhoneOSGameView (MonoTouch.Foundation.NSCoder coder);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class MonoTouch.Foundation.NSCoder coder) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("initWithCoder:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="coder" Type="MonoTouch.Foundation.NSCoder" />
+      </Parameters>
+      <Docs>
+        <param name="coder">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <altmember cref="C:MonoTouch.UIKit.UIView(MonoTouch.Foundation.NSCoder)" />
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public iPhoneOSGameView (System.Drawing.RectangleF frame);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(valuetype System.Drawing.RectangleF frame) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("initWithFrame:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="frame" Type="System.Drawing.RectangleF" />
+      </Parameters>
+      <Docs>
+        <param name="frame">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+        <altmember cref="C:MonoTouch.UIKit.UIView(System.Drawing.RectangleF)" />
+      </Docs>
+    </Member>
+    <Member MemberName="AutoResize">
+      <MemberSignature Language="C#" Value="public bool AutoResize { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool AutoResize" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          Controls whether the graphics context is recreated when the display 
+          size changes.
+        </summary>
+        <value>
+          A <see cref="T:System.Boolean" /> which controls whether the
+          graphics context is recreated when the view's 
+          <see cref="P:MonoTouch.UIKit.UIView.Bounds" /> changes.
+        </value>
+        <remarks>
+          <para>
+            If <see langword="true" />, when
+            <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.LayoutSubviews" />
+            is invoked and <see cref="P:MonoTouch.UIKit.UIView.Bounds" /> differs
+            from <see cref="P:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Size" />,
+            then the framebuffer will be destroyed and recreated.
+          </para>
+          <para>
+            Otherwise, all view size changes are ignored.
+          </para>
+        </remarks>
+        <altmember cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.LayoutSubviews" />
+      </Docs>
+    </Member>
+    <Member MemberName="Close">
+      <MemberSignature Language="C#" Value="public virtual void Close ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Close() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          Invokes the
+          <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.OnClosed(System.EventArgs)" />
+          event.
+        </summary>
+        <remarks>
+          This method only invokes the 
+          <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.OnClosed(System.EventArgs)" />
+          method.
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">
+          The instance has had 
+          <see cref="M:MonoTouch.Foundation.NSObject.Dispose" /> invoked on it.
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Closed">
+      <MemberSignature Language="C#" Value="public event EventHandler&lt;EventArgs&gt; Closed;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler`1&lt;class System.EventArgs&gt; Closed" />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler&lt;System.EventArgs&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          Occurs when the view has been closed.
+        </summary>
+        <remarks>
+          This never actually happens; 
+          <see cref="T:MonoTouch.UIKit.UIView" /> instances aren't closed.
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ConfigureLayer">
+      <MemberSignature Language="C#" Value="protected virtual void ConfigureLayer (MonoTouch.CoreAnimation.CAEAGLLayer eaglLayer);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void ConfigureLayer(class MonoTouch.CoreAnimation.CAEAGLLayer eaglLayer) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="eaglLayer" Type="MonoTouch.CoreAnimation.CAEAGLLayer" />
+      </Parameters>
+      <Docs>
+        <param name="eaglLayer">
+          A <see cref="T:MonoTouch.CoreAnimation.CAEAGLLayer" /> instance
+          which is the current
+          <see cref="P:MonoTouch.UIKit.UIView.Layer" /> that will be drawn on.
+        </param>
+        <summary>
+          Permits additional configuration to be performed on the graphics
+          context.
+        </summary>
+        <remarks>
+          <block subset="none" type="overrides">
+            This method is invoked from 
+            <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.CreateFrameBuffer" />
+            so that <paramref name="eaglLayer" /> may be configured without
+            needing to manually cast <see cref="P:MonoTouch.UIKit.UIView.Layer" /> 
+            to <see cref="T:MonoTouch.CoreAnimation.CAEAGLLayer" />.  
+            This method is invoked after 
+            <see cref="P:MonoTouch.CoreAnimation.CAEAGLLayer.DrawableProperties" />
+            has been initialized, and before the 
+            <see cref="T:OpenTK.Graphics.IGraphicsContext" /> has been created.
+          </block>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ContextRenderingApi">
+      <MemberSignature Language="C#" Value="public MonoTouch.OpenGLES.EAGLRenderingAPI ContextRenderingApi { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype MonoTouch.OpenGLES.EAGLRenderingAPI ContextRenderingApi" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MonoTouch.OpenGLES.EAGLRenderingAPI</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          Gets or sets the OpenGLES version that will be used with 
+          <see cref="P:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.GraphicsContext" />.
+        </summary>
+        <value>
+          A <see cref="T:MonoTouch.OpenGLES.EAGLRenderingAPI" /> value which
+          specifies the OpenGLES version that will be used with 
+          <see cref="P:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.GraphicsContext" />.
+        </value>
+        <remarks>
+          <para>
+            This property must be set before 
+            <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.CreateFrameBuffer" />
+            is invoked.  No default is provided.
+          </para>
+        </remarks>
+        <exception cref="T:System.NotSupportedException">
+          <see cref="P:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.ContextRenderingApi" />
+          can't be set after 
+          <see cref="P:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.GraphicsContext" />
+          has been created.
+        </exception>
+        <exception cref="T:System.ObjectDisposedException">
+          The instance has had 
+          <see cref="M:MonoTouch.Foundation.NSObject.Dispose" /> invoked on it.
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateFrameBuffer">
+      <MemberSignature Language="C#" Value="protected virtual void CreateFrameBuffer ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void CreateFrameBuffer() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          Creates the framebuffer so that OpenGL operations can be performed.
+        </summary>
+        <remarks>
+          <para>
+            This method is invoked to create an
+            <see cref="T:OpenTK.Graphics.IGraphicsContext" />
+            implementation, create a
+            <see cref="T:MonoTouch.OpenGLES.EAGLContext" />, and initialize
+            the GL context so that a framebuffer and renderbuffer exist for
+            future GL calls.
+          </para>
+          <para>
+            This method is invoked by:
+            <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.LayoutSubviews" />,
+            <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Run" />,
+            and
+            <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Run(System.Double)" />.
+          </para>
+          <block subset="none" type="behaviors">
+            This method performs the following operations:
+            <list type="number"><item><term>
+                Configure the <see cref="P:MonoTouch.UIKit.UIView.Layer" />'s 
+                <see cref="P:MonoTouch.CoreAnimation.CAEAGLLayer.DrawableProperties" />.
+                <see cref="P:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.LayerRetainsBacking" /> 
+                is used to set the 
+                <see cref="F:MonoTouch.OpenGLES.EAGLDrawableProperty.RetainedBacking" />
+                property, while 
+                <see cref="P:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.LayerColorFormat" /> 
+                is used to set the 
+                <see cref="F:MonoTouch.OpenGLES.EAGLDrawableProperty.ColorFormat" /> property.
+              </term></item><item><term><see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.ConfigureLayer(MonoTouch.CoreAnimation.CAEAGLLayer)" />
+                is invoked.
+              </term></item><item><term>
+                The 
+                <see cref="P:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.GraphicsContext" />
+                is created, wihch in turns creates an <see cref="T:MonoTouch.OpenGLES.EAGLContext" />.
+                The <c>EAGLContext</c> can be retrieved through the 
+                <see cref="P:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.EAGLContext" />
+                property.
+              </term></item><item><term>
+                A renderbuffer is created and bound to the GL context as the
+                <c>RenderbufferOes</c> property.  The renderbuffer is
+                accessible via 
+                via <see cref="P:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Renderbuffer" />.
+              </term></item><item><term><see cref="M:MonoTouch.OpenGLES.EAGLContext.RenderBufferStorage(System.UInt32,MonoTouch.CoreAnimation.CAEAGLLayer)" />
+                is invoked to bind the above renderbuffer to
+                <c>EAGLContext</c>.
+              </term></item><item><term>
+                A framebuffer is created and bound to the GL context as the
+                <c>FramebufferOes</c> property.  The framebuffer is accessible
+                via <see cref="P:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Framebuffer" />.
+              </term></item><item><term>
+                The framebuffer and renderbuffer are bound together:
+                <c>GL.Oes.FramebufferRenderbuffer (All.FramebufferOes, All.ColorAttachment0Oes, All.RenderbufferOes, renderbuffer);</c></term></item><item><term><see cref="P:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Size" /> 
+                is initialized based on the current 
+                <see cref="P:MonoTouch.UIKit.UIView.Bounds" /> value.
+              </term></item><item><term><c>GL.Viewport(0, 0, Size.Width, Size.Height)</c> is invoked.
+              </term></item><item><term><c>GL.Scissor(0, 0, Size.Width, Size.Height)</c> is invoked.
+              </term></item></list></block>
+          <block subset="none" type="overrides">
+            <para>
+              Inheritors can override either 
+              <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.ConfigureLayer(MonoTouch.CoreAnimation.CAEAGLLayer)" />,
+              or this method to add additional construction logic (e.g. to add
+              a depth buffer).  If only the layer needs to be configured, then
+              override <c>ConfigureLayer</c>; otherwise, override this method
+              and call this implementation to create the framebuffer and
+              renderbuffer.
+            </para>
+            <para>
+              Intelligent OpenGLES fallback can be performed by changing the 
+              <see cref="P:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.ContextRenderingApi" />
+              if an error occurs.  For example:
+              <code lang="C#">protected override CreateFrameBuffer()
+{
+    try {
+        ContextRenderingApi = EAGLRenderingAPI.OpenGLES2;
+        base.CreateFrameBuffer();
+    } catch (Exception) {
+        // device doesn't support OpenGLES 2.0; retry with 1.1:
+        ContextRenderingApi = EAGLRenderingAPI.OpenGLES1;
+        base.CreateFrameBuffer();
+    }
+}</code></para>
+          </block>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <para>
+            <see cref="P:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.ContextRenderingApi" />
+            hasn't been initialized.
+          </para>
+        </exception>
+        <exception cref="T:System.InvalidOperationException">
+          <para>
+            <see cref="P:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.LayerColorFormat" />
+            hasn't been initialized.
+          </para>
+        </exception>
+        <exception cref="T:System.ObjectDisposedException">
+          The instance has had 
+          <see cref="M:MonoTouch.Foundation.NSObject.Dispose" /> invoked on it.
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="DestroyFrameBuffer">
+      <MemberSignature Language="C#" Value="protected virtual void DestroyFrameBuffer ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void DestroyFrameBuffer() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          Destroys the framebuffer, renderbuffer, 
+          <see cref="P:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.EAGLContext" />, and 
+          <see cref="P:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.GraphicsContext" />.
+        </summary>
+        <remarks>
+          <para>
+            This method is invoked by:
+            <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Dispose(System.Boolean)" />,
+            <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.LayoutSubviews" />, and
+            <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.OnUnload(System.EventArgs)" />.
+          </para>
+          <block subset="none" type="overrides">
+            Override this method if you override
+            <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.CreateFrameBuffer" />
+            and add additional buffers that need to be properly disposed of
+            (e.g. a depth buffer).
+          </block>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">
+          The instance has had 
+          <see cref="M:MonoTouch.Foundation.NSObject.Dispose" /> invoked on it.
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Dispose">
+      <MemberSignature Language="C#" Value="protected override void Dispose (bool disposing);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Dispose(bool disposing) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="disposing" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="disposing">
+          A <see cref="T:System.Boolean" /> specifying whether this method was
+          invoked explicitly by user code or via a finalizer.  
+          If <see langword="true" />, this was as the result of explicit user
+          code; otherwise, it's due to invocation by a finalizer.
+        </param>
+        <summary>
+          Releases resources held by this instance.
+        </summary>
+        <remarks>
+          <para>
+            Invokes the 
+            <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.OnDisposed(System.EventArgs)" />
+            method.
+          </para>
+          <block subset="none" type="overrides">
+            Override this method if you have additional managed or unmanaged
+            resources that need to be released when an instance is destroyed.
+          </block>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Disposed">
+      <MemberSignature Language="C#" Value="public event EventHandler&lt;EventArgs&gt; Disposed;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler`1&lt;class System.EventArgs&gt; Disposed" />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler&lt;System.EventArgs&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          Occurs when the view is disposed by a call to the 
+          <see cref="M:MonoTouch.Foundation.NSObject.Dispose" /> method.
+        </summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EAGLContext">
+      <MemberSignature Language="C#" Value="public MonoTouch.OpenGLES.EAGLContext EAGLContext { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class MonoTouch.OpenGLES.EAGLContext EAGLContext" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MonoTouch.OpenGLES.EAGLContext</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          The <see cref="T:MonoTouch.OpenGLES.EAGLContext" /> bound to the 
+          <see cref="P:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.GraphicsContext" />.
+        </summary>
+        <value>
+          A <see cref="T:MonoTouch.OpenGLES.EAGLContext" /> which is bound to the 
+          <see cref="P:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.GraphicsContext" />.
+        </value>
+        <remarks>
+          <para>
+            <c>EAGLContext</c> will be <see langword="null" /> until
+            <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.CreateFrameBuffer" />
+            has been invoked.
+          </para>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">
+          The instance has had 
+          <see cref="M:MonoTouch.Foundation.NSObject.Dispose" /> invoked on it.
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Framebuffer">
+      <MemberSignature Language="C#" Value="public int Framebuffer { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 Framebuffer" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          The framebuffer value for the 
+          <see cref="P:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.GraphicsContext" />.
+        </summary>
+        <value>
+          A <see cref="T:System.Int32" /> containing the value for the
+          framebuffer bound to the OpenGL context.
+        </value>
+        <remarks>
+          <para>
+            <c>Framebuffer</c> will be <c>0</c> until
+            <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.CreateFrameBuffer" />
+            has been invoked.
+          </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetLayerClass">
+      <MemberSignature Language="C#" Value="public static MonoTouch.ObjCRuntime.Class GetLayerClass ();" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.ObjCRuntime.Class GetLayerClass() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("layerClass")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>MonoTouch.ObjCRuntime.Class</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          Gets a <see cref="T:MonoTouch.ObjCRuntime.Class" /> instance which
+          specifies what the runtime type of the 
+          <see cref="P:MonoTouch.UIKit.UIView.Layer" /> should be.
+        </summary>
+        <returns>
+          A <see cref="T:MonoTouch.ObjCRuntime.Class" /> instance specifying
+          what the runtime type of 
+          <see cref="P:MonoTouch.UIKit.UIView.Layer" /> should be.
+        </returns>
+        <remarks>
+          <block subset="none" type="overrides">
+            All subclasses of 
+            <see cref="T:OpenTK.Platform.iPhoneOS.iPhoneOSGameView" />
+            must provide a <c>layerClass</c> selector implementation.  Use
+            <c>GetLayerClass</c> in your implementation:
+        <code lang="C#">class MyGameView : iPhoneOSGameView
+{
+    [Export("layerClass")]
+    public static Class GetLayerClass()
+    {
+        return iPhoneOSGameView.GetLayerClass();
+    }
+    // ...
+}</code></block>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GraphicsContext">
+      <MemberSignature Language="C#" Value="public OpenTK.Graphics.IGraphicsContext GraphicsContext { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class OpenTK.Graphics.IGraphicsContext GraphicsContext" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>OpenTK.Graphics.IGraphicsContext</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          Gets the <see cref="T:OpenTK.Graphics.IGraphicsContext" /> instance 
+          bound to this 
+          <see cref="T:OpenTK.Platform.iPhoneOS.iPhoneOSGameView" /> instance.
+        </summary>
+        <value>
+          A <see cref="T:OpenTK.Graphics.IGraphicsContext" /> instance bound
+          to this <see cref="T:OpenTK.Platform.iPhoneOS.iPhoneOSGameView" />
+          instance.
+        </value>
+        <remarks>
+          <para>
+            Unless manually set, <c>GraphicsContext</c> will be 
+            <see langword="null" /> until
+            <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.CreateFrameBuffer" />
+            has been invoked.
+          </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LayerColorFormat">
+      <MemberSignature Language="C#" Value="public MonoTouch.Foundation.NSString LayerColorFormat { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class MonoTouch.Foundation.NSString LayerColorFormat" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          Gets or sets the <see cref="T:MonoTouch.OpenGLES.EAGLColorFormat" />
+          value that should be used when configuring the 
+          <see cref="T:MonoTouch.CoreAnimation.CAEAGLLayer" />.
+        </summary>
+        <value>
+          A <see cref="T:MonoTouch.OpenGLES.EAGLColorFormat" />
+          value that should be used when configuring the 
+          <see cref="T:MonoTouch.CoreAnimation.CAEAGLLayer" />.
+        </value>
+        <remarks>
+          <para>
+            This property must be set before 
+            <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.CreateFrameBuffer" />
+            is invoked.  No default is provided.
+          </para>
+          <para>
+            This should be set to one of the 
+            <see cref="T:MonoTouch.OpenGLES.EAGLColorFormat" /> values, and is
+            used when configuring the 
+            <see cref="T:MonoTouch.CoreAnimation.CAEAGLLayer" /> to set the 
+            <see cref="F:MonoTouch.OpenGLES.EAGLDrawableProperty.ColorFormat" /> property.
+          </para>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">
+          The instance has had 
+          <see cref="M:MonoTouch.Foundation.NSObject.Dispose" /> invoked on it.
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="LayerRetainsBacking">
+      <MemberSignature Language="C#" Value="public bool LayerRetainsBacking { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool LayerRetainsBacking" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          Gets or sets a <see cref="T:System.Boolean" /> that controls whether 
+          the layer should retain its contents.
+        </summary>
+        <value>
+          A <see cref="T:System.Boolean" /> that controls whether the layer
+          should retain its contents.
+        </value>
+        <remarks>
+          <para>
+            This value is used when configuring the
+            <see cref="T:MonoTouch.CoreAnimation.CAEAGLLayer" /> to set the 
+            <see cref="F:MonoTouch.OpenGLES.EAGLDrawableProperty.RetainedBacking" /> property.
+          </para>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">
+          The instance has had 
+          <see cref="M:MonoTouch.Foundation.NSObject.Dispose" /> invoked on it.
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="LayoutSubviews">
+      <MemberSignature Language="C#" Value="public override void LayoutSubviews ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void LayoutSubviews() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          Lays out subviews.
+        </summary>
+        <remarks>
+          <para>
+            Lays out subviews when 
+            <see cref="M:MonoTouch.UIKit.UIView.LayoutIfNeeded" /> is invoked.
+          </para>
+          <block subset="none" type="behaviors">
+            If 
+            <see cref="P:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.AutoResize" />
+            is <see langword="true" /> and the size of the view has changed
+            (i.e. 
+            <see cref="P:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Size" />
+            differs from <see cref="P:MonoTouch.UIKit.UIView.Bounds" />), then
+            the framebuffer will be destroyed and recreated.
+          </block>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <para>
+            <see cref="P:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.ContextRenderingApi" />
+            hasn't been initialized.
+          </para>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Load">
+      <MemberSignature Language="C#" Value="public event EventHandler&lt;EventArgs&gt; Load;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler`1&lt;class System.EventArgs&gt; Load" />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler&lt;System.EventArgs&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          Occurs before the run loop starts.
+        </summary>
+        <remarks>
+          <para>
+            When using the run-loop processing architecture, events happen in
+            the following order:
+          </para>
+          <list type="number">
+            <item>
+              <term>
+                <c>Load</c>
+              </term>
+            </item>
+            <item>
+              <term>
+                <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.UpdateFrame" />
+              </term>
+            </item>
+            <item>
+              <term>
+                <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.RenderFrame" />
+              </term>
+            </item>
+            <item>
+              <term>
+                <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Unload" />
+              </term>
+            </item>
+          </list>
+          <para>
+            <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Run" /> and
+            <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Run(System.Double)" />,
+            invoke
+            <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Load" />
+            before starting the 
+            <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.UpdateFrame" />/<see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.RenderFrame" />
+            loop which is invoked for every rendered frame.
+          </para>
+          <para>
+            <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Stop" />
+            ends the 
+            <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.UpdateFrame" />/<see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.RenderFrame" />
+            loop processing, then invokes the 
+            <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Unload" />
+            event.
+          </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="MakeCurrent">
+      <MemberSignature Language="C#" Value="public virtual void MakeCurrent ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void MakeCurrent() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          Makes the 
+          <see cref="P:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.GraphicsContext" />
+          current on the calling thread.
+        </summary>
+        <remarks>
+          <para>
+            This method is equivalent to calling:
+            <c>GraphicsContext.MakeCurrent(WindowInfo)</c>.
+          </para>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">
+          The instance has had 
+          <see cref="M:MonoTouch.Foundation.NSObject.Dispose" /> invoked on it.
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="OnClosed">
+      <MemberSignature Language="C#" Value="protected virtual void OnClosed (EventArgs e);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnClosed(class System.EventArgs e) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="e" Type="System.EventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="e">
+          An <see cref="T:System.EventArgs" /> that contains the event data.
+        </param>
+        <summary>
+          Raises the 
+          <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Closed" />
+          event.
+        </summary>
+        <remarks>
+          <para>
+            The <c>OnClosed</c> method also allows derived classes to handle
+            the event without attaching a delegate.  This is the preferred
+            technique for handling the event in a derived class.
+          </para>
+          <block subset="none" type="overrides">
+            When overriding <c>OnClosed</c> in a derived class, be sure to
+            call the base class's <c>OnClosed</c> method so that registered
+            delegates receive the event.
+          </block>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnDisposed">
+      <MemberSignature Language="C#" Value="protected virtual void OnDisposed (EventArgs e);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnDisposed(class System.EventArgs e) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="e" Type="System.EventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="e">
+          An <see cref="T:System.EventArgs" /> that contains the event data.
+        </param>
+        <summary>
+          Raises the 
+          <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Disposed" />
+          event.
+        </summary>
+        <remarks>
+          <para>
+            The <c>OnDisposed</c> method also allows derived classes to handle
+            the event without attaching a delegate.  This is the preferred
+            technique for handling the event in a derived class.
+          </para>
+          <block subset="none" type="overrides">
+            When overriding <c>OnDisposed</c> in a derived class, be sure to
+            call the base class's <c>OnDisposed</c> method so that registered
+            delegates receive the event.
+          </block>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnLoad">
+      <MemberSignature Language="C#" Value="protected virtual void OnLoad (EventArgs e);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnLoad(class System.EventArgs e) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="e" Type="System.EventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="e">
+          An <see cref="T:System.EventArgs" /> that contains the event data.
+        </param>
+        <summary>
+          Raises the 
+          <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Load" />
+          event.
+        </summary>
+        <remarks>
+          <para>
+            The <c>OnLoad</c> method also allows derived classes to handle
+            the event without attaching a delegate.  This is the preferred
+            technique for handling the event in a derived class.
+          </para>
+          <block subset="none" type="overrides">
+            When overriding <c>OnLoad</c> in a derived class, be sure to
+            call the base class's <c>OnLoad</c> method so that registered
+            delegates receive the event.
+          </block>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnRenderFrame">
+      <MemberSignature Language="C#" Value="protected virtual void OnRenderFrame (OpenTK.FrameEventArgs e);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnRenderFrame(class OpenTK.FrameEventArgs e) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="e" Type="OpenTK.FrameEventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="e">
+          An <see cref="T:OpenTK.FrameEventArgs" /> that contains the event data.
+        </param>
+        <summary>
+          Raises the 
+          <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.RenderFrame" />
+          event.
+        </summary>
+        <remarks>
+          <para>
+            The <c>OnRenderFrame</c> method also allows derived classes to handle
+            the event without attaching a delegate.  This is the preferred
+            technique for handling the event in a derived class.
+          </para>
+          <block subset="none" type="overrides">
+            When overriding <c>OnRenderFrame</c> in a derived class, be sure to
+            call the base class's <c>OnRenderFrame</c> method so that registered
+            delegates receive the event.
+          </block>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnResize">
+      <MemberSignature Language="C#" Value="protected virtual void OnResize (EventArgs e);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnResize(class System.EventArgs e) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="e" Type="System.EventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="e">
+          An <see cref="T:System.EventArgs" /> that contains the event data.
+        </param>
+        <summary>
+          Raises the 
+          <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Resize" />
+          event.
+        </summary>
+        <remarks>
+          <para>
+            The <c>OnResize</c> method also allows derived classes to handle
+            the event without attaching a delegate.  This is the preferred
+            technique for handling the event in a derived class.
+          </para>
+          <block subset="none" type="overrides">
+            When overriding <c>OnResize</c> in a derived class, be sure to
+            call the base class's <c>OnResize</c> method so that registered
+            delegates receive the event.
+          </block>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnTitleChanged">
+      <MemberSignature Language="C#" Value="protected virtual void OnTitleChanged (EventArgs e);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnTitleChanged(class System.EventArgs e) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="e" Type="System.EventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="e">
+          An <see cref="T:System.EventArgs" /> that contains the event data.
+        </param>
+        <summary>
+          Raises the 
+          <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.TitleChanged" />
+          event.
+        </summary>
+        <remarks>
+          <para>
+            The <c>OnTitleChanged</c> method also allows derived classes to handle
+            the event without attaching a delegate.  This is the preferred
+            technique for handling the event in a derived class.
+          </para>
+          <block subset="none" type="overrides">
+            When overriding <c>OnTitleChanged</c> in a derived class, be sure to
+            call the base class's <c>OnTitleChanged</c> method so that registered
+            delegates receive the event.
+          </block>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnUnload">
+      <MemberSignature Language="C#" Value="protected virtual void OnUnload (EventArgs e);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnUnload(class System.EventArgs e) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="e" Type="System.EventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="e">
+          An <see cref="T:System.EventArgs" /> that contains the event data.
+        </param>
+        <summary>
+          Raises the 
+          <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Unload" />
+          event.
+        </summary>
+        <remarks>
+          <para>
+            The <c>OnUnload</c> method also allows derived classes to handle
+            the event without attaching a delegate.  This is the preferred
+            technique for handling the event in a derived class.
+          </para>
+          <block subset="none" type="overrides">
+            When overriding <c>OnUnload</c> in a derived class, be sure to
+            call the base class's <c>OnUnload</c> method so that registered
+            delegates receive the event.
+          </block>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnUpdateFrame">
+      <MemberSignature Language="C#" Value="protected virtual void OnUpdateFrame (OpenTK.FrameEventArgs e);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnUpdateFrame(class OpenTK.FrameEventArgs e) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="e" Type="OpenTK.FrameEventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="e">
+          An <see cref="T:OpenTK.FrameEventArgs" /> that contains the event data.
+        </param>
+        <summary>
+          Raises the 
+          <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.UpdateFrame" />
+          event.
+        </summary>
+        <remarks>
+          <para>
+            The <c>OnUpdateFrame</c> method also allows derived classes to handle
+            the event without attaching a delegate.  This is the preferred
+            technique for handling the event in a derived class.
+          </para>
+          <block subset="none" type="overrides">
+            When overriding <c>OnUpdateFrame</c> in a derived class, be sure to
+            call the base class's <c>OnUpdateFrame</c> method so that registered
+            delegates receive the event.
+          </block>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnVisibleChanged">
+      <MemberSignature Language="C#" Value="protected virtual void OnVisibleChanged (EventArgs e);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnVisibleChanged(class System.EventArgs e) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="e" Type="System.EventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="e">
+          An <see cref="T:System.EventArgs" /> that contains the event data.
+        </param>
+        <summary>
+          Raises the 
+          <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.VisibleChanged" />
+          event.
+        </summary>
+        <remarks>
+          <para>
+            The <c>OnVisibleChanged</c> method also allows derived classes to handle
+            the event without attaching a delegate.  This is the preferred
+            technique for handling the event in a derived class.
+          </para>
+          <block subset="none" type="overrides">
+            When overriding <c>OnVisibleChanged</c> in a derived class, be sure to
+            call the base class's <c>OnVisibleChanged</c> method so that registered
+            delegates receive the event.
+          </block>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnWindowStateChanged">
+      <MemberSignature Language="C#" Value="protected virtual void OnWindowStateChanged (EventArgs e);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnWindowStateChanged(class System.EventArgs e) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="e" Type="System.EventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="e">
+          An <see cref="T:System.EventArgs" /> that contains the event data.
+        </param>
+        <summary>
+          Raises the 
+          <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.WindowStateChanged" />
+          event.
+        </summary>
+        <remarks>
+          <para>
+            The <c>OnWindowStateChanged</c> method also allows derived classes to handle
+            the event without attaching a delegate.  This is the preferred
+            technique for handling the event in a derived class.
+          </para>
+          <block subset="none" type="overrides">
+            When overriding <c>OnWindowStateChanged</c> in a derived class, be sure to
+            call the base class's <c>OnWindowStateChanged</c> method so that registered
+            delegates receive the event.
+          </block>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OpenTK.INativeWindow.Bounds">
+      <MemberSignature Language="C#" Value="System.Drawing.Rectangle OpenTK.INativeWindow.Bounds { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Drawing.Rectangle OpenTK.INativeWindow.Bounds" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Drawing.Rectangle</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Throws <see cref="T:System.NotSupportedException" />.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OpenTK.INativeWindow.ClientRectangle">
+      <MemberSignature Language="C#" Value="System.Drawing.Rectangle OpenTK.INativeWindow.ClientRectangle { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Drawing.Rectangle OpenTK.INativeWindow.ClientRectangle" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Drawing.Rectangle</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Throws <see cref="T:System.NotSupportedException" />.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OpenTK.INativeWindow.ClientSize">
+      <MemberSignature Language="C#" Value="System.Drawing.Size OpenTK.INativeWindow.ClientSize { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Drawing.Size OpenTK.INativeWindow.ClientSize" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Drawing.Size</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Throws <see cref="T:System.NotSupportedException" />.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OpenTK.INativeWindow.Exists">
+      <MemberSignature Language="C#" Value="bool OpenTK.INativeWindow.Exists { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool OpenTK.INativeWindow.Exists" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Throws <see cref="T:System.NotSupportedException" />.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OpenTK.INativeWindow.Focused">
+      <MemberSignature Language="C#" Value="bool OpenTK.INativeWindow.Focused { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool OpenTK.INativeWindow.Focused" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Throws <see cref="T:System.NotSupportedException" />.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OpenTK.INativeWindow.Height">
+      <MemberSignature Language="C#" Value="int OpenTK.INativeWindow.Height { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 OpenTK.INativeWindow.Height" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Throws <see cref="T:System.NotSupportedException" />.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OpenTK.INativeWindow.Location">
+      <MemberSignature Language="C#" Value="System.Drawing.Point OpenTK.INativeWindow.Location { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Drawing.Point OpenTK.INativeWindow.Location" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Drawing.Point</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Throws <see cref="T:System.NotSupportedException" />.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OpenTK.INativeWindow.PointToClient">
+      <MemberSignature Language="C#" Value="System.Drawing.Point INativeWindow.PointToClient (System.Drawing.Point point);" />
+      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance valuetype System.Drawing.Point OpenTK.INativeWindow.PointToClient(valuetype System.Drawing.Point point) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Drawing.Point</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="point" Type="System.Drawing.Point" />
+      </Parameters>
+      <Docs>
+        <param name="point">To be added.</param>
+        <summary>Throws <see cref="T:System.NotSupportedException" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OpenTK.INativeWindow.PointToScreen">
+      <MemberSignature Language="C#" Value="System.Drawing.Point INativeWindow.PointToScreen (System.Drawing.Point point);" />
+      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance valuetype System.Drawing.Point OpenTK.INativeWindow.PointToScreen(valuetype System.Drawing.Point point) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Drawing.Point</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="point" Type="System.Drawing.Point" />
+      </Parameters>
+      <Docs>
+        <param name="point">To be added.</param>
+        <summary>Throws <see cref="T:System.NotSupportedException" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OpenTK.INativeWindow.ProcessEvents">
+      <MemberSignature Language="C#" Value="void INativeWindow.ProcessEvents ();" />
+      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance void OpenTK.INativeWindow.ProcessEvents() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Throws <see cref="T:System.NotSupportedException" />.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OpenTK.INativeWindow.Width">
+      <MemberSignature Language="C#" Value="int OpenTK.INativeWindow.Width { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 OpenTK.INativeWindow.Width" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Throws <see cref="T:System.NotSupportedException" />.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OpenTK.INativeWindow.X">
+      <MemberSignature Language="C#" Value="int OpenTK.INativeWindow.X { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 OpenTK.INativeWindow.X" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Throws <see cref="T:System.NotSupportedException" />.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OpenTK.INativeWindow.Y">
+      <MemberSignature Language="C#" Value="int OpenTK.INativeWindow.Y { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 OpenTK.INativeWindow.Y" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Throws <see cref="T:System.NotSupportedException" />.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Renderbuffer">
+      <MemberSignature Language="C#" Value="public int Renderbuffer { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 Renderbuffer" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          The renderbuffer value for the 
+          <see cref="P:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.GraphicsContext" />.
+        </summary>
+        <value>
+          A <see cref="T:System.Int32" /> containing the value for the
+          renderbuffer bound to the OpenGL context.
+        </value>
+        <remarks>
+          <para>
+            <c>Renderbuffer</c> will be <c>0</c> until
+            <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.CreateFrameBuffer" />
+            has been invoked.
+          </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RenderFrame">
+      <MemberSignature Language="C#" Value="public event EventHandler&lt;OpenTK.FrameEventArgs&gt; RenderFrame;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler`1&lt;class OpenTK.FrameEventArgs&gt; RenderFrame" />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler&lt;OpenTK.FrameEventArgs&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          Occurs part of run-loop processing when a frame should be rendered.
+        </summary>
+        <remarks>
+          <para>
+            When using the run-loop processing architecture, events happen in
+            the following order:
+          </para>
+          <list type="number">
+            <item>
+              <term>
+                <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Load" />
+              </term>
+            </item>
+            <item>
+              <term>
+                <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.UpdateFrame" />
+              </term>
+            </item>
+            <item>
+              <term>
+                <c>RenderFrame</c>
+              </term>
+            </item>
+            <item>
+              <term>
+                <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Unload" />
+              </term>
+            </item>
+          </list>
+          <para>
+            <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Run" /> and
+            <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Run(System.Double)" />,
+            invoke
+            <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Load" />
+            before starting the 
+            <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.UpdateFrame" />/<see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.RenderFrame" />
+            loop which is invoked for every rendered frame.
+          </para>
+          <para>
+            <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Stop" />
+            ends the 
+            <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.UpdateFrame" />/<see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.RenderFrame" />
+            loop processing, then invokes the 
+            <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Unload" />
+            event.
+          </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Resize">
+      <MemberSignature Language="C#" Value="public event EventHandler&lt;EventArgs&gt; Resize;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler`1&lt;class System.EventArgs&gt; Resize" />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler&lt;System.EventArgs&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          Occurs when the view's
+          <see cref="P:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Size" />
+          changes.
+        </summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Run">
+      <MemberSignature Language="C#" Value="public void Run ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Run() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          Starts as-fast-as-possible run-loop processing.
+        </summary>
+        <remarks>
+          <para>
+            Invokes 
+            <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.CreateFrameBuffer" />,
+            raises the 
+            <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Load" />
+            event, then begins run-loop processing.  Run-loop processing
+            consists of the following step (which happens for each frame):
+          </para>
+          <list type="number">
+            <item>
+              <term>
+              The <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.UpdateFrame" />
+              event is raised.
+            </term>
+            </item>
+            <item>
+              <term>
+              The OpenGL frame buffer is re-bound to
+              <see cref="P:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Framebuffer" />.
+            </term>
+            </item>
+            <item>
+              <term>
+              The <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.RenderFrame" />
+              event is raised.
+            </term>
+            </item>
+          </list>
+          <para>
+            Run-loop processing should not be used if a persistant layer is
+            used (i.e. 
+            <see cref="P:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.LayerRetainsBacking" />
+            is <see langword="false" />); the entire view should need to be 
+            re-rendered on every frame.
+          </para>
+          <para>
+            In this <c>Run</c> overload, there is no delay between raising of the 
+            <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.RenderFrame" /> 
+            event and the 
+            <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.UpdateFrame" />
+            of the following frame; everything is executed as quickly as
+            possible.  This may not be desirable.
+          </para>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">
+          The instance has had 
+          <see cref="M:MonoTouch.Foundation.NSObject.Dispose" /> invoked on it.
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Run">
+      <MemberSignature Language="C#" Value="public void Run (double updatesPerSecond);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Run(float64 updatesPerSecond) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="updatesPerSecond" Type="System.Double" />
+      </Parameters>
+      <Docs>
+        <param name="updatesPerSecond">
+          A <see cref="T:System.Double" /> containing the number of frames per
+          second that should be updated and rendered.
+        </param>
+        <summary>
+          Starts run-loop processing at a rate of <paramref name="updatesPerSecond" />
+          frames per second.
+        </summary>
+        <remarks>
+          <para>
+            If <paramref name="updatesPerSecond" /> is <c>0.0</c>, then
+            <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Run" /> is
+            invoked and the method exits.
+          </para>
+          <para>
+            Invokes 
+            <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.CreateFrameBuffer" />,
+            raises the 
+            <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Load" />
+            event, then begins run-loop processing.  Run-loop processing
+            consists of the following step (which happens for each frame):
+          </para>
+          <list type="number">
+            <item>
+              <term>
+              The <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.UpdateFrame" />
+              event is raised.
+            </term>
+            </item>
+            <item>
+              <term>
+              The OpenGL frame buffer is re-bound to
+              <see cref="P:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Framebuffer" />.
+            </term>
+            </item>
+            <item>
+              <term>
+              The <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.RenderFrame" />
+              event is raised.
+            </term>
+            </item>
+          </list>
+          <para>
+            Run-loop processing should not be used if a persistant layer is
+            used (i.e. 
+            <see cref="P:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.LayerRetainsBacking" />
+            is <see langword="false" />); the entire view should need to be 
+            re-rendered on every frame.
+          </para>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <paramref name="updatesPerSecond" /> is less than 0.
+        </exception>
+        <exception cref="T:System.ObjectDisposedException">
+          The instance has had 
+          <see cref="M:MonoTouch.Foundation.NSObject.Dispose" /> invoked on it.
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Run">
+      <MemberSignature Language="C#" Value="public void Run (int frameInterval);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Run(int32 frameInterval) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete("Use either Run (float updatesPerSecond) or RunWithFrameInterval (int frameInterval)")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="frameInterval" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="frameInterval">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RunWithFrameInterval">
+      <MemberSignature Language="C#" Value="public void RunWithFrameInterval (int frameInterval);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void RunWithFrameInterval(int32 frameInterval) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="frameInterval" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="frameInterval">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Size">
+      <MemberSignature Language="C#" Value="public System.Drawing.Size Size { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Drawing.Size Size" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Drawing.Size</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          The size of the current view.
+        </summary>
+        <value>
+          A <see cref="T:System.Drawing.Size" /> which is the size of the
+          current view.
+        </value>
+        <remarks>
+          <para>
+            This differs from 
+            <see cref="P:MonoTouch.UIKit.UIView.Bounds" /> in that
+            <c>Size</c>'s <c>Width</c> and <c>Height</c> are of type
+            <see cref="T:System.Int32" />, while <c>Bound</c>'s <c>Width</c>
+            and <c>Height</c> are of type <see cref="T:System.Single" /> 
+            (i.e. integer vs. floating-point).  OpenGL uses integral types, so
+            <c>Size</c> is a simple way to get sizes in a form usable by
+            OpenGL.
+          </para>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">
+          The instance has had 
+          <see cref="M:MonoTouch.Foundation.NSObject.Dispose" /> invoked on it.
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Stop">
+      <MemberSignature Language="C#" Value="public void Stop ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Stop() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          Terminates the run-loop.
+        </summary>
+        <remarks>
+          <para>
+            This terminates the run-loop started by 
+            <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Run" />, 
+            <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Run(System.Double)" />, 
+	    or <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.RunWithFrameInterval" />,
+	    <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.RunWithFrameInterval(System.Int32)" />
+            then invokes the
+            <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Unload" />
+            event.
+          </para>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">
+          The instance has had 
+          <see cref="M:MonoTouch.Foundation.NSObject.Dispose" /> invoked on it.
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="SwapBuffers">
+      <MemberSignature Language="C#" Value="public virtual void SwapBuffers ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SwapBuffers() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          Swaps the front and back buffers of the current GraphicsContext, 
+          presenting the rendered scene to the user.
+        </summary>
+        <remarks>
+          <para>
+            This method rebinds 
+            <see cref="P:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Renderbuffer" />
+            to the OpenGL context's <c>RenderbufferOes</c> property, then
+            invokes <see cref="M:OpenTK.Graphics.IGraphicsContext.SwapBuffers" />.
+          </para>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">
+          The instance has had 
+          <see cref="M:MonoTouch.Foundation.NSObject.Dispose" /> invoked on it.
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Title">
+      <MemberSignature Language="C#" Value="public virtual string Title { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Title" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          Gets or sets the title of the 
+          <see cref="T:MonoTouch.UIKit.UIViewController" /> attached to this
+          view.
+        </summary>
+        <value>
+          A <see cref="T:System.String" /> containing the title of the 
+          <see cref="T:MonoTouch.UIKit.UIViewController" /> attached to this
+          view.
+        </value>
+        <remarks>
+          <para>
+            When the value changes, the 
+            <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.TitleChanged" />
+            event is raised.
+          </para>
+        </remarks>
+        <exception cref="T:System.NotSupportedException">
+          If the <see cref="T:MonoTouch.UIKit.UIViewController" /> could not
+          be found for this view.
+        </exception>
+        <exception cref="T:System.ObjectDisposedException">
+          The instance has had 
+          <see cref="M:MonoTouch.Foundation.NSObject.Dispose" /> invoked on it.
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="TitleChanged">
+      <MemberSignature Language="C#" Value="public event EventHandler&lt;EventArgs&gt; TitleChanged;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler`1&lt;class System.EventArgs&gt; TitleChanged" />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler&lt;System.EventArgs&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          Occurs when the value of
+          <see cref="P:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Title" />
+          changes.
+        </summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Unload">
+      <MemberSignature Language="C#" Value="public event EventHandler&lt;EventArgs&gt; Unload;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler`1&lt;class System.EventArgs&gt; Unload" />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler&lt;System.EventArgs&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          Occurs when the run-loop is terminated.
+        </summary>
+        <remarks>
+          <para>
+            When using the run-loop processing architecture, events happen in
+            the following order:
+          </para>
+          <list type="number">
+            <item>
+              <term>
+                <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Load" />
+              </term>
+            </item>
+            <item>
+              <term>
+                <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.UpdateFrame" />
+              </term>
+            </item>
+            <item>
+              <term>
+                <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.RenderFrame" />
+              </term>
+            </item>
+            <item>
+              <term>
+                <c>Unload</c>
+              </term>
+            </item>
+          </list>
+          <para>
+            <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Run" /> and
+            <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Run(System.Double)" />,
+            invoke
+            <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Load" />
+            before starting the 
+            <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.UpdateFrame" />/<see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.RenderFrame" />
+            loop which is invoked for every rendered frame.
+          </para>
+          <para>
+            <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Stop" />
+            ends the 
+            <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.UpdateFrame" />/<see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.RenderFrame" />
+            loop processing, then invokes the 
+            <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Unload" />
+            event.
+          </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="UpdateFrame">
+      <MemberSignature Language="C#" Value="public event EventHandler&lt;OpenTK.FrameEventArgs&gt; UpdateFrame;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler`1&lt;class OpenTK.FrameEventArgs&gt; UpdateFrame" />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler&lt;OpenTK.FrameEventArgs&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          Occurs part of run-loop processing when a frame should be updated prior to rendering.
+        </summary>
+        <remarks>
+          <para>
+            When using the run-loop processing architecture, events happen in
+            the following order:
+          </para>
+          <list type="number">
+            <item>
+              <term>
+                <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Load" />
+              </term>
+            </item>
+            <item>
+              <term>
+                <c>UpdateFrame</c>
+              </term>
+            </item>
+            <item>
+              <term>
+                <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.RenderFrame" />
+              </term>
+            </item>
+            <item>
+              <term>
+                <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Unload" />
+              </term>
+            </item>
+          </list>
+          <para>
+            <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Run" /> and
+            <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Run(System.Double)" />,
+            invoke
+            <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Load" />
+            before starting the 
+            <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.UpdateFrame" />/<see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.RenderFrame" />
+            loop which is invoked for every rendered frame.
+          </para>
+          <para>
+            <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Stop" />
+            ends the 
+            <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.UpdateFrame" />/<see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.RenderFrame" />
+            loop processing, then invokes the 
+            <see cref="E:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Unload" />
+            event.
+          </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Visible">
+      <MemberSignature Language="C#" Value="public virtual bool Visible { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool Visible" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          Gets or sets a value specifying whether the view is visible.
+        </summary>
+        <value>
+          A <see cref="T:System.Boolean" /> specifying whether the view is
+          visible.
+        </value>
+        <remarks>
+          <para>
+            This is equivalent to <c>!<see cref="P:MonoTouch.UIKit.UIView.Hidden" /></c>.
+          </para>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">
+          The instance has had 
+          <see cref="M:MonoTouch.Foundation.NSObject.Dispose" /> invoked on it.
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="VisibleChanged">
+      <MemberSignature Language="C#" Value="public event EventHandler&lt;EventArgs&gt; VisibleChanged;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler`1&lt;class System.EventArgs&gt; VisibleChanged" />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler&lt;System.EventArgs&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          Occurs when the value of
+          <see cref="P:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Visible" />
+          changes.
+        </summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WillMoveToWindow">
+      <MemberSignature Language="C#" Value="public override void WillMoveToWindow (MonoTouch.UIKit.UIWindow window);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WillMoveToWindow(class MonoTouch.UIKit.UIWindow window) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="window" Type="MonoTouch.UIKit.UIWindow" />
+      </Parameters>
+      <Docs>
+        <param name="window">
+          A <see cref="T:MonoTouch.UIKit.UIWindow" /> that will be the root of
+          the new view hiearchy.
+        </param>
+        <summary>
+          Invoked when this view will be added to the view hiearchy of another
+          object.
+        </summary>
+        <remarks>
+          <para>
+            If the run-loop is executing, then 
+            <see cref="M:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.Stop" />
+            is invoked (meaning that if the view is ever moved or removed,
+            <c>Stop</c> is implicitly called).
+          </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WindowBorder">
+      <MemberSignature Language="C#" Value="public virtual OpenTK.WindowBorder WindowBorder { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype OpenTK.WindowBorder WindowBorder" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>OpenTK.WindowBorder</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          Always returns <see cref="F:OpenTK.WindowBorder.Hidden" />.
+        </summary>
+        <value>
+          A <see cref="T:OpenTK.WindowBorder" /> value controlling the border
+          of the view.
+        </value>
+        <remarks>
+          <para>
+            Always returns <see cref="F:OpenTK.WindowBorder.Hidden" />.
+          </para>
+          <para>
+            The setter is ignored.
+          </para>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">
+          The instance has had 
+          <see cref="M:MonoTouch.Foundation.NSObject.Dispose" /> invoked on it.
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="WindowInfo">
+      <MemberSignature Language="C#" Value="public virtual OpenTK.Platform.IWindowInfo WindowInfo { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class OpenTK.Platform.IWindowInfo WindowInfo" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>OpenTK.Platform.IWindowInfo</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          Gets information about the containing window.
+        </summary>
+        <value>
+          A <see cref="T:OpenTK.Platform.IWindowInfo" /> which provides
+          information about the containing window.
+        </value>
+        <remarks>
+          <para>
+            Always returns <see langword="null" />.
+          </para>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">
+          The instance has had 
+          <see cref="M:MonoTouch.Foundation.NSObject.Dispose" /> invoked on it.
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="WindowState">
+      <MemberSignature Language="C#" Value="public virtual OpenTK.WindowState WindowState { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype OpenTK.WindowState WindowState" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>OpenTK.WindowState</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          Gets or states the state of the view.
+        </summary>
+        <value>
+          A <see cref="T:OpenTK.WindowState" /> value specifying the state of
+          the window.
+        </value>
+        <remarks>
+          <para>
+            Only two values will be returned: 
+            <see cref="F:OpenTK.WindowState.Fullscreen" /> and
+            <see cref="F:OpenTK.WindowState.Normal" />.
+          </para>
+          <para>
+            <see cref="F:OpenTK.WindowState.Fullscreen" /> is returned if the
+            <see cref="P:MonoTouch.UIKit.UIViewController.WantsFullScreenLayout" /> 
+            property of the
+            <see cref="P:MonoTouch.UIKit.UIViewController" /> attached to this
+            view is <see langword="true" />; otherwise, 
+            <see cref="F:OpenTK.WindowState.Normal" /> is returned.
+          </para>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">
+          The instance has had 
+          <see cref="M:MonoTouch.Foundation.NSObject.Dispose" /> invoked on it.
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="WindowStateChanged">
+      <MemberSignature Language="C#" Value="public event EventHandler&lt;EventArgs&gt; WindowStateChanged;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler`1&lt;class System.EventArgs&gt; WindowStateChanged" />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler&lt;System.EventArgs&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          Occurs when the value of
+          <see cref="P:OpenTK.Platform.iPhoneOS.iPhoneOSGameView.WindowState" />
+          changes.
+        </summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

@@ -1,0 +1,1358 @@
+<Type Name="UITableViewSource" FullName="MonoTouch.UIKit.UITableViewSource">
+  <TypeSignature Language="C#" Value="public abstract class UITableViewSource : MonoTouch.UIKit.UIScrollViewDelegate" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit UITableViewSource extends MonoTouch.UIKit.UIScrollViewDelegate" />
+  <AssemblyInfo>
+    <AssemblyName>monotouch</AssemblyName>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>MonoTouch.UIKit.UIScrollViewDelegate</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Attributes>
+    <Attribute>
+      <AttributeName>MonoTouch.Foundation.Model</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>MonoTouch.Foundation.Register("UITableViewSource", true)</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>Joint DataSource and Delegate base class.</summary>
+    <remarks>
+      <para>
+This model class merges both the <see cref="T:MonoTouch.UIKit.UITableViewDataSource" /> and the <see cref="T:MonoTouch.UIKit.UITableViewDelegate" /> into a single class.
+</para>
+      <para>
+You can use this class in cases where the data source and the delegate will not be shared in other pieces of code to allow for sharing of information between the delegate and the data source.    
+</para>
+      <para>
+Use this class by creating your own derived type from this class and overriding the methods that you are intersted in handling.   Then assign an instance of this object to the <see cref="P:MonoTouch.UIKit.UITableView.Source" /> property.
+</para>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public UITableViewSource ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("init")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters />
+      <Docs>
+        <summary>Default constructor that initializes a new instance of this class with no parameters.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public UITableViewSource (MonoTouch.Foundation.NSCoder coder);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class MonoTouch.Foundation.NSCoder coder) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("initWithCoder:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="coder" Type="MonoTouch.Foundation.NSCoder" />
+      </Parameters>
+      <Docs>
+        <param name="coder">The unarchiver object.</param>
+        <summary>A constructor that initializes the object from the data stored in the unarchiver object.</summary>
+        <remarks>This constructor is provided to allow the class to be initialized from an unarchiver (for example, during NIB deserialization).</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public UITableViewSource (MonoTouch.Foundation.NSObjectFlag t);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class MonoTouch.Foundation.NSObjectFlag t) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="t" Type="MonoTouch.Foundation.NSObjectFlag" />
+      </Parameters>
+      <Docs>
+        <param name="t">Unused sentinel value, pass NSObjectFlag.Empty.</param>
+        <summary>Constructor to call on derived classes to skip initialization and merely allocate the object.</summary>
+        <remarks>
+          <para>This constructor should be called by derived classes when they completely construct the object in managed code and merely want the runtime to allocate and initialize the NSObject.   This is required to implement the two-step initialization process that Objective-C uses, the first step is to perform the object allocation, the second step is to initialize the object.   When you invoke the constructor that takes the NSObjectFlag.Empty you taking advatnage of a direct path that goes all the way up to NSObject to merely allocate the object's memory and bind the Objective-C and C# objects together.    The actual initialization of the object is up to you.</para>
+          <para>This constructor is typically used by the binding generator to allocate the object, but prevent the actual initialization to take place.   Once the allocation has taken place, the constructor has to initialize the object.   With constructors generated by the binding generator this means that it manually invokes one of the "init" methods to initialize the object.</para>
+          <para>It is your responsability to completely initialize the object if you chain up using the NSObjectFlag.Empty path.</para>
+          <para>In general, if your constructors invokes the NSObjectFlag.Empty base implementation, then it should be calling an Objective-C init method.   If this is not the case, you should instead chain to the proper constructor in your class. </para>
+          <para>The argument value is ignored and merely ensures that the only code that is executed is the construction phase is the basic NSObject allocation and runtime type registration.  Typically the chaining would look like this:</para>
+          <example>
+            <code lang="C#">
+//
+// The NSObjectFlag merely allocates the object and registers the
+// C# class with the Objective-C runtime if necessary, but no actual
+// initXxx method is invoked, that is done later in the constructor
+//
+// This is taken from MonoTouch's source code:
+//
+[Export ("initWithFrame:")]
+public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
+{
+// Invoke the init method now.
+	var initWithFrame = new Selector ("initWithFrame:").Handle;
+	if (IsDirectBinding)
+		Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+	else
+		Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+}
+</code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public UITableViewSource (IntPtr handle);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int handle) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="handle" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="handle">Pointer (handle) to the unmanaged object.</param>
+        <summary>A constructor used when creating managed representations of unmanaged objects;  Called by the runtime.</summary>
+        <remarks>
+          <para>This constructor is invoked by the runtime infrastructure (<see cref="M:MonoTouch.ObjCRuntime.GetNSObject (System.IntPtr)" />) to create a new managed representation for a pointer to an unmanaged Objective-C object.    You should not invoke this method directly, instead you should call the GetNSObject method as it will prevent two instances of a managed object to point to the same native object.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AccessoryButtonTapped">
+      <MemberSignature Language="C#" Value="public virtual void AccessoryButtonTapped (MonoTouch.UIKit.UITableView tableView, MonoTouch.Foundation.NSIndexPath indexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void AccessoryButtonTapped(class MonoTouch.UIKit.UITableView tableView, class MonoTouch.Foundation.NSIndexPath indexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("tableView:accessoryButtonTappedForRowWithIndexPath:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="tableView" Type="MonoTouch.UIKit.UITableView" />
+        <Parameter Name="indexPath" Type="MonoTouch.Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="tableView">To be added.</param>
+        <param name="indexPath">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AccessoryForRow">
+      <MemberSignature Language="C#" Value="public virtual MonoTouch.UIKit.UITableViewCellAccessory AccessoryForRow (MonoTouch.UIKit.UITableView tableView, MonoTouch.Foundation.NSIndexPath indexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance valuetype MonoTouch.UIKit.UITableViewCellAccessory AccessoryForRow(class MonoTouch.UIKit.UITableView tableView, class MonoTouch.Foundation.NSIndexPath indexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("tableView:accessoryTypeForRowWithIndexPath:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>MonoTouch.UIKit.UITableViewCellAccessory</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="tableView" Type="MonoTouch.UIKit.UITableView" />
+        <Parameter Name="indexPath" Type="MonoTouch.Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="tableView">To be added.</param>
+        <param name="indexPath">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CanEditRow">
+      <MemberSignature Language="C#" Value="public virtual bool CanEditRow (MonoTouch.UIKit.UITableView tableView, MonoTouch.Foundation.NSIndexPath indexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool CanEditRow(class MonoTouch.UIKit.UITableView tableView, class MonoTouch.Foundation.NSIndexPath indexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("tableView:canEditRowAtIndexPath:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="tableView" Type="MonoTouch.UIKit.UITableView" />
+        <Parameter Name="indexPath" Type="MonoTouch.Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="tableView">To be added.</param>
+        <param name="indexPath">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CanMoveRow">
+      <MemberSignature Language="C#" Value="public virtual bool CanMoveRow (MonoTouch.UIKit.UITableView tableView, MonoTouch.Foundation.NSIndexPath indexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool CanMoveRow(class MonoTouch.UIKit.UITableView tableView, class MonoTouch.Foundation.NSIndexPath indexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("tableView:canMoveRowAtIndexPath:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="tableView" Type="MonoTouch.UIKit.UITableView" />
+        <Parameter Name="indexPath" Type="MonoTouch.Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="tableView">To be added.</param>
+        <param name="indexPath">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CanPerformAction">
+      <MemberSignature Language="C#" Value="public virtual bool CanPerformAction (MonoTouch.UIKit.UITableView tableView, MonoTouch.ObjCRuntime.Selector action, MonoTouch.Foundation.NSIndexPath indexPath, MonoTouch.Foundation.NSObject sender);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool CanPerformAction(class MonoTouch.UIKit.UITableView tableView, class MonoTouch.ObjCRuntime.Selector action, class MonoTouch.Foundation.NSIndexPath indexPath, class MonoTouch.Foundation.NSObject sender) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("tableView:canPerformAction:forRowAtIndexPath:withSender:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="tableView" Type="MonoTouch.UIKit.UITableView" />
+        <Parameter Name="action" Type="MonoTouch.ObjCRuntime.Selector" />
+        <Parameter Name="indexPath" Type="MonoTouch.Foundation.NSIndexPath" />
+        <Parameter Name="sender" Type="MonoTouch.Foundation.NSObject" />
+      </Parameters>
+      <Docs>
+        <param name="tableView">To be added.</param>
+        <param name="action">To be added.</param>
+        <param name="indexPath">To be added.</param>
+        <param name="sender">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CommitEditingStyle">
+      <MemberSignature Language="C#" Value="public virtual void CommitEditingStyle (MonoTouch.UIKit.UITableView tableView, MonoTouch.UIKit.UITableViewCellEditingStyle editingStyle, MonoTouch.Foundation.NSIndexPath indexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void CommitEditingStyle(class MonoTouch.UIKit.UITableView tableView, valuetype MonoTouch.UIKit.UITableViewCellEditingStyle editingStyle, class MonoTouch.Foundation.NSIndexPath indexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("tableView:commitEditingStyle:forRowAtIndexPath:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="tableView" Type="MonoTouch.UIKit.UITableView" />
+        <Parameter Name="editingStyle" Type="MonoTouch.UIKit.UITableViewCellEditingStyle" />
+        <Parameter Name="indexPath" Type="MonoTouch.Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="tableView">To be added.</param>
+        <param name="editingStyle">To be added.</param>
+        <param name="indexPath">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CustomizeMoveTarget">
+      <MemberSignature Language="C#" Value="public virtual MonoTouch.Foundation.NSIndexPath CustomizeMoveTarget (MonoTouch.UIKit.UITableView tableView, MonoTouch.Foundation.NSIndexPath sourceIndexPath, MonoTouch.Foundation.NSIndexPath proposedIndexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class MonoTouch.Foundation.NSIndexPath CustomizeMoveTarget(class MonoTouch.UIKit.UITableView tableView, class MonoTouch.Foundation.NSIndexPath sourceIndexPath, class MonoTouch.Foundation.NSIndexPath proposedIndexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("tableView:targetIndexPathForMoveFromRowAtIndexPath:toProposedIndexPath:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>MonoTouch.Foundation.NSIndexPath</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="tableView" Type="MonoTouch.UIKit.UITableView" />
+        <Parameter Name="sourceIndexPath" Type="MonoTouch.Foundation.NSIndexPath" />
+        <Parameter Name="proposedIndexPath" Type="MonoTouch.Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="tableView">To be added.</param>
+        <param name="sourceIndexPath">To be added.</param>
+        <param name="proposedIndexPath">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DecelerationEnded">
+      <MemberSignature Language="C#" Value="public override void DecelerationEnded (MonoTouch.UIKit.UIScrollView scrollView);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void DecelerationEnded(class MonoTouch.UIKit.UIScrollView scrollView) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("scrollViewDidEndDecelerating:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="scrollView" Type="MonoTouch.UIKit.UIScrollView" />
+      </Parameters>
+      <Docs>
+        <param name="scrollView">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DecelerationStarted">
+      <MemberSignature Language="C#" Value="public override void DecelerationStarted (MonoTouch.UIKit.UIScrollView scrollView);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void DecelerationStarted(class MonoTouch.UIKit.UIScrollView scrollView) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("scrollViewWillBeginDecelerating:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="scrollView" Type="MonoTouch.UIKit.UIScrollView" />
+      </Parameters>
+      <Docs>
+        <param name="scrollView">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DidEndEditing">
+      <MemberSignature Language="C#" Value="public virtual void DidEndEditing (MonoTouch.UIKit.UITableView tableView, MonoTouch.Foundation.NSIndexPath indexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void DidEndEditing(class MonoTouch.UIKit.UITableView tableView, class MonoTouch.Foundation.NSIndexPath indexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("tableView:didEndEditingRowAtIndexPath:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="tableView" Type="MonoTouch.UIKit.UITableView" />
+        <Parameter Name="indexPath" Type="MonoTouch.Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="tableView">To be added.</param>
+        <param name="indexPath">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DidZoom">
+      <MemberSignature Language="C#" Value="public override void DidZoom (MonoTouch.UIKit.UIScrollView scrollView);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void DidZoom(class MonoTouch.UIKit.UIScrollView scrollView) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("scrollViewDidZoom:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="scrollView" Type="MonoTouch.UIKit.UIScrollView" />
+      </Parameters>
+      <Docs>
+        <param name="scrollView">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DraggingEnded">
+      <MemberSignature Language="C#" Value="public override void DraggingEnded (MonoTouch.UIKit.UIScrollView scrollView, bool willDecelerate);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void DraggingEnded(class MonoTouch.UIKit.UIScrollView scrollView, bool willDecelerate) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("scrollViewDidEndDragging:willDecelerate:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="scrollView" Type="MonoTouch.UIKit.UIScrollView" />
+        <Parameter Name="willDecelerate" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="scrollView">To be added.</param>
+        <param name="willDecelerate">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DraggingStarted">
+      <MemberSignature Language="C#" Value="public override void DraggingStarted (MonoTouch.UIKit.UIScrollView scrollView);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void DraggingStarted(class MonoTouch.UIKit.UIScrollView scrollView) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("scrollViewWillBeginDragging:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="scrollView" Type="MonoTouch.UIKit.UIScrollView" />
+      </Parameters>
+      <Docs>
+        <param name="scrollView">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EditingStyleForRow">
+      <MemberSignature Language="C#" Value="public virtual MonoTouch.UIKit.UITableViewCellEditingStyle EditingStyleForRow (MonoTouch.UIKit.UITableView tableView, MonoTouch.Foundation.NSIndexPath indexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance valuetype MonoTouch.UIKit.UITableViewCellEditingStyle EditingStyleForRow(class MonoTouch.UIKit.UITableView tableView, class MonoTouch.Foundation.NSIndexPath indexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("tableView:editingStyleForRowAtIndexPath:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>MonoTouch.UIKit.UITableViewCellEditingStyle</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="tableView" Type="MonoTouch.UIKit.UITableView" />
+        <Parameter Name="indexPath" Type="MonoTouch.Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="tableView">To be added.</param>
+        <param name="indexPath">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetCell">
+      <MemberSignature Language="C#" Value="public abstract MonoTouch.UIKit.UITableViewCell GetCell (MonoTouch.UIKit.UITableView tableView, MonoTouch.Foundation.NSIndexPath indexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class MonoTouch.UIKit.UITableViewCell GetCell(class MonoTouch.UIKit.UITableView tableView, class MonoTouch.Foundation.NSIndexPath indexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("tableView:cellForRowAtIndexPath:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>MonoTouch.UIKit.UITableViewCell</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="tableView" Type="MonoTouch.UIKit.UITableView" />
+        <Parameter Name="indexPath" Type="MonoTouch.Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="tableView">To be added.</param>
+        <param name="indexPath">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetHeightForFooter">
+      <MemberSignature Language="C#" Value="public virtual float GetHeightForFooter (MonoTouch.UIKit.UITableView tableView, int section);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance float32 GetHeightForFooter(class MonoTouch.UIKit.UITableView tableView, int32 section) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("tableView:heightForFooterInSection:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Single</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="tableView" Type="MonoTouch.UIKit.UITableView" />
+        <Parameter Name="section" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="tableView">To be added.</param>
+        <param name="section">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetHeightForHeader">
+      <MemberSignature Language="C#" Value="public virtual float GetHeightForHeader (MonoTouch.UIKit.UITableView tableView, int section);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance float32 GetHeightForHeader(class MonoTouch.UIKit.UITableView tableView, int32 section) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("tableView:heightForHeaderInSection:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Single</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="tableView" Type="MonoTouch.UIKit.UITableView" />
+        <Parameter Name="section" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="tableView">To be added.</param>
+        <param name="section">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetHeightForRow">
+      <MemberSignature Language="C#" Value="public virtual float GetHeightForRow (MonoTouch.UIKit.UITableView tableView, MonoTouch.Foundation.NSIndexPath indexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance float32 GetHeightForRow(class MonoTouch.UIKit.UITableView tableView, class MonoTouch.Foundation.NSIndexPath indexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("tableView:heightForRowAtIndexPath:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Single</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="tableView" Type="MonoTouch.UIKit.UITableView" />
+        <Parameter Name="indexPath" Type="MonoTouch.Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="tableView">To be added.</param>
+        <param name="indexPath">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetViewForFooter">
+      <MemberSignature Language="C#" Value="public virtual MonoTouch.UIKit.UIView GetViewForFooter (MonoTouch.UIKit.UITableView tableView, int section);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class MonoTouch.UIKit.UIView GetViewForFooter(class MonoTouch.UIKit.UITableView tableView, int32 section) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("tableView:viewForFooterInSection:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>MonoTouch.UIKit.UIView</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="tableView" Type="MonoTouch.UIKit.UITableView" />
+        <Parameter Name="section" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="tableView">To be added.</param>
+        <param name="section">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetViewForHeader">
+      <MemberSignature Language="C#" Value="public virtual MonoTouch.UIKit.UIView GetViewForHeader (MonoTouch.UIKit.UITableView tableView, int section);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class MonoTouch.UIKit.UIView GetViewForHeader(class MonoTouch.UIKit.UITableView tableView, int32 section) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("tableView:viewForHeaderInSection:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>MonoTouch.UIKit.UIView</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="tableView" Type="MonoTouch.UIKit.UITableView" />
+        <Parameter Name="section" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="tableView">To be added.</param>
+        <param name="section">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IndentationLevel">
+      <MemberSignature Language="C#" Value="public virtual int IndentationLevel (MonoTouch.UIKit.UITableView tableView, MonoTouch.Foundation.NSIndexPath indexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance int32 IndentationLevel(class MonoTouch.UIKit.UITableView tableView, class MonoTouch.Foundation.NSIndexPath indexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("tableView:indentationLevelForRowAtIndexPath:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="tableView" Type="MonoTouch.UIKit.UITableView" />
+        <Parameter Name="indexPath" Type="MonoTouch.Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="tableView">To be added.</param>
+        <param name="indexPath">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="MoveRow">
+      <MemberSignature Language="C#" Value="public virtual void MoveRow (MonoTouch.UIKit.UITableView tableView, MonoTouch.Foundation.NSIndexPath sourceIndexPath, MonoTouch.Foundation.NSIndexPath destinationIndexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void MoveRow(class MonoTouch.UIKit.UITableView tableView, class MonoTouch.Foundation.NSIndexPath sourceIndexPath, class MonoTouch.Foundation.NSIndexPath destinationIndexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("tableView:moveRowAtIndexPath:toIndexPath:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="tableView" Type="MonoTouch.UIKit.UITableView" />
+        <Parameter Name="sourceIndexPath" Type="MonoTouch.Foundation.NSIndexPath" />
+        <Parameter Name="destinationIndexPath" Type="MonoTouch.Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="tableView">To be added.</param>
+        <param name="sourceIndexPath">To be added.</param>
+        <param name="destinationIndexPath">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="NumberOfSections">
+      <MemberSignature Language="C#" Value="public virtual int NumberOfSections (MonoTouch.UIKit.UITableView tableView);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance int32 NumberOfSections(class MonoTouch.UIKit.UITableView tableView) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("numberOfSectionsInTableView:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="tableView" Type="MonoTouch.UIKit.UITableView" />
+      </Parameters>
+      <Docs>
+        <param name="tableView">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PerformAction">
+      <MemberSignature Language="C#" Value="public virtual void PerformAction (MonoTouch.UIKit.UITableView tableView, MonoTouch.ObjCRuntime.Selector action, MonoTouch.Foundation.NSIndexPath indexPath, MonoTouch.Foundation.NSObject sender);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void PerformAction(class MonoTouch.UIKit.UITableView tableView, class MonoTouch.ObjCRuntime.Selector action, class MonoTouch.Foundation.NSIndexPath indexPath, class MonoTouch.Foundation.NSObject sender) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("tableView:performAction:forRowAtIndexPath:withSender:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="tableView" Type="MonoTouch.UIKit.UITableView" />
+        <Parameter Name="action" Type="MonoTouch.ObjCRuntime.Selector" />
+        <Parameter Name="indexPath" Type="MonoTouch.Foundation.NSIndexPath" />
+        <Parameter Name="sender" Type="MonoTouch.Foundation.NSObject" />
+      </Parameters>
+      <Docs>
+        <param name="tableView">To be added.</param>
+        <param name="action">To be added.</param>
+        <param name="indexPath">To be added.</param>
+        <param name="sender">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RowDeselected">
+      <MemberSignature Language="C#" Value="public virtual void RowDeselected (MonoTouch.UIKit.UITableView tableView, MonoTouch.Foundation.NSIndexPath indexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void RowDeselected(class MonoTouch.UIKit.UITableView tableView, class MonoTouch.Foundation.NSIndexPath indexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("tableView:didDeselectRowAtIndexPath:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="tableView" Type="MonoTouch.UIKit.UITableView" />
+        <Parameter Name="indexPath" Type="MonoTouch.Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="tableView">To be added.</param>
+        <param name="indexPath">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RowSelected">
+      <MemberSignature Language="C#" Value="public virtual void RowSelected (MonoTouch.UIKit.UITableView tableView, MonoTouch.Foundation.NSIndexPath indexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void RowSelected(class MonoTouch.UIKit.UITableView tableView, class MonoTouch.Foundation.NSIndexPath indexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("tableView:didSelectRowAtIndexPath:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="tableView" Type="MonoTouch.UIKit.UITableView" />
+        <Parameter Name="indexPath" Type="MonoTouch.Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="tableView">To be added.</param>
+        <param name="indexPath">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RowsInSection">
+      <MemberSignature Language="C#" Value="public abstract int RowsInSection (MonoTouch.UIKit.UITableView tableview, int section);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance int32 RowsInSection(class MonoTouch.UIKit.UITableView tableview, int32 section) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("tableView:numberOfRowsInSection:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="tableview" Type="MonoTouch.UIKit.UITableView" />
+        <Parameter Name="section" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="tableview">To be added.</param>
+        <param name="section">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ScrollAnimationEnded">
+      <MemberSignature Language="C#" Value="public override void ScrollAnimationEnded (MonoTouch.UIKit.UIScrollView scrollView);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void ScrollAnimationEnded(class MonoTouch.UIKit.UIScrollView scrollView) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("scrollViewDidEndScrollingAnimation:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="scrollView" Type="MonoTouch.UIKit.UIScrollView" />
+      </Parameters>
+      <Docs>
+        <param name="scrollView">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Scrolled">
+      <MemberSignature Language="C#" Value="public override void Scrolled (MonoTouch.UIKit.UIScrollView scrollView);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void Scrolled(class MonoTouch.UIKit.UIScrollView scrollView) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("scrollViewDidScroll:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="scrollView" Type="MonoTouch.UIKit.UIScrollView" />
+      </Parameters>
+      <Docs>
+        <param name="scrollView">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ScrolledToTop">
+      <MemberSignature Language="C#" Value="public override void ScrolledToTop (MonoTouch.UIKit.UIScrollView scrollView);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void ScrolledToTop(class MonoTouch.UIKit.UIScrollView scrollView) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("scrollViewDidScrollToTop:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="scrollView" Type="MonoTouch.UIKit.UIScrollView" />
+      </Parameters>
+      <Docs>
+        <param name="scrollView">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SectionFor">
+      <MemberSignature Language="C#" Value="public virtual int SectionFor (MonoTouch.UIKit.UITableView tableView, string title, int atIndex);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance int32 SectionFor(class MonoTouch.UIKit.UITableView tableView, string title, int32 atIndex) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("tableView:sectionForSectionIndexTitle:atIndex:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="tableView" Type="MonoTouch.UIKit.UITableView" />
+        <Parameter Name="title" Type="System.String" />
+        <Parameter Name="atIndex" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="tableView">To be added.</param>
+        <param name="title">To be added.</param>
+        <param name="atIndex">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SectionIndexTitles">
+      <MemberSignature Language="C#" Value="public virtual string[] SectionIndexTitles (MonoTouch.UIKit.UITableView tableView);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance string[] SectionIndexTitles(class MonoTouch.UIKit.UITableView tableView) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("sectionIndexTitlesForTableView:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="tableView" Type="MonoTouch.UIKit.UITableView" />
+      </Parameters>
+      <Docs>
+        <param name="tableView">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ShouldIndentWhileEditing">
+      <MemberSignature Language="C#" Value="public virtual bool ShouldIndentWhileEditing (MonoTouch.UIKit.UITableView tableView, MonoTouch.Foundation.NSIndexPath indexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool ShouldIndentWhileEditing(class MonoTouch.UIKit.UITableView tableView, class MonoTouch.Foundation.NSIndexPath indexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("tableView:shouldIndentWhileEditingRowAtIndexPath:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="tableView" Type="MonoTouch.UIKit.UITableView" />
+        <Parameter Name="indexPath" Type="MonoTouch.Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="tableView">To be added.</param>
+        <param name="indexPath">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ShouldScrollToTop">
+      <MemberSignature Language="C#" Value="public override bool ShouldScrollToTop (MonoTouch.UIKit.UIScrollView scrollView);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance bool ShouldScrollToTop(class MonoTouch.UIKit.UIScrollView scrollView) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("scrollViewShouldScrollToTop:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="scrollView" Type="MonoTouch.UIKit.UIScrollView" />
+      </Parameters>
+      <Docs>
+        <param name="scrollView">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ShouldShowMenu">
+      <MemberSignature Language="C#" Value="public virtual bool ShouldShowMenu (MonoTouch.UIKit.UITableView tableView, MonoTouch.Foundation.NSIndexPath rowAtindexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool ShouldShowMenu(class MonoTouch.UIKit.UITableView tableView, class MonoTouch.Foundation.NSIndexPath rowAtindexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("tableView:shouldShowMenuForRowAtIndexPath:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="tableView" Type="MonoTouch.UIKit.UITableView" />
+        <Parameter Name="rowAtindexPath" Type="MonoTouch.Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="tableView">To be added.</param>
+        <param name="rowAtindexPath">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TitleForDeleteConfirmation">
+      <MemberSignature Language="C#" Value="public virtual string TitleForDeleteConfirmation (MonoTouch.UIKit.UITableView tableView, MonoTouch.Foundation.NSIndexPath indexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance string TitleForDeleteConfirmation(class MonoTouch.UIKit.UITableView tableView, class MonoTouch.Foundation.NSIndexPath indexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("tableView:titleForDeleteConfirmationButtonForRowAtIndexPath:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="tableView" Type="MonoTouch.UIKit.UITableView" />
+        <Parameter Name="indexPath" Type="MonoTouch.Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="tableView">To be added.</param>
+        <param name="indexPath">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TitleForFooter">
+      <MemberSignature Language="C#" Value="public virtual string TitleForFooter (MonoTouch.UIKit.UITableView tableView, int section);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance string TitleForFooter(class MonoTouch.UIKit.UITableView tableView, int32 section) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("tableView:titleForFooterInSection:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="tableView" Type="MonoTouch.UIKit.UITableView" />
+        <Parameter Name="section" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="tableView">To be added.</param>
+        <param name="section">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TitleForHeader">
+      <MemberSignature Language="C#" Value="public virtual string TitleForHeader (MonoTouch.UIKit.UITableView tableView, int section);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance string TitleForHeader(class MonoTouch.UIKit.UITableView tableView, int32 section) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("tableView:titleForHeaderInSection:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="tableView" Type="MonoTouch.UIKit.UITableView" />
+        <Parameter Name="section" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="tableView">To be added.</param>
+        <param name="section">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ViewForZoomingInScrollView">
+      <MemberSignature Language="C#" Value="public override MonoTouch.UIKit.UIView ViewForZoomingInScrollView (MonoTouch.UIKit.UIScrollView scrollView);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance class MonoTouch.UIKit.UIView ViewForZoomingInScrollView(class MonoTouch.UIKit.UIScrollView scrollView) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("viewForZoomingInScrollView:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>MonoTouch.UIKit.UIView</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="scrollView" Type="MonoTouch.UIKit.UIScrollView" />
+      </Parameters>
+      <Docs>
+        <param name="scrollView">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WillBeginEditing">
+      <MemberSignature Language="C#" Value="public virtual void WillBeginEditing (MonoTouch.UIKit.UITableView tableView, MonoTouch.Foundation.NSIndexPath indexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void WillBeginEditing(class MonoTouch.UIKit.UITableView tableView, class MonoTouch.Foundation.NSIndexPath indexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("tableView:willBeginEditingRowAtIndexPath:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="tableView" Type="MonoTouch.UIKit.UITableView" />
+        <Parameter Name="indexPath" Type="MonoTouch.Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="tableView">To be added.</param>
+        <param name="indexPath">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WillDeselectRow">
+      <MemberSignature Language="C#" Value="public virtual void WillDeselectRow (MonoTouch.UIKit.UITableView tableView, MonoTouch.Foundation.NSIndexPath indexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void WillDeselectRow(class MonoTouch.UIKit.UITableView tableView, class MonoTouch.Foundation.NSIndexPath indexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("tableView:willDeselectRowAtIndexPath:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="tableView" Type="MonoTouch.UIKit.UITableView" />
+        <Parameter Name="indexPath" Type="MonoTouch.Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="tableView">To be added.</param>
+        <param name="indexPath">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WillDisplay">
+      <MemberSignature Language="C#" Value="public virtual void WillDisplay (MonoTouch.UIKit.UITableView tableView, MonoTouch.UIKit.UITableViewCell cell, MonoTouch.Foundation.NSIndexPath indexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void WillDisplay(class MonoTouch.UIKit.UITableView tableView, class MonoTouch.UIKit.UITableViewCell cell, class MonoTouch.Foundation.NSIndexPath indexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("tableView:willDisplayCell:forRowAtIndexPath:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="tableView" Type="MonoTouch.UIKit.UITableView" />
+        <Parameter Name="cell" Type="MonoTouch.UIKit.UITableViewCell" />
+        <Parameter Name="indexPath" Type="MonoTouch.Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="tableView">To be added.</param>
+        <param name="cell">To be added.</param>
+        <param name="indexPath">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WillEndDragging">
+      <MemberSignature Language="C#" Value="public override void WillEndDragging (MonoTouch.UIKit.UIScrollView scrollView, System.Drawing.PointF velocity, ref System.Drawing.PointF targetContentOffset);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WillEndDragging(class MonoTouch.UIKit.UIScrollView scrollView, valuetype System.Drawing.PointF velocity, valuetype System.Drawing.PointF targetContentOffset) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("scrollViewWillEndDragging:withVelocity:targetContentOffset:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="scrollView" Type="MonoTouch.UIKit.UIScrollView" />
+        <Parameter Name="velocity" Type="System.Drawing.PointF" />
+        <Parameter Name="targetContentOffset" Type="System.Drawing.PointF&amp;" RefType="ref" />
+      </Parameters>
+      <Docs>
+        <param name="scrollView">To be added.</param>
+        <param name="velocity">To be added.</param>
+        <param name="targetContentOffset">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WillSelectRow">
+      <MemberSignature Language="C#" Value="public virtual MonoTouch.Foundation.NSIndexPath WillSelectRow (MonoTouch.UIKit.UITableView tableView, MonoTouch.Foundation.NSIndexPath indexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class MonoTouch.Foundation.NSIndexPath WillSelectRow(class MonoTouch.UIKit.UITableView tableView, class MonoTouch.Foundation.NSIndexPath indexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("tableView:willSelectRowAtIndexPath:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>MonoTouch.Foundation.NSIndexPath</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="tableView" Type="MonoTouch.UIKit.UITableView" />
+        <Parameter Name="indexPath" Type="MonoTouch.Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="tableView">To be added.</param>
+        <param name="indexPath">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ZoomingEnded">
+      <MemberSignature Language="C#" Value="public override void ZoomingEnded (MonoTouch.UIKit.UIScrollView scrollView, MonoTouch.UIKit.UIView withView, float atScale);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void ZoomingEnded(class MonoTouch.UIKit.UIScrollView scrollView, class MonoTouch.UIKit.UIView withView, float32 atScale) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("scrollViewDidEndZooming:withView:atScale:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="scrollView" Type="MonoTouch.UIKit.UIScrollView" />
+        <Parameter Name="withView" Type="MonoTouch.UIKit.UIView" />
+        <Parameter Name="atScale" Type="System.Single" />
+      </Parameters>
+      <Docs>
+        <param name="scrollView">To be added.</param>
+        <param name="withView">To be added.</param>
+        <param name="atScale">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ZoomingStarted">
+      <MemberSignature Language="C#" Value="public override void ZoomingStarted (MonoTouch.UIKit.UIScrollView scrollView, MonoTouch.UIKit.UIView view);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void ZoomingStarted(class MonoTouch.UIKit.UIScrollView scrollView, class MonoTouch.UIKit.UIView view) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("scrollViewWillBeginZooming:withView:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="scrollView" Type="MonoTouch.UIKit.UIScrollView" />
+        <Parameter Name="view" Type="MonoTouch.UIKit.UIView" />
+      </Parameters>
+      <Docs>
+        <param name="scrollView">To be added.</param>
+        <param name="view">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>
