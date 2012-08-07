@@ -36,7 +36,7 @@
       <para>
 
 	When you use AudioQueues, you must allocate buffers for
-	playback or recording.  You use the <see cref="M:MonoTouch.AudioToolBox.AllocateBuffer" /> method or the
+	playback or recording.  You use the <see cref=" M:MonoTouch.AudioToolBox.AllocateBuffer" /> method or the
 	<see cref="M:MonoTouch.AudioToolBox.AllocateBufferWithPacketDescriptors" />
 	to allocate them and you use the <see cref="M:MonoTouch.AudioToolBox.FreeBuffer" /> to release them.
 	You keep a collection of buffers around that the underlying
@@ -101,10 +101,10 @@
         <Parameter Name="callback" Type="MonoTouch.AudioToolbox.AudioQueue+AudioQueuePropertyChanged" />
       </Parameters>
       <Docs>
-        <param name="id">To be added.</param>
-        <param name="callback">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="id">ID of the property to listen to.</param>
+        <param name="callback">The method to invoke when the specified AudioQueue property changes.</param>
+        <summary>Use this method to track changes to the audio queue properties.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="AllocateBuffer">
@@ -147,9 +147,15 @@
       <Docs>
         <param name="bufferSize">The audio buffer size to allocate (in bytes).</param>
         <param name="audioQueueBuffer">Returns the pointer to the allocated buffer as an IntPtr.</param>
-        <summary>Allocates an audio buffer associated with this AudioQueue</summary>
+        <summary>Allocates an audio buffer associated with this AudioQueue, used for fixed bit rate buffers.</summary>
         <returns>AudioQueueStatus.Ok on success, otherwise the error. </returns>
         <remarks>
+
+	  Use the <see
+	  cref="M:MonoTouch.AudioToolBox.AllocateBufferWithPacketDescriptors"
+	  /> to allocate buffers that will be used with variable bit
+	  rate encodings.
+
         </remarks>
       </Docs>
     </Member>
@@ -169,12 +175,17 @@
         <Parameter Name="audioQueueBuffer" Type="System.IntPtr&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="bufferSize">To be added.</param>
-        <param name="nPackets">To be added.</param>
-        <param name="audioQueueBuffer">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="bufferSize">Size of the buffer to allocate.</param>
+        <param name="nPackets">Number of packets descriptors in the audio queue buffer.</param>
+        <param name="audioQueueBuffer">The allocated buffer on return</param>
+        <summary>Allocates an audio queue object for variable-bit-rate buffers.</summary>
         <returns>AudioQueueStatus.Ok on success and the audioQueueBuffer pointing to the buffer, otherwise the error.</returns>
-        <remarks>To be added.</remarks>
+        <remarks>
+	  Use the <see
+	  cref="M:MonoTouch.AudioToolBox.AllocateBuffer"
+	  /> to allocate buffers that will be used with fixed bit
+	  rate encodings.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="AudioStreamPacketDescription">
@@ -204,7 +215,7 @@
         <ReturnType>MonoTouch.AudioToolbox.AudioChannelLayout</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The audio layout.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -467,12 +478,15 @@
         <Parameter Name="size" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="audioQueueBuffer">To be added.</param>
-        <param name="offset">To be added.</param>
-        <param name="source">To be added.</param>
-        <param name="sourceOffset">To be added.</param>
-        <param name="size">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="audioQueueBuffer">An audio buffer allocated with either the <see cref=" M:MonoTouch.AudioToolBox.AllocateBuffer" /> method or the
+	<see cref="M:MonoTouch.AudioToolBox.AllocateBufferWithPacketDescriptors" /> methods.</param>
+        <param name="offset">Offset into the audio queue buffer to copy the data to.</param>
+        <param name="source">Pointer to the data source to copy into the audio queue buffer.</param>
+        <param name="sourceOffset">Offset inside the source.</param>
+        <param name="size">Number of bytes to copy into the audio queue buffer.</param>
+        <summary>
+	  Copies raw audio data contained at the location pointed to by source+sourceOffset at the specified offset into the AudioQueueBuffer.
+	</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
