@@ -31,10 +31,10 @@
         <Parameter Name="listener" Type="MonoTouch.AudioToolbox.AudioSession+PropertyListener" />
       </Parameters>
       <Docs>
-        <param name="property">To be added.</param>
-        <param name="listener">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="property">The property to monitor.</param>
+        <param name="listener">Callback to invoke when the property changes.</param>
+        <summary>Registers a method to be invoked when an audio session property changes.</summary>
+        <remarks>Use the RemoveListener method to stop receiving property change notifications.</remarks>
       </Docs>
     </Member>
     <Member MemberName="AudioInputAvailable">
@@ -225,8 +225,46 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Initializes the Audio Session.</summary>
+        <remarks>
+
+	  <para>
+
+	    In addition to calling the Initialize method on
+	    AudioSession, you will want to set the <see
+	    cref="P:MonoTouch.AudioToolbox.AudioSession.Category" />
+	    and the <see
+	    cref="P:MonoTouch.AudioToolbox.AudioSession.Mode" />
+	    properties to control the priority of your audio and the
+	    rules for mixing your audio with other audio playing on
+	    the device.
+
+	  </para>
+
+	  <para>
+
+	    When you call this variation of Initialize, both the <see
+	    cref="E:MonoTouch.AudioToolbox.AudioSession.Interrupted"/>
+	    and <see
+	    cref="E:MonoTouch.AudioToolbox.AudioSession.Resumed"/>
+	    events are raised on the main loop.  Use the <see
+	    cref="P:MonoTouch.AudioToolbox.AudioSession.Initialize(MonoTouch.CoreFoundation.CFRunLoop
+	    runLoop, System.String runMode)"/> if you want to specify
+	    a different runloop.
+
+	  </para>
+
+	  <example>
+<code lang="c#">
+//
+// Initialize the audio session for audio playback
+//
+AudioSession.Initialize ();
+AudioSession.Category = AudioSessionCategory.MediaPlayback;
+</code>
+	  </example>
+
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Initialize">
@@ -244,10 +282,47 @@
         <Parameter Name="runMode" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="runLoop">To be added.</param>
-        <param name="runMode">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="runLoop">The runloop to execute on.</param>
+        <param name="runMode">Run loop mode (see NSRunLoop for the various modes).</param>
+        <summary>Initializes the Audio Session.</summary>
+        <remarks>
+
+	  <para>
+
+	    In addition to calling the Initialize method on
+	    AudioSession, you will want to set the <see
+	    cref="P:MonoTouch.AudioToolbox.AudioSession.Category" />
+	    and the <see
+	    cref="P:MonoTouch.AudioToolbox.AudioSession.Mode" />
+	    properties to control the priority of your audio and the
+	    rules for mixing your audio with other audio playing on
+	    the device.
+
+	  </para>
+
+	  <para>
+
+	    When you call this variation of Initialize, both the <see
+	    cref="E:MonoTouch.AudioToolbox.AudioSession.Interrupted"/>
+	    and <see
+	    cref="E:MonoTouch.AudioToolbox.AudioSession.Resumed"/>
+	    events are raised on the specified run loop with the
+	    specified run loop mode.  Use the <see
+	    cref="P:MonoTouch.AudioToolbox.AudioSession.Initialize()"/>
+	    if you want those events to be raised on the main thread.
+
+	  </para>
+
+	  <example>
+<code lang="c#">
+//
+// Initialize the audio session for audio playback
+//
+AudioSession.Initialize (myRunLoop, myRunMode);
+AudioSession.Category = AudioSessionCategory.MediaPlayback;
+</code>
+	  </example>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="InputRoute">
@@ -277,8 +352,17 @@
         <ReturnType>System.EventHandler</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Event raised when the audio session has been interrupted.</summary>
+        <remarks>
+	  <para>
+
+	    You can use the <see cref="P:MonoTouch.AudioToolbox.AudioSession.InterruptionType" /> property to determine the cause of the interruption.
+
+	  </para>
+	  <para>
+	    In addition, the Resumed event is raised when the audio session is resumed.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="InterruptionType">
@@ -297,9 +381,11 @@
         <ReturnType>MonoTouch.AudioToolbox.AudioSessionInterruptionType</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>The type of interruption, used to determine the appropriate course of action when the AudioSession is interrupted.</summary>
+        <value></value>
+        <remarks>
+	  The value of this property is only valid when called from the <see cref="E:MonoTouch.AudioToolbox.AudioSession.Interrupted" /> event handler.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Mode">
@@ -459,10 +545,10 @@
         <Parameter Name="listener" Type="MonoTouch.AudioToolbox.AudioSession+PropertyListener" />
       </Parameters>
       <Docs>
-        <param name="property">To be added.</param>
-        <param name="listener">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="property">The monitored property.</param>
+        <param name="listener">The Callback that was specified in the call to AddListener.</param>
+        <summary>Removes the specified listener from the list of monitored audio session properties.</summary>
+        <remarks>Properties to monitor are registered with the AddListener method.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Resumed">
@@ -476,8 +562,8 @@
         <ReturnType>System.EventHandler</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Event raised when the audio session has resumed.</summary>
+        <remarks>In addition, the Interrupted event is raised when the audio session is interrupted.</remarks>
       </Docs>
     </Member>
     <Member MemberName="RoutingOverride">
@@ -510,9 +596,19 @@
         <Parameter Name="active" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="active">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="active">Whether to enable the audio session.</param>
+        <summary>Enables or Disables the audio session.</summary>
+        <remarks>
+	  <para>
+	    This method is used to enable and disable the audio session.
+	  </para>
+
+	  <para>
+	    This method can throw an AudioSessionException if another
+	    application is currently using the AudioSession in the
+	    foreground and does not support audio mixing.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
   </Members>
