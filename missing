@@ -1,0 +1,16 @@
+#!/usr/bin/csharp
+
+LoadAssembly ("System.Xml.Linq.dll");
+using System.Xml.Linq;
+using System.IO;
+
+var doc = XDocument.Load ("en/index.xml");
+foreach (var ns in doc.Descendants ("Namespace")) {
+	var nsName = (string)ns.Attribute ("Name");
+	foreach (var t in ns.Elements ("Type")) {
+		var tName = (string)t.Attribute ("Name");
+		var path = Path.Combine ("en", nsName, tName + ".xml");
+		if (!File.Exists (path))
+			Console.WriteLine (path);
+	}
+}
