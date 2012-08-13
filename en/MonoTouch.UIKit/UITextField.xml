@@ -25,10 +25,25 @@
    The MonoTouch API supports two styles of event notification: the Objective-C style that uses a delegate class or the C# style using event notifications.  
 </para>
       <para>
-   The C# style allows the user to add or remove event handlers at runtime by assigning to the events of properties of this class.    Event handlers can be anyone of a method, an anonymous methods or a lambda expression.  Using the C# style events or properties will override any manual settings to the Objective-C Delegate or WeakDelegate settings.
-</para>
+       The C# style allows the user to add or remove event handlers at runtime by assigning to the events of properties of this class.    Event handlers can be anyone of a method, an anonymous methods or a lambda expression.  Using the C# style events or properties will override any manual settings to the Objective-C Delegate or WeakDelegate settings.
+      </para>
       <para>The Objective-C style requires the user to create a new class derived from <see cref="T:MonoTouch.UIKit.UITextFieldDelegate" /> class and assign it to the <see cref="P:MonoTouch.UIKit.Delegate" /> property.   Alternatively, for low-level control, by creating a class derived from <see cref="T:MonoTouch.Foundation.NSObject" /> which has every entry point properly decorated with an [Export] attribute.   The instance of this object can then be assigned to the <see cref="T:MonoTouch.UIKit.UITextField.WeakDelegate" /> property.   
-</para>
+      </para>
+      <para>Managing the Keyboard</para>
+      <para>When the user taps in a text field, that text field becomes the first responder and automatically asks the system to display the associated keyboard. Because the appearance of the keyboard has the potential to obscure portions of your user interface, it is up to you to make sure that does not happen by repositioning any views that might be obscured. Some system views, like table views, help you by scrolling the first responder into view automatically. If the first responder is at the bottom of the scrolling region, however, you may still need to resize or reposition the scroll view itself to ensure the first responder is visible.</para>
+      <para>It is your application’s responsibility to dismiss the keyboard at the time of your choosing. You might dismiss the keyboard in response to a specific user action, such as the user tapping a particular button in your user interface. You might also configure your text field delegate to dismiss the keyboard when the user presses the “return” key on the keyboard itself. To dismiss the keyboard, send the resignFirstResponder message to the text field that is currently the first responder. Doing so causes the text field object to end the current editing session (with the delegate object’s consent) and hide the keyboard.</para>
+      <para>The appearance of the keyboard itself can be customized using the properties provided by the UITextInputTraits protocol. Text field objects implement this protocol and support the properties it defines. You can use these properties to specify the type of keyboard (ASCII, Numbers, URL, Email, and others) to display. You can also configure the basic text entry behavior of the keyboard, such as whether it supports automatic capitalization and correction of the text.</para>
+      <para>Keyboard Notifications</para>
+      <para>When the system shows or hides the keyboard, it posts several keyboard notifications. These notifications contain information about the keyboard, including its size, which you can use for calculations that involve moving views. Registering for these notifications is the only way to get some types of information about the keyboard. The system delivers the following notifications for keyboard-related events:</para>
+      <list type="bullet">
+        <item>
+          <term>UIKeyboardWillShowNotification</term>
+        </item>
+        <item><term>UIKeyboardDidShowNotification</term></item>
+        <item><term>UIKeyboardWillHideNotification</term></item>
+        <item><term>UIKeyboardDidHideNotification</term></item>
+      </list>
+      <para>For information about how to show and hide the keyboard, see Text and Web.</para>
     </remarks>
     <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=23a2571b-45eb-4889-bb67-d88937cb68c1">monocatalog</related>
   </Docs>
@@ -193,9 +208,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>A Boolean value indicating whether the font size should be reduced in order to fit the text string into the text field’s bounding rectangle.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks><para>Normally, the text field’s content is drawn with the font you specify in the font property. If this property is set to <code lang="C#">true</code>, however, and the contents in the text property exceed the text field’s bounding rectangle, the receiver starts reducing the font size until the string fits or the minimum font size is reached. The text is shrunk along the baseline.</para>
+        <para>The default value for this property is <code lang="C#">false</code>. If you change it to <code lang="C#">true</code>, you should also set an appropriate minimum font size by modifying the minimumFontSize property.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Appearance">
@@ -318,9 +335,11 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>MonoTouch.UIKit.UIImage</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The image that represents the background appearance of the text field when it is enabled.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks><para>When set, the image referred to by this property replaces the standard appearance controlled by the borderStyle property. Background images are drawn in the border rectangle portion of the image. Images you use for the text field’s background should be able to stretch to fit.</para>
+        <para>This property is set to <code lang="C#">null</code> by default.</para>
+      </remarks>
       </Docs>
     </Member>
     <Member MemberName="BeginningOfDocument">
@@ -363,10 +382,12 @@ mySliders.TintColor = UIColor.Red;
         <Parameter Name="forBounds" Type="System.Drawing.RectangleF" />
       </Parameters>
       <Docs>
-        <param name="forBounds">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="forBounds">The bounding rectangle of the receiver.</param>
+        <summary>Returns the receiver's border rectangle.</summary>
+        <returns>The border rectangle for the receiver.</returns>
+        <remarks><para>You should not call this method directly. If you want to provide a different border rectangle for drawing, you can override this method and return that rectangle.</para>
+        <para>The default implementation of this method returns the original bounds rectangle</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="BorderStyle">
@@ -388,9 +409,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>MonoTouch.UIKit.UITextBorderStyle</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The border style used by the text field.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>TThe default value for this property is UITextBorderStyleNone. If the value is set to the UITextBorderStyleRoundedRect style, the custom background image associated with the text field is ignored.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ClassHandle">
@@ -428,9 +449,11 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>MonoTouch.UIKit.UITextFieldViewMode</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Controls when the standard clear button appears in the text field.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks><para>The standard clear button is displayed at the right side of the text field as a way for the user to remove text quickly. This button appears automatically based on the value set for this property.</para>
+        <para>The default value for this property is UITextFieldViewModeNever.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ClearButtonRect">
@@ -452,10 +475,10 @@ mySliders.TintColor = UIColor.Red;
         <Parameter Name="forBounds" Type="System.Drawing.RectangleF" />
       </Parameters>
       <Docs>
-        <param name="forBounds">To be added.</param>
+        <param name="forBounds">The bounding rectangle of the receiver.</param>
         <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <returns>The rectangle in which to draw the clear button.</returns>
+        <remarks>You should not call this method directly. If you want to place the clear button in a different location, you can override this method and return the new rectangle. Your method should call the <code lang="C#">base</code> implementation and modify the returned rectangle’s origin only. Changing the size of the clear button may cause unnecessary distortion of the button image.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ClearsOnBeginEditing">
@@ -477,9 +500,11 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>A boolean value indicating wether the text field removes old text when editing begins.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks><para>If this property is set to <code lang="C#">true</code>, the text field’s previous text is cleared when the user selects the text field to begin editing. If <code lang="C#">false</code>, the text field places an insertion point at the place where the user tapped the field.</para>
+        <para>Even if this property is set to <code lang="C#">true</code>, the text field delegate can override this behavior by returning <code lang="C#">false</code> from its textFieldShouldClear: method.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ComparePosition">
@@ -646,9 +671,11 @@ void Setup ()
         <ReturnType>MonoTouch.UIKit.UIImage</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The image that represents the background appearance of the text field when it is disabled.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks><para>Background images are drawn in the border rectangle portion of the image. Images you use for the text field's background should be able to stretch to fit. This property is ignore if the background property is not also set.</para>
+        <para>This property is set to nil by default.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Dispose">
@@ -696,9 +723,11 @@ void Setup ()
         <Parameter Name="rect" Type="System.Drawing.RectangleF" />
       </Parameters>
       <Docs>
-        <param name="rect">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="rect">The rectangle in which to draw the placeholder text.</param>
+        <summary>Draws the receiver’s placeholder text in the specified rectangle.</summary>
+        <remarks><para>You should not call this method directly. If you want to customize the drawing behavior for the placeholder text, you can override this method to do your drawing.</para>
+        <para>By the time this method is called, the current graphics context is already configured with the default environment and text color for drawing. In your overridden method, you can configure the current context further and then invoke <code lang="C#">base</code> to do the actual drawing or do the drawing yourself. If you do render the text yourself, you should not invoke <code lang="C#">base</code>.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="DrawText">
@@ -720,9 +749,11 @@ void Setup ()
         <Parameter Name="rect" Type="System.Drawing.RectangleF" />
       </Parameters>
       <Docs>
-        <param name="rect">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="rect">The rectangle in which to draw the text.</param>
+        <summary>Draws the receiver's text in the specified rectangle.</summary>
+        <remarks><para>You should not call this method directly. If you want to customize the drawing behavior for the text, you can override this method to do your drawing.</para>
+        <para>By the time this method is called, the current graphics context is already configured with the default environment and text color for drawing. In your overridden method, you can configure the current context further and then invoke <code lang="C#">base</code> to do the actual drawing or you can do the drawing yourself. If you do render the text yourself, you should not invoke <code lang="C#">base</code>.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="EditingRect">
@@ -744,10 +775,10 @@ void Setup ()
         <Parameter Name="forBounds" Type="System.Drawing.RectangleF" />
       </Parameters>
       <Docs>
-        <param name="forBounds">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="forBounds">The bounding rectangle of the receiver.</param>
+        <summary>Returns the rectangle in which editable text can be displayed.</summary>
+        <returns>The computed editing rectangle for the text.</returns>
+        <remarks>You should not call this method directly. If you want to provide a different editing rectangle for the text, you can override this method and return that rectangle. By default, this method returns a region in the text field that is not occupied by any overlay views.</remarks>
       </Docs>
     </Member>
     <Member MemberName="EnablesReturnKeyAutomatically">
@@ -829,9 +860,9 @@ void Setup ()
         <ReturnType>MonoTouch.UIKit.UIFont</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The font of the text.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>This propertie applies to the entire text of the text field. It also applies to the placeholder text. The default font is a 12-point Helvetica plain font.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetBaseWritingDirection">
@@ -1273,9 +1304,9 @@ void Setup ()
         <ReturnType>MonoTouch.UIKit.UIView</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The custom accessory view to display when the text field becomes the first responder.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>The default value of this property is <code lang="C#">null</code>. Assigning a view to this property causes that view to be displayed above the standard system keyboard (or above the custom input view if one is provided) when the text field becomes the first responder. For example, you could use this property to attach a custom toolbar to the keyboard.</remarks>
       </Docs>
     </Member>
     <Member MemberName="InputDelegate">
@@ -1313,9 +1344,11 @@ void Setup ()
         <ReturnType>MonoTouch.UIKit.UIView</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The custom input view to displauy when the text field becomes the first responder.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks><para>If the value in this property is <code lang="C#">null</code>, the text field displays the standard system keyboard when it becomes first responder. Assigning a custom view to this property causes that view to be presented instead.</para>
+        <para>The default value of this property is <code lang="C#">null</code>.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="InsertDictationResult">
@@ -1454,9 +1487,12 @@ void Setup ()
         <ReturnType>MonoTouch.UIKit.UIView</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The overlay view displayed on the left side of the text field.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks><para>You can use the left overlay view to indicate the intended behavior of the text field. For example, you might display a magnifying glass in this location to indicate that the text field is a search field.</para>
+        <para>The left overlay view is placed in the rectangle returned by the leftViewRectForBounds: method of the receiver. The image associated with this property should fit the given rectangle. If it does not fit, it is scaled to fit.</para>
+        <para>If your overlay view does not overlap any other sibling views, it receives touch events like any other view. If you specify a control for your view, the control tracks and sends actions as usual. If an overlay view overlaps the clear button, however, the clear button always takes precedence in receiving events.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="LeftViewMode">
@@ -1478,9 +1514,9 @@ void Setup ()
         <ReturnType>MonoTouch.UIKit.UITextFieldViewMode</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Controls when the left overlay view appears in the text field.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>The default value for this property is UITextFieldViewModeNever.</remarks>
       </Docs>
     </Member>
     <Member MemberName="LeftViewRect">
@@ -1502,10 +1538,10 @@ void Setup ()
         <Parameter Name="forBounds" Type="System.Drawing.RectangleF" />
       </Parameters>
       <Docs>
-        <param name="forBounds">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="forBounds">The bounding rectangle of the receiver.</param>
+        <summary>Returns the drawing rectangle of the receiver's left overlay view.</summary>
+        <returns>The rectangle in which to draw the left overlay view.</returns>
+        <remarks>You should not call this method directly. If you want to place the left overlay view in a different location, you can override this method and return the new rectangle.</remarks>
       </Docs>
     </Member>
     <Member MemberName="MarkedTextRange">
@@ -1572,9 +1608,11 @@ void Setup ()
         <ReturnType>System.Single</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The size of the smallest permissible font with which to draw the text field’s text.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks><para>When drawing text that might not fit within the bounding rectangle of the text field, you can use this property to prevent the receiver from reducing the font size to the point where it is no longer legible.</para>
+        <para>The default value for this property is 0.0. If you enable font adjustment for the text field, you should always increase this value.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Placeholder">
@@ -1596,9 +1634,9 @@ void Setup ()
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The string that is displayed when there is no other text in the text field.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>This value is <code lang="C#">null</code> by default. The placeholder string is drawn using a 70% grey color.</remarks>
       </Docs>
     </Member>
     <Member MemberName="PlaceholderRect">
@@ -1620,10 +1658,12 @@ void Setup ()
         <Parameter Name="forBounds" Type="System.Drawing.RectangleF" />
       </Parameters>
       <Docs>
-        <param name="forBounds">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="forBounds">The bounding rectangle of the receiver.</param>
+        <summary>Returns the drawing rectangle for the text field’s placeholder text.</summary>
+        <returns>The computed drawing rectangle for the placeholder text.</returns>
+        <remarks><para>You should not call this method directly. If you want to customize the drawing rectangle for the placeholder text, you can override this method and return a different rectangle.</para>
+        <para>If the placeholder string is empty or <code lang="C#">null</code>, this method is not called.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ReplaceText">
@@ -1695,9 +1735,12 @@ void Setup ()
         <ReturnType>MonoTouch.UIKit.UIView</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The overlay view displayed on the right side of the text field.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks><para>You can use the right overlay view to provide indicate additional features available for the text field. For example, you might display a bookmarks button in this location to allow the user to select from a set of predefined items.</para>
+        <para>The right overlay view is placed in the rectangle returned by the rightViewRectForBounds: method of the receiver. The image associated with this property should fit the given rectangle. If it does not fit, it is scaled to fit.</para>
+        <para>If your overlay view does not overlap any other sibling views, it receives touch events like any other view. If you specify a control for your view, that control tracks and sends actions as usual. If an overlay view overlaps the clear button, however, the clear button always takes precedence in receiving events. By default, the right overlay view does overlap the clear button.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="RightViewMode">
@@ -1719,9 +1762,9 @@ void Setup ()
         <ReturnType>MonoTouch.UIKit.UITextFieldViewMode</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Controls when the right overlay view appears in the text field.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>The default value for this property is UITextFieldViewModeNever.</remarks>
       </Docs>
     </Member>
     <Member MemberName="RightViewRect">
@@ -1743,10 +1786,10 @@ void Setup ()
         <Parameter Name="forBounds" Type="System.Drawing.RectangleF" />
       </Parameters>
       <Docs>
-        <param name="forBounds">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="forBounds">The bounding rectangle of the receiver.</param>
+        <summary>Returns the drawing location of the receiver’s right overlay view.</summary>
+        <returns>The rectangle in which to draw the right overlay view.</returns>
+        <remarks>You should not call this method directly. If you want to place the right overlay view in a different location, you can override this method and return the new rectangle.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SecureTextEntry">
@@ -2008,9 +2051,9 @@ void Setup ()
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The text displayed by the text field.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>This string is <code lang="C#">null</code> by default.</remarks>
       </Docs>
     </Member>
     <Member MemberName="TextAlignment">
@@ -2032,9 +2075,9 @@ void Setup ()
         <ReturnType>MonoTouch.UIKit.UITextAlignment</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The technique to use for aligning the text.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>This property applies to the both the main text string and the placeholder string. The default value of this property is UITextAlignmentLeft.</remarks>
       </Docs>
     </Member>
     <Member MemberName="TextBackgroundColorKey">
@@ -2072,9 +2115,9 @@ void Setup ()
         <ReturnType>MonoTouch.UIKit.UIColor</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The color of the text.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>This property applies to the entire text string. The default value for this property is a black color. The value for the property can only be set to a non-<code lang="C#">null</code> value; setting this property to <code lang="C#">null</code> raises an exception.</remarks>
       </Docs>
     </Member>
     <Member MemberName="TextColorKey">
@@ -2399,10 +2442,12 @@ void Setup ()
         <Parameter Name="forBounds" Type="System.Drawing.RectangleF" />
       </Parameters>
       <Docs>
-        <param name="forBounds">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="forBounds">The bounding rectangle of the receiver.</param>
+        <summary>Returns the drawing rectangle for the text field’s text.</summary>
+        <returns>The computed drawing rectangle for the label’s text.</returns>
+        <remarks><para>You should not call this method directly. If you want to customize the drawing rectangle for the text, you can override this method and return a different rectangle.</para>
+        <para>The default implementation of this method returns a rectangle that is derived from the control’s original bounds, but which does not include the area occupied by the receiver’s border or overlay views.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Tokenizer">
