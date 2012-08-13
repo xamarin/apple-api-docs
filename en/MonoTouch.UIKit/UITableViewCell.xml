@@ -181,10 +181,13 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="reuseIdentifier" Type="MonoTouch.Foundation.NSString" />
       </Parameters>
       <Docs>
-        <param name="style">To be added.</param>
-        <param name="reuseIdentifier">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="style">The style to use for this cell.</param>
+        <param name="reuseIdentifier">A string used to identify the cell object if it should be reused for mutiple rows in a table view. Pass <see langword="null"/> if the object should not be reused. The same reuse identifier string should be used for all cells that use the same class and layout.</param>
+        <summary>Create a table cell with the given style and reuse identifier.</summary>
+        <remarks>
+            <para>The reuse identifier is associated with all cells (rows) in a table view that have the same layout (irrespective of their content) and can therefore be used interchangeably. The <see cref="M:MonoTouch.UIKit.UITableViewSouce.GetCell(MonoTouch.UIKit.UITableView,MonoTouch.Foundation.NSIndexPath)" /> implementation calls <see cref="M:MonoTouch.UIKit.UITableView.DequeueReusableCell(MonoTouch.Foundation.NSString)" /> with a specific reuse identifier string to obtain a cached cell object with a particular layout to use as the basis for the row being constructed for viewing.</para>
+            <para>To produce a layout different to those built-in to <see cref="T:MonoTouch.UIKit.UITableViewCell" />, create a custom cell. To set the row height of each cell differently, implement <see cref="M:MonoTouch.UIKit.UITableViewSource.GetHeightForRow(MonoTouch.UIKit.UITableView,MonoTouch.Foundation.NSIndexPath)" />.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -199,10 +202,13 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="reuseIdentifier" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="style">To be added.</param>
-        <param name="reuseIdentifier">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+          <param name="style">The style to use for this cell.</param>
+          <param name="reuseIdentifier">A string used to identify the cell object if it should be reused for mutiple rows in a table view. Pass <see langword="null"/> if the object should not be reused. The same reuse identifier string should be used for all cells that use the same class and layout.</param>
+          <summary>Create a table cell with the given style and reuse identifier.</summary>
+          <remarks>
+              <para>The reuse identifier is associated with all cells (rows) in a table view that have the same layout (irrespective of their content) and can therefore be used interchangeably. The <see cref="M:MonoTouch.UIKit.UITableViewSouce.GetCell(MonoTouch.UIKit.UITableView,MonoTouch.Foundation.NSIndexPath)" /> implementation calls <see cref="M:MonoTouch.UIKit.UITableView.DequeueReusableCell(MonoTouch.Foundation.NSString)" /> with a specific reuse identifier string to obtain a cached cell object with a particular layout to use as the basis for the row being constructed for viewing.</para>
+              <para>To produce a layout different to those built-in to <see cref="T:MonoTouch.UIKit.UITableViewCell" />, create a custom cell. To set the row height of each cell differently, implement <see cref="M:MonoTouch.UIKit.UITableViewSource.GetHeightForRow(MonoTouch.UIKit.UITableView,MonoTouch.Foundation.NSIndexPath)" />.</para>
+          </remarks>
       </Docs>
     </Member>
     <Member MemberName="Accessory">
@@ -224,9 +230,14 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.UIKit.UITableViewCellAccessory</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>The type of standard accessory the cell should use (in its normal state).</summary>
+        <value>Default value is <see cref="P:MonoTouch.UIKit.UITableViewCellAccessory.None" />.</value>
+        <remarks>
+            <para>If specified, the accessory view appears on the right side of a cell. Standard accessory view types include the 'disclosure indicator' right-chevron.</para>
+            <para>If the accessory type is <see cref="P:MonoTouch.UIKit.UITableViewCellAccessory.DetailDisclosureButton" /> (and the cell is enabled) then when tapped it will call the <see cref="M:MonoTouch.UIKit.UITableViewSource.AccessoryButtonTapped(MonoTouch.UIKit.UITableView,MonoTouch.Foundation.NSIndexPath)" /> method. This method is seperate to the <see cref="M:MonoTouch.UIKit.UITableViewSource.RowSelected(MonoTouch.UIKit.UITableView,MonoTouch.Foundation.NSIndexPath)" /> method that is called if the rest of the cell is tapped.</para>
+            <para>If a custom accessory view is set via <see cref="P:MonoTouch.UIKit.UITableViewCell.AccessoryView" /> then this Accessory property is ignored.</para>
+            <para>The accessory image cross-fades between normal and editing states if it is set for both states; use the <see cref="P:MonoTouch.UIKit.UITableViewCell.EditingAccessory" /> property to set the accessory type to be displayed in editing mode. If an accessory is not defined for both states (normal and editing) the the accessory is animated to slide in or out, as required.</para>
+            </remarks>
       </Docs>
     </Member>
     <Member MemberName="AccessoryView">
@@ -248,9 +259,12 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.UIKit.UIView</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>A view on the right side of a UITableViewCell (normal state).</summary>
+        <value></value>
+        <remarks>
+            <para>If this property is not  <see langword="null"/> then the cell uses the given view as the accessory (for the normal state). The value of the <see cref="P:MonoTouch.UIKit.UITableViewCell.Accessory" /> is ignored when AccessoryView is set. The custom accessory view can be a control, a label or a custom view.</para>
+            <para>The accessory view cross-fades between normal and editing states if it is set for both states; use the <see cref="P:MonoTouch.UIKit.UITableViewCell.EditingAccessoryView" /> property to set a custom accessory view to be displayed in editing mode. If an accessory is not defined for both states (normal and editing) the the accessory view is animated to slide in or out, as required.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Appearance">
@@ -362,9 +376,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>MonoTouch.UIKit.UIView</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Returns the content view of the cell object (read-only).</summary>
+        <value></value>
+        <remarks>This property returns the default superview for content displayed in the cell. To customize cells with additional views, add them to the content view so they will be positioned correctly as the cell transitions in and out of editing mode.</remarks>
       </Docs>
     </Member>
     <Member MemberName="DetailTextLabel">
@@ -383,9 +397,12 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>MonoTouch.UIKit.UILabel</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Returns the secondary label of the table cell (read-only).</summary>
+        <value></value>
+        <remarks>
+            <para>UITableViewCell automatically creates the secondary (detail) label if the cell is created with a <see cref="M:MonoTouch.UIKit.UITableViewCellStyle" /> that supports a detail label.</para>
+            <para>If the cell's style doesn't support a detail label, this property returns <see langword="null"/>.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="DidTransitionToState">
@@ -407,9 +424,13 @@ mySliders.TintColor = UIColor.Red;
         <Parameter Name="mask" Type="MonoTouch.UIKit.UITableViewCellState" />
       </Parameters>
       <Docs>
-        <param name="mask">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="mask">A bit mask indicating the state (or combination of states) the cell is transitioning to.</param>
+        <summary>Called on the cell just after it transitions between cell states.</summary>
+        <remarks>
+            <para>UITableViewCell subclasses can implement this method to perform additional animations when it is changing state (such as from a normal state to editing move). This method is called at the end of the animation block so the </para>
+            <para>Subclasses must always call <see langword="super"/> when overriding this method.</para>
+            <para>Note that when the user swipes to delete, the cell transitions to the <see cref="P:MonoTouch.UIKit.UITableViewCellState.ShowingDeleteConfirmationMask" /> - but <see cref="P:MonoTouch.UIKit.UITableViewCellState.ShowingEditControlMask" /> is not set. Remember to test for the correct value when handling this case.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Dispose">
@@ -457,9 +478,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Whether the cell is in an editable state.</summary>
+        <value><see langword="true" /> if the cell is in the editing state, <see langword="false" /> if the cell is in the normal state.</value>
+          <remarks>In the editing state, a cell displays the editing controls specified for it: the green insertion control or the red deletion control on the left, and/or the reordering control on the right. Use <see cref="P:MonoTouch.UIKit.UITableViewCell.EditingStyle" /> and <see cref="P:MonoTouch.UIKit.UITableViewCell.ShowsReorderControl" /> to specify which controls appear in the cell.</remarks>
       </Docs>
     </Member>
     <Member MemberName="EditingAccessory">
@@ -481,9 +502,14 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>MonoTouch.UIKit.UITableViewCellAccessory</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>The type of standard accessory the cell should use (in its editing state).</summary>
+        <value>Default value is <see cref="P:MonoTouch.UIKit.UITableViewCellAccessory.None" />.</value>
+        <remarks>
+            <para>If specified, the accessory view appears on the right side of a cell. Standard accessory types include the 'disclosure indicator' right-chevron.</para>
+            <para>If the accessory type is <see cref="P:MonoTouch.UIKit.UITableViewCellAccessory.DetailDisclosureButton" /> (and the cell is enabled) then when tapped it will call the <see cref="M:MonoTouch.UIKit.UITableViewSource.AccessoryButtonTapped(MonoTouch.UIKit.UITableView,MonoTouch.Foundation.NSIndexPath)" /> method. This method is seperate to the <see cref="M:MonoTouch.UIKit.UITableViewSource.RowSelected(MonoTouch.UIKit.UITableView,MonoTouch.Foundation.NSIndexPath)" /> method that is called if the rest of the cell is tapped.</para>
+            <para>If a custom accessory view is set for the editing state via <see cref="P:MonoTouch.UIKit.UITableViewCell.EditingAccessoryView" /> then this EditingAccessory property is ignored.</para>
+            <para>The accessory image cross-fades between normal and editing states if it is set for both states; use the <see cref="P:MonoTouch.UIKit.UITableViewCell.Accessory" /> property to set the accessory type to be displayed in the normal state. If an accessory is not defined for both states (normal and editing) the the accessory is animated to slide in or out, as required.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="EditingAccessoryView">
@@ -505,9 +531,12 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>MonoTouch.UIKit.UIView</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>A view on the right side of a UITableViewCell (editing state).</summary>
+        <value></value>
+        <remarks>
+            <para>If this property is not <see langword="null"/> then the cell uses the given view as the accessory (for the editing state). The value of the <see cref="P:MonoTouch.UIKit.UITableViewCell.EditingAccessory" /> is ignored when EditingAccessoryView is set. The custom accessory view can be a control, a label or a custom view.</para>
+            <para>The accessory view cross-fades between normal and editing states if it is set for both states; use the <see cref="P:MonoTouch.UIKit.UITableViewCell.AccessoryView" /> property to set a custom accessory view to be displayed in the normal state. If an accessory is not defined for both states (normal and editing) the the accessory view is animated to slide in or out, as required.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="EditingStyle">
@@ -526,9 +555,11 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>MonoTouch.UIKit.UITableViewCellEditingStyle</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>The editing style of the cell (read-only). Returns whether the cell is in an editable state, and if so whether it is showing an insertion or deletion control.</summary>
+        <value>The default value is <see cref="P:MonoTouch.UIKit.UITableViewCellEditingStyle.None" /> (the cell is not currently editable).</value>
+        <remarks>
+            <para>The <see cref="M:MonoTouch.UIKit.UITableViewSource.EditingStyleForRow(MonoTouch.UIKit.UITableView,MonoTouch.Foundation.NSIndexPath)" /> method returns the value for each cell.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Highlighted">
@@ -550,9 +581,13 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Whether the cell is highlighted.</summary>
+        <value>Default value is <see langword="false"/>.</value>
+        <remarks>
+            <para>Highlighting affects the appearance of labels, the image and background. When Highlighted is <see langword="true"/>, the labels in the cell are drawn in their highlighted text color (which is white by default).</para>
+            <para>When this property is set to <see langword="true"/>, the transition to the new appearance is not animated. Use the <see cref="M:MonoTouch.UIKit.UITableViewCell.SetHighlighted(System.Boolean,System.Boolean)" /> method for animated highlight-state transitions.</para>
+            <para>For highlighting to work properly, set the <see cref="P:MonoTouch.UIKit.UILabel.HighlightedTextColor" /> for the two labels (<see cref="P:MonoTouch.UIKit.UITableViewCell.TextLabel" /> and <see cref="P:MonoTouch.UIKit.UITableViewCell.DetailTextLabel" />), and set the <see cref="P:MonoTouch.UIKit.UImageView.HighlightedImage" /> property on the cell's <see cref="P:MonoTouch.UIKit.UITableViewCell.ImageView" />. </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ImageView">
@@ -571,9 +606,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>MonoTouch.UIKit.UIImageView</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Returns the image view of the table cell (read-only).</summary>
+        <value></value>
+        <remarks>The image appears on the left hand side of the cell, forcing the labels to move to the right. The image view object is created when the cell is created but initially there is no image set.</remarks>
       </Docs>
     </Member>
     <Member MemberName="IndentationLevel">
@@ -595,9 +630,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Sets the indentation level of a cell, shifting the position of the cell's content.</summary>
+        <value>Default value is zero (no indentation).</value>
+          <remarks>The width of each level of indentation is determined by <see cref="P:MonoTouch.UIKit.UITableViewCell.IndentationWidth" /> property.</remarks>
       </Docs>
     </Member>
     <Member MemberName="IndentationWidth">
@@ -619,9 +654,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Single</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>The width of each the indentation level.</summary>
+        <value>Default indentation is 10 points.</value>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="MultipleSelectionBackgroundView">
@@ -643,9 +678,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>MonoTouch.UIKit.UIView</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>The background view used when a cell is selected inside a table view that allows multiple selection.</summary>
+        <value></value>
+        <remarks>If this property is not <see langword="null" />, it is used as the background view for any selected cells (when the containing table view allows mutiple selection). Mulitple selection is set on a <see cref="T:MonoTouch.UIKit.UITableView" /> using the <see cref="P:MonoTouch.UIKit.UITableView.AllowsMultipleSelection" /> and <see cref="P:MonoTouch.UIKit.UITableView.AllowsMultipleSelectionDuringEditing" /> properties.</remarks>
       </Docs>
     </Member>
     <Member MemberName="PrepareForReuse">
@@ -665,8 +700,12 @@ mySliders.TintColor = UIColor.Red;
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Prepares a cell for reuse by the table view's <see cref="T:MonoTouch.UIKit.UITableViewSource" />.</summary>
+        <remarks>
+            <para>If a <see cref="T:MonoTouch.UIKit.UITableView" /> is reusable - it has a ReuseIdentifier - this method is called just before the object is returned by <see cref="M:MonoTouch.UIKit.UITableView.DequeueReusableCell(System.String)" />. This method implementation should reset cell attributes that are not content-related, such as alpha, editing, and selection state. The <see cref="M:MonoTouch.UIKit.UITableViewSource.GetCell(MonoTouch.UIKit.UITableView,MonoTouch.Foundation.NSIndexPath)" /> should always reset the content when reusing a cell.</para>
+            <para>Implementations of this method should call the base method.</para>
+            <para>If the cell object does not have a <see cref="P:MonoTouch.UIKit.UITableViewCell.ReuseIdentifier" />, this method is not called.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ReuseIdentifier">
@@ -685,9 +724,11 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>A string that identifies a cell object so that it can be reused.</summary>
+        <value></value>
+        <remarks>
+            <para>The ReuseIdentifier is set in the cell's constructor and cannot be changed. When cells disappear from view, the <see cref="T:MonoTouch.UIKit.UITableView" /> object maintains a queue of those cell objects so they can be reused. The <see cref="M:MonoTouch.UIKit.UITableViewSource.GetCell(MonoTouch.UIKit.UITableView,MonoTouch.Foundation.NSIndexPath)" /> implementation then uses <see cref="M:MonoTouch.UIKit.UITableView.DequeueReusableCell(System.String)" /> with a given ReuseIdentifier to retrieve an existing cell of the correct type for reuse.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Selected">
@@ -709,9 +750,12 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Whether the cell is selected.</summary>
+        <value>Default value is <see langword="false"/>.</value>
+        <remarks>
+            <para>Selection affects the appearance of labels, image and background. When the Selected property is set to <see langword="true"/>, the labels are drawn in white and the background is set to the <see cref="P:MonoTouch.UIKit.UITableViewCell.SelectedBackgroundView" /> (if set).</para>
+            <para>When this property is set to <see langword="true"/>, the transition to the new appearance is not animated. Use the <see cref="M:MonoTouch.UIKit.UITableViewCell.SetSelected(System.Boolean,System.Boolean)" /> method for animated selection-state transitions.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SelectedBackgroundView">
