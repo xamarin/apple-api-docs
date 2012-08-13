@@ -427,8 +427,8 @@ mySliders.TintColor = UIColor.Red;
         <param name="mask">A bit mask indicating the state (or combination of states) the cell is transitioning to.</param>
         <summary>Called on the cell just after it transitions between cell states.</summary>
         <remarks>
-            <para>UITableViewCell subclasses can implement this method to perform additional animations when it is changing state (such as from a normal state to editing move). This method is called at the end of the animation block so the </para>
-            <para>Subclasses must always call <see langword="super"/> when overriding this method.</para>
+            <para>UITableViewCell subclasses can implement this method to perform additional animations when it is changing state (such as from a normal state to editing move). This method is called at the end of the animation block to clean up after the state change (such as removing the editing and reordering controls when transitioning from editing to normal mode).</para>
+            <para>Subclasses must always call <see langword="base"/> when overriding this method.</para>
             <para>Note that when the user swipes to delete, the cell transitions to the <see cref="P:MonoTouch.UIKit.UITableViewCellState.ShowingDeleteConfirmationMask" /> - but <see cref="P:MonoTouch.UIKit.UITableViewCellState.ShowingEditControlMask" /> is not set. Remember to test for the correct value when handling this case.</para>
         </remarks>
       </Docs>
@@ -703,7 +703,7 @@ mySliders.TintColor = UIColor.Red;
         <summary>Prepares a cell for reuse by the table view's <see cref="T:MonoTouch.UIKit.UITableViewSource" />.</summary>
         <remarks>
             <para>If a <see cref="T:MonoTouch.UIKit.UITableView" /> is reusable - it has a ReuseIdentifier - this method is called just before the object is returned by <see cref="M:MonoTouch.UIKit.UITableView.DequeueReusableCell(System.String)" />. This method implementation should reset cell attributes that are not content-related, such as alpha, editing, and selection state. The <see cref="M:MonoTouch.UIKit.UITableViewSource.GetCell(MonoTouch.UIKit.UITableView,MonoTouch.Foundation.NSIndexPath)" /> should always reset the content when reusing a cell.</para>
-            <para>Implementations of this method should call the base method.</para>
+            <para>Subclasses must always call <see langword="base"/> when overriding this method.</para>
             <para>If the cell object does not have a <see cref="P:MonoTouch.UIKit.UITableViewCell.ReuseIdentifier" />, this method is not called.</para>
         </remarks>
       </Docs>
@@ -777,9 +777,12 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>MonoTouch.UIKit.UIView</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>The view that is used as the cell's background when it is selected.</summary>
+        <value>Default is <see langword="null"/> for Plain tables and non-<see langword="null"/> for Grouped style tables.</value>
+        <remarks>
+            <para><see cref="T:MonoTouch.UIKit.UITableView" /> adds the value of this proerty as a subview only when the cell is selected. It is added as a subview directly above the <see cref="P:MonoTouch.UIKit.UITableView.BackgroundView" /> if that is not <see langword="null"/>, otherwise behind all other views.</para>
+            <para>If <see cref="P:MonoTouch.UIKit.UITableViewCell.SetSelected(System.Boolean,System.Boolean)" /> is called, this view is animated in and out with an alpha fade.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SelectionStyle">
@@ -801,9 +804,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>MonoTouch.UIKit.UITableViewCellSelectionStyle</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>The selection style for a cell.</summary>
+        <value>Default value is <see cref="P:MonoTouch.UIKit.UITableViewCellSelectionStyle.Blue" />.</value>
+        <remarks>The selection style determines the color of a cell when it is selected.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetEditing">
@@ -826,9 +829,9 @@ mySliders.TintColor = UIColor.Red;
         <Parameter Name="animated" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="editing">To be added.</param>
-        <param name="animated">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="editing"><see langword="true"/> to enter editing mode, <see langword="false"/> to leave it.</param>
+        <param name="animated"><see langword="true"/> to animate the appearance/disappearance of the editing controls, <see langword="false"/> to immediately show/hide the controls.</param>
+        <summary>Toggles the cell in and out of editing mode.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -852,10 +855,14 @@ mySliders.TintColor = UIColor.Red;
         <Parameter Name="animated" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="highlighted">To be added.</param>
-        <param name="animated">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="highlighted"><see langword="true"/> to highlight the cell, <see langword="false"/> to unhighlight.</param>
+        <param name="animated"><see langword="true"/> to animate the highlight transition, <see langword="false"/> to make the transition immediate.</param>
+        <summary>Sets the highlighted state of the cell, optionally animating the transition between states.</summary>
+        <remarks>
+            <para>Highlights or unhighlights the cell, animating the transition if <paramref name="animated"/> is <see langword="true"/>. Highlighting changes the appearance of the cell's labels, image, and background.</para>
+            <para>For highlighting to work properly, set the <see cref="P:MonoTouch.UIKit.UILabel.HighlightedTextColor" /> for the two labels (<see cref="P:MonoTouch.UIKit.UITableViewCell.TextLabel" /> and <see cref="P:MonoTouch.UIKit.UITableViewCell.DetailTextLabel" />), and set the <see cref="P:MonoTouch.UIKit.UImageView.HighlightedImage" /> property on the cell's <see cref="P:MonoTouch.UIKit.UITableViewCell.ImageView" />. </para>
+            <para>Custom cells can override this method to make additional changes when transitioning between states.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SetSelected">
@@ -878,10 +885,10 @@ mySliders.TintColor = UIColor.Red;
         <Parameter Name="animated" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="selected">To be added.</param>
-        <param name="animated">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="selected"><see langword="true"/> to select the cell, <see langword="false"/> to deselect.</param>
+        <param name="animated"><see langword="true"/> to animate the selected transition, <see langword="false"/> to make the transition immediate.</param>
+        <summary>Sets the selected state of the cell, optionally animating the transition between the states.</summary>
+          <remarks>Selection changes the the appearance of the cell's labels, image, and background.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ShouldIndentWhileEditing">
@@ -903,9 +910,13 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Whether the cell background is indented while in editing mode.</summary>
+        <value>Default value is <see langword="true"/>.</value>
+        <remarks>
+            <para>This property is not related to <see cref="P:MonoTouch.UIKit.UITableViewCell.IndentationLevel" />.</para>
+            <para>This value can be overridden in <see cref="M:MonoTouch.UIKit.UITableViewSource.ShouldIndentWhileEditing(MonoTouch.UIKit.UITableView,MonoTouch.Foundation.NSIndexPath)" />.</para>
+            <para>Only Grouped style table views are affected by this property, Plain table views ignore it.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ShowingDeleteConfirmation">
@@ -927,9 +938,12 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Whether the delete confirmation button is currently showing in the cell (read-only).</summary>
+        <value>Default value is <see langword="false"/>.</value>
+        <remarks>
+            <para>When the deletion control (red cirle to the left of the cell) is showing and is tapped, the cell displays a Delete button on the right side of the cell (which is when this method returns <see langword="true"/>).</para>
+            <para>The text displayed in the Delete button is localized.</para>
+            </remarks>
       </Docs>
     </Member>
     <Member MemberName="ShowsReorderControl">
@@ -951,9 +965,12 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Whether the reordering control is currently showing in the cell (read-only).</summary>
+        <value>Default value is <see langword="false"/>.</value>
+        <remarks>
+            <para>The reordering control consists of three grey, horizontal lines on the right side of the cell. Dragging this control causes the entire cell to be moved to another position in the table.</para>
+            <para>The reordering control only appears if this property is set and the <see cref="M:MonoTouch.UIKit.UITableViewSource.MoveRow(MonoTouch.UIKit.UITableView,MonoTouch.Foundation.NSIndexPath,MonoTouch.Foundation.NSIndexPath)" /> method has been implemented on the <see cref="T:MonoTouch.UIKit.UITableViewSource" />. The reordering control can be selectively hidden on specific rows by returning <see langword="false"/> from <see cref="M:MonoTouch.UIKit.UITableViewSource.CanMoveRow(MonoTouch.UIKit.UITableView,MonoTouch.Foundation.NSIndexPath)" /></para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="TextLabel">
@@ -972,9 +989,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>MonoTouch.UIKit.UILabel</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Returns the label that displays the main text content in the cell (read-only).</summary>
+        <value></value>
+        <remarks><see cref="T:MonoTouch.UIKit.UITableViewCell" /> creates the label control when the cell is constructed in with a style that supports it.</remarks>
       </Docs>
     </Member>
     <Member MemberName="WillTransitionToState">
@@ -996,9 +1013,13 @@ mySliders.TintColor = UIColor.Red;
         <Parameter Name="mask" Type="MonoTouch.UIKit.UITableViewCellState" />
       </Parameters>
       <Docs>
-        <param name="mask">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="mask">A bit mask indicating the state/s the cell is transitioning to.</param>
+        <summary>Called on the cell just before it transitions between states.</summary>
+        <remarks>
+            <para>UITableViewCell subclasses can implement this method to perform additional animations when it is changing state (such as from a normal state to editing move). A custom cell may create any new views that are required in the new state. <see cref="M:MonoTouch.UIKit.UIView.LayoutSubviews()" /> is then called which allows the code to position these new elements in their correct locations for the new state.</para>
+            <para>Subclasses must always call <see langword="base"/> when overriding this method.</para>
+            <para>Note that when the user swipes to delete, the cell transitions to the <see cref="P:MonoTouch.UIKit.UITableViewCellState.ShowingDeleteConfirmationMask" /> - but <see cref="P:MonoTouch.UIKit.UITableViewCellState.ShowingEditControlMask" /> is not set. Remember to test for the correct value when handling this case.</para>
+        </remarks>
       </Docs>
     </Member>
   </Members>
