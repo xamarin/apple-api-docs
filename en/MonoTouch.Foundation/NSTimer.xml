@@ -16,7 +16,23 @@
   </Attributes>
   <Docs>
     <summary>The timer can trigger actions at certain time intervals.</summary>
-    <remarks>To be added.</remarks>
+    <remarks><para>You use the <tt>NSTimer</tt> class to create timer objects or, more simply, timers. A timer waits until a certain time interval has elapsed and then fires, sending a specified message to a target object. For example, you could create an <tt>NSTimer</tt> object that sends a message to a window, telling it to update itself after a certain time interval.</para>
+    <para>Timers work in conjunction with run loops. To use a timer effectively, you should be aware of how run loops operate—see <tt>NSRunLoop</tt>. Note in particular that run loops retain their timers, so you can release a timer after you have added it to a run loop.</para>
+    <para>A timer is not a real-time mechanism; it fires only when one of the run loop modes to which the timer has been added is running and able to check if the timer’s firing time has passed. Because of the various input sources a typical run loop manages, the effective resolution of the time interval for a timer is limited to on the order of 50-100 milliseconds. If a timer’s firing time occurs during a long callout or while the run loop is in a mode that is not monitoring the timer, the timer does not fire until the next time the run loop checks the timer. Therefore, the actual time at which the timer fires potentially can be a significant period of time after the scheduled firing time.</para>
+    <para>NSTimer is “toll-free bridged” with its Core Foundation counterpart, <tt>CFRunLoopTimerRef</tt>. See “Toll-Free Bridging” for more information on toll-free bridging.</para>
+    <para>Repeating Versus Non-Repeating Timers</para>
+    <para>You specify whether a timer is repeating or non-repeating at creation time. A non-repeating timer fires once and then invalidates itself automatically, thereby preventing the timer from firing again. By contrast, a repeating timer fires and then reschedules itself on the same run loop.</para>
+    <para>A repeating timer always schedules itself based on the scheduled firing time, as opposed to the actual firing time. For example, if a timer is scheduled to fire at a particular time and every 5 seconds after that, the scheduled firing time will always fall on the original 5 second time intervals, even if the actual firing time gets delayed. If the firing time is delayed so far that it passes one or more of the scheduled firing times, the timer is fired only once for that time period; the timer is then rescheduled, after firing, for the next scheduled firing time in the future.</para>
+    <para>Scheduling Timers in Run Loops</para>
+    <para>A timer object can be registered in only one run loop at a time, although it can be added to multiple run loop modes within that run loop. There are three ways to create a timer:</para>
+    <list type="bullet">
+      <item><term>Use the <tt>scheduledTimerWithTimeInterval:invocation:repeats:</tt> or <tt>scheduledTimerWithTimeInterval:target:selector:userInfo:repeats:</tt> class method to create the timer and schedule it on the current run loop in the default mode.</term></item>
+      <item><term>Use the <tt>timerWithTimeInterval:invocation:repeats:</tt> or <tt>timerWithTimeInterval:target:selector:userInfo:repeats:</tt> class method to create the timer object without scheduling it on a run loop. (After creating it, you must add the timer to a run loop manually by calling the <tt>addTimer:forMode:</tt> method of the corresponding <tt>NSRunLoop</tt> object.)</term></item>
+      <item><term>Allocate the timer and initialize it using the <tt>initWithFireDate:interval:target:selector:userInfo:repeats:</tt> method. (After creating it, you must add the timer to a run loop manually by calling the <tt>addTimer:forMode:</tt> method of the corresponding <tt>NSRunLoop</tt> object.)</term></item>
+    </list>
+    <para>Once scheduled on a run loop, the timer fires at the specified interval until it is invalidated. A non-repeating timer invalidates itself immediately after it fires. However, for a repeating timer, you must invalidate the timer object yourself by calling its <tt>invalidate</tt> method. Calling this method requests the removal of the timer from the current run loop; as a result, you should always call the <tt>invalidate</tt> method from the same thread on which the timer was installed. Invalidating the timer immediately disables it so that it no longer affects the run loop. The run loop then removes and releases the timer, either just before the <tt>invalidate</tt> method returns or at some later point. Once invalidated, timer objects cannot be reused.</para>
+    <para>You should not attempt to subclass <tt>NSTimer</tt>.</para>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -158,13 +174,13 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="date">Time at which the timer will be fired.</param>
-        <param name="seconds">For repeating timers, the number of seconds to wait before firing the timer again.</param>
-        <param name="target">To be added.</param>
-        <param name="selector">To be added.</param>
-        <param name="userInfo">To be added.</param>
-        <param name="repeats">Whether this timer should repeat automatically (true) or will be invalidated after firing the first time (false).</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="seconds">For repeating timers, the number of seconds to wait before firing the timer again. If <em>seconds</em> is less than or equal to 0.0, this method chooses the nonnegative value of 0.1 milliseconds instead.</param>
+        <param name="target">The object to which to send the message specified by <em>selector</em> when the timer fires. The target object is retained by the timer and released when the timer is invalidated.</param>
+        <param name="selector">The message to send to <em>target</em> when the timer fires. The timer passes itself as the argument to this method.</param>
+        <param name="userInfo">Custom user info for the timer. The object you specify is retained by the timer and released when the timer is invalidated. This parameter may be nil.</param>
+        <param name="repeats">Whether this timer should repeat automatically (<tt>true</tt>) or will be invalidated after firing the first time (<tt>false</tt>).</param>
+        <summary>Initializes a new <tt>NSTimer</tt> object using the specified object and selector.</summary>
+        <remarks>TYou must add the new timer to a run loop, using <tt>addTimer:forMode:</tt>. Upon firing, the timer sends the message <em>selector</em> to target. (If the timer is configured to repeat, there is no need to subsequently re-add the timer to the run loop.)</remarks>
       </Docs>
     </Member>
     <Member MemberName="ClassHandle">
@@ -338,14 +354,14 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="repeats" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="seconds">To be added.</param>
-        <param name="target">To be added.</param>
-        <param name="selector">To be added.</param>
-        <param name="userInfo">To be added.</param>
-        <param name="repeats">Whether this timer should repeat automatically (true) or will be invalidated after firing the first time (false).</param>
-        <summary>Creates a timer with the specified parameters and schedules it for execution on the current NSRunLoop in the default mode. </summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="seconds">The number of seconds between firings of the timer. If <em>seconds</em> is less than or equal to 0.0, this method chooses the nonnegative value of 0.1 milliseconds instead.</param>
+        <param name="target">The object to which to send the message specified by <em>aSelector</em> when the timer fires. The target object is retained by the timer and released when the timer is invalidated.</param>
+        <param name="selector">The message to send to <em>target</em> when the timer fires. The selector must correspond to a method that returns void and takes a single argument. The timer passes itself as the argument to this method.</param>
+        <param name="userInfo">The user info for the timer. The object you specify is retained by the timer and released when the timer is invalidated. This parameter may be nil.</param>
+        <param name="repeats">Whether this timer should repeat automatically (<tt>true</tt>) or will be invalidated after firing the first time (<tt>false</tt>).</param>
+        <summary>Creates a timer with the specified parameters and schedules it for execution on the current <tt>NSRunLoop</tt> in the default mode. </summary>
+        <returns>A new <tt>NSTimer</tt> object, configured according to the specified parameters.</returns>
+        <remarks>After <em>seconds</em> seconds have elapsed, the timer fires, sending the message <em>aSelector</em> to <em>target</em>.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CreateTimer">
@@ -415,14 +431,14 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="repeats" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="seconds">To be added.</param>
-        <param name="target">To be added.</param>
-        <param name="selector">To be added.</param>
-        <param name="userInfo">To be added.</param>
+        <param name="seconds">The number of seconds between firings of the timer. If <em>seconds</em> is less than or equal to 0.0, this method chooses the nonnegative value of 0.1 milliseconds instead.</param>
+        <param name="target">The object to which to send the message specified by <em>aSelector</em> when the timer fires. The target object is retained by the timer and released when the timer is invalidated.</param>
+        <param name="selector">The message to send to target when the timer fires. The timer passes itself as the argument to this method.</param>
+        <param name="userInfo">Custom user info for the timer. The object you specify is retained by the timer and released when the timer is invalidated. This parameter may be nil.</param>
         <param name="repeats">Whether this timer should repeat automatically (true) or will be invalidated after firing the first time (false).</param>
         <summary>Creates a timer object that can be later added to an NSRunLoop.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <returns>A new <tt>NSTimer</tt> object, configured according to the specified parameters.</returns>
+        <remarks>You must add the new timer to a run loop, using <tt>addTimer:forMode:</tt>. Then, after <em>seconds</em> seconds have elapsed, the timer fires, sending the message <em>selector</em> to <em>target</em>. (If the timer is configured to repeat, there is no need to subsequently re-add the timer to the run loop.)</remarks>
       </Docs>
     </Member>
     <Member MemberName="Dispose">
@@ -491,9 +507,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.Foundation.NSDate</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Resets the firing time of the receiver to the specified date.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks><para>You typically use this method to adjust the firing time of a repeating timer. Although resetting a timer’s next firing time is a relatively expensive operation, it may be more efficient in some situations. For example, you could use it in situations where you want to repeat an action multiple times in the future, but at irregular time intervals. Adjusting the firing time of a single timer would likely incur less expense than creating multiple timer objects, scheduling each one on a run loop, and then destroying them.</para>
+        <para>You should not call this method on a timer that has been invalidated, which includes non-repeating timers that have already fired. You could potentially call this method on a non-repeating timer that had not yet fired, although you should always do so from the thread to which the timer is attached to avoid potential race conditions.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Invalidate">
@@ -513,8 +531,12 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Stops the receiver from ever firing again and requests its removal from its run loop.</summary>
+        <remarks>
+        <para>This method is the only way to remove a timer from an <tt>NSRunLoop</tt> object. The <tt>NSRunLoop</tt> object removes and releases the timer, either just before the <tt>invalidate</tt> method returns or at some later point.</para>
+        <para>If it was configured with target and user info objects, the receiver releases its references to those objects as well.</para>
+        <para>You must send this message from the thread on which the timer was installed. If you send this message from another thread, the input source associated with the timer may not be removed from its run loop, which could prevent the thread from exiting properly.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="IsValid">
@@ -533,9 +555,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Returns a Boolean value that indicates whether the receiver is currently valid.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks><tt>true</tt> if the receiver is still capable of firing or <tt>false</tt> if the timer has been invalidated and is no longer capable of firing.</remarks>
       </Docs>
     </Member>
     <Member MemberName="TimeInterval">
@@ -554,8 +576,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Double</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>Returns the receiver’s time interval.</summary>
+        <value>The receiver’s time interval. If the receiver is a non-repeating timer, returns 0 (even if a time interval was set).</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -575,9 +597,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.Foundation.NSObject</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Returns the receiver's <em>userInfo</em> object.</summary>
+        <value>The receiver's <em>userInfo</em> object.</value>
+        <remarks>Do not invoke this method after the timer is invalidated. Use <tt>isValid</tt> to test whether the timer is valid.</remarks>
       </Docs>
     </Member>
   </Members>
