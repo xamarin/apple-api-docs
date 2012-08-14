@@ -19,7 +19,13 @@
   </Attributes>
   <Docs>
     <summary>A class used to receive notifications from a UIApplication.</summary>
-    <remarks>A strongly typed implementation of a class that can be used to respond to events raised by the <see cref="T:MonoTouch.UIKit.UIApplication" />.</remarks>
+    <remarks><para>A strongly typed implementation of a class that can be used to respond to events raised by the <see cref="T:MonoTouch.UIKit.UIApplication" />.</para>
+    <para>The <tt>UIApplicationDelegate</tt> protocol declares methods that are implemented by the delegate of the singleton UIApplication object. These methods provide you with information about key events in an application’s execution such as when it finished launching, when it is about to be terminated, when memory is low, and when important changes occur. Implementing these methods gives you a chance to respond to these system events and respond appropriately.</para>
+    <para>One of the main jobs of the application delegate is to track the state transitions the application goes through while it is running. Prior to iOS 4.0, applications were either active, inactive, or not running. In iOS 4.0 and later, applications can also be running in the background or suspended. All of these transitions require a response from your application to ensure that it is doing the right thing. For example, a background application would need to stop updating its user interface. You provide the response to these transitions using the methods of the application delegate.</para>
+    <para>Launch time is also a particularly important point in an application’s life cycle. In addition to the user launching an application by tapping its icon, an application can be launched in order to respond to a specific type of event. For example, it could be launched in response to an incoming push notification, it could be asked to open a file, or it could be launched to handle some background event that it had requested. In all of these cases, the options dictionary passed to the <tt>application:didFinishLaunchingWithOptions:</tt> method provides information about the reason for the launch.</para>
+    <para>In situations where the application is already running, the methods of the application delegate are called in response to key changes. Although the methods of this protocol are optional, most or all of them should be implemented.</para>
+
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -158,9 +164,12 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="application" Type="MonoTouch.UIKit.UIApplication" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="application">The delegating application object.</param>
+        <summary>Tells the delegate when there is a significant change in the time.</summary>
+        <remarks><para>Examples of significant time changes include the arrival of midnight, an update of the time by a carrier, and the change to daylight savings time. The delegate can implement this method to adjust any object of the application that displays time or is sensitive to time changes.</para>
+        <para>Prior to calling this method, the application also posts a <tt>UIApplicationSignificantTimeChangeNotification</tt> notification to give interested objects a chance to respond to the change.</para>
+        <para>If your application is currently suspended, this message is queued until your application returns to the foreground, at which point it is delivered. If multiple time changes occur, only the most recent one is delivered.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ChangedStatusBarFrame">
@@ -209,10 +218,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="oldStatusBarOrientation" Type="MonoTouch.UIKit.UIInterfaceOrientation" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
-        <param name="oldStatusBarOrientation">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="application">The delegating application object.</param>
+        <param name="oldStatusBarOrientation">The previous frame of the status bar, in screen coordinates.</param>
+        <summary>Tells the delegate when the frame of the status bar has changed.</summary>
+        <remarks><para>The delegate can get the current device orientation from the shared UIDevice object.</para>
+        <para>After calling this method, the application also posts a <tt>UIApplicationDidChangeStatusBarFrameNotification</tt> notification to give interested objects a chance to respond to the change.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="DidEnterBackground">
@@ -234,9 +244,13 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="application" Type="MonoTouch.UIKit.UIApplication" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="application">The singleton application instance.</param>
+        <summary>Tells the delegate that the application is now in the background.</summary>
+        <remarks><para>In iOS 4.0 and later, this method is called instead of the applicationWillTerminate: method when the user quits an application that supports background execution. You should use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. You should also disable updates to your application’s user interface and avoid using some types of shared system resources (such as the user’s contacts database). It is also imperative that you avoid using OpenGL ES in the background.</para>
+        <para>Your implementation of this method has approximately five seconds to perform any tasks and return. If you need additional time to perform any final tasks, you can request additional execution time from the system by calling <tt>beginBackgroundTaskWithExpirationHandler:</tt>. In practice, you should return from <tt>applicationDidEnterBackground:</tt> as quickly as possible. If the method does not return before time runs out your application is terminated and purged from memory.</para>
+        <para>You should perform any tasks relating to adjusting your user interface before this method exits but other tasks (such as saving state) should be moved to a concurrent dispatch queue or secondary thread as needed. Because it's likely any background tasks you start in <tt>applicationDidEnterBackground:</tt> will not run until after that method exits, you should request additional background execution time before starting those tasks. In other words, first call <tt>beginBackgroundTaskWithExpirationHandler:</tt> and then run the task on a dispatch queue or secondary thread.</para>
+        <para>The application also posts a <tt>UIApplicationDidEnterBackgroundNotification</tt> notification around the same time it calls this method to give interested objects a chance to respond to the transition.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="FailedToRegisterForRemoteNotifications">
@@ -259,10 +273,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="error" Type="MonoTouch.Foundation.NSError" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
-        <param name="error">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="application">The application that initiated the remote-notification registration process.</param>
+        <param name="error">An <tt>NSError</tt> object that encapsulates information why registration did not succeed. The application can choose to display this information to the user.</param>
+        <summary>Sent to the delegate when Apple Push Service cannot successfully complete the registration process.</summary>
+        <remarks><para>The delegate receives this message after the <tt>registerForRemoteNotificationTypes:</tt> method of <tt>UIApplication</tt> is invoked and there is an error in the registration process.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="FinishedLaunching">
@@ -284,9 +298,13 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="application" Type="MonoTouch.UIKit.UIApplication" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="application">The delegating application object.</param>
+        <summary>Tells the delegate when the application has finished launching.</summary>
+        <remarks>
+          <para>This method is used in earlier versions of iOS to initialize the application and prepare it to run. In iOS 3.0 and later, you should use the <tt>application:didFinishLaunchingWithOptions:</tt> instead.</para>
+          <para>Your implementation of this method should create your application’s user interface and initialize the application’s data structures. If your application persists its state between launches, you would also use this method to restore your application to its previous state.</para>
+          <para>After calling this method, the application also posts a <tt>UIApplicationDidFinishLaunchingNotification</tt> notification to give interested objects a chance to respond to the initialization cycle.</para>
+          </remarks>
       </Docs>
     </Member>
     <Member MemberName="FinishedLaunching">
@@ -309,11 +327,23 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="launcOptions" Type="MonoTouch.Foundation.NSDictionary" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
-        <param name="launcOptions">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="application">The delegating application object.</param>
+        <param name="launcOptions">A dictionary indicating the reason the application was launched (if any). The contents of this dictionary may be empty in situations where the user launched the application directly. See “Launch Options Keys” in UIApplication Class Reference for descriptions of these keys.</param>
+        <summary>Tells the delegate when the application has launched and may have additional launch options to handle.</summary>
+        <returns><tt>false</tt> if the application cannot handle the URL resource, otherwise return <tt>true</tt>. The return value is ignored if the application is launched as a result of a remote notification.</returns>
+        <remarks><para>You should use this method to initialize your application and prepare it for running. It is called after your application has been launched and its main nib file has been loaded. At the time this method is called, your application is in the inactive state. At some point after this method returns, a subsequent delegate method is called to move your application to the active (foreground) state or the background state.</para>
+        <para>It is highly recommended that you use this method to initialize your application and not the <tt>applicationDidFinishLaunching:</tt> method.</para>
+        <para>If your application was launched by the system for a specific reason, the launchOptions dictionary contains data indicating the reason for the launch. The options dictionary typically contains keys for the following types of events:</para>
+        <list type="bullet">
+          <item><term>The user launched the application in response to the arrival of a remote notification. In this case, the dictionary contains the notification payload dictionary described in the <tt>application:didReceiveRemoteNotification:</tt> method. (Key: <tt>UIApplicationLaunchOptionsRemoteNotificationKey</tt>)</term></item>
+          <item><term>The user launched the application in response to the arrival of a local notification. In this case, the dictionary contains the local notification. (Key: <tt>UIApplicationLaunchOptionsLocalNotificationKey</tt>)</term></item>
+          <item><term>Another application opened a URL that is owned by your application. In this case, the dictionary contains the bundle ID of the application and the URL to open. (Keys: <tt>UIApplicationLaunchOptionsSourceApplicationKey</tt> and <tt>UIApplicationLaunchOptionsURLKey</tt>)</term></item>
+          <item><term>The system asked your application to open a file that it claims to support. In this case, the dictionary contains a URL for the file to open. (Key: <tt>UIApplicationLaunchOptionsURLKey</tt>)</term></item>
+          <item><term>The application tracks location updates in the background, was purged, and has now been relaunched. In this case, the dictionary contains a key indicating that the application was relaunched because of a new location event. (Key: <tt>UIApplicationLaunchOptionsLocationKey</tt>)</term></item>
+          <item><term>The application is launched to open a document via the document-interaction controller (<tt>UIDocumentInteractionController</tt>). In this case the dictionary contains an annotation property list supplied by the originating application to communicate information to the receiving application. (Key: <tt>UIApplicationLaunchOptionsAnnotationKey</tt>)</term></item>
+        </list>
+        <para>Objects that are not the application delegate can access the same <em>launchOptions</em> dictionary values by observing the notification named <tt>UIApplicationDidFinishLaunchingNotification</tt> and accessing the notification’s <tt>userInfo</tt> dictionary. That notification is sent shortly after this method returns.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="HandleOpenURL">
@@ -336,11 +366,14 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="url" Type="MonoTouch.Foundation.NSUrl" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
-        <param name="url">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="application">The application object.</param>
+        <param name="url">A object representing a URL (Universal Resource Locator).</param>
+        <summary>Asks the delegate to open a resource identified by URL. (Deprecated. Use <tt>application:openURL:sourceApplication:annotation:</tt> instead of this method to open URL resources.)</summary>
+        <returns><tt>true</tt> if the delegate successfully handled the request; <tt>false</tt> if the attempt to handle the URL failed.</returns>
+        <remarks><para>This method is not called if the delegate returns <tt>false</tt> from its implementation of the <tt>application:didFinishLaunchingWithOptions:</tt> method. if your application implements the <tt>applicationDidFinishLaunching:</tt> method instead of <tt>application:didFinishLaunchingWithOptions:</tt>, this method is called to open the specified URL after the application has been initialized.</para>
+        <para>If a URL arrives while your application is suspended or running in the background, the system moves your application to the foreground prior to calling this method.</para>
+        <para>There is no equivalent notification for this delegation method.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="OnActivated">
@@ -362,9 +395,12 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="application" Type="MonoTouch.UIKit.UIApplication" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="application">The singleton application instance.</param>
+        <summary>Tells the delegate that the application has become active.</summary>
+        <remarks><para>This method is called to let your application know that it moved from the inactive to active state. This can occur because your application was launched by the user or the system. Applications can also return to the active state if the user chooses to ignore an interruption (such as an incoming phone call or SMS message) that sent the application temporarily to the inactive state.</para>
+        <para>You should use this method to restart any tasks that were paused (or not yet started) while the application was inactive. For example, you could use it to restart timers or throttle up OpenGL ES frame rates. If your application was previously in the background, you could also use it to refresh your application’s user interface.</para>
+        <para>After calling this method, the application also posts a <tt>UIApplicationDidBecomeActiveNotification</tt> notification to give interested objects a chance to respond to the transition.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="OnResignActivation">
@@ -386,9 +422,12 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="application" Type="MonoTouch.UIKit.UIApplication" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="application">The singleton application instance.</param>
+        <summary>Tells the delegate that the application is about to become inactive.</summary>
+        <remarks><para>This method is called to let your application know that it is about to move from the active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state. An application in the inactive state continues to run but does not dispatch incoming events to responders.</para>
+        <para>You should use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game. An application in the inactive state should do minimal work while it waits to transition to either the active or background state.</para>
+        <para>After calling this method, the application also posts a <tt>UIApplicationWillResignActiveNotification</tt> notification to give interested objects a chance to respond to the transition.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="OpenUrl">
@@ -413,13 +452,16 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="annotation" Type="MonoTouch.Foundation.NSObject" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
-        <param name="url">To be added.</param>
-        <param name="sourceApplication">To be added.</param>
-        <param name="annotation">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="application">The application object.</param>
+        <param name="url">A object representing a URL (Universal Resource Locator).</param>
+        <param name="sourceApplication">The bundle ID of the application that is requesting your application to open the URL (<em>url</em>).</param>
+        <param name="annotation">A property-list object supplied by the source application to communicate information to the receiving application.</param>
+        <summary>Asks the delegate to open a resource identified by URL.</summary>
+        <returns><tt>true</tt> if the delegate successfully handled the request; <tt>false</tt> if the attempt to open the URL resource failed.</returns>
+        <remarks><para>If an application is launched as a result of another application requesting it to open a URL resource, <tt>UIApplication</tt> first sends the application a <tt>application:didFinishLaunchingWithOptions:</tt> message and then it invokes this method. This method supplies the delegate of the handling application with the bundle ID of the source application as well as any annotation information from that application. If an application is already running when it receives a request to open a URL, this method is called but <tt>application:didFinishLaunchingWithOptions:</tt> isn’t.</para>
+        <para>If this method is not implemented, <tt>UIApplication</tt> calls <tt>application:handleOpenURL:</tt> (if implemented). You should implement this method in preference to application:handleOpenURL:.</para>
+        <para>There is no matching notification for this method.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ProtectedDataDidBecomeAvailable">
@@ -441,9 +483,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="application" Type="MonoTouch.UIKit.UIApplication" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="application">The delegating application object.</param>
+        <summary>Tells the delegate that protected files are available now.</summary>
+        <remarks>On a device that uses content protection, protected files are stored in an encrypted form and made available only while the device is unlocked. This notification lets your application know that the device is now unlocked and that you may access any protected files once again.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ProtectedDataWillBecomeUnavailable">
@@ -465,9 +507,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="application" Type="MonoTouch.UIKit.UIApplication" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="application">The delegating application object.</param>
+        <summary>Tells the delegate that the protected files are about to become unavailable.</summary>
+        <remarks><para>On a device that uses content protection, protected files are stored in an encrypted form and made available only while the device is unlocked. This notification lets your application know that the device is about to be locked and that any protected files it is currently accessing will be unavailable shortly.</para>
+        <para>If your application is currently accessing a protected file, you can use this method to release any references to that file. Although it is not an error to access the file while the device is locked, any attempts to do so will fail. Therefore, if your application depends on the file, you might want to take steps to avoid using that file while the device is locked.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ReceivedLocalNotification">
@@ -490,10 +534,13 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="notification" Type="MonoTouch.UIKit.UILocalNotification" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
-        <param name="notification">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="application">The application that received the local notification.</param>
+        <param name="notification">A local notification that encapsulates details about the notification, potentially including custom data.</param>
+        <summary>Sent to the delegate when a running application receives a local notification.</summary>
+        <remarks><para>Local notifications are similar to remote push notifications, but differ in that they are scheduled, displayed, and received entirely on the same device. An application can create and schedule a local notification, and the operating system then delivers it at the schedule date and time. If it delivers it when the application is not active in the foreground, it displays an alert, badges the application icon, or plays a sound—whatever is specified in the <tt>UILocalNotification</tt> object. If the application is running in the foreground, there is no alert, badging, or sound; instead, the <tt>application:didReceiveLocalNotification:</tt> method is called if the delegate implements it.</para>
+        <para>The delegate can implement this method if it wants to be notified that a local notification occurred. For example, if the application is a calendar application, it can enumerate its list of calendar events to determine which ones have due dates that have transpired or are about to transpire soon. It can also reset the application icon badge number, and it can access any custom data in the local-notification object’s <tt>userInfo</tt> dictionary.</para>
+        <para>This method is invoked after <tt>application:didFinishLaunchingWithOptions:</tt> (if that method is implemented).</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ReceivedRemoteNotification">
@@ -516,10 +563,28 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="userInfo" Type="MonoTouch.Foundation.NSDictionary" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
-        <param name="userInfo">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="application">The application that received the remote notification.</param>
+        <param name="userInfo">A dictionary that contains information related to the remote notification, potentially including a badge number for the application icon, an alert sound, an alert message to display to the user, a notification identifier, and custom data. The provider originates it as a JSON-defined dictionary that iOS converts to an <tt>NSDictionary</tt> object; the dictionary may contain only property-list objects plus <tt>NSNull</tt>.</param>
+        <summary>Sent to the delegate when a running application receives a remote notification.</summary>
+        <remarks><para>The delegate receives this message when the application is running and a remote notification arrives for it. In response, the application typically connects with its provider and downloads the data waiting for it. It may also process the notification in any other way it deems useful.</para>
+        <para>The <tt>userInfo</tt> dictionary contains another dictionary that you can obtain using the <tt>aps</tt> key. You can access the contents of the <tt>aps</tt> dictionary—though you shouldn’t need to in most cases—using the following keys:</para>
+        <list>
+          <item>
+            <term><tt>alert</tt></term>
+            <description>The value may either be a string for the alert message or a dictionary with two keys: <tt>body</tt> and <tt>show-view</tt>. The value of the former is the alert message and the latter is a Boolean (<tt>false</tt> or <tt>true</tt>). If <tt>false</tt>, the alert’s View button is not shown. The default is to show the View button which, if the user taps it, launches the application.</description>
+          </item>
+          <item>
+            <term><tt>badge</tt></term>
+            <description>A number indicating the quantity of data items to download from the provider. This number is to be displayed on the application icon. The absence of a badge property indicates that any number currently badging the icon should be removed.</description>
+          </item>
+          <item>
+            <term><tt>sound</tt></term>
+            <description>The name of a sound file in the application bundle to play as an alert sound. If “default” is specified, the default sound should be played.</description>
+          </item>
+        </list>
+        <para>The <tt>userInfo</tt> dictionary may also have custom data defined by the provider according to the JSON schema. The properties for custom data should be specified at the same level as the <tt>aps</tt> dictionary. However, custom-defined properties should not be used for mass data transport because there is a strict size limit per notification (256 bytes) and delivery is not guaranteed.</para>
+        <para>f you implement <tt>application:didFinishLaunchingWithOptions:</tt> to handle an incoming push notification that causes the launch of the application, this method is not invoked for that push notification.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ReceiveMemoryWarning">
@@ -541,9 +606,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="application" Type="MonoTouch.UIKit.UIApplication" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="application">The delegating application object.</param>
+        <summary>Tells the delegate when the application receives a memory warning from the system.</summary>
+        <remarks><para>Your implementation of this method should free up as much memory as possible by purging cached data objects that can be recreated (or reloaded from disk) later. You use this method in conjunction with the <tt>didReceiveMemoryWarning</tt> of the <tt>UIViewController</tt> class and the <tt>UIApplicationDidReceiveMemoryWarningNotification</tt> notification to release memory throughout your application.</para>
+        <para>It is strongly recommended that you implement this method. If your application does not release enough memory during low-memory conditions, the system may terminate it outright.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="RegisteredForRemoteNotifications">
@@ -566,10 +633,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="deviceToken" Type="MonoTouch.Foundation.NSData" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
-        <param name="deviceToken">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="application">The application that initiated the remote-notification registration process.</param>
+        <param name="deviceToken"><para>A token that identifies the device to APS. The token is an opaque data type because that is the form that the provider needs to submit to the APS servers when it sends a notification to a device. The APS servers require a binary format for performance reasons.</para><para>Note that the device token is different from the <tt>uniqueIdentifier</tt> property of <tt>UIDevice</tt> because, for security and privacy reasons, it must change when the device is wiped.</para></param>
+        <summary>Sent to the delegate when the application successfully registers with Apple Push Service (APS).</summary>
+        <remarks>The delegate receives this message after the <tt>registerForRemoteNotificationTypes:</tt> method of <tt>UIApplication</tt> is invoked and there is no error in the registration process. After receiving the device token, the application should connect with its provider and give the token to it. APS only pushes notifications to the application’s device that are accompanied with this token. This method could be called in other rare circumstances, such as when the user launches an application after having restored a device from data that is not the device’s backup data. In this exceptional case, the application won’t know the new device’s token until the user launches it.</remarks>
       </Docs>
     </Member>
     <Member MemberName="WillChangeStatusBarFrame">
@@ -592,10 +659,12 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="newStatusBarFrame" Type="System.Drawing.RectangleF" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
-        <param name="newStatusBarFrame">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="application">The delegating application object.</param>
+        <param name="newStatusBarFrame">The changed frame of the status bar, in screen coordinates.</param>
+        <summary>Tells the delegate when the frame of the status bar is about to change.</summary>
+        <remarks><para>The application calls this method when it receives a <tt>setStatusBarOrientation:animated:</tt> message and is about to change the interface orientation.</para>
+        <para>After calling this method, the application also posts a <tt>UIApplicationWillChangeStatusBarFrameNotification</tt> notification to give interested objects a chance to respond to the change.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="WillChangeStatusBarOrientation">
@@ -619,11 +688,13 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="duration" Type="System.Double" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
-        <param name="newStatusBarOrientation">To be added.</param>
-        <param name="duration">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="application">The delegating application object.</param>
+        <param name="newStatusBarOrientation">A constant that indicates the new orientation of the application’s user interface.</param>
+        <param name="duration">The duration of the animation to the new orientation, in seconds.</param>
+        <summary>Tells the delegate when the interface orientation of the status bar is about to change.</summary>
+        <remarks><para>The delegate typically implements this method to prepare its windows and views for the new orientation. The delegate can get the current device orientation from the shared <tt>UIDevice</tt> object.</para>
+        <para>After calling this method, the application also posts a <tt>UIApplicationWillChangeStatusBarOrientationNotification</tt> notification to give interested objects a chance to respond to the change.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="WillEnterForeground">
@@ -645,9 +716,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="application" Type="MonoTouch.UIKit.UIApplication" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="application">The singleton application instance.</param>
+        <summary>Tells the delegate that the application is about to enter the foreground.</summary>
+        <remarks><para>In iOS 4.0 and later, this method is called as part of the transition from the background to the inactive state. You can use this method to undo many of the changes you made to your application upon entering the background. The call to this method is invariably followed by a call to the <tt>applicationDidBecomeActive:</tt> method, which then moves the application from the inactive to the active state.</para>
+        <para>The application also posts a <tt>UIApplicationWillEnterForegroundNotification</tt> notification shortly before calling this method to give interested objects a chance to respond to the transition.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="WillTerminate">
@@ -669,9 +742,12 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="application" Type="MonoTouch.UIKit.UIApplication" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="application">The delegating application object.</param>
+        <summary>Tells the delegate when the application is about to terminate.</summary>
+        <remarks><para>This method lets your application know that it is about to be terminated and purged from memory entirely. You should use this method to perform any final clean-up tasks for your application, such as freeing shared resources, saving user data, invalidating timers, and storing enough application state to reconstitute your application’s interface when it is relaunched. Your implementation of this method has approximately five seconds to perform any tasks and return. If the method does not return before time expires, the system may kill the process altogether.</para>
+        <para>For applications that do not support background execution or are linked against iOS 3.x or earlier, this method is always called when the user quits the application. For applications that support background execution, this method is generally not called when the user quits the application because the application simply moves to the background in that case. However, this method may be called in situations where the application is running in the background (not suspended) and the system needs to terminate it for some reason.</para>
+        <para>After calling this method, the application also posts a <tt>UIApplicationWillTerminateNotification</tt> notification to give interested objects a chance to respond to the transition.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Window">
@@ -693,9 +769,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.UIKit.UIWindow</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The window to use when presenting a storyboard.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>When a storyboard is being used, the application must present the storyboard by adding it to a window and putting that window on-screen. The application queries this property for the window. The retained reference to the window by this property is necessary to keep the window from being released. If the value of the property is <tt>nil</tt> (the default), the application creates a generic instance of <tt>UIWindow</tt> and assign it to this property for the delegate to reference. You may implement the getter method of this protocol to provide the application with a different window. This property is required if the <tt>UIMainStoryboardFile</tt> property is specified in the application’s <tt>Info.plist</tt> file.</remarks>
       </Docs>
     </Member>
   </Members>
