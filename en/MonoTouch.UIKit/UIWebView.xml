@@ -17,14 +17,18 @@
   <Docs>
     <summary>A web browser as a UIView.</summary>
     <remarks>
-      <para>
-   The MonoTouch API supports two styles of event notification: the Objective-C style that uses a delegate class or the C# style using event notifications.  
-</para>
-      <para>
-   The C# style allows the user to add or remove event handlers at runtime by assigning to the events of properties of this class.    Event handlers can be anyone of a method, an anonymous methods or a lambda expression.  Using the C# style events or properties will override any manual settings to the Objective-C Delegate or WeakDelegate settings.
-</para>
-      <para>The Objective-C style requires the user to create a new class derived from <see cref="T:MonoTouch.UIKit.UIWebViewDelegate" /> class and assign it to the <see cref="P:MonoTouch.UIKit.Delegate" /> property.   Alternatively, for low-level control, by creating a class derived from <see cref="T:MonoTouch.Foundation.NSObject" /> which has every entry point properly decorated with an [Export] attribute.   The instance of this object can then be assigned to the <see cref="T:MonoTouch.UIKit.UIWebView.WeakDelegate" /> property.   
-</para>
+      <para>You use the UIWebView class to embed web content in your application. To do so, you simply create a UIWebView object, attach it to a window, and send it a request to load web content. You can also use this class to move back and forward in the history of webpages, and you can even set some web content properties programmatically.</para>
+      <para>The MonoTouch API supports two styles of event notification: the Objective-C style that uses a delegate class or the C# style using event notifications.</para>
+      <para>The C# style allows the user to add or remove event handlers at runtime by assigning to the events of properties of this class.    Event handlers can be anyone of a method, an anonymous methods or a lambda expression.  Using the C# style events or properties will override any manual settings to the Objective-C Delegate or WeakDelegate settings.</para>
+      <para>Use the loadRequest: method to begin loading web content, the stopLoading method to stop loading, and the loading property to find out if a web view is in the process of loading.</para>
+      <para>If you allow the user to move back and forward through the webpage history, then you can use the goBack and goForward methods as actions for buttons. Use the canGoBack and canGoForward properties to disable the buttons when the user can’t move in a direction.</para>
+      <para>By default, a web view automatically converts telephone numbers that appear in web content to Phone links. When a Phone link is tapped, the Phone application launches and dials the number. Set the detectsPhoneNumbers property to NO to turn off this default behavior.</para>
+      <para>You can also use the scalesPageToFit property to programmatically set the scale of web content the first time it is displayed in a web view. Thereafter, the user can change the scale using gestures.</para>
+      <para>Set the delegate property to an object conforming to the UIWebViewDelegate protocol if you want to track the loading of web content.</para>
+      <para>You should not embed UIWebView or UITableView objects in UIScrollView objects. If you do so, unexpected behavior can result because touch events for the two objects can be mixed up and wrongly handled.</para>
+      <para>In addition to HTML content, UIWebView objects can be used to display other content types. For more information, see Using UIWebView to display select document types.</para>
+      <para>The UIWebView class should not be subclassed.</para>
+      <para>The Objective-C style requires the user to create a new class derived from <see cref="T:MonoTouch.UIKit.UIWebViewDelegate" /> class and assign it to the <see cref="P:MonoTouch.UIKit.Delegate" /> property.   Alternatively, for low-level control, by creating a class derived from <see cref="T:MonoTouch.Foundation.NSObject" /> which has every entry point properly decorated with an [Export] attribute.   The instance of this object can then be assigned to the <see cref="T:MonoTouch.UIKit.UIWebView.WeakDelegate" /> property.</para>
     </remarks>
     <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=167dc2bb-abca-4dc6-b6db-af97a040b57b">Example_ContentControls</related>
     <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=23a2571b-45eb-4889-bb67-d88937cb68c1">monocatalog</related>
@@ -193,9 +197,12 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>A Boolean value that determines whether HTML5 videos play inline or use the native full-screen controller.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>
+        <para>The default value on iPhone is <code lang="C#">false</code>.</para>
+        <para>In order for video to play inline, not only does this property need to be set on the view, but the video element in the HTML document must also include the webkit-playsinline attribute.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Appearance">
@@ -267,9 +274,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>A Boolean value indicating whether the receiver can move backward. (read-only)</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>If <code lang="C#">true</code>, able to move backward; otherwise, <code lang="C#">false</code>.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CanGoForward">
@@ -288,9 +295,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>A Boolean value indicating whether the receiver can move forward. (read-only)</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>If <code lang="C#">true</code>, able to move forward; otherwise, <code lang="C#">false</code>.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ClassHandle">
@@ -328,9 +335,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>MonoTouch.UIKit.UIDataDetectorType</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The types of data converted to clickable URLs in the web view’s content.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>You can use this property to specify the types of data (phone numbers, http links, email address, and so on) that should be automatically converted to clickable URLs in the web view. When clicked, the web view opens the application responsible for handling the URL type and passes it the URL.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Delegate">
@@ -405,7 +412,8 @@ mySliders.TintColor = UIColor.Red;
         <returns>
           <para>The result of running <em>script</em> or <tt>nil</tt> if it fails.</para>
         </returns>
-        <remarks>
+        <remarks><para>JavaScript execution time is limited to 10 seconds for each top-level entry point. If your script executes for more than 10 seconds, the web view stops executing the script. This is likely to occur at a random place in your code, so unintended consequences may result. This limit is imposed because JavaScript execution may cause the main thread to block, so when scripts are running, the user is not able to interact with the webpage.</para>
+        <para>JavaScript allocations are also limited to 10 MB. The web view raises an exception if you exceed this limit on the total memory allocation for JavaScript.</para>
         </remarks>
       </Docs>
     </Member>
@@ -469,9 +477,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>A Boolean value indicating whether the receiver is done loading content. (read-only)</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>If <code lang="C#">true</code>, the receiver is still loading content; otherwise, <code lang="C#">false</code>.</remarks>
       </Docs>
     </Member>
     <Member MemberName="LoadData">
@@ -637,9 +645,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>A Boolean value that determines whether Air Play is allowed from this view.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>The default value on both iPad and iPhone is <code lang="C#">true</code>.</remarks>
       </Docs>
     </Member>
     <Member MemberName="MediaPlaybackRequiresUserAction">
@@ -704,7 +712,7 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>MonoTouch.Foundation.NSUrlRequest</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The URL request identifying the location of the content to load. (read-only)</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -728,9 +736,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>A Boolean value determining whether the webpage scales to fit the view and the user can change the scale.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>If <code lang="C#">true</code>, the webpage is scaled to fit and the user can zoom in and zoom out. If <code lang="C#">false</code>, user zooming is disabled. The default value is NO.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ScrollView">
@@ -749,9 +757,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>MonoTouch.UIKit.UIScrollView</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The scroll view associated with the web view. (read-only)</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>Your application can access the scroll view if it wants to customize the scrolling behavior of the web view.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ShouldStartLoad">
@@ -788,7 +796,7 @@ mySliders.TintColor = UIColor.Red;
       <Parameters />
       <Docs>
         <summary>Stops the loading of any web content managed by the receiver.</summary>
-        <remarks>
+        <remarks>Stops any content in the process of being loaded by the main frame or any of its children frames. Does nothing if no content is being loaded.
         </remarks>
       </Docs>
     </Member>
