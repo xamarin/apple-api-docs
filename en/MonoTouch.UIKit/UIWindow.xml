@@ -16,7 +16,10 @@
   </Attributes>
   <Docs>
     <summary>Windows are the main container for views in a CocoaTouch application.</summary>
-    <remarks>To be added.</remarks>
+    <remarks><para>The UIWindow class defines objects (known as windows ) that manage and coordinate the windows an application displays on the screen. The two principal functions of a window are to provide an area for displaying its views and to distribute events to the views. The window is the root view in the view hierarchy. A window belongs to a level; the windows in one level appear above another level. For example, alerts appear above normal windows. Typically, there is only one window in an iOS application.</para>
+    <para>When creating windows in Interface Builder, it is recommended that you enable the Full Screen at Launch option in the attributes inspector. If this option is not enabled and your window is not sized properly for the target device, touch events may not be received by some of your views. This is because the window does not receive touch events outside of its bounds and views are not clipped to the window’s bounds by default. Enabling the Full Screen at Launch option ensures that the window is sized appropriately for the current device.</para>
+    <para>For more information about how to use windows, see View Programming Guide for iOS.</para>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -231,8 +234,7 @@ mySliders.TintColor = UIColor.Red;
       <Parameters />
       <Docs>
         <summary>Invoked automatically to inform the receiver that it has become the key window; never invoke this method directly.</summary>
-        <remarks>
-        </remarks>
+        <remarks>This method reestablishes the receiver’s first responder, sends the becomeKeyWindow message to that object if it responds, and posts UIWindowDidBecomeKeyNotification to the default notification center.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ClassHandle">
@@ -729,9 +731,11 @@ void Setup ()
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>A Boolean value that indicates whether the receiver is the key window for the application. (read-only)</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks><para>If <code lang="C#">true</code>, the receiver is the key window for the application; otherwise, <code lang="C#">false</code>.</para>
+        <para>he key window is the one that is designated to receive keyboard and other non-touch related events. Only one window at a time may be the key window.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="KeyboardDidChangeFrameNotification">
@@ -870,8 +874,7 @@ void Setup ()
       <Parameters />
       <Docs>
         <summary>Makes the receiver the key window and makes that window visible.</summary>
-        <remarks>
-        </remarks>
+        <remarks>This is a convenience method to make the receiver the main window and displays it in front of other windows. You can also hide and reveal a window using the inherited hidden property of UIView.</remarks>
       </Docs>
     </Member>
     <Member MemberName="MakeKeyWindow">
@@ -914,7 +917,7 @@ void Setup ()
       <Parameters />
       <Docs>
         <summary>Invoked automatically when the window resigns key window status; never invoke this method directly.</summary>
-        <remarks>
+        <remarks>This method sends <tt>resignKeyWindow</tt> to the receiver’s first responder and posts <tt>UIWindowDidResignKeyNotification</tt> to the default notification center.
         </remarks>
       </Docs>
     </Member>
@@ -937,9 +940,11 @@ void Setup ()
         <ReturnType>MonoTouch.UIKit.UIViewController</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The root view controller for the window.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks><para>The root view controller provides the content view of the window. Assigning a view controller to this property (either programmatically or using Interface Builder) installs the view controller’s view as the content view of the window. If the window has an existing view hierarchy, the old views are removed before the new ones are installed.</para>
+        <para>The default value of this property is <code lang="C#">null</code>.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Screen">
@@ -961,9 +966,11 @@ void Setup ()
         <ReturnType>MonoTouch.UIKit.UIScreen</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The screen on which the window is currently displayed.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks><para>By default, all windows are created on the main screen. If additional screens are attached to the device, assigning a different screen object to this property causes the window to be displayed on the new screen.</para>
+        <para>Moving windows from screen to screen is a relatively expensive operation and should not be done in performance-sensitive code. Instead, it is recommended that you change the screen before displaying the window the first time. Changing the screen of a window that has not yet been ordered onto the screen has no significant additional cost.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SendEvent">
@@ -1012,9 +1019,9 @@ void Setup ()
         <ReturnType>System.Single</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The receiver’s window level.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>Levels are ordered so that each level groups windows within it in front of those in all preceding groups. For example, alert windows appear in front of all normal-level windows. When a window enters a new level, it’s ordered in front of all its peers in that level. See “UIWindowLevel” for a list of possible values. The default value is 0.0.</remarks>
       </Docs>
     </Member>
   </Members>
