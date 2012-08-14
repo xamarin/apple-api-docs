@@ -16,7 +16,12 @@
   </Attributes>
   <Docs>
     <summary>Manages a popover on the screen.</summary>
-    <remarks>To be added.</remarks>
+    <remarks><para>The <tt>UIPopoverController</tt> class is used to manage the presentation of content in a popover. You use popovers to present information temporarily but in a way that does not take over the entire screen like a modal view does. The popover content is layered on top of your existing content in a special type of window. The popover remains visible until the user taps outside of the popover window or you explicitly dismiss it. Popover controllers are for use exclusively on iPad devices. Attempting to create one on other devices results in an exception.</para>
+    <para>To display a popover, create an instance of this class and present it using one of the appropriate methods. When initializing an instance of this class, you must provide the view controller that provides the content for the popover. Popovers normally derive their size from the view controller they present. However, you can change the size of the popover by modifying the value in the <tt>popoverContentSize</tt> property or by calling the <tt>setPopoverContentSize:animated:</tt> method. The latter approach is particularly effective if you need to animate changes to the popover’s size. The size you specify is just the preferred size for the popover’s view. The actual size may be altered to ensure that the popover fits on the screen and does not collide with the keyboard.</para>
+    <para>When displayed, taps outside of the popover window cause the popover to be dismissed automatically. To allow the user to interact with the specified views and not dismiss the popover, you can assign one or more views to the <tt>passthroughViews</tt> property. Taps inside the popover window do not automatically cause the popover to be dismissed. Your view and view controller code must handle actions and events inside the popover explicitly and call the <tt>dismissPopoverAnimated:</tt> method as needed.</para>
+    <para>If the user rotates the device while a popover is visible, the popover controller hides the popover and then shows it again at the end of the rotation. The popover controller attempts to position the popover appropriately for you but you may have to present it again or hide it altogether in some cases. For example, when displayed from a bar button item, the popover controller automatically adjusts the position (and potentially the size) of the popover to account for changes to the position of the bar button item. However, if you remove the bar button item during the rotation, or if you presented the popover from a target rectangle in a view, the popover controller does not attempt to reposition the popover. In those cases, you must manually hide the popover or present it again from an appropriate new position. You can do this in the <tt>didRotateFromInterfaceOrientation:</tt> method of the view controller that you used to present the popover.</para>
+    <para>You can assign a delegate to the popover to manage interactions with the popover and receive notifications about its dismissal.</para>
+    </remarks>
     <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=08f52114-da41-447b-92a4-b86981b03c21">Popovers</related>
     <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=afab3ce5-a98f-43d8-a981-c803ca8b9738">Example_CoreAnimation</related>
   </Docs>
@@ -109,9 +114,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="viewController" Type="MonoTouch.UIKit.UIViewController" />
       </Parameters>
       <Docs>
-        <param name="viewController">To be added.</param>
+        <param name="viewController">The view controller for managing the popover’s content. This parameter must not be <tt>null</tt>.</param>
         <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <remarks>When initializing a popover controller, you must specify the view controller object whose content is to be displayed in the popover. You can change this view controller later by modifying the <tt>contentViewController</tt> property.</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -172,9 +177,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.UIKit.UIViewController</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The view controller responsible for the content portion of the popover.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>This property is initially set to the view controller passed to the <tt>initWithContentViewController:</tt> method. You can change the value of this property later to reflect a new set of content. Changing the value of this property swaps the new view controller in for the old one immediately and does not trigger an animation. If you want to animate the change, use the <tt>setContentViewController:animated:</tt> method instead.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Delegate">
@@ -231,9 +236,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="animated" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="animated">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="animated">Specify <tt>true</tt> to animate the dismissal of the popover or <tt>false</tt> to dismiss it immediately.</param>
+        <summary>Dismisses the popover programmatically.</summary>
+        <remarks>You can use this method to dismiss the popover programmatically in response to taps inside the popover window. Taps outside of the popover’s contents automatically dismiss the popover.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Dispose">
@@ -281,9 +286,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.UIKit.UIView[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>An array of views that the user can interact with while the popover is visible.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>When a popover is active, interactions with other views are normally disabled until the popover is dismissed. Assigning an array of views to this property allows taps outside of the popover to be handled by the corresponding views.</remarks>
       </Docs>
     </Member>
     <Member MemberName="PopoverArrowDirection">
@@ -323,9 +328,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Type</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The direction of the popover’s arrow. (read-only)</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>The default value of this property is <tt>UIPopoverArrowDirectionUnknown</tt>. When you present the popover, the value changes to reflect the actual direction of the arrow being used by the popover. When the popover is subsequently dismissed, the value of this property returns to <tt>UIPopoverArrowDirectionUnknown</tt>.</remarks>
       </Docs>
     </Member>
     <Member MemberName="PopoverContentSize">
@@ -347,9 +352,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Drawing.SizeF</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The size of the popover’s content view.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks><para>This property represents the size of the content view that is managed by the view controller in the <tt>contentViewController</tt> property. The initial value of this property is set to value in the view controller’s <tt>contentSizeForViewInPopover</tt> property. Changing the value of this property overrides the default value of the current view controller. The overridden value persists until you assign a new content view controller to the receiver. Thus, if you want to keep your overridden value, you must reassign it after changing the content view controller.</para>
+        <para>When changing the value of this property, the width value you specify must be at least 320 points and no more than 600 points. There are no restrictions on the height value. However, both the width and height values you specify may be adjusted to ensure the popup fits on screen and is not covered by the keyboard. If you change the value of this property while the popover is visible, the size change is animated.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="PopoverLayoutMargins">
@@ -371,9 +378,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.UIKit.UIEdgeInsets</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The margins that define the portion of the screen in which it is permissible to display the popover.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks><para>The edge inset values are measured in points from the edges of the screen, relative to the current device orientation. Thus, the top-edge inset always reflects the top edge of the device from the user’s perspective, which changes depending on whether the user is holding the device in a portrait or landscape orientation. Remember that the device orientation is not always the same as the interface orientation—that is, the orientation of your window and views. Window orientations are typically fixed and view orientations are controlled by the owning view controller. In addition, if the rotation lock option is engaged, the interface does not change orientation at all, even when the device orientation changes.</para>
+        <para>The default edge insets are 10 points along each edge. The popover controller automatically subtracts the status bar from the viable area when determining where to display the popover, so you do not need to factor the status bar height into your insets.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="PopoverVisible">
@@ -392,9 +401,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>A Boolean value indicating whether the popover is currently visible. (read-only)</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>You must present the popover to make it visible.</remarks>
       </Docs>
     </Member>
     <Member MemberName="PresentFromBarButtonItem">
@@ -418,11 +427,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="animated" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="item">To be added.</param>
-        <param name="arrowDirections">To be added.</param>
-        <param name="animated">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="item">The bar button item on which to anchor the popover.</param>
+        <param name="arrowDirections">The arrow directions the popover is permitted to use. You can use this value to force the popover to be positioned on a specific side of the bar button item. However, it is generally better to specify <tt>UIPopoverArrowDirectionAny</tt> and let the popover decide the best placement. You must not specify <tt>UIPopoverArrowDirectionUnknown</tt> for this parameter.</param>
+        <param name="animated">Specify <tt>true</tt> to animate the presentation of the popover or <tt>false</tt> to display it immediately.</param>
+        <summary>Displays the popover and anchors it to the specified bar button item.</summary>
+        <remarks>When presenting the popover, this method adds the toolbar that owns the button to the popover’s list of passthrough views. Thus, taps in the toolbar result in the action methods of the corresponding toolbar items being called. If you want the popover to be dismissed when a different toolbar item is tapped, you must implement that behavior in your action handler methods.</remarks>
       </Docs>
     </Member>
     <Member MemberName="PresentFromRect">
@@ -447,11 +456,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="animated" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="rect">To be added.</param>
-        <param name="view">To be added.</param>
-        <param name="arrowDirections">To be added.</param>
-        <param name="animated">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="rect">The rectangle in view at which to anchor the popover window.</param>
+        <param name="view">The view containing the anchor rectangle for the popover.</param>
+        <param name="arrowDirections">The arrow directions the popover is permitted to use. You can use this value to force the popover to be positioned on a specific side of the rectangle. However, it is generally better to specify <tt>UIPopoverArrowDirectionAny</tt> and let the popover decide the best placement. You must not specify <tt>UIPopoverArrowDirectionUnknown</tt> for this parameter.</param>
+        <param name="animated">Specify <tt>true</tt> to animate the presentation of the popover or <tt>false</tt> to display it immediately.</param>
+        <summary>Displays the popover and anchors it to the specified location in the view.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -475,9 +484,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="animated" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="viewController">To be added.</param>
-        <param name="animated">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="viewController">The new view controller whose content should be displayed by the popover.</param>
+        <param name="animated">Specify <tt>true</tt> if the change of view controllers should be animated or <tt>false</tt> if the change should occur immediately.</param>
+        <summary>Sets the view controller responsible for the content portion of the popover.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -501,10 +510,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="animated" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="size">To be added.</param>
-        <param name="animated">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="size">The new size to apply to the content view.</param>
+        <param name="animated">Specify <tt>true</tt> if you want the change in size to be animated or <tt>false</tt> if you want the change to appear immediately.</param>
+        <summary>Changes the size of the popover’s content view.</summary>
+        <remarks>When changing the size of the popover’s content, the width value you specify must be at least 320 points and no more than 600 points. There are no restrictions on the height value. However, both the width and height values you specify may be adjusted to ensure the popup fits on screen and is not covered by the keyboard.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ShouldDismiss">
