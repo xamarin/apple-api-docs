@@ -17,14 +17,17 @@
   <Docs>
     <summary>A view that can scroll its children.</summary>
     <remarks>
-      <para>
-   The MonoTouch API supports two styles of event notification: the Objective-C style that uses a delegate class or the C# style using event notifications.  
-</para>
-      <para>
-   The C# style allows the user to add or remove event handlers at runtime by assigning to the events of properties of this class.    Event handlers can be anyone of a method, an anonymous methods or a lambda expression.  Using the C# style events or properties will override any manual settings to the Objective-C Delegate or WeakDelegate settings.
-</para>
+      <para>UIScrollView is the superclass of several UIKit classes including UITableView and UITextView.</para>
+      <para>The central notion of a UIScrollView object (or, simply, a scroll view) is that it is a view whose origin is adjustable over the content view. It clips the content to its frame, which generally (but not necessarily) coincides with that of the application’s main window. A scroll view tracks the movements of fingers and adjusts the origin accordingly. The view that is showing its content “through” the scroll view draws that portion of itself based on the new origin, which is pinned to an offset in the content view. The scroll view itself does no drawing except for displaying vertical and horizontal scroll indicators. The scroll view must know the size of the content view so it knows when to stop scrolling; by default, it “bounces” back when scrolling exceeds the bounds of the content.</para>
+      <para>The object that manages the drawing of content displayed in a scroll view should tile the content’s subviews so that no view exceeds the size of the screen. As users scroll in the scroll view, this object should add and remove subviews as necessary.</para>
+      <para>Because a scroll view has no scroll bars, it must know whether a touch signals an intent to scroll versus an intent to track a subview in the content. To make this determination, it temporarily intercepts a touch-down event by starting a timer and, before the timer fires, seeing if the touching finger makes any movement. If the timer fires without a significant change in position, the scroll view sends tracking events to the touched subview of the content view. If the user then drags their finger far enough before the timer elapses, the scroll view cancels any tracking in the subview and performs the scrolling itself. Subclasses can override the touchesShouldBegin:withEvent:inContentView:, pagingEnabled, and touchesShouldCancelInContentView: methods (which are called by the scroll view) to affect how the scroll view handles scrolling gestures.</para>
+      <para>A scroll view also handles zooming and panning of content. As the user makes a pinch-in or pinch-out gesture, the scroll view adjusts the offset and the scale of the content. When the gesture ends, the object managing the content view should should update subviews of the content as necessary. (Note that the gesture can end and a finger could still be down.) While the gesture is in progress, the scroll view does not send any tracking calls to the subview.</para>
+      <para>The UIScrollView class can have a delegate that must adopt the UIScrollViewDelegate protocol. For zooming and panning to work, the delegate must implement both viewForZoomingInScrollView: and scrollViewDidEndZooming:withView:atScale:; in addition, the maximum (maximumZoomScale) and minimum ( minimumZoomScale) zoom scale must be different.</para>
+      <para>The MonoTouch API supports two styles of event notification: the Objective-C style that uses a delegate class or the C# style using event notifications.</para>
+      <para>The C# style allows the user to add or remove event handlers at runtime by assigning to the events of properties of this class.    Event handlers can be anyone of a method, an anonymous methods or a lambda expression.  Using the C# style events or properties will override any manual settings to the Objective-C Delegate or WeakDelegate settings.</para>
       <para>The Objective-C style requires the user to create a new class derived from <see cref="T:MonoTouch.UIKit.UIScrollViewDelegate" /> class and assign it to the <see cref="P:MonoTouch.UIKit.Delegate" /> property.   Alternatively, for low-level control, by creating a class derived from <see cref="T:MonoTouch.Foundation.NSObject" /> which has every entry point properly decorated with an [Export] attribute.   The instance of this object can then be assigned to the <see cref="T:MonoTouch.UIKit.UIScrollView.WeakDelegate" /> property.   
 </para>
+
     </remarks>
     <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=556b1b8f-088e-494f-bc1a-bd418c174ba3">ZoomingPdfViewer</related>
     <related type="recipe" href="http://docs.xamarin.com/ios/Recipes/Content_Controls/Scroll_View/Create_a_Horizontal_Scrolling_Button_List">Create a Horizontal Scrolling Button List</related>
@@ -190,9 +193,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>A Boolean value that determines whether boucning always occurs when horizontal scrolling reaches the end of the content view.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>If this property is set to <code lang="C#">true</code> and bounces is <code lang="C#">true</code>, horizontal dragging is allowed even if the content is smaller than the bounds of the scroll view. The default value is <code lang="C#">false</code>.</remarks>
       </Docs>
     </Member>
     <Member MemberName="AlwaysBounceVertical">
@@ -214,9 +217,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>A Boolean value that determines whether bouncing always occures when vertical scrolling reaches the end of the content.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>If this property is set to <code lang="C#">true</code> and bounces is <code lang="C#">true</code>, horizontal dragging is allowed even if the content is smaller than the bounds of the scroll view. The default value is <code lang="C#">false</code>.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Appearance">
@@ -291,9 +294,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>A Boolean value that controls whether the scroll view bounces past the edge of the content and back again.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>If the value of this property is <code lang="C#">true</code>, the scroll view bounces when it encounters a boundary of the content. Bouncing visually indicates that scrolling has reached an edge of the content. If the value is <code lang="C#">false</code>, scrolling stops immediately at the content boundary without bouncing. The default value is <code lang="C#">true</code>.</remarks>
       </Docs>
     </Member>
     <Member MemberName="BouncesZoom">
@@ -315,9 +318,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>A Boolean value that determines whether the scroll view animates the content scaling when the scaling exceeds the maximum or minimum limits.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>If the value of this property is <code lang="C#">true</code> and zooming exceeds either the maximum or minimum limits for scaling, the scroll view temporarily animates the content scaling just past these limits before returning to them. If this property is <code lang="C#">false</code>, zooming stops immediately at one a scaling limits. The default is <code lang="C#">true</code>.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CanCancelContentTouches">
@@ -339,9 +342,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>A Boolean value that controls whether touchs in the content view always lead to tracking.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>If the value of this property is <code lang="C#">true</code> and a view in the content has begun tracking a finger touching it, and if the user drags the finger enough to initiate a scroll, the view receives a touchesCancelled:withEvent: message and the scroll view handles the touch as a scroll. If the value of this property is <code lang="C#">false</code>, the scroll view does not scroll regardless of finger movement once the content view starts tracking.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ClassHandle">
@@ -379,9 +382,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>MonoTouch.UIKit.UIEdgeInsets</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The distance that the content view is inset from the enclosing scroll view.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>Use this property to add to the scrolling area around the content. The unit of size is points. The default value is UIEdgeInsetsZero.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ContentOffset">
@@ -403,9 +406,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Drawing.PointF</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The point at which the origin of the content view is offset from the origin of the scroll view.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>The default value is CGPointZero.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ContentSize">
@@ -427,9 +430,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Drawing.SizeF</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The size of the content view.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>The unit of sie is points. The default size is CGSizeZero.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Decelerating">
@@ -448,9 +451,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Returns whether the content is moving in the scroll view after the user lifted their finger. (read-only)</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>The returned valus is <code lang="C#">true</code> if the user isn't dragging the content but scrolling is still occuring.</remarks>
       </Docs>
     </Member>
     <Member MemberName="DecelerationEnded">
@@ -487,9 +490,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Single</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>A floating-point value that determins the rate of deceleration after the user lifts their finger.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>Your application can use the UIScrollViewDecelerationRateNormal and UIScrollViewDecelerationRateFast constants as reference points for reasonable deceleration rates.</remarks>
       </Docs>
     </Member>
     <Member MemberName="DecelerationRateFast">
@@ -558,9 +561,11 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>A Boolean value that determines where the scroll view delays the handling of touch-down gestures.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks><para>If the value of this property is YES, the scroll view delays handling the touch-down gesture until it can determine if scrolling is the intent. If the value is <code lang="C#">false</code> , the scroll view immediately calls touchesShouldBegin:withEvent:inContentView:. The default value is <code lang="C#">true</code>.</para>
+        <para>See the class description for a fuller discussion.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Delegate">
@@ -617,9 +622,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>A Boolean valud that determins whether scrolling is disabled in a particular direction.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>If this property is <code lang="C#">false</code>, scrolling is permitted in both horizontal and vertical directions. If this property is <code lang="C#">true</code> and the user begins dragging in one general direction (horizontally or vertically), the scroll view disables scrolling in the other direction. If the drag direction is diagonal, then scrolling will not be locked and the user can drag in any direction until the drag completes. The default value is <code lang="C#">false</code>.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Dispose">
@@ -664,9 +669,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>A Boolean value that indicates whether the user has begun scrolling the content. (read-only)</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>The value held by this property might require some time or distance of scrolling before it is set to <code lang="C#">true</code>.</remarks>
       </Docs>
     </Member>
     <Member MemberName="DraggingEnded">
@@ -716,8 +721,8 @@ mySliders.TintColor = UIColor.Red;
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Displays the scroll indicators momentarily.</summary>
+        <remarks>You should call this method whenever you bring the scroll view to front.</remarks>
       </Docs>
     </Member>
     <Member MemberName="IndicatorStyle">
@@ -739,9 +744,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>MonoTouch.UIKit.UIScrollViewIndicatorStyle</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The style of the scroll indicators.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>The default style is UIScrollViewIndicatorStyleDefault. See Scroll Indicator Style for descriptions of these constants.</remarks>
       </Docs>
     </Member>
     <Member MemberName="MaximumZoomScale">
@@ -763,9 +768,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Single</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>A floating-point value that specifies the maximum scale factor that can be applied to the scroll view's content.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>This value determins how large the content can be scaled. It must be greater than the minimum zoom scale for zooming to be enabled. The default value is 1.0.</remarks>
       </Docs>
     </Member>
     <Member MemberName="MinimumZoomScale">
@@ -787,9 +792,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Single</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>A floating-point valud that specifies the mininum scale fator that can be applied to the scroll view's content.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>This value determines how small the content can be scaled. The default value is 1.0.</remarks>
       </Docs>
     </Member>
     <Member MemberName="PagingEnabled">
@@ -811,9 +816,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>A Boolean value that determines whether paging is enabled for the scroll view.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>If the valud of this property is <code lang="C#">true</code>, the scroll view stops on multiples of the scroll view's bounds when the user scrolls. The default value is <code lang="C#">false</code>.</remarks>
       </Docs>
     </Member>
     <Member MemberName="PanGestureRecognizer">
@@ -832,9 +837,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>MonoTouch.UIKit.UIPanGestureRecognizer</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The underlying gesture recognizer for pan gestures.  (read-only)</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>Your application accessess this property when it wants to more precisely control which pan gestures are recognized by the scroll view.</remarks>
       </Docs>
     </Member>
     <Member MemberName="PinchGestureRecognizer">
@@ -853,9 +858,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>MonoTouch.UIKit.UIPinchGestureRecognizer</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The underlying gesture recognizer for pinch gestures.  (read-only)</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>Your application accesses this property when it wants to more precisely control which pinch gestures are recognized by the scroll view.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ScrollAnimationEnded">
@@ -922,9 +927,11 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>A Boolean value that determines whether scrolling is enabled.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks><para>If the value of this property is <code lang="C#">true</code> , scrolling is enabled, and if it is <code lang="C#">false</code> , scrolling is disabled. The default is <code lang="C#">true</code>.</para>
+        <para>When scrolling is disabled, the scroll view does not accept touch events; it forwards them up the responder chain.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ScrollIndicatorInsets">
@@ -946,9 +953,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>MonoTouch.UIKit.UIEdgeInsets</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The distance the scroll indicators are inset from the edge of the scroll view.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>The default value is UIEdgeInsetsZero.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ScrollRectToVisible">
@@ -971,10 +978,10 @@ mySliders.TintColor = UIColor.Red;
         <Parameter Name="animated" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="rect">To be added.</param>
-        <param name="animated">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="rect">A rectangle defining an area of the content view.</param>
+        <param name="animated"><code lang="C#">true</code> if the scrolling should be animated, <code lang="C#">true</code> if it should be immediate.</param>
+        <summary>Scrolls a specific area of the content so that it is visible in the receiver.</summary>
+        <remarks>This method scrolls the content view so that the area defined by rect is just visible inside the scroll view. If the area is already visible, the method does nothing.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ScrollsToTop">
@@ -996,9 +1003,11 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>A Boolean value that controls whether the scroll-to-top gesture is effective.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks><para>The scroll-to-top gesture is a tap on the status bar; when this property is YES, the scroll view jumps to the top of the content when this gesture occurs. The default value of this property is <code lang="C#">true</code>.</para>
+        <para>This gesture works on a single visible scroll view; if there are multiple scroll views (for example, a date picker) with this property set, or if the delegate returns <code lang="C#">false</code> in scrollViewShouldScrollToTop:, UIScrollView ignores the request. After the scroll view scrolls to the top of the content view, it sends the delegate a scrollViewDidScrollToTop: message.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SetContentOffset">
@@ -1021,9 +1030,9 @@ mySliders.TintColor = UIColor.Red;
         <Parameter Name="animated" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="contentOffset">To be added.</param>
-        <param name="animated">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="contentOffset">A point (expressed in points) that is offset from the content view’s origin.</param>
+        <param name="animated"><code lang="C#">true</code> to animate the transition at a constant velocity to the new offset, <code lang="C#">false</code> to make the transition immediate.</param>
+        <summary>Sets the offset from the content view’s origin that corresponds to the receiver’s origin.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -1047,10 +1056,10 @@ mySliders.TintColor = UIColor.Red;
         <Parameter Name="animated" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="scale">To be added.</param>
-        <param name="animated">To be added.</param>
+        <param name="scale">The new value to scale the content to.</param>
+        <param name="animated"><code lang="C#">true</code> to animate the transition to the new scale, <code lang="C#">false</code> to make the transition immediate.</param>
         <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <remarks>The new scale value should be between the minimumZoomScale and the maximumZoomScale.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ShouldScrollToTop">
@@ -1088,9 +1097,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>A Boolean value that controls whether the horizontal scroll indicator is visible.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>The default value is <code lang="C#">true</code>. The indicator is visible while tracking is underway and fades out after tracking.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ShowsVerticalScrollIndicator">
@@ -1112,9 +1121,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>A Boolean value that controlls whether the vertical scroll indicator is visible.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>The default value is <code lang="C#">true</code>. The indicator is visible while tracking is underway and fades out after tracking.</remarks>
       </Docs>
     </Member>
     <Member MemberName="TouchesShouldBegin">
@@ -1138,12 +1147,12 @@ mySliders.TintColor = UIColor.Red;
         <Parameter Name="inContentView" Type="MonoTouch.UIKit.UIView" />
       </Parameters>
       <Docs>
-        <param name="touches">To be added.</param>
-        <param name="withEvent">To be added.</param>
-        <param name="inContentView">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="touches">A set of UITouch instances that represent the touches for the starting phase of the event represented by event.</param>
+        <param name="withEvent">An object representing the event to which the touch objects in touches belong.</param>
+        <param name="inContentView">The subview in the content where the touch-down gesture occurred.</param>
+        <summary>Overridden by subclasses to customize the default behavior when a finger touches down in displayed content.</summary>
+        <returns>Return <code lang="C#">false</code> if you don’t want the scroll view to send event messages to view. If you want view to receive those messages, return <code lang="C#">true</code> (the default).</returns>
+        <remarks>The default behavior of UIScrollView is to invoke the UIResponder event-handling methods of the target subview that the touches occur in.</remarks>
       </Docs>
     </Member>
     <Member MemberName="TouchesShouldCancelInContentView">
@@ -1165,10 +1174,10 @@ mySliders.TintColor = UIColor.Red;
         <Parameter Name="view" Type="MonoTouch.UIKit.UIView" />
       </Parameters>
       <Docs>
-        <param name="view">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="view">The view object in the content that is being touched.</param>
+        <summary>Returns whether to cancel touches related to the content subview and start dragging.</summary>
+        <returns><code lang="C#">true</code> to cancel further touch messages to view, <code lang="C#">false</code> to have view continue to receive those messages. The default returned value is <code lang="C#">true</code> if view is not a UIControl object; otherwise, it returns <code lang="C#">false</code>.</returns>
+        <remarks>The scroll view calls this method just after it starts sending tracking messages to the content view. If it receives <code lang="C#">false</code> from this method, it stops dragging and forwards the touch events to the content subview. The scroll view does not call this method if the value of the canCancelContentTouches property is <code lang="C#">false</code>.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Tracking">
@@ -1187,9 +1196,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Returns whether the user has touched the content to initiate scrolling. (read-only)</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>The value of this property is <code lang="C#">true</code> if the user has touched the content view but might not have yet have started dragging it.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ViewForZoomingInScrollView">
@@ -1267,9 +1276,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>A Boolean value that indicates that zooming has exceeded the scaling limts specified for the receiver. (read-only)</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>The value of this property is <code lang="C#">true</code> if the scroll view is zooming back to a minimum or maximum zoom scaling value; otherwise the value is <code lang="C#">false</code>.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Zooming">
@@ -1288,9 +1297,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>A Boolean value that indicates whether the content view is currently zooming in or out. (read-only)</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>The value of this property is <code lang="C#">true</code> if user is making a zoom gesture, otherwise it is <code lang="C#">false</code>.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ZoomingEnded">
@@ -1342,9 +1351,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Single</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>A floating-point value that specifies the current scale factor applied to the scroll view's content.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>This value determines how much the content is currently scaled. The default value is 1.0.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ZoomToRect">
@@ -1367,10 +1376,10 @@ mySliders.TintColor = UIColor.Red;
         <Parameter Name="animated" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="rect">To be added.</param>
-        <param name="animated">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="rect">A rectangle defining an area of the content view.</param>
+        <param name="animated"><code lang="C#">true</code> if the scrolling should be animated, <code lang="C#">false</code> if it should be immediate.</param>
+        <summary>Zooms to a specific area of the content so that it is visible in the receiver.</summary>
+        <remarks>This method zooms so that the content view becomes the area defined by rect, adjusting the zoomScale as necessary.</remarks>
       </Docs>
     </Member>
   </Members>
