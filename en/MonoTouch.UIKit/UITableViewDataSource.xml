@@ -159,13 +159,17 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="tableView" Type="MonoTouch.UIKit.UITableView" />
         <Parameter Name="indexPath" Type="MonoTouch.Foundation.NSIndexPath" />
       </Parameters>
-      <Docs>
-        <param name="tableView">To be added.</param>
-        <param name="indexPath">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
-      </Docs>
+        <Docs>
+            <param name="tableView">Table view containing the row.</param>
+            <param name="indexPath">Location of the row.</param>
+            <summary>Whether the row located at <paramref name="indexPath"/> should be editable.</summary>
+            <returns><see langword="true"/> if the row is editable, otherwise <see langword="false"/>.</returns>
+            <remarks>
+                <para>This method allows specific rows to be editable or not. If this method is not implemented, all rows are assumed to be editable. Editable rows display the insertion or deletion control in their cell when the table view is in editing mode.</para>
+                <para>Rows that are not editable will ignore the <see cref="P:MonoTouch.UIKit.UITableViewCell.EditingStyle" /> property and will not be indented.</para>
+                <para>Rows that are editable, but should not display the insertion or deletion control, can return <see cref="F:MonoTouch.UIKit.UITableViewCellEditingStyle.None" /> from the <see cref="M:MonoTouch.UIKit.UITableViewSource.EditingStyleForRow(MonoTouch.UIKit.UITableView,MonoTouch.Foundation.NSIndexPath)" /> method on the table view's <see cref="T:MonoTouch.UIKit.UITableViewSource" />.</para>
+            </remarks>
+        </Docs>
     </Member>
     <Member MemberName="CanMoveRow">
       <MemberSignature Language="C#" Value="public virtual bool CanMoveRow (MonoTouch.UIKit.UITableView tableView, MonoTouch.Foundation.NSIndexPath indexPath);" />
@@ -186,13 +190,15 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="tableView" Type="MonoTouch.UIKit.UITableView" />
         <Parameter Name="indexPath" Type="MonoTouch.Foundation.NSIndexPath" />
       </Parameters>
-      <Docs>
-        <param name="tableView">To be added.</param>
-        <param name="indexPath">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
-      </Docs>
+        <Docs>
+            <param name="tableView">Table view containing the row.</param>
+            <param name="indexPath">Location of the row.</param>
+            <summary>Whether the row located at <paramref name="indexPath"/> can be moved to another location in the table view.</summary>
+            <returns><see langword="true"/> if the row can be moved, otherwise <see langword="false"/>.</returns>
+            <remarks>
+                <para>This method allows specific rows to have the reordering control to be hidden for specific rows. By default, the reordering control is always shown if <see cref="M:MonoTouch.UIKit.UITableViewSource.MoveRow(MonoTouch.UIKit.UITableView,MonoTouch.Foundation.NSIndexPath,MonoTouch.Foundation.NSIndexPath)" /> is implemented on the <see cref="M:MonoTouch.UIKit.UITableViewSource" />.</para>
+            </remarks>
+        </Docs>
     </Member>
     <Member MemberName="CommitEditingStyle">
       <MemberSignature Language="C#" Value="public virtual void CommitEditingStyle (MonoTouch.UIKit.UITableView tableView, MonoTouch.UIKit.UITableViewCellEditingStyle editingStyle, MonoTouch.Foundation.NSIndexPath indexPath);" />
@@ -214,13 +220,19 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="editingStyle" Type="MonoTouch.UIKit.UITableViewCellEditingStyle" />
         <Parameter Name="indexPath" Type="MonoTouch.Foundation.NSIndexPath" />
       </Parameters>
-      <Docs>
-        <param name="tableView">To be added.</param>
-        <param name="editingStyle">To be added.</param>
-        <param name="indexPath">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
-      </Docs>
+        <Docs>
+            <param name="tableView">Table view requesting insertion or deletion.</param>
+            <param name="editingStyle">Cell editing style requested for the row at <paramref name="indexPath"/>, such as <see cref="F:MonoTouch.UIKit.UITableViewEditingStyle.Insert" /> or <see cref="F:MonoTouch.UIKit.UITableViewEditingStyle.Delete" />.</param>
+            <param name="indexPath">Location of the row.</param>
+            <summary>Commits the insertion or deletion of the specified row.</summary>
+            <remarks>
+                <para>When the user taps the insertion (green plus) or Delete button in a cell, the table view calls this method to commit the change (if the user taps the deletion (red minus) button, that simply reveals the Delete button).</para>
+                <para>This method should commit the <paramref name="editingStyle"/> by calling <see cref="T:MonoTouch.UIKit.UITableView" /> methods <see cref="M:MonoTouch.UIKit.UITableView.InsertRows(MonoTouch.Foundation.NSIndexPath[],MonoTouch.UIKit.UITableViewRowAnimation)" /> or <see cref="M:MonoTouch.UIKit.UITableView.DeleteRows(MonoTouch.Foundation.NSIndexPath[],MonoTouch.UIKit.UITableViewRowAnimation)" />.</para>
+                <para>This method must be implemented to enable the swipe-to-delete feature of the table view control.</para>
+                <para>You should not call <see cref="M:MonoTouch.UIKit.UITableView.SetEditing(System.Boolean,System.Boolean)" /> in this method. If for some reason you need to, invoke it after a delay using <see cref="M:MonoTouch.Foundation.PerformSelector(MonoTouch.ObjCRuntime.Selector,MonoTouch.Foundation.NSObject,System.Double)" />.</para>
+                <para>[UITableViewDataSource]</para>
+            </remarks>
+        </Docs>
     </Member>
     <Member MemberName="GetCell">
       <MemberSignature Language="C#" Value="public abstract MonoTouch.UIKit.UITableViewCell GetCell (MonoTouch.UIKit.UITableView tableView, MonoTouch.Foundation.NSIndexPath indexPath);" />
