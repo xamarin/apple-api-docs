@@ -21,14 +21,15 @@
   <Docs>
     <summary>Provides an action sheet with one or more buttons.</summary>
     <remarks>
-      <para>
-   The MonoTouch API supports two styles of event notification: the Objective-C style that uses a delegate class or the C# style using event notifications.  
-</para>
-      <para>
-   The C# style allows the user to add or remove event handlers at runtime by assigning to the events of properties of this class.    Event handlers can be anyone of a method, an anonymous methods or a lambda expression.  Using the C# style events or properties will override any manual settings to the Objective-C Delegate or WeakDelegate settings.
-</para>
-      <para>The Objective-C style requires the user to create a new class derived from <see cref="T:MonoTouch.UIKit.UIActionSheetDelegate" /> class and assign it to the <see cref="P:MonoTouch.UIKit.Delegate" /> property.   Alternatively, for low-level control, by creating a class derived from <see cref="T:MonoTouch.Foundation.NSObject" /> which has every entry point properly decorated with an [Export] attribute.   The instance of this object can then be assigned to the <see cref="T:MonoTouch.UIKit.UIActionSheet.WeakDelegate" /> property.   
-</para>
+      <para>Use the <tt>UIActionSheet</tt> class to present the user with a set of alternatives for how to proceed with a given task. You can also use action sheets to prompt the user to confirm a potentially dangerous action. The action sheet contains an optional title and one or more buttons, each of which corresponds to an action to take.</para>
+      <para>Use the properties and methods of this class to configure the action sheet’s message, style, and buttons before presenting it. You should also assign a delegate to your action sheet. Your delegate object is responsible for performing the action associated with any buttons when they are tapped and should conform to the UIActionSheetDelegate protocol.</para>
+      <para>You can present an action sheet from a toolbar, tab bar, button bar item, or from a view. This class takes the starting view and current platform into account when determining how to present the action sheet. For applications running on iPhone and iPod touch devices, the action sheet typically slides up from the bottom of the window that owns the view. For applications running on iPad devices, the action sheet is typically displayed in a popover that is anchored to the starting view in an appropriate way. Taps outside of the popover automatically dismiss the action sheet, as do taps within any custom buttons. You can also dismiss it programmatically.</para>
+      <para>When presenting an action sheet on an iPad, there are times when you should not include a cancel button. If you are presenting just the action sheet, the system displays the action sheet inside a popover without using an animation. Because taps outside the popover dismiss the action sheet without selecting an item, this results in a default way to cancel the sheet. Including a cancel button would therefore only cause confusion. However, if you have an existing popover and are displaying an action sheet on top of other content using an animation, a cancel button is still appropriate.</para>
+      <para>In iOS 4.0 and later, action sheets are not dismissed automatically when an application moves to the background. This behavior differs from earlier versions of the operating system, where action sheets were automatically cancelled (and their cancellation handler executed) as part of the termination sequence for the application. Now, it is up to you to decide whether to dismiss the action sheet (and execute its cancellation handler) or leave it visible for when your application moves back to the foreground. Remember that your application can still be terminated while in the background, so some type of action may be necessary in either case.</para>
+
+      <para>The MonoTouch API supports two styles of event notification: the Objective-C style that uses a delegate class or the C# style using event notifications.  </para>
+      <para>The C# style allows the user to add or remove event handlers at runtime by assigning to the events of properties of this class.    Event handlers can be anyone of a method, an anonymous methods or a lambda expression.  Using the C# style events or properties will override any manual settings to the Objective-C Delegate or WeakDelegate settings.</para>
+      <para>The Objective-C style requires the user to create a new class derived from <see cref="T:MonoTouch.UIKit.UIActionSheetDelegate" /> class and assign it to the <see cref="P:MonoTouch.UIKit.Delegate" /> property.   Alternatively, for low-level control, by creating a class derived from <see cref="T:MonoTouch.Foundation.NSObject" /> which has every entry point properly decorated with an [Export] attribute.   The instance of this object can then be assigned to the <see cref="T:MonoTouch.UIKit.UIActionSheet.WeakDelegate" /> property.</para>
     </remarks>
     <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=23a2571b-45eb-4889-bb67-d88937cb68c1">monocatalog</related>
   </Docs>
@@ -276,9 +277,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="title" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="title">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="title">The title of the new button.</param>
+        <summary>Adds a custom button to the action sheet.</summary>
+        <returns>The index of the new button. Button indices start at 0 and increase in the order they are added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -351,7 +352,7 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The number of buttons on the action sheet. (read-only)</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -375,9 +376,9 @@ mySliders.TintColor = UIColor.Red;
         <Parameter Name="index" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="index">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="index">The index of the button. The button indices start at 0.</param>
+        <summary>Returns the title of the button at the specified index.</summary>
+        <returns>The title of the button specified by <em>index</em>.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -400,9 +401,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The index number of the cancel button.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks><para>utton indices start at 0. The default value of this property is normally -1, which indicates that no cancel button has been set. However, a cancel button may be created and set automatically by the <tt>initWithTitle:delegate:cancelButtonTitle:destructiveButtonTitle:otherButtonTitles:</tt> method. If you use that method to create a cancel button, you should not change the value of this property.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="Canceled">
@@ -490,9 +491,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The index number of the destructive button.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>Button indices start at 0. The default value of this property is normally -1, which indicates that no destructive button has been set. However, a destructive button may be created and set automatically by the initWithTitle:delegate:cancelButtonTitle:destructiveButtonTitle:otherButtonTitles: method. If you use that method to create a destructive button, you should not change the value of this property.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Dismissed">
@@ -530,10 +531,12 @@ mySliders.TintColor = UIColor.Red;
         <Parameter Name="animated" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="buttonIndex">To be added.</param>
-        <param name="animated">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="buttonIndex">The index of the button that was clicked. Button indices start at 0.</param>
+        <param name="animated">Specify <tt>true</tt> to animate the dismissal of the action sheet or <tt>false</tt> to remove the action sheet without an animation.</param>
+        <summary>Dismisses the action sheet immediately using an optional animation.</summary>
+        <remarks><para>You can use this method to dismiss the action sheet programmatically as needed. The action sheet also calls this method itself in response to the user tapping one of the buttons in the action sheet.</para>
+        <para>In iOS 4.0, you may want to call this method whenever your application moves to the background. An action sheet is not dismissed automatically when an application moves to the background. This behavior differs from previous versions of the operating system, where they were canceled automatically when the application was terminated. Dismissing the action sheet gives your application a chance to save changes or abort the operation and perform any necessary cleanup in case your application is terminated later.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Dispose">
@@ -578,9 +581,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The index of the first custom button. (read-only)</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>Button indices start at 0. The default value of this property is -1, which indicates that there are no other custom buttons.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetEnumerator">
@@ -636,10 +639,10 @@ mySliders.TintColor = UIColor.Red;
         <Parameter Name="animated" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="item">To be added.</param>
-        <param name="animated">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="item">The bar button item from which the action sheet originates.</param>
+        <param name="animated">Specify <tt>true</tt> to animate the presentation of the action sheet or <tt>false</tt> to present it immediately without any animation effects.</param>
+        <summary>Displays an action sheet that originates from the specified bar button item.</summary>
+        <remarks>On iPad, this method presents the action sheet in a popover and adds the toolbar that owns the button to the popover’s list of passthrough views. Thus, taps in the toolbar result in the action methods of the corresponding toolbar items being called. If you want the popover to be dismissed when a different toolbar item is tapped, you must implement that behavior in your action handler methods.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ShowFrom">
@@ -663,11 +666,11 @@ mySliders.TintColor = UIColor.Red;
         <Parameter Name="animated" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="rect">To be added.</param>
-        <param name="inView">To be added.</param>
-        <param name="animated">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="rect">The portion of <em>inView</em> from which to originate the action sheet.</param>
+        <param name="inView">The view from which to originate the action sheet.</param>
+        <param name="animated">Specify <tt>true</tt> to animate the presentation of the action sheet or <tt>false</tt> to present it immediately without any animation effects.</param>
+        <summary>Displays an action sheet that originates from the specified view.</summary>
+        <remarks>On iPad, this method displays the action sheet in a popover whose arrow points to the specified rectangle of the view. The popover does not overlap the specified rectangle.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ShowFromTabBar">
@@ -689,9 +692,11 @@ mySliders.TintColor = UIColor.Red;
         <Parameter Name="view" Type="MonoTouch.UIKit.UITabBar" />
       </Parameters>
       <Docs>
-        <param name="view">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="view">The tab bar from which the action sheet originates.</param>
+        <summary>Displays an action sheet that originates from the specified tab bar.</summary>
+        <remarks><para>The appearance of the action sheet is animated.</para>
+        <para>On iPad, this method centers the action sheet in the middle of the screen. Generally, if you want to present an action sheet relative to a tab bar in an iPad application, you should use the <tt>showFromRect:inView:animated:</tt> method instead.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ShowFromToolbar">
@@ -713,9 +718,11 @@ mySliders.TintColor = UIColor.Red;
         <Parameter Name="view" Type="MonoTouch.UIKit.UIToolbar" />
       </Parameters>
       <Docs>
-        <param name="view">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="view">he toolbar from which the action sheet originates.</param>
+        <summary>Displays an action sheet that originates from the specified toolbar.</summary>
+        <remarks><para>The appearance of the action sheet is animated.</para>
+        <para>On iPad, this method centers the action sheet in the middle of the screen. Generally, if you want to present an action sheet relative to a toolbar in an iPad application, you should use the <tt>showFromBarButtonItem:animated:</tt> method instead.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ShowInView">
@@ -737,9 +744,11 @@ mySliders.TintColor = UIColor.Red;
         <Parameter Name="view" Type="MonoTouch.UIKit.UIView" />
       </Parameters>
       <Docs>
-        <param name="view">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="view">The view from which the action sheet originates.</param>
+        <summary>Displays an action sheet that originates from the specified view.</summary>
+        <remarks><para>The appearance of the action sheet is animated.</para>
+        <para>On iPad, this method centers the action sheet in the middle of the screen. Generally, if you want to present an action sheet in an iPad application, you should use the <tt>showFromRect:inView:animated:</tt> method to display the action sheet instead.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Style">
@@ -761,7 +770,7 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>MonoTouch.UIKit.UIActionSheetStyle</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>This property determines how the action sheet looks when it is presented. For a list of possible values, see the <see cref="F:MonoTouch.UIKit.UIActionSheetStyle" /> constants.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -785,7 +794,7 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The string that appears in the receiver’s title bar.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -806,7 +815,7 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>A Boolean value that indicates whether the receiver is displayed. (read-only)</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
