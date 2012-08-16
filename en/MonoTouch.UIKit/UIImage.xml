@@ -16,7 +16,35 @@
   </Attributes>
   <Docs>
     <summary>Image representation in UIKit, with support for loading, saving and manipulating images.</summary>
-    <remarks>To be added.</remarks>
+    <remarks><para>Image objects do not provide direct access to the underlying image - they are immutable. The methods <see cref="M:MonoTouch.UIKit.UIImage.AsJPEG()"/> or <see cref="M:MonoTouch.UIKit.UIImage.AsPNG()" /> will provide the underlying image data as a JPEG or PNG.</para>
+    <para>To availe issues with exccessive memory use, UIImages objects should not be larger than 1024x1024 in size. Code based manipulations such as resizing are not subject to this restriction.</para>
+    <para>It is possible that the system may purge UIImage objects to free up memory. If the UIImage is required later on by an application, it will be loaded again from it's source file.</para>
+    <para>The following image formats are supported by the UIImage class:
+      <list type="bullet">
+        <item>
+          <term>.tiff</term>
+        </item>
+        <item>
+          <term>.jpg, .jpeg</term>
+        </item>
+        <item>
+          <term>.gif</term>
+        </item>
+        <item>
+          <term>.bmp</term>
+        </item>
+        <item>
+          <term>.ico</term>
+        </item>
+        <item>
+          <term>.cur</term>
+        </item>
+        <item>
+          <term>.xbm</term>
+        </item>
+      </list>
+    </para>
+    </remarks>
     <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=064a9ab4-1e58-4cf6-a1c2-aab04997aa57">Example_Drawing</related>
     <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=23a2571b-45eb-4889-bb67-d88937cb68c1">monocatalog</related>
     <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=6b7f700b-aad2-4d67-a437-3a3482728a1b">Example_Touch</related>
@@ -62,9 +90,9 @@
         <Parameter Name="cgImage" Type="MonoTouch.CoreGraphics.CGImage" />
       </Parameters>
       <Docs>
-        <param name="cgImage">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="cgImage">A <see cref="MonoTouch.CoreGraphics.CGIImage"/> object.</param>
+        <summary></summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -83,9 +111,9 @@
         <Parameter Name="ciImage" Type="MonoTouch.CoreImage.CIImage" />
       </Parameters>
       <Docs>
-        <param name="ciImage">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="ciImage">A <see cref="MonoTouch.CoreImage.CIImage"/> object.</param>
+        <summary></summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -128,9 +156,9 @@
         <Parameter Name="data" Type="MonoTouch.Foundation.NSData" />
       </Parameters>
       <Docs>
-        <param name="data">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="data">The <see cref="MonoTouch.Foundation.NSData"/> object containing the image data.</param>
+        <summary></summary>
+        <remarks>The <see cref="MonoTouch.Foundation.NSData"/> object must match one of the supported image types.</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -241,9 +269,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="filename" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="filename">To be added.</param>
+        <param name="filename">The path to a supported image file.</param>
         <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <remarks>The image will not be cached.</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -287,11 +315,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="orientation" Type="MonoTouch.UIKit.UIImageOrientation" />
       </Parameters>
       <Docs>
-        <param name="cgImage">To be added.</param>
-        <param name="scale">To be added.</param>
-        <param name="orientation">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="cgImage">The <see cref="T:MonoTouch.CoreGraphics.CGImage "/> to initialize from.</param>
+        <param name="scale">The scale factor for the image. A factor of 1.0 is the original size of the image.</param>
+        <param name="orientation">The rotation that is to be applied to the image</param>
+        <summary></summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="AsJPEG">
@@ -367,9 +395,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.UIKit.UIEdgeInsets</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>The portions of a image that are not resized when the image is stretched. Read-only.</summary>
+        <value></value>
+        <remarks>This is the size of all four end caps. When specified, the stretchable area is all pixels of the image that are not included by the end caps.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CGImage">
@@ -388,9 +416,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.CoreGraphics.CGImage</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>The underlying image data. Read-only.</summary>
+        <value></value>
+        <remarks>This property may be <see langword="null"/> if the UIImage object was initialized with a <see cref="T:MonoTouch.CoreImage.CIImage"/> object. If the underlying image data was purged, then accessing this property will force the underlying image to be reloaded from the source.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CIImage">
@@ -409,9 +437,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.CoreImage.CIImage</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>The underlying <see cref="T:MonoTouch.CoreImage.CIImage"/> data. Read-only.</summary>
+        <value></value>
+        <remarks>This propery may be <see langword="null"/> if the UIImage object was initialized with a <see cref="T:MonoTouch.CoreGraphics.CGImage"/> object.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ClassHandle">
@@ -450,11 +478,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="duration" Type="System.Double" />
       </Parameters>
       <Docs>
-        <param name="images">To be added.</param>
-        <param name="duration">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="images">A collection of <see cref="T:MonoTouch.UIKitUIImages"/> to make up the animation.</param>
+        <param name="duration">The dureation of the animation in seconds.</param>
+        <summary>This method will create a animated image from a collection of images.</summary>
+        <returns></returns>
+        <remarks>The source images should all be the same size and scale.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CreateAnimatedImage">
@@ -477,11 +505,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="duration" Type="System.Double" />
       </Parameters>
       <Docs>
-        <param name="name">To be added.</param>
-        <param name="duration">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="name">The path and filename of images to load, without the suffix (i.e. .JPG)</param>
+        <param name="duration">How long the animation will last.</param>
+        <summary>Creates an animated image from a series of files.</summary>
+        <returns>A single animated image.</returns>
+        <remarks>All images that are to be loaded should be of the same size and scale. This method will load files by appending an integer (in the range of 0-1024) to the end of file and loading that file.  For example, if <paramref name="name"/> was 'my_image', this method will create an animation of all files from 'my_image0' to 'my_image1024' inclusive.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CreateAnimatedImage">
@@ -505,12 +533,12 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="duration" Type="System.Double" />
       </Parameters>
       <Docs>
-        <param name="images">To be added.</param>
+        <param name="images">The path and filename of images to load, without the suffix (i.e. .JPG)</param>
         <param name="capInsets">To be added.</param>
-        <param name="duration">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="duration">How long the animation will last.</param>
+        <summary>Creates an animated image from a series of files with the end caps applied.</summary>
+        <returns>A single animated image.</returns>
+        <remarks>All images that are to be loaded should be of the same size and scale. This method will load files by appending an integer (in the range of 0-1024) to the end of file and loading that file.  For example, if <paramref name="name"/> was 'my_image', this method will create an animation of all files from 'my_image0' to 'my_image1024' inclusive.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CreateResizableImage">
@@ -532,10 +560,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="capInsets" Type="MonoTouch.UIKit.UIEdgeInsets" />
       </Parameters>
       <Docs>
-        <param name="capInsets">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="capInsets">The cap insets to apply to the image.</param>
+        <summary>Creates a new image from the current instance and applies the specified cap insets.</summary>
+        <returns>A new image object with the specified cap insets</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="CurrentScale">
@@ -628,9 +656,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="rect" Type="System.Drawing.RectangleF" />
       </Parameters>
       <Docs>
-        <param name="rect">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="rect">The rectangle in which to draw the image.</param>
+        <summary>This method will draw the image (scaling as necessary) in the rectangle specified.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Draw">
@@ -654,11 +682,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="alpha" Type="System.Single" />
       </Parameters>
       <Docs>
-        <param name="point">To be added.</param>
-        <param name="blendMode">To be added.</param>
-        <param name="alpha">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="point">The point for the top-left corner of the image.</param>
+        <param name="blendMode">The blend mode to use.</param>
+        <param name="alpha">The opacity of the image as it is drawn.</param>
+        <summary>This method will draw an image starting at the specified point.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Draw">
@@ -682,11 +710,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="alpha" Type="System.Single" />
       </Parameters>
       <Docs>
-        <param name="rect">To be added.</param>
-        <param name="blendMode">To be added.</param>
-        <param name="alpha">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="rect">The rectangle in which to draw the image (using the coordinate system of the graphics context).</param>
+        <param name="blendMode">The blend mode to use.</param>
+        <param name="alpha">he opacity of the image as it is drawn</param>
+        <summary>This method will draw an image in the specified rectangle.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="DrawAsPatternInRect">
@@ -708,9 +736,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="rect" Type="System.Drawing.RectangleF" />
       </Parameters>
       <Docs>
-        <param name="rect">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="rect">The rectangle in which to draw the image (using the coordinate system of the graphics context).</param>
+        <summary>This method will draw an image in the specified rectangle.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Duration">
@@ -729,9 +757,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Double</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>The time interval to display the animated image. Read-only.</summary>
+        <value></value>
+        <remarks>The value is 0.0 for non-animated images.</remarks>
       </Docs>
     </Member>
     <Member MemberName="FromBundle">
@@ -779,10 +807,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="filename" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="filename">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="filename">Contains the path of the image file to load.</param>
+        <summary>Create an image object from the specified file.</summary>
+        <returns>A <see cref="T:MonoTouch.UIKit.UIImage"/> object, or <see langword="null"/> if the file could not be found or the image cannot be created.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="FromFileUncached">
@@ -830,10 +858,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="image" Type="MonoTouch.CoreGraphics.CGImage" />
       </Parameters>
       <Docs>
-        <param name="image">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="image">Contains the Quartz image to use.</param>
+        <summary>Creates a new image oject from a Quartz image.</summary>
+        <returns>A new image object, or <see langword="null"/> if the image cannot be created.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="FromResource">
@@ -874,9 +902,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.UIKit.UIImage[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>An array of <see cref="M:MonoTouch.UIKit.UIImage"/> objects that make up an animated iamge.</summary>
+        <value></value>
+        <remarks>Will be <see langword="null"/> for a non-animated image.</remarks>
       </Docs>
     </Member>
     <Member MemberName="LeftCapWidth">
@@ -919,10 +947,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="data" Type="MonoTouch.Foundation.NSData" />
       </Parameters>
       <Docs>
-        <param name="data">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="data">The image data to create the image from.</param>
+        <summary>Will create an image from data that originated from a file or was programmatically created.</summary>
+        <returns>A new image object, or <see langword="null"/> if the image could not be created.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Orientation">
@@ -941,9 +969,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.UIKit.UIImageOrientation</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>The orienation of the image. Read-only.</summary>
+        <value></value>
+        <remarks>The default value is the "up" orientation. If the underlying image has metadata that contains orientation information, then this property will reflect the value of that metadata.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SaveToPhotosAlbum">
@@ -1005,9 +1033,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Drawing.SizeF</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>The dimensions of the image. Read-only.</summary>
+        <value></value>
+        <remarks>In iOS 4.0 and higher, this value is in points.  In iOS 3.0 and lower, this value is in pixels.</remarks>
       </Docs>
     </Member>
     <Member MemberName="StretchableImage">
