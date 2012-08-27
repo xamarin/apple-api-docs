@@ -15,8 +15,151 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>To be added.</summary>
-    <remarks>To be added.</remarks>
+    <summary>Strings that can be annotated with a set of attributes.</summary>
+    <remarks>
+      <para>
+	The NSAttributedString type represents a string that has a
+	series of attributes applied uniformly.  
+      </para>
+
+      <para>
+	<img href="NSAttributedString.png"/>
+      </para>
+
+      <para> The companion <see
+	cref="T:MonoTouch.Foundation.NSMutableAttributedString"/> type
+	can be used to create attributed strings that have overlapping
+	attributes and whose contents can be modified after creation.
+      </para>
+
+      <para> 
+	These types typically are used to attach information to
+	elements of the string that dictate the font and colors to use
+	as well as rendering attributes like kerning or how to render
+	ligatures on a specific run of code.
+      </para>
+
+      <para> These classes do not dictate the meaning or behavior of
+	the attributes on a string, they merely keep track of the
+	attributes.  The actual meaning of these attributes is
+	interpreted by the consumer of these objects.   
+      </para>
+
+      <para> 
+	NSAttributedStrings are created with a string and a set
+	of attributes.  The default constructor takes a string and an
+	NSDictionary object where the keys represent the attributes
+	and the values on each element represent the value of that
+	attribute. 
+      </para>
+
+      <para>To simplify many common scenarios, MonoTouch
+	provides constructors with strong-types to easily create
+	attributed strings for use with CoreText or UIKit.   These
+	constructors provide type-safety and eliminate programming
+	errors caused by accidentally creating attributes that are not
+	recognized by a backend. 
+      </para>
+
+      <para>
+	To create NSAttributedStrings that you can use with CoreText's
+	rendering, you create an instance of the <see
+	cref="T:MonoTouch.CoreText.CTStringAttributes"/> class, set its
+	properties to the attributes that you desire, and then invoke
+	the NSAttributedString constructor with it.   
+      </para>
+
+      <para>
+	To create NSAttributedStrings that you can use with UIKit's
+	rendering, you create an instance of the <see
+	cref="T:MonoTouch.UIKit.UIStringAttributes"/> class, set its
+	properties to the attributes that you desire, and then invoke
+	the NSAttributedString constructor with it.   
+      </para>
+
+      <para>
+	The examples below show how to use the C# object initializer
+	syntax to initialize the CTStringAttributes and the
+	UIStringAttributes to setup your attributes.   You can later
+	use these attributes multiple times with different attributed
+	strings: 
+      </para>
+
+      <example>
+	<code lang="c#">
+// 
+// Using NSAttributedString with CoreText
+//
+var attributedString = new NSAttributedString ("Hello, world",
+       new CTStringAttributes () {
+              ForegroundColorFromContext =  true,
+              Font = new CTFont ("Arial", 24)
+       });
+
+// Pass the NSAttributedString to a CTLine and draw the CTLine.
+using (var textLine = new CTLine (attributedString)) {
+       textLine.Draw (gctx);
+}
+
+// 
+// Using NSAttributedString with UIKit
+//
+var myText = new NSAttributedString ("Hello, world",
+       new UIStringAttributes () {
+              ForegroundColor =  UIColor.Red,
+	      Kerning = 3
+       });
+label.AttributedText = myText;
+	</code>
+      </example>
+      <para>
+	While both <see
+	cref="T:MonoTouch.CoreText.CTStringAttributes"/> and <see
+	cref="T:MonoTouch.UIKit.UIStringAttributes"/> are useful to
+	create attributes that can later be used with attributed
+	strings, it is also possible to use the <see cref="C:MonoTouch.Foundation.NSAttributedString(string str, MonoTouch.UIKit.UIFont font, MonoTouch.UIKit.UIColor foregroundColor, MonoTouch.UIKit.UIColor backgroundColor, MonoTouch.UIKit.UIColor strokeColor, MonoTouch.UIKit.NSParagraphStyle paragraphStyle, MonoTouch.Foundation.NSLigatureType ligatures, float kerning, MonoTouch.Foundation.NSUnderlineStyle underlineStyle, MonoTouch.UIKit.NSShadow shadow, float strokeWidth, MonoTouch.Foundation.NSUnderlineStyle strikethroughStyle"/> constructor
+	with C# named parameters for quickly creating attributed
+	strings inline.
+      </para>
+
+      <example>
+	<code lang="c#">
+//
+// This example shows how to create an NSAttributedString for
+// use with UIKit without creating the attributes separately
+//
+var text = new NSAttributedString (
+    "Hello, World",
+    font: UIFont.FromName ("HoeflerText-Regular", 24.0f),
+    foregroundColor: UIColor.Red,
+    strokeWidth: 4
+);
+	</code>
+      </example>
+
+      <para>
+	It is also possible to create NSAttributedStrings with the
+	NSDictionary API, although that does not offer any type safety
+	nor prevents common errors.   To use it, you typically use
+	the various NSString properties that end in "AttributedName"
+	that are part of this class.
+      </para>
+      <example>
+	<code lang="c#">
+//
+// This example shows how to create an NSAttributedString for
+// use with UIKit using NSDictionaries
+//
+var dict = new NSMutableDictionary () {
+    { NSAttributedString.FontAttributeName, UIFont.FromName ("HoeflerText-Regular", 24.0f), },
+    { NSAttributedString.ForegroundColorAttributeName, UIColor.Black }
+};
+
+var text = new NSAttributedString (
+	"Hello, World", dict);
+	</code>
+      </example>
+    </remarks>
     <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=cb71419a-f5de-4239-aa70-260ce1813e55">SimpleTextInput</related>
   </Docs>
   <Members>
@@ -191,10 +334,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="attributes" Type="MonoTouch.CoreText.CTStringAttributes" />
       </Parameters>
       <Docs>
-        <param name="str">To be added.</param>
-        <param name="attributes">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="str">String.</param>
+        <param name="attributes">CoreText string attributes.</param>
+        <summary>Creates an NSAttributedString for use with CoreText rendering functions.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -214,10 +357,121 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="attributes" Type="MonoTouch.Foundation.NSDictionary" />
       </Parameters>
       <Docs>
-        <param name="str">To be added.</param>
-        <param name="attributes">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="str">Strings</param>
+        <param name="attributes">Dictionary containing the attributes
+	(keys) and their values attached to the strings.</param>
+        <summary>Creates an NSAttributedString with user defined
+	attributes specified in a dictionary.</summary>
+        <remarks>
+      <example>
+	<code lang="c#">
+//
+// This example shows how to create an NSAttributedString for
+// use with UIKit using NSDictionaries
+//
+var dict = new NSMutableDictionary () {
+    { NSAttributedString.FontAttributeName, UIFont.FromName ("HoeflerText-Regular", 24.0f), },
+    { NSAttributedString.ForegroundColorAttributeName, UIColor.Black }
+};
+
+var text = new NSAttributedString (
+	"Hello, World", dict);
+	</code>
+      </example>
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public NSAttributedString (string str, MonoTouch.UIKit.UIFont font, MonoTouch.UIKit.UIColor foregroundColor, MonoTouch.UIKit.UIColor backgroundColor, MonoTouch.UIKit.UIColor strokeColor, MonoTouch.UIKit.NSParagraphStyle paragraphStyle, MonoTouch.Foundation.NSLigatureType ligatures, float kerning, MonoTouch.Foundation.NSUnderlineStyle underlineStyle, MonoTouch.UIKit.NSShadow shadow, float strokeWidth, MonoTouch.Foundation.NSUnderlineStyle strikethroughStyle);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string str, class MonoTouch.UIKit.UIFont font, class MonoTouch.UIKit.UIColor foregroundColor, class MonoTouch.UIKit.UIColor backgroundColor, class MonoTouch.UIKit.UIColor strokeColor, class MonoTouch.UIKit.NSParagraphStyle paragraphStyle, valuetype MonoTouch.Foundation.NSLigatureType ligatures, float32 kerning, valuetype MonoTouch.Foundation.NSUnderlineStyle underlineStyle, class MonoTouch.UIKit.NSShadow shadow, float32 strokeWidth, valuetype MonoTouch.Foundation.NSUnderlineStyle strikethroughStyle) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="str" Type="System.String" />
+        <Parameter Name="font" Type="MonoTouch.UIKit.UIFont" />
+        <Parameter Name="foregroundColor" Type="MonoTouch.UIKit.UIColor" />
+        <Parameter Name="backgroundColor" Type="MonoTouch.UIKit.UIColor" />
+        <Parameter Name="strokeColor" Type="MonoTouch.UIKit.UIColor" />
+        <Parameter Name="paragraphStyle" Type="MonoTouch.UIKit.NSParagraphStyle" />
+        <Parameter Name="ligatures" Type="MonoTouch.Foundation.NSLigatureType" />
+        <Parameter Name="kerning" Type="System.Single" />
+        <Parameter Name="underlineStyle" Type="MonoTouch.Foundation.NSUnderlineStyle" />
+        <Parameter Name="shadow" Type="MonoTouch.UIKit.NSShadow" />
+        <Parameter Name="strokeWidth" Type="System.Single" />
+        <Parameter Name="strikethroughStyle" Type="MonoTouch.Foundation.NSUnderlineStyle" />
+      </Parameters>
+      <Docs>
+        <param name="str">String to create.</param>
+        <param name="font">Desired font (or null, if none is desired).</param>
+        <param name="foregroundColor">Desired foreground color (or null if none is desired).</param>
+        <param name="backgroundColor">Desired background color (or null if none is desired)..</param>
+        <param name="strokeColor">Desired stroke color (or null if none is desired).</param>
+        <param name="paragraphStyle">To be added.</param>
+        <param name="ligatures">To be added.</param>
+        <param name="kerning">To be added.</param>
+        <param name="underlineStyle">To be added.</param>
+        <param name="shadow">Desired shadow.</param>
+        <param name="strokeWidth">Desired stroked width..</param>
+        <param name="strikethroughStyle">To be added.</param>
+        <summary>Creates a UIKit attributed string with the specified attributes in the parameters.</summary>
+        <remarks>
+	  <para>
+	    This is the recommended constructor for NSAttributedString
+	    objects that are intended to be unique.   
+	  </para>
+	  <para>
+	    The advantage of this constructor is that other than the
+	    string, every parameter is optional.   It provides a
+	    convenient way of creating the objects
+	  </para>
+
+      <example>
+	<code lang="c#">
+//
+// This example shows how to create an NSAttributedString for
+// use with UIKit without creating the attributes separately
+//
+var text = new NSAttributedString (
+    "Hello, World",
+    font: UIFont.FromName ("HoeflerText-Regular", 24.0f),
+    foregroundColor: UIColor.Red,
+    strokeWidth: 4
+);
+	</code>
+      </example>
+
+
+	  <para>
+	    For cases where the same attributes will be reused across
+	    multiple attributed strings, it is best to create the
+	    attributes using the UIStringAttributes class as that will
+	    share the same dictionary across multiple uses while this
+	    constructor creates a dictionary on demand for the
+	    specified attributes in the constructor.
+	  </para>
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BackgroundColorAttributeName">
+      <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSString BackgroundColorAttributeName { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class MonoTouch.Foundation.NSString BackgroundColorAttributeName" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Key to use for UIKit-based attributed strings for the
+	BackgroundColor.</summary>
+        <value>Must be a UIColor.</value>
+        <remarks>This is a constant that can be used as a key in an
+	NSDictionary that is passed to the basic NSAttributedString
+	constructor.   MonoTouch users can use the strongly typed
+	variations instead.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ClassHandle">
@@ -234,6 +488,82 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <summary>The handle for this class.</summary>
         <value>The pointer to the Objective-C class.</value>
         <remarks>Each MonoTouch class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DrawString">
+      <MemberSignature Language="C#" Value="public virtual void DrawString (System.Drawing.PointF point);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void DrawString(valuetype System.Drawing.PointF point) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("drawAtPoint:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="point" Type="System.Drawing.PointF" />
+      </Parameters>
+      <Docs>
+        <param name="point">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DrawString">
+      <MemberSignature Language="C#" Value="public virtual void DrawString (System.Drawing.RectangleF rect);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void DrawString(valuetype System.Drawing.RectangleF rect) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("drawAtPoint:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rect" Type="System.Drawing.RectangleF" />
+      </Parameters>
+      <Docs>
+        <param name="rect">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DrawString">
+      <MemberSignature Language="C#" Value="public virtual void DrawString (System.Drawing.RectangleF rect, MonoTouch.Foundation.NSStringDrawingOptions options, MonoTouch.Foundation.NSStringDrawingContext context);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void DrawString(valuetype System.Drawing.RectangleF rect, valuetype MonoTouch.Foundation.NSStringDrawingOptions options, class MonoTouch.Foundation.NSStringDrawingContext context) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("drawWithRect:options:context:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rect" Type="System.Drawing.RectangleF" />
+        <Parameter Name="options" Type="MonoTouch.Foundation.NSStringDrawingOptions" />
+        <Parameter Name="context" Type="MonoTouch.Foundation.NSStringDrawingContext" />
+      </Parameters>
+      <Docs>
+        <param name="rect">To be added.</param>
+        <param name="options">To be added.</param>
+        <param name="context">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="EnumerateAttribute">
@@ -292,6 +622,47 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="callback">To be added.</param>
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FontAttributeName">
+      <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSString FontAttributeName { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class MonoTouch.Foundation.NSString FontAttributeName" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Key to use for UIKit-based attributed strings for
+	specifying the
+	Font.</summary>
+        <value>Must be a UIFont.</value>
+        <remarks>This is a constant that can be used as a key in an
+	NSDictionary that is passed to the basic NSAttributedString
+	constructor.   MonoTouch users can use the strongly typed
+	variations instead.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ForegroundColorAttributeName">
+      <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSString ForegroundColorAttributeName { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class MonoTouch.Foundation.NSString ForegroundColorAttributeName" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Key to use for UIKit-based attributed strings for the
+	ForegroundColor.</summary>
+        <value>Must be a UIColor.</value>
+        <remarks>This is a constant that can be used as a key in an
+	NSDictionary that is passed to the basic NSAttributedString
+	constructor.   MonoTouch users can use the strongly typed
+	variations instead.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetAttribute">
@@ -410,6 +781,35 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="GetBoundingRect">
+      <MemberSignature Language="C#" Value="public virtual System.Drawing.RectangleF GetBoundingRect (System.Drawing.SizeF size, MonoTouch.Foundation.NSStringDrawingOptions options, MonoTouch.Foundation.NSStringDrawingContext context);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance valuetype System.Drawing.RectangleF GetBoundingRect(valuetype System.Drawing.SizeF size, valuetype MonoTouch.Foundation.NSStringDrawingOptions options, class MonoTouch.Foundation.NSStringDrawingContext context) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("boundingRectWithSize:options:context:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Drawing.RectangleF</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="size" Type="System.Drawing.SizeF" />
+        <Parameter Name="options" Type="MonoTouch.Foundation.NSStringDrawingOptions" />
+        <Parameter Name="context" Type="MonoTouch.Foundation.NSStringDrawingContext" />
+      </Parameters>
+      <Docs>
+        <param name="size">To be added.</param>
+        <param name="options">To be added.</param>
+        <param name="context">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="IsEqual">
       <MemberSignature Language="C#" Value="public virtual bool IsEqual (MonoTouch.Foundation.NSAttributedString other);" />
       <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool IsEqual(class MonoTouch.Foundation.NSAttributedString other) cil managed" />
@@ -435,6 +835,26 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="KernAttributeName">
+      <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSString KernAttributeName { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class MonoTouch.Foundation.NSString KernAttributeName" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Key to use for UIKit-based attributed strings for the
+	font kerning.</summary>
+        <value>Must be an NSNumber float value.</value>
+        <remarks>This is a constant that can be used as a key in an
+	NSDictionary that is passed to the basic NSAttributedString
+	constructor.   MonoTouch users can use the strongly typed
+	variations instead.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="Length">
       <MemberSignature Language="C#" Value="public virtual int Length { get; }" />
       <MemberSignature Language="ILAsm" Value=".property instance int32 Length" />
@@ -454,6 +874,147 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <summary>To be added.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LigatureAttributeName">
+      <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSString LigatureAttributeName { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class MonoTouch.Foundation.NSString LigatureAttributeName" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Key to use for UIKit-based attributed strings to
+	specify the ligature.</summary>
+        <value>Must be an NSNumber.</value>
+        <remarks>This is a constant that can be used as a key in an
+	NSDictionary that is passed to the basic NSAttributedString
+	constructor.   MonoTouch users can use the strongly typed
+	variations instead.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ParagraphStyleAttributeName">
+      <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSString ParagraphStyleAttributeName { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class MonoTouch.Foundation.NSString ParagraphStyleAttributeName" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Key to use for UIKit-based attributed strings to
+	specify the paragraph style.</summary>
+        <value>Must be an NSNumber.</value>
+        <remarks>This is a constant that can be used as a key in an
+	NSDictionary that is passed to the basic NSAttributedString
+	constructor.   MonoTouch users can use the strongly typed
+	variations instead.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ShadowAttributeName">
+      <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSString ShadowAttributeName { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class MonoTouch.Foundation.NSString ShadowAttributeName" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Key to use for UIKit-based attributed strings to
+	specify a shadow.</summary>
+        <value>Must be an NSShadow.</value>
+        <remarks>This is a constant that can be used as a key in an
+	NSDictionary that is passed to the basic NSAttributedString
+	constructor.   MonoTouch users can use the strongly typed
+	variations instead.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Size">
+      <MemberSignature Language="C#" Value="public virtual System.Drawing.SizeF Size { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Drawing.SizeF Size" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: MonoTouch.Foundation.Export("size")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Drawing.SizeF</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="StrikethroughStyleAttributeName">
+      <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSString StrikethroughStyleAttributeName { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class MonoTouch.Foundation.NSString StrikethroughStyleAttributeName" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Key to use for UIKit-based attributed strings to
+	specify the strikethrough style.</summary>
+        <value>Must be an NSNumber.</value>
+        <remarks>This is a constant that can be used as a key in an
+	NSDictionary that is passed to the basic NSAttributedString
+	constructor.   MonoTouch users can use the strongly typed
+	variations instead.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="StrokeColorAttributeName">
+      <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSString StrokeColorAttributeName { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class MonoTouch.Foundation.NSString StrokeColorAttributeName" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Key to use for UIKit-based attributed strings to
+	specify the stroke color.</summary>
+        <value>Must be a UIColor</value>
+        <remarks>This is a constant that can be used as a key in an
+	NSDictionary that is passed to the basic NSAttributedString
+	constructor.   MonoTouch users can use the strongly typed
+	variations instead.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="StrokeWidthAttributeName">
+      <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSString StrokeWidthAttributeName { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class MonoTouch.Foundation.NSString StrokeWidthAttributeName" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Key to use for UIKit-based attributed strings to
+	specify the stroke width.</summary>
+        <value>Must be an NSNumber.</value>
+        <remarks>This is a constant that can be used as a key in an
+	NSDictionary that is passed to the basic NSAttributedString
+	constructor.   MonoTouch users can use the strongly typed
+	variations instead.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Substring">
@@ -478,6 +1039,26 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="UnderlineStyleAttributeName">
+      <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSString UnderlineStyleAttributeName { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class MonoTouch.Foundation.NSString UnderlineStyleAttributeName" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Key to use for UIKit-based attributed strings to
+	specify the underline style.</summary>
+        <value>Must be an NSNumber.</value>
+        <remarks>This is a constant that can be used as a key in an
+	NSDictionary that is passed to the basic NSAttributedString
+	constructor.   MonoTouch users can use the strongly typed
+	variations instead.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="Value">
       <MemberSignature Language="C#" Value="public virtual string Value { get; }" />
       <MemberSignature Language="ILAsm" Value=".property instance string Value" />
@@ -497,6 +1078,25 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <summary>To be added.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="VerticalGlyphFormAttributeName">
+      <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSString VerticalGlyphFormAttributeName { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class MonoTouch.Foundation.NSString VerticalGlyphFormAttributeName" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Key to use for UIKit-based attributed strings to
+	specify whether this is a vertical or horizontal font.</summary>
+        <value>Must be an NSNumber</value>
+        <remarks>This is a constant that can be used as a key in an
+	NSDictionary that is passed to the basic NSAttributedString
+	constructor.   MonoTouch users should</remarks>
       </Docs>
     </Member>
   </Members>
