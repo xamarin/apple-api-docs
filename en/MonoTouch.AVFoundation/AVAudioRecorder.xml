@@ -16,7 +16,28 @@
   </Attributes>
   <Docs>
     <summary>Audio recording class.</summary>
-    <remarks>To be added.</remarks>
+    <remarks>
+      <para>
+	To create instances of this class use the factory method <see cref="M:MonoTouch.AVFoundation.AVRecorder.ToUrl(MonoTouch.Foundation.NSUrl, MonoTouch.AVFoundation.AVAudioRecorderSettings,MonoTouch.Foundation.NSError)" /> 
+      </para>
+      <example>
+	<code lang="C#">
+var settings = new AVAudioRecorderSettings () {
+	AudioFormat = AudioFormatType.LinearPCM,
+	AudioQuality = AVAudioQuality.High,
+	SampleRate = 44100f,
+	NumberChannels = 1
+};
+var recorder = AVAudioRecorder.ToUrl (url, settings, out error);
+if (recorder == null){
+    Console.WriteLine (error);
+    return;
+}
+recorder.PrepareToRecord ();            
+recorder.Record ();
+</code>
+</example>
+    </remarks>
     <related type="recipe" href="http://docs.xamarin.com/ios/Recipes/Media/Sound/Play_Sound">Play Sound</related>
     <related type="recipe" href="http://docs.xamarin.com/ios/Recipes/Media/Sound/Record_Sound">Record Sound</related>
   </Docs>
@@ -159,8 +180,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="url">To be added.</param>
         <param name="settings">To be added.</param>
         <param name="outError">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Use the factory AVAudioRecorder.ToUrl as this method had an invalid signature up to MonoTouch 1.4.4</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="AveragePower">
@@ -619,7 +640,7 @@ recorder.Record ();
         <summary>Creates an AVAudioRecoder that records into a specified file, using the specified settings.</summary>
         <returns>null on error (details will be on the NSError instance), not null for an initialized AVAudioRecorder instance.</returns>
         <remarks>
-          <para> We strongly advise you to use <see cref="M:MonoTouch.AVFoundation.AVRecorder.ToUrl(MonoTouch.Foundation.NSUrl,&#xA;     MonoTouch.AVFoundation.AVAudioRecorderSettings,&#xA;     MonoTouch.Foundation.NSError)" /> as uses strong types that
+          <para> We strongly advise you to use <see cref="M:MonoTouch.AVFoundation.AVRecorder.ToUrl(MonoTouch.Foundation.NSUrl, MonoTouch.AVFoundation.AVAudioRecorderSettings,MonoTouch.Foundation.NSError)" /> as uses strong types that
 	    are easier to work with.  </para>
           <example>
             <code lang="C#">
