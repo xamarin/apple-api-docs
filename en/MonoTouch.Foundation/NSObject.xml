@@ -313,6 +313,29 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 	    immediately to the caller.
 
 	  </para>
+
+	  <example>
+<code lang="c#">
+// Invoked in response to a button clicked on the UI.
+void StartDownload ()
+{
+	status.Text = "Downloading file...";
+	ThreadPool.QueueUserWorkItem (BackgroundDownload);
+}
+
+// This is the background helper
+BackgroundDownload ()
+{
+	var wc = new WebClient ();
+	wc.DownloadFile (myUrl, "/tmp/largeFile.txt");
+
+	// When the download is complete, notify the UI
+	BeginInvokeOnMainThread (delegate {
+		status.Text = "Download has been completed";
+	});
+}
+</code>
+	  </example>
         </remarks>
       </Docs>
     </Member>
