@@ -210,9 +210,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>Wraps the NSData into System.IO.Stream</summary>
+        <returns></returns>
+        <remarks>Call Dispose on the returned Stream to release the reference to this NSData.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Bytes">
@@ -231,9 +231,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.IntPtr</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Returns a pointer to the data held by this NSData.</summary>
+        <value></value>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="ClassHandle">
@@ -273,10 +273,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="searchRange" Type="MonoTouch.Foundation.NSRange" />
       </Parameters>
       <Docs>
-        <param name="dataToFind">To be added.</param>
-        <param name="searchOptions">To be added.</param>
-        <param name="searchRange">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="dataToFind">NSData to look for.</param>
+        <param name="searchOptions">Parameters to the search.</param>
+        <param name="searchRange">Range to search</param>
+        <summary>Looks for the dataToFind in this NSData, based on the specified searchOptions in the specified range.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -295,9 +295,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="buffer" Type="System.Byte[]" />
       </Parameters>
       <Docs>
-        <param name="buffer">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="buffer">C# Byte array containing the data to wrap.</param>
+        <summary>Creates an NSData that wraps a managed C# byte array.</summary>
+        <returns>Newly created NSData object wrapping the contents of the array.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -321,10 +321,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="size" Type="System.UInt32" />
       </Parameters>
       <Docs>
-        <param name="bytes">To be added.</param>
-        <param name="size">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="bytes">Pointer to a block of data in memory.</param>
+        <param name="size">The size of the block that you want to wrap</param>
+        <summary>Creates an NSData from an in-memory block by specifying its address and length.</summary>
+        <returns>Newly created NSData object wrapping the buffer.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -347,10 +347,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="path" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="path">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="path">Path to the filename to wrap as an NSData.</param>
+        <summary>Creates an NSData by loading the contents of the specified file into memory.</summary>
+        <returns>Newly created NSData object exposing the contents of the file, or null on error.</returns>
+        <remarks>This version of FromFile loads the contents of the file into memory on startup, use the <see cref="M:MonoTouch.Foundation.NSData.FromFile(string,MonoTouch.Foundation.NSDataReadingOptions,MonoTouch.Foundation.Error)"/> to use mmap.</remarks>
       </Docs>
     </Member>
     <Member MemberName="FromFile">
@@ -374,12 +374,31 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="error" Type="MonoTouch.Foundation.NSError&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="path">To be added.</param>
-        <param name="mask">To be added.</param>
-        <param name="error">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="path">Path to the filename to wrap as an NSData.</param>
+        <param name="mask">Options can be used to control the file loading, can be used to force the file to be mapped into the VM, instead of loaded by reading the contents.</param>
+        <param name="error">Returns the error on failure.</param>
+        <summary>Creates an NSData by loading the contents of the specified file into memory.</summary>
+        <returns>Newly created NSData object exposing the contents of the file, or null on error.</returns>
+        <remarks>
+	  <para>
+	    By default NSData will loads the contents of the file in memory
+	    by allocating a block of memory and then reading the contents of
+	    the file into it.
+	  </para>
+
+	  <para>
+
+	    The Mapped and MappedAlways parameter instruct NSData to use
+	    the kernel's interface to map the file into the process
+	    address space.  This has a few advantages: instead of
+	    allocating read/write memory for the process, that becomes
+	    real memory usage, the mapped versions map the file into
+	    memory which means that the data is loaded on demand instead
+	    of being loaded upfront.  This also allows the kernel to
+	    discard the data loaded from memory when the system is running
+	    low on memory. 
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="FromStream">
@@ -396,10 +415,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="stream" Type="System.IO.Stream" />
       </Parameters>
       <Docs>
-        <param name="stream">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="stream">System.IO.Stream to wrap as an NSData.</param>
+        <summary>Creates an NSData by loading the contents of the provided stream.</summary>
+        <returns>Newly created NSData, or null if it the stream does not support reading or the stream throws an exception.</returns>
+        <remarks>This method will load the contents of the stream starting at the current location in the stream.</remarks>
       </Docs>
     </Member>
     <Member MemberName="FromString">
@@ -416,10 +435,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="s" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="s">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="s">String to wrap.</param>
+        <summary>Creates an NSData for a C# string, the string is encoded in UTF8.</summary>
+        <returns>Newly creates NSData.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="FromString">
@@ -437,11 +456,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="encoding" Type="MonoTouch.Foundation.NSStringEncoding" />
       </Parameters>
       <Docs>
-        <param name="s">To be added.</param>
-        <param name="encoding">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="s">String to wrap.</param>
+        <param name="encoding">Encoding to use.</param>
+        <summary>Creates an NSData for a C# string, the string is encoded using the specified encoding.</summary>
+        <returns>Newly creates NSData.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="FromUrl">
@@ -463,10 +482,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="url" Type="MonoTouch.Foundation.NSUrl" />
       </Parameters>
       <Docs>
-        <param name="url">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="url">Url pointing to the resource to load into NSData.</param>
+        <summary>Cretes an NSData with the contents in the specified url.</summary>
+        <returns>Newly creates NSData, or null on error.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="FromUrl">
@@ -490,11 +509,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="error" Type="MonoTouch.Foundation.NSError&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="url">To be added.</param>
-        <param name="mask">To be added.</param>
-        <param name="error">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="url">Url pointing to the resource to load into NSData.</param>
+        <param name="mask">Options can be used to control the file loading, can be used to force the file to be mapped into the VM, instead of loaded by reading the contents.</param>
+        <param name="error">Returns the error on failure.</param>
+        <summary>Cretes an NSData with the contents in the specified url.</summary>
+        <returns>Newly creates NSData, or null on error.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -512,10 +531,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="idx" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="idx">To be added.</param>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <param name="idx">Index into the NSData.</param>
+        <summary>Retrieves the byte at the specified position in the NSData object.</summary>
+        <value>The value at that position, or an exception if you try to access data beyond its boundaries.</value>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Length">
@@ -534,8 +553,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>The size of the contents wrapped by this NSData.</summary>
+        <value></value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -553,10 +572,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="s" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="s">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="s">String to convert.</param>
+        <summary>Implicit conversion from string to an NSData encoded as UTF8.</summary>
+        <returns></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Save">
@@ -643,9 +662,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>Enumerator for the NSDatac contents.</summary>
+        <returns></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="System.Collections.IEnumerable.GetEnumerator">
@@ -660,9 +679,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>Enumerator for the NSDatac contents.</summary>
+        <returns></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="ToString">
@@ -698,7 +717,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="encoding" Type="MonoTouch.Foundation.NSStringEncoding" />
       </Parameters>
       <Docs>
-        <param name="encoding">To be added.</param>
+        <param name="encoding">The encoding to use to convert the contents.</param>
         <summary>Returns a string representation of the value of the current instance.</summary>
         <returns>
         </returns>
