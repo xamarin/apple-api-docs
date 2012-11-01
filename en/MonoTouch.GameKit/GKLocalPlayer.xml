@@ -15,8 +15,66 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>To be added.</summary>
-    <remarks>To be added.</remarks>
+    <summary>Represents the authenticated local player.</summary>
+    <remarks>
+      <para>
+	Represents the authenticated player for this device.   
+      </para>
+      <para>
+
+	On iOS 6.0 and newer, to authenticate the user, set the <see
+	cref="P:MonoTouch.GameKit.GKLocalPlayer.AuthenticateHandler"/>
+	property to a delegate that takes both a UIViewController and
+	an NSError parameters.  This will trigger the authentication
+	to take place.  For older versions of iOS, you should call the
+	<see
+	cref="P:MonoTouch.GameKit.GKLocalPlayer.Authenticate(MonoTouch.GameKit.GKNotificationHandler)"/>
+	method.  The difference is that with iOS 6.0 your callback
+	receives a UIViewController that you can present to your user,
+	while the old API would present the API and invoke your
+	callback on an arbitrary thread.
+
+      </para>
+
+      <para>
+
+	GameKit will call <see
+	cref="P:MonoTouch.GameKit.GKLocalPlayer.AuthenticateHandler"/>
+	on demand as your application transitions from background and
+	foreground.  It is important that you update any internal
+	state when authenticated as the user might have logged off,
+	and logged in with a different account.
+
+      </para>
+
+<example>
+<code lang="c#">
+//
+// This shows how to authenticate on both iOS 6.0 and older versions
+//
+if (UIDevice.CurrentDevice.CheckSystemVersion (6, 0)) {
+    //
+    // iOS 6.0 and newer
+    //
+    GKLocalPlayer.LocalPlayer.AuthenticateHandler = (ui, error) => {
+
+        // If ui is null, that means the user is already authenticated,
+	// for example, if the user used Game Center directly to log in
+
+	if (ui != null)
+            current.PresentModalViewController (ui, true);
+
+	Console.WriteLine ("Authentication result: {0}",err);
+    };
+} else {
+    // Versions prior to iOS 6.0
+    GKLocalPlayer.LocalPlayer.Authenticate ((err) => {
+        Console.WriteLine ("Authentication result: {0}",err);
+    });
+};
+</code>
+</example>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -179,9 +237,16 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Current authentication state for the local player.</summary>
+        <value>True if the user has been authenticated, false otherwise.</value>
+        <remarks>
+
+	  This property changes as the application transitions from
+	  background to foreground, so you should check the value of
+	  this property on your handler and enable or disable features
+	  that depend on it in your game.
+
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="AuthenticateHandler">
@@ -206,7 +271,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Action&lt;MonoTouch.UIKit.UIViewController,MonoTouch.Foundation.NSError&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Handler used to authenticate the user</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -222,7 +287,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Notification constant for AuthenticationDidChangeNoti</summary>
+        <summary>Notification constant for AuthenticationDidChangeNotice.</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
