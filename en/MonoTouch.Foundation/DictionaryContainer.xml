@@ -10,8 +10,63 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>To be added.</summary>
-    <remarks>To be added.</remarks>
+    <summary>Convenience base class used by strongly-typed classes that wrap NSDictionary-based settings.</summary>
+    <remarks>
+      <para>
+
+	Many iOS and OSX APIs accept configuration options as untyped
+	NSDictionary values, or return untyped NSDictionary values.
+	The C# bindings offer strong-typed versions of those
+	dictionaries, which allow developers to get code completion
+	while passing parameters, and to extract data from return
+	values.  The DicionaryContainer is an abstract base class that
+	encapsulates the common code to wrap NSDictionaries like this
+
+      </para>
+
+      <para>
+
+	When creating a strongly typed wrapper for NSDictionary,
+	subclass the DicionaryContainer and provide two constructors:
+	one taking an NSDictionary (to create the wrapper) and one
+	taking no arguments, which should call the base class with an
+	NSMutableDictionary.  Then use one of the various Get and Set
+	methods exposed by this class to get and set values.  This is
+	how a sample class would work:
+
+      </para>
+
+      <example>
+	<code lang="c#">
+public class MyProperties : DicionaryContainer {
+    public MyProperties () : base (new NSMutableDictionary ())
+    {
+    }
+    
+    public MyProperties (NSDictionary dict) : base (dict)
+    {
+    }
+
+    static NSString boolKey = new NSString ("SomeBoolKey");
+
+    public bool MyBool {
+        get {
+            return GetInt32Value (boolKey);
+        }
+	set {
+	    SetInt32Value (boolKey, value);
+        }
+    }
+}
+	</code>
+      </example>
+
+      <para>
+
+      </para>
+
+
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName="Dictionary">
@@ -53,6 +108,32 @@
       <Docs>
         <typeparam name="T">To be added.</typeparam>
         <param name="key">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetArray&lt;T&gt;">
+      <MemberSignature Language="C#" Value="protected T[] GetArray&lt;T&gt; (MonoTouch.Foundation.NSString key, Func&lt;IntPtr,T&gt; creator);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance !!T[] GetArray&lt;T&gt;(class MonoTouch.Foundation.NSString key, class System.Func`2&lt;native int, !!T&gt; creator) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>T[]</ReturnType>
+      </ReturnValue>
+      <TypeParameters>
+        <TypeParameter Name="T" />
+      </TypeParameters>
+      <Parameters>
+        <Parameter Name="key" Type="MonoTouch.Foundation.NSString" />
+        <Parameter Name="creator" Type="System.Func&lt;System.IntPtr,T&gt;" />
+      </Parameters>
+      <Docs>
+        <typeparam name="T">To be added.</typeparam>
+        <param name="key">To be added.</param>
+        <param name="creator">To be added.</param>
         <summary>To be added.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
@@ -147,6 +228,46 @@
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Nullable&lt;System.Int64&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="key" Type="MonoTouch.Foundation.NSString" />
+      </Parameters>
+      <Docs>
+        <param name="key">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetNSDictionary">
+      <MemberSignature Language="C#" Value="protected MonoTouch.Foundation.NSDictionary GetNSDictionary (MonoTouch.Foundation.NSString key);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance class MonoTouch.Foundation.NSDictionary GetNSDictionary(class MonoTouch.Foundation.NSString key) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MonoTouch.Foundation.NSDictionary</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="key" Type="MonoTouch.Foundation.NSString" />
+      </Parameters>
+      <Docs>
+        <param name="key">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetNSStringValue">
+      <MemberSignature Language="C#" Value="protected string GetNSStringValue (MonoTouch.Foundation.NSString key);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance string GetNSStringValue(class MonoTouch.Foundation.NSString key) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Parameters>
         <Parameter Name="key" Type="MonoTouch.Foundation.NSString" />
@@ -302,8 +423,8 @@
       </Docs>
     </Member>
     <Member MemberName="SetNativeValue">
-      <MemberSignature Language="C#" Value="protected void SetNativeValue (MonoTouch.Foundation.NSString key, MonoTouch.ObjCRuntime.INativeObject value);" />
-      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance void SetNativeValue(class MonoTouch.Foundation.NSString key, class MonoTouch.ObjCRuntime.INativeObject value) cil managed" />
+      <MemberSignature Language="C#" Value="protected void SetNativeValue (MonoTouch.Foundation.NSString key, MonoTouch.ObjCRuntime.INativeObject value, bool removeNullValue);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance void SetNativeValue(class MonoTouch.Foundation.NSString key, class MonoTouch.ObjCRuntime.INativeObject value, bool removeNullValue) cil managed" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -314,10 +435,12 @@
       <Parameters>
         <Parameter Name="key" Type="MonoTouch.Foundation.NSString" />
         <Parameter Name="value" Type="MonoTouch.ObjCRuntime.INativeObject" />
+        <Parameter Name="removeNullValue" Type="System.Boolean" />
       </Parameters>
       <Docs>
         <param name="key">To be added.</param>
         <param name="value">To be added.</param>
+        <param name="removeNullValue">To be added.</param>
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
       </Docs>
