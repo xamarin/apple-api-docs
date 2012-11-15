@@ -15,17 +15,179 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>A view that can scroll its children.</summary>
+    <summary>A view that contains other views, providing scrolling, zooming, and panning functionality.</summary>
     <remarks>
-      <para>
-   The MonoTouch API supports two styles of event notification: the Objective-C style that uses a delegate class or the C# style using event notifications.  
+	<para>
+The <see cref="T:MonoTouch.UIKit.UIScrollView"/> class is a container that
+provides scrolling, zooming, and panning functionality of its content view.
+Because the UIScrollView class provides out-of-the-box functionality for 
+scrolling and paging, it is generally used as the basis for 
+<see cref="T:MonoTouch.UIKit.UIView"/>s whose content is larger than the 
+<see cref="T:MonoTouch.UIKit.UIScrollView"/> frame. The need for and range of
+scrolling is specified by the application developer setting the 
+<see cref="T:MonoTouch.UIKit.UIScrollView"/>'s 
+<see cref="P:MonoTouch.UIKit.UIScrollView.ContentSize"/> to a 
+<see cref="T:System.Drawing.SizeF"/> greater than the 
+<see cref="T:MonoTouch.UIKit.UIScrollView"/>'s 
+<see cref="P:MonoTouch.UIKit.UIView.Frame"/>
 </para>
-      <para>
-   The C# style allows the user to add or remove event handlers at runtime by assigning to the events of properties of this class.    Event handlers can be anyone of a method, an anonymous methods or a lambda expression.  Using the C# style events or properties will override any manual settings to the Objective-C Delegate or WeakDelegate settings.
+<para>
+The most common ways to 
+use it are to either:
+<list type="bullet">
+	<item>Add a single large subview, generally with a 
+<see cref="P:MonoTouch.UIKit.UIView.Frame"/> whose 
+<see cref="M:System.Drawing.RectangleF.Location"/> is [0,0] and whose 
+<see cref="T:System.Drawing.SizeF"/> is the same as the 
+<see cref="T:MonoTouch.UIKit.UIScrollView"/>'s 
+<see cref="P:MonoTouch.UIKit.UIScrollView.ContentSize"/>. 
+</item>
+	<item>Arrange multiple subviews within the 
+<see cref="T:MonoTouch.UIKit.UIScrollView"/>'s 
+<see cref="P:MonoTouch.UIKit.UIScrollView.ContentSize"/> and use the 
+<see cref="T:MonoTouch.UIKit.UIScrollView"/> to scroll between them or, by
+setting <see cref="P:MonoTouch.UIKit.UIScrollView.PagingEnabled"/>
+to <see langword="true" />, to page between them. (Often in combination with a
+<see cref="T:MonoTouch.UIKit.UIPageControl"/>.)
+</item>
+	<item>Subclass <see cref="T:MonoTouch.UIKit.UIScrollView"/> and extend
+it's functionality. In fact, the <see cref="T:MonoTouch.UIKit.UIScrollView"/>
+is the base class of such commonly-used classes as 
+<see cref="T:MonoTouch.UIKit.UITextField"/> and 
+<see cref="T:MonoTouch.UIKit.UITableView"/>.
+	</item>
+</list>
+    </para>
+<para>
+This image, drawn from the "Scroll View" option of the 
+<related type="sample" href="http://samples.xamarin.com/iOS/Samples/ByGuid?guid=D307AF95-96A3-4FBC-832A-1FB187936FAB">iOS Standard Controls</related>
+sample, illustrates the simplest use-case: a single large subview (in
+this case, a <see cref="T:MonoTouch.UIKit.UIImageView"/>) whose image size matches the 
+<see cref="T:MonoTouch.UIKit.UIScrollView"/>'s 
+<see cref="P:MonoTouch.UIKit.UIScrollView.ContentSize"/>. The 
+<see cref="P:MonoTouch.UIKit.UIScrollView.ContentOffset"/> of the 
+<see cref="T:MonoTouch.UIKit.UIScrollView"/> corresponds to the image pixel
+showing at the origin of the 
+<see cref="T:MonoTouch.UIKit.UIImageView"/> (e.g., <see cref="T:System.Drawing.PointF"/> [215, 145]).  
+<image href="UIScrollView_Exploded.png"/>
 </para>
-      <para>The Objective-C style requires the user to create a new class derived from <see cref="T:MonoTouch.UIKit.UIScrollViewDelegate" /> class and assign it to the <see cref="P:MonoTouch.UIKit.Delegate" /> property.   Alternatively, for low-level control, by creating a class derived from <see cref="T:MonoTouch.Foundation.NSObject" /> which has every entry point properly decorated with an [Export] attribute.   The instance of this object can then be assigned to the <see cref="T:MonoTouch.UIKit.UIScrollView.WeakDelegate" /> property.   
+<para>
+The following image, based on the "Page Control" option of the <related type="sample" href="http://samples.xamarin.com/iOS/Samples/ByGuid?guid=D307AF95-96A3-4FBC-832A-1FB187936FAB">iOS Standard Controls</related>
+	sample, illustrates multiple subviews aligned within the <see cref="T:MonoTouch.UIKit.UIScrollView"/>'s 
+	<see cref="P:MonoTouch.UIKit.UIScrollView.ContentSize"/>. The <see cref="P:MonoTouch.UIKit.UIView.Frame"/>s of the individual subviews and the 
+<see cref="P:MonoTouch.UIKit.UIScrollView.ContentSize"/> of the 
+<see cref="T:MonoTouch.UIKit.UIScrollView"/> are set using the following code:</para>
+<example>
+<code>
+for (int i = 0; i < controllers.Count; i++)
+{
+	// set their location and size, each one is moved to the 
+	// right by the width of the previous
+	RectangleF viewFrame = new RectangleF (
+		scrlMain.Frame.Width * i,
+		scrlMain.Frame.Y,
+		scrlMain.Frame.Width,
+		scrlMain.Frame.Height);
+	controllers[i].View.Frame = viewFrame;
+
+	// add the view to the scrollview
+	scrlMain.AddSubview (controllers[i].View);
+}
+
+// set our scroll view content size (width = number of pages * scroll view width)
+scrlMain.ContentSize = new SizeF (
+	scrlMain.Frame.Width * controllers.Count, scrlMain.Frame.Height);
+</code>
+</example> 
+<para>
+	<image href="UIScrollView_Page_Exploded.png"/>
+</para>
+<para>	
+---END MAIN TOPIC HERE?---
+</para>
+<para>	
+	
+	
+	The <see cref="P:MonoTouch.UIKit.UIScrollView.ContentSize"/> and 
+<see cref="P:MonoTouch.UIKit.UIScrollView.ZoomScale"/> of the 
+<see cref="T:MonoTouch.UIKit.UIScrollView"/> 
+determine the need for and parameters of the scrolling. The 
+<see cref="P:MonoTouch.UIKit.UIScrollView.ContentOffset"/> is 
+
+The 
+<see cref="P:MonoTouch.UIKit.UIView.Frame"/>s of the content 
+<see cref="T:MonoTouch.UIKit.UIView"/>s determine their relative location and
+are usually aligned with each other and the extent of the 
+<see cref="P:MonoTouch.UIKit.UIScrollView.ContentSize"/>. (This is not 
+required: the <see cref="T:MonoTouch.UIKit.UIView"/>s' 
+<see cref="P:MonoTouch.UIKit.UIView.Frame"/>'s may include areas that fall
+outside of the <see cref="P:MonoTouch.UIKit.UIScrollView.ContentSize"/> of the
+<see cref="T:MonoTouch.UIKit.UIScrollView"/>. Such areas cannot be scrolled to
+but may make drawing geometry easier or more consistent).
+	</para>
+	<para>
+		The <see cref="P:MonoTouch.UIKit.UIScrollView.ContentSize"/> of the
+<see cref="T:MonoTouch.UIKit.UIScrollView"/> defines the scroll limits. When
+the <see cref="P:MonoTouch.UIKit.UIScrollView.ContentSize"/> is larger than the
+<see cref="T:MonoTouch.UIKit.UIScrollView"/>'s 
+<see cref="P:MonoTouch.UIKit.UIView.Frame"/>, one gets scrolling behavior. If it
+is not set or is set to too small a <see cref="T:System.Drawing.RectangleF"/>,
+one doesn't.
+</para>
+	<para>
+		If one displays an area within the 
+<see cref="P:MonoTouch.UIKit.UIScrollView.ContentSize"/> of the 
+<see cref="T:MonoTouch.UIKit.UIScrollView"/> that does not contain a content
+view, gestures for scrolling and zooming occurring in the blank area will not
+work: the application <strong>must</strong> have an underlying content view to get the
+expected behavior.
+	</para>   
+	<para>
+		The <see cref="T:MonoTouch.UIKit.UIScrollView"/> provides animations
+ associated with scrolling, panning, and zooming and paints the
+briefly-displayed vertical and horizontal scrolling indicators.
+	</para>
+	<para>
+		By setting <see cref="P:MonoTouch.UIKit.UIScrollView.PagingEnabled"/>
+to <see langword="true" />, the scrolling behavior snaps to align with the
+desired page of content.
+	</para>
+	<para>
+		The <see cref="T:MonoTouch.UIKit.UIScrollView"/> tracks the motion of the 
+		end-user's fingers and adjusts the <see cref="T:MonoTouch.UIKit.UIScrollView"/>'s <see cref="P:MonoTouch.UIKit.UIScrollView.ContentOffset"/> accordingly.  
+		The <see cref="T:MonoTouch.UIKit.UIScrollView"/> provides the necessary
+behavior to respond to user gestures such as pinch-to-zoom, panning, and
+scrolling. However, because these gestures are not restricted to a predefined
+scrollbar area, the <see cref="T:MonoTouch.UIKit.UIScrollView"/> intercepts the
+events and waits briefly to see if the application user has made a gesture. This 
+introduces a small delay, but one can customize this by overriding 
+<see cref="M:MonoTouch.UIKit.UIScrollView.TouchesShouldBegin"/> and 
+<see cref="M:MonoTouch.UIKit.UIScrollView.TouchesShouldCancelInContentView"/>.
+	</para>
+    <para>
+   The MonoTouch API supports two styles of event notification: the
+Objective-C style that uses a delegate class or the C# style using event
+notifications.  
+	</para>
+    <para>
+   The C# style allows the user to add or remove event handlers at runtime by 
+assigning to the events of properties of this class.    Event handlers can be
+anyone of a method, an anonymous methods or a lambda expression.  Using the C#
+style events or properties will override any manual settings to the
+Objective-C Delegate or WeakDelegate settings.
+	</para>
+    <para>
+	The Objective-C style requires the user to create a new class derived from
+ <see cref="T:MonoTouch.UIKit.UIScrollViewDelegate" /> class and assign it to
+the <see cref="P:MonoTouch.UIKit.Delegate" /> property.   Alternatively, for
+low-level control, by creating a class derived from 
+<see  cref="T:MonoTouch.Foundation.NSObject" /> which has every entry point
+properly decorated with an [Export] attribute.   The instance of this object
+can then be assigned to the 
+<see cref="T:MonoTouch.UIKit.UIScrollView.WeakDelegate" /> property.   
 </para>
     </remarks>
+    <related type="sample" href="http://samples.xamarin.com/iOS/Samples/ByGuid?guid=D307AF95-96A3-4FBC-832A-1FB187936FAB">iOS Standard Controls</related>
     <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=556b1b8f-088e-494f-bc1a-bd418c174ba3">ZoomingPdfViewer</related>
     <related type="recipe" href="http://docs.xamarin.com/ios/Recipes/Content_Controls/Scroll_View/Create_a_Horizontal_Scrolling_Button_List">Create a Horizontal Scrolling Button List</related>
   </Docs>
@@ -95,9 +257,9 @@
         <param name="t">Unused sentinel value, pass NSObjectFlag.Empty.</param>
         <summary>Constructor to call on derived classes to skip initialization and merely allocate the object.</summary>
         <remarks>
-          <para>This constructor should be called by derived classes when they completely construct the object in managed code and merely want the runtime to allocate and initialize the NSObject.   This is required to implement the two-step initialization process that Objective-C uses, the first step is to perform the object allocation, the second step is to initialize the object.   When you invoke the constructor that takes the NSObjectFlag.Empty you taking advantage of a direct path that goes all the way up to NSObject to merely allocate the object's memory and bind the Objective-C and C# objects together.    The actual initialization of the object is up to you.</para>
+          <para>This constructor should be called by derived classes when they completely construct the object in managed code and merely want the runtime to allocate and initialize the NSObject.   This is required to implement the two-step initialization process that Objective-C uses, the first step is to perform the object allocation, the second step is to initialize the object.   When you invoke the constructor that takes the NSObjectFlag.Empty you taking advatnage of a direct path that goes all the way up to NSObject to merely allocate the object's memory and bind the Objective-C and C# objects together.    The actual initialization of the object is up to you.</para>
           <para>This constructor is typically used by the binding generator to allocate the object, but prevent the actual initialization to take place.   Once the allocation has taken place, the constructor has to initialize the object.   With constructors generated by the binding generator this means that it manually invokes one of the "init" methods to initialize the object.</para>
-          <para>It is your responsibility to completely initialize the object if you chain up using the NSObjectFlag.Empty path.</para>
+          <para>It is your responsability to completely initialize the object if you chain up using the NSObjectFlag.Empty path.</para>
           <para>In general, if your constructors invokes the NSObjectFlag.Empty base implementation, then it should be calling an Objective-C init method.   If this is not the case, you should instead chain to the proper constructor in your class. </para>
           <para>The argument value is ignored and merely ensures that the only code that is executed is the construction phase is the basic NSObject allocation and runtime type registration.  Typically the chaining would look like this:</para>
           <example>
@@ -143,8 +305,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="frame">Frame used by the view, expressed in iOS points.</param>
         <summary>Initializes the UIScrollView with the specified frame.</summary>
         <remarks>
-          <para>This constructor is used to programmatically create a new instance of UIScrollView with the specified dimension in the frame.   The object will only be displayed once it has been added to a view hierarchy by calling AddSubview in a containing view.</para>
-          <para>This constructor is not invoked when deserializing objects from storyboards or XIB files, instead the constructor that takes an NSCoder parameter is invoked.</para>
+          <para>This constructor is used to programatically create a new instance of UIScrollView with the specified dimension in the frame.   The object will only be displayed once it has been added to a view hierarchy by calling AddSubview in a containing view.</para>
+          <para>This constructor is not invoked when deserializing objects from storyboards or XIB filesinstead the constructor that takes an NSCoder parameter is invoked.</para>
         </remarks>
       </Docs>
     </Member>
@@ -193,7 +355,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <summary>If set to <see langword="true" />, then bouncing will occur when horizontal scrolling reaches the end of the view.</summary>
         <value>
         </value>
-        <remarks>When set to the default <see langword="false"/> value, horizontal scrolling is disabled if the content is narrower than the scrollview's bounds. If set to <see langword="true"/> the contents will continue to drag sideways and then, when the user lifts their finger, will bounce back. 
+        <remarks>
         </remarks>
       </Docs>
     </Member>
@@ -216,10 +378,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>If set to <see langword="true" />, then bouncing will occur when vertical scrolling reaches the end of the view.</summary>
+        <summary>If set to <see langword="true" />, then boucing will occur when vertical scrolling reaches the end of the view.</summary>
         <value>
         </value>
-        <remarks>When set to the default <see langword="false"/> value, vertical scrolling is disabled if the content is smaller than the scrollview's bounds. If set to <see langword="true"/> the contents will continue to drag vertically and then, when the user lifts their finger, will bounce back. 
+        <remarks>
         </remarks>
       </Docs>
     </Member>
@@ -234,7 +396,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.UIKit.UIScrollView+UIScrollViewAppearance</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Strongly-typed property that returns the <see cref="T:MonoTouch.UIKit.UIAppearance" /> class for this class.</summary>
+        <summary>Strongly-typed property that returns the UIAppearance class for this class.</summary>
         <value>
         </value>
         <remarks>Setting any appearance properties on this instance will affect the appearance of all instances of UIScrollView.</remarks>
@@ -261,10 +423,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="containers">List of types that you want to have as the containers to apply this particular appearance</param>
-        <summary>Returns a strongly typed <see cref="T:MonoTouch.UIKit.UIAppearance" /> for instances of this class when the view is hosted in the specified hierarchy.</summary>
+        <summary>Returns a strongly typed UIAppearance for instances of this class when the view is hosted in the specified hierarchy.</summary>
         <returns>The appearance proxy object that you can use to set properties when the given container hierarchy is active</returns>
         <remarks>
-          <para>The returned object represents the <see cref="T:MonoTouch.UIKit.UIAppearance" /> proxy where you can set appearance properties for instances of UIScrollView when those instances are contained in the hierarchy specified by the <paramref name="containers" /> parameter.</para>
+          <para>The returned object represents the UIAppearance proxy where you can set appearance properties for instances of UIScrollView when those instances are contained in the hierarchy specified by the <paramref name="containers" /> parameter.</para>
           <para>The following example shows how the AppearanceWhenContainedIn method works</para>
           <example>
             <code lang="C#">
@@ -460,7 +622,7 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>If this property returns <see langword="true" />, then scrolling is still occurring in the scroll view but the user is not dragging their finger.</summary>
+        <summary>If this property returns <see langword="true" />, then scrolling is still occuring in the scroll view but the user is not dragging their finger.</summary>
         <value>
         </value>
         <remarks>
@@ -578,9 +740,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>A <see cref="T:System.Boolean"/> that specifies whether the scroll view delays calls to <see cref="M:TouchesShouldBegin"/>.</summary>
-        <value>Defaults to  <see langword="true" />.</value>
-        <remarks><para>When a touch gesture begins, the user may be intending to scroll, in which case they will continue with a pinch or swipe, or the user may be intending to activate a subview, such as a <see cref="T:MonoTouch.UIKit.UITableViewCell"/>, in which case they will not drag their finger. When the DelaysContentTouches property is set to its default  <see langword="true" /> value, the runtime delays the call to <see cref="M:MonoTouch.UIKit.UIScrollView.TouchesShouldBegin"/> until the runtime makes that determination. This can, however, lead to a perceivable delay, especially if your intention is for the underlying component to immediately highlight or otherwise react. If set to  <see langword="false" />, <see cref="M:MonoTouch.UIKit.UIScrollView.TouchesShouldBegin"/> will be called immediately and you can implement your custom behavior.</para></remarks>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Delegate">
@@ -594,8 +756,8 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>MonoTouch.UIKit.UIScrollViewDelegate</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>An instance of the <see cref="MonoTouch.UIKit.UIScrollViewDelegate"/> model class which acts as the class delegate.</summary>
-        <value><para>The instance of the <see cref="MonoTouch.UIKit.UIScrollViewDelegate"/> model class</para><para tool="nullallowed">This value can be <see langword="null" />.</para></value>
+        <summary>An instance of the MonoTouch.UIKit.UIScrollViewDelegate model class which acts as the class delegate.</summary>
+        <value><para>The instance of the MonoTouch.UIKit.UIScrollViewDelegate model class</para><para tool="nullallowed">This value can be <see langword="null" />.</para></value>
         <remarks>
           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
@@ -640,7 +802,7 @@ mySliders.TintColor = UIColor.Red;
         <summary>If <see langword="true" />, and the user begins scrolling in one axis (i.e. horizontally) then the scroll view disables scrolling in the other axis (i.e. vertically).</summary>
         <value>
         </value>
-        <remarks>If this property is <see langword="false" />, then scrolling is permitted both horizontally and vertically.</remarks>
+        <remarks>If this property is <see cref="false" />, then scrolling is permitted both horizontally and vertically.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Dispose">
@@ -740,23 +902,8 @@ mySliders.TintColor = UIColor.Red;
       <Docs>
         <summary>This method will flash the scroll indicators for a short time.</summary>
         <remarks>
-			<para>You should call this method every time you bring the scroll view to the front. It shows the user the relationship of the display to the underlying UIScrollView. You should also call this method after programmatically setting the scroll position using <see cref="P:MonoTouch.UIKit.UIScrollView:ContentOffset"/> or <see cref="M:MonoTouch.UIKit.UIScrollView:SetContentOffset"/>.</para>
-			<example>
-            	<code lang="C#">
-public class FlashScrollIndicatorsViewController : UIViewController
-{
-	UITableView Table { get; set; }
-	
-	public override void ViewDidAppear (bool animated)
-	{
-		table.FlashScrollIndicators();
-	}
-	...etc...
-}
-				</code>
-			</example>
-		</remarks>
-    </Docs>
+        </remarks>
+      </Docs>
     </Member>
     <Member MemberName="IndicatorStyle">
       <MemberSignature Language="C#" Value="public virtual MonoTouch.UIKit.UIScrollViewIndicatorStyle IndicatorStyle { get; set; }" />
@@ -854,10 +1001,10 @@ public class FlashScrollIndicatorsViewController : UIViewController
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>If <see langword="true" /> then scrolling will stop on paging boundaries of the content view; scrolling occurs page at a time.</summary>
+        <summary>If <see cref="true" /> then scrolling will stop on paging boundaries of the content view; scrolling occurs page at a time.</summary>
         <value>
         </value>
-        <remarks>The default value is <see langword="false" />.</remarks>
+        <remarks>The default value is <see cref="false" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="PanGestureRecognizer">
@@ -976,10 +1123,10 @@ public class FlashScrollIndicatorsViewController : UIViewController
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>If set to <see langword="true" /> then scrolling is enabled.</summary>
+        <summary>If set to <see cref="true" /> then scrolling is enabled.</summary>
         <value>
         </value>
-        <remarks>If <see langword="true" />, then touch events will not be processed by the scroll view.</remarks>
+        <remarks>If <see cref="false" />, then touch events will not be processed by the scroll view.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ScrollIndicatorInsets">
@@ -1029,7 +1176,7 @@ public class FlashScrollIndicatorsViewController : UIViewController
       </Parameters>
       <Docs>
         <param name="rect">A rectangle defining an area inside the content view.</param>
-        <param name="animated">If <see langword="true" />, then scrolling should be animated.</param>
+        <param name="animated">If <see cref="true" />, then scrolling should be animated.</param>
         <summary>This method will scroll the content view so that the area defined by <paramref name="rect" /> is visible.</summary>
         <remarks>
         </remarks>
@@ -1054,7 +1201,7 @@ public class FlashScrollIndicatorsViewController : UIViewController
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>If <see langword="true" />, then the scroll view will jump to the top of the content when the user taps on the status bar.</summary>
+        <summary>If <see cref="true" />, then the scroll view will jump to the top of the content when the user taps on the status bar.</summary>
         <value>
         </value>
         <remarks>
@@ -1082,7 +1229,7 @@ public class FlashScrollIndicatorsViewController : UIViewController
       </Parameters>
       <Docs>
         <param name="contentOffset">A point (relative to the content view's origin) to use as an offset.</param>
-        <param name="animated">If <see langword="true" />, then animate the transition.</param>
+        <param name="animated">If <see cref="true" />, then animate the transition.</param>
         <summary>This method will move the scroll view to a new location.</summary>
         <remarks>
         </remarks>
@@ -1109,9 +1256,11 @@ public class FlashScrollIndicatorsViewController : UIViewController
       </Parameters>
       <Docs>
         <param name="scale">The new scale factor to apply to the content.</param>
-        <param name="animated">If <see langword="true" />, then animate the zoom.</param>
+        <param name="animated">If <see cref="true" />, then animate the zoom.</param>
         <summary>This value should be between the values of <see cref="P:MonoTouch.UIKit.UIScrollView.MinimumZoomFactor" /> and <see cref="P:MonoTouch.UIKit.UIScrollView.MaximumZoomFactor" />.</summary>
-        <remarks>If animation is never desired, using <see cref="P:MonoTouch.UIKit.UIScrollView.ZoomScale"/> is slightly easier to read.</remarks>
+        <remarks>
+	Here is where I would do my code.
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ShouldScrollToTop">
@@ -1205,8 +1354,8 @@ public class FlashScrollIndicatorsViewController : UIViewController
       <Docs>
         <param name="touches">A collection of <see cref="MonoTouch.UIKit.UITouch" /></param>
         <param name="withEvent">The <see cref="MonoTouch.UIKit.UIEvent" /> to which <paramref name="touches" /> belongs to.</param>
-        <param name="inContentView">This is the subview where the touch-down event occurred in.</param>
-        <summary>This method is provided so that the behavior of a touch in the content view may be customized by a subclass.</summary>
+        <param name="inContentView">This is the subview where the touch-down event occured in.</param>
+        <summary>This method is provided so that the behaviour of a touch in the content view may be customized by a subclass.</summary>
         <returns>
           <see langword="true" /> if the scroll view is to send the event messages to <paramref name="inContentView" />.</returns>
         <remarks>This method is meant to be override by subclasses of <see cref="T:MonoTouch.UIKit.UIScrollView" />.</remarks>
@@ -1359,7 +1508,7 @@ public class FlashScrollIndicatorsViewController : UIViewController
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Returns <see langword="false" /> if the content view is zooming in or out. Read-only.</summary>
+        <summary>Returns <see cref="true" /> if the content view is zooming in or out. Read-only.</summary>
         <value>
         </value>
         <remarks>
@@ -1418,7 +1567,8 @@ public class FlashScrollIndicatorsViewController : UIViewController
         <summary>This is the scale factor that is being applied to the content of a scroll view.</summary>
         <value>
         </value>
-        <remarks>To animate the zoom, see <see cref="P:MonoTouch.UIKit.UIScrollView.ZoomScale" />
+        <remarks>
+	Here is where I would do my code. 2
         </remarks>
       </Docs>
     </Member>
