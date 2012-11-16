@@ -15,8 +15,9 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>To be added.</summary>
-    <remarks>To be added.</remarks>
+    <summary>Manages the central CoreText Font System.</summary>
+    <remarks>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -43,8 +44,9 @@
         <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>The error domain string key.</summary>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ErrorFontUrlsKey">
@@ -141,11 +143,37 @@
         <Parameter Name="error" Type="MonoTouch.Foundation.NSError&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="font">To be added.</param>
-        <param name="error">To be added.</param>
+        <param name="font">The CoreGraphics font to register with the CoreText font system.</param>
+        <param name="error">On return the error, if any.</param>
         <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <returns>True on success, false on error.</returns>
+        <remarks>
+          <para>
+
+	    You can use this feature to register fonts that you
+	    download from the network, or to use fonts that are for
+	    example embedded as a resource in your executable or some
+	    other database.
+
+	  </para>
+          <example>
+            <code lang="c#">
+// 
+// Load font into byte array from a file.
+//
+byte [] myBuffer = GetEmbeddedResource ("myResource");
+CGFont font = CGFont.CreateFromProvider (new CGDataProvider (myBuffer, 0, myBuffer.Count));
+if (CTFontManager.RegisterGraphicsFont (font, out error)){
+	//
+	// access font
+	//
+
+	// Release font after we use it.
+	CTFontManager.UnregisterGraphicsFont (font, out error);
+}
+</code>
+          </example>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="UnregisterFontsForUrl">
@@ -207,11 +235,29 @@
         <Parameter Name="error" Type="MonoTouch.Foundation.NSError&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="font">To be added.</param>
-        <param name="error">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="font">The CoreGraphics font to unregister with the CoreText font system.</param>
+        <param name="error">On return the error, if any.</param>
+        <summary>Unregisters a CoreGraphics Font from the CoreText font system.</summary>
+        <returns>True on success, false on error.</returns>
+        <remarks>
+          <example>
+            <code lang="c#">
+// 
+// Load font into byte array from a file.
+//
+byte [] myBuffer = GetEmbeddedResource ("myResource");
+CGFont font = CGFont.CreateFromProvider (new CGDataProvider (myBuffer, 0, myBuffer.Count));
+if (CTFontManager.RegisterGraphicsFont (font, out error)){
+	//
+	// access font
+	//
+
+	// Release font after we use it.
+	CTFontManager.UnregisterGraphicsFont (font, out error);
+}
+</code>
+          </example>
+        </remarks>
       </Docs>
     </Member>
   </Members>

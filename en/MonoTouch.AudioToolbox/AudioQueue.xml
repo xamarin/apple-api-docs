@@ -1,6 +1,6 @@
 <Type Name="AudioQueue" FullName="MonoTouch.AudioToolbox.AudioQueue">
-  <TypeSignature Language="C#" Value="public class AudioQueue : IDisposable" />
-  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit AudioQueue extends System.Object implements class System.IDisposable" />
+  <TypeSignature Language="C#" Value="public abstract class AudioQueue : IDisposable" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit AudioQueue extends System.Object implements class System.IDisposable" />
   <AssemblyInfo>
     <AssemblyName>monotouch</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -90,25 +90,26 @@
   </Docs>
   <Members>
     <Member MemberName="AddListener">
-      <MemberSignature Language="C#" Value="public void AddListener (MonoTouch.AudioToolbox.AudioQueueProperty id, MonoTouch.AudioToolbox.AudioQueue.AudioQueuePropertyChanged callback);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void AddListener(valuetype MonoTouch.AudioToolbox.AudioQueueProperty id, class MonoTouch.AudioToolbox.AudioQueue/AudioQueuePropertyChanged callback) cil managed" />
+      <MemberSignature Language="C#" Value="public MonoTouch.AudioToolbox.AudioQueueStatus AddListener (MonoTouch.AudioToolbox.AudioQueueProperty property, MonoTouch.AudioToolbox.AudioQueue.AudioQueuePropertyChanged callback);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype MonoTouch.AudioToolbox.AudioQueueStatus AddListener(valuetype MonoTouch.AudioToolbox.AudioQueueProperty property, class MonoTouch.AudioToolbox.AudioQueue/AudioQueuePropertyChanged callback) cil managed" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>MonoTouch.AudioToolbox.AudioQueueStatus</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="id" Type="MonoTouch.AudioToolbox.AudioQueueProperty" />
+        <Parameter Name="property" Type="MonoTouch.AudioToolbox.AudioQueueProperty" />
         <Parameter Name="callback" Type="MonoTouch.AudioToolbox.AudioQueue+AudioQueuePropertyChanged" />
       </Parameters>
       <Docs>
-        <param name="id">ID of the property to listen to.</param>
+        <param name="property">ID of the property to listen to.</param>
         <param name="callback">The method to invoke when the specified AudioQueue property changes.</param>
         <summary>Use this method to track changes to the audio queue properties.</summary>
         <remarks>
         </remarks>
+        <returns>Status code.</returns>
       </Docs>
     </Member>
     <Member MemberName="AllocateBuffer">
@@ -233,6 +234,35 @@
       <Docs>
         <summary>To be added.</summary>
         <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateProcessingTap">
+      <MemberSignature Language="C#" Value="public MonoTouch.AudioToolbox.AudioQueueProcessingTap CreateProcessingTap (MonoTouch.AudioToolbox.AudioQueueProcessingTapCallback processingCallback, MonoTouch.AudioToolbox.AudioQueueProcessingTapFlags flags, out MonoTouch.AudioToolbox.AudioQueueStatus status);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class MonoTouch.AudioToolbox.AudioQueueProcessingTap CreateProcessingTap(class MonoTouch.AudioToolbox.AudioQueueProcessingTapCallback processingCallback, valuetype MonoTouch.AudioToolbox.AudioQueueProcessingTapFlags flags, valuetype MonoTouch.AudioToolbox.AudioQueueStatus status) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Since(6, 0)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>MonoTouch.AudioToolbox.AudioQueueProcessingTap</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="processingCallback" Type="MonoTouch.AudioToolbox.AudioQueueProcessingTapCallback" />
+        <Parameter Name="flags" Type="MonoTouch.AudioToolbox.AudioQueueProcessingTapFlags" />
+        <Parameter Name="status" Type="MonoTouch.AudioToolbox.AudioQueueStatus&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="processingCallback">To be added.</param>
+        <param name="flags">To be added.</param>
+        <param name="status">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -390,7 +420,7 @@
         <summary>Releases the resourced used by the AudioQueue object.</summary>
         <remarks>
           <para>This Dispose method releases the resources used by the AudioQueue class.</para>
-          <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposting <paramref name="disposing" /> is set to <see langword="true" /> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false" />. </para>
+          <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposing <paramref name="disposing" /> is set to <see langword="true" /> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false" />. </para>
           <para>Calling the Dispose method when you are finished using the AudioQueue ensures that all external resources used by this managed object are released as soon as possible.  Once you have invoked the Dispose method, the object is no longer useful and you should no longer make any calls to it.</para>
           <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at http://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
         </remarks>
@@ -461,6 +491,72 @@
       </Docs>
     </Member>
     <Member MemberName="EnqueueBuffer">
+      <MemberSignature Language="C#" Value="public MonoTouch.AudioToolbox.AudioQueueStatus EnqueueBuffer (MonoTouch.AudioToolbox.AudioQueueBuffer* audioQueueBuffer, int bytes, MonoTouch.AudioToolbox.AudioStreamPacketDescription[] desc, int trimFramesAtStart, int trimFramesAtEnd, MonoTouch.AudioToolbox.AudioQueueParameterEvent[] parameterEvents, out MonoTouch.AudioToolbox.AudioTimeStamp actualStartTime);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype MonoTouch.AudioToolbox.AudioQueueStatus EnqueueBuffer(valuetype MonoTouch.AudioToolbox.AudioQueueBuffer* audioQueueBuffer, int32 bytes, valuetype MonoTouch.AudioToolbox.AudioStreamPacketDescription[] desc, int32 trimFramesAtStart, int32 trimFramesAtEnd, valuetype MonoTouch.AudioToolbox.AudioQueueParameterEvent[] parameterEvents, valuetype MonoTouch.AudioToolbox.AudioTimeStamp actualStartTime) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MonoTouch.AudioToolbox.AudioQueueStatus</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="audioQueueBuffer" Type="MonoTouch.AudioToolbox.AudioQueueBuffer*" />
+        <Parameter Name="bytes" Type="System.Int32" />
+        <Parameter Name="desc" Type="MonoTouch.AudioToolbox.AudioStreamPacketDescription[]" />
+        <Parameter Name="trimFramesAtStart" Type="System.Int32" />
+        <Parameter Name="trimFramesAtEnd" Type="System.Int32" />
+        <Parameter Name="parameterEvents" Type="MonoTouch.AudioToolbox.AudioQueueParameterEvent[]" />
+        <Parameter Name="actualStartTime" Type="MonoTouch.AudioToolbox.AudioTimeStamp&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="audioQueueBuffer">The audio queue buffer to add to the buffer queue.</param>
+        <param name="bytes">The number of bytes from the queue buffer to add to the buffer queue. The audioQueueBuffer parameter will be updated with this value.</param>
+        <param name="desc">An array of packet descriptors for the packets that will be added to the queue.</param>
+        <param name="trimFramesAtStart">The number of frames to skip at the start of the buffer. </param>
+        <param name="trimFramesAtEnd">The number of frames to skip at the end of the buffer.</param>
+        <param name="parameterEvents">An array of parameter events for the buffer.</param>
+        <param name="actualStartTime">The time when the buffer will start playing.</param>
+        <summary>Adds a buffer that should play as soon as possible to the buffer queue of a playback audio queue.</summary>
+        <returns>AudioQueueStatus.Ok on success, otherwise the error.</returns>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EnqueueBuffer">
+      <MemberSignature Language="C#" Value="public MonoTouch.AudioToolbox.AudioQueueStatus EnqueueBuffer (IntPtr audioQueueBuffer, int bytes, MonoTouch.AudioToolbox.AudioStreamPacketDescription[] desc, int trimFramesAtStart, int trimFramesAtEnd, MonoTouch.AudioToolbox.AudioQueueParameterEvent[] parameterEvents, out MonoTouch.AudioToolbox.AudioTimeStamp actualStartTime);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype MonoTouch.AudioToolbox.AudioQueueStatus EnqueueBuffer(native int audioQueueBuffer, int32 bytes, valuetype MonoTouch.AudioToolbox.AudioStreamPacketDescription[] desc, int32 trimFramesAtStart, int32 trimFramesAtEnd, valuetype MonoTouch.AudioToolbox.AudioQueueParameterEvent[] parameterEvents, valuetype MonoTouch.AudioToolbox.AudioTimeStamp actualStartTime) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MonoTouch.AudioToolbox.AudioQueueStatus</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="audioQueueBuffer" Type="System.IntPtr" />
+        <Parameter Name="bytes" Type="System.Int32" />
+        <Parameter Name="desc" Type="MonoTouch.AudioToolbox.AudioStreamPacketDescription[]" />
+        <Parameter Name="trimFramesAtStart" Type="System.Int32" />
+        <Parameter Name="trimFramesAtEnd" Type="System.Int32" />
+        <Parameter Name="parameterEvents" Type="MonoTouch.AudioToolbox.AudioQueueParameterEvent[]" />
+        <Parameter Name="actualStartTime" Type="MonoTouch.AudioToolbox.AudioTimeStamp&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="audioQueueBuffer">The audio queue buffer to add to the buffer queue.</param>
+        <param name="bytes">The number of bytes from the queue buffer to add to the buffer queue. The audioQueueBuffer parameter will be updated with this value.</param>
+        <param name="desc">An array of packet descriptors for the packets that will be added to the queue.</param>
+        <param name="trimFramesAtStart">The number of frames to skip at the start of the buffer. </param>
+        <param name="trimFramesAtEnd">The number of frames to skip at the end of the buffer.</param>
+        <param name="parameterEvents">An array of parameter events for the buffer.</param>
+        <param name="actualStartTime">The time when the buffer will start playing.</param>
+        <summary>Adds a buffer that should play as soon as possible to the buffer queue of a playback audio queue.</summary>
+        <returns>AudioQueueStatus.Ok on success, otherwise the error.</returns>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EnqueueBuffer">
       <MemberSignature Language="C#" Value="public MonoTouch.AudioToolbox.AudioQueueStatus EnqueueBuffer (MonoTouch.AudioToolbox.AudioQueueBuffer* audioQueueBuffer, int bytes, MonoTouch.AudioToolbox.AudioStreamPacketDescription[] desc, int trimFramesAtStart, int trimFramesAtEnd, MonoTouch.AudioToolbox.AudioQueueParameterEvent[] parameterEvents, ref MonoTouch.AudioToolbox.AudioTimeStamp startTime, out MonoTouch.AudioToolbox.AudioTimeStamp actualStartTime);" />
       <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype MonoTouch.AudioToolbox.AudioQueueStatus EnqueueBuffer(valuetype MonoTouch.AudioToolbox.AudioQueueBuffer* audioQueueBuffer, int32 bytes, valuetype MonoTouch.AudioToolbox.AudioStreamPacketDescription[] desc, int32 trimFramesAtStart, int32 trimFramesAtEnd, valuetype MonoTouch.AudioToolbox.AudioQueueParameterEvent[] parameterEvents, valuetype MonoTouch.AudioToolbox.AudioTimeStamp startTime, valuetype MonoTouch.AudioToolbox.AudioTimeStamp actualStartTime) cil managed" />
       <MemberType>Method</MemberType>
@@ -481,17 +577,18 @@
         <Parameter Name="actualStartTime" Type="MonoTouch.AudioToolbox.AudioTimeStamp&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="audioQueueBuffer">To be added.</param>
-        <param name="bytes">To be added.</param>
-        <param name="desc">To be added.</param>
-        <param name="trimFramesAtStart">To be added.</param>
-        <param name="trimFramesAtEnd">To be added.</param>
-        <param name="parameterEvents">To be added.</param>
-        <param name="startTime">To be added.</param>
-        <param name="actualStartTime">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="audioQueueBuffer">The audio queue buffer to add to the buffer queue.</param>
+        <param name="bytes">The number of bytes from the queue buffer to add to the buffer queue. The audioQueueBuffer parameter will be updated with this value.</param>
+        <param name="desc">An array of packet descriptors for the packets that will be added to the queue.</param>
+        <param name="trimFramesAtStart">The number of frames to skip at the start of the buffer. This value is ignored if startTime is specified.</param>
+        <param name="trimFramesAtEnd">The number of frames to skip at the end of the buffer.</param>
+        <param name="parameterEvents">An array of parameter events for the buffer.</param>
+        <param name="startTime">The time when the buffer should start playing.</param>
+        <param name="actualStartTime">The time when the buffer will start playing.</param>
+        <summary>Adds a buffer to the buffer queue of a playback audio queue, specifying start time and parameters.</summary>
+        <returns>AudioQueueStatus.Ok on success, otherwise the error.</returns>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="EnqueueBuffer">
@@ -515,17 +612,18 @@
         <Parameter Name="actualStartTime" Type="MonoTouch.AudioToolbox.AudioTimeStamp&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="audioQueueBuffer">To be added.</param>
-        <param name="bytes">To be added.</param>
-        <param name="desc">To be added.</param>
-        <param name="trimFramesAtStart">To be added.</param>
-        <param name="trimFramesAtEnd">To be added.</param>
-        <param name="parameterEvents">To be added.</param>
-        <param name="startTime">To be added.</param>
-        <param name="actualStartTime">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="audioQueueBuffer">The audio queue buffer to add to the buffer queue.</param>
+        <param name="bytes">The number of bytes from the queue buffer to add to the buffer queue. The audioQueueBuffer parameter will be updated with this value.</param>
+        <param name="desc">An array of packet descriptors for the packets that will be added to the queue.</param>
+        <param name="trimFramesAtStart">The number of frames to skip at the start of the buffer. This value is ignored if startTime is specified.</param>
+        <param name="trimFramesAtEnd">The number of frames to skip at the end of the buffer.</param>
+        <param name="parameterEvents">An array of parameter events for the buffer.</param>
+        <param name="startTime">The time when the buffer should start playing.</param>
+        <param name="actualStartTime">The time when the buffer will start playing.</param>
+        <summary>Adds a buffer to the buffer queue of a playback audio queue, specifying start time and parameters.</summary>
+        <returns>AudioQueueStatus.Ok on success, otherwise the error.</returns>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="FillAudioData">
@@ -660,6 +758,11 @@
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.IntPtr</ReturnType>
       </ReturnValue>
@@ -682,6 +785,11 @@
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
@@ -706,6 +814,11 @@
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>T</ReturnType>
       </ReturnValue>
@@ -752,6 +865,22 @@
         <summary>Handle (pointer) to the unmanaged object representation.</summary>
         <value>A pointer</value>
         <remarks>This IntPtr is a handle to the underlying unmanaged representation for this object.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="HardwareCodecPolicy">
+      <MemberSignature Language="C#" Value="public MonoTouch.AudioToolbox.AudioQueueHardwareCodecPolicy HardwareCodecPolicy { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype MonoTouch.AudioToolbox.AudioQueueHardwareCodecPolicy HardwareCodecPolicy" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MonoTouch.AudioToolbox.AudioQueueHardwareCodecPolicy</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="IsRunning">
@@ -802,6 +931,22 @@
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Pan">
+      <MemberSignature Language="C#" Value="public float Pan { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float32 Pan" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Single</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>To be added.</summary>
@@ -866,8 +1011,8 @@
       </Docs>
     </Member>
     <Member MemberName="RemoveListener">
-      <MemberSignature Language="C#" Value="public void RemoveListener (MonoTouch.AudioToolbox.AudioQueueProperty id, MonoTouch.AudioToolbox.AudioQueue.AudioQueuePropertyChanged callback);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void RemoveListener(valuetype MonoTouch.AudioToolbox.AudioQueueProperty id, class MonoTouch.AudioToolbox.AudioQueue/AudioQueuePropertyChanged callback) cil managed" />
+      <MemberSignature Language="C#" Value="public void RemoveListener (MonoTouch.AudioToolbox.AudioQueueProperty property, MonoTouch.AudioToolbox.AudioQueue.AudioQueuePropertyChanged callback);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void RemoveListener(valuetype MonoTouch.AudioToolbox.AudioQueueProperty property, class MonoTouch.AudioToolbox.AudioQueue/AudioQueuePropertyChanged callback) cil managed" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -876,11 +1021,11 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="id" Type="MonoTouch.AudioToolbox.AudioQueueProperty" />
+        <Parameter Name="property" Type="MonoTouch.AudioToolbox.AudioQueueProperty" />
         <Parameter Name="callback" Type="MonoTouch.AudioToolbox.AudioQueue+AudioQueuePropertyChanged" />
       </Parameters>
       <Docs>
-        <param name="id">To be added.</param>
+        <param name="property">To be added.</param>
         <param name="callback">To be added.</param>
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
@@ -919,6 +1064,37 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="SetChannelAssignments">
+      <MemberSignature Language="C#" Value="public MonoTouch.AudioToolbox.AudioQueueStatus SetChannelAssignments (MonoTouch.AudioToolbox.AudioQueueChannelAssignment[] channelAssignments);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype MonoTouch.AudioToolbox.AudioQueueStatus SetChannelAssignments(valuetype MonoTouch.AudioToolbox.AudioQueueChannelAssignment[] channelAssignments) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Since(6, 0)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>MonoTouch.AudioToolbox.AudioQueueStatus</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="channelAssignments" Type="MonoTouch.AudioToolbox.AudioQueueChannelAssignment[]">
+          <Attributes>
+            <Attribute>
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="channelAssignments">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="SetProperty">
       <MemberSignature Language="C#" Value="public bool SetProperty (MonoTouch.AudioToolbox.AudioQueueProperty property, int dataSize, IntPtr propertyData);" />
       <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool SetProperty(valuetype MonoTouch.AudioToolbox.AudioQueueProperty property, int32 dataSize, native int propertyData) cil managed" />
@@ -926,6 +1102,11 @@
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
@@ -1035,6 +1216,22 @@
         <value>Value between 0.0 and 1.0.</value>
         <remarks>
         </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="VolumeRampTime">
+      <MemberSignature Language="C#" Value="public float VolumeRampTime { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float32 VolumeRampTime" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Single</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
   </Members>

@@ -23,7 +23,21 @@
   </Attributes>
   <Docs>
     <summary>Represents a CoreText Font.</summary>
-    <remarks></remarks>
+    <remarks>
+      <para>
+
+	CoreText does not synthesize font styles (italic and bold).
+	This means that if you pick a font that has neither a Bolded
+	or Italicized versions available, CoreText will not create a
+	dynamic font that is merely a slanted version of the font for
+	italic, or a boldened version from the original font.  In
+	those cases, if you want to synthesize the font, you could
+	apply a Matrix transformation to slant the font (it will still
+	be wrong, but will look slanted).  For bolding, you could
+	stroke the font twice, or manually extend the glyph path.
+
+      </para>
+    </remarks>
     <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=cb71419a-f5de-4239-aa70-260ce1813e55">SimpleTextInput</related>
   </Docs>
   <Members>
@@ -61,7 +75,7 @@
         <param name="size">The desired font size.  If you specify zero, it will use the system default.</param>
         <summary>To be added.</summary>
         <remarks>
-	  <para>
+          <para>
 
 	    Although currently iOS this allows the "name" parameter to
 	    use aliases to the font, in addition to the Postscript
@@ -70,10 +84,12 @@
 	    scan.   
 
 	  </para>
+          <para>
 
-	  <para>
-	    If you want to create fonts from names that are not exactly the PostScript name 
-	</remarks>
+	    If you want to create fonts from other names (like the fullname "Helvetica Neue" instead of the PostScript name "HelveticaNeue") you can use <see cref="C:MonoTouch.CoreText.CTFontDescriptor(MonoTouch.CoreText.CTFontDescriptorAttributes)" />. 
+
+	  </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -89,7 +105,7 @@
         <Parameter Name="transform" Type="MonoTouch.CoreGraphics.CGAffineTransform" />
       </Parameters>
       <Docs>
-        <param name="name">The name of the font.   Use PostScript names (for example "HelveticaNeue").</param>
+        <param name="font">To be added.</param>
         <param name="size">The desired font size.  If you specify zero, it will use the system default.</param>
         <param name="transform">Transformation matrix for the font, if null, it uses the identity matrix.</param>
         <summary>To be added.</summary>
@@ -133,7 +149,8 @@
         <param name="size">The desired font size.  If you specify zero, it will use the system default.</param>
         <param name="matrix">Transformation matrix for the font, if null, it uses the identity matrix.</param>
         <summary>Creates a CTFont from a CTFontDescriptor.</summary>
-        <remarks></remarks>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -417,7 +434,7 @@
         <summary>Releases the resourced used by the CTFont object.</summary>
         <remarks>
           <para>This Dispose method releases the resources used by the CTFont class.</para>
-          <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposting <paramref name="disposing" /> is set to <see langword="true" /> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false" />. </para>
+          <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposing <paramref name="disposing" /> is set to <see langword="true" /> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false" />. </para>
           <para>Calling the Dispose method when you are finished using the CTFont ensures that all external resources used by this managed object are released as soon as possible.  Once you have invoked the Dispose method, the object is no longer useful and you should no longer make any calls to it.</para>
           <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at http://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
         </remarks>
@@ -665,6 +682,11 @@
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Since(6, 0)</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>MonoTouch.CoreText.CTFontDescriptor[]</ReturnType>
       </ReturnValue>
@@ -885,7 +907,7 @@
       </Docs>
     </Member>
     <Member MemberName="GetOpticalBounds">
-      <MemberSignature Language="C#" Value="public System.Drawing.RectangleF GetOpticalBounds (ushort[] glyphs, System.Drawing.RectangleF[] boundingRects, int count, MonoTouch.CoreText.CTFontOptions options = MonoTouch.CoreText.CTFontOptions.Default);" />
+      <MemberSignature Language="C#" Value="public System.Drawing.RectangleF GetOpticalBounds (ushort[] glyphs, System.Drawing.RectangleF[] boundingRects, int count, MonoTouch.CoreText.CTFontOptions options);" />
       <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype System.Drawing.RectangleF GetOpticalBounds(unsigned int16[] glyphs, valuetype System.Drawing.RectangleF[] boundingRects, int32 count, valuetype MonoTouch.CoreText.CTFontOptions options) cil managed" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
@@ -1125,8 +1147,10 @@
       </ReturnValue>
       <Docs>
         <summary>The transformation matrix used when this font was created.</summary>
-        <value></value>
-        <remarks></remarks>
+        <value>
+        </value>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="PostScriptName">
@@ -1157,7 +1181,8 @@
       </ReturnValue>
       <Docs>
         <summary>The font size.</summary>
-        <value></value>
+        <value>
+        </value>
         <remarks>This is the size that was used when the font was constructed.</remarks>
       </Docs>
     </Member>
