@@ -14,3 +14,7 @@ view:
 	git submodule update --init --recursive
 	$(MAKE) -C external/monomac/samples/macdoc macdoc
 	cd external/monomac/samples/macdoc/bin/Debug && ./macdoc.app/Contents/MacOS/macdoc @"$(TOP)/en"
+
+install:
+	mdoc assemble -o MonoTouch-lib en
+	cp MonoTouch-lib.{tree,zip} /Library/Frameworks/Mono.framework/External/monodoc/
