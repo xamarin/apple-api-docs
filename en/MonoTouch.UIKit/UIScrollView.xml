@@ -49,22 +49,19 @@
                     <term>
                         Add a single large subview, generally with a <see cref="P:MonoTouch.UIKit.UIView.Frame"/> whose <see cref="P:System.Drawing.RectangleF.Location"/>
                         is [0,0] and whose <see cref="T:System.Drawing.SizeF"/> is the same as the  <see cref="T:MonoTouch.UIKit.UIScrollView"/>'s <see cref="P:MonoTouch.UIKit.UIScrollView.ContentSize"/>; or 
-                    </term>
-                </item>
+                    </term></item>
                 <item>
                     <term>
                         Arrange multiple subviews within the <see cref="T:MonoTouch.UIKit.UIScrollView"/>'s 
                         <see cref="P:MonoTouch.UIKit.UIScrollView.ContentSize"/> and use the <see cref="T:MonoTouch.UIKit.UIScrollView"/> to scroll between them or, by
                         setting <see cref="P:MonoTouch.UIKit.UIScrollView.PagingEnabled"/> to <see langword="true"/>, to page between them. This is often done in
                         conjunction with a <see cref="T:MonoTouch.UIKit.UIPageControl"/>; or
-                    </term>
-                </item>
+                    </term></item>
                 <item>
                     <term>
                         Subclass <see cref="T:MonoTouch.UIKit.UIScrollView"/> and extend it's functionality. In fact, the <see cref="T:MonoTouch.UIKit.UIScrollView"/> is
                         the base class of such commonly-used classes as <see cref="T:MonoTouch.UIKit.UITextField"/> and <see cref="T:MonoTouch.UIKit.UITableView"/>.
-                    </term>
-                </item>
+                    </term></item>
             </list>
             <format type="text/html">
                 <h2>Using A Single Large Subview</h2>
@@ -121,7 +118,7 @@ scrollView.ViewForZoomingInScrollView += (UIScrollView sv) =&gt; { return imageV
                 the application in the middle of a swiping animation; portions of both the white and gray subviews are visible. 
             </para>
             <para>
-                <img href="http://images.google.com/intl/en_ALL/images/logos/images_logo_lg.gif"/>
+                <img href="MonoTouch.UIKit.UIScrollView.Slide1.png"/>
             </para>
             <para>
                 If <see cref="P:MonoTouch.UIKit.UIScrollView.PagingEnabled"/> is set to <see langword="true"/> or if the gesture attempts to scroll to an area
@@ -218,6 +215,30 @@ public void OnDoubleTap (UIGestureRecognizer sender) {
                 of tiled subviews. However, all subviews -- whether visible or not -- are rendered and this can be resource- and processor-intensive. In such
                 cases, it is the application developer's responsibility to add or remove subviews appropriately.
             </para>
+            <format type="text/html">
+				<h2>Event Sequence</h2>
+			</format>
+			<para>
+				The following illustration shows the user actions and resulting <see cref="T:MonoTouch.UIKit.UIScrollView"/> event sequence associated with a dragging or swiping gesture:
+			</para>
+          <list type="bullet">
+                <item>
+                    <term>The user touches the screen;</term></item><item>
+                    <term>The user begins dragging;</term></item><item>
+                    <term>The <see cref="E:MonoTouch.UIKit.UIScrollView.DraggingStarted"/> event is raised;</term></item><item>
+                    <term>As long as the user continues dragging...</term></item><item>
+                    <term>The <see cref="E:MonoTouch.UIKit.UIScrollView.Scrolled"/> event is raised repeatedly;</term></item><item>
+                    <term>The user raises their finger...</term></item><item>
+                    <term>The <see cref="E:MonoTouch.UIKit.UIScrollView.WillEndDragging"/> event is raised;</term></item><item>
+					<term>The <see cref="E:MonoTouch.UIKIt.UIScrollView.DraggingEnded"/> event is raised;</term></item><item>
+					<term>The <see cref="E:MonoTouch.UIKit.UIScrollView.DecelerationStarted"/> event is raised;</term></item><item>
+					<term>As long as the scrolling animation continues...</term></item><item>
+					<term>The <see cref="E:MonoTouch.UIKit.UIScrollView.Scrolled"/> event is raised repeatedly;</term></item><item>
+					<term>The <see cref="E:MonoTouch.UIKit.UIScroll.DevelerationEnded"/> event is raised.</term></item>
+			</list>			
+			<para>
+				<img href="MonoTouch.UIKit.UIScrollView.DragEventSequence.png"/>
+			</para>
             <format type="text/html">
                 <h2>State Preservation and Restoration</h2>
             </format>
@@ -747,10 +768,15 @@ scrollView.ContentOffset = new PointF (240, 170);
                 <ReturnType>System.EventHandler</ReturnType>
             </ReturnValue>
             <Docs>
-                <summary>Event raised when the scrolling animation ends.</summary>
-                <remarks>If the application developer assigns a value to this event, it will reset the value for the <c>WeakDelegate</c> property to an internal handler that maps delegates to events.</remarks>
-				<altmember cref="E:MonoTouch.UIKit.UIScrollView.DecelerationStarted"/>
-				<altmember cref="E:MonoTouch.UIKit.UIScrollView.Scrolled"/>
+                 <summary>Event raised after the scrolling animation has ended.</summary>
+	                <remarks>
+						<para>This event is the final event raised in the scrolling animation. For more on the event sequence associated with dragging, see the main remarks of <see cref="T:MonoTouch.UIKit.UIScrollView"/></para>
+		              <para>If you assign a value to this event, this will reset the value for the <c>WeakDelegate</c> property to an internal handler that maps delegates to events.</para></remarks>
+					<altmember cref="E:MonoTouch.UIKit.UIScrollView.DraggingStarted"/>
+					<altmember cref="E:MonoTouch.UIKit.UIScrollView.DraggingEnded"/>
+					<altmember cref="E:MonoTouch.UIKit.UIScrollView.WillEndDragging"/>
+					<altmember cref="E:MonoTouch.UIKit.UIScrollView.Scrolled"/>
+					<altmember cref="E:MonoTouch.UIKit.UIScrollView.DecelerationStarted"/>
             </Docs>
         </Member>
         <Member MemberName="DecelerationRate">
@@ -826,11 +852,15 @@ scrollView.ContentOffset = new PointF (240, 170);
                 <ReturnType>System.EventHandler</ReturnType>
             </ReturnValue>
             <Docs>
-                <summary>Event raised when the user lifts their finger after a drag or swipe gesture.</summary>
-                <remarks>If the application developer assigns a value to this event, it will reset the value for the <c>WeakDelegate</c> property to an internal handler that maps delegates to events.</remarks>
-				<altmember cref="E:MonoTouch.UIKit.UIScrollView.DecelerationEnded"/>
-				<altmember cref="E:MonoTouch.UIKit.UIScrollView.Scrolled"/>
-				
+                    <summary>Event raised after dragging has ended and the deceleration animation is about to begin.</summary>
+	                <remarks>
+						<para>This event is raised after the <see cref="E:MonoTouch.UIKit.UIScrollView.DraggingEnded"/> and is followed by a number of <see cref="E:MonoTouch.UIKit.UIScrollView.Scrolled"/> events and finally by <see cref="E:MonoTouch.UIKit.UIScrollView.DecelerationEnded"/>. For more on the event sequence associated with dragging, see the main remarks of <see cref="T:MonoTouch.UIKit.UIScrollView"/></para>
+		              <para>If you assign a value to this event, this will reset the value for the <c>WeakDelegate</c> property to an internal handler that maps delegates to events.</para></remarks>
+					<altmember cref="E:MonoTouch.UIKit.UIScrollView.DraggingStarted"/>
+					<altmember cref="E:MonoTouch.UIKit.UIScrollView.DraggingEnded"/>
+					<altmember cref="E:MonoTouch.UIKit.UIScrollView.WillEndDragging"/>
+					<altmember cref="E:MonoTouch.UIKit.UIScrollView.Scrolled"/>
+					<altmember cref="E:MonoTouch.UIKit.UIScrollView.DecelerationEnded"/>
             </Docs>
         </Member>
         <Member MemberName="DelaysContentTouches">
@@ -989,8 +1019,15 @@ scrollView.ContentOffset = new PointF (240, 170);
                 <ReturnType>System.EventHandler&lt;MonoTouch.UIKit.DraggingEventArgs&gt;</ReturnType>
             </ReturnValue>
             <Docs>
-                <summary>Event raised by the object.</summary>
-                <remarks>If you assign a value to this event, this will reset the value for the <c>WeakDelegate</c> property to an internal handler that maps delegates to events.</remarks>
+                <summary>Event raised after dragging has ended.</summary>
+                <remarks>
+					<para>This event is raised after <see cref="E:MonoTouch.UIKit.UIScrollView.WillEndDragging"/> and before <see cref="E:MonoTouch.UIKit.UIScrollView.DecelerationStarted"/>. For more on the event sequence associated with dragging, see the main remarks of <see cref="T:MonoTouch.UIKit.UIScrollView"/></para>
+	              <para>If you assign a value to this event, this will reset the value for the <c>WeakDelegate</c> property to an internal handler that maps delegates to events.</para></remarks>
+				<altmember cref="E:MonoTouch.UIKit.UIScrollView.DraggingStarted"/>
+				<altmember cref="E:MonoTouch.UIKit.UIScrollView.WillEndDragging"/>
+				<altmember cref="E:MonoTouch.UIKit.UIScrollView.Scrolled"/>
+				<altmember cref="E:MonoTouch.UIKit.UIScrollView.DecelerationStarted"/>
+				<altmember cref="E:MonoTouch.UIKit.UIScrollView.DecelerationEnded"/>
             </Docs>
         </Member>
         <Member MemberName="DraggingStarted">
@@ -1004,8 +1041,15 @@ scrollView.ContentOffset = new PointF (240, 170);
                 <ReturnType>System.EventHandler</ReturnType>
             </ReturnValue>
             <Docs>
-                <summary>Event raised by the object.</summary>
-                <remarks>If you assign a value to this event, this will reset the value for the <c>WeakDelegate</c> property to an internal handler that maps delegates to events.</remarks>
+                    <summary>Event raised after dragging has begun.</summary>
+	                <remarks>
+						<para>This event is raised at the beginning of the dragging sequence. It is quickly followed by zero or more <see cref="E:MonoTouch.UIKit.UIScrollView.Scrolled"/> events and then the events associated with the ending of a drag gesture. For more on the event sequence associated with dragging, see the main remarks of <see cref="T:MonoTouch.UIKit.UIScrollView"/></para>
+		              <para>If you assign a value to this event, this will reset the value for the <c>WeakDelegate</c> property to an internal handler that maps delegates to events.</para></remarks>
+					<altmember cref="E:MonoTouch.UIKit.UIScrollView.DraggingEnded"/>
+					<altmember cref="E:MonoTouch.UIKit.UIScrollView.WillEndDragging"/>
+					<altmember cref="E:MonoTouch.UIKit.UIScrollView.Scrolled"/>
+					<altmember cref="E:MonoTouch.UIKit.UIScrollView.DecelerationStarted"/>
+					<altmember cref="E:MonoTouch.UIKit.UIScrollView.DecelerationEnded"/>
             </Docs>
         </Member>
         <Member MemberName="FlashScrollIndicators">
@@ -1236,11 +1280,15 @@ scrollView.ContentOffset = new PointF (240, 170);
                 <ReturnType>System.EventHandler</ReturnType>
             </ReturnValue>
             <Docs>
-                <summary>Event raised when the <see cref="T:MonoTouch.UIKit.UIScrollView"/> has scrolled.</summary>
-                <remarks>
-                    <para>This event is raised when the <see cref="T:MonoTouch.UIKit.UIScrollView"/> has scrolled. During a drag or pan gesture or during a scrolling animation, it will be called repeatedly. Refer to the <see cref="M:MonoTouch.UIKit.ContentOffset"/> to determine the current location. </para>    
-                    <para>If you assign a value to this event, this will reset the value for the <c>WeakDelegate</c> property to an internal handler that maps delegates to events.</para>
-                </remarks>
+				 <summary>Event raised repeatedly during scrolling.</summary>
+	                <remarks>
+						<para>This event indicates that the <see cref="T:MonoTouch.UIKit.UIScrollView"/> has scrolled. </para>
+		              <para>If you assign a value to this event, this will reset the value for the <c>WeakDelegate</c> property to an internal handler that maps delegates to events.</para></remarks>
+					<altmember cref="E:MonoTouch.UIKit.UIScrollView.DraggingStarted"/>
+					<altmember cref="E:MonoTouch.UIKit.UIScrollView.DraggingEnded"/>
+					<altmember cref="E:MonoTouch.UIKit.UIScrollView.WillEndDragging"/>
+					<altmember cref="E:MonoTouch.UIKit.UIScrollView.DecelerationStarted"/>
+					<altmember cref="E:MonoTouch.UIKit.UIScrollView.DecelerationEnded"/>
             </Docs>
         </Member>
         <Member MemberName="ScrolledToTop">
