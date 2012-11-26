@@ -58,7 +58,10 @@ if (UIDevice.CurrentDevice.CheckSystemVersion (6, 0)) {
 
 	if (ui != null)
             current.PresentModalViewController (ui, true);
-
+	else {
+	    // Check if you are authenticated:
+	    var authenticated = GKLocalPlayer.LocalPlayer.Authenticated;
+	}
 	Console.WriteLine ("Authentication result: {0}",err);
     };
 } else {
@@ -266,9 +269,28 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Action&lt;MonoTouch.UIKit.UIViewController,MonoTouch.Foundation.NSError&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Handler used to authenticate the user</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Handler used to authenticate the user, triggers authentication when set.</summary>
+        <value>
+        </value>
+        <remarks>
+          <para>
+
+	    This method will be called on demand, and the scenarios
+	    are either (a) the user has not authenticated this device,
+	    so you should present the view controller that is passed
+	    as an argument to this function; (b) the user is either
+	    authenticated or not authenticated, and you should use the
+	    value of the <see cref="P:MonoTouch.GameKit.GKLocalPlayer.Authenticated" />
+	    to determine this.
+
+	  </para>
+          <para> 
+	    This callback can be called multiple times, for
+	    example in response to the user logging off, and another
+	    one logging in in GameCenter.  Use the state in the
+	    GKLocalPlayer to determine the 
+	  </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AuthenticationDidChangeNotificationName">
