@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0"?>
 <Type Name="UIScrollView" FullName="MonoTouch.UIKit.UIScrollView" 
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation='../../monodoc-ecma.xsd'>
@@ -22,7 +22,7 @@
         <remarks>
             <para>
                 The <see cref="T:MonoTouch.UIKit.UIScrollView"/> class is a container that provides scrolling, zooming, and panning functionality of its content
-                view. Because the UIScrollView class provides out-of-the-box functionality for   scrolling and paging, it is generally used as the basis for <see cref="T:MonoTouch.UIKit.UIView"/>s whose content is larger than the <see cref="T:MonoTouch.UIKit.UIScrollView"/>'s <see cref="P:MonoTouch.UIKit.UIView.Frame"/>. The need for and range of scrolling is specified by the application developer setting the <see cref="T:MonoTouch.UIKit.UIScrollView"/>'s <see cref="P:MonoTouch.UIKit.UIScrollView.ContentSize"/> to a <see cref="T:System.Drawing.SizeF"/>
+                view. Because the <see cref="T:MonoTouch.UIKit.UIScrollView"/> class provides out-of-the-box functionality for   scrolling and paging, it is generally used as the basis for <see cref="T:MonoTouch.UIKit.UIView"/>s whose content is larger than the <see cref="T:MonoTouch.UIKit.UIScrollView"/>'s <see cref="P:MonoTouch.UIKit.UIView.Frame"/>. The need for and range of scrolling is specified by the application developer setting the <see cref="T:MonoTouch.UIKit.UIScrollView"/>'s <see cref="P:MonoTouch.UIKit.UIScrollView.ContentSize"/> to a <see cref="T:System.Drawing.SizeF"/>
                 greater than the <see cref="T:MonoTouch.UIKit.UIScrollView"/>'s <see cref="P:MonoTouch.UIKit.UIView.Frame"/>.
             </para>
             <para>
@@ -50,17 +50,17 @@
                     </term>
                 </item>
             </list>
-             <format type="text/html">
+            <format type="text/html">
                 <h2>Using A Single Large Subview</h2>
             </format>
             <para>
                 The following image, drawn from the "Scroll View" demo in the "iOS Standard Controls" sample, illustrates the simplest use-case: a single large subview (in this case, a <see cref="T:MonoTouch.UIKit.UIImageView"/>) whose image size
                 matches the <see cref="T:MonoTouch.UIKit.UIScrollView"/>'s <see cref="P:MonoTouch.UIKit.UIScrollView.ContentSize"/>. The <see cref="P:MonoTouch.UIKit.UIScrollView.ContentOffset"/> of the  <see cref="T:MonoTouch.UIKit.UIScrollView"/> corresponds to the image pixel showing
                 at the origin of the <see cref="T:MonoTouch.UIKit.UIImageView"/> (e.g., <see cref="T:System.Drawing.PointF"/> [215, 145]). The <see cref="P:MonoTouch.UIKit.UIScrollView.ContentSize"/> of the <see cref="T:MonoTouch.UIKit.UIScrollView"/> defines the scroll limits. When the <see cref="P:MonoTouch.UIKit.UIScrollView.ContentSize"/> is larger than the <see cref="T:MonoTouch.UIKit.UIScrollView"/>'s <see cref="P:MonoTouch.UIKit.UIView.Frame"/>, one gets scrolling behavior. If <see cref="P:MonoTouch.UIKit.UIScrollView.ContentSize"/> is not set or is
-                set to too small a <see cref="T:System.Drawing.RectangleF"/>, one doesn't.
+                set to too small a <see cref="T:System.Drawing.RectangleF"/>, one doesn't (however, <see cref="P:MonoTouch.UIKit.UIScrollView.AlwaysBounceVertical"/> and <see cref="P:MonoTouch.UIKit.UIScrollView.AlwaysBounceHorizontal"/> can be used to allow dragging even in this situation.)
             </para>
             <para>
-            <img href="MonoTouch.UIKit.UIScrollView.Slide2.png"/>
+                <img href="MonoTouch.UIKit.UIScrollView.Slide2.png"/>
             </para>  
             <para>
                 As the following code shows, it's straightforward to create and use a <see cref="T:MonoTouch.UIKit.UIScrollView"/> in this manner. The
@@ -72,20 +72,20 @@
             </para>
             <example>
                 <code lang="C#">
-// create our scroll view
-scrollView = new UIScrollView (
-   new RectangleF (0, 0, this.View.Frame.Width, this.View.Frame.Height - this.NavigationController.NavigationBar.Frame.Height));
-this.View.AddSubview (scrollView);
-
-// create our image view
-imageView = new UIImageView (UIImage.FromFile ("Images/Icons/512_icon.png"));
-scrollView.ContentSize = imageView.Image.Size;
-scrollView.MaximumZoomScale = 3f;
-scrollView.MinimumZoomScale = .1f;
-scrollView.AddSubview (imageView);
-
-scrollView.ViewForZoomingInScrollView += (UIScrollView sv) =&gt; { return imageView; };
-            </code>
+                    // create our scroll view
+                    scrollView = new UIScrollView (
+                    new RectangleF (0, 0, this.View.Frame.Width, this.View.Frame.Height - this.NavigationController.NavigationBar.Frame.Height));
+                    this.View.AddSubview (scrollView);
+                    
+                    // create our image view
+                    imageView = new UIImageView (UIImage.FromFile ("Images/Icons/512_icon.png"));
+                    scrollView.ContentSize = imageView.Image.Size;
+                    scrollView.MaximumZoomScale = 3f;
+                    scrollView.MinimumZoomScale = .1f;
+                    scrollView.AddSubview (imageView);
+                    
+                    scrollView.ViewForZoomingInScrollView += (UIScrollView sv) =&gt; { return imageView; };
+                </code>
             </example>
             <para>
                 The <see cref="T:MonoTouch.UIKit.UIScrollView"/> tracks the location of the application-user's fingers and updates the <see cref="T:MonoTouch.UIKit.UIScrollView"/>'s <see cref="P:MonoTouch.UIKit.UIScrollView.ContentSize"/> and 
@@ -114,7 +114,7 @@ scrollView.ViewForZoomingInScrollView += (UIScrollView sv) =&gt; { return imageV
             </para>
             <para>
                 It is up to the application developer to synchronize with the <see cref="T:MonoTouch.UIKit.UIPageControl"/> if one is used. A common way to do this
-                is to handle the <see cref="T:MonoTouch.UIKit.UIScrollView"/>'s <see cref="E:MonoTouch.UIKit.UIScrollView.DecelerationEnded"/> event and change
+                is to handle the <see cref="T:MonoTouch.UIKit.UIScrollView"/>'s <see cref="E:MonoTouch.UIKit.UIScrollView.Scrolled"/> event and change
                 the model value that is observed by the <see cref="T:MonoTouch.UIKit.UIPageControl"/> (or one can imperatively set the <see cref="T:MonoTouch.UIKit.UIPageControl"/>'s <see cref="P:MonoTouch.UIKit.UIPageControl.CurrentPage"/>).
             </para>
             <para>
@@ -123,29 +123,29 @@ scrollView.ViewForZoomingInScrollView += (UIScrollView sv) =&gt; { return imageV
             </para>
             <example>
                 <code lang="C#">
-// instantiate and add the controllers to our list
-controllers.Add (new Controller_1 ());
-controllers.Add (new Controller_2 ());
-controllers.Add (new Controller_3 ());
-
-for (int i = 0; i &lt; controllers.Count; i++)
-{
-   // set their location and size, each one is moved to the 
-   // right by the width of the previous
-   RectangleF viewFrame = new RectangleF (
-      scrlMain.Frame.Width * i,
-      scrlMain.Frame.Y,
-      scrlMain.Frame.Width,
-      scrlMain.Frame.Height);
-   controllers[i].View.Frame = viewFrame;
-
-   // add the view to the scrollview
-   scrlMain.AddSubview (controllers[i].View);
-}
-
-// set our scroll view content size (width = number of pages * scroll view width)
-scrlMain.ContentSize = new SizeF (
-   scrlMain.Frame.Width * controllers.Count, scrlMain.Frame.Height);
+                    // instantiate and add the controllers to our list
+                    controllers.Add (new Controller_1 ());
+                    controllers.Add (new Controller_2 ());
+                    controllers.Add (new Controller_3 ());
+                    
+                    for (int i = 0; i &lt; controllers.Count; i++)
+                    {
+                    // set their location and size, each one is moved to the 
+                    // right by the width of the previous
+                    RectangleF viewFrame = new RectangleF (
+                    scrlMain.Frame.Width * i,
+                    scrlMain.Frame.Y,
+                    scrlMain.Frame.Width,
+                    scrlMain.Frame.Height);
+                    controllers[i].View.Frame = viewFrame;
+                    
+                    // add the view to the scrollview
+                    scrlMain.AddSubview (controllers[i].View);
+                    }
+                    
+                    // set our scroll view content size (width = number of pages * scroll view width)
+                    scrlMain.ContentSize = new SizeF (
+                    scrlMain.Frame.Width * controllers.Count, scrlMain.Frame.Height);
                 </code>
             </example>
             <format type="text/html">
@@ -162,21 +162,21 @@ scrlMain.ContentSize = new SizeF (
             </para>
             <example>
                 <code lang="C#">
-UITapGestureRecognizer doubletap = new UITapGestureRecognizer();
-doubletap.NumberOfTapsRequired = 2; // double tap
-doubletap.AddTarget (this, new MonoTouch.ObjCRuntime.Selector("DoubleTapSelector"));
-scrollView.AddGestureRecognizer(doubletap); // detect when the scrollView is double-tapped
-//...etc...
-
-[MonoTouch.Foundation.Export("DoubleTapSelector")]
-public void OnDoubleTap (UIGestureRecognizer sender) {
-if (scrollView.ZoomScale &gt;= 1)
-   scrollView.SetZoomScale(0.25f, true);
-else
-   scrollView.SetZoomScale(2f, true);
-}
+                    UITapGestureRecognizer doubletap = new UITapGestureRecognizer();
+                    doubletap.NumberOfTapsRequired = 2; // double tap
+                    doubletap.AddTarget (this, new MonoTouch.ObjCRuntime.Selector("DoubleTapSelector"));
+                    scrollView.AddGestureRecognizer(doubletap); // detect when the scrollView is double-tapped
+                    //...etc...
+                    
+                    [MonoTouch.Foundation.Export("DoubleTapSelector")]
+                    public void OnDoubleTap (UIGestureRecognizer sender) {
+                    if (scrollView.ZoomScale &gt;= 1)
+                    scrollView.SetZoomScale(0.25f, true);
+                    else
+                    scrollView.SetZoomScale(2f, true);
+                    }
                 </code>
-                </example>
+            </example>
             <format type="text/html">
                 <h2>Touch Delays Associated with UIScrollView</h2>
             </format>
@@ -218,15 +218,15 @@ else
             <para>
                 The C# style allows the user to add or remove event handlers at runtime by assigning to the events of properties of this class.    Event handlers
                 can be anyone of a method, an anonymous methods or a lambda expression.  Using the C# style events or properties will override any manual settings
-                to the Objective-C Delegate or WeakDelegate settings.
+                to the Objective-C Delegate or <see cref="T:MonoTouch.UIKit.UIScrollView.WeakDelegate"/> settings.
             </para>
             <para>
                 The Objective-C style requires the user to create a new class derived from <see cref="T:MonoTouch.UIKit.UIScrollViewDelegate"/> class and assign it
                 to
-                the Delegate property.   Alternatively, for
+                the <see cref="P:MonoTouch.UIKit.UIScrollView.Delegate"/> property.   Alternatively, for
                 low-level control, by creating a class derived from 
-                NSObject which has every entry point properly decorated with an [Export] attribute.   The instance of this object
-                can then be assigned to the WeakDelegate property.
+                <see cref="T:MonoTouch.Foundation.NSObject"/> which has every entry point properly decorated with an [Export] attribute (see <see cref="T:MonoTouch.Foundation.ExportAttribute"/>).   The instance of this object
+                can then be assigned to the <see cref="P:MonoTouch.UIKit.UIScrollView.WeakDelegate"/> property.
             </para>
         </remarks>
         <related type="sample" href="http://samples.xamarin.com/iOS/Samples/ByGuid?guid=D307AF95-96A3-4FBC-832A-1FB187936FAB">iOS Standard Controls</related>
@@ -395,10 +395,13 @@ else
                 <ReturnType>System.Boolean</ReturnType>
             </ReturnValue>
             <Docs>
-                <summary>If set to <see langword="true"/>, then bouncing will occur when horizontal scrolling reaches the end of the view.</summary>
-                <value>The default value is <see langword="true"/>
+                <summary>If set to <see langword="true"/> and <see cref="P:MonoTouch.UIKit.UIScrollView.Bounces"/> is <see langword="true"/>, then bouncing will occur when horizontal scrolling reaches the end of the view.</summary>
+                <value>The default value is <see langword="false"/>
                 </value>
                 <remarks>
+                    <para>
+                        If set to <see langword="true"/>, horizontal dragging is enabled even if the <see cref="P:MonoTouch.UIKit.UIScrollView.ContentSize"/> property is smaller than the <see cref="T:MonoTouch.UIKit.UIScrollView"/>'s '<see cref="P:MonoTouch.UIKit.UIView.Bounds"/>.
+                    </para>
                 </remarks>
             </Docs>
         </Member>
@@ -421,10 +424,13 @@ else
                 <ReturnType>System.Boolean</ReturnType>
             </ReturnValue>
             <Docs>
-                <summary>If set to <see langword="true"/>, then bouncing will occur when vertical scrolling reaches the end of the view.</summary>
-                <value>
+                <summary>If set to <see langword="true"/> and <see cref="P:MonoTouch.UIKit.UIScrollView.Bounces"/> is <see langword="true"/>, then bouncing will occur when vertical scrolling reaches the end of the view.</summary>
+                <value>The default value is <see langword="false"/>.
                 </value>
                 <remarks>
+                    <para>
+                        If set to <see langword="true"/>, vertical dragging is enabled even if the <see cref="P:MonoTouch.UIKit.UIScrollView.ContentSize"/> property is smaller than the <see cref="T:MonoTouch.UIKit.UIScrollView"/>'s '<see cref="P:MonoTouch.UIKit.UIView.Bounds"/>.
+                    </para>
                 </remarks>
             </Docs>
         </Member>
@@ -439,10 +445,15 @@ else
                 <ReturnType>MonoTouch.UIKit.UIScrollView+UIScrollViewAppearance</ReturnType>
             </ReturnValue>
             <Docs>
-                <summary>Strongly-typed property that returns the <see cref="T:MonoTouch.UIKit.UIScrollViewAppearance"/> for this class.</summary>
+                <summary>Strongly-typed property that returns the <see cref="P:MonoTouch.UIKit.UIScrollViewAppearance"/> for this class.</summary>
                 <value>
                 </value>
-                <remarks>Setting any appearance properties on this instance will affect the appearance of all instances of UIScrollView.</remarks>
+                <remarks><para>
+                        Setting any appearance properties on this instance will affect the appearance of all instances of  <see cref="T:MonoTouch.UIKit.UIScrollView"/>. For further details, see <see cref="T:MonoTouch.UIKit.UIScrollView+UIScrollViewAppearance"/>.
+                    </para>
+                </remarks>
+                <altmember cref="T:MonoTouch.UIKit.UIScrollView+UIScrollViewAppearance" />
+                <altmember cref="P:MonoTouch.UIKit.UIScrollView.IndicatorStyle" />
             </Docs>
         </Member>
         <Member MemberName="AppearanceWhenContainedIn">
@@ -466,19 +477,21 @@ else
             </Parameters>
             <Docs>
                 <param name="containers">List of types that you want to have as the containers to apply this particular appearance</param>
-                <summary>Returns a strongly typed UIAppearance for instances of this class when the view is hosted in the specified hierarchy.</summary>
-                <returns>The appearance proxy object that you can use to set properties when the given container hierarchy is active</returns>
+                <summary>Returns a strongly typed <see cref="T:MonoTouch.UIKit.UIAppearance"/> for instances of this class when the view is hosted in the specified hierarchy.</summary>
+                <returns>The appearance proxy object that you can use to set properties when the given container hierarchy is active.</returns>
                 <remarks>
-                    <para>The returned object represents the UIAppearance proxy where you can set appearance properties for instances of UIScrollView when those instances are contained in the hierarchy specified by the <paramref name="containers"/> parameter.</para>
-                    <para>The following example shows how the AppearanceWhenContainedIn method works</para>
+                    <para>The returned object represents the <see cref="T:MonoTouch.UIKit.UIAppearance"/> proxy with which you can set appearance properties for instances of <see cref="T:MonoTouch.UIKit.UIScrollView"/> contained within the hierarchy specified by the <paramref name="containers"/> parameter.</para>
+                    <para>The following example shows how the <see cref="M:MonoTouch.UIKit.UIScrollView.AppearanceWhenContainedIn"/> method works:</para>
                     <example>
                         <code lang="C#">
                             var mySliders = UISlider.AppearanceWhenContainedIn (typeof (UINavigationBar), typeof (UIPopoverController));
-                            mySliders.TintColor = UIColor.Red;
+                            mySliders.ThumbTintColor = UIColor.Red;
                         </code>
                     </example>
-                    <para>For more information, see the documentation for the <see cref="T:MonoTouch.UIKit.UIAppearance"/> class.</para>
                 </remarks>
+                <altmember cref="P:MonoTouch.UIKit.UIScrollView.Appearance" />
+                <altmember cref="T:MonoTouch.UIKit.UIScrollView+UIScrollViewAppearance" />
+                <altmember cref="P:MonoTouch.UIKit.UIScrollView.IndicatorStyle" />
             </Docs>
         </Member>
         <Member MemberName="Bounces">
@@ -525,7 +538,7 @@ else
                 <ReturnType>System.Boolean</ReturnType>
             </ReturnValue>
             <Docs>
-                <summary>If set to <see langword="true"/>, then the scroll view will bounce around a zoom limit once zooming has exceeded that limit.</summary>
+                <summary>If set to <see langword="true"/> and <see cref="P:MonoTouch.UIKit.UIScrollView.Bounces"/> is <see langword="true"/>, then the scroll view will bounce around a zoom limit once zooming has exceeded that limit.</summary>
                 <value>
                 </value>
                 <remarks>Default value is <see langword="true"/>.</remarks>
@@ -551,9 +564,14 @@ else
             </ReturnValue>
             <Docs>
                 <summary>If set to <see langword="false"/>, then the scroll view will not scroll as a result of finger movement once the tracking has started in the content view.</summary>
-                <value>
+                <value>The default value is <see langword="true"/>.
                 </value>
-                <remarks>Default value is <see langword="true"/>.</remarks>
+                <remarks>
+                    <para>Default value is <see langword="true"/>.</para>
+                    <para>
+                        By default, a <see cref="T:MonoTouch.UIKit.UIScrollView"/> intercepts touches before they propagate to subviews and, if a scrolling gesture is made, cancels those touches from being passed to the underlying <see cref="T:MonoTouch.UIKit.UIView"/> (instead, both the <see cref="T:MonoTouch.UIKit.UIScrollView"/> and the <see cref="T:MonoTouch.UIKit.UIView"/> subview receive <see cref="M.MonoTouch.UIKit.UIScrollView.TouchesCancelledWithEvent"/> events). By setting this property to <see langword="false"/>, the application developer specifies that touches immediately propagate to the underlying  <see cref="T:MonoTouch.UIKit.UIView"/>. This can avoid potentially-perceptible delays in activating subviews, but makes it impossible for the <see cref="T:MonoTouch.UIKit.UIScrollView"/> to recognize scrolling and panning gestures. In this situation, it is up to the application developer to develop a logical and consistent model for scrolling. This may involve the use of <see cref="T:MonoTouch.UIKit.UIGestureRecognizer"/>s, overriding <see cref="E:MonoTouch.UIKit.UIScrollView.TouchesShouldBegin"/>,  <see cref="E:MonoTouch.UIKit.UIScrollView.TouchesShouldCancelInContentView"/> 
+                    </para>
+                </remarks>
             </Docs>
         </Member>
         <Member MemberName="ClassHandle">
@@ -592,9 +610,9 @@ else
             </ReturnValue>
             <Docs>
                 <summary>The distance, in points, that the content of the scroll view is inset inside of the scroll view.</summary>
-                <value>
-                </value>
-                <remarks>This is used to add scrolling area around the content of the a scroll view.</remarks>
+                <value>The default value is <see cref="P:MonoTouch.UIKit.UIEdgeInsets.Zero"/></value>
+                <remarks>This is used to add scrolling area around the content of the a scroll view. Generally, the application developer also sets <see cref="P:MonoTouch.UIKit.UIScrollView.ScrollIndicatorInset"/> to the same value, so that the scroll indicators appear near the to-be-scrolled content and do not overlap elements placed in the inset area. </remarks>
+                <altmember cref="P:MonoTouch.UIKit.UIScrollView.ScrollIndicatorInset"/>
             </Docs>
         </Member>
         <Member MemberName="ContentOffset">
@@ -620,8 +638,8 @@ else
                 <value>
                 </value>
                 <remarks>
-                    <para>tk
-                        By setting the `ContentOffset` property, the application developer can specify the visible portion of the subview. For instance, compare the appearance of an 800x800 image in a `UIScrollView` with the `ContentOffset` property set to `PointF` [0,0] (left image) with the appearance when `ContentOffset` is set to `PointF` [240,170] (right image).
+                    <para>
+                        By setting the <c>ContentOffset</c> property, the application developer can specify the visible portion of the subview. For instance, compare the appearance of an 800x800 image in a <see cref="T:MonoTouch.UIKit.UIScrollView"/> with the <c>ContentOffset</c> property set to <see cref="T:System.Drawing.PointF"/>[0,0] (left image) with the appearance when <c>ContentOffset</c> is set to <see cref="T:System.Drawing.PointF"/> [240,170] (right image).
                     </para>
                     <para>
                         <img href="content_offset.png"/>
@@ -638,9 +656,12 @@ else
                         </code>
                     </example>
                     <para>
-                        "An un-official 80cm FITA archery target" (c)2006 Alberto Barbati, used under a Creative Commons Attribution-Share Alike 2.5 Generic license: http://creativecommons.org/licenses/by-sa/2.5/deed.en
+                        "An un-official 80cm FITA archery target"  (c)2006 Alberto Barbati, used under a Creative Commons Attribution-Share Alike 2.5 Generic license: http://creativecommons.org/licenses/by-sa/2.5/deed.en
                     </para>
+                    <para>Assignment to this value will move the subview instantaneously. If animation is desired, use  <see cref="M:MonoTouch.UIKit.UIScrollView.SetContentOffset"/>.
+                        </para>
                 </remarks>
+                <altmember cref="M:MonoTouch.UIKit.UIScrollView.SetContentOffset"/>
             </Docs>
         </Member>
         <Member MemberName="ContentSize">
@@ -667,7 +688,11 @@ else
                 </value>
                 <remarks>
                     <para>
-                        The `ContentSize` property specifies the total scrollable area, visible or not, of the `UIScrollView.` The application developer must set the `ContentSize` property to a value greater than the `UIScrollView`'s `Frame` to get the expected scrolling behavior. The `ContentSize` is generally the union of the `Frame`s of the `UIScrollView`'s subviews, but this is not necessarily the case (sometimes, drawing geometry can be made easier or more consistent by having `Frame`s that are partially unreachable by scrolling).
+                        The <c>ContentSize</c> property specifies the total scrollable area, visible or not, of the <see cref="T:MonoTouch.UIKit.UIScrollView"/>. The 
+                        application developer must set the <c>ContentSize</c> property to a value greater than the <see cref="T:MonoTouch.UIKit.UIScrollView"/>'s 
+                        <c>Frame</c> to get the expected scrolling behavior. The <c>ContentSize</c> is generally the union of the <c>Frame</c>s of the 
+                        <see cref="T:MonoTouch.UIKit.UIScrollView"/>'s subviews, but this is not necessarily the case (sometimes, drawing geometry can be made easier 
+                        or more consistent by having <c>Frame</c>s that are partially unreachable by scrolling).
                     </para>
                 </remarks>
             </Docs>
@@ -707,7 +732,7 @@ else
             </ReturnValue>
             <Docs>
                 <summary>Event raised by the object.</summary>
-                <remarks>If the application developer assigns a value to this event, it will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+                <remarks>If the application developer assigns a value to this event, it will reset the value for the <c>WeakDelegate</c> property to an internal handler that maps delegates to events.</remarks>
             </Docs>
         </Member>
         <Member MemberName="DecelerationRate">
@@ -747,7 +772,7 @@ else
                 <ReturnType>System.Single</ReturnType>
             </ReturnValue>
             <Docs>
-                <summary>Represents the value associated with the constant UIScrollViewDecelerationRateFast</summary>
+                <summary>Represents the value associated with the constant <c>UIScrollViewDecelerationRateFast</c></summary>
                 <value>
                 </value>
                 <remarks>
@@ -765,7 +790,7 @@ else
                 <ReturnType>System.Single</ReturnType>
             </ReturnValue>
             <Docs>
-                <summary>Represents the value associated with the constant UIScrollViewDecelerationRateNormal</summary>
+                <summary>Represents the value associated with the constant <c>UIScrollViewDecelerationRateNormal</c></summary>
                 <value>
                 </value>
                 <remarks>
@@ -784,7 +809,7 @@ else
             </ReturnValue>
             <Docs>
                 <summary>Event raised by the object.</summary>
-                <remarks>If the application developer assigns a value to this event, it will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+                <remarks>If the application developer assigns a value to this event, it will reset the value for the <c>WeakDelegate</c> property to an internal handler that maps delegates to events.</remarks>
             </Docs>
         </Member>
         <Member MemberName="DelaysContentTouches">
@@ -829,15 +854,15 @@ else
                 <ReturnType>MonoTouch.UIKit.UIScrollViewDelegate</ReturnType>
             </ReturnValue>
             <Docs>
-                <summary>An instance of the MonoTouch.UIKit.UIScrollViewDelegate model class which acts as the class delegate.</summary>
+                <summary>An instance of the <see cref="T:MonoTouch.UIKit.UIScrollViewDelegate"/> model class which acts as the class delegate.</summary>
                 <value>
-                    <para>The instance of the MonoTouch.UIKit.UIScrollViewDelegate model class</para>
+                    <para>The instance of the <see cref="T:MonoTouch.UIKit.UIScrollViewDelegate"/> model class.</para>
                     <para tool="nullallowed">This value can be <see langword="null"/>.</para>
                 </value>
                 <remarks>
                     <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
-                    <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
-                    <para>This is the strongly typed version of the object, use the WeakDelegate property instead if you want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+                    <para>When setting the Delegate or <c>WeakDelegate</c> values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+                    <para>This is the strongly typed version of the object, use the <c>WeakDelegate</c> property instead if you want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
                 </remarks>
             </Docs>
         </Member>
@@ -853,7 +878,7 @@ else
             </ReturnValue>
             <Docs>
                 <summary>Event raised by the object.</summary>
-                <remarks>If you assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+                <remarks>If you assign a value to this event, this will reset the value for the <c>WeakDelegate</c> property to an internal handler that maps delegates to events.</remarks>
             </Docs>
         </Member>
         <Member MemberName="DirectionalLockEnabled">
@@ -896,14 +921,15 @@ else
             </Parameters>
             <Docs>
                 <param name="disposing">
-                    <para>If set to <see langword="true"/>, the method is invoked directly and will dispose manage and unmanaged resources;   If set to <see langword="false"/> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</para>
+                    <para>If set to <see langword="true"/>, the method is invoked directly and will dispose manage and unmanaged resources; if set to <see langword="false"/> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</para>
                 </param>
-                <summary>Releases the resourced used by the UIScrollView object.</summary>
+                <summary>Releases the resourced used by the <c>UIScrollView</c> object.</summary>
                 <remarks>
-                    <para>This Dispose method releases the resources used by the UIScrollView class.</para>
-                    <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposing <paramref name="disposing"/> is set to <see langword="true"/> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false"/>. </para>
-                    <para>Calling the Dispose method when you are finished using the UIScrollView ensures that all external resources used by this managed object are released as soon as possible.  Once you have invoked the Dispose method, the object is no longer useful and you should no longer make any calls to it.</para>
-                    <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at http://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
+                    <para>This <c>Dispose</c> method releases the resources used by the <c>UIScrollView</c> class.</para>
+                    <para>This method is called by both the <c>Dispose()</c> method and the object finalizer (<c>Finalize</c>).    When invoked by the <c>Dispose</c> method, the parameter disposing <paramref name="disposing"/> is set to <see langword="true"/> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false"/>. </para>
+                    <para>Calling the <c>Dispose</c> method when you are finished using the <c>UIScrollView</c> ensures that all external resources used by this managed object are released as soon as possible.  Once you have invoked the <c>Dispose</c> method, the object is no longer useful and you should no longer make any calls to it.</para>
+                    <para>  For more information on how to override this method and on the <c>Dispose/IDisposable</c> pattern, read the ``Implementing a Dispose Method'' document at http://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
+                    <!-- Confirmed link 11/20/2012 -->
                 </remarks>
             </Docs>
         </Member>
@@ -926,7 +952,7 @@ else
                 <summary>Returns <see langword="true"/> if the content has begun scrolling. Read-only.</summary>
                 <value>
                 </value>
-                <remarks>This property many not be updated immediately after the scrolling has started.</remarks>
+                <remarks>This property can not be depended upon to be updated immediately after the scrolling has started.</remarks>
             </Docs>
         </Member>
         <Member MemberName="DraggingEnded">
@@ -941,7 +967,7 @@ else
             </ReturnValue>
             <Docs>
                 <summary>Event raised by the object.</summary>
-                <remarks>If you assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+                <remarks>If you assign a value to this event, this will reset the value for the <c>WeakDelegate</c> property to an internal handler that maps delegates to events.</remarks>
             </Docs>
         </Member>
         <Member MemberName="DraggingStarted">
@@ -956,7 +982,7 @@ else
             </ReturnValue>
             <Docs>
                 <summary>Event raised by the object.</summary>
-                <remarks>If you assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+                <remarks>If you assign a value to this event, this will reset the value for the <c>WeakDelegate</c> property to an internal handler that maps delegates to events.</remarks>
             </Docs>
         </Member>
         <Member MemberName="FlashScrollIndicators">
@@ -1034,10 +1060,11 @@ else
             </ReturnValue>
             <Docs>
                 <summary>The value of the maximum scale factor that can be applied to the content view.</summary>
-                <value>
+                <value>The default value is 1.0f
                 </value>
                 <remarks>
                     <para>This value should be greater than the value of <see cref="P:MonoTouch.UIKit.UIScrollView.MinimumZoomScale"/>.</para>
+                    <para>If this and <see cref="P:MonoTouch.UIKit.UIScrollView.MinimumZoomScale"/> are left at their default values of 1.0, zooming will not appear to work, as the zoom will be constrained to that single value.</para>
                 </remarks>
             </Docs>
         </Member>
@@ -1061,10 +1088,11 @@ else
             </ReturnValue>
             <Docs>
                 <summary>The value of the minimum scale factor that can be applied to the content view.</summary>
-                <value>
+                <value>The default value is 1.0f
                 </value>
                 <remarks>
                     <para>This value should be smaller than the value of <see cref="P:MonoTouch.UIKit.UIScrollView.MaximumZoomScale"/>.</para>
+                    <para>If this and <see cref="P:MonoTouch.UIKit.UIScrollView.MaximumZoomScale"/> are left at their default values of 1.0, zooming will not appear to work, as the zoom will be constrained to that single value.</para>
                 </remarks>
             </Docs>
         </Member>
@@ -1168,7 +1196,7 @@ else
             </ReturnValue>
             <Docs>
                 <summary>Event raised by the object.</summary>
-                <remarks>If you assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+                <remarks>If you assign a value to this event, this will reset the value for the <c>WeakDelegate</c> property to an internal handler that maps delegates to events.</remarks>
             </Docs>
         </Member>
         <Member MemberName="Scrolled">
@@ -1182,8 +1210,11 @@ else
                 <ReturnType>System.EventHandler</ReturnType>
             </ReturnValue>
             <Docs>
-                <summary>Event raised by the object.</summary>
-                <remarks>If you assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+                <summary>Event raised when the <see cref="T:MonoTouch.UIKit.UIScrollView"/> has scrolled.</summary>
+                <remarks>
+                    <para>This event is raised when the <see cref="T:MonoTouch.UIKit.UIScrollView"/> has scrolled. During a drag or pan gesture or during a scrolling animation, it will be called repeatedly. Refer to the <see cref="M:MonoTouch.UIKit.ContentOffset"/> to determine the current location. </para>    
+                    <para>If you assign a value to this event, this will reset the value for the <c>WeakDelegate</c> property to an internal handler that maps delegates to events.</para>
+                </remarks>
             </Docs>
         </Member>
         <Member MemberName="ScrolledToTop">
@@ -1198,7 +1229,11 @@ else
             </ReturnValue>
             <Docs>
                 <summary>Event raised by the object.</summary>
-                <remarks>If you assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+                <remarks>
+                    <para>The scroll view calls this method when it finishes scrolling to the top of the content. It might be called immediately if the top is already shown. For the scroll-to-top gesture (tap on the status bar) to work, <see cref="P:MonoTouch.UIKit.UIScrollView.ScrollsToTop"/> must be set to <see langword="true"/>.</para>
+                    <para>If you assign a value to this event, this will reset the value for the <c>WeakDelegate</c> property to an internal handler that maps delegates to events.
+                    </para>
+                </remarks>
             </Docs>
         </Member>
         <Member MemberName="ScrollEnabled">
@@ -1220,7 +1255,7 @@ else
                 <ReturnType>System.Boolean</ReturnType>
             </ReturnValue>
             <Docs>
-                <summary>If set to <see cref="true"/> then scrolling is enabled.</summary>
+                <summary>If set to <see langword="true"/> then scrolling is enabled.</summary>
                 <value>
                 </value>
                 <remarks>If <see cref="false"/>, then touch events will not be processed by the scroll view. They continue to be forwarded up the responder chain.</remarks>
@@ -1245,11 +1280,15 @@ else
                 <ReturnType>MonoTouch.UIKit.UIEdgeInsets</ReturnType>
             </ReturnValue>
             <Docs>
-                <summary>How far inset the scroll indicators are from the scroll view.</summary>
-                <value>
+                <summary>How far inset the scroll indicators are from the scroll view's edges.</summary>
+                <value>Default value is <see cref="P:MonoTouch.UIKit.UIEdgeInsets.Zero"/>
                 </value>
                 <remarks>
+                    <para>
+                        If the application developer sets the <see cref="P:MonoTouch.UIKit.UIScrollView.ContentInset"/> to a value other than the default <see cref="P:MonoTouch.UIKit.UIEdgeInsets.Zero"/>, the developer will typically also want to set this property to the same <see cref="T:MonoTouch.UIKit.UIEdgeInsets"/> value so that the scroll indicators will appear near the scrolling content and not overlap elements placed inside the inset area.
+                    </para>
                 </remarks>
+                <altmember cref="P:MonoTouch.UIKit.UIScrollView.ContentInset"/>
             </Docs>
         </Member>
         <Member MemberName="ScrollRectToVisible">
@@ -1273,7 +1312,7 @@ else
             </Parameters>
             <Docs>
                 <param name="rect">A rectangle defining an area inside the content view.</param>
-                <param name="animated">If <see cref="true"/>, then scrolling should be animated.</param>
+                <param name="animated">If <see langword="true"/>, then scrolling should be animated.</param>
                 <summary>This method will scroll the content view so that the area defined by <paramref name="rect"/> is visible.</summary>
                 <remarks>
                 </remarks>
@@ -1298,11 +1337,14 @@ else
                 <ReturnType>System.Boolean</ReturnType>
             </ReturnValue>
             <Docs>
-                <summary>If <see cref="true"/>, then the scroll view will jump to the top of the content when the user taps on the status bar.</summary>
-                <value>
+                <summary>If <see langword="true"/>, then the scroll view will jump to the top of the content when the user taps on the status bar.</summary>
+                <value>The default value is <see langword="false"/>
                 </value>
                 <remarks>
+                    If set to <see langword="true"/> and <see cref="M:MonoTouch.UIKit.UIScrollView.ShouldScrollToTop"/> returns <see langword="true"/>, the scroll-to-tap gesture of a tap on the status bar will jump to the top of the content view and fire the <see cref="E:MonoTouch.UIKit.UIScrollView.ScrolledToTop"/> event. 
                 </remarks>
+                <altmember cref="M:MonoTouch.UIKit.UIScrollView.ShouldScrollToTop"/>
+                <altmember cref="E:MonoTouch.UIKit.UIScrollView.ScrolledToTop"/>
             </Docs>
         </Member>
         <Member MemberName="SetContentOffset">
@@ -1326,10 +1368,14 @@ else
             </Parameters>
             <Docs>
                 <param name="contentOffset">A point (relative to the content view's origin) to use as an offset.</param>
-                <param name="animated">If <see cref="true"/>, then animate the transition.</param>
-                <summary>This method will move the scroll view to a new location.</summary>
+                <param name="animated">If <see langword="true"/>, then animate the transition.</param>
+                <summary>This method will move the scroll view to a new location, with optional animation.</summary>
                 <remarks>
+                    <para>
+                        Assignment to <see cref="P:MonoTouch.UIKit.UIScrollView.ContentOffset"/> is instantaneous. This method allows the change in location to be animated.
+                    </para>
                 </remarks>
+                <altmember cref="P:MonoTouch.UIKit.UIScrollView.ContentOffset"/>
             </Docs>
         </Member>
         <Member MemberName="SetZoomScale">
@@ -1353,10 +1399,12 @@ else
             </Parameters>
             <Docs>
                 <param name="scale">The new scale factor to apply to the content.</param>
-                <param name="animated">If <see cref="true"/>, then animate the zoom.</param>
-                <summary>This value should be between the values of <see cref="P:MonoTouch.UIKit.UIScrollView.MinimumZoomFactor"/> and <see cref="P:MonoTouch.UIKit.UIScrollView.MaximumZoomFactor"/>. tk</summary>
+                <param name="animated">If <see langword="true"/>, then animate the zoom.</param>
+                <summary>This value should be between the values of <see cref="P:MonoTouch.UIKit.UIScrollView.MinimumZoomFactor"/> and <see cref="P:MonoTouch.UIKit.UIScrollView.MaximumZoomFactor"/>. </summary>
                 <remarks>
+                    <para> Assignment to <see cref="ZoomScale"/> is instantaneous. This method allows the change in scale to be animated.</para>
                 </remarks>
+                <altmember cref="P:MonoTouch.UIKit.UIScrollView.ZoomScale"/>
             </Docs>
         </Member>
         <Member MemberName="ShouldScrollToTop">
@@ -1370,9 +1418,12 @@ else
                 <ReturnType>MonoTouch.UIKit.UIScrollViewCondition</ReturnType>
             </ReturnValue>
             <Docs>
-                <summary>Delegate invoked by the object to get a value.</summary>
-                <value>To be added.</value>
-                <remarks>You assign a function, delegate or anonymous method to this property to return a value to the object.   If you assign a value to this property, it this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+                <summary>Delegate called after the scroll-to-top gesture has been executed but before the scroll has taken place. </summary>
+                <remarks>
+                    <para>Assignment to this property allows fine-grained control over the scroll-to-top gesture. The function is called after the application user has made a scroll-to-top gesture. The target <see cref="T:MonoTouch.UIKit.UIScrollView"/> is passed as a parameter to the <see cref="T:MonoTouch.UIKit.UIScrollViewCondition"/> delegate. If the delegate returns <see langword="true"/>, the <see cref="T:MonoTouch.UIKit.UIScrollView"/> scrolls to the top, otherwise, it does not.</para>
+                    <para>If you assign a value to this property, it this will reset the value for the <c>WeakDelegate</c> property to an internal handler that maps delegates to events.
+                    </para>
+                </remarks>
             </Docs>
         </Member>
         <Member MemberName="ShowsHorizontalScrollIndicator">
@@ -1395,10 +1446,13 @@ else
             </ReturnValue>
             <Docs>
                 <summary>If <see langword="true"/>, then the horizontal scroll bar will be visible when tracking.</summary>
-                <value>
-                </value>
+                <value>The default value is <see langword="true"/>.</value>
                 <remarks>
+                    <para>
+                       The application developer can set this property to <see langword="false"/> to constrain scrolling. 
+                    </para>
                 </remarks>
+                <altmember cref="P:MonoTouch.UIKit.UIScrollView.ShowsVerticalScrollIndicator"/>
             </Docs>
         </Member>
         <Member MemberName="ShowsVerticalScrollIndicator">
@@ -1421,10 +1475,13 @@ else
             </ReturnValue>
             <Docs>
                 <summary>If <see langword="true"/>, then the vertical scroll bar will be visible when tracking.</summary>
-                <value>
-                </value>
+                <value>The default value is <see langword="true"/>.</value>
                 <remarks>
+                    <para>
+                       The application developer can set this property to <see langword="false"/> to constrain scrolling. 
+                    </para>
                 </remarks>
+                <altmember cref="P:MonoTouch.UIKit.UIScrollView.ShowsHorizontalScrollIndicator"/>
             </Docs>
         </Member>
         <Member MemberName="TouchesShouldBegin">
@@ -1478,7 +1535,12 @@ else
                 <param name="view">The view object that was touched.</param>
                 <summary>This method controls if the touches of a content subview should be cancelled, which would allow dragging to start.</summary>
                 <returns><see langword="true"/> if future touch events to <paramref name="view"/> are to be cancelled.  <see langword="false"/> if <paramref name="view"/> is to receive the touch events.</returns>
-                <remarks>To be added.</remarks>
+                <remarks>
+                    <para>This method is called by the <see cref="T:MonoTouch.UIKit.UIScrollView"/> after the application user touches the screen but before tracking begins. If not overridden, returns <see langword="true"/> if the <paramref name="view"/> is a subtype of <see cref="T:MonoTouch.UIKit.UIControl"/>, otherwise, it returns <see langword="false"/>. This method is not called at all if <see cref="P:MonoTouch.UIKit.UIScrollView.CanCancelContentTouches"/> returns <see langword="false"/>.  
+                    </para>
+                </remarks>
+                <altmember cref="T:MonoTouch.UIKit.UIControl"/>
+                <altmember cref="P:MonoTouch.UIKit.UIScrollView.CanCancelContentTouches"/>
             </Docs>
         </Member>
         <Member MemberName="Tracking">
@@ -1498,7 +1560,7 @@ else
             </ReturnValue>
             <Docs>
                 <summary>Returns <see langword="true"/> if the user has touched the content and scrolling is about to begin.</summary>
-                <value>
+                <value><see langword="true"/> while tracking is active, otherwise <see langword="false"/>.
                 </value>
                 <remarks>
                 </remarks>
@@ -1515,9 +1577,37 @@ else
                 <ReturnType>MonoTouch.UIKit.UIScrollViewGetZoomView</ReturnType>
             </ReturnValue>
             <Docs>
-                <summary>Delegate invoked by the object to get a value.</summary>
-                <value>To be added.</value>
-                <remarks>You assign a function, delegate or anonymous method to this property to return a value to the object.   If you assign a value to this property, it this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+                <summary>A delegate for reading or writing the <see cref="T:MonoTouch.UIKit.UIView"/> that is to be scaled.</summary>
+                <value>The default value is <see langword="null"/></value>
+                <remarks>
+                    <para>
+                        The application developer must set this delegate for zooming to occur. The following code, taken from the ScrollView demo in the "Standard Controls" demo, shows a typical use. The content of the <see cref="T:MonoTouch.UIKit.UIScrollView"/> is a <see cref="T:MonoTouch.UIKit.UIImageView"/> and a new <see cref="M:MonoTouch.UIKit.UIScrollViewGetZoomView"/> delegate is specified that returns that same <see cref="T:MonoTouch.UIKit.UIImageView"/>.
+                    </para>
+                    <example>
+                        <code lang="C#">
+// create our scroll view
+scrollView = new UIScrollView (
+	new RectangleF (0, 0, this.View.Frame.Width, this.View.Frame.Height - this.NavigationController.NavigationBar.Frame.Height));
+this.View.AddSubview (scrollView);
+
+// create our image view
+imageView = new UIImageView (UIImage.FromFile ("Images/Icons/512_icon.png"));
+scrollView.ContentSize = imageView.Image.Size;
+scrollView.MaximumZoomScale = 3f;
+scrollView.MinimumZoomScale = .1f;
+scrollView.AddSubview (imageView);
+
+scrollView.ViewForZoomingInScrollView += (UIScrollView sv) =&gt; 
+{
+	return imageView; 
+};
+                    </code>
+                        </example>
+                        <para>If you assign a value to this property, it this will reset the value for the <c>WeakDelegate</c> property to an internal handler that maps delegates to events.
+                    </para>
+                </remarks>
+                <altmember cref="T:MonoTouch.UIKit.UIScrollViewGetZoomView"/>
+                <related type="sample" href="http://samples.xamarin.com/iOS/Samples/ByGuid?guid=D307AF95-96A3-4FBC-832A-1FB187936FAB">iOS Standard Controls</related>
             </Docs>
         </Member>
         <Member MemberName="WeakDelegate">
@@ -1539,14 +1629,14 @@ else
                 <ReturnType>MonoTouch.Foundation.NSObject</ReturnType>
             </ReturnValue>
             <Docs>
-                <summary>An object that can respond to the delegate protocol for this type</summary>
+                <summary>An object that can respond to the delegate protocol for this type.</summary>
                 <value>
                     <para>The instance that will respond to events and data requests.</para>
                     <para tool="nullallowed">This value can be <see langword="null"/>.</para>
                 </value>
                 <remarks>
                     <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
-                    <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+                    <para>When setting the Delegate or <c>WeakDelegate</c> values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
                     <para>   Methods must be decorated with the [Export ("selectorName")] attribute to respond to each method from the protocol.   Alternatively use the Delegate method which is strongly typed and does not require the [Export] attributes on methods.</para>
                 </remarks>
             </Docs>
@@ -1562,8 +1652,14 @@ else
                 <ReturnType>System.EventHandler&lt;MonoTouch.UIKit.WillEndDraggingEventArgs&gt;</ReturnType>
             </ReturnValue>
             <Docs>
-                <summary>Event raised by the object.</summary>
-                <remarks>If you assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+                <summary>Event raised at the end of dragging.</summary>
+                <remarks>
+                    <para>
+                        This event is raised when the application user finishes dragging but before the scroll animation has ended. The <see cref="T:MonoTouch.UIKit.WillEndDraggingEventArgs"/> contain the velocity and the projected <see cref="P:MonoTouch.UIKit.UIScrollView.ContentOffset"/>. If the application developer modifies the <see cref="P:MonoTouch.UIKit.UIScrollView.ContentOffset"/>, the modified value will be used as the final location.
+                        </para>
+                    <para>If you assign a value to this event, this will reset the value for the <c>WeakDelegate</c> property to an internal handler that maps delegates to events.</para></remarks>
+                <altmember cref="T:MonoTouch.UIKit.WillEndDraggingEventArgs"/>
+                <altmember cref="P:MonoTouch.UIKit.UIScrollView.ContentOffset"/>
             </Docs>
         </Member>
         <Member MemberName="ZoomBouncing">
@@ -1605,7 +1701,7 @@ else
                 <ReturnType>System.Boolean</ReturnType>
             </ReturnValue>
             <Docs>
-                <summary>Returns <see cref="true"/> if the content view is zooming in or out. Read-only.</summary>
+                <summary>Returns <see langword="true"/> if the content view is zooming in or out. Read-only.</summary>
                 <value>
                 </value>
                 <remarks>
@@ -1623,8 +1719,12 @@ else
                 <ReturnType>System.EventHandler&lt;MonoTouch.UIKit.ZoomingEndedEventArgs&gt;</ReturnType>
             </ReturnValue>
             <Docs>
-                <summary>Event raised by the object.</summary>
-                <remarks>If you assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+                <summary>Event raised at the end of zooming.</summary>
+                <remarks>
+                    <para>Zooming scales the content, but does not cause it to be redrawn in a sharper manner. To assure sharpness at higher zoom levels, the application developer should use the <see cref="M:MonoTouch.CoreAnimation.CALayer.DrawInContext"/> method.</para>
+                    <para>If you assign a value to this event, this will reset the value for the <c>WeakDelegate</c> property to an internal handler that maps delegates to events.</para></remarks>
+                <altmember see="M:MonoTouch.UIKit.UIScrollView.ZoomingStarted"/>
+                 <altmember cref="M:MonoTouch.CoreAnimation.CALayer.DrawInContext"/>
             </Docs>
         </Member>
         <Member MemberName="ZoomingStarted">
@@ -1638,8 +1738,9 @@ else
                 <ReturnType>System.EventHandler&lt;MonoTouch.UIKit.UIScrollViewZoomingEventArgs&gt;</ReturnType>
             </ReturnValue>
             <Docs>
-                <summary>Event raised by the object.</summary>
-                <remarks>If you assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+                <summary>Event raised at the beginning of zooming.</summary>
+                <remarks>If you assign a value to this event, this will reset the value for the <c>WeakDelegate</c> property to an internal handler that maps delegates to events.</remarks>
+                 <altmember see="M:MonoTouch.UIKit.UIScrollView.ZoomingEnded"/>
             </Docs>
         </Member>
         <Member MemberName="ZoomScale">
@@ -1662,10 +1763,12 @@ else
             </ReturnValue>
             <Docs>
                 <summary>This is the scale factor that is being applied to the content of a scroll view.</summary>
-                <value>
+                <value>The default value is 1.0.
                 </value>
                 <remarks>
+                    <para>Zooming scales the content, but does not cause it to be redrawn in a sharper manner. To assure sharpness at higher zoom levels, the application developer should use the <see cref="M:MonoTouch.CoreAnimation.CALayer.DrawInContext"/> method.</para>
                 </remarks>
+                <altmember cref="M:MonoTouch.CoreAnimation.CALayer.DrawInContext"/>
             </Docs>
         </Member>
         <Member MemberName="ZoomToRect">
