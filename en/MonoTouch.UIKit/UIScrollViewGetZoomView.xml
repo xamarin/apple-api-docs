@@ -15,10 +15,27 @@
     <ReturnType>MonoTouch.UIKit.UIView</ReturnType>
   </ReturnValue>
   <Docs>
-    <param name="scrollView">To be added.</param>
-    <summary>A delegate signature used int he UIScrollView class that defines a mechanism to get a view to render an object at a specified zoom factor.</summary>
-    <returns>To be added.</returns>
-    <remarks>To be added.</remarks>
-    <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=556b1b8f-088e-494f-bc1a-bd418c174ba3">ZoomingPdfViewer</related>
-  </Docs>
+    <param name="scrollView">The <see cref="T:MonoTouch.UIKit.UIScrollView"/> on whose behalf this method is being called.</param>
+    <summary>A delegate signature used by <see cref="T:MonoTouch.UIKit.UIScrollView"/>'s <see cref="M:MonoTouch.UIKit.UIScrollView.ViewForZoomingInScrollView"/>  that specifies which view to render during zoom.</summary>
+    <returns>The <see cref="T:MonoTouch.UIKit.UIView"/> that should be zoomed when the <paramref name="scrollView"/> is zooming.</returns>
+    <remarks><para>The <see cref="M:MonoTouch.UIKit.UIScrollView.ViewForZoomingInScrollView"/> in <see cref="T:MonoTouch.UIKit.UIScrollView"/> needs to be assigned for zooming to work. For instance, in this code taken from the "Scroll View" section of the "iOS Standard Controls" example, a <see cref="T:MonoTouch.UIKit.UIImageView"/> is created and added as a subview of the <see cref="T:MonoTouch.UIKit.UIScrollView"/> and then used as the return value from the <see cref="M:MonoTouch.UIKit.UIScrollView.ViewForZoomingInScrollView"/> delegate: </para>
+      <example>
+        <code lang="C#">
+// create our image view
+imageView = new UIImageView (UIImage.FromFile ("Images/Icons/512_icon.png"));
+scrollView.ContentSize = imageView.Image.Size;
+scrollView.MaximumZoomScale = 3f;
+scrollView.MinimumZoomScale = .1f;
+scrollView.AddSubview (imageView);
+          
+scrollView.ViewForZoomingInScrollView += (UIScrollView sv) => {
+	return imageView; 
+};          
+        </code>
+      </example>
+    </remarks>
+      <altmember cref="T:MonoTouch.UIKit.UIScrollView"/>
+      <altmember cref="M:MonoTouch.UIKit.UIScrollView.ViewForZoomingInScrollView"/>
+      <related type="sample" href="http://samples.xamarin.com/iOS/Samples/ByGuid?guid=D307AF95-96A3-4FBC-832A-1FB187936FAB">iOS Standard Controls</related>
+                <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=556b1b8f-088e-494f-bc1a-bd418c174ba3">Zooming Pdf Viewer</related>  </Docs>
 </Type>
