@@ -85,19 +85,19 @@
             </para>
             <example>
                 <code lang="C#">
-                    // create our scroll view
-                    scrollView = new UIScrollView (
-                    new RectangleF (0, 0, this.View.Frame.Width, this.View.Frame.Height - this.NavigationController.NavigationBar.Frame.Height));
-                    this.View.AddSubview (scrollView);
-                    
-                    // create our image view
-                    imageView = new UIImageView (UIImage.FromFile ("Images/Icons/512_icon.png"));
-                    scrollView.ContentSize = imageView.Image.Size;
-                    scrollView.MaximumZoomScale = 3f;
-                    scrollView.MinimumZoomScale = .1f;
-                    scrollView.AddSubview (imageView);
-                    
-                    scrollView.ViewForZoomingInScrollView += (UIScrollView sv) =&gt; { return imageView; };
+// create our scroll view
+scrollView = new UIScrollView (
+new RectangleF (0, 0, this.View.Frame.Width, this.View.Frame.Height - this.NavigationController.NavigationBar.Frame.Height));
+this.View.AddSubview (scrollView);
+
+// create our image view
+imageView = new UIImageView (UIImage.FromFile ("Images/Icons/512_icon.png"));
+scrollView.ContentSize = imageView.Image.Size;
+scrollView.MaximumZoomScale = 3f;
+scrollView.MinimumZoomScale = .1f;
+scrollView.AddSubview (imageView);
+
+scrollView.ViewForZoomingInScrollView += (UIScrollView sv) =&gt; { return imageView; };
                 </code>
             </example>
             <para>
@@ -136,29 +136,29 @@
             </para>
             <example>
                 <code lang="C#">
-                    // instantiate and add the controllers to our list
-                    controllers.Add (new Controller_1 ());
-                    controllers.Add (new Controller_2 ());
-                    controllers.Add (new Controller_3 ());
-                    
-                    for (int i = 0; i &lt; controllers.Count; i++)
-                    {
-                    // set their location and size, each one is moved to the 
-                    // right by the width of the previous
-                    RectangleF viewFrame = new RectangleF (
-                    scrlMain.Frame.Width * i,
-                    scrlMain.Frame.Y,
-                    scrlMain.Frame.Width,
-                    scrlMain.Frame.Height);
-                    controllers[i].View.Frame = viewFrame;
-                    
-                    // add the view to the scrollview
-                    scrlMain.AddSubview (controllers[i].View);
-                    }
-                    
-                    // set our scroll view content size (width = number of pages * scroll view width)
-                    scrlMain.ContentSize = new SizeF (
-                    scrlMain.Frame.Width * controllers.Count, scrlMain.Frame.Height);
+// instantiate and add the controllers to our list
+controllers.Add (new Controller_1 ());
+controllers.Add (new Controller_2 ());
+controllers.Add (new Controller_3 ());
+
+for (int i = 0; i &lt; controllers.Count; i++)
+{
+	// set their location and size, each one is moved to the 
+	// right by the width of the previous
+	RectangleF viewFrame = new RectangleF (
+	scrlMain.Frame.Width * i,
+	scrlMain.Frame.Y,
+	scrlMain.Frame.Width,
+	scrlMain.Frame.Height);
+	controllers[i].View.Frame = viewFrame;
+
+	// add the view to the scrollview
+	scrlMain.AddSubview (controllers[i].View);
+}
+
+// set our scroll view content size (width = number of pages * scroll view width)
+scrlMain.ContentSize = new SizeF (
+scrlMain.Frame.Width * controllers.Count, scrlMain.Frame.Height);
                 </code>
             </example>
             <format type="text/html">
@@ -175,19 +175,19 @@
             </para>
             <example>
                 <code lang="C#">
-                    UITapGestureRecognizer doubletap = new UITapGestureRecognizer();
-                    doubletap.NumberOfTapsRequired = 2; // double tap
-                    doubletap.AddTarget (this, new MonoTouch.ObjCRuntime.Selector("DoubleTapSelector"));
-                    scrollView.AddGestureRecognizer(doubletap); // detect when the scrollView is double-tapped
-                    //...etc...
-                    
-                    [MonoTouch.Foundation.Export("DoubleTapSelector")]
-                    public void OnDoubleTap (UIGestureRecognizer sender) {
-                    if (scrollView.ZoomScale &gt;= 1)
-                    scrollView.SetZoomScale(0.25f, true);
-                    else
-                    scrollView.SetZoomScale(2f, true);
-                    }
+UITapGestureRecognizer doubletap = new UITapGestureRecognizer();
+doubletap.NumberOfTapsRequired = 2; // double tap
+doubletap.AddTarget (this, new MonoTouch.ObjCRuntime.Selector("DoubleTapSelector"));
+scrollView.AddGestureRecognizer(doubletap); // detect when the scrollView is double-tapped
+//...etc...
+
+[MonoTouch.Foundation.Export("DoubleTapSelector")]
+public void OnDoubleTap (UIGestureRecognizer sender) {
+if (scrollView.ZoomScale &gt;= 1)
+   scrollView.SetZoomScale(0.25f, true);
+else
+   scrollView.SetZoomScale(2f, true);
+}
                 </code>
             </example>
             <format type="text/html">
@@ -715,14 +715,15 @@
                         <img href="MonoTouch.UIKit.UIScrollView.content_offset.png"/>
                     </para>
                     <example>
-                        <code>
-                            var scrollView = new UIScrollView ();
-                            scrollView.ContentSize = new SizeF (800, 800);
+                        <code lang="C#">
+var scrollView = new UIScrollView ();
+scrollView.ContentSize = new SizeF (800, 800);
+
+var imageView = new UIImageView (UIImage.FromFile ("target800.png"));
+
+scrollView.AddSubview (imageView);
+scrollView.ContentOffset = new PointF (240, 170);
                             
-                            var imageView = new UIImageView (UIImage.FromFile ("target800.png"));
-                            
-                            scrollView.AddSubview (imageView);
-                            scrollView.ContentOffset = new PointF (240, 170);
                         </code>
                     </example>
                     <para>
@@ -1221,7 +1222,7 @@
                 <remarks>
                     <para>The default value is <see langword="false"/>.</para>
                     <para>
-                        The following image, from the "Page Control" demo in the [iOS Standard Controls](http://samples.xamarin.com/iOS/Samples/ByGuid?guid=D307AF95-96A3-4FBC-832A-1FB187936FAB) sample, shows
+                        The following image, from the "Page Control" demo in the "iOS Standard Controls" sample, shows
                         the application in the middle of a swiping animation; portions of both the white and gray subviews are visible. If <see cref="P:MonoTouch.UIKit.UIScrollView.PagingEnabled"/>
                         were left to the default <see langword="false"/> value, if the application user's finger was lifted at this point, the scrolling would stop with both views
                         partially visible. If it were <see langword="true"/>, the closest view would "snap" into alignment (in this case, the white view).
@@ -1230,6 +1231,7 @@
                         <img href="MonoTouch.UIKit.UIScrollView.Slide1.png"/>
                     </para>
                 </remarks>
+                <related type="sample" href="http://samples.xamarin.com/iOS/Samples/ByGuid?guid=D307AF95-96A3-4FBC-832A-1FB187936FAB">iOS Standard Controls</related>
             </Docs>
         </Member>
         <Member MemberName="PanGestureRecognizer">
@@ -1696,22 +1698,22 @@
                     </para>
                     <example>
                         <code lang="C#">
-                            // create our scroll view
-                            scrollView = new UIScrollView (
-                            new RectangleF (0, 0, this.View.Frame.Width, this.View.Frame.Height - this.NavigationController.NavigationBar.Frame.Height));
-                            this.View.AddSubview (scrollView);
-                            
-                            // create our image view
-                            imageView = new UIImageView (UIImage.FromFile ("Images/Icons/512_icon.png"));
-                            scrollView.ContentSize = imageView.Image.Size;
-                            scrollView.MaximumZoomScale = 3f;
-                            scrollView.MinimumZoomScale = .1f;
-                            scrollView.AddSubview (imageView);
-                            
-                            scrollView.ViewForZoomingInScrollView += (UIScrollView sv) =&gt; 
-                            {
-                            return imageView; 
-                            };
+// create our scroll view
+scrollView = new UIScrollView (
+   new RectangleF (0, 0, this.View.Frame.Width, this.View.Frame.Height - this.NavigationController.NavigationBar.Frame.Height));
+   this.View.AddSubview (scrollView);
+
+// create our image view
+imageView = new UIImageView (UIImage.FromFile ("Images/Icons/512_icon.png"));
+scrollView.ContentSize = imageView.Image.Size;
+scrollView.MaximumZoomScale = 3f;
+scrollView.MinimumZoomScale = .1f;
+scrollView.AddSubview (imageView);
+
+scrollView.ViewForZoomingInScrollView += (UIScrollView sv) =&gt; 
+{
+   return imageView; 
+};
                         </code>
                     </example>
                     <para>If you assign a value to this property, it this will reset the value for the <c>WeakDelegate</c> property to an internal handler that maps delegates to events.
