@@ -55,26 +55,108 @@
         A single View Controller may have many views and subcontrollers, but typically a single View Controller will have a single root view and be primarily concerned with controlling that one view or it will be primarily concerned with maintaining a collection of subcontrollers. In the following example, taken from the &#x201C;Hello World iPhone&#x201D; sample, a Content View Controller of type <c>HelloWorld_iPhoneViewController</c> is instantiated and set to be the <see cref="P:MonoTouch.UIKit.UIWindow.RootViewController"/> for the application's window: 
       </para>
       <example>
-        <code>
+        <code lang="C#">
           public override bool FinishedLaunching (UIApplication app, NSDictionary options)
           {
-             // create a new window instance based on the screen size
-             window = new UIWindow (UIScreen.MainScreen.Bounds);
+          // create a new window instance based on the screen size
+          window = new UIWindow (UIScreen.MainScreen.Bounds);
           
           
-             viewController = new HelloWorld_iPhoneViewController ("HelloWorld_iPhoneViewController", null);
-             window.RootViewController = viewController;
-             window.MakeKeyAndVisible ();
+          viewController = new HelloWorld_iPhoneViewController ("HelloWorld_iPhoneViewController", null);
+          window.RootViewController = viewController;
+          window.MakeKeyAndVisible ();
           
-             return true;
+          return true;
           }
         </code>
       </example>
       <para>
-        tk
+        By contrast, the following code taken from the "iOS Standard Controls" sample demonstrates how a <see cref="T:MonoTouch.UIKit.UITableViewController"/> uses an application-defined <c>NavItemGroup</c> to manage a series of other <see cref="T:MonoTouch.UIKit.UIViewController"/>s. In this code, the second parameter to the <c>NavItem</c> constructor is the specific <see cref="T:MonoTouch.UIKit.UIViewController"/> subtype desired when that item is selected in the table:</para>
+      <example>
+        <code lang="C#">
+          navGroup = new NavItemGroup ("Toolbars");
+          navItems.Add (navGroup);
+          navGroup.Items.Add (new NavItem ("Toolbar 1", "", typeof(Toolbar.Toolbar1_iPhone)));
+          navGroup.Items.Add (new NavItem ("Programmatic Toolbar", "", typeof(Toolbar.ProgrammaticToolbar_Controller)));
+          navGroup.Items.Add (new NavItem ("Toolbar Items", "", typeof(Toolbar.ToolbarItems)));
+          
+          // create a table source from our nav items
+          tableSource = new NavItemTableSource (this.NavigationController, navItems);
+          
+          // set the source on the table to our data source
+          base.TableView.Source = tableSource;
+        </code>
+      </example>
+      <format type="text/html">
+        <h2>UIViewController and the MVC Architecture</h2>
+      </format>
+      <para>
+        The following illustration shows the classic relationship between Model, View, and Controller classes. The arrows indicate dependencies: the View depends on the Model class to provide data, the Controller depends on the Model class for information about what to display and depends on the View class to do the drawing. This diagram is idealized: there would be several classes in the Model, several Views, <see cref="T:MonoTouch.UIKit.UIView"/> can actually use <see cref="T:MonoTouch.UIKit.UIResponder.NextResponder"/> to determine their <see cref="T:MonoTouch.UIKit.UIViewController"/>, etc. 
+      </para>
+      <para>
+        <img href="UIViewController_MVC_Triad.png"/>
+      </para>
+      <list type="bullet">
+        <item>
+          <term>The Model class has no knowledge of the associated View and Controller classes. This allows the Model to evolve independently and greatly improves maintainability and portability</term>
+        </item>
+        <item>
+          <term>Event handlers are used between the areas of concern. This allows for strongly-typed <see cref="T:System.EventArgs"/> that only contain the data relating to that event. This improves maintainability by limiting the client object&#x2019;s access to the event-provider&#x2019;s scope.</term>
+        </item>
+        <item>
+          <term>
+            <list type="bullet">
+              <item>
+                <term>The Controller reacts to events both from the View and from the Model. A <see cref="T:MonoTouch.UIKit.UIViewController"/> might, for instance, handle a <see cref="M:MonoTouch.UIKit.UIButton.TouchUpInside"/> input event by requesting the Model to convert between Celsius and Fahrenheit temperature units. Conversely it might respond to a Model &#x201C;too hot&#x201D; event by changing the display (making visible a warning icon or somesuch). </term>
+              </item>
+              <term>
+                <item>The View updates its display in reaction to new data provided by Model events. View classes should be as passive as possible. One of the most common mistakes in non-maintainable software is a View class that acts as a Controller or that "reaches into" the Model for data rather than accepting values passed in as event arguments. </item>
+              </term>
+            </list>
+          </term>
+        </item>
+      </list>
+      <format type="text/html">
+        <h3>MVC, MVP, and MVVM</h3>
+      </format>
+      <para>
+        .NET developers will be familiar with Microsoft-promoted architectures that serve the same goal as MVC. Both Model-View-Presenter (MVP) and Model-View-ViewModel (MVVM) strive to maintain the separation between Model classes and display classes. Developers familiar with MVP will be used to Model data flowing through a coordinating Presenter object towards the View rather than MVC's model in which Views directly subscribe to Model events. It is possible to do an MVP architecture in iOS by increasing the responsibilities of a <see cref="T:MonoTouch.UIKit.UIViewController"/>. The defining characteristic of MVVM is the use of databinding to ensure that View objects are reactive. iOS controls do not support databinding so MVVM is not possible. MVVM developers will be used to more of a "firewall" between View and Model objects than is available in MVC. MVVM developers should remind themselves to ensure their View objects are as reactive as possible and are not reaching in to the Model for data or taking over Controller responsibilities.
+      </para>
+      <format type="text/html">
+        <h2>UIViewController, Interface Builder, Storyboards, and .xib files</h2>
+      </format>
+      <para>
+        XCode, Apple&#x2019;s IDE, contains Interface Builder (&#x201C;IB&#x201D;), a tool that allows user interfaces to be created interactively and saved as &#x201C;.xib&#x201D; files. MonoDevelop generates Code Behind classes for .xib files and generally these will be subclasses of <see cref="T:MonoTouch.UIKit.UIViewController"/>. Starting with iOS 5, application developers can use "Storyboards" to visually specify navigation amongst individual <see cref="T:MonoTouch.UIKit.UIViewController"/>s.  For more on Storyboards, see <format type="text/html"><a href="http://docs.xamarin.com/ios/Guides/User_Interface/Introduction_to_Storyboards">Introduction to Storyboards</a></format>.
+      </para>
+      <format type="text/html">
+        <h2>Universal applications</h2>
+      </format>
+      <para>
+        MonoDevelop fully supports universal applications that use a single <see cref="T:MonoTouch.UIKit.UIViewController"/> to control multiple <see cref="T:MonoTouch.UIKit.UIView"/>s customized for the iPad or the iPhone.  As long as the <see cref="T:MonoTouch.UIKit.UIView"/>s used by the two devices share the same elements, they can share the same Outlets and Actions, as described in the "<format type="text/html"><a href="http://docs.xamarin.com/index.php?title=ios/Guides/Getting_Started/Hello%2C_iPad___Universal_Apps">iPad + Universal (iPhone + iPad) Apps</a></format>" guide. 
+      </para>
+      <para>It is not necessary for the iPhone and iPad versions to use the same UI elements, however. The application developer may wish to take advantage of the increased screen real-estate and larger set of controls available on the iPad. In such cases, the application developer should create separate <see cref="T:MonoTouch.UIKit.UIViewController"/>s and load them appropriatel using code similar to the following, again taken from the "<format type="text/html"><a href="http://docs.xamarin.com/index.php?title=ios/Guides/Getting_Started/Hello%2C_iPad___Universal_Apps">iPad + Universal (iPhone + iPad) Apps</a></format>" guide.  The choice of the <see cref="T:MonoTouch.UIKit.UIViewController"/> to be loaded is determined at runtime based on a call to <see cref="P:MonoTouch.UIKit.UIDevice.CurrentDevice.UserInterfaceIdiom"/>.
+      </para>
+      <example>
+        <code lang="C#">
+          if (UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone) {
+          homeScreen = new Screens.HomeScreen_iPhone();
+          } else {
+          homeScreen = new Screens.HomeScreen_iPad();
+          }
+          window.RootViewController = homeScreen;          
+        </code>
+      </example>
+      <format type="text/html">
+        <h2>UIViewController and MonoTouch.Dialog</h2>
+      </format>
+      <para><format type="text/html"><a href="http://docs.xamarin.com/ios/Guides/User_Interface/Monotouch.Dialog">MonoTouch.Dialog</a></format> (&#x201C;MT.D&#x201D;) allows complex UIs to be rapidly built using declarative statements. As opposed to applications built using Apple&#x2019;s Interface Builder, most MT.D applications use the predefined <see cref="T:MonoTouch.Dialog.DialogViewController"/> and do not create their own subclass of <see cref="T:MonoTouch.UIKit.UIViewController"/>. For more information, refer to the <see cref="N:MonoTouch.Dialog"/> namespace documentation and the article  <format type="text/html"><a href="http://docs.xamarin.com/ios/Guides/User_Interface/Monotouch.Dialog">"http://docs.xamarin.com/ios/Guides/User_Interface/Monotouch.Dialog"</a></format>.
       </para>
     </remarks>
+    <related type="article" href="http://docs.xamarin.com/ios/Guides/User_Interface/Monotouch.Dialog">Introduction to MonoTouch.Dialog</related>
+    <related type="article" href="http://docs.xamarin.com/index.php?title=ios/Guides/Getting_Started/Hello%2C_iPad___Universal_Apps">iPad + Universal (iPhone + iPad) Apps</related>
+    <related type="article" href="http://docs.xamarin.com/ios/Guides/User_Interface/Introduction_to_Storyboards">Introduction to Storyboards</related>
     <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=adbcadf5-c8fa-41bc-897b-4e8b20b98d26">Hello World iPhone</related>
+    <related type="sample" href="http://samples.xamarin.com/iOS/Samples/ByGuid?guid=D307AF95-96A3-4FBC-832A-1FB187936FAB">iOS Standard Controls</related>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -238,10 +320,10 @@
       </Parameters>
       <Docs>
         <param name="view">The subview to add.</param>
-        <summary>This is an alias for AddSubview, but uses the Add pattern as it allows C# 3.0 constructs to add subviews after creating the object.</summary>
+        <summary>This is an alias for <see cref="M:MonoTouch.UIKit.UIViewController.AddSubview"/>, but uses the Add pattern as it allows C# 3.0 constructs to add subviews after creating the object.</summary>
         <remarks>
           <para>
-            This method is equivalent to AddSubview and is present to enable C# 3.0 to add subviews at creation time.
+            This method is equivalent to <see cref="M:MonoTouch.UIKit.UIViewController.AddSubview"/> and is present to enable C# 3.0 to add subviews at creation time.
           </para>
           <example>
             <code lang="c#">
@@ -276,9 +358,16 @@
         <Parameter Name="childController" Type="MonoTouch.UIKit.UIViewController"/>
       </Parameters>
       <Docs>
-        <param name="childController">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="childController">The <see cref="T:MonoTouch.UIKit.UIViewController"/> to be added.</param>
+        <summary>Adds a <see cref="T:MonoTouch.UIKit.UIViewController"/> as a child.</summary>
+        <remarks>
+          <para><see cref="T:MonoTouch.UIKit.UIViewController"/>s that are primarily containers of other <see cref="T:MonoTouch.UIKit.UIViewController"/>s should use this method to add child view controllers.</para>
+          <block subset="none" type="overrides">
+            <para>
+              Application developers who override this method must call <c>base.AddChildViewController(childController)</c>.
+            </para>
+          </block>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AttemptRotationToDeviceOrientation">
@@ -298,8 +387,8 @@
       </ReturnValue>
       <Parameters/>
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Programmatically triggers rotation of views.</summary>
+        <remarks>If <see cref="M:MonoTouch.UIKit.UIViewController.ShouldAutorotateToInterfaceOrientation"/>  returns <see langword="false"/>, this method can be used to programmatically trigger view rotation.</remarks>
       </Docs>
     </Member>
     <Member MemberName="AutomaticallyForwardAppearanceAndRotationMethodsToChildViewControllers">
