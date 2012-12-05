@@ -17,12 +17,12 @@
   <Docs>
     <summary>The repository for Calendar and Reminder events.</summary>
     <remarks>
-    	<para>
+      <para>
 		    The EventStore is required to perform any operations in EventKit. It can be thought of as the persistent storage, 
 		   	or database, engine for all EventKit data. From EKEventStore you have access to both the calendars and calendar 	
 		    events in the Calendar Application, as well as reminders in the Reminders Application.
     	</para>
-		<para>
+      <para>
 			Because EKEventStore is like a database engine, it should be long-lived, meaning that it should be created and 
 			destroyed as little as possible during the lifetime of an application instance. In fact, it’s recommended that 
 			once you create one instance of an EDEventStore in an application, you keep that reference around for the entire 
@@ -30,12 +30,12 @@
 			single EKEventStore instance. For this reason, the Singleton pattern is recommended for keeping a single instance 
 			available.
 		</para>
-		<para>
+      <para>
 			The following code illustrates an easy and efficient way to create a single instance of the EventStore class 
 			and make it available statically from within an application:
 		</para>
-		<example>
-			<code lang="c#">
+      <example>
+        <code lang="c#">
 public class App
 {
 	public static App Current {
@@ -58,13 +58,12 @@ public class App
 	}
 }			
 			</code>
-		</example>
-		<para>
+      </example>
+      <para>
 			The code above uses the Singleton pattern to instantiate an instance of the EventStore when the application 
 			loads. The EventStore can then be accessed globally from within the application as follows:
-				<c>App.Current.EventStore;</c>
-		</para>
-		<para>
+				<c>App.Current.EventStore;</c></para>
+      <para>
 			Before being allowed to access any data via the EKEventStore, an application must first request access to 
 			either the calendar events data or reminders data, depending on which one you need. To facilitate this, the 
 			KEEventStore exposes a method called RequestAccess which, when called, will show an alert view to the user 
@@ -75,10 +74,10 @@ public class App
 			information in the request. For example, the following coded will request access to calendar event data and 
 			show an alert view if the request was not granted:
 		</para>
-		<example>
-			<code lang="c#">
+      <example>
+        <code lang="c#">
 App.Current.EventStore.RequestAccess (EKEntityType.Event, 
-	(bool granted, NSError e) => {
+	(bool granted, NSError e) =&gt; {
 		if (granted)
 			//do something here
 		else
@@ -87,17 +86,17 @@ App.Current.EventStore.RequestAccess (EKEntityType.Event,
 "ok", null).Show ();
 		} );
 			</code>
-		</example>
-		<para>
+      </example>
+      <para>
 			Once the request has been granted, it will be remembered as long as the application is installed on the 
 			device and will not pop up an alert to the user. However, access is only given to the type of resource, 
 			either calendar events or reminders granted. If an application needs access to both, it should request both.
 		</para>
-		<para>
+      <para>
 			Because permission is remembered, it’s relatively cheap to make the request each time, so it’s a good idea 
 			to always request access before performing an operation.
 		</para>
-		<para>
+      <para>
 			Additionally, because the completion handler is called on a separate (non-UI) thread, any updates to the 
 			UI in the completion handler should be called via InovkeOnMainThread, otherwise an exception will be thrown, 
 			and if not caught, the application will crash.
