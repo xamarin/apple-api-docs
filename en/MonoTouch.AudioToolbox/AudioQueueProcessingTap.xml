@@ -14,8 +14,22 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>To be added.</summary>
-    <remarks>To be added.</remarks>
+    <summary>Holds the state for an AudioQueue processing tap.</summary>
+    <remarks>
+      <para>
+	Instances of this class are returned by the <see
+	cref="M:MonoTouch.AudioToolbox.AudioQueue.CreateProcessingTap(MonoTouch.AudioToolbox.AudioQueueProcessingTapDelegate,MonoTouch.AudioToolbox.AudioQueueProcessingTapFlags,MonoTouch.AudioToolbox.AudioQueueStatus)"/>
+	from AudioQueue and hold the state to the audio processing tap that was created as well as containing information like MaxFrames and the ProcessingFormat.
+      </para>
+      <para>
+	You can terminate the processing tap by calling the Dispose
+	method or by releasing the AudioQueue that created it.
+      </para>
+<example>
+<code lang="c#">
+</code>
+</example>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName="Dispose">
@@ -94,11 +108,15 @@
         <Parameter Name="frameCount" Type="System.UInt32&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="sampleTime">To be added.</param>
-        <param name="frameCount">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="sampleTime">Returns the sample time for the output queue.</param>
+        <param name="frameCount">Frame count for the audio being processed by the tap..</param>
+        <summary>Get the current Queue Time.</summary>
+        <returns></returns>
+        <remarks>
+	  <para>
+	    This method should only be called from the AudioProcessingTap callback.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetSourceAudio">
@@ -124,14 +142,26 @@
         <Parameter Name="data" Type="MonoTouch.AudioToolbox.AudioBufferList" />
       </Parameters>
       <Docs>
-        <param name="numberOfFrames">To be added.</param>
-        <param name="timeStamp">To be added.</param>
-        <param name="flags">To be added.</param>
-        <param name="parentNumberOfFrames">To be added.</param>
-        <param name="data">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="numberOfFrames">Number of frames requires by the Tap processor.</param>
+        <param name="timeStamp">For input queues, the timestamp is returned.  For output queues, it must contain the timestamp.</param>
+        <param name="flags">Flags</param>
+        <param name="parentNumberOfFrames">Returns the number of provided frames.</param>
+        <param name="data">The AudioBuffers that contain the source data.</param>
+        <summary>Deprecated: Retrieve source audio.</summary>
+        <returns></returns>
+        <remarks>
+	  <para>
+	    Memory management for the AudioBuffers is as follows.  If
+	    the AudioBuffer Data field contains IntPtr.Zero, the
+	    AudioQueue will allocate the buffers and release them
+	    after the tap processor has executed.  If the value is
+	    not-null, it must point to a block of memory large enough
+	    to hold the requested number of frames.
+	  </para>
+	  <para>
+	    This method should only be called from the AudioProcessingTap callback.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetSourceAudio">
@@ -152,14 +182,26 @@
         <Parameter Name="data" Type="MonoTouch.AudioToolbox.AudioBuffers" />
       </Parameters>
       <Docs>
-        <param name="numberOfFrames">To be added.</param>
-        <param name="timeStamp">To be added.</param>
-        <param name="flags">To be added.</param>
-        <param name="parentNumberOfFrames">To be added.</param>
-        <param name="data">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="numberOfFrames">Number of frames requires by the Tap processor.</param>
+        <param name="timeStamp">For input queues, the timestamp is returned.  For output queues, it must contain the timestamp.</param>
+        <param name="flags">Flags</param>
+        <param name="parentNumberOfFrames">Returns the number of provided frames.</param>
+        <param name="data">The AudioBuffers that contain the source data.</param>
+        <summary>Deprecated: Retrieve source audio.</summary>
+        <returns></returns>
+        <remarks>
+	  <para>
+	    Memory management for the AudioBuffers is as follows.  If
+	    the AudioBuffer Data field contains IntPtr.Zero, the
+	    AudioQueue will allocate the buffers and release them
+	    after the tap processor has executed.  If the value is
+	    not-null, it must point to a block of memory large enough
+	    to hold the requested number of frames.
+	  </para>
+	  <para>
+	    This method should only be called from the AudioProcessingTap callback.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="MaxFrames">
@@ -173,9 +215,9 @@
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Maximum number of sample frames per tap.</summary>
+        <value></value>
+        <remarks>Apple lists this as being "50 msec of audio, 2048 samples at 44.1Khz".</remarks>
       </Docs>
     </Member>
     <Member MemberName="ProcessingFormat">
@@ -189,9 +231,9 @@
         <ReturnType>MonoTouch.AudioToolbox.AudioStreamBasicDescription</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>The format of the data that will be provided to the tap render function.</summary>
+        <value></value>
+        <remarks></remarks>
       </Docs>
     </Member>
   </Members>
