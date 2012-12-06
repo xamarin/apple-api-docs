@@ -132,6 +132,7 @@
         <summary>Allocates an audio buffer associated with this AudioQueue</summary>
         <returns>AudioQueueStatus.Ok on success, otherwise the error. </returns>
         <remarks>
+	  Use <see cref=" M:MonoTouch.AudioToolBox.FreeBuffer" /> to dispose the buffer.
         </remarks>
       </Docs>
     </Member>
@@ -155,10 +156,11 @@
         <summary>Allocates an audio buffer associated with this AudioQueue, used for fixed bit rate buffers.</summary>
         <returns>AudioQueueStatus.Ok on success, otherwise the error. </returns>
         <remarks>
-
-	  Use the <see cref="M:MonoTouch.AudioToolBox.AllocateBufferWithPacketDescriptors" /> to allocate buffers that will be used with variable bit
-	  rate encodings.
-
+	  <para>
+	    Use the <see cref="M:MonoTouch.AudioToolBox.AllocateBufferWithPacketDescriptors" /> to allocate buffers that will be used with variable bit
+	    rate encodings.
+	  </para>
+	  <para>Use <see cref=" M:MonoTouch.AudioToolBox.FreeBuffer" /> to dispose the buffer.</para>
         </remarks>
       </Docs>
     </Member>
@@ -184,8 +186,11 @@
         <summary>Allocates an audio queue object for variable-bit-rate buffers.</summary>
         <returns>AudioQueueStatus.Ok on success and the audioQueueBuffer pointing to the buffer, otherwise the error.</returns>
         <remarks>
-	  Use the <see cref="M:MonoTouch.AudioToolBox.AllocateBuffer" /> to allocate buffers that will be used with fixed bit
-	  rate encodings.
+	  <para>
+	    Use the <see cref="M:MonoTouch.AudioToolBox.AllocateBuffer" /> to allocate buffers that will be used with fixed bit
+	    rate encodings.
+	  </para>
+	  <para>Use <see cref=" M:MonoTouch.AudioToolBox.FreeBuffer" /> to dispose the buffer.</para>
 	</remarks>
       </Docs>
     </Member>
@@ -291,8 +296,8 @@
       </Parameters>
       <Docs>
         <param name="processingCallback">Tap handler to invoke.</param>
-        <param name="flags">Determines the kind of processing that this tap does.</param>
-        <param name="status">Result code from.</param>
+        <param name="flags">Determines the kind of processing that this tap does (pre-process, post-process or siphon).</param>
+        <param name="status">Result code from creating the processing tap.</param>
         <summary>Creates a processing tap in the AudioQueue.</summary>
         <returns>Object that can be used to control the tap.   Disposing it terminates the tap.</returns>
         <remarks>
@@ -306,9 +311,19 @@
 	  <para>
 
 	    There are three types: pre-processing, post-processing and
-	    siphon.  The first two can modify the data.
+	    siphon.  The first two should provide the data requested
+	    during the callback, typically by calling the <see
+	    cref="T:MonoTouch.AudioToolbox.AudioQueueProcessingTap"/>'s
+	    GetSourceAudio method and optionally performing some
+	    transormation on the buffers and returning these buffers
+	    to the caller.  Siphoning taps receive buffers with the
+	    data and can inspect the data, but should not alter its
+	    contents.  See the <see
+	    cref="T:MonoTouch.AudioToolbox.AudioQueueProcessingTapDelegate"/>
+	    documentation for more information.
 
 	  </para>
+
 	  <para>
 	    To establish a tap, the queue must be in the stopped state.
 	  </para>
@@ -736,9 +751,9 @@
         <Parameter Name="audioQueueBuffer" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <param name="audioQueueBuffer">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="audioQueueBuffer">AudioQueue buffer previously allocated with AllocateBuffer.</param>
+        <summary>Releases an AudioQueue buffer.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="gch">
