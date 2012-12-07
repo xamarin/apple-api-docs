@@ -139,14 +139,14 @@
       <example>
         <code lang="C#">
           if (UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone) {
-          &#x00A0;&#x00A0;homeScreen = new Screens.HomeScreen_iPhone();
+          &#xA0;&#xA0;homeScreen = new Screens.HomeScreen_iPhone();
           } else {
-          &#x00A0;&#x00A0;homeScreen = new Screens.HomeScreen_iPad();
+          &#xA0;&#xA0;homeScreen = new Screens.HomeScreen_iPad();
           }
           window.RootViewController = homeScreen;          
         </code>
-        </example>
-          <format type="text/html">
+      </example>
+      <format type="text/html">
         <h2>UIViewController and MonoTouch.Dialog</h2>
       </format>
       <para><format type="text/html"><a href="http://docs.xamarin.com/ios/Guides/User_Interface/Monotouch.Dialog">MonoTouch.Dialog</a></format> (&#x201C;MT.D&#x201D;) allows complex UIs to be rapidly built using declarative statements. As opposed to applications built using Apple&#x2019;s Interface Builder, most MT.D applications use the predefined <see cref="T:MonoTouch.Dialog.DialogViewController"/> and do not create their own subclass of <see cref="T:MonoTouch.UIKit.UIViewController"/>. For more information, refer to the <see cref="N:MonoTouch.Dialog"/> namespace documentation and the article  <format type="text/html"><a href="http://docs.xamarin.com/ios/Guides/User_Interface/Monotouch.Dialog">"http://docs.xamarin.com/ios/Guides/User_Interface/Monotouch.Dialog"</a></format>.
@@ -540,8 +540,9 @@
       <Docs>
         <summary>An array of <see cref="T:MonoTouch.UIKit.UIViewController"/>s that are managed by <c>this</c>.</summary>
         <value>An array of <see cref="T:MonoTouch.UIKit.UIViewController"/>s.</value>
-        <remarks><para>Certain <see cref="T:MonoTouch.UIKit.UIViewController"/>s (e.g., <see cref="T:MonoTouch.UIKit.UINavigationController"/>) are primarily concerned with manipulating child controllers. Such controllers are often referred to as "Container View-Controllers." </para>
-          <para>This property does not include <see cref="T:MonoTouch.UIKit.UIViewController"/>s "presented" using <see cref="M:MonoTouch.UIKit.UIViewController.PresentViewController"/>, <see cref="M:MonoTouch.UIKit.UIViewController.PresentModalViewController"/>, or <see cref="M:MonoTouch.UIKit.UIViewController.PresentMoviePlayerViewController"/>.</para>  
+        <remarks>
+          <para>Certain <see cref="T:MonoTouch.UIKit.UIViewController"/>s (e.g., <see cref="T:MonoTouch.UIKit.UINavigationController"/>) are primarily concerned with manipulating child controllers. Such controllers are often referred to as "Container View-Controllers." </para>
+          <para>This property does not include <see cref="T:MonoTouch.UIKit.UIViewController"/>s "presented" using <see cref="M:MonoTouch.UIKit.UIViewController.PresentViewController"/>, <see cref="M:MonoTouch.UIKit.UIViewController.PresentModalViewController"/>, or <see cref="M:MonoTouch.UIKit.UIViewController.PresentMoviePlayerViewController"/>.</para>
         </remarks>
       </Docs>
     </Member>
@@ -585,8 +586,10 @@
       <Docs>
         <summary>Default content size for popovers.</summary>
         <value>The default value is [320,1100] points.</value>
-        <remarks><para>Unless overridden by <see cref="P:MonoTouch.UIKit.UIPopoverController.PopoverContentSize"/>, this value specifies the content size of popovers displayed by the <see cref="T:MonoTouch.UIKit.UIViewController"/>.</para>
-          <para>Popovers may be up to 600 points wide, but application developers are recommended to use the standard 320 point width.</para></remarks>
+        <remarks>
+          <para>Unless overridden by <see cref="P:MonoTouch.UIKit.UIPopoverController.PopoverContentSize"/>, this value specifies the content size of popovers displayed by the <see cref="T:MonoTouch.UIKit.UIViewController"/>.</para>
+          <para>Popovers may be up to 600 points wide, but application developers are recommended to use the standard 320 point width.</para>
+        </remarks>
         <related type="sample" href="http://samples.xamarin.com/iOS/Samples/ByGuid?guid=08f52114-da41-447b-92a4-b86981b03c21">Popovers</related>
         <altmember cref="T:MonoTouch.UIKit.UIPopoverController"/>
       </Docs>
@@ -713,9 +716,12 @@
         </param>
         <summary>Called after <c>this</c> is added or removed from a parent <see cref="T:MonoTouch.UIKit.UIViewController"/>.</summary>
         <remarks>
-          <para>tk tk tk</para>  
+          <para>Application developers who implement their own container <see cref="T:MonoTouch.UIKit.UIViewController"/> must call this method after adding child <see cref="T:MonoTouch.UIKit.UIViewController"/>s with <see cref="M:MonoTouch.UIKit.UIViewController.AddChildViewController"/>.</para>
+          <para>This method is called automatically by <see cref="M:MonoTouch.UIKit.UIViewController.RemoveFromParentViewController"/>.</para>
         </remarks>
         <altmember cref="P:MonoTouch.UIKit.UIViewController.Parent"/>
+        <altmember cref="M:MonoTouch.UIKit.UIViewController.AddChildViewController"/>
+        <altmember cref="M:MonoTouch.UIKit.UIViewController.RemoveFromParentViewController"/>
       </Docs>
     </Member>
     <Member MemberName="DidReceiveMemoryWarning">
@@ -735,9 +741,24 @@
       </ReturnValue>
       <Parameters/>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Called when the system is running low on memory.</summary>
         <remarks>
+          <para>This method is automatically called when the system is running low on memory. Application developers who override this method in order to release resources must call <c>base.DidReceiveMemoryWarning()</c>, as shown in the following code, taken from the "Media Notes" sample:</para>
+          <example>
+            <code lang="C#">
+              public override void DidReceiveMemoryWarning ()
+              {
+              &#xA0;&#xA0;photoMap.Clear ();
+              &#xA0;&#xA0;View = null;
+              &#xA0;&#xA0;photoImageView = null;
+              &#xA0;&#xA0;toolbar = null;
+              &#xA0;&#xA0;syncIsNeeded = true;
+              &#x00A0;&#x00A0;base.DidReceiveMemoryWarning();
+              }
+            </code>
+          </example>
         </remarks>
+        <related type="sample" href="http://samples.xamarin.com/iOS/Samples/ByGuid?guid=FAE04EC0-301F-11D3-BF4B-00C04F79EFBC">Media Notes</related>
       </Docs>
     </Member>
     <Member MemberName="DidRotate">
@@ -760,10 +781,15 @@
       </Parameters>
       <Docs>
         <param name="fromInterfaceOrientation">
-          <para>To be added.</para>
+          <para>The prior orientation.</para>
         </param>
-        <summary>To be added.</summary>
+        <summary>Called after the UI has rotated.</summary>
         <remarks>
+          <para>The application developer can override this method to perform rotation logic beyond what is provided by auto-rotation, for instance, recalculating expensive drawing parameters, modifying and restarting media playback, etc.
+          </para>
+          <para>
+            When this method is called, the <see cref="P:MonoTouch.UIKit.UIViewController.InterfaceOrientation"/> property has already been set to the new <see cref="T:MonoTouch.UIKit.UIInterfaceOrientation"/>.
+          </para>
         </remarks>
       </Docs>
     </Member>
@@ -786,9 +812,15 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>If <see langword="true"/>, input view will remain on-screen even when non-input control is tapped.</summary>
+        <value>The default value is <see langword="false"/> unless using a modal form sheet, in which case it is <see langword="true"/>.</value>
+        <remarks>
+          <para>
+          The input view (generally the system keyboard) typically disappears when the application user taps on a control which does not reqire the input view. Application developers can override this method so that it returns <see langword="true"/>, leaving the input view on the screen in that situation.  
+          </para>
+          <para>If the <see cref="P:MonoTouch.UIKit.UIViewController.ModalPresentationStyle"/> property is set to <see cref="M:MonoTouch.UIKit.UIModalPresentationStyle.UIModalPresentationStyle.FormSheet"/>, the default value for this method is <see langword="true"/>. That is, by default the system leaves the input view on-screen when presenting modal forms.</para>
+        </remarks>
+        <altmember cref="M:MonoTouch.UIKit.UIModalPresentationStyle.UIModalPresentationStyle.FormSheet"/>
       </Docs>
     </Member>
     <Member MemberName="DismissModalViewControllerAnimated">
@@ -814,10 +846,13 @@
       </Parameters>
       <Docs>
         <param name="animated">
-          <para>To be added.</para>
+          <para><see langword="true"/> if this method animates the view during dismissal.</para>
         </param>
-        <summary>To be added.</summary>
+        <summary>Dismisses a modal <see cref="T:MonoTouch.UIKit.UIViewController"/>.</summary>
         <remarks>
+          <para>
+            Application developers should not use this deprecated method, but instead should use <see cref="M:MonoTouch.UIKit.UIViewController.DismissViewController"/>.
+          </para>
         </remarks>
       </Docs>
     </Member>
@@ -838,8 +873,9 @@
       </ReturnValue>
       <Parameters/>
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Dismisses a <see cref="T:MonoTouch.MediaPlayer.MPMoviePlayerViewController"/>.</summary>
+        <remarks><para>Along with <see cref="M:MonoTouch.UIKit.UIViewController.PresentMoviePlayerViewController"/>, this method can be used to control the presentation and dismissal of a <see cref="T:MonoTouch.MediaPlayer.MPMoviePlayerViewController"/></para></remarks>
+        <altmember cref="M:MonoTouch.UIKit.UIViewController.PresentMoviePlayerViewController"/>
       </Docs>
     </Member>
     <Member MemberName="DismissViewController">
@@ -862,13 +898,17 @@
         <Parameter Name="completionHandler" Type="MonoTouch.Foundation.NSAction"/>
       </Parameters>
       <Docs>
-        <param name="animated">To be added.</param>
+        <param name="animated"><see langword="true"/> if the transition is to be animated.</param>
         <param name="completionHandler">
           <para>The method to invoke when the animation completes.</para>
           <para tool="nullallowed">This parameter can be <see langword="null"/>.</para>
         </param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Dismisses a presented <see cref="T:MonoTouch.UIKit.UIViewController"/>.</summary>
+        <remarks><para>It is the responsibility of the <see cref="T:MonoTouch.UIKit.UIViewController"/> that presents another <see cref="T:MonoTouch.UIKit.UIViewController"/> to dismiss it as appropriate. If this method is called on a presented <see cref="T:MonoTouch.UIKit.UIViewController"/> that is in a stack but is not the head, only the head <see cref="T:MonoTouch.UIKit.UIViewController"/> will be animated during dismissal.</para>
+          <para>
+            After a <see cref="T:MonoTouch.UIKit.UIViewController"/> is dismissed, it's <see cref="M:MonoTouch.UIKit.UIViewController.ViewDidDisappear"/> method will be called. 
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Dispose">
@@ -913,9 +953,13 @@
         <ReturnType>MonoTouch.UIKit.UIBarButtonItem</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>A <see cref="T:MonoTouch.UIKit.UIBarButtonItem"/> that toggles between statees "Edit" and "Done."</summary>
+        <value>The standard "Edit" <see cref="T:MonoTouch.UIKit.UIBarButton"/>.</value>
+        <remarks><para>The application developer should take the value returned by this function and apply it to one of the <see cref="T:MonoTouch.UIKit.UIBarButtomItem"/>s in the <see cref="P:MonoTouch.UIKit.UIViewController.NavigationItem"/>. The <see cref="T:MonoTouch.UIKit.UIBarButtonItem"/> will reflect the value of the <see cref="P:MonoTouch.UIKit.UIViewController.Editing"/> property.</para></remarks>
+        <altmember cref="T:MonoTouch.UIKit.UIbarButtonItem"/>
+        <altmember cref="T:MonoTouch.UIKit.UIBarButton"/>
+        <altmember cref="P:MonoTouch.UIKit.UIViewController.NavigationItem"/>
+        <altmember cref="P:MonoTouch.UIKit.UIViewController.Editing"/>
       </Docs>
     </Member>
     <Member MemberName="Editing">
@@ -937,9 +981,12 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary><see langword="true"/> if the <see cref="T:MonoTouch.UIKit.UIViewController"/> allows the application user to edit the <see cref="T:MonoTouch.UIKit.UIView"/> contents.</summary>
+        <value><see langword="true"/> if in editing mode, <see langword="false"/> otherwise.</value>
+        <remarks><para>
+            If the application developer wishes to allow editing in the <see cref="T:MonoTouch.UIKit.UIViewController"/>, they should set this value to <see langword="true"/>. If the <see cref="T:MonoTouch.UIKit.UIBarButtonItem"/> retrieved by the <see cref="M:MonoTouch.UIKit.UIViewController.EditButtonItem"/> is visible in the <see cref="T:MonoTouch.UIKit.UINavigationBar"/>, that button's <see cref="P:MonoTouch.UIKit.UIBarItem.Title"/> will reflect this value.
+          </para></remarks>
+        <altmember cref="M:MonoTouch.UIKit.UIViewController.EditButtonItem"/>
       </Docs>
     </Member>
     <Member MemberName="EncodeRestorableState">
@@ -1002,11 +1049,11 @@
               commentViewController.WillMoveToParentViewController (null);
               commentViewController.BeginAppearanceTransition (false, true);
               UIView.Animate (0.5f, () => {
-              commentView.Alpha = 0.5f;
+              &#x00A0;&#x00A0;commentView.Alpha = 0.5f;
               }, () => { 
-              commentView.RemoveFromSuperview ();
-              commentViewController.EndAppearanceTransition ();
-              commentViewController.RemoveFromParentViewController ();
+              &#x00A0;&#x00A0;commentView.RemoveFromSuperview ();
+              &#x00A0;&#x00A0;commentViewController.EndAppearanceTransition ();
+              &#x00A0;&#x00A0;commentViewController.RemoveFromParentViewController ();
               });
               ]]></code>
           </example>
@@ -1027,9 +1074,8 @@
       </ReturnValue>
       <Parameters/>
       <Docs>
-        <summary>Returns an enumerator that lists all of the subviews in this view</summary>
-        <returns>
-        </returns>
+        <summary>Returns an enumerator that lists all of the child <see cref="T:MonoTouch.UIKit.UIView"/>s</summary>
+        <returns>An <see cref="T:System.Collections.IEnumerator"/> of the <see cref="T:MonoTouch.UIKit.UIView"/>s that are children of this <see cref="T:MonoTouch.UIKit.UIViewController"/>.</returns>
         <remarks>
         </remarks>
       </Docs>
@@ -1055,12 +1101,15 @@
         <Parameter Name="identifier" Type="System.String"/>
       </Parameters>
       <Docs>
-        <param name="toViewController">To be added.</param>
-        <param name="fromViewController">To be added.</param>
-        <param name="identifier">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="toViewController">The <see cref="T:MonoTouch.UIKit.UIViewController"/> at which the segue will end.</param>
+        <param name="fromViewController">The <see cref="T:MonoTouch.UIKit.UIViewController"/> at which the segue began.</param>
+        <param name="identifier">The segue's identifier.</param>
+        <summary>Defines the segue to be used between two <see cref="T:MonoTouch.UIKit.UIViewController"/>s.</summary>
+        <returns>The segue to be used.</returns>
+        <remarks>
+          <para>Application developers that create custom <see cref="T:MonoTouch.UIKit.UIViewController"/>s that use segue unwinding must implement this method. This method should instantiate and return a <see cref="T:MonoTouch.UIKit.UIStoryboardSegue"/> that performs the appropriate animations and application state-manipulation for the specified unwinding.</para>  
+        </remarks>
+        <altmember cref="T:MonoTouch.UIKit.UIStoryboardSegue"/>
       </Docs>
     </Member>
     <Member MemberName="GetSupportedInterfaceOrientations">
@@ -1080,9 +1129,10 @@
       </ReturnValue>
       <Parameters/>
       <Docs>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>The orientations supported by this <see cref="T:MonoTouch.UIKit.UIViewController"/>.</summary>
+        <returns>A <see cref="T:MonoTouch.UIKit.UIInterfaceOrientationMask"/> of the orientations supported by this <see cref="T:MonoTouch.UIKit.UIViewController"/>.</returns>
+        <remarks/>
+        <altmember cref="T:MonoTouch.UIKit.UIInterfaceOrientationMask"/>
       </Docs>
     </Member>
     <Member MemberName="GetViewControllerForUnwind">
@@ -1106,12 +1156,12 @@
         <Parameter Name="sender" Type="MonoTouch.Foundation.NSObject"/>
       </Parameters>
       <Docs>
-        <param name="segueAction">To be added.</param>
-        <param name="fromViewController">To be added.</param>
-        <param name="sender">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="segueAction">The initiating action.</param>
+        <param name="fromViewController">The initial <see cref="T:MonoTouch.UIKit.UIViewController"/>.</param>
+        <param name="sender">The initiating object.</param>
+        <summary>Used for searching child <see cref="T:MonoTouch.UIKit.UIViewController"/>s for a specific unwind segue.</summary>
+        <returns>The appropriate <see cref="T:MonoTouch.UIKit.UIViewController"/> from amongst the <see cref="P:MonoTouch.UIKit.UIViewController.ChildViewControllers"/> or, if none are appropriate, <c>base.GetViewControllerForUnwind(segueAction, fromViewController,sender);</c>.</returns>
+        <remarks><para>A custom contain <see cref="T:MonoTouch.UIKit.UIViewController"/> should override this method and call <see cref="M:MonoTouch.UIKit.UIViewController.CanPerformUnwind"/> on the <see cref="T:MonoTouch.UIKit.UIViewController"/>s returned by the <see cref="P:MonoTouch.UIKit.UIViewController.ChildViewControllers"/> property. If none return <see langword="true"/>, the application developer should return the value <c>base.GetViewControllerForUnwind(segueAction,fromViewController,sender);</c>.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="HidesBottomBarWhenPushed">
@@ -1685,7 +1735,7 @@
       <Docs>
         <param name="moviePlayerViewController">To be added.</param>
         <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <remarks>Along with <see cref="M:MonoTouch.UIKit.UIViewController.DismissMoviePlayerViewController"/>, this method can be used to control the presentation and dismissal of a <see cref="T:MonoTouch.MediaPlayer.MPMoviePlayerViewController"/></remarks>
       </Docs>
     </Member>
     <Member MemberName="PresentViewController">
