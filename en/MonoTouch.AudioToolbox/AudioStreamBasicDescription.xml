@@ -11,7 +11,38 @@
   <Interfaces />
   <Docs>
     <summary>An AudioStream description.</summary>
-    <remarks>To be added.</remarks>
+    <remarks>
+      <para>
+      </para>
+
+<example>
+<code lang="c#">
+
+// 
+// Standard pattern
+//
+int channels = 1;
+
+sampleRate = AudioSession.CurrentHardwareSampleRate;
+var format = new AudioStreamBasicDescription () {
+        SampleRate = sampleRate,
+        Format = AudioFormatType.LinearPCM,
+        FormatFlags = AudioFormatFlags.LinearPCMIsSignedInteger | AudioFormatFlags.LinearPCMIsPacked,
+        BitsPerChannel = 16,
+        ChannelsPerFrame = channels
+        BytesPerFrame = 2 * (interleaved ? channels : 1),
+        BytesPerPacket = 2,
+        FramesPerPacket = 1,
+};
+
+//
+// Convenience Function for LinearPCM configurations
+//
+var format2 = AudioStreamBasicDescription.CreateLinearPCM (sampleRate, channelsperFrame, bitsPerChannel, bigEndian);
+
+</code>
+</example>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -25,9 +56,9 @@
         <Parameter Name="formatType" Type="MonoTouch.AudioToolbox.AudioFormatType" />
       </Parameters>
       <Docs>
-        <param name="formatType">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="formatType">Format type for the AudioStreamBasicDescription.</param>
+        <summary>Initializes the AudioStreamBasicDescription with the specified format type.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="AudioStreamAnyRate">
@@ -42,8 +73,8 @@
       </ReturnValue>
       <MemberValue>0</MemberValue>
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Flag used to indicate that the audio stream can use any rate (can be assigned to the SampleRate field)</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="BitsPerChannel">
@@ -57,8 +88,8 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Number of bits for an audio sample, per channel;   Use zero for compressed formats.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="BytesPerFrame">
@@ -72,8 +103,10 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Number of bytes in an audio frame;   Use Zero for compressed formats.</summary>
+	<remarks>
+	  This value must take into account whether the data is interleaved.   If so, the size must include the whole size for the frame, including interleaved data.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="BytesPerPacket">
@@ -102,8 +135,8 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Number of audio channels.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="CreateLinearPCM">
@@ -123,13 +156,13 @@
         <Parameter Name="bigEndian" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="sampleRate">To be added.</param>
-        <param name="channelsPerFrame">To be added.</param>
-        <param name="bitsPerChannel">To be added.</param>
-        <param name="bigEndian">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="sampleRate">Sample rate.</param>
+        <param name="channelsPerFrame">Channels per frame.</param>
+        <param name="bitsPerChannel">Bits per channel.</param>
+        <param name="bigEndian">Format data..</param>
+        <summary>Convenience function to create an AudioStreamBasicDescription for LinearPCM data..</summary>
+        <returns></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Format">
@@ -143,8 +176,8 @@
         <ReturnType>MonoTouch.AudioToolbox.AudioFormatType</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Audio format type.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="FormatFlags">
@@ -158,8 +191,8 @@
         <ReturnType>MonoTouch.AudioToolbox.AudioFormatFlags</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Audio format specific flags.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="FramesPerPacket">
@@ -173,8 +206,8 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Number of frames per audio packet.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Reserved">
@@ -188,8 +221,8 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Unused, must be zero.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="SampleRate">
@@ -203,8 +236,8 @@
         <ReturnType>System.Double</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>The sample rate for the audio data.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="ToString">
@@ -219,9 +252,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>Renders a debugging-friendly description of the contents of the AudioStreamBasicDescription.</summary>
+        <returns></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
   </Members>
