@@ -84,6 +84,9 @@
       </list>
       <example>
         <code lang="C#">
+	//
+	// Print a PDF file, simple API
+	//
         NSUrl url = NSUrl.FromFilename ("SomeFile.pdf");           
 	var printInfo = UIPrintInfo.PrintInfo;
 
@@ -101,8 +104,6 @@
                 Console.WriteLine ("error");
             }
         });
-
-    }
 </code>
       </example>
     </remarks>
@@ -224,8 +225,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="data" Type="MonoTouch.Foundation.NSData" />
       </Parameters>
       <Docs>
-        <param name="data">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="data">Data to probe.</param>
+        <summary>Determines if the data stored in the NSData can be printed.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -659,9 +660,41 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.UIKit.UIPrintPageRenderer</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>If set, use the specified instance of UIPrintPageRenderer for printing.</summary>
+        <value></value>
+        <remarks>
+	  <para>
+	    You must
+	    implement a subclass of <see cref="T:MonoTouch.UIKit.UIPrintPageRenderer" /> and assign
+	    the instance of your renderer to the <see cref="P:MonoTouch.UIKit.UIPrintInteractionController.PrintPageRenderer" />
+	    property.
+	  </para>
+      <example>
+        <code lang="C#">
+	// Get a reference to the singleton iOS printing concierge
+	UIPrintInteractionController printController = UIPrintInteractionController.SharedPrintController;
+	
+	// Instruct the printing concierge to use our custom UIPrintPageRenderer subclass when printing this job
+	printController.PrintPageRenderer = new MyPrintPageRenderer (myData);
+	
+	// Ask for a print job object and configure its settings to tailor the print request
+	UIPrintInfo info = UIPrintInfo.PrintInfo;
+	
+	// B&amp;W or color, normal quality output for mixed text, graphics, and images
+	info.OutputType = UIPrintInfoOutputType.General;
+	
+	// Select the job named this in the printer queue to cancel our print request.
+	info.JobName = "Recipes";
+	
+	// Instruct the printing concierge to use our custom print job settings.
+	printController.PrintInfo = info;
+	
+	// Present the standard iOS Print Panel that allows you to pick the target Printer, number of pages, double-sided, etc.
+	printController.Present (true, PrintingCompleted);
+
+	</code>
+      </example>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="PrintPaper">
