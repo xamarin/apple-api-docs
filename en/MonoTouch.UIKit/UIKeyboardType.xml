@@ -10,7 +10,25 @@
   </Base>
   <Docs>
     <summary>The type of keyboard.</summary>
-    <remarks>To be added.</remarks>
+    <remarks>
+      <para>In order to change the keyboard appearance, the currently displaying keyboard must be dismissed. This is achieved by having the <see cref="T:MonoTouch.UIKit.UIControl"/> associated with the keyboard resigning as first responder, changing the keyboard type, and then re-subscribed as the first subscriber, as shown in the following code:</para>
+      <example>
+        <code lang="C#">
+void AddKeyboardTypeButton (UIKeyboardType kbType, RectangleF frame)
+{
+	var kbButton = UIButton.FromType (UIButtonType.RoundedRect);
+	kbButton.Frame = frame;
+	kbButton.SetTitle (kbType.ToString (), UIControlState.Normal);
+	View.AddSubview (kbButton);
+	kbButton.TouchUpInside += (sender, e) => {
+		myTextField.ResignFirstResponder ();
+		myTextField.KeyboardType = kbType;
+		myTextField.BecomeFirstResponder ();
+	};
+}
+        </code>
+        </example>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName="ASCIICapable">
@@ -24,7 +42,7 @@
         <ReturnType>MonoTouch.UIKit.UIKeyboardType</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Displays standard ASCII characters.</summary>
       </Docs>
     </Member>
     <Member MemberName="DecimalPad">
@@ -38,7 +56,7 @@
         <ReturnType>MonoTouch.UIKit.UIKeyboardType</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Displays numbers and decimal point.</summary>
       </Docs>
     </Member>
     <Member MemberName="Default">
@@ -52,7 +70,7 @@
         <ReturnType>MonoTouch.UIKit.UIKeyboardType</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The default keyboard for the current input type.</summary>
       </Docs>
     </Member>
     <Member MemberName="EmailAddress">
@@ -66,7 +84,7 @@
         <ReturnType>MonoTouch.UIKit.UIKeyboardType</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Characters, an @ symbol, and access to numbers and punctuation.</summary>
       </Docs>
     </Member>
     <Member MemberName="NamePhonePad">
@@ -80,7 +98,7 @@
         <ReturnType>MonoTouch.UIKit.UIKeyboardType</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Characters plus access to numbers.</summary>
       </Docs>
     </Member>
     <Member MemberName="NumberPad">
@@ -94,7 +112,7 @@
         <ReturnType>MonoTouch.UIKit.UIKeyboardType</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Numbers.</summary>
       </Docs>
     </Member>
     <Member MemberName="NumbersAndPunctuation">
@@ -108,7 +126,7 @@
         <ReturnType>MonoTouch.UIKit.UIKeyboardType</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Numbers and punctuation.</summary>
       </Docs>
     </Member>
     <Member MemberName="PhonePad">
@@ -122,7 +140,7 @@
         <ReturnType>MonoTouch.UIKit.UIKeyboardType</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Numbers plus access to #, *, 'pause', and 'wait'.</summary>
       </Docs>
     </Member>
     <Member MemberName="Twitter">
@@ -136,7 +154,7 @@
         <ReturnType>MonoTouch.UIKit.UIKeyboardType</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Characters, @ and # keys, and access to numbers and punctuation.</summary>
       </Docs>
     </Member>
     <Member MemberName="Url">
@@ -150,7 +168,7 @@
         <ReturnType>MonoTouch.UIKit.UIKeyboardType</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Characters, '.', '/', and '.com' keys, and access to numbers and punctuation.</summary>
       </Docs>
     </Member>
   </Members>
