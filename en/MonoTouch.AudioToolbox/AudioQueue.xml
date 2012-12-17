@@ -237,9 +237,9 @@
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Contains the most recent error generated in the audio queue's encoding or decoding process.</summary>
+        <value></value>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="CreateProcessingTap">
@@ -342,9 +342,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>Creates a timeline object that can be used to track discontinuities in the audio queue's audio.</summary>
+        <returns></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="CurrentDevice">
@@ -358,9 +358,9 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Unique identifier for the device associated with this Audio Queue.</summary>
+        <value></value>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="CurrentLevelMeter">
@@ -374,9 +374,37 @@
         <ReturnType>MonoTouch.AudioToolbox.AudioQueueLevelMeterState[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Current Level meters, one per channel in the range zero (minimum) to one (maximum).</summary>
+        <value>Array of level meters, one per audio channel.</value>
+        <remarks>
+	  <para>
+	    To use this property, make sure that you set the <see cref="T:MonoTouch.AudioToolbox.AudioQueue.EnableLevelMetering"/> property on the queue.
+	  </para>
+	  <para>
+	    Use the <see cref="T:MonoTouch.AudioToolbox.AudioQueue.CurrentLevelMeterDB"/> if you want to get the values in decibels.
+	  </para>
+	  <example>
+	    <code lang="c#">
+class MyInputQueue : InputAudioQueue {
+    public MyQueueInput (AudioStreamBasicDescription desc) : base (desc) 
+    {
+    	inputQueue.EnableLevelMetering = true;
+    }
+    
+    protected virtual void OnInputCompleted (IntPtr audioQueueBuffer, 
+                                             AudioTimeStamp timeStamp, 
+                                             AudioStreamPacketDescription [] packetData)
+    {
+        var levels = CurrentLevelMeterDB;
+        for (int channel = 0; channel &lt; levels.Count; channel.Length)
+    	Console.WriteLine ("Channel {0} Average Power: {1} Peak Power: {2}", 
+                               channel, levels [channel].AveragePower, levels [channel].PeakPower);
+        }
+    }
+}
+	    </code>
+	  </example>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="CurrentLevelMeterDB">
@@ -390,9 +418,37 @@
         <ReturnType>MonoTouch.AudioToolbox.AudioQueueLevelMeterState[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Current Level meters, one per channel in decibels.</summary>
+        <value>Array of level meters, one per audio channel.</value>
+        <remarks>
+	  <para>
+	    To use this property, make sure that you set the <see cref="T:MonoTouch.AudioToolbox.AudioQueue.EnableLevelMetering"/> property on the queue.
+	  </para>
+	  <para>
+	    Use the <see cref="T:MonoTouch.AudioToolbox.AudioQueue.CurrentLevelMeter"/> if you want to get the values normalized to the range zero (minimum) to one (maximum).
+	  </para>
+	  <example>
+	    <code lang="c#">
+class MyInputQueue : InputAudioQueue {
+    public MyQueueInput (AudioStreamBasicDescription desc) : base (desc) 
+    {
+    	inputQueue.EnableLevelMetering = true;
+    }
+    
+    protected virtual void OnInputCompleted (IntPtr audioQueueBuffer, 
+                                             AudioTimeStamp timeStamp, 
+                                             AudioStreamPacketDescription [] packetData)
+    {
+        var levels = CurrentLevelMeterDB;
+        for (int channel = 0; channel &lt; levels.Count; channel.Length)
+    	Console.WriteLine ("Channel {0} Average Power: {1} Peak Power: {2}", 
+                               channel, levels [channel].AveragePower, levels [channel].PeakPower);
+        }
+    }
+}
+	    </code>
+	  </example>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="CurrentTime">
@@ -406,9 +462,9 @@
         <ReturnType>MonoTouch.AudioToolbox.AudioTimeStamp</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Returns the current time for the hardware device.</summary>
+        <value></value>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="DecodeBufferSizeFrames">
@@ -501,9 +557,13 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Enables level metering on the audio queue.</summary>
+        <value></value>
+        <remarks>
+	  <para>
+	    Enable level metering in your audio queue if you want to read the level meters with the <see cref="T:MonoTouch.AudioToolbox.AudioQueue.CurrentLevelMeter"/> or <see cref="T:MonoTouch.AudioToolbox.AudioQueue.CurrentLevelMeterDB"/> properties.n
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="EnqueueBuffer">
@@ -787,12 +847,12 @@
         <Parameter Name="timelineDiscontinuty" Type="System.Boolean&amp;" RefType="ref" />
       </Parameters>
       <Docs>
-        <param name="timeline">To be added.</param>
-        <param name="time">To be added.</param>
-        <param name="timelineDiscontinuty">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="timeline">Timeline object to track discontinuities, or null if you do not need it.</param>
+        <param name="time">The time</param>
+        <param name="timelineDiscontinuty">On return, if true, it means that there was an audio discontinuity.</param>
+        <summary>Returns the current time for the audio queue.</summary>
         <returns>AudioQueueStatus.Ok on success, otherwise the error.</returns>
-        <remarks>To be added.</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="GetNearestStartTime">
@@ -835,11 +895,16 @@
         <Parameter Name="size" Type="System.Int32&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="property">To be added.</param>
-        <param name="size">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="property">Property ID to retrieve.</param>
+        <param name="size">Expected size of the property.</param>
+        <summary>Low-level API to fetch AudioQueue properties. </summary>
+        <returns></returns>
+        <remarks>
+	  MonoTouch provides a high-level interface to the AudioQueue
+	  properties.  This API is here in case a new property is
+	  added and you have not updated your code to the latest
+	  version of MonoTouch.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetProperty">
@@ -863,12 +928,17 @@
         <Parameter Name="outdata" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <param name="property">To be added.</param>
-        <param name="dataSize">To be added.</param>
-        <param name="outdata">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="property">Property ID to retrieve.</param>
+        <param name="size">Expected size of the property.</param>
+        <param name="outdata">Pointers to the data.</param>
+        <summary>Low-level API to fetch AudioQueue properties. </summary>
+        <returns></returns>
+        <remarks>
+	  MonoTouch provides a high-level interface to the AudioQueue
+	  properties.  This API is here in case a new property is
+	  added and you have not updated your code to the latest
+	  version of MonoTouch.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetProperty&lt;T&gt;">
@@ -894,10 +964,20 @@
       </Parameters>
       <Docs>
         <typeparam name="T">To be added.</typeparam>
-        <param name="property">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="property">Property ID to retrieve.</param>
+        <summary>Low-level API to fetch AudioQueue properties. </summary>
+        <returns></returns>
+        <remarks>
+	  <para>
+	    This version returns the value of the property based on the provided generic type.
+	  </para>
+	  <para>
+	    MonoTouch provides a high-level interface to the AudioQueue
+	    properties.  This API is here in case a new property is
+	    added and you have not updated your code to the latest
+	    version of MonoTouch.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="handle">
