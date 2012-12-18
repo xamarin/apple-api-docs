@@ -1,6 +1,7 @@
+<?xml version="1.0"?>
 <Type Name="UIMenuController" FullName="MonoTouch.UIKit.UIMenuController">
-  <TypeSignature Language="C#" Value="public class UIMenuController : MonoTouch.Foundation.NSObject" />
-  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit UIMenuController extends MonoTouch.Foundation.NSObject" />
+  <TypeSignature Language="C#" Value="public class UIMenuController : MonoTouch.Foundation.NSObject"/>
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit UIMenuController extends MonoTouch.Foundation.NSObject"/>
   <AssemblyInfo>
     <AssemblyName>monotouch</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -8,21 +9,54 @@
   <Base>
     <BaseTypeName>MonoTouch.Foundation.NSObject</BaseTypeName>
   </Base>
-  <Interfaces />
+  <Interfaces/>
   <Attributes>
     <Attribute>
       <AttributeName>MonoTouch.Foundation.Register("UIMenuController", true)</AttributeName>
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>The class used to implement Cut, Copy, Paste and Select commands.</summary>
-    <remarks>To be added.</remarks>
+    <summary>The class used to implement Cut, Copy, Paste, Select, and Delete commands.</summary>
+    <remarks>
+      <para>The <see cref="T:MonoTouch.UIKit.UIMenuController"/> is a singleton object, accessed by <see cref="M:MonoTouch.UIKit.UIMenuController.SharedMenuController"/>. It manages the editng menu, which provides options for Cut, Copy, Paste, Select, Select All, and Delete commands. The menu is visually associated with a target rectangle specified by <see cref="M:MonoTouch.UIKit.UIMenuController.SetTargetRect"/>. It is the application developer's responsibility to set this target rectangle appropriately before displaying the <see cref="T:MonoTouch.UIKit.UIMenuController"/>.  </para>
+      <para>The application can add or delete additional menu items using the <see cref="P:MonoTouch.UIKit.UIMenuController.MenuItems"/>. The following code, taken from the "Touches Gesture Recognizers" sample shows the code necessary to create a modified context menu:</para>
+      <example>
+        <code lang="C#">
+          var menuController = UIMenuController.SharedMenuController;
+          var resetMenuItem = new UIMenuItem ("Reset", new Selector ("ResetImage"));
+          var location = gestureRecognizer.LocationInView (gestureRecognizer.View);
+          BecomeFirstResponder ();
+          menuController.MenuItems = new [] { resetMenuItem };
+          menuController.SetTargetRect (new RectangleF (location.X, location.Y, 0, 0), gestureRecognizer.View);
+          menuController.MenuVisible = true;
+          menuController.Animated = true;
+          imageForReset = gestureRecognizer.View;
+          
+          ...
+          
+          [Export("ResetImage")]
+          void ResetImage (UIMenuController controller)
+          {
+          var mid = new PointF ((imageForReset.Bounds.Left + imageForReset.Bounds.Right) / 2, (imageForReset.Bounds.Top + imageForReset.Bounds.Bottom) / 2);
+          var locationInSuperview = imageForReset.ConvertPointToView (mid, imageForReset.Superview);
+          imageForReset.Layer.AnchorPoint = new PointF (0.5f, 0.5f);
+          imageForReset.Center =locationInSuperview;
+          
+          UIView.BeginAnimations (null, IntPtr.Zero);
+          imageForReset.Transform = MonoTouch.CoreGraphics.CGAffineTransform.MakeIdentity ();
+          UIView.CommitAnimations ();
+          }
+        </code>
+      </example>
+    </remarks>
     <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=82ff303e-bd49-43cb-9520-d471c625a3c5">Touches_Classic</related>
+    <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=82ff303e-bd49-43cb-9520-d471c625a3c5">Touches_GestureRecognizers</related>
+    
   </Docs>
   <Members>
     <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public UIMenuController ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="C#" Value="public UIMenuController ();"/>
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed"/>
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -35,7 +69,7 @@
           <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
         </Attribute>
       </Attributes>
-      <Parameters />
+      <Parameters/>
       <Docs>
         <summary>Default constructor that initializes a new instance of this class with no parameters.</summary>
         <remarks>
@@ -43,8 +77,8 @@
       </Docs>
     </Member>
     <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public UIMenuController (MonoTouch.Foundation.NSCoder coder);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class MonoTouch.Foundation.NSCoder coder) cil managed" />
+      <MemberSignature Language="C#" Value="public UIMenuController (MonoTouch.Foundation.NSCoder coder);"/>
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class MonoTouch.Foundation.NSCoder coder) cil managed"/>
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -58,7 +92,7 @@
         </Attribute>
       </Attributes>
       <Parameters>
-        <Parameter Name="coder" Type="MonoTouch.Foundation.NSCoder" />
+        <Parameter Name="coder" Type="MonoTouch.Foundation.NSCoder"/>
       </Parameters>
       <Docs>
         <param name="coder">The unarchiver object.</param>
@@ -67,8 +101,8 @@
       </Docs>
     </Member>
     <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public UIMenuController (MonoTouch.Foundation.NSObjectFlag t);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class MonoTouch.Foundation.NSObjectFlag t) cil managed" />
+      <MemberSignature Language="C#" Value="public UIMenuController (MonoTouch.Foundation.NSObjectFlag t);"/>
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class MonoTouch.Foundation.NSObjectFlag t) cil managed"/>
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -79,7 +113,7 @@
         </Attribute>
       </Attributes>
       <Parameters>
-        <Parameter Name="t" Type="MonoTouch.Foundation.NSObjectFlag" />
+        <Parameter Name="t" Type="MonoTouch.Foundation.NSObjectFlag"/>
       </Parameters>
       <Docs>
         <param name="t">Unused sentinel value, pass NSObjectFlag.Empty.</param>
@@ -92,31 +126,31 @@
           <para>The argument value is ignored and merely ensures that the only code that is executed is the construction phase is the basic NSObject allocation and runtime type registration.  Typically the chaining would look like this:</para>
           <example>
             <code lang="C#">
-//
-// The NSObjectFlag merely allocates the object and registers the
-// C# class with the Objective-C runtime if necessary, but no actual
-// initXxx method is invoked, that is done later in the constructor
-//
-// This is taken from MonoTouch's source code:
-//
-[Export ("initWithFrame:")]
-public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
-{
-// Invoke the init method now.
-	var initWithFrame = new Selector ("initWithFrame:").Handle;
-	if (IsDirectBinding)
-		Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
-	else
-		Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
-}
-</code>
+              //
+              // The NSObjectFlag merely allocates the object and registers the
+              // C# class with the Objective-C runtime if necessary, but no actual
+              // initXxx method is invoked, that is done later in the constructor
+              //
+              // This is taken from MonoTouch's source code:
+              //
+              [Export ("initWithFrame:")]
+              public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
+              {
+              // Invoke the init method now.
+              var initWithFrame = new Selector ("initWithFrame:").Handle;
+              if (IsDirectBinding)
+              Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+              else
+              Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+              }
+            </code>
           </example>
         </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public UIMenuController (IntPtr handle);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int handle) cil managed" />
+      <MemberSignature Language="C#" Value="public UIMenuController (IntPtr handle);"/>
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int handle) cil managed"/>
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -127,19 +161,19 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         </Attribute>
       </Attributes>
       <Parameters>
-        <Parameter Name="handle" Type="System.IntPtr" />
+        <Parameter Name="handle" Type="System.IntPtr"/>
       </Parameters>
       <Docs>
         <param name="handle">Pointer (handle) to the unmanaged object.</param>
         <summary>A constructor used when creating managed representations of unmanaged objects;  Called by the runtime.</summary>
         <remarks>
-          <para>This constructor is invoked by the runtime infrastructure (<see cref="M:MonoTouch.ObjCRuntime.GetNSObject (System.IntPtr)" />) to create a new managed representation for a pointer to an unmanaged Objective-C object.    You should not invoke this method directly, instead you should call the GetNSObject method as it will prevent two instances of a managed object to point to the same native object.</para>
+          <para>This constructor is invoked by the runtime infrastructure (<see cref="M:MonoTouch.ObjCRuntime.GetNSObject (System.IntPtr)"/>) to create a new managed representation for a pointer to an unmanaged Objective-C object.    You should not invoke this method directly, instead you should call the GetNSObject method as it will prevent two instances of a managed object to point to the same native object.</para>
         </remarks>
       </Docs>
     </Member>
     <Member MemberName="ArrowDirection">
-      <MemberSignature Language="C#" Value="public virtual MonoTouch.UIKit.UIMenuControllerArrowDirection ArrowDirection { get; set; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance valuetype MonoTouch.UIKit.UIMenuControllerArrowDirection ArrowDirection" />
+      <MemberSignature Language="C#" Value="public virtual MonoTouch.UIKit.UIMenuControllerArrowDirection ArrowDirection { get; set; }"/>
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype MonoTouch.UIKit.UIMenuControllerArrowDirection ArrowDirection"/>
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -165,8 +199,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Docs>
     </Member>
     <Member MemberName="ClassHandle">
-      <MemberSignature Language="C#" Value="public override IntPtr ClassHandle { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance native int ClassHandle" />
+      <MemberSignature Language="C#" Value="public override IntPtr ClassHandle { get; }"/>
+      <MemberSignature Language="ILAsm" Value=".property instance native int ClassHandle"/>
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -181,8 +215,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Docs>
     </Member>
     <Member MemberName="DidHideMenuNotification">
-      <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSString DidHideMenuNotification { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property class MonoTouch.Foundation.NSString DidHideMenuNotification" />
+      <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSString DidHideMenuNotification { get; }"/>
+      <MemberSignature Language="ILAsm" Value=".property class MonoTouch.Foundation.NSString DidHideMenuNotification"/>
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -194,70 +228,70 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <summary>Notification constant for DidHideMenu</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIMenuController+Notifications" />.<see cref="M:UIMenuController+Notifications.ObserveDidHideMenu" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter"/> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIMenuController+Notifications"/>.<see cref="M:UIMenuController+Notifications.ObserveDidHideMenu"/> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="c#">
-//
-// Lambda style
-//
-
-// listening
-notification = UIMenuController.Notifications.ObserveDidHideMenu ((sender, args) =&gt; {
-    /* Access strongly typed args */
-    Console.WriteLine ("Notification: {0}", args.Notification);
-});
-
-// To stop listening:
-notification.Dispose ();
-
-//
-// Method style
-//
-NSObject notification;
-void Callback (object sender, DidHideMenu args)
-{
-    // Access strongly typed args
-    Console.WriteLine ("Notification: {0}", args.Notification);
-}
-
-void Setup ()
-{
-    notification = UIMenuController.Notifications.ObserveDidHideMenu (Callback);
-}
-
-void Teardown ()
-{
-    notification.Dispose ();
-}</code>
+              //
+              // Lambda style
+              //
+              
+              // listening
+              notification = UIMenuController.Notifications.ObserveDidHideMenu ((sender, args) =&gt; {
+              /* Access strongly typed args */
+              Console.WriteLine ("Notification: {0}", args.Notification);
+              });
+              
+              // To stop listening:
+              notification.Dispose ();
+              
+              //
+              // Method style
+              //
+              NSObject notification;
+              void Callback (object sender, DidHideMenu args)
+              {
+              // Access strongly typed args
+              Console.WriteLine ("Notification: {0}", args.Notification);
+              }
+              
+              void Setup ()
+              {
+              notification = UIMenuController.Notifications.ObserveDidHideMenu (Callback);
+              }
+              
+              void Teardown ()
+              {
+              notification.Dispose ();
+              }</code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
             <code lang="c#">
-// Lambda style
-NSNotificationCenter.DefaultCenter.AddObserver (
-        UIMenuController.DidHideMenuNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIMenuController", notification); }
-
-
-// Method style
-void Callback (NSNotification notification)
-{
-    Console.WriteLine ("Received a notification UIMenuController", notification);
-}
-
-void Setup ()
-{
-    NSNotificationCenter.DefaultCenter.AddObserver (UIMenuController.DidHideMenuNotification, Callback);
-}
-</code>
+              // Lambda style
+              NSNotificationCenter.DefaultCenter.AddObserver (
+              UIMenuController.DidHideMenuNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIMenuController", notification); }
+              
+              
+              // Method style
+              void Callback (NSNotification notification)
+              {
+              Console.WriteLine ("Received a notification UIMenuController", notification);
+              }
+              
+              void Setup ()
+              {
+              NSNotificationCenter.DefaultCenter.AddObserver (UIMenuController.DidHideMenuNotification, Callback);
+              }
+            </code>
           </example>
         </remarks>
       </Docs>
     </Member>
     <Member MemberName="DidShowMenuNotification">
-      <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSString DidShowMenuNotification { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property class MonoTouch.Foundation.NSString DidShowMenuNotification" />
+      <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSString DidShowMenuNotification { get; }"/>
+      <MemberSignature Language="ILAsm" Value=".property class MonoTouch.Foundation.NSString DidShowMenuNotification"/>
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -269,70 +303,70 @@ void Setup ()
         <summary>Notification constant for DidShowMenu</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIMenuController+Notifications" />.<see cref="M:UIMenuController+Notifications.ObserveDidShowMenu" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter"/> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIMenuController+Notifications"/>.<see cref="M:UIMenuController+Notifications.ObserveDidShowMenu"/> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="c#">
-//
-// Lambda style
-//
-
-// listening
-notification = UIMenuController.Notifications.ObserveDidShowMenu ((sender, args) =&gt; {
-    /* Access strongly typed args */
-    Console.WriteLine ("Notification: {0}", args.Notification);
-});
-
-// To stop listening:
-notification.Dispose ();
-
-//
-// Method style
-//
-NSObject notification;
-void Callback (object sender, DidShowMenu args)
-{
-    // Access strongly typed args
-    Console.WriteLine ("Notification: {0}", args.Notification);
-}
-
-void Setup ()
-{
-    notification = UIMenuController.Notifications.ObserveDidShowMenu (Callback);
-}
-
-void Teardown ()
-{
-    notification.Dispose ();
-}</code>
+              //
+              // Lambda style
+              //
+              
+              // listening
+              notification = UIMenuController.Notifications.ObserveDidShowMenu ((sender, args) =&gt; {
+              /* Access strongly typed args */
+              Console.WriteLine ("Notification: {0}", args.Notification);
+              });
+              
+              // To stop listening:
+              notification.Dispose ();
+              
+              //
+              // Method style
+              //
+              NSObject notification;
+              void Callback (object sender, DidShowMenu args)
+              {
+              // Access strongly typed args
+              Console.WriteLine ("Notification: {0}", args.Notification);
+              }
+              
+              void Setup ()
+              {
+              notification = UIMenuController.Notifications.ObserveDidShowMenu (Callback);
+              }
+              
+              void Teardown ()
+              {
+              notification.Dispose ();
+              }</code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
             <code lang="c#">
-// Lambda style
-NSNotificationCenter.DefaultCenter.AddObserver (
-        UIMenuController.DidShowMenuNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIMenuController", notification); }
-
-
-// Method style
-void Callback (NSNotification notification)
-{
-    Console.WriteLine ("Received a notification UIMenuController", notification);
-}
-
-void Setup ()
-{
-    NSNotificationCenter.DefaultCenter.AddObserver (UIMenuController.DidShowMenuNotification, Callback);
-}
-</code>
+              // Lambda style
+              NSNotificationCenter.DefaultCenter.AddObserver (
+              UIMenuController.DidShowMenuNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIMenuController", notification); }
+              
+              
+              // Method style
+              void Callback (NSNotification notification)
+              {
+              Console.WriteLine ("Received a notification UIMenuController", notification);
+              }
+              
+              void Setup ()
+              {
+              NSNotificationCenter.DefaultCenter.AddObserver (UIMenuController.DidShowMenuNotification, Callback);
+              }
+            </code>
           </example>
         </remarks>
       </Docs>
     </Member>
     <Member MemberName="Dispose">
-      <MemberSignature Language="C#" Value="protected override void Dispose (bool disposing);" />
-      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Dispose(bool disposing) cil managed" />
+      <MemberSignature Language="C#" Value="protected override void Dispose (bool disposing);"/>
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Dispose(bool disposing) cil managed"/>
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -341,24 +375,24 @@ void Setup ()
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="disposing" Type="System.Boolean" />
+        <Parameter Name="disposing" Type="System.Boolean"/>
       </Parameters>
       <Docs>
         <param name="disposing">
-          <para>If set to <see langword="true" />, the method is invoked directly and will dispose manage and unmanaged resources;   If set to <see langword="false" /> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</para>
+          <para>If set to <see langword="true"/>, the method is invoked directly and will dispose manage and unmanaged resources;   If set to <see langword="false"/> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</para>
         </param>
         <summary>Releases the resourced used by the UIMenuController object.</summary>
         <remarks>
           <para>This Dispose method releases the resources used by the UIMenuController class.</para>
-          <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposing <paramref name="disposing" /> is set to <see langword="true" /> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false" />. </para>
+          <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposing <paramref name="disposing"/> is set to <see langword="true"/> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false"/>. </para>
           <para>Calling the Dispose method when you are finished using the UIMenuController ensures that all external resources used by this managed object are released as soon as possible.  Once you have invoked the Dispose method, the object is no longer useful and you should no longer make any calls to it.</para>
           <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at http://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
         </remarks>
       </Docs>
     </Member>
     <Member MemberName="MenuFrame">
-      <MemberSignature Language="C#" Value="public virtual System.Drawing.RectangleF MenuFrame { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Drawing.RectangleF MenuFrame" />
+      <MemberSignature Language="C#" Value="public virtual System.Drawing.RectangleF MenuFrame { get; }"/>
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Drawing.RectangleF MenuFrame"/>
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -378,8 +412,8 @@ void Setup ()
       </Docs>
     </Member>
     <Member MemberName="MenuItems">
-      <MemberSignature Language="C#" Value="public virtual MonoTouch.UIKit.UIMenuItem[] MenuItems { get; set; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class MonoTouch.UIKit.UIMenuItem[] MenuItems" />
+      <MemberSignature Language="C#" Value="public virtual MonoTouch.UIKit.UIMenuItem[] MenuItems { get; set; }"/>
+      <MemberSignature Language="ILAsm" Value=".property instance class MonoTouch.UIKit.UIMenuItem[] MenuItems"/>
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -405,8 +439,8 @@ void Setup ()
       </Docs>
     </Member>
     <Member MemberName="MenuVisible">
-      <MemberSignature Language="C#" Value="public virtual bool MenuVisible { get; set; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance bool MenuVisible" />
+      <MemberSignature Language="C#" Value="public virtual bool MenuVisible { get; set; }"/>
+      <MemberSignature Language="ILAsm" Value=".property instance bool MenuVisible"/>
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -429,8 +463,8 @@ void Setup ()
       </Docs>
     </Member>
     <Member MemberName="SetMenuVisible">
-      <MemberSignature Language="C#" Value="public virtual void SetMenuVisible (bool visible, bool animated);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SetMenuVisible(bool visible, bool animated) cil managed" />
+      <MemberSignature Language="C#" Value="public virtual void SetMenuVisible (bool visible, bool animated);"/>
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SetMenuVisible(bool visible, bool animated) cil managed"/>
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -444,8 +478,8 @@ void Setup ()
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="visible" Type="System.Boolean" />
-        <Parameter Name="animated" Type="System.Boolean" />
+        <Parameter Name="visible" Type="System.Boolean"/>
+        <Parameter Name="animated" Type="System.Boolean"/>
       </Parameters>
       <Docs>
         <param name="visible">To be added.</param>
@@ -455,8 +489,8 @@ void Setup ()
       </Docs>
     </Member>
     <Member MemberName="SetTargetRect">
-      <MemberSignature Language="C#" Value="public virtual void SetTargetRect (System.Drawing.RectangleF rect, MonoTouch.UIKit.UIView inView);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SetTargetRect(valuetype System.Drawing.RectangleF rect, class MonoTouch.UIKit.UIView inView) cil managed" />
+      <MemberSignature Language="C#" Value="public virtual void SetTargetRect (System.Drawing.RectangleF rect, MonoTouch.UIKit.UIView inView);"/>
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SetTargetRect(valuetype System.Drawing.RectangleF rect, class MonoTouch.UIKit.UIView inView) cil managed"/>
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -470,8 +504,8 @@ void Setup ()
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="rect" Type="System.Drawing.RectangleF" />
-        <Parameter Name="inView" Type="MonoTouch.UIKit.UIView" />
+        <Parameter Name="rect" Type="System.Drawing.RectangleF"/>
+        <Parameter Name="inView" Type="MonoTouch.UIKit.UIView"/>
       </Parameters>
       <Docs>
         <param name="rect">To be added.</param>
@@ -481,8 +515,8 @@ void Setup ()
       </Docs>
     </Member>
     <Member MemberName="SharedMenuController">
-      <MemberSignature Language="C#" Value="public static MonoTouch.UIKit.UIMenuController SharedMenuController { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property class MonoTouch.UIKit.UIMenuController SharedMenuController" />
+      <MemberSignature Language="C#" Value="public static MonoTouch.UIKit.UIMenuController SharedMenuController { get; }"/>
+      <MemberSignature Language="ILAsm" Value=".property class MonoTouch.UIKit.UIMenuController SharedMenuController"/>
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -502,8 +536,8 @@ void Setup ()
       </Docs>
     </Member>
     <Member MemberName="Update">
-      <MemberSignature Language="C#" Value="public virtual void Update ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Update() cil managed" />
+      <MemberSignature Language="C#" Value="public virtual void Update ();"/>
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Update() cil managed"/>
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -516,15 +550,15 @@ void Setup ()
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
-      <Parameters />
+      <Parameters/>
       <Docs>
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="WillHideMenuNotification">
-      <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSString WillHideMenuNotification { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property class MonoTouch.Foundation.NSString WillHideMenuNotification" />
+      <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSString WillHideMenuNotification { get; }"/>
+      <MemberSignature Language="ILAsm" Value=".property class MonoTouch.Foundation.NSString WillHideMenuNotification"/>
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -536,70 +570,70 @@ void Setup ()
         <summary>Notification constant for WillHideMenu</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIMenuController+Notifications" />.<see cref="M:UIMenuController+Notifications.ObserveWillHideMenu" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter"/> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIMenuController+Notifications"/>.<see cref="M:UIMenuController+Notifications.ObserveWillHideMenu"/> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="c#">
-//
-// Lambda style
-//
-
-// listening
-notification = UIMenuController.Notifications.ObserveWillHideMenu ((sender, args) =&gt; {
-    /* Access strongly typed args */
-    Console.WriteLine ("Notification: {0}", args.Notification);
-});
-
-// To stop listening:
-notification.Dispose ();
-
-//
-// Method style
-//
-NSObject notification;
-void Callback (object sender, WillHideMenu args)
-{
-    // Access strongly typed args
-    Console.WriteLine ("Notification: {0}", args.Notification);
-}
-
-void Setup ()
-{
-    notification = UIMenuController.Notifications.ObserveWillHideMenu (Callback);
-}
-
-void Teardown ()
-{
-    notification.Dispose ();
-}</code>
+              //
+              // Lambda style
+              //
+              
+              // listening
+              notification = UIMenuController.Notifications.ObserveWillHideMenu ((sender, args) =&gt; {
+              /* Access strongly typed args */
+              Console.WriteLine ("Notification: {0}", args.Notification);
+              });
+              
+              // To stop listening:
+              notification.Dispose ();
+              
+              //
+              // Method style
+              //
+              NSObject notification;
+              void Callback (object sender, WillHideMenu args)
+              {
+              // Access strongly typed args
+              Console.WriteLine ("Notification: {0}", args.Notification);
+              }
+              
+              void Setup ()
+              {
+              notification = UIMenuController.Notifications.ObserveWillHideMenu (Callback);
+              }
+              
+              void Teardown ()
+              {
+              notification.Dispose ();
+              }</code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
             <code lang="c#">
-// Lambda style
-NSNotificationCenter.DefaultCenter.AddObserver (
-        UIMenuController.WillHideMenuNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIMenuController", notification); }
-
-
-// Method style
-void Callback (NSNotification notification)
-{
-    Console.WriteLine ("Received a notification UIMenuController", notification);
-}
-
-void Setup ()
-{
-    NSNotificationCenter.DefaultCenter.AddObserver (UIMenuController.WillHideMenuNotification, Callback);
-}
-</code>
+              // Lambda style
+              NSNotificationCenter.DefaultCenter.AddObserver (
+              UIMenuController.WillHideMenuNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIMenuController", notification); }
+              
+              
+              // Method style
+              void Callback (NSNotification notification)
+              {
+              Console.WriteLine ("Received a notification UIMenuController", notification);
+              }
+              
+              void Setup ()
+              {
+              NSNotificationCenter.DefaultCenter.AddObserver (UIMenuController.WillHideMenuNotification, Callback);
+              }
+            </code>
           </example>
         </remarks>
       </Docs>
     </Member>
     <Member MemberName="WillShowMenuNotification">
-      <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSString WillShowMenuNotification { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property class MonoTouch.Foundation.NSString WillShowMenuNotification" />
+      <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSString WillShowMenuNotification { get; }"/>
+      <MemberSignature Language="ILAsm" Value=".property class MonoTouch.Foundation.NSString WillShowMenuNotification"/>
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -611,63 +645,63 @@ void Setup ()
         <summary>Notification constant for WillShowMenu</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIMenuController+Notifications" />.<see cref="M:UIMenuController+Notifications.ObserveWillShowMenu" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter"/> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIMenuController+Notifications"/>.<see cref="M:UIMenuController+Notifications.ObserveWillShowMenu"/> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="c#">
-//
-// Lambda style
-//
-
-// listening
-notification = UIMenuController.Notifications.ObserveWillShowMenu ((sender, args) =&gt; {
-    /* Access strongly typed args */
-    Console.WriteLine ("Notification: {0}", args.Notification);
-});
-
-// To stop listening:
-notification.Dispose ();
-
-//
-// Method style
-//
-NSObject notification;
-void Callback (object sender, WillShowMenu args)
-{
-    // Access strongly typed args
-    Console.WriteLine ("Notification: {0}", args.Notification);
-}
-
-void Setup ()
-{
-    notification = UIMenuController.Notifications.ObserveWillShowMenu (Callback);
-}
-
-void Teardown ()
-{
-    notification.Dispose ();
-}</code>
+              //
+              // Lambda style
+              //
+              
+              // listening
+              notification = UIMenuController.Notifications.ObserveWillShowMenu ((sender, args) =&gt; {
+              /* Access strongly typed args */
+              Console.WriteLine ("Notification: {0}", args.Notification);
+              });
+              
+              // To stop listening:
+              notification.Dispose ();
+              
+              //
+              // Method style
+              //
+              NSObject notification;
+              void Callback (object sender, WillShowMenu args)
+              {
+              // Access strongly typed args
+              Console.WriteLine ("Notification: {0}", args.Notification);
+              }
+              
+              void Setup ()
+              {
+              notification = UIMenuController.Notifications.ObserveWillShowMenu (Callback);
+              }
+              
+              void Teardown ()
+              {
+              notification.Dispose ();
+              }</code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
             <code lang="c#">
-// Lambda style
-NSNotificationCenter.DefaultCenter.AddObserver (
-        UIMenuController.WillShowMenuNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIMenuController", notification); }
-
-
-// Method style
-void Callback (NSNotification notification)
-{
-    Console.WriteLine ("Received a notification UIMenuController", notification);
-}
-
-void Setup ()
-{
-    NSNotificationCenter.DefaultCenter.AddObserver (UIMenuController.WillShowMenuNotification, Callback);
-}
-</code>
+              // Lambda style
+              NSNotificationCenter.DefaultCenter.AddObserver (
+              UIMenuController.WillShowMenuNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIMenuController", notification); }
+              
+              
+              // Method style
+              void Callback (NSNotification notification)
+              {
+              Console.WriteLine ("Received a notification UIMenuController", notification);
+              }
+              
+              void Setup ()
+              {
+              NSNotificationCenter.DefaultCenter.AddObserver (UIMenuController.WillShowMenuNotification, Callback);
+              }
+            </code>
           </example>
         </remarks>
       </Docs>
