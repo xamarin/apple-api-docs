@@ -2783,9 +2783,22 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>tk tk tkTo be added.</remarks>
+        <summary><see langword="true"/> if the view should overlap the status bar.</summary>
+        <value>The default value is <see langword="false"/>.</value>
+        <remarks>
+          <para>When this property is at it's default value of <see langword="false"/>, the <see cref="T:MonoTouch.UIKit.UIViewController"/>'s <see cref="P:MonoTouch.UIKit.UIViewController.View"/>'s <see cref="P:MonoTouch.UIKit.UIView.Frame"/> is sized so that it does not include the area under the device's status bar (the area at the stop of the screen that shows, e.g., signal and carrier, battery charge, etc.). If set to <see langword="true"/> and <see cref="P:MonoTouch.UIKit.UIApplication.StatusBarStyle"/> is set to <see cref="M:MonoTouch.UIKit.UIStatusBarStyle.BlackTranslucent"/>, the <see cref="P:MonoTouch.UIKit.UIViewController.View"/> will be visible behind the status bar.</para>
+          <example>
+            <code lang="C#">
+              public override void ViewDidLoad ()
+              {
+              &#xA0;&#xA0;base.ViewDidLoad ();
+              
+              &#xA0;&#xA0;WantsFullScreenLayout = true;
+              &#xA0;&#xA0;UIApplication.SharedApplication.StatusBarStyle = UIStatusBarStyle.BlackTranslucent;
+              }
+            </code>
+          </example>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="WillAnimateFirstHalfOfRotation">
@@ -2809,13 +2822,15 @@
       </Parameters>
       <Docs>
         <param name="toInterfaceOrientation">
-          <para>To be added.</para>
+          <para>The new orientation.</para>
         </param>
         <param name="duration">
-          <para>To be added.</para>
+          <para>The duration of the first half of the rotation animation, in seconds.</para>
         </param>
-        <summary>To be added.</summary>
+        <summary>Deprecated method sent during the first half of a rotation. Application developers should instead use <see cref="M:MonoTouch.UIKit.UIViewController.WillAnimateRotation"/>.</summary>
         <remarks>
+          <para>Two-step rotations are deprecated and application developers should instead use single-step rotations (see <see cref="M:MonoTouch.UIKit.UIViewController.WillAnimateRotation"/> ).</para>
+          <para>When this method is called, the <see cref="P:MonoTouch.UIKit.UIViewController.InterfaceOrientation"/> is set to the old orientation. </para>
         </remarks>
       </Docs>
     </Member>
@@ -2840,13 +2855,17 @@
       </Parameters>
       <Docs>
         <param name="toInterfaceOrientation">
-          <para>To be added.</para>
+          <para>The new orientation.</para>
         </param>
         <param name="duration">
-          <para>To be added.</para>
+          <para>The duration of the rotation animation, in seconds.</para>
         </param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Called prior to a one-step interface rotation.</summary>
+        <remarks>
+          <para>This method is called from with the animation block associated with a user interface rotation. When this method is called, the <see cref="P:MonoTouch.UIKit.UIViewController.InterfaceOrientation"/> is set to the new interface orientation and the <see cref="P:MonoTouch.UIKit.UIView.Bounds"/> of the <see cref="T:MonoTouch.UIKit.UIViewController"/>'s <see cref="P:MonoTouch.UIKit.UIViewController.View"/> have been modified.</para>
+        </remarks>
+        <altmember cref="M:MonoTouch.UIKit.UIViewController.WillRotate"/>
+        <altmember cref="M:MonoTouch.UIKit.UIViewController.DidRotate"/>
       </Docs>
     </Member>
     <Member MemberName="WillAnimateSecondHalfOfRotation">
@@ -2870,14 +2889,16 @@
       </Parameters>
       <Docs>
         <param name="fromInterfaceOrientation">
-          <para>To be added.</para>
+          <para>The old orientation.</para>
         </param>
         <param name="duration">
-          <para>To be added.</para>
+          <para>The duration of the second half of the rotation animation, in seconds.</para>
         </param>
-        <summary>To be added.</summary>
+        <summary>Deprecated method sent during the second half of a rotation. Application developers should instead use <see cref="M:MonoTouch.UIKit.UIViewController.WillAnimateRotation"/>.</summary>
         <remarks>
-        </remarks>
+          <para>Two-step rotations are deprecated and application developers should instead use single-step rotations (see <see cref="M:MonoTouch.UIKit.UIViewController.WillAnimateRotation"/> ).</para>
+          <para>When this method is called, the <see cref="P:MonoTouch.UIKit.UIViewController.InterfaceOrientation"/> is set to the new orientation. </para>
+          </remarks>
       </Docs>
     </Member>
     <Member MemberName="WillMoveToParentViewController">
@@ -2900,11 +2921,13 @@
       </Parameters>
       <Docs>
         <param name="parent">
-          <para>The new parent view controller, or null if there wont be a new parent.</para>
+          <para>The new parent view controller, or <see langword="null"/> if there won't be a new parent.</para>
           <para tool="nullallowed">This parameter can be <see langword="null"/>.</para>
         </param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Called prior to adding or removing <c>this</c> from a container <see cref="T:MonoTouch.UIKit.UIViewController"/>.</summary>
+        <remarks><para>Application developers may override this method in their custom container <see cref="T:MonoTouch.UIKit.UIViewController"/>s. Application developers who implement their own container <see cref="T:MonoTouch.UIKit.UIViewController"/>s must call this method with the <paramref name="parent"/> parameter set to <see langword="null"/> prior to calling <see cref="M:MonoTouch.UIKit.UIViewController.RemoveFromParentViewController"/>. </para></remarks>
+        <altmember cref="M:MonoTouch.UIKit.UIViewController.RemoveFromParentViewController"/>
+
       </Docs>
     </Member>
     <Member MemberName="WillRotate">
@@ -2928,13 +2951,14 @@
       </Parameters>
       <Docs>
         <param name="toInterfaceOrientation">
-          <para>To be added.</para>
+          <para>The new interface orientation.</para>
         </param>
         <param name="duration">
-          <para>To be added.</para>
+          <para>The duration of the rotation, in seconds.</para>
         </param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Called prior to a user interface rotation.</summary>
+        <remarks><para>Application developers may override this method to disable expensive drawing operations, media playback, or other resource-intensive operations during a user interface rotation.</para>
+        <para>When this method is called, the <see cref="P:MonoTouch.UIKit.UIViewController.InterfaceOrientation"/> is set to the original <see cref="T:MonoTouch.UIKit.UIInterfaceOrientation"/>.</para></remarks>
       </Docs>
     </Member>
   </Members>
