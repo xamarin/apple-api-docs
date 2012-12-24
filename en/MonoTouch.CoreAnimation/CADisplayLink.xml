@@ -17,6 +17,60 @@
   <Docs>
     <summary>Synchronization object between your animations and the display refresh.</summary>
     <remarks>
+      <para>
+
+	The display link object is a timer that can be used to
+	synchronize your drawing with the screen refresh rate.  Once
+	you create your CADisplayLink, you need to add it to a runloop
+	by using the <see
+	cref="M:MonoTouch.CoreAnimation.CADisplayLink.AddToRunLoop"/>
+	method.
+
+      </para>
+
+      <para>
+	Using the display link ensures that your application will not
+	suffer from display glitches like screen tearing and micro-stuttering. 
+      </para>
+
+      <para>
+
+	You can pause the display link by setting the <see
+	cref="P:MonoTouch.CoreAnimation.CADisplayLink.Paused"/>
+	property.  And you can remove your display link from any
+	registered run loops by calling the <see
+	cref="M:MonoTouch.CoreAnimation.CADisplayLink.Invalidate"/>
+	method.
+
+      </para>
+
+      <para>
+
+	By default the timer is triggered sixty times per second.  If
+	your application does not need this level of precision, set
+	the FrameInterval property to skip one or more updates.  For
+	example, setting FrameInterval to two, would invoke your
+	target method thirty times per second.
+
+      </para>
+
+<example>
+<code lang="c#">
+GLKView myGlView;
+
+void Setup ()
+{
+    CADisplayLink displayLink = CADisplayLink.Create (Display);
+    displayLink.AddToRunLoop (NSRunLoop.Main, NSRunLoop.UITrackingRunLoopMode); 
+}
+
+void Display ()
+{
+    myGLView.Display ();
+}
+
+</code>
+</example>
     </remarks>
   </Docs>
   <Members>
@@ -193,10 +247,14 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="action" Type="MonoTouch.Foundation.NSAction" />
       </Parameters>
       <Docs>
-        <param name="action">To be added.</param>
+        <param name="action">Method to invoke on each screen refresh.</param>
         <summary>Registers the delegate to be invoked every time the display is about to be updated.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <returns>The DisplayLink object that will invoke the specified method on each screen update.</returns>
+        <remarks>
+	  <para>
+	    Once you create the display link, you must add the handler to the runloop.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Create">
@@ -219,11 +277,18 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="sel" Type="MonoTouch.ObjCRuntime.Selector" />
       </Parameters>
       <Docs>
-        <param name="target">To be added.</param>
-        <param name="sel">To be added.</param>
-        <summary>Registers the delegate to be invoked every time the display is about to be updated.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="target">Target object to invoke the selector on.</param>
+        <param name="sel">Selector to invoke.</param>
+        <summary>Objective-C style registeration of the method to be invoked every time the display is about to be updated.</summary>
+        <returns>The DisplayLink object that will invoke the specified method on each screen update.</returns>
+        <remarks>
+	  <para>
+	    With C# you can use the Create overload that takes a NSAction as it can be used with lambdas.
+	  </para>
+	  <para>
+	    Once you create the display link, you must add the handler to the runloop.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="FrameInterval">
@@ -247,7 +312,24 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <summary>The number of times that the display output should be updated before your code is invoked. </summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>
+
+	  <para>
+	    The default value is one, which means that your code is
+	    invoked once each time that a screen refresh will take
+	    place.  If you set this value to two, then your method will
+	    only be invoked half the time (once every two frames) and so
+	    on.
+	  </para>
+
+	  <para>
+	    In general, you should not skip frames.  If your software
+	    can not keep up with the frame rate, it is better to
+	    increase the frame interval and deliver a consistent set
+	    of updates.
+	  </para>
+
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Invalidate">
@@ -338,8 +420,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Docs>
         <summary>Timestamp for the last frame displayed.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <value></value>
+        <remarks>
+	  Use this value to compute which date should be displayed next.
+	</remarks>
       </Docs>
     </Member>
   </Members>
