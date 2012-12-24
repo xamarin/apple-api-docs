@@ -17,68 +17,68 @@
   <Docs>
     <summary>Loads Image and cube maps into OpenGL textures.</summary>
     <remarks>
-
       <para>
 
 	GLTextureLoader simplifies the process of loading textures and
 	cube maps by providing a high-level API that can load images
 	on a variety of graphic file formats (PNG, JPEG, TIFF and
-	other formats supported by <see cref="N:MonoTouch.ImageIO"/>.
+	other formats supported by <see cref="N:MonoTouch.ImageIO" />.
+	The data can be loaded both synchronously and asynchrously from <see
+	cref="T:MonoTOuch.CoreGraphics.CGImage"/> objects, in-memory
+	binary data, files and arbitrary <see
+	cref="T:MonoTouch.Foundation.NSUrl"/> locations.
 
       </para>
 
       <para>
 
 	You can control how textures are loaded by configuring the
-	textureOperations NSDictionary.  You can configure whether the
-	texture will be premultiplied by their alpha channel or not,
-	whether mipmaps should be created from the source image when
-	the texture is loaded and whether the image should be flipped
-	when it is loaded.
+	<see cref="T:MonoTouch.GLKit.GLKTextureOperations"/> object.
+	You can configure whether the texture will be premultiplied by
+	their alpha channel or not, whether mipmaps should be created
+	from the source image when the texture is loaded and whether
+	the image should be flipped when it is loaded.
 
       </para>
-
       <para>
 
-	To use the texture loader, make an <see
-	cref="T:MonoTouch.OpenGLES.EAGLContext"/> current, use one of
+	To use the texture loader, make an <see cref="T:MonoTouch.OpenGLES.EAGLContext" /> current, use one of
 	the loading methods in this class and use the values in the
-	returned <see cref="T:MonoTouch.GLKit.GLKTextureInfo"/> which
+	returned <see cref="T:MonoTouch.GLKit.GLKTextureInfo" /> which
 	contains the OpenGL object name (an uint), properties such as
 	width, heigh, alpha, origin and mipmapping.
 	
       </para>
-
       <para>
-	To use the texture loaded asynchrously, create the context using the <see
-	cref="T:MonoTouch.OpenGLES.EAGLContext"/>'s sharegroup.   Then you call one of the 
+	To use the texture loaded asynchrously, create the context using the <see cref="T:MonoTouch.OpenGLES.EAGLContext" />'s sharegroup.   Then you call one of the 
       </para>
-
-<example>
-<code lang="c#">
+      <example>
+        <code lang="c#">
 //
 // if myQueue is null, it dispatches into the main queue.
 void AsyncLoad (EAGLContext context, DispatchQueue myQueue)
 {
     var shareGroup = context.ShareGroup;
     var loader = new GLTextureLoader (shareGroup);
+    var textureOperations = new GLKTextureOperations () {
+        ApplyPremultiplication = true,
+        GenerateMipmaps = true
+    }
 
-    loader.BeginTextureLoad ("file.png", textureOperations: null, queue: myQueue, TextureLoadedCallback);
+    loader.BeginTextureLoad ("file.png", textureOperations, myQueue, TextureLoadedCallback);
 }
 
 // 
-// Called on the specified queue
+// Called on the specified queue.
 //
 void TextureLoadedCallback (GLKTextureInfo textureInfo, NSError error)
 {
     // Use texture info here.
 }
 </code>
-</example>
-
+      </example>
       <para>
       </para>
-
     </remarks>
   </Docs>
   <Members>
@@ -213,7 +213,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <summary>Represents the value associated with the constant GLKTextureLoaderApplyPremultiplication</summary>
         <value>
         </value>
-        <remarks>To be added.</remarks>
+        <remarks>Used as a key for textureOperations if you are using the NSDictionary overloads instead of the strongly typed GLKTextureOperations class.</remarks>
       </Docs>
     </Member>
     <Member MemberName="BeginLoadCubeMap">
@@ -238,12 +238,53 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="onComplete" Type="MonoTouch.GLKit.GLKTextureLoaderCallback" />
       </Parameters>
       <Docs>
-        <param name="filePath">To be added.</param>
-        <param name="textureOperations">To be added.</param>
+        <param name="filePath">The file that contains the texture.</param>
+        <param name="textureOperations">An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.</param>
         <param name="queue">The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.</param>
-        <param name="onComplete">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="onComplete">Callback to invoke when the texture is loaded.   The callback receives a GLKTextureInfo and an NSError.</param>
+        <summary>Asynchronously loads a cube map.</summary>
+        <remarks>
+	  <para>
+
+	    Loads the data in the background.  When the data has
+	    loaded, or an error has been encountered, the provided
+	    callback is invoked on the specified queue.  If no queue
+	    is specified, the callback is invoked on the main queue.
+
+	  </para>
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginLoadCubeMap">
+      <MemberSignature Language="C#" Value="public void BeginLoadCubeMap (MonoTouch.Foundation.NSUrl filePath, MonoTouch.GLKit.GLKTextureOperations textureOperations, MonoTouch.CoreFoundation.DispatchQueue queue, MonoTouch.GLKit.GLKTextureLoaderCallback onComplete);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void BeginLoadCubeMap(class MonoTouch.Foundation.NSUrl filePath, class MonoTouch.GLKit.GLKTextureOperations textureOperations, class MonoTouch.CoreFoundation.DispatchQueue queue, class MonoTouch.GLKit.GLKTextureLoaderCallback onComplete) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="filePath" Type="MonoTouch.Foundation.NSUrl" />
+        <Parameter Name="textureOperations" Type="MonoTouch.GLKit.GLKTextureOperations" />
+        <Parameter Name="queue" Type="MonoTouch.CoreFoundation.DispatchQueue" />
+        <Parameter Name="onComplete" Type="MonoTouch.GLKit.GLKTextureLoaderCallback" />
+      </Parameters>
+      <Docs>
+        <param name="filePath">The file that contains the texture.</param>
+        <param name="textureOperations">Operations to be performed during the image loading on the texture.</param>
+        <param name="queue">The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.</param>
+        <param name="onComplete">Callback to invoke when the texture is loaded.   The callback receives a GLKTextureInfo and an NSError.</param>
+        <summary>Asynchronously loads a cube map.</summary>
+        <remarks>
+	  <para>
+	    Loads the data in the background.  When the data has loaded,
+	    or an error has been encountered, the provided
+	    callback is invoked on the specified queue.  If no queue is
+	    specified, the callback is invoked on the main queue.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="BeginLoadCubeMap">
@@ -263,12 +304,53 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="onComplete" Type="MonoTouch.GLKit.GLKTextureLoaderCallback" />
       </Parameters>
       <Docs>
-        <param name="urls">To be added.</param>
-        <param name="textureOperations">To be added.</param>
+        <param name="urls">Six URLs that point to the sides of the cube.</param>
+        <param name="textureOperations">An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.</param>
         <param name="queue">The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.</param>
-        <param name="onComplete">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="onComplete">Callback to invoke when the texture is loaded.   The callback receives a GLKTextureInfo and an NSError.</param>
+        <summary>Asynchronously loads a cube map.</summary>
+        <remarks>
+	  <para>
+	    Loads the data in the background.  When the data has
+	    loaded, or an error has been encountered, the provided
+	    callback is invoked on the specified queue.  If no queue
+	    is specified, the callback is invoked on the main queue.
+	  </para>
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginLoadCubeMap">
+      <MemberSignature Language="C#" Value="public void BeginLoadCubeMap (MonoTouch.Foundation.NSUrl[] urls, MonoTouch.GLKit.GLKTextureOperations textureOperations, MonoTouch.CoreFoundation.DispatchQueue queue, MonoTouch.GLKit.GLKTextureLoaderCallback onComplete);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void BeginLoadCubeMap(class MonoTouch.Foundation.NSUrl[] urls, class MonoTouch.GLKit.GLKTextureOperations textureOperations, class MonoTouch.CoreFoundation.DispatchQueue queue, class MonoTouch.GLKit.GLKTextureLoaderCallback onComplete) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="urls" Type="MonoTouch.Foundation.NSUrl[]" />
+        <Parameter Name="textureOperations" Type="MonoTouch.GLKit.GLKTextureOperations" />
+        <Parameter Name="queue" Type="MonoTouch.CoreFoundation.DispatchQueue" />
+        <Parameter Name="onComplete" Type="MonoTouch.GLKit.GLKTextureLoaderCallback" />
+      </Parameters>
+      <Docs>
+        <param name="urls">Six URLs that point to the sides of the cube.</param>
+        <param name="textureOperations">Operations to be performed during the image loading on the texture.</param>
+        <param name="queue">The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.</param>
+        <param name="onComplete">Callback to invoke when the texture is loaded.   The callback receives a GLKTextureInfo and an NSError.</param>
+        <summary>Asynchronously loads a cube map.</summary>
+        <remarks>
+	  <para>
+
+	    Loads the data in the background.  When the data has
+	    loaded, or an error has been encountered, the provided
+	    callback is invoked on the specified queue.  If no queue
+	    is specified, the callback is invoked on the main queue.
+
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="BeginLoadCubeMap">
@@ -293,12 +375,53 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="onComplete" Type="MonoTouch.GLKit.GLKTextureLoaderCallback" />
       </Parameters>
       <Docs>
-        <param name="fileName">To be added.</param>
-        <param name="textureOperations">To be added.</param>
+        <param name="fileName">File name where the data will be loaded from.</param>
+        <param name="textureOperations">An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.</param>
         <param name="queue">The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.</param>
-        <param name="onComplete">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="onComplete">Callback to invoke when the texture is loaded.   The callback receives a GLKTextureInfo and an NSError.</param>
+        <summary>Asynchronously loads a cube map.</summary>
+        <remarks>
+	  <para>
+	    Loads the data in the background.  When the data has loaded,
+	    or an error has been encountered, the provided
+	    callback is invoked on the specified queue.  If no queue is
+	    specified, the callback is invoked on the main queue.
+	  </para>
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginLoadCubeMap">
+      <MemberSignature Language="C#" Value="public void BeginLoadCubeMap (string fileName, MonoTouch.GLKit.GLKTextureOperations textureOperations, MonoTouch.CoreFoundation.DispatchQueue queue, MonoTouch.GLKit.GLKTextureLoaderCallback onComplete);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void BeginLoadCubeMap(string fileName, class MonoTouch.GLKit.GLKTextureOperations textureOperations, class MonoTouch.CoreFoundation.DispatchQueue queue, class MonoTouch.GLKit.GLKTextureLoaderCallback onComplete) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="fileName" Type="System.String" />
+        <Parameter Name="textureOperations" Type="MonoTouch.GLKit.GLKTextureOperations" />
+        <Parameter Name="queue" Type="MonoTouch.CoreFoundation.DispatchQueue" />
+        <Parameter Name="onComplete" Type="MonoTouch.GLKit.GLKTextureLoaderCallback" />
+      </Parameters>
+      <Docs>
+        <param name="fileName">File name where the data will be loaded from.</param>
+        <param name="textureOperations">Operations to be performed during the image loading on the texture.</param>
+        <param name="queue">The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.</param>
+        <param name="onComplete">Callback to invoke when the texture is loaded.   The callback receives a GLKTextureInfo and an NSError.</param>
+        <summary>Asynchronously loads a cube map.</summary>
+        <remarks>
+	  <para>
+
+	    Loads the data in the background.  When the data has
+	    loaded, or an error has been encountered, the provided
+	    callback is invoked on the specified queue.  If no queue
+	    is specified, the callback is invoked on the main queue.
+
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="BeginLoadCubeMap">
@@ -318,12 +441,55 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="onComplete" Type="MonoTouch.GLKit.GLKTextureLoaderCallback" />
       </Parameters>
       <Docs>
-        <param name="files">To be added.</param>
-        <param name="textureOperations">To be added.</param>
+        <param name="files">Six files that point to the sides of the cube.</param>
+        <param name="textureOperations">An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.</param>
         <param name="queue">The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.</param>
-        <param name="onComplete">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="onComplete">Callback to invoke when the texture is loaded.   The callback receives a GLKTextureInfo and an NSError.</param>
+        <summary>Asynchronously loads a cube map.</summary>
+        <remarks>
+	  <para>
+
+	    Loads the data in the background.  When the data has
+	    loaded, or an error has been encountered, the provided
+	    callback is invoked on the specified queue.  If no queue
+	    is specified, the callback is invoked on the main queue.
+
+	  </para>
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginLoadCubeMap">
+      <MemberSignature Language="C#" Value="public void BeginLoadCubeMap (string[] files, MonoTouch.GLKit.GLKTextureOperations textureOperations, MonoTouch.CoreFoundation.DispatchQueue queue, MonoTouch.GLKit.GLKTextureLoaderCallback onComplete);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void BeginLoadCubeMap(string[] files, class MonoTouch.GLKit.GLKTextureOperations textureOperations, class MonoTouch.CoreFoundation.DispatchQueue queue, class MonoTouch.GLKit.GLKTextureLoaderCallback onComplete) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="files" Type="System.String[]" />
+        <Parameter Name="textureOperations" Type="MonoTouch.GLKit.GLKTextureOperations" />
+        <Parameter Name="queue" Type="MonoTouch.CoreFoundation.DispatchQueue" />
+        <Parameter Name="onComplete" Type="MonoTouch.GLKit.GLKTextureLoaderCallback" />
+      </Parameters>
+      <Docs>
+        <param name="files">Six files that point to the sides of the cube.</param>
+        <param name="textureOperations">Operations to be performed during the image loading on the texture.</param>
+        <param name="queue">The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.</param>
+        <param name="onComplete">Callback to invoke when the texture is loaded.   The callback receives a GLKTextureInfo and an NSError.</param>
+        <summary>Asynchronously loads a cube map.</summary>
+        <remarks>
+	  <para>
+
+	    Loads the data in the background.  When the data has
+	    loaded, or an error has been encountered, the provided
+	    callback is invoked on the specified queue.  If no queue
+	    is specified, the callback is invoked on the main queue.
+
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="BeginTextureLoad">
@@ -348,12 +514,54 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="onComplete" Type="MonoTouch.GLKit.GLKTextureLoaderCallback" />
       </Parameters>
       <Docs>
-        <param name="image">To be added.</param>
-        <param name="textureOperations">To be added.</param>
+        <param name="image">CGImage that contains the image to be loaded into the texture.</param>
+        <param name="textureOperations">An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.</param>
         <param name="queue">The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.</param>
-        <param name="onComplete">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="onComplete">Callback to invoke when the texture is loaded.   The callback receives a GLKTextureInfo and an NSError.</param>
+        <summary>Asynchronously loads a texture.</summary>
+        <remarks>
+	  <para>
+	    
+	    Loads the data in the background.  When the data has loaded,
+	    or an error has been encountered, the provided
+	    callback is invoked on the specified queue.  If no queue is
+	    specified, the callback is invoked on the main queue.
+	  </para>
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginTextureLoad">
+      <MemberSignature Language="C#" Value="public void BeginTextureLoad (MonoTouch.CoreGraphics.CGImage image, MonoTouch.GLKit.GLKTextureOperations textureOperations, MonoTouch.CoreFoundation.DispatchQueue queue, MonoTouch.GLKit.GLKTextureLoaderCallback onComplete);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void BeginTextureLoad(class MonoTouch.CoreGraphics.CGImage image, class MonoTouch.GLKit.GLKTextureOperations textureOperations, class MonoTouch.CoreFoundation.DispatchQueue queue, class MonoTouch.GLKit.GLKTextureLoaderCallback onComplete) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="image" Type="MonoTouch.CoreGraphics.CGImage" />
+        <Parameter Name="textureOperations" Type="MonoTouch.GLKit.GLKTextureOperations" />
+        <Parameter Name="queue" Type="MonoTouch.CoreFoundation.DispatchQueue" />
+        <Parameter Name="onComplete" Type="MonoTouch.GLKit.GLKTextureLoaderCallback" />
+      </Parameters>
+      <Docs>
+        <param name="image">CGImage that contains the image to be loaded into the texture.</param>
+        <param name="textureOperations">Operations to be performed during the image loading on the texture.</param>
+        <param name="queue">The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.</param>
+        <param name="onComplete">Callback to invoke when the texture is loaded.   The callback receives a GLKTextureInfo and an NSError.</param>
+        <summary>Asynchronously loads a texture.</summary>
+        <remarks>
+	  <para>
+
+	    Loads the data in the background.  When the data has
+	    loaded, or an error has been encountered, the provided
+	    callback is invoked on the specified queue.  If no queue
+	    is specified, the callback is invoked on the main queue.
+
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="BeginTextureLoad">
@@ -378,12 +586,54 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="onComplete" Type="MonoTouch.GLKit.GLKTextureLoaderCallback" />
       </Parameters>
       <Docs>
-        <param name="data">To be added.</param>
-        <param name="textureOperations">To be added.</param>
+        <param name="data">NSData object that contains the bitmap that will be loaded into the texture.</param>
+        <param name="textureOperations">An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.</param>
         <param name="queue">The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.</param>
-        <param name="onComplete">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="onComplete">Callback to invoke when the texture is loaded.   The callback receives a GLKTextureInfo and an NSError.</param>
+        <summary>Asynchronously loads a texture.</summary>
+        <remarks>
+
+	  <para>
+	  Loads the data in the background.  When the data has loaded,
+	  or an error has been encountered, the provided
+	  callback is invoked on the specified queue.  If no queue is
+	  specified, the callback is invoked on the main queue.
+	  </para>
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginTextureLoad">
+      <MemberSignature Language="C#" Value="public void BeginTextureLoad (MonoTouch.Foundation.NSData data, MonoTouch.GLKit.GLKTextureOperations textureOperations, MonoTouch.CoreFoundation.DispatchQueue queue, MonoTouch.GLKit.GLKTextureLoaderCallback onComplete);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void BeginTextureLoad(class MonoTouch.Foundation.NSData data, class MonoTouch.GLKit.GLKTextureOperations textureOperations, class MonoTouch.CoreFoundation.DispatchQueue queue, class MonoTouch.GLKit.GLKTextureLoaderCallback onComplete) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="data" Type="MonoTouch.Foundation.NSData" />
+        <Parameter Name="textureOperations" Type="MonoTouch.GLKit.GLKTextureOperations" />
+        <Parameter Name="queue" Type="MonoTouch.CoreFoundation.DispatchQueue" />
+        <Parameter Name="onComplete" Type="MonoTouch.GLKit.GLKTextureLoaderCallback" />
+      </Parameters>
+      <Docs>
+        <param name="data">NSData object that contains the bitmap that will be loaded into the texture.</param>
+        <param name="textureOperations">Operations to be performed during the image loading on the texture.</param>
+        <param name="queue">The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.</param>
+        <param name="onComplete">Callback to invoke when the texture is loaded.   The callback receives a GLKTextureInfo and an NSError.</param>
+        <summary>Asynchronously loads a texture.</summary>
+        <remarks>
+	  <para>
+
+	    Loads the data in the background.  When the data has
+	    loaded, or an error has been encountered, the provided
+	    callback is invoked on the specified queue.  If no queue
+	    is specified, the callback is invoked on the main queue.
+
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="BeginTextureLoad">
@@ -408,12 +658,53 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="onComplete" Type="MonoTouch.GLKit.GLKTextureLoaderCallback" />
       </Parameters>
       <Docs>
-        <param name="filePath">To be added.</param>
-        <param name="textureOperations">To be added.</param>
+        <param name="filePath">The file that contains the texture.</param>
+        <param name="textureOperations">An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.</param>
         <param name="queue">The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.</param>
-        <param name="onComplete">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="onComplete">Callback to invoke when the texture is loaded.   The callback receives a GLKTextureInfo and an NSError.</param>
+        <summary>Asynchronously loads a texture.</summary>
+        <remarks>
+	  <para>
+	    Loads the data in the background.  When the data has loaded,
+	    or an error has been encountered, the provided
+	    callback is invoked on the specified queue.  If no queue is
+	    specified, the callback is invoked on the main queue.
+	  </para>
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginTextureLoad">
+      <MemberSignature Language="C#" Value="public void BeginTextureLoad (MonoTouch.Foundation.NSUrl filePath, MonoTouch.GLKit.GLKTextureOperations textureOperations, MonoTouch.CoreFoundation.DispatchQueue queue, MonoTouch.GLKit.GLKTextureLoaderCallback onComplete);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void BeginTextureLoad(class MonoTouch.Foundation.NSUrl filePath, class MonoTouch.GLKit.GLKTextureOperations textureOperations, class MonoTouch.CoreFoundation.DispatchQueue queue, class MonoTouch.GLKit.GLKTextureLoaderCallback onComplete) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="filePath" Type="MonoTouch.Foundation.NSUrl" />
+        <Parameter Name="textureOperations" Type="MonoTouch.GLKit.GLKTextureOperations" />
+        <Parameter Name="queue" Type="MonoTouch.CoreFoundation.DispatchQueue" />
+        <Parameter Name="onComplete" Type="MonoTouch.GLKit.GLKTextureLoaderCallback" />
+      </Parameters>
+      <Docs>
+        <param name="filePath">The file that contains the texture.</param>
+        <param name="textureOperations">Operations to be performed during the image loading on the texture.</param>
+        <param name="queue">The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.</param>
+        <param name="onComplete">Callback to invoke when the texture is loaded.   The callback receives a GLKTextureInfo and an NSError.</param>
+        <summary>Asynchronously loads a texture.</summary>
+        <remarks>
+	  <para>
+
+	    Loads the data in the background.  When the data has
+	    loaded, or an error has been encountered, the provided
+	    callback is invoked on the specified queue.  If no queue
+	    is specified, the callback is invoked on the main queue.
+
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="BeginTextureLoad">
@@ -438,12 +729,54 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="onComplete" Type="MonoTouch.GLKit.GLKTextureLoaderCallback" />
       </Parameters>
       <Docs>
-        <param name="file">To be added.</param>
-        <param name="textureOperations">To be added.</param>
+        <param name="file">The file that contains the texture.</param>
+        <param name="textureOperations">An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.</param>
         <param name="queue">The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.</param>
-        <param name="onComplete">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="onComplete">Callback to invoke when the texture is loaded.   The callback receives a GLKTextureInfo and an NSError.</param>
+        <summary>Asynchronously loads a texture.</summary>
+        <remarks>
+
+	  <para>
+	    Loads the data in the background.  When the data has loaded,
+	    or an error has been encountered, the provided
+	    callback is invoked on the specified queue.  If no queue is
+	    specified, the callback is invoked on the main queue.
+	  </para>
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginTextureLoad">
+      <MemberSignature Language="C#" Value="public void BeginTextureLoad (string file, MonoTouch.GLKit.GLKTextureOperations textureOperations, MonoTouch.CoreFoundation.DispatchQueue queue, MonoTouch.GLKit.GLKTextureLoaderCallback onComplete);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void BeginTextureLoad(string file, class MonoTouch.GLKit.GLKTextureOperations textureOperations, class MonoTouch.CoreFoundation.DispatchQueue queue, class MonoTouch.GLKit.GLKTextureLoaderCallback onComplete) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="file" Type="System.String" />
+        <Parameter Name="textureOperations" Type="MonoTouch.GLKit.GLKTextureOperations" />
+        <Parameter Name="queue" Type="MonoTouch.CoreFoundation.DispatchQueue" />
+        <Parameter Name="onComplete" Type="MonoTouch.GLKit.GLKTextureLoaderCallback" />
+      </Parameters>
+      <Docs>
+        <param name="file">The file that contains the texture.</param>
+        <param name="textureOperations">Operations to be performed during the image loading on the texture.</param>
+        <param name="queue">The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.</param>
+        <param name="onComplete">Callback to invoke when the texture is loaded.   The callback receives a GLKTextureInfo and an NSError.</param>
+        <summary>Asynchronously loads a texture.</summary>
+        <remarks>
+	  <para>
+
+	    Loads the data in the background.  When the data has
+	    loaded, or an error has been encountered, the provided
+	    callback is invoked on the specified queue.  If no queue
+	    is specified, the callback is invoked on the main queue.
+
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="ClassHandle">
@@ -462,10 +795,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <remarks>Each MonoTouch class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="Constructors">
-      <MemberSignature Language="C#" Value="public virtual IntPtr Constructors (MonoTouch.OpenGLES.EAGLSharegroup sharegroup);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance native int Constructors(class MonoTouch.OpenGLES.EAGLSharegroup sharegroup) cil managed" />
-      <MemberType>Method</MemberType>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public GLKTextureLoader (MonoTouch.OpenGLES.EAGLSharegroup sharegroup);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class MonoTouch.OpenGLES.EAGLSharegroup sharegroup) cil managed" />
+      <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -481,10 +814,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="sharegroup" Type="MonoTouch.OpenGLES.EAGLSharegroup" />
       </Parameters>
       <Docs>
-        <param name="sharegroup">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="sharegroup">Share context where the textures will be loaded.</param>
+        <summary>Creates a GLKTextureLoader for an EAGLSharegroup, used for asynchronous texture loading.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="CubeMapFromFile">
@@ -508,11 +840,35 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="error" Type="MonoTouch.Foundation.NSError&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="path">To be added.</param>
-        <param name="textureOperations">To be added.</param>
-        <param name="error">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="path">The file that contains the texture.</param>
+        <param name="textureOperations">An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.</param>
+        <param name="error">Error result.</param>
+        <summary>Loads a cube map synchronously.</summary>
+        <returns>On error, this will return null, the details of the error will be stored in the NSError parameter.   Otherwise the instance of the GLKTextureInfo.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CubeMapFromFile">
+      <MemberSignature Language="C#" Value="public static MonoTouch.GLKit.GLKTextureInfo CubeMapFromFile (string path, MonoTouch.GLKit.GLKTextureOperations textureOperations, out MonoTouch.Foundation.NSError error);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.GLKit.GLKTextureInfo CubeMapFromFile(string path, class MonoTouch.GLKit.GLKTextureOperations textureOperations, class MonoTouch.Foundation.NSError error) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MonoTouch.GLKit.GLKTextureInfo</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="path" Type="System.String" />
+        <Parameter Name="textureOperations" Type="MonoTouch.GLKit.GLKTextureOperations" />
+        <Parameter Name="error" Type="MonoTouch.Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="path">The file that contains the texture.</param>
+        <param name="textureOperations">Operations to be performed during the image loading on the texture.</param>
+        <param name="error">Error result.</param>
+        <summary>Loads a cube map synchronously.</summary>
+        <returns>On error, this will return null, the details of the error will be stored in the NSError parameter.   Otherwise the instance of the GLKTextureInfo.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -532,11 +888,35 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="error" Type="MonoTouch.Foundation.NSError&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="files">To be added.</param>
-        <param name="textureOperations">To be added.</param>
-        <param name="error">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="files">Six files that point to the sides of the cube.</param>
+        <param name="textureOperations">An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.</param>
+        <param name="error">Error result.</param>
+        <summary>Loads a cube map synchronously.</summary>
+        <returns>On error, this will return null, the details of the error will be stored in the NSError parameter.   Otherwise the instance of the GLKTextureInfo.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CubeMapFromFiles">
+      <MemberSignature Language="C#" Value="public static MonoTouch.GLKit.GLKTextureInfo CubeMapFromFiles (string[] files, MonoTouch.GLKit.GLKTextureOperations textureOperations, out MonoTouch.Foundation.NSError error);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.GLKit.GLKTextureInfo CubeMapFromFiles(string[] files, class MonoTouch.GLKit.GLKTextureOperations textureOperations, class MonoTouch.Foundation.NSError error) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MonoTouch.GLKit.GLKTextureInfo</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="files" Type="System.String[]" />
+        <Parameter Name="textureOperations" Type="MonoTouch.GLKit.GLKTextureOperations" />
+        <Parameter Name="error" Type="MonoTouch.Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="files">Six files that point to the sides of the cube.</param>
+        <param name="textureOperations">Operations to be performed during the image loading on the texture.</param>
+        <param name="error">Error result.</param>
+        <summary>Loads a cube map synchronously.</summary>
+        <returns>On error, this will return null, the details of the error will be stored in the NSError parameter.   Otherwise the instance of the GLKTextureInfo.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -561,11 +941,35 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="error" Type="MonoTouch.Foundation.NSError&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="url">To be added.</param>
-        <param name="textureOperations">To be added.</param>
-        <param name="error">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="url">URL pointing to the texture to load.</param>
+        <param name="textureOperations">An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.</param>
+        <param name="error">Error result.</param>
+        <summary>Loads a cube map synchronously.</summary>
+        <returns>On error, this will return null, the details of the error will be stored in the NSError parameter.   Otherwise the instance of the GLKTextureInfo.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CubeMapFromUrl">
+      <MemberSignature Language="C#" Value="public static MonoTouch.GLKit.GLKTextureInfo CubeMapFromUrl (MonoTouch.Foundation.NSUrl url, MonoTouch.GLKit.GLKTextureOperations textureOperations, out MonoTouch.Foundation.NSError error);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.GLKit.GLKTextureInfo CubeMapFromUrl(class MonoTouch.Foundation.NSUrl url, class MonoTouch.GLKit.GLKTextureOperations textureOperations, class MonoTouch.Foundation.NSError error) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MonoTouch.GLKit.GLKTextureInfo</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="url" Type="MonoTouch.Foundation.NSUrl" />
+        <Parameter Name="textureOperations" Type="MonoTouch.GLKit.GLKTextureOperations" />
+        <Parameter Name="error" Type="MonoTouch.Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="url">URL pointing to the texture to load.</param>
+        <param name="textureOperations">Operations to be performed during the image loading on the texture.</param>
+        <param name="error">Error result.</param>
+        <summary>Loads a cube map synchronously.</summary>
+        <returns>On error, this will return null, the details of the error will be stored in the NSError parameter.   Otherwise the instance of the GLKTextureInfo.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -585,11 +989,35 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="error" Type="MonoTouch.Foundation.NSError&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="urls">To be added.</param>
-        <param name="textureOperations">To be added.</param>
-        <param name="error">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="urls">Six URLs that point to the sides of the cube.</param>
+        <param name="textureOperations">An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.</param>
+        <param name="error">Error result.</param>
+        <summary>Loads a cube map synchronously.</summary>
+        <returns>On error, this will return null, the details of the error will be stored in the NSError parameter.   Otherwise the instance of the GLKTextureInfo.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CubeMapFromUrls">
+      <MemberSignature Language="C#" Value="public static MonoTouch.GLKit.GLKTextureInfo CubeMapFromUrls (MonoTouch.Foundation.NSUrl[] urls, MonoTouch.GLKit.GLKTextureOperations textureOperations, out MonoTouch.Foundation.NSError error);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.GLKit.GLKTextureInfo CubeMapFromUrls(class MonoTouch.Foundation.NSUrl[] urls, class MonoTouch.GLKit.GLKTextureOperations textureOperations, class MonoTouch.Foundation.NSError error) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MonoTouch.GLKit.GLKTextureInfo</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="urls" Type="MonoTouch.Foundation.NSUrl[]" />
+        <Parameter Name="textureOperations" Type="MonoTouch.GLKit.GLKTextureOperations" />
+        <Parameter Name="error" Type="MonoTouch.Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="urls">Six URLs that point to the sides of the cube.</param>
+        <param name="textureOperations">Operations to be performed during the image loading on the texture.</param>
+        <param name="error">Error result.</param>
+        <summary>Loads a cube map synchronously.</summary>
+        <returns>On error, this will return null, the details of the error will be stored in the NSError parameter.   Otherwise the instance of the GLKTextureInfo.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -607,7 +1035,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <summary>Represents the value associated with the constant GLKTextureLoaderErrorDomain</summary>
         <value>
         </value>
-        <remarks>To be added.</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="ErrorKey">
@@ -624,7 +1052,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <summary>Represents the value associated with the constant GLKTextureLoaderErrorKey</summary>
         <value>
         </value>
-        <remarks>To be added.</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="FromData">
@@ -648,11 +1076,35 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="error" Type="MonoTouch.Foundation.NSError&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="data">To be added.</param>
-        <param name="textureOperations">To be added.</param>
-        <param name="error">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="data">NSData object that contains the bitmap that will be loaded into the texture.</param>
+        <param name="textureOperations">An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.</param>
+        <param name="error">Error result.</param>
+        <summary>Loads a texture from an NSData source.</summary>
+        <returns>On error, this will return null, the details of the error will be stored in the NSError parameter.   Otherwise the instance of the GLKTextureInfo.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromData">
+      <MemberSignature Language="C#" Value="public static MonoTouch.GLKit.GLKTextureInfo FromData (MonoTouch.Foundation.NSData data, MonoTouch.GLKit.GLKTextureOperations textureOperations, out MonoTouch.Foundation.NSError error);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.GLKit.GLKTextureInfo FromData(class MonoTouch.Foundation.NSData data, class MonoTouch.GLKit.GLKTextureOperations textureOperations, class MonoTouch.Foundation.NSError error) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MonoTouch.GLKit.GLKTextureInfo</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="data" Type="MonoTouch.Foundation.NSData" />
+        <Parameter Name="textureOperations" Type="MonoTouch.GLKit.GLKTextureOperations" />
+        <Parameter Name="error" Type="MonoTouch.Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="data">NSData object that contains the bitmap that will be loaded into the texture.</param>
+        <param name="textureOperations">Operations to be performed during the image loading on the texture.</param>
+        <param name="error">Error result.</param>
+        <summary>Loads a texture from an NSData source.</summary>
+        <returns>On error, this will return null, the details of the error will be stored in the NSError parameter.   Otherwise the instance of the GLKTextureInfo.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -677,11 +1129,35 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="error" Type="MonoTouch.Foundation.NSError&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="path">To be added.</param>
-        <param name="textureOperations">To be added.</param>
-        <param name="error">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="path">File name where the data will be loaded from.</param>
+        <param name="textureOperations">An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.</param>
+        <param name="error">Error result.</param>
+        <summary>Loads a texture from a file synchronously.</summary>
+        <returns>On error, this will return null, the details of the error will be stored in the NSError parameter.   Otherwise the instance of the GLKTextureInfo.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromFile">
+      <MemberSignature Language="C#" Value="public static MonoTouch.GLKit.GLKTextureInfo FromFile (string path, MonoTouch.GLKit.GLKTextureOperations textureOperations, out MonoTouch.Foundation.NSError error);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.GLKit.GLKTextureInfo FromFile(string path, class MonoTouch.GLKit.GLKTextureOperations textureOperations, class MonoTouch.Foundation.NSError error) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MonoTouch.GLKit.GLKTextureInfo</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="path" Type="System.String" />
+        <Parameter Name="textureOperations" Type="MonoTouch.GLKit.GLKTextureOperations" />
+        <Parameter Name="error" Type="MonoTouch.Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="path">File name where the data will be loaded from.</param>
+        <param name="textureOperations">Operations to be performed during the image loading on the texture.</param>
+        <param name="error">Error result.</param>
+        <summary>Loads a texture from a file synchronously.</summary>
+        <returns>On error, this will return null, the details of the error will be stored in the NSError parameter.   Otherwise the instance of the GLKTextureInfo.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -706,11 +1182,34 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="error" Type="MonoTouch.Foundation.NSError&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="cgImage">To be added.</param>
-        <param name="textureOperations">To be added.</param>
-        <param name="error">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="cgImage">CGImage that contains the image to be loaded into the texture.</param>
+        <param name="textureOperations">An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.</param>
+        <param name="error">Error result.</param>
+        <summary>Loads a texture from a CGImage.</summary>
+        <returns>On error, this will return null, the details of the error will be stored in the NSError parameter.   Otherwise the instance of the GLKTextureInfo be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromImage">
+      <MemberSignature Language="C#" Value="public static MonoTouch.GLKit.GLKTextureInfo FromImage (MonoTouch.CoreGraphics.CGImage cgImage, MonoTouch.GLKit.GLKTextureOperations textureOperations, out MonoTouch.Foundation.NSError error);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.GLKit.GLKTextureInfo FromImage(class MonoTouch.CoreGraphics.CGImage cgImage, class MonoTouch.GLKit.GLKTextureOperations textureOperations, class MonoTouch.Foundation.NSError error) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MonoTouch.GLKit.GLKTextureInfo</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="cgImage" Type="MonoTouch.CoreGraphics.CGImage" />
+        <Parameter Name="textureOperations" Type="MonoTouch.GLKit.GLKTextureOperations" />
+        <Parameter Name="error" Type="MonoTouch.Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="cgImage">CGImage that contains the image to be loaded into the texture.</param>
+        <param name="textureOperations">Operations to be performed during the image loading on the texture.</param>
+        <param name="error">Error result.</param>
+        <summary>Loads a texture from a CGImage.</summary>
+        <returns>On error, this will return null, the details of the error will be stored in the NSError parameter.   Otherwise the instance of the GLKTextureInfo.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -735,11 +1234,35 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="error" Type="MonoTouch.Foundation.NSError&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="url">To be added.</param>
-        <param name="textureOperations">To be added.</param>
-        <param name="error">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="url">URL pointing to the texture to load.</param>
+        <param name="textureOperations">An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.</param>
+        <param name="error">Error result.</param>
+        <summary>Loads a texture from a file pointed to by the url.</summary>
+        <returns>On error, this will return null, the details of the error will be stored in the NSError parameter.   Otherwise the instance of the GLKTextureInfo.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromUrl">
+      <MemberSignature Language="C#" Value="public static MonoTouch.GLKit.GLKTextureInfo FromUrl (MonoTouch.Foundation.NSUrl url, MonoTouch.GLKit.GLKTextureOperations textureOperations, out MonoTouch.Foundation.NSError error);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.GLKit.GLKTextureInfo FromUrl(class MonoTouch.Foundation.NSUrl url, class MonoTouch.GLKit.GLKTextureOperations textureOperations, class MonoTouch.Foundation.NSError error) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MonoTouch.GLKit.GLKTextureInfo</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="url" Type="MonoTouch.Foundation.NSUrl" />
+        <Parameter Name="textureOperations" Type="MonoTouch.GLKit.GLKTextureOperations" />
+        <Parameter Name="error" Type="MonoTouch.Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="url">URL pointing to the texture to load.</param>
+        <param name="textureOperations">Operations to be performed during the image loading on the texture.</param>
+        <param name="error">Error result.</param>
+        <summary>Loads a texture from a file pointed to by the url.</summary>
+        <returns>On error, this will return null, the details of the error will be stored in the NSError parameter.   Otherwise the instance of the GLKTextureInfo.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -757,7 +1280,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <summary>Represents the value associated with the constant GLKTextureLoaderGenerateMipmaps</summary>
         <value>
         </value>
-        <remarks>To be added.</remarks>
+        <remarks>Used as a key for textureOperations if you are using the NSDictionary overloads instead of the strongly typed GLKTextureOperations class.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GLErrorKey">
@@ -774,7 +1297,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <summary>Represents the value associated with the constant GLKTextureLoaderGLErrorKey</summary>
         <value>
         </value>
-        <remarks>To be added.</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="GrayscaleAsAlpha">
@@ -791,7 +1314,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <summary>Represents the value associated with the constant GLKTextureLoaderGrayscaleAsAlpha</summary>
         <value>
         </value>
-        <remarks>To be added.</remarks>
+        <remarks>Used as a key for textureOperations if you are using the NSDictionary overloads instead of the strongly typed GLKTextureOperations class.</remarks>
       </Docs>
     </Member>
     <Member MemberName="OriginBottomLeft">
@@ -808,7 +1331,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <summary>Represents the value associated with the constant GLKTextureLoaderOriginBottomLeft</summary>
         <value>
         </value>
-        <remarks>To be added.</remarks>
+        <remarks>Used as a key for textureOperations if you are using the NSDictionary overloads instead of the strongly typed GLKTextureOperations class.</remarks>
       </Docs>
     </Member>
   </Members>
