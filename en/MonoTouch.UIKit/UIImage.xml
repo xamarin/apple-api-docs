@@ -745,8 +745,35 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="capInsets">The cap insets to apply to the image.</param>
         <summary>Creates a new image from the current instance and applies the specified cap insets.</summary>
         <returns>A new image object with the specified cap insets</returns>
-        <remarks>
+	<remarks>
           <para>
+
+	    Use this method to turn an existing UIImage into a UIImage
+	    that can be resized with the specified parameters.  The
+	    region described by the UIEdgeInsets will be stretched
+	    when rendered.  The corners will be kept intact, the
+	    borders will stretch along their side and the center will
+	    be tiled.
+
+	  </para>
+
+	  <para>
+
+	    There are some scenarios where this method can crash in
+	    some versions of the operating system.  See
+	    http://openradar.appspot.com/11411000 for more details.
+	    If you experience those crashes, you should try to replace
+	    this with the <see
+	    cref="M:MonoTouch.UIImage.StretchableImage"/> method
+	    instead.
+
+	  </para>
+
+	  <para>
+
+	    For best performace, it is best to make
+	    the region that stretches 1x1 pixels.
+
           </para>
           <para tool="threads">This can be used from a background thread.</para>
         </remarks>
@@ -1428,11 +1455,15 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="topCapHeight" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="leftCapWidth">To be added.</param>
-        <param name="topCapHeight">To be added.</param>
-        <summary>Creates a stretchable image with the specified parameters.  Deprecated in iOS 5, </summary>
+        <param name="leftCapWidth">Width of the left cap to be left unscaled.</param>
+        <param name="topCapHeight">Height tof the top cap to be left unscaled.</param>
+        <summary>Creates a stretchable image with the specified parameters.  Deprecated in iOS 5, but still useful since the replacement is known to have bugs.</summary>
         <returns>To be added.</returns>
         <remarks>
+	  <para>
+	    The more versatile replacement method that was introduced in iOS 5 crashes under some conditions, for more information, see: http://openradar.appspot.com/11411000.
+	  </para>
+
           <para tool="threads">This can be used from a background thread.</para>
         </remarks>
       </Docs>
