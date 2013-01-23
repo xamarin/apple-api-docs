@@ -55,7 +55,19 @@
         <param name="property">The property to monitor.</param>
         <param name="listener">Callback to invoke when the property changes.</param>
         <summary>Registers a method to be invoked when an audio session property changes.</summary>
-        <remarks>Use the RemoveListener method to stop receiving property change notifications.</remarks>
+        <remarks>
+	  <para>
+	    Use the RemoveListener method to stop receiving property change notifications.
+	  </para>
+	  <para>
+
+	    For the specific case of audio route changes, use the <see
+	    cref="E:MonoTouch.AudioToolbox.AudioSession.AudioRouteChanged"/>
+	    event instead as it provides a high-level and strongly
+	    typed access to the audio route changes.
+
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="AudioInputAvailable">
@@ -97,7 +109,7 @@
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>System.Obsolete("Use InputRoute or OutputRoute instead")</AttributeName>
+          <AttributeName>System.Obsolete("Deprecated in iOS 5.0. Use InputRoute or OutputRoute instead")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -113,6 +125,58 @@
 	    this will raise an <see cref="T:MonoTouch.AudioToolbox.AudioSessionException" />.
 	  </para>
         </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AudioRouteChanged">
+      <MemberSignature Language="C#" Value="public static event EventHandler&lt;MonoTouch.AudioToolbox.AudioSessionRouteChangeEventArgs&gt; AudioRouteChanged;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler`1&lt;class MonoTouch.AudioToolbox.AudioSessionRouteChangeEventArgs&gt; AudioRouteChanged" />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler&lt;MonoTouch.AudioToolbox.AudioSessionRouteChangeEventArgs&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Event raised when the input and output audio routes change on the device.</summary>
+        <remarks>
+	  <para>
+
+	    This event is raised when audio hardware is plugged or
+	    unplugged from your device.  The event receives a <see
+	    cref="T:MonoTouch.AudioToolbox.AudioSessionRouteChangeEventArgs"/>
+	    instance that contains information about the reason for
+	    the change and both the old input sources and output
+	    targets as well as the new ones.
+	  </para>
+
+	  <example>
+<code lang="c#">
+void DisplayRoutes (string caption, AudioSessionInputRouteKind input, AudioSessionOutputRouteKind [] output)
+{
+	if (output == null)
+		Console.WriteLine ("No outputs");
+	else if (output.Length == 1)	
+		Console.WriteLine ("Output {0}", output [0]);
+	else
+		for (int i = 0; i &lt; output.Lenght; i++)
+			Console.WriteLine ("Output {0}", output [i])
+
+	Console.WriteLine (input.ToString ());
+} 
+
+void Setup ()
+{
+    AudioSession.AudioRouteChanged += (sender, args) => {
+        DisplayRoutes ("Current Routes", args.CurrentInputRoute, args.CurrentOutputRoutes),
+        DisplayRoutes ("Old Routes", args.PreviousInputRoute, args.PreviousOutputRoutes),
+        Console.WriteLine (args.Reason);
+    };
+}
+</code>
+	  </example>
+
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="AudioShouldDuck">
