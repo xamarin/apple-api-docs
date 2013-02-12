@@ -145,6 +145,36 @@
         </code>
       </example>
       <format type="text/html">
+        <h2>State Restoration</h2>
+      </format>
+      <para>
+
+	If you want to provide state restoration in your class, you
+	need to manually add a method with the following signature to
+	your class:
+
+      </para>
+<example>
+<code lang="c#">
+[Adopts ("UIViewControllerRestoration")]
+class MyUIViewController : UIViewController {
+
+  [Export ("viewControllerWithRestorationIdentifierPath:")]
+  static UIViewController FromIdentifierPath (string [] identifierComponents, NSCoder coder)
+  {
+     var sb = (UIStoryboard) coder.DecodeObject (UIStateRestoration.ViewControllerStoryboardKey);
+     if (sb != null){
+      var vc = (MyUIViewController) sb.InstantiateViewController ("MyViewController");
+      vc.RestorationIdentifier = identifierComponents [identifierComponents.Length-1];
+      vc.RestorationClass = Class.GetHandle (typeof (MyViewController));
+     }
+  }
+}
+</code>
+</example>
+<para>
+</para>
+      <format type="text/html">
         <h2>UIViewController and MonoTouch.Dialog</h2>
       </format>
       <para>
