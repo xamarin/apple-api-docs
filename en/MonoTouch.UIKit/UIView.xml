@@ -2910,11 +2910,23 @@
         <Parameter Name="force" Type="System.Boolean"/>
       </Parameters>
       <Docs>
-        <!-- tk tk tk -->
-        <param name="force">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="force">If <see langword="true"/>, overrides the subview's resignation choice.</param>
+        <summary>Causes the view (or an appropriate subview) to resign first responder status.</summary>
+        <returns><see langword="true"/> if the view resigned first responder status.</returns>
+        <remarks>
+          <para>This method causes the view or one of its <see cref="P:MonoTouch.UIKit.UIView.Subviews"/> to resign first responder status. If <paramref name="force"/> is <see langword="true"/>, the field is not even asked to resign: it is forced.</para>
+          <para>This method returns <see langword="true"/> if the view or subview resigned first responder status. It will return <see langword="false"/> if:</para>
+          <list type="bullet">
+            <item>
+              <term>Neither the <see cref="T:MonoTouch.UIKit.UIView"/> nor any of its <see cref="P:MonoTouch.UIKit.UIView.Subviews"/> was first responder; or
+              </term>
+            </item>
+            <item>
+              <term>The <paramref name="force"/> parameter was <see langword="false"/> and the first responder refused to resign (i.e., returned <see langword="false"/> from <see cref="M:MonoTouch.UIKit.UIResponder.ResignFirstResponder"/>.)
+              </term>
+            </item>
+          </list>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ExchangeSubview">
@@ -2938,14 +2950,20 @@
       </Parameters>
       <Docs>
         <param name="atIndex">
-          <para>To be added.</para>
+          <para>An index within the zero-based <see cref="P:MonoTouch.UIKit.UIView.Subviews"/> array.</para>
         </param>
         <param name="withSubviewAtIndex">
-          <para>To be added.</para>
+          <para>Another index within the zero-based <see cref="P:MonoTouch.UIKit.UIView.Subviews"/> array.</para>
         </param>
-        <summary>To be added.</summary>
+        <summary>
+          <para>This method exchanges the indices of two <see cref="T:MonoTouch.UIKit.UIView"/>s within the <see cref="P:MonoTouch.UIKit.UIView.Subviews"/> array. </para>
+        </summary>
         <remarks>
         </remarks>
+        <altmember cref="M:MonoTouch.UIKit.UIView.AddSubview"/>
+        <altmember cref="M:MonoTouch.UIKit.UIView.InsertSubview"/>
+        <altmember cref="M:MonoTouch.UIKit.UIView.InsertSubviewAbove"/>
+        <altmember cref="M:MonoTouch.UIKit.UIView.InsertSubviewBelow"/>
       </Docs>
     </Member>
     <Member MemberName="ExclusiveTouch">
@@ -3007,8 +3025,12 @@
       </ReturnValue>
       <Parameters/>
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Randomly changes the <see cref="P:MonoTouch.UIKit.UIView.Frame"/> within an ambiguous set of Auto Layout constraints.</summary>
+        <remarks>
+          <para>This is a debugging method that should not be used in production applications.</para>
+          <para>This method should be used with an under-constrained (ambiguous) Auto Layout. When called, it varies the <see cref="P:MonoTouch.UIKit.UIView.Frame"/> among its valid values, providing visual cues to assist the application developer in determining needed constraints.</para>
+        </remarks>
+        <altmember cref="P:MonoTouch.UIKit.UIView.HasAmbiguousLayout"/>
       </Docs>
     </Member>
     <Member MemberName="Frame">
@@ -3099,10 +3121,16 @@
         <Parameter Name="alignmentRect" Type="System.Drawing.RectangleF"/>
       </Parameters>
       <Docs>
-        <param name="alignmentRect">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="alignmentRect">A <see cref="T:System.Drawing.RectangleF"/> for which the frame rectangle should be calculated.</param>
+        <summary>Returns the frame resulting from applying the <paramref name="alignmentRect"/> to the current Auto Layout constraints.</summary>
+        <returns>
+          <para>The frame rectangle appropriate to the <paramref name="alignmentRect"/>/</para>
+        </returns>
+        <remarks>
+          <para>By overriding this method, application developers can fully customize the alignment rectangle of the <see cref="T:MonoTouch.UIKit.UIView"/>.Application developers who override this method must also override the complementary method <see cref="M:MonoTouch.UIKit.UIView.AlignmentRectForFrame"/>. The two methods must provide complementary values.</para>
+          <para>Auto Layout uses "alignment rectangles" to layout subviews rather than the subviews' <see cref="P:MonoTouch.UIKit.UIView.Frame"/>. The <see cref="P:MonoTouch.UIKit.UIView.Frame"/> of a <see cref="T:MonoTouch.UIKit.UIView"/> may include visual elements, such as drop-shadows, that are not symmetrical around the <see cref="T:MonoTouch.UIKit.UIView"/>'s logical center. The "alignment rectangle" for a <see cref="T:MonoTouch.UIKit.UIView"/> should be related to its logical content.</para>
+          <para> By default, the "alignment rectangle" of a <see cref="T:MonoTouch.UIKit.UIView"/> is the <see cref="P:MonoTouch.UIKit.UIView.Frame"/> plus the <see cref="P:MonoTouch.UIKit.UIView.AlignmentRectInsets"/>. The <see cref="M:MonoTouch.UIKit.UIView.AlignmentRectForFrame"/> and <see cref="M:MonoTouch.UIKit.UIView.FrameForAlignmentRect"/> methods can be used to fully customize the alignment rectangle.</para>
+        </remarks>
         <altmember cref="M:MonoTouch.UIKit.UIView.AlignmentRectForFrame"/>
         <altmember cref="M:MonoTouch.UIKit.UIView.AlignmentRectInsets"/>
         <altmember cref="M:MonoTouch.UIKit.UIView.ViewForBaselineLayout"/>
@@ -3130,9 +3158,9 @@
         <ReturnType>MonoTouch.UIKit.UIGestureRecognizer[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>The array of <see cref="T:MonoTouch.UIKit.UIGestureRecognizer"/>s for this <see cref="T:MonoTouch.UIKit.UIView"/>.</summary>
+        <value>The default value is <see langword="null"/>.</value>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="GestureRecognizerShouldBegin">
@@ -3186,10 +3214,33 @@
         <Parameter Name="axis" Type="MonoTouch.UIKit.UILayoutConstraintAxis"/>
       </Parameters>
       <Docs>
-        <param name="axis">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="axis">The direction of interest.</param>
+        <summary>Returns the array of <see cref="T:MonoTouch.UIKit.NSLayoutConstraint"/> that are affecting the layout of the <see cref="T:MonoTouch.UIKit.UIView"/> along the specified <paramref name="axis"/>.</summary>
+        <returns>The default value is an empty array.</returns>
+        <remarks>
+          <para>This is a debugging method that should not be used in production applications.</para>
+          <para>
+            The returned array may contain <see cref="T:MonoTouch.UIKit.NSLayoutConstraint"/>s that do not explicitly reference <c>this</c> <see cref="T:MonoTouch.UIKit.UIView"/> but which nonetheless affect the <see cref="P:MonoTouch.UIKit.UIView.Frame"/>. For instance, if <c>this</c> is pinned to <c>anotherView</c> and <c>anotherView</c> is pinned to it's <see cref="P:MonoTouch.UIKit.UIView.Superview"/>, the method may return both constraints. 
+          </para>
+          <para>This method is a debugging oriented helper method and is not guaranteed to return the complete set (or any) <see cref="T:MonoTouch.UIKit.NSLayoutConstraint"/>s. </para>
+          <para>If this method is called directly from within <see cref="M:MonoTouch.UIKit.UIView.ViewDidLoad"/>, it will generally return an empty array. If it is invoked as shown in the following example, it appears to be more likely to provide a comprehensive answer.</para>
+          <example>
+            <code lang="C#">
+              mainView.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|-[blue]-|", 0, new NSDictionary(), viewsDictionary));
+              mainView.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|-[blue]-(==30)-[green(==blue)]-|", 0, new NSDictionary(), viewsDictionary));
+              mainView.AddConstraints(NSLayoutConstraint.FromVisualFormat("|-[green(==blue)]-|", 0, new NSDictionary(), viewsDictionary));
+              
+              System.Threading.ThreadPool.QueueUserWorkItem(delegate {
+              &#x00A0;&#x00A0;InvokeOnMainThread(delegate {
+              &#x00A0;&#x00A0;&#x00A0;&#x00A0;foreach(var c2 in blueView.GetConstraintsAffectingLayout(UILayoutConstraintAxis.Horizontal))
+              &#x00A0;&#x00A0;&#x00A0;&#x00A0;{
+              &#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;Console.WriteLine(c2);
+              &#x00A0;&#x00A0;&#x00A0;&#x00A0;}
+              &#x00A0;&#x00A0;});
+              });
+            </code>
+          </example>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetEnumerator">
@@ -3230,9 +3281,12 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Returns <see langword="true"/> if the Auto Layout for this <see cref="T:MonoTouch.UIKit.UIView"/> is ambiguous.</summary>
+        <value>Returns <see langword="false"/> if the <see cref="T:MonoTouch.UIKit.UIView"/>'s constraints are sufficient to accurately specify its alignment rectangle.</value>
+        <remarks>
+          <para>This is a debugging method that should not be used in production applications.</para>
+          <para>This method can be used to determine if the set of <see cref="T:MonoTouch.UIKit.NSLayoutConstraint"/>s for a <see cref="T:MonoTouch.UIKit.UIView"/> are sufficient to fully determine the alignment rectangle or if they are ambiguous. </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Hidden">
@@ -3254,9 +3308,12 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Specifies whether the <see cref="T:MonoTouch.UIKit.UIView"/> displays or not.</summary>
+        <value>The default value is <see langword="false"/>.</value>
+        <remarks>
+          <para>A hidden <see cref="T:MonoTouch.UIKit.UIView"/> does not display and does not receive input events. It does, however, participate in resizing and layout events and remains in its <see cref="P:MonoTouch.UIKit.UIView.Superview"/>'s list of <see cref="P:MonoTouch.UIKit.UIView.Subviews"/>s.</para>
+          <para>A hidden <see cref="T:MonoTouch.UIKit.UIView"/> hides its descendant views in addition to hiding itself. This does not affect the <see cref="P:MonoTouch.UIKit.UIView.Hidden"/> property of the descendant views. Thus, a <see cref="T:MonoTouch.UIKit.UIView"/> may be hidden even though its <see cref="P:MonoTouch.UIKit.UIView.Hidden"/> property is <see langword="false"/>.</para>     
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="HitTest">
@@ -3419,6 +3476,7 @@
         <ReturnType>System.Drawing.SizeF</ReturnType>
       </ReturnValue>
       <Docs>
+        <!-- tk tk tk -->
         <summary>To be added.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
