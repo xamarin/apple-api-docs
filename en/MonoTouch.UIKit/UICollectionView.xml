@@ -1,4 +1,3 @@
-<?xml version="1.0"?>
 <Type Name="UICollectionView" FullName="MonoTouch.UIKit.UICollectionView">
   <TypeSignature Language="C#" Value="public class UICollectionView : MonoTouch.UIKit.UIScrollView"/>
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit UICollectionView extends MonoTouch.UIKit.UIScrollView"/>
@@ -9,7 +8,7 @@
   <Base>
     <BaseTypeName>MonoTouch.UIKit.UIScrollView</BaseTypeName>
   </Base>
-  <Interfaces/>
+  <Interfaces />
   <Attributes>
     <Attribute>
       <AttributeName>MonoTouch.Foundation.Register("UICollectionView", true)</AttributeName>
@@ -38,22 +37,26 @@
           <item>
             <term>Content Management</term>
             <description>The overall contents of the user interface</description>
-            <description><see cref="T:MonoTouch.UIKit.UICollectionView"/>, <see cref="T:MonoTouch.UIKit.UICollectionViewController"/></description>
+            <description>
+              <see cref="T:MonoTouch.UIKit.UICollectionView"/>, <see cref="T:MonoTouch.UIKit.UICollectionViewController"/></description>
           </item>
           <item>
             <term>Layout</term>
             <description>Position and layout attributes of various component views</description>
-            <description><see cref="T:MonoTouch.UIKit.UICollectionViewLayout"/>, <see cref="T:MonoTouch.UIKit.UICollectionViewLayoutAttributes"/>, <see cref="T:MonoTouch.UIKit.UICollectionViewUpdateItem"/></description>
+            <description>
+              <see cref="T:MonoTouch.UIKit.UICollectionViewLayout"/>, <see cref="T:MonoTouch.UIKit.UICollectionViewLayoutAttributes"/>, <see cref="T:MonoTouch.UIKit.UICollectionViewUpdateItem"/></description>
           </item>
           <item>
             <term>Data Management</term>
             <description>Data and event-management</description>
-            <description><see cref="T:MonoTouch.UIKit.UICollectionViewDataSource"/>, <see cref="T:MonoTouch.UIKit.UICollectionViewDelegate"/></description>
+            <description>
+              <see cref="T:MonoTouch.UIKit.UICollectionViewDataSource"/>, <see cref="T:MonoTouch.UIKit.UICollectionViewDelegate"/></description>
           </item>
           <item>
             <term>Reusable views</term>
             <description>Define component elements of the overall <see cref="T:MonoTouch.UIKit.UICollectionView"/></description>
-            <description><see cref="T:MonoTouch.UIKit.UICollectionViewCell"/>, <see cref="T:MonoTouch.UIKit.UICollectionReusableView"/></description>
+            <description>
+              <see cref="T:MonoTouch.UIKit.UICollectionViewCell"/>, <see cref="T:MonoTouch.UIKit.UICollectionReusableView"/></description>
           </item>
         </list>
       </para>
@@ -127,43 +130,43 @@
         <code lang="C#">
           public class AnimalCell : UICollectionViewCell
           {
-          &#xA0;&#xA0;private static NSString classId = new NSString ("AnimalCell");
-          &#xA0;&#xA0;public static NSString ClassId { get { return classId; } }
+            private static NSString classId = new NSString ("AnimalCell");
+            public static NSString ClassId { get { return classId; } }
           //..etc...
           }
           
           
           public class SimpleCollectionViewController : UICollectionViewController
           {
-          &#xA0;&#xA0;public override void ViewDidLoad ()
-          &#xA0;&#xA0;{
-          &#xA0;&#xA0;&#xA0;&#xA0;Base.ViewDidLoad ();
+            public override void ViewDidLoad ()
+            {
+              Base.ViewDidLoad ();
           
-          &#xA0;&#xA0;&#xA0;&#xA0;var cv = CollectionView;
+              var cv = CollectionView;
           
-          &#xA0;&#xA0;&#xA0;&#xA0;cv.RegisterClassForCell (typeof(AnimalCell), AnimalCell.ClassId);
-          &#xA0;&#xA0;&#xA0;&#xA0;cv.RegisterClassForSupplementaryView (typeof(HeaderView), UICollectionElementKindSection.Header, HeaderView.ClassId);
-          &#xA0;&#xA0;&#xA0;&#xA0;cv.CollectionViewLayout.RegisterClassForDecorationView (typeof(DecorationView), DecorationView.ClassId);
-          &#xA0;&#xA0;}
+              cv.RegisterClassForCell (typeof(AnimalCell), AnimalCell.ClassId);
+              cv.RegisterClassForSupplementaryView (typeof(HeaderView), UICollectionElementKindSection.Header, HeaderView.ClassId);
+              cv.CollectionViewLayout.RegisterClassForDecorationView (typeof(DecorationView), DecorationView.ClassId);
+            }
           
-          &#xA0;&#xA0;public override UICollectionViewCell GetCell (UICollectionView collectionView, MonoTouch.Foundation.NSIndexPath indexPath)
-          &#xA0;&#xA0;{
-          &#xA0;&#xA0;&#xA0;&#xA0;var animalCell = (AnimalCell)collectionView.DequeueReusableCell (AnimalCell.ClassId, indexPath);
-          &#xA0;&#xA0;&#xA0;&#xA0;var animal = animals [indexPath.Section * (animals.Count / SectionCount) + indexPath.Item];
+            public override UICollectionViewCell GetCell (UICollectionView collectionView, MonoTouch.Foundation.NSIndexPath indexPath)
+            {
+              var animalCell = (AnimalCell)collectionView.DequeueReusableCell (AnimalCell.ClassId, indexPath);
+              var animal = animals [indexPath.Section * (animals.Count / SectionCount) + indexPath.Item];
           
-          &#xA0;&#xA0;&#xA0;&#xA0;animalCell.Image = animal.Image;
+              animalCell.Image = animal.Image;
           
-          &#xA0;&#xA0;&#xA0;&#xA0;return animalCell;
-          &#xA0;&#xA0;}
+              return animalCell;
+            }
           
           
-          &#xA0;&#xA0;public override UICollectionReusableView GetViewForSupplementaryElement (UICollectionView collectionView, NSString elementKind, NSIndexPath indexPath)
-          &#xA0;&#xA0;{
-          &#xA0;&#xA0;&#xA0;&#xA0;var headerView = (HeaderView)collectionView.DequeueReusableSupplementaryView (elementKind, HeaderView.ClassId, indexPath);
-          &#xA0;&#xA0;&#xA0;&#xA0;headerView.Text = "Supplementary View Section " + indexPath.Section.ToString ();
-          &#xA0;&#xA0;&#xA0;&#xA0;return headerView;
-          &#xA0;&#xA0;}
-          &#xA0;&#xA0;//...etc...
+            public override UICollectionReusableView GetViewForSupplementaryElement (UICollectionView collectionView, NSString elementKind, NSIndexPath indexPath)
+            {
+              var headerView = (HeaderView)collectionView.DequeueReusableSupplementaryView (elementKind, HeaderView.ClassId, indexPath);
+              headerView.Text = "Supplementary View Section " + indexPath.Section.ToString ();
+              return headerView;
+            }
+            //...etc...
           }
         </code>
       </example>
@@ -211,7 +214,8 @@
         </format>
       </para>
       <para>To handle events associated with a <see cref="T:MonoTouch.UIKit.UICollectionView"/>, the application developer may subtype <see cref="T:MonoTouch.UIKit.UICollectionViewDelegate"/> and assign an instance to the <see cref="P:MonoTouch.UIKit.UICollectionView.Delegate"/> property.</para>
-      <para><see cref="T:MonoTouch.UIKit.UICollectionView"/> is a subtype of <see cref="T:MonoTouch.UIKit.UIScrollView"/> and <see cref="T:MonoTouch.UIKit.UIScrollViewDelegate"/> contains many of the same methods as <see cref="T:MonoTouch.UIKit.UIScrollViewDelegate"/> but is not a subtype of that class.</para>
+      <para>
+        <see cref="T:MonoTouch.UIKit.UICollectionView"/> is a subtype of <see cref="T:MonoTouch.UIKit.UIScrollView"/> and <see cref="T:MonoTouch.UIKit.UIScrollViewDelegate"/> contains many of the same methods as <see cref="T:MonoTouch.UIKit.UIScrollViewDelegate"/> but is not a subtype of that class.</para>
       <para>Selecting and highlighting in a <see cref="T:MonoTouch.UIKit.UICollectionView"/> follows this sequence:</para>
       <list type="table">
         <listheader>
@@ -222,20 +226,22 @@
         </listheader>
         <item>
           <term>Nothing touched</term>
-          <description/>
+          <description />
           <description>
             <c>Highlighted == <see langword="false"/>; Selected == <see langword="false"/></c>
           </description>
         </item>
         <item>
           <term>Finger down in cell</term>
-          <description><see cref="M:MonoTouch.UIKit.UICollectionViewDelegate.ShouldHighlightItem"/> is called. If it returns <see langword="false"/>, processing stops. 
+          <description>
+            <see cref="M:MonoTouch.UIKit.UICollectionViewDelegate.ShouldHighlightItem"/> is called. If it returns <see langword="false"/>, processing stops. 
           </description>
-          <description/>
+          <description />
         </item>
         <item>
-          <term/>
-          <description><see cref="M:MonoTouch.UIKit.UICollectionViewDelegate.ItemHighlighted"/> is called.
+          <term />
+          <description>
+            <see cref="M:MonoTouch.UIKit.UICollectionViewDelegate.ItemHighlighted"/> is called.
           </description>
           <description>
             <c>Highlighted == <see langword="true"/>; Selected == <see langword="false"/></c>
@@ -243,13 +249,15 @@
         </item>
         <item>
           <term>Finger up</term>
-          <description><see cref="M:MonoTouch.UIKit.UICollectionViewDelegate.ShouldSelectItem"/> is called. If it returns <see langword="false"/>, processing stops.
+          <description>
+            <see cref="M:MonoTouch.UIKit.UICollectionViewDelegate.ShouldSelectItem"/> is called. If it returns <see langword="false"/>, processing stops.
           </description>
-          <description/>
+          <description />
         </item>
         <item>
-          <term/>
-          <description><see cref="M:MonoTouch.UIKit.UICollectionViewDelegate.ItemSelected"/> is called. <see cref="M:MonoTouch.UIKit.UICollectionViewDelegate.ItemUnhighlighted"/> is called.
+          <term />
+          <description>
+            <see cref="M:MonoTouch.UIKit.UICollectionViewDelegate.ItemSelected"/> is called. <see cref="M:MonoTouch.UIKit.UICollectionViewDelegate.ItemUnhighlighted"/> is called.
             
           </description>
           <description>
@@ -270,20 +278,22 @@
         </listheader>
         <item>
           <term>Nothing touched while some <see cref="T:MonoTouch.UIKit.UICollectionViewCell"/> is highlighted.</term>
-          <description/>
+          <description />
           <description>
             <c>Highlighted == <see langword="false"/>; Selected == <see langword="true"/></c>
           </description>
         </item>
         <item>
           <term>Finger taps cell (Deselect gesture)</term>
-          <description><see cref="M:MonoTouch.UIKit.UICollectionViewDelegate.ShouldDeselectItem"/> is called. If it returns <see langword="false"/>, processing stops. 
+          <description>
+            <see cref="M:MonoTouch.UIKit.UICollectionViewDelegate.ShouldDeselectItem"/> is called. If it returns <see langword="false"/>, processing stops. 
           </description>
-          <description/>
+          <description />
         </item>
         <item>
-          <term/>
-          <description><see cref="M:MonoTouch.UIKit.UICollectionViewDelegate.ItemDeselected"/> is called.
+          <term />
+          <description>
+            <see cref="M:MonoTouch.UIKit.UICollectionViewDelegate.ItemDeselected"/> is called.
           </description>
           <description>
             <c>Highlighted == <see langword="false"/>; Selected == <see langword="false"/></c>
@@ -537,7 +547,7 @@
           <AttributeName>set: MonoTouch.Foundation.Export("setBackgroundView:")</AttributeName>
         </Attribute>
       </Attributes>
-      <ReturnValue> 
+      <ReturnValue>
         <ReturnType>MonoTouch.UIKit.UIView</ReturnType>
       </ReturnValue>
       <Docs>
@@ -571,8 +581,8 @@
         <param name="indexPath">The <see cref="T:MonoTouch.Foundation.NSIndexPath"/> indicating the section and item index of the desired <see cref="T:MonoTouch.UIKit.UICollectionViewCell"/>.</param>
         <summary>Returns the <see cref="T:MonoTouch.UIKit.UICollectionViewCell"/> at the specified <see cref="T:MonoTouch.Foundation.NSIndexPath"/>.</summary>
         <returns>The <see cref="T:MonoTouch.UIKit.UICollectionViewCell"/> corresponding to the <paramref name="indexPath"/> parameter. If there is no corresponding <see cref="T:MonoTouch.UIKit.UICollectionViewCell"/>, the function returns <see langword="null"/>.</returns>
-        <remarks>&#x00A0;</remarks>
-        </Docs>
+        <remarks> </remarks>
+      </Docs>
     </Member>
     <Member MemberName="ClassHandle">
       <MemberSignature Language="C#" Value="public override IntPtr ClassHandle { get; }"/>
@@ -632,7 +642,7 @@
           <para>The default value is <see langword="null"/>.</para>
           <para tool="nullallowed">This value can be <see langword="null"/>.</para>
         </value>
-        <remarks>&#x00A0;&#x00A0;&#x00A0;&#x00A0;</remarks>
+        <remarks>    </remarks>
         <altmember cref="P:MonoTouch.UIKit.UICollectionView.Source"/>
       </Docs>
     </Member>
@@ -870,12 +880,12 @@
       <ReturnValue>
         <ReturnType>MonoTouch.Foundation.NSIndexPath[]</ReturnType>
       </ReturnValue>
-      <Parameters/>
+      <Parameters />
       <Docs>
         <summary>Returns an array of <see cref="T:MonoTouch.Foundation.NSIndexPath"/>s indicating which cells are currently selected.</summary>
         <returns>An array containing zero or more <see cref="T:MonoTouch.Foundation.NSIndexPath"/>s.</returns>
-        <remarks/>
-         </Docs>
+        <remarks />
+      </Docs>
     </Member>
     <Member MemberName="GetLayoutAttributesForItem">
       <MemberSignature Language="C#" Value="public virtual MonoTouch.UIKit.UICollectionViewLayoutAttributes GetLayoutAttributesForItem (MonoTouch.Foundation.NSIndexPath indexPath);"/>
@@ -899,7 +909,8 @@
         <param name="indexPath">A <see cref="T:MonoTouch.Foundation.NSIndexPath"/> indicating the desired cell being laid out.</param>
         <summary>Returns the layout information for the specified <see cref="T:MonoTouch.UIKit.UICollectionViewCell"/>.</summary>
         <returns>A <see cref="T:MonoTouch.UIKit.UICollectionViewLayoutAttributes"/> object specifying layout attributes. Returns <see langword="null"/> if the <paramref name="indexPath"/> specifies a non-existent index.</returns>
-        <remarks> </remarks>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetLayoutAttributesForSupplementaryElement">
@@ -927,7 +938,8 @@
         <param name="indexPath">The <see cref="T:MonoTouch.Foundation.NSIndexPath"/> specifying the location of the supplementary view.</param>
         <summary>Returns the layout information for the specified supplementary view.</summary>
         <returns>A <see cref="T:MonoTouch.UIKit.UICollectionViewLayoutAttributes"/> object specifying layout attributes. Returns <see langword="null"/> if the <paramref name="indexPath"/> specifies a non-existent index.</returns>
-        <remarks> </remarks>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="IndexPathForCell">
@@ -952,7 +964,8 @@
         <param name="cell">The <see cref="T:MonoTouch.UIKit.UICollectionViewCell"/> for which the index is desired.</param>
         <summary>Returns the <see cref="T:MonoTouch.Foundation.NSIndexPath"/> for the <paramref name="cell"/>.</summary>
         <returns>The <see cref="T:MonoTouch.Foundation.NSIndexPath"/> of the specified <see cref="T:MonoTouch.UIKit.UICollectionViewCell"/>. Returns <see langword="null"/> f the cell is not in this <see cref="T:MonoTouch.UIKit.UICollectionView"/></returns>
-        <remarks> </remarks>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="IndexPathForItemAtPoint">
@@ -1132,7 +1145,7 @@
         <param name="section">The index of the section.</param>
         <summary>Returns the number of items in the specified section.</summary>
         <returns>The number of items in the specified section.</returns>
-        <remarks/>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="NumberOfSections">
@@ -1150,11 +1163,11 @@
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
-      <Parameters/>
+      <Parameters />
       <Docs>
         <summary>Returns the number of sections in the <see cref="T:MonoTouch.UIKit.UICollectionView"/>.</summary>
         <returns>The number of sections in the <see cref="T:MonoTouch.UIKit.UICollectionView"/>.</returns>
-        <remarks/>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="PerformBatchUpdates">
@@ -1402,7 +1415,7 @@
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
-      <Parameters/>
+      <Parameters />
       <Docs>
         <summary>Reloads all of the data for the <see cref="T:MonoTouch.UIKit.UICollectionView"/>.</summary>
         <remarks>
@@ -1493,9 +1506,10 @@
       <Docs>
         <param name="indexPath">The <see cref="T:MonoTouch.Foundation.NSIndexPath"/> of the desired element.</param>
         <param name="scrollPosition">Where the item should be positioned after scrolling stops.</param>
-        <param name="animated"><see langword="true"/> if the scrolling should be animated.</param>
+        <param name="animated">
+          <see langword="true"/> if the scrolling should be animated.</param>
         <summary>Scrollls the <see cref="T:MonoTouch.UIKit.UICollectionView"/> so that the desired element is visible.</summary>
-        <remarks/>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="SelectItem">
@@ -1520,11 +1534,12 @@
       </Parameters>
       <Docs>
         <param name="indexPath">The <see cref="T:MonoTouch.Foundation.NSIndexPath"/> of the desired element.</param>
-        <param name="animated"><see langword="true"/> if the selection change should be animated.</param>
+        <param name="animated">
+          <see langword="true"/> if the selection change should be animated.</param>
         <param name="scrollPosition">Where the item should be positioned after scrolling finishes.</param>
         <summary>Selects a <see cref="T:MonoTouch.UIKit.UICollectionViewCell"/> and optionally scrolls to make it visible.</summary>
         <remarks>
-          <para>This method does nothing if <see cref="P:MonoTouch.UIKit.UICollectionView.AllowsSelection"/> is <see langword="false"/>. This method deselects the currently selected element if <see cref="P:MonoTouch.UIKit.UICollectionView.AllowsMultipleSelection"/> is <see langword="false"/>.</para>  
+          <para>This method does nothing if <see cref="P:MonoTouch.UIKit.UICollectionView.AllowsSelection"/> is <see langword="false"/>. This method deselects the currently selected element if <see cref="P:MonoTouch.UIKit.UICollectionView.AllowsMultipleSelection"/> is <see langword="false"/>.</para>
           <para>This method does not trigger calls to any selection-related delegate methods (e.g., <see cref="M:MonoTouch.UIKit.UICollectionViewDelegate.ItemSelected"/> or <see cref="M:MonoTouch.UIKit.UICollectionViewDelegate.ItemDeselected"/>).</para>
         </remarks>
       </Docs>
@@ -1550,9 +1565,12 @@
       </Parameters>
       <Docs>
         <param name="layout">The new <see cref="T:MonoTouch.UIKit.UICollectionViewLayout"/>.</param>
-        <param name="animated"><see langword="true"/> if the transition to the new layout should be animated.</param>
+        <param name="animated">
+          <see langword="true"/> if the transition to the new layout should be animated.</param>
         <summary>Changes the <see cref="T:MonoTouch.UIKit.UICollectionViewLayout"/> used by the <see cref="T:MonoTouch.UIKit.UICollectionView"/>.</summary>
-        <remarks><para>A <see cref="T:MonoTouch.UIKit.UICollectionView"/> must have its <see cref="P:MonoTouch.UIKit.UICollectionView.CollectionViewLayout"/> assigned before being displayed. The application developer must either instantiate the <see cref="T:MonoTouch.UIKit.UICollectionView"/> with the <see cref="C:MonoTouch.UIKit.UICollectionView.UICollectionView(System.Drawing.RectangleF, MonoTouch.UIKit.UICollectionViewLayout)"/> constructor or call this method prior to displaying the <see cref="T:MonoTouch.UIKit.UICollectionView"/>.</para></remarks>
+        <remarks>
+          <para>A <see cref="T:MonoTouch.UIKit.UICollectionView"/> must have its <see cref="P:MonoTouch.UIKit.UICollectionView.CollectionViewLayout"/> assigned before being displayed. The application developer must either instantiate the <see cref="T:MonoTouch.UIKit.UICollectionView"/> with the <see cref="C:MonoTouch.UIKit.UICollectionView.UICollectionView(System.Drawing.RectangleF, MonoTouch.UIKit.UICollectionViewLayout)"/> constructor or call this method prior to displaying the <see cref="T:MonoTouch.UIKit.UICollectionView"/>.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Source">
@@ -1568,7 +1586,8 @@
       <Docs>
         <summary>An optional property that can substitute for the <see cref="P:MonoTouch.UIKit.UICollectionView.DataSource"/> and <see cref="P:MonoTouch.UIKit.UICollectionView.Delegate"/> properties</summary>
         <value>The default value is <see langword="null"/>.</value>
-        <remarks><para>Rather than specify separate classes and provide two objects for the  <see cref="P:MonoTouch.UIKit.UICollectionView.DataSource"/> and <see cref="P:MonoTouch.UIKit.UICollectionView.Delegate"/> properties, one can provide a single class of type <see cref="T:MonoTouch.UIKit.UICollectionViewSource"/> (which itself is simply defined as ).</para>
+        <remarks>
+          <para>Rather than specify separate classes and provide two objects for the  <see cref="P:MonoTouch.UIKit.UICollectionView.DataSource"/> and <see cref="P:MonoTouch.UIKit.UICollectionView.Delegate"/> properties, one can provide a single class of type <see cref="T:MonoTouch.UIKit.UICollectionViewSource"/> (which itself is simply defined as ).</para>
         </remarks>
       </Docs>
     </Member>
@@ -1590,8 +1609,8 @@
       <Docs>
         <summary>An array of the currently-visible <see cref="T:MonoTouch.UIKit.UICollectionViewCell"/>.</summary>
         <value>An array containing zero or more <see cref="T:MonoTouch.UIKit.UICollectionViewCell"/>s.</value>
-        <remarks/>
-           </Docs>
+        <remarks />
+      </Docs>
     </Member>
     <Member MemberName="WeakDataSource">
       <MemberSignature Language="C#" Value="public virtual MonoTouch.Foundation.NSObject WeakDataSource { get; set; }"/>
