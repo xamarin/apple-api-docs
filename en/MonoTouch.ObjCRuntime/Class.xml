@@ -115,6 +115,30 @@
         </remarks>
       </Docs>
     </Member>
+    <Member MemberName="GetHandleIntrinsic">
+      <MemberSignature Language="C#" Value="public static IntPtr GetHandleIntrinsic (string name);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig native int GetHandleIntrinsic(string name) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="type">Type for an NSObject-derived class</param>
+        <summary>Gets the Objective-C handle to the given type.</summary>
+        <returns>The Objective-C handle to the object.</returns>
+        <remarks>
+          <para>
+      This method looks up the Objective-C handle for the specified type. This method is special-cased by the AOT compiler to become an inlined, static reference to the type. This is significantly faster that calling <see cref="MonoTouch.ObjCRuntime.Selector.GetHandle (System.String)" />, but it also means that the class must exist in the executable (or in a framework the executable is linked with).
+    </para>
+        </remarks>
+      </Docs>
+    </Member>
     <Member MemberName="Handle">
       <MemberSignature Language="C#" Value="public IntPtr Handle { get; }" />
       <MemberSignature Language="ILAsm" Value=".property instance native int Handle" />
@@ -183,6 +207,32 @@
         <summary>The Objective-C handle to the super class for this class.</summary>
         <value />
         <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="ThrowOnInitFailure">
+      <MemberSignature Language="C#" Value="public static bool ThrowOnInitFailure;" />
+      <MemberSignature Language="ILAsm" Value=".field public static bool ThrowOnInitFailure" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Determines whether MonoTouch will check in the NSObject constructor if the corresponding native object was successfully created (the default value is true).</summary>
+        <remarks>
+          <para>
+      Traditionally MonoTouch has allowed managed objects to be
+      created without a native peer. The behavior has however been
+      inconsistent between types, and in the case of types from
+      third-party libraries it would result in instances that would,
+      if used, most likely crash the process with a stack overflow.
+    </para>
+    <para>
+      With this check the behavior will be consistent among all types.
+    </para>
+        </remarks>
       </Docs>
     </Member>
   </Members>
