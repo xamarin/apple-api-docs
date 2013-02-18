@@ -3357,6 +3357,7 @@
             
           </para>
         </remarks>
+        <altmember cref="M:MonoTouch.UIKit.UIView.PointInside"/>
       </Docs>
     </Member>
     <Member MemberName="InsertSubview">
@@ -3450,7 +3451,7 @@
         <param name="siblingSubview">
           <para>The subview of this view that will be below the view.</para>
         </param>
-        <summary>Inserts the specified view below the siblingSubvie in
+        <summary>Inserts the specified view below the <paramref name="siblingSubview"/> in
           the view hierarchy.</summary>
         <remarks>
         </remarks>
@@ -3475,10 +3476,13 @@
         <ReturnType>System.Drawing.SizeF</ReturnType>
       </ReturnValue>
       <Docs>
-        <!-- tk tk tk -->
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>The size of the intrinsic content of the <see cref="T:MonoTouch.UIKit.UIView"/>.</summary>
+        <value>The default value is {<see cref="P:MonoTouch.UIKit.UIView.NoIntrinsicMetric"/>, <see cref="P:MonoTouch.UIKit.UIView.NoIntrinsicMetric"/>}.</value>
+        <remarks>
+          <para>Some views, such as <see cref="T:MonoTouch.UIKit.UILabel"/>s, have a natural intrinsic size that is not related to the actual <see cref="P:MonoTouch.UIKit.UIView.Frame"/> that contains the entirety of the <see cref="T:MonoTouch.UIKit.UIView"/>. This property allows the <see cref="T:MonoTouch.UIKit.UIView"/> to tell the Auto Layout system what <see cref="T:MonoTouch.Foundation.SizeF"/> it would prefer to be.</para>
+          <para>If a <see cref="T:MonoTouch.UIKit.UIView"/> has no intrinsic size, it should return the default {<see cref="P:MonoTouch.UIKit.UIView.NoIntrinsicMetric"/>,<see cref="P:MonoTouch.UIKit.UIView.NoIntrinsicMetric"/>} value.</para>
+        </remarks>
+        <altmember cref="M:MonoTouch.UIKit.UIView.InvalidateIntrinsicContentSize"/>
       </Docs>
     </Member>
     <Member MemberName="InvalidateIntrinsicContentSize">
@@ -3498,8 +3502,10 @@
       </ReturnValue>
       <Parameters/>
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Alerts the Auto Layout system that the intrinsic value of the <see cref="T:MonoTouch.UIKit.UIView"/> has changed.</summary>
+        <remarks>
+        <para>Application developers should call this method when they have overridden <see cref="P:MonoTouch.UIKit.UIView.IntrinsicContentSize"/> and something has happened to change the value of that property. The Auto Layout system will use the new property in its next layout pass.</para>  
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="IsDescendantOfView">
@@ -3522,13 +3528,14 @@
       </Parameters>
       <Docs>
         <param name="view">
-          <para>To be added.</para>
+          <para>The <see cref="T:MonoTouch.UIKit.UIView"/> that may be an ancestore of <c>this</c> <see cref="T:MonoTouch.UIKit.UIView"/>.</para>
         </param>
-        <summary>To be added.</summary>
+        <summary>Returns <see langword="true"/> if <c>this</c> <see cref="T:MonoTouch.UIKit.UIView"/> is in the <paramref name="view"/>'s view hierarchy.</summary>
         <returns>
-          <para>To be added.</para>
+          <para>Returns <see langword="true"/> if the <paramref name="view"/> is the same as <c>this</c> or if the <paramref name="view"/> is an ancestor of <c>this</c>.</para>
         </returns>
         <remarks>
+          <para>A <see cref="T:MonoTouch.UIKit.UIView"/> is a descendant of another <paramref name="view"/> if the views are the same or if the <paramref name="view"/> can be reached by repeatedly retrieving the <see cref="P:MonoTouch.UIKit.UIView.Superview"/> property. This is the equivalent to specifying that <c>this</c> <see cref="T:MonoTouch.UIKit.UIView"/> is in <paramref name="view"/>'s view hierarchy.</para>
         </remarks>
       </Docs>
     </Member>
@@ -3551,10 +3558,11 @@
         <ReturnType>MonoTouch.CoreAnimation.CALayer</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>The Core Animation layer used for rendering.</summary>
+        <value>Returns the <see cref="T:MonoTouch.CoreAnimation.CALayer"/> that the <see cref="T:MonoTouch.UIKit.UIView"/> is being rendered upon.</value>
         <remarks>
-          <para>(More documentation for this node is coming)</para>
+          <para>This method will not return <see langword="null"/>.</para>
+          <para>The <see cref="T:MonoTouch.UIKit.UIView"/> and the <see cref="T:MonoTouch.CoreAnimation.CALayer"/> are tightly coupled and should not be reassigned.</para>
           <para tool="threads">This can be used from a background thread.</para>
         </remarks>
       </Docs>
@@ -3620,8 +3628,11 @@
       </ReturnValue>
       <Parameters/>
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Indicates the <see cref="T:MonoTouch.UIKit.UIView"/> has had its <see cref="P:MonoTouch.UIKit.UIView.Superview"/> property changed.</summary>
+        <remarks>
+          <para>Application developers can override this method to perform additional calculations when the <see cref="P:MonoTouch.UIKit.UIView.Superview"/> changes.</para>
+          <para>This method is only called on the immediate descendants of the <see cref="P:MonoTouch.UIKit.UIView.Superview"/>.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="MovedToWindow">
@@ -3641,8 +3652,10 @@
       </ReturnValue>
       <Parameters/>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Indicates the <see cref="T:MonoTouch.UIKit.UIView"/> has had its <see cref="P:MonoTouch.UIKit.UIView.Window"/> property changed.</summary>
         <remarks>
+          <para>Application developers can override this method to perform additional calculations whent he <see cref="P:MonoTouch.UIKit.UIView.Window"/> changes.</para>
+          <para>This method is called on all members of the <see cref="T:MonoTouch.UIKit.UIView"/>'s view hierarchy when the <see cref="P:MonoTouch.UIKit.UIView.Window"/> property changes.</para>
         </remarks>
       </Docs>
     </Member>
@@ -3691,9 +3704,12 @@
       </ReturnValue>
       <Parameters/>
       <Docs>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>Indicates that the Auto Layout constraints of the <see cref="T:MonoTouch.UIKit.UIView"/> need updating.</summary>
+        <returns>If this method returns <see langword="true"/>, the Auto Layout system will call <see cref="M:MonoTouch.UIKit.UIView.UpdateConstraints"/> during its layout pass.</returns>
+        <remarks>
+        <para>This method is checked by the Auto Layout system to determine if the <see cref="P:MonoTouch.UIKit.UIView.Constraints"/> for this <see cref="T:MonoTouch.UIKit.UIView"/> need updating. If this method returns <see langword="true"/>, the method <see cref="M:MonoTouch.UIKit.UIView.UpdateConstraints"/> will be called and should perform the updates.</para>  
+        </remarks>
+        <altmember cref="M:Monotouch.UIKit.UIView.SetNeedsUpdateConstraints"/>
       </Docs>
     </Member>
     <Member MemberName="NoIntrinsicMetric">
@@ -3710,7 +3726,9 @@
         <summary>Represents the value associated with the constant UIViewNoIntrinsicMetric</summary>
         <value>
         </value>
-        <remarks>To be added.</remarks>
+        <remarks>
+        <para>This property is associated with the <see cref="M:MonoTouch.UIKit.UIView.IntrinsicContentSize"/> method. This value indicates that the <see cref="T:MonoTouch.UIKit.UIView"/> has no natural size in a particular dimension.</para>  
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Opaque">
@@ -3772,17 +3790,19 @@
       </Parameters>
       <Docs>
         <param name="point">
-          <para>To be added.</para>
+          <para>The location being checked.</para>
         </param>
         <param name="uievent">
-          <para>
+          <para>The event that triggered this method call, or <see langword="null"/>.
           </para>
           <para tool="nullallowed">This parameter can be <see langword="null"/>.</para>
         </param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <summary>Returns <see langword="true"/> if the specified point is within the <see cref="T:MonoTouch.UIKit.UIView"/>'s <see cref="P:MonoTouch.UIKit.UIView.Bounds"/>.</summary>
+        <returns>Returns <see langword="true"/> if the specified point is within the <see cref="T:MonoTouch.UIKit.UIView"/>'s <see cref="P:MonoTouch.UIKit.UIView.Bounds"/>.</returns>
         <remarks>
+          <para>The <paramref name="point"/> is evaluated in <c>this</c> <see cref="T:MonoTouch.UIKit.UIView"/>'s coordinate system.</para>
         </remarks>
+        <altmember cref="M:MonoTouch.UIKit.UIView.HitTest"/>
       </Docs>
     </Member>
     <Member MemberName="RemoveConstraint">
@@ -3804,9 +3824,9 @@
         <Parameter Name="constraint" Type="MonoTouch.UIKit.NSLayoutConstraint"/>
       </Parameters>
       <Docs>
-        <param name="constraint">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="constraint">The <see cref="T:MonoTouch.UIKit.NSLayoutConstraint"/> to be removed.</param>
+        <summary>Removes an Auto Layout constraint from the <see cref="T:MonoTouch.UIKit.UIView"/>'s <see cref="P:MonoTouch.UIKit.UIView.Constraints"/>.</summary>
+        <remarks/>
         <altmember cref="P:MonoTouch.UIKit.UIView.Constraints"/>
         <altmember cref="M:MonoTouch.UIKit.UIView.AddConstraint"/>
         <altmember cref="M:MonoTouch.UIKit.UIView.AddConstraints"/>
@@ -3833,10 +3853,10 @@
         <Parameter Name="constraints" Type="MonoTouch.UIKit.NSLayoutConstraint[]"/>
       </Parameters>
       <Docs>
-        <param name="constraints">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
-        <altmember cref="P:MonoTouch.UIKit.UIView.Constraints"/>
+        <param name="constraints">The <see cref="T:MonoTouch.UIKit.NSLayoutConstraint"/>s to be removed.</param>
+        <summary>Removes multiple Auto Layout constraints from the <see cref="T:MonoTouch.UIKit.UIView"/>'s <see cref="P:MonoTouch.UIKit.UIView.Constraints"/>.</summary>
+        <remarks/>
+          <altmember cref="P:MonoTouch.UIKit.UIView.Constraints"/>
         <altmember cref="M:MonoTouch.UIKit.UIView.AddConstraint"/>
         <altmember cref="M:MonoTouch.UIKit.UIView.AddConstraints"/>
         <altmember cref="M:MonoTouch.UIKit.UIView.RemoveConstraint"/>
@@ -3860,6 +3880,7 @@
       </ReturnValue>
       <Parameters/>
       <Docs>
+        <!-- tk tk tk -->
         <summary>To be added.</summary>
         <remarks>
         </remarks>
