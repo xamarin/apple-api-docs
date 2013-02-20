@@ -1201,7 +1201,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="filename">Path of the file to probe.</param>
         <summary>Returns the status of the SkipBackup to iCloud attribute is set on the file.</summary>
         <returns>true if the extended attribute is set.</returns>
-        <remarks>This returns true if the com.apple.MobileBackup attribute has been set on the file and its value is one.   If the attribute is not set, or the value is zero, this method will return false.</remarks>
+        <remarks>This returns true if the file is marked not to be backed up by iCloud, otherwise it will return false.
+        This high-level API automagically adjust itself based on the version of iOS being executed. 
+        On iOS 5.0.1 (only) it will use the old getxattr API to get the value of the "com.apple.MobileBackup" attribute. 
+        On iOS 5.1 (and later) it will use NSUrlIsExcludedFromBackupKey to accomplish the same.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetSkipBackupAttribute">
@@ -1223,7 +1226,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="error">The error will be set to null if there was no error, or it will point to an instance of NSError if there was a problem.</param>
         <summary>Returns the status of the SkipBackup to iCloud attribute is set on the file.</summary>
         <returns>true if the extended attribute is set.</returns>
-        <remarks>This returns true if the com.apple.MobileBackup attribute has been set on the file and its value is one.   If the attribute is not set, or the value is zero, this method will return false.</remarks>
+        <remarks>This returns true if the file is marked not to be backed up by iCloud, otherwise it will return false.
+        This high-level API automagically adjust itself based on the version of iOS being executed. 
+        On iOS 5.0.1 (only) it will use the old getxattr API to get the value of the "com.apple.MobileBackup" attribute. 
+        On iOS 5.1 (and later) it will use NSUrlIsExcludedFromBackupKey to accomplish the same.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetSymbolicLinkDestination">
@@ -1995,7 +2001,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <summary>
         </summary>
         <returns>A null return value will indicate success, while a non-null error will contain an instance of NSError detailing the problem</returns>
-        <remarks>If you set the SkipBackup attribute on a file, it will inform the operating system that this file should not be backed up into iCloud.   Under the covers this either sets the extedned file attribuet "com.apple.MobileBackup" to the value 1 or removes that attribute from the file.</remarks>
+        <remarks>If you set the SkipBackup attribute on a file, it will inform the operating system that this file should not be backed up into iCloud.   
+        This high-level API automagically adjust itself based on the version of iOS being executed. 
+        On iOS 5.0.1 (only) it will use the old setxattr API to set (or remove) the "com.apple.MobileBackup" attribute. 
+        On iOS 5.1 (and later) it will use NSUrlIsExcludedFromBackupKey to accomplish the same.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetUbiquitous">
