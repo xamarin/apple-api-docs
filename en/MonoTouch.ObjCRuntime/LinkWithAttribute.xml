@@ -16,7 +16,34 @@
   </Attributes>
   <Docs>
     <summary>A LinkWith attribute specifies how the native library associated with the assembly should be linked to the resulting application.</summary>
-    <remarks>This attribute is only useful for assemblies that bind to native libraries.</remarks>
+    <remarks>
+      <para>
+	This attribute is only useful for assemblies that bind to native libraries.
+      </para>
+      <para>
+
+	When using this attribute, the specified library in the
+	constructor will be linked with the final application.  You
+	can use one or more of the properties of the attribute to
+	configure how the linking is done.
+
+      </para>
+
+<example>
+<code lang="c#">
+// The following is used to link with GoogleAdMobAds:
+
+[assembly: LinkWith ("libGoogleAdMobAds.a", 
+		     LinkTarget.Simulator | LinkTarget.ArmV7, 
+		     ForceLoad = true, 
+		     Frameworks = "AudioToolbox MessageUI SystemConfiguration CoreGraphics MediaPlayer StoreKit", 
+		     WeakFrameworks = "AdSupport", 
+		     IsCxx = true, 
+		     LinkerFlags = "-lz -lsqlite3")]
+</code>
+</example>
+
+      </remarks>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
