@@ -20,6 +20,32 @@
       <para>
         Application developers who override this class in order to provide additional layout parameters should also override <see cref="M:MonoTouch.UIKit.UICollectionReusableView.ApplyLayoutAttributes" /> to apply them.
       </para>
+      <para>
+        In order to get a layout attributes object for a subclass of this class, you must call <see cref="M:MonoTouch.UIKit.UICollectionViewLayoutAttributes.CreateForCell`1" /> and specify the type of the subclass, like this:
+      </para>
+      <example>
+        <code lang="C#">
+// A custom UICollectionViewLayoutAttributes class with one extra property
+public class CustomCollectionViewLayoutAttributes : UICollectionViewLayoutAttributes {
+  public int SomeProperty { get; set; }
+  public override NSObject Copy ()
+  {
+    // It is required to override Copy, iOS will call this method to clone your object.
+    var copy = (CustomCollectionViewLayoutAttributes) base.Copy ();
+    copy.SomeProperty = SomeProperty;
+    return copy;
+  }
+}
+public class CircleLayout : UICollectionViewLayout {
+  public override UICollectionViewLayoutAttributes LayoutAttributesForItem (NSIndexPath path)
+  {
+    var attributes = UICollectionViewLayoutAttributes.CreateForCell&lt;CustomCollectionViewLayoutAttributes&gt; (path);
+    attributes.SomeProperty = 1;
+    return attributes;
+  }
+}
+        </code>
+      </example>
     </remarks>
     <related type="article" href="http://docs.xamarin.com/ios/Guides/User_Interface/Introduction_to_Collection_Views">Introduction to Collection Views</related>
   </Docs>
@@ -227,7 +253,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="indexPath">The index path describing the cell to create a layout attributes object for.</param>
         <summary>Creates a layout attributes object for the cell at the specified index path.</summary>
         <returns>A layout attributes object representing the cell at the specified index path.</returns>
-        <remarks>This method will always return a UICollectionViewLayoutAttributes. If you've subclassed UICollectionViewLayoutAttributes and need to return an instance of the subclass, use <see cref="M:MonoTouch.UIKit.UICollectionViewLayoutAttributes.CreateForCell{T}" /> instead. This method is equivalent to calling CreateForCell&lt;UICollectionViewLayoutAttributes&gt;.</remarks>
+        <remarks>This method will always return a UICollectionViewLayoutAttributes. If you've subclassed UICollectionViewLayoutAttributes and need to return an instance of the subclass, use <see cref="M:MonoTouch.UIKit.UICollectionViewLayoutAttributes.CreateForCell`1" /> instead. This method is equivalent to calling CreateForCell&lt;UICollectionViewLayoutAttributes&gt;.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CreateForCell&lt;T&gt;">
