@@ -36,9 +36,9 @@
       <para>
 
 	When you use AudioQueues, you must allocate buffers for
-	playback or recording.  You use the <see cref=" M:MonoTouch.AudioToolBox.AllocateBuffer" /> method or the
-	<see cref="M:MonoTouch.AudioToolBox.AllocateBufferWithPacketDescriptors" />
-	to allocate them and you use the <see cref="M:MonoTouch.AudioToolBox.FreeBuffer" /> to release them.
+	playback or recording.  You use the <see cref="M:MonoTouch.AudioToolBox.AudioQueue.AllocateBuffer" /> method or the
+	<see cref="M:MonoTouch.AudioToolBox.AudioQueue.AllocateBufferWithPacketDescriptors" />
+	to allocate them and you use the <see cref="M:MonoTouch.AudioToolBox.AudioQueue.FreeBuffer" /> to release them.
 	You keep a collection of buffers around that the underlying
 	hardware can use to either playback audio, or record into.  As
 	the buffers are used, a notification callback is invoked.  In
@@ -63,8 +63,8 @@
 	listen to a few property changes raised by the queues during
 	their processing (See the <see cref="E:MonoTouch.AudioToolBox.AudioQueueProperty" /> for a
 	list of events that you can listen to).  To do this, use the
-	<see cref="M:MonoTouch.AudioToolBox.AddListener(MonoTouch.AudioToolBox.AudioQueueProperty,AudioQueuePropertyChanged)" />
-	method to add a listener and use the <see cref="M:MonoTouch.AudioToolBox.RemoveListener(MonoTouch.AudioToolBox.AudioQueueProperty,AudioQueuePropertyChanged)" />
+	<see cref="M:MonoTouch.AudioToolBox.AudioQueue.AddListener(MonoTouch.AudioToolBox.AudioQueueProperty,AudioQueuePropertyChanged)" />
+	method to add a listener and use the <see cref="M:MonoTouch.AudioToolBox.AudioQueue.RemoveListener(MonoTouch.AudioToolBox.AudioQueueProperty,AudioQueuePropertyChanged)" />
 	method to remove the listener.
 
       </para>
@@ -132,7 +132,7 @@
         <summary>Allocates an audio buffer associated with this AudioQueue</summary>
         <returns>AudioQueueStatus.Ok on success, otherwise the error. </returns>
         <remarks>
-	  Use <see cref=" M:MonoTouch.AudioToolBox.FreeBuffer" /> to dispose the buffer.
+	  Use <see cref="M:MonoTouch.AudioToolbox.AudioQueue.FreeBuffer" /> to dispose the buffer.
         </remarks>
       </Docs>
     </Member>
@@ -157,10 +157,10 @@
         <returns>AudioQueueStatus.Ok on success, otherwise the error. </returns>
         <remarks>
           <para>
-	    Use the <see cref="M:MonoTouch.AudioToolBox.AllocateBufferWithPacketDescriptors" /> to allocate buffers that will be used with variable bit
+	    Use the <see cref="M:MonoTouch.AudioToolBox.AudioQueue.AllocateBufferWithPacketDescriptors" /> to allocate buffers that will be used with variable bit
 	    rate encodings.
 	  </para>
-          <para>Use <see cref=" M:MonoTouch.AudioToolBox.FreeBuffer" /> to dispose the buffer.</para>
+          <para>Use <see cref="M:MonoTouch.AudioToolbox.AudioQueue.FreeBuffer" /> to dispose the buffer.</para>
         </remarks>
       </Docs>
     </Member>
@@ -187,10 +187,10 @@
         <returns>AudioQueueStatus.Ok on success and the audioQueueBuffer pointing to the buffer, otherwise the error.</returns>
         <remarks>
           <para>
-	    Use the <see cref="M:MonoTouch.AudioToolBox.AllocateBuffer" /> to allocate buffers that will be used with fixed bit
+	    Use the <see cref="M:MonoTouch.AudioToolBox.AudioQueue.AllocateBuffer" /> to allocate buffers that will be used with fixed bit
 	    rate encodings.
 	  </para>
-          <para>Use <see cref=" M:MonoTouch.AudioToolBox.FreeBuffer" /> to dispose the buffer.</para>
+          <para>Use <see cref="M:MonoTouch.AudioToolBox.AudioQueue.FreeBuffer" /> to dispose the buffer.</para>
         </remarks>
       </Docs>
     </Member>
@@ -384,10 +384,10 @@
         <value>Array of level meters, one per audio channel.</value>
         <remarks>
           <para>
-	    To use this property, make sure that you set the <see cref="T:MonoTouch.AudioToolbox.AudioQueue.EnableLevelMetering" /> property on the queue.
+	    To use this property, make sure that you set the <see cref="P:MonoTouch.AudioToolbox.AudioQueue.EnableLevelMetering" /> property on the queue.
 	  </para>
           <para>
-	    Use the <see cref="T:MonoTouch.AudioToolbox.AudioQueue.CurrentLevelMeterDB" /> if you want to get the values in decibels.
+	    Use the <see cref="P:MonoTouch.AudioToolbox.AudioQueue.CurrentLevelMeterDB" /> if you want to get the values in decibels.
 	  </para>
           <example>
             <code lang="c#">
@@ -428,10 +428,10 @@ class MyInputQueue : InputAudioQueue {
         <value>Array of level meters, one per audio channel.</value>
         <remarks>
           <para>
-	    To use this property, make sure that you set the <see cref="T:MonoTouch.AudioToolbox.AudioQueue.EnableLevelMetering" /> property on the queue.
+	    To use this property, make sure that you set the <see cref="P:MonoTouch.AudioToolbox.AudioQueue.EnableLevelMetering" /> property on the queue.
 	  </para>
           <para>
-	    Use the <see cref="T:MonoTouch.AudioToolbox.AudioQueue.CurrentLevelMeter" /> if you want to get the values normalized to the range zero (minimum) to one (maximum).
+	    Use the <see cref="P:MonoTouch.AudioToolbox.AudioQueue.CurrentLevelMeter" /> if you want to get the values normalized to the range zero (minimum) to one (maximum).
 	  </para>
           <example>
             <code lang="c#">
@@ -570,7 +570,7 @@ class MyInputQueue : InputAudioQueue {
         </value>
         <remarks>
           <para>
-	    Enable level metering in your audio queue if you want to read the level meters with the <see cref="T:MonoTouch.AudioToolbox.AudioQueue.CurrentLevelMeter" /> or <see cref="T:MonoTouch.AudioToolbox.AudioQueue.CurrentLevelMeterDB" /> properties.n
+	    Enable level metering in your audio queue if you want to read the level meters with the <see cref="P:MonoTouch.AudioToolbox.AudioQueue.CurrentLevelMeter" /> or <see cref="P:MonoTouch.AudioToolbox.AudioQueue.CurrentLevelMeterDB" /> properties.n
 	  </para>
         </remarks>
       </Docs>
@@ -777,8 +777,8 @@ class MyInputQueue : InputAudioQueue {
         <Parameter Name="size" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="audioQueueBuffer">An audio buffer allocated with either the <see cref=" M:MonoTouch.AudioToolBox.AllocateBuffer" /> method or the
-	<see cref="M:MonoTouch.AudioToolBox.AllocateBufferWithPacketDescriptors" /> methods.</param>
+        <param name="audioQueueBuffer">An audio buffer allocated with either the <see cref="M:MonoTouch.AudioToolBox.AudioQueue.AllocateBuffer" /> method or the
+	<see cref="M:MonoTouch.AudioToolBox.AudioQueue.AllocateBufferWithPacketDescriptors" /> methods.</param>
         <param name="offset">Offset into the audio queue buffer to copy the data to.</param>
         <param name="source">Pointer to the data source to copy into the audio queue buffer.</param>
         <param name="sourceOffset">Offset inside the source.</param>
