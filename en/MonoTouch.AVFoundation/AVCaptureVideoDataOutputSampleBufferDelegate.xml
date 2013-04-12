@@ -14,12 +14,25 @@
       <AttributeName>MonoTouch.Foundation.Model</AttributeName>
     </Attribute>
     <Attribute>
+      <AttributeName>MonoTouch.Foundation.Protocol</AttributeName>
+    </Attribute>
+    <Attribute>
       <AttributeName>MonoTouch.Foundation.Register("AVCaptureVideoDataOutputSampleBufferDelegate", true)</AttributeName>
     </Attribute>
   </Attributes>
   <Docs>
     <summary>Delegate class used to notify when a sample buffer has been written.</summary>
-    <remarks>To be added.</remarks>
+    <remarks>
+      <para>
+	See the sample linked on this page for a complete sample showing how to configure this delegate.
+      </para>
+      <para>
+	It is worth pointing out that the buffers delivered to the
+	DidOutputSampleBuffer method come from a small pool of buffers
+	in AVFoundation, and failure to call Dispose() on the buffers
+	you receive will block the delivery of further frames.
+      </para>
+    </remarks>
     <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=9fa28988-64fe-4365-b2b7-95542daf4f9b">avcaptureframes</related>
   </Docs>
   <Members>
@@ -161,11 +174,19 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="connection" Type="MonoTouch.AVFoundation.AVCaptureConnection" />
       </Parameters>
       <Docs>
-        <param name="captureOutput">To be added.</param>
-        <param name="sampleBuffer">To be added.</param>
-        <param name="connection">To be added.</param>
-        <summary>Method invoked when a sample buffer has been written.</summary>
-        <remarks>To be added.</remarks>
+        <param name="captureOutput">The capture output on which the frame was captured.</param>
+        <param name="sampleBuffer">The video frame data, part of a small finite pool of buffers.</param>
+        <param name="connection">The connection on which the video frame was received.</param>
+        <summary>Method invoked when a sample buffer has been written on the configured dispatch queue;  You must dispose the sampleBuffer before returning.</summary>
+        <remarks>
+	  <para>
+	    Unless you need to keep the buffer for longer, you must call
+	    Dispose() on the sampleBuffer before returning.  The system
+	    has a limited pool of video frames, and once it runs out of
+	    those buffers, the system will stop calling this method
+	    until the buffers are released.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
   </Members>
