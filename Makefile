@@ -10,10 +10,10 @@ validate:
 
 TOP := $(shell pwd)
 
-view:
-	git submodule update --init --recursive
-	$(MAKE) -C external/monomac/samples/macdoc macdoc
-	cd external/monomac/samples/macdoc/bin/Debug && ./macdoc.app/Contents/MacOS/macdoc @"$(TOP)/en"
+#view:
+#	git submodule update --init --recursive
+#	$(MAKE) -C external/monomac/samples/macdoc macdoc
+#	cd external/monomac/samples/macdoc/bin/Debug && ./macdoc.app/Contents/MacOS/macdoc @"$(TOP)/en"
 
 install:
 	mdoc assemble -o MonoTouch-lib en
