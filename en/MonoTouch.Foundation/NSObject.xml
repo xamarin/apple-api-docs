@@ -1916,11 +1916,32 @@ public class EditableCoreTextView : UIView {
         <Parameter Name="delay" Type="System.Double" />
       </Parameters>
       <Docs>
-        <param name="sel">To be added.</param>
-        <param name="obj">To be added.</param>
-        <param name="delay">To be added.</param>
-        <summary>Invokes a method on <code>this</code> that takes a single argument, aft tk tk tk .</summary>
-        <remarks>tk tk tk To be added.</remarks>
+        <param name="sel">The selector to invoke on the current object.</param>
+        <param name="obj">Parameter to pass to the method, or null if the method does not take any arguments.</param>
+        <param name="delay">The delay in seconds before the method is invoked.</param>
+        <summary>Invokes the selector on the current instance and if the <code>obj</code> is not null, it passes this as its single parameter.</summary>
+        <remarks>
+<example>
+<code lang="c#">
+public override bool FinishedLaunching (UIApplication app, NSDictionary options)
+{
+	window = new UIWindow (UIScreen.MainScreen.Bounds);
+	window.MakeKeyAndVisible ();
+
+	// Invoke our method in 10 seconds
+	PerformSelector (new MonoTouch.ObjCRuntime.Selector ("demo:"), new NSString ("hello world"), 10);
+	return true;
+}
+
+// This registers the method "RunDemo" as responding to the selector "demo:"
+[Export ("demo:")]
+void RunDemo (NSString arg)
+{
+	Console.WriteLine ("This is the parameter I got {0}", arg);
+}
+</code>
+</example>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="PerformSelector">
@@ -1939,12 +1960,31 @@ public class EditableCoreTextView : UIView {
         <Parameter Name="delay" Type="System.Single" />
       </Parameters>
       <Docs>
-        <param name="sel">To be added.</param>
-        <param name="obj">To be added.</param>
-        <param name="delay">To be added.</param>
-        <summary>Send a message to an object.</summary>
+       <param name="sel">The selector to invoke on the current object.</param>
+        <param name="obj">Parameter to pass to the method, or null if the method does not take any arguments.</param>
+        <param name="delay">The delay in seconds before the method is invoked.</param>
+        <summary>Invokes the selector on the current instance and if the <code>obj</code> is not null, it passes this as its single parameter.</summary>
         <remarks>
-          tk tk tkTo be added.
+<example>
+<code lang="c#">
+public override bool FinishedLaunching (UIApplication app, NSDictionary options)
+{
+	window = new UIWindow (UIScreen.MainScreen.Bounds);
+	window.MakeKeyAndVisible ();
+
+	// Invoke our method in 10 seconds
+	PerformSelector (new MonoTouch.ObjCRuntime.Selector ("demo:"), new NSString ("hello world"), 10);
+	return true;
+}
+
+// This registers the method "RunDemo" as responding to the selector "demo:"
+[Export ("demo:")]
+void RunDemo (NSString arg)
+{
+	Console.WriteLine ("This is the parameter I got {0}", arg);
+}
+</code>
+</example>
         </remarks>
       </Docs>
     </Member>
