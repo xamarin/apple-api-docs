@@ -289,9 +289,79 @@ public class MyLockeingObject : NSObject {
 </code>
 </example>
 
+      <format type="text/html">
+        <h2>Key Value Coding</h2>
+      </format>
+
       <para>
 
+	Key Value coding is a mechanism that allows you to access
+	properties of an object by their name, as opposed to accessing
+	them directly with a C# method.
+
       </para>
+
+      <para>
+
+	You use the <see
+	cref="M:MonoTouch.Foundation.ValueForKey(MonoTouch.Foundation.NSString);"/>
+	to lookup a property using a name, and you use the of
+	functions <see
+	cref="M:MonoTouch.Foundation.SetValueForKey(MonoTouch.Foundation.NSObject,
+	MonoTouch.Foundation.NSString);"/> to set the value for the
+	specified property.  For example, you could call
+	foo.ValueForKey ("user") to grab the value of the user
+	property in an object.  The names must be ASCII names, start
+	with a lowercase letter, and must not contain any spaces.
+
+      </para>
+
+      <para>
+
+	In addition, you can use Key Paths to have the runtime
+	repeatedly call the ValueForKey or SetValueForKey for you.
+	You separate the keys by using a dot.  For example the keypath
+	"user.address.phone.mobile" would request the user property,
+	and then request the address property on the user, then it
+	would request the phone property on the address and finally
+	request the mobile property on the phone and finally use the
+	result as the value.  You use the <see
+	cref="M:MonoTouch.Foundation.ValueForKeyPath(MonoTouch.Foundation.NSString);"/> to lookup a property using
+	a keypath, and you use the <see
+	cref="M:MonoTouch.Foundation.SetValueForKeyPath(MonoTouch.Foundation.NSObject, MonoTouch.Foundation.NSString);"/> to set a value using a
+	keypath.
+
+      </para>
+
+      <para> When using keypaths, if a lookup fails, the <see
+	cref="M:MonoTouch.Foundation.NSObject.SetValueForUndefinedKey(MonoTouch.Foundation.NSObject,MonoTouch.Foundation.NSString)"/>
+	will be invoked when setting a value, and the <see
+	cref="M:MonoTouch.Foundation.NSObject.ValueForUndefinedKey(MonoTouch.Foundation.NSString)"/>
+	will be invoked when looking up a value.  Both methods by
+	default raise an Objective-C exception, you can alter that behavior by overriding the methods. 
+	</para>
+
+      <format type="text/html">
+        <h2>Key Value Observing</h2>
+      </format>
+
+      <para>
+	Key value observing is a mechanism implemented by NSObject
+	that can be used to monitor changes being done to an NSObject
+	through the Key Value Coding system.
+      </para>
+
+      <para>
+
+	For your class to observe a notification, you must override
+	the <see
+	cref="M:MonoTouch.Foundation.ObserveValue(MonoTouch.Foundation.NSString,MonoTouch.Foundation.NSObject,MonoTouch.Foundation.NSDictionary,IntPtr)"/>
+	method which will be invoked with the information about the value changes for a specific keypath.   Then you use the <see
+	cref="M:MonoTouch.Foundation.AddObserver(MonoTouch.Foundation.NSObject,MonoTouch.Foundation.NSString,MonoTouch.Foundation.NSKeyValueObservingOptions,IntPtr)"/> to start observing changes and the <see
+	cref="M:MonoTouch.Foundation.RemoveObserver(MonoTouch.Foundation.NSObject,MonoTouch.Foundation.NSString)"/> method to stop receiving notifications. 
+
+      </para>
+
     </remarks>
   </Docs>
   <Members>
@@ -1480,7 +1550,10 @@ public class EditableCoreTextView : UIView {
       <Docs>
         <summary>Handle (pointer) to the unmanaged object representation.</summary>
         <value>A pointer</value>
-        <remarks>This IntPtr is a handle to the underlying unmanaged representation for this object.</remarks>
+        <remarks>
+	  <para>This IntPtr is a handle to the underlying unmanaged representation for this object.   It is the actual pointer value to the Objective-C "id" value.</para>
+	  <para>This is typicallly used when you want to pass this instance to an unmanaged Objective-C call, or when you want to call any of the Messaging methods on the current class.</para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Init">
@@ -2094,10 +2167,10 @@ public class EditableCoreTextView : UIView {
         <Parameter Name="key" Type="MonoTouch.Foundation.NSString" />
       </Parameters>
       <Docs>
-        <param name="value">To be added.</param>
-        <param name="key">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="value">Value to set on the property.</param>
+        <param name="key">Name of the Objective-C property whose value you want to retrieve.  It must be an ASCII name, start with a lowercase letter and contain no spaces.</param>
+        <summary>Sets the value of the property specified by the key to the specified value.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="SetValueForKeyPath">
@@ -2120,10 +2193,35 @@ public class EditableCoreTextView : UIView {
         <Parameter Name="keyPath" Type="MonoTouch.Foundation.NSString" />
       </Parameters>
       <Docs>
-        <param name="value">To be added.</param>
-        <param name="keyPath">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="value">Value to set on the property.</param>
+        <param name="keyPath">Key-path to use to perform the value lookup.   The keypath consists of a series of lowercase ASCII-strings with no spaces in them separated by dot characters.</param>
+        <summary>Sets the value of a property that can be reached using a keypath.</summary>
+        <remarks>
+	  <para>
+
+	    The keypath is separated by dots, and each component is
+	    used to lookup a specific key on the object.  The process
+	    is repeated on each returning object until the last
+	    element is processed.  
+	  </para>
+
+	  <para>
+	    If a component of the key path is
+	    not found, the method <see
+	    cref="M:MonoTouch.Foundation.NSObject.SetValueForUndefinedKey(MonoTouch.Foundation.NSObject,MonoTouch.Foundation.NSString)"/>
+	    is invoked, and its default implementation raises an
+	    Objective-C exception.   Subclasses can alter this behavior by overriding that method.
+	  </para>
+
+	  <example>
+<code lang="c#">
+string SetMobilePhone (Order order, NSString phone)
+{
+	return order.SetValueForKeyPath ("user.address.phone.mobile", phone);
+}
+</code>
+	  </example>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetValueForKeyPath">
@@ -2142,7 +2240,7 @@ public class EditableCoreTextView : UIView {
       </Parameters>
       <Docs>
         <param name="handle">Pointer (handle) to the unmanaged object.</param>
-        <param name="keyPath">To be added.</param>
+        <param name="keyPath">Key-path to use to perform the value lookup.   The keypath consists of a series of lowercase ASCII-strings with no spaces in them separated by dot characters.</param>
         <summary>A constructor used when creating managed representations of unmanaged objects;  Called by the runtime.</summary>
         <remarks>
           <para>This constructor is invoked by the runtime infrastructure (<see cref="M:MonoTouch.ObjCRuntime.GetNSObject (System.IntPtr)" />) to create a new managed representation for a pointer to an unmanaged Objective-C object.    You should not invoke this method directly, instead you should call the GetNSObject method as it will prevent two instances of a managed object to point to the same native object.</para>
@@ -2210,9 +2308,15 @@ public class EditableCoreTextView : UIView {
         <ReturnType>System.IntPtr</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Handle used to represent the methods in the base class for this NSObject.</summary>
+        <value>An opaque pointer, represents an Objective-C objc_super object pointing to our base class.</value>
+        <remarks>
+	  This property is used to access members of a base class.
+	  This is typically used when you call any of the Messaging
+	  methods to invoke methods that were implemented in your base
+	  class, instead of invoking the implementation in the current
+	  class.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="ToString">
@@ -2277,10 +2381,19 @@ public class EditableCoreTextView : UIView {
         <Parameter Name="key" Type="MonoTouch.Foundation.NSString" />
       </Parameters>
       <Docs>
-        <param name="key">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="key">Name of the Objective-C property whose value you want to retrieve.  It must be an ASCII name, start with a lowercase letter and contain no spaces.</param>
+        <summary>Returns the value of the property associated with the specified key.</summary>
+        <returns>An NSObject containing the value.</returns>
+        <remarks>
+	  <example>
+<code lang="c#">
+string GetName (NSObject myObject)
+{
+	return (string) myObject.ValueForKey ("name");
+}
+</code>
+	  </example>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="ValueForKeyPath">
@@ -2302,10 +2415,34 @@ public class EditableCoreTextView : UIView {
         <Parameter Name="keyPath" Type="MonoTouch.Foundation.NSString" />
       </Parameters>
       <Docs>
-        <param name="keyPath">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="keyPath">Key-path to use to perform the value lookup.   The keypath consists of a series of lowercase ASCII-strings with no spaces in them separated by dot characters.</param>
+        <summary>Returns the value of a property that can be reached using a keypath.</summary>
+        <returns>An NSObject containing the value for the specified keypath.</returns>
+        <remarks>
+	  <para>
+
+	    The keypath is separated by dots, and each component is
+	    used to lookup a specific key on the object.  The process
+	    is repeated on each returning object until the last
+	    element is processed.  
+	  </para>
+
+	  <para>
+	    If a component of the key path is
+	    not found, the method <see
+	    cref="M:MonoTouch.Foundation.NSObject.ValueForUndefinedKey(MonoTouch.Foundation.NSString)"/>
+	    is invoked, and its default implementation raises an
+	    Objective-C exception.   Subclasses can alter this behavior by overriding that method.
+	  </para>
+
+	  <example>
+<code lang="c#">
+string GetMobilePhone (Order order)
+{
+	return (string) order.ValueForKeyPath ("user.address.phone.mobile");
+}
+</code>
+	  </example></remarks>
       </Docs>
     </Member>
     <Member MemberName="ValueForUndefinedKey">
