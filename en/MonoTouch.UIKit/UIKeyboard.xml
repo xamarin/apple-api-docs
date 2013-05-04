@@ -11,7 +11,74 @@
   <Interfaces />
   <Docs>
     <summary>The iPhone virtual keyboard.</summary>
-    <remarks />
+    <remarks>
+
+      <para>
+
+	The UIKeyboard class contains constants and methods to track
+	the visibility of the iPhone virtual keyboard.  iOS posts a
+	number of notifications when the keyboard is shown, hidden or
+	moved in the screen.   
+
+      </para>
+
+      <para>
+
+	The preferred way of receiving UIKeyboard notification is to
+	use the <see
+	cref="T:MonoTouch.UIKit.UIKeyboard+Notifications"/> class,
+	which provides a strongly-typed set of APIs to track the
+	changes to the keyboard state and provides strongly-typed
+	accessors to the various parameters of the keyboard changes.
+
+      </para>
+
+          <example>
+            <code lang="c#">
+//
+// Lambda style
+//
+
+// listening
+notification = UIKeyboard.Notifications.ObserveDidChangeFrame ((sender, args) =&gt; {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("FrameBegin", args.FrameBegin);
+    Console.WriteLine ("FrameEnd", args.FrameEnd);
+    Console.WriteLine ("AnimationDuration", args.AnimationDuration);
+    Console.WriteLine ("AnimationCurve", args.AnimationCurve);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, MonoTouch.UIKit.UIKeyboardEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("FrameBegin", args.FrameBegin);
+    Console.WriteLine ("FrameEnd", args.FrameEnd);
+    Console.WriteLine ("AnimationDuration", args.AnimationDuration);
+    Console.WriteLine ("AnimationCurve", args.AnimationCurve);
+}
+
+void Setup ()
+{
+    notification = UIKeyboard.Notifications.ObserveDidChangeFrame (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}</code>
+	  </example>
+    </remarks>
     <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=23a2571b-45eb-4889-bb67-d88937cb68c1">monocatalog</related>
   </Docs>
   <Members>
@@ -29,10 +96,10 @@
         <Parameter Name="n" Type="MonoTouch.Foundation.NSNotification" />
       </Parameters>
       <Docs>
-        <param name="n">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="n">notification and its payload.</param>
+        <summary>Deprecated: helper method to extract the animation curve from a notification.</summary>
+        <returns></returns>
+        <remarks>Use the <see cref="T:MonoTouch.UIKit.UIKeyboard+Notifications"/> strongly typed methods instead.</remarks>
       </Docs>
     </Member>
     <Member MemberName="AnimationCurveUserInfoKey">
@@ -49,7 +116,7 @@
         <summary>Represents the value associated with the constant UIKeyboardAnimationCurveUserInfoKey</summary>
         <value>
         </value>
-        <remarks>To be added.</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="AnimationDurationFromNotification">
@@ -66,10 +133,10 @@
         <Parameter Name="n" Type="MonoTouch.Foundation.NSNotification" />
       </Parameters>
       <Docs>
-        <param name="n">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="n">notification and its payload.</param>
+        <summary>Deprecated: helper method to extract the animation duration from a notification.</summary>
+        <returns></returns>
+        <remarks>Use the <see cref="T:MonoTouch.UIKit.UIKeyboard+Notifications"/> strongly typed methods instead.</remarks>
       </Docs>
     </Member>
     <Member MemberName="AnimationDurationUserInfoKey">
@@ -86,7 +153,7 @@
         <summary>Represents the value associated with the constant UIKeyboardAnimationDurationUserInfoKey</summary>
         <value>
         </value>
-        <remarks>To be added.</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="BoundsFromNotification">
@@ -108,10 +175,10 @@
         <Parameter Name="n" Type="MonoTouch.Foundation.NSNotification" />
       </Parameters>
       <Docs>
-        <param name="n">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="n">notification and its payload.</param>
+        <summary>Deprecated: helper method to extract the keyboard bounds from a notification.</summary>
+        <returns></returns>
+        <remarks>Use the <see cref="T:MonoTouch.UIKit.UIKeyboard+Notifications"/> strongly typed methods instead.</remarks>
       </Docs>
     </Member>
     <Member MemberName="BoundsUserInfoKey">
@@ -128,7 +195,7 @@
         <summary>Represents the value associated with the constant UIKeyboardBoundsUserInfoKey</summary>
         <value>
         </value>
-        <remarks>To be added.</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="CenterBeginFromNotification">
@@ -150,10 +217,10 @@
         <Parameter Name="n" Type="MonoTouch.Foundation.NSNotification" />
       </Parameters>
       <Docs>
-        <param name="n">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="n">notification and its payload.</param>
+        <summary>Deprecated: helper method to extract the center start from a notification</summary>
+        <returns></returns>
+        <remarks>Use the <see cref="T:MonoTouch.UIKit.UIKeyboard+Notifications"/> strongly typed methods instead.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CenterBeginUserInfoKey">
@@ -170,7 +237,7 @@
         <summary>Represents the value associated with the constant UIKeyboardCenterBeginUserInfoKey</summary>
         <value>
         </value>
-        <remarks>To be added.</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="CenterEndFromNotification">
@@ -192,10 +259,10 @@
         <Parameter Name="n" Type="MonoTouch.Foundation.NSNotification" />
       </Parameters>
       <Docs>
-        <param name="n">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="n">notification and its payload.</param>
+        <summary>Deprecated: helper method to extract the center end from a notification.</summary>
+        <returns></returns>
+        <remarks>Use the <see cref="T:MonoTouch.UIKit.UIKeyboard+Notifications"/> strongly typed methods instead.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CenterEndUserInfoKey">
@@ -212,7 +279,7 @@
         <summary>Represents the value associated with the constant UIKeyboardCenterEndUserInfoKey</summary>
         <value>
         </value>
-        <remarks>To be added.</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="DidChangeFrameNotification">
@@ -489,10 +556,10 @@ void Setup ()
         <Parameter Name="n" Type="MonoTouch.Foundation.NSNotification" />
       </Parameters>
       <Docs>
-        <param name="n">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="n">notification and its payload.</param>
+        <summary>Deprecated: helper method to extract the keyboard's starting frame from a notification</summary>
+        <returns></returns>
+        <remarks>Use the <see cref="T:MonoTouch.UIKit.UIKeyboard+Notifications"/> strongly typed methods instead.</remarks>
       </Docs>
     </Member>
     <Member MemberName="FrameBeginUserInfoKey">
@@ -509,7 +576,7 @@ void Setup ()
         <summary>Represents the value associated with the constant UIKeyboardFrameBeginUserInfoKey</summary>
         <value>
         </value>
-        <remarks>To be added.</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="FrameEndFromNotification">
@@ -531,10 +598,10 @@ void Setup ()
         <Parameter Name="n" Type="MonoTouch.Foundation.NSNotification" />
       </Parameters>
       <Docs>
-        <param name="n">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="n">notification and its payload.</param>
+        <summary>Deprecated: helper method to extract the keyboard's ending frame from a notification</summary>
+        <returns></returns>
+        <remarks>Use the <see cref="T:MonoTouch.UIKit.UIKeyboard+Notifications"/> strongly typed methods instead.</remarks>
       </Docs>
     </Member>
     <Member MemberName="FrameEndUserInfoKey">
@@ -551,7 +618,7 @@ void Setup ()
         <summary>Represents the value associated with the constant UIKeyboardFrameEndUserInfoKey</summary>
         <value>
         </value>
-        <remarks>To be added.</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="WillChangeFrameNotification">
