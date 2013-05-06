@@ -965,24 +965,24 @@
           <para>The argument value is ignored and merely ensures that the only code that is executed is the construction phase is the basic NSObject allocation and runtime type registration.  Typically the chaining would look like this:</para>
           <example>
             <code lang="C#">
-              //
-              // The NSObjectFlag merely allocates the object and registers the
-              // C# class with the Objective-C runtime if necessary, but no actual
-              // initXxx method is invoked, that is done later in the constructor
-              //
-              // This is taken from MonoTouch's source code:
-              //
-              [Export ("initWithFrame:")]
-              public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
-              {
-              // Invoke the init method now.
-              var initWithFrame = new Selector ("initWithFrame:").Handle;
-              if (IsDirectBinding)
-              Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
-              else
-              Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
-              }
-            </code>
+//
+// The NSObjectFlag merely allocates the object and registers the
+// C# class with the Objective-C runtime if necessary, but no actual
+// initXxx method is invoked, that is done later in the constructor
+//
+// This is taken from MonoTouch's source code:
+//
+[Export ("initWithFrame:")]
+public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
+{
+// Invoke the init method now.
+	var initWithFrame = new Selector ("initWithFrame:").Handle;
+	if (IsDirectBinding)
+		Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+	else
+		Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+}
+</code>
           </example>
         </remarks>
       </Docs>
@@ -1825,9 +1825,30 @@
         <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Notification constant for AnnouncementDidFinish</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="c#">
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        UIView.AnnouncementDidFinishNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIView", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UIView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UIView.AnnouncementDidFinishNotification, Callback);
+}
+</code>
+          </example>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AnnouncementNotification">
@@ -1896,9 +1917,9 @@
           <para>The following example shows how the AppearanceWhenContainedIn method works</para>
           <example>
             <code lang="C#">
-              var mySliders = UISlider.AppearanceWhenContainedIn (typeof (UINavigationBar), typeof (UIPopoverController));
-              mySliders.TintColor = UIColor.Red;
-            </code>
+var mySliders = UISlider.AppearanceWhenContainedIn (typeof (UINavigationBar), typeof (UIPopoverController));
+mySliders.TintColor = UIColor.Red;
+</code>
           </example>
           <para>For more information, see the documentation for the <see cref="T:MonoTouch.UIKit.UIAppearance" /> class.</para>
         </remarks>
@@ -2267,9 +2288,30 @@
         <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Notification constant for ClosedCaptioningStatusDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="c#">
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        UIView.ClosedCaptioningStatusDidChangeNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIView", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UIView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UIView.ClosedCaptioningStatusDidChangeNotification, Callback);
+}
+</code>
+          </example>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CommitAnimations">
@@ -3585,9 +3627,30 @@
         <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Notification constant for GuidedAccessStatusDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="c#">
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        UIView.GuidedAccessStatusDidChangeNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIView", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UIView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UIView.GuidedAccessStatusDidChangeNotification, Callback);
+}
+</code>
+          </example>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="HasAmbiguousLayout">
@@ -3854,9 +3917,30 @@
         <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Notification constant for InvertColorsStatusDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="c#">
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        UIView.InvertColorsStatusDidChangeNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIView", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UIView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UIView.InvertColorsStatusDidChangeNotification, Callback);
+}
+</code>
+          </example>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="IsAccessibilityElement">
@@ -4023,9 +4107,30 @@
         <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Notification constant for MonoAudioStatusDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <example>
+            <code lang="c#">
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        UIView.MonoAudioStatusDidChangeNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIView", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UIView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UIView.MonoAudioStatusDidChangeNotification, Callback);
+}
+</code>
+          </example>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="MovedToSuperview">

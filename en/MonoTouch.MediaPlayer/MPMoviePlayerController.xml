@@ -93,24 +93,24 @@
           <para>The argument value is ignored and merely ensures that the only code that is executed is the construction phase is the basic NSObject allocation and runtime type registration.  Typically the chaining would look like this:</para>
           <example>
             <code lang="C#">
-              //
-              // The NSObjectFlag merely allocates the object and registers the
-              // C# class with the Objective-C runtime if necessary, but no actual
-              // initXxx method is invoked, that is done later in the constructor
-              //
-              // This is taken from MonoTouch's source code:
-              //
-              [Export ("initWithFrame:")]
-              public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
-              {
-              // Invoke the init method now.
-              var initWithFrame = new Selector ("initWithFrame:").Handle;
-              if (IsDirectBinding)
-              Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
-              else
-              Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
-              }
-            </code>
+//
+// The NSObjectFlag merely allocates the object and registers the
+// C# class with the Objective-C runtime if necessary, but no actual
+// initXxx method is invoked, that is done later in the constructor
+//
+// This is taken from MonoTouch's source code:
+//
+[Export ("initWithFrame:")]
+public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
+{
+// Invoke the init method now.
+	var initWithFrame = new Selector ("initWithFrame:").Handle;
+	if (IsDirectBinding)
+		Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+	else
+		Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+}
+</code>
           </example>
         </remarks>
       </Docs>
@@ -472,58 +472,58 @@
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="c#">
-              //
-              // Lambda style
-              //
-              
-              // listening
-              notification = MPMoviePlayerController.Notifications.ObserveDidEnterFullscreen ((sender, args) =&gt; {
-              /* Access strongly typed args */
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              });
-              
-              // To stop listening:
-              notification.Dispose ();
-              
-              //
-              // Method style
-              //
-              NSObject notification;
-              void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
-              {
-              // Access strongly typed args
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              }
-              
-              void Setup ()
-              {
-              notification = MPMoviePlayerController.Notifications.ObserveDidEnterFullscreen (Callback);
-              }
-              
-              void Teardown ()
-              {
-              notification.Dispose ();
-              }</code>
+//
+// Lambda style
+//
+
+// listening
+notification = MPMoviePlayerController.Notifications.ObserveDidEnterFullscreen ((sender, args) =&gt; {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = MPMoviePlayerController.Notifications.ObserveDidEnterFullscreen (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}</code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
             <code lang="c#">
-              // Lambda style
-              NSNotificationCenter.DefaultCenter.AddObserver (
-              MPMoviePlayerController.DidEnterFullscreenNotification, (notification) =&gt; {Console.WriteLine ("Received the notification MPMoviePlayerController", notification); }
-              
-              
-              // Method style
-              void Callback (NSNotification notification)
-              {
-              Console.WriteLine ("Received a notification MPMoviePlayerController", notification);
-              }
-              
-              void Setup ()
-              {
-              NSNotificationCenter.DefaultCenter.AddObserver (MPMoviePlayerController.DidEnterFullscreenNotification, Callback);
-              }
-            </code>
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        MPMoviePlayerController.DidEnterFullscreenNotification, (notification) =&gt; {Console.WriteLine ("Received the notification MPMoviePlayerController", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification MPMoviePlayerController", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (MPMoviePlayerController.DidEnterFullscreenNotification, Callback);
+}
+</code>
           </example>
         </remarks>
       </Docs>
@@ -552,58 +552,58 @@
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="c#">
-              //
-              // Lambda style
-              //
-              
-              // listening
-              notification = MPMoviePlayerController.Notifications.ObserveDidExitFullscreen ((sender, args) =&gt; {
-              /* Access strongly typed args */
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              });
-              
-              // To stop listening:
-              notification.Dispose ();
-              
-              //
-              // Method style
-              //
-              NSObject notification;
-              void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
-              {
-              // Access strongly typed args
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              }
-              
-              void Setup ()
-              {
-              notification = MPMoviePlayerController.Notifications.ObserveDidExitFullscreen (Callback);
-              }
-              
-              void Teardown ()
-              {
-              notification.Dispose ();
-              }</code>
+//
+// Lambda style
+//
+
+// listening
+notification = MPMoviePlayerController.Notifications.ObserveDidExitFullscreen ((sender, args) =&gt; {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = MPMoviePlayerController.Notifications.ObserveDidExitFullscreen (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}</code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
             <code lang="c#">
-              // Lambda style
-              NSNotificationCenter.DefaultCenter.AddObserver (
-              MPMoviePlayerController.DidExitFullscreenNotification, (notification) =&gt; {Console.WriteLine ("Received the notification MPMoviePlayerController", notification); }
-              
-              
-              // Method style
-              void Callback (NSNotification notification)
-              {
-              Console.WriteLine ("Received a notification MPMoviePlayerController", notification);
-              }
-              
-              void Setup ()
-              {
-              NSNotificationCenter.DefaultCenter.AddObserver (MPMoviePlayerController.DidExitFullscreenNotification, Callback);
-              }
-            </code>
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        MPMoviePlayerController.DidExitFullscreenNotification, (notification) =&gt; {Console.WriteLine ("Received the notification MPMoviePlayerController", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification MPMoviePlayerController", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (MPMoviePlayerController.DidExitFullscreenNotification, Callback);
+}
+</code>
           </example>
         </remarks>
       </Docs>
@@ -682,58 +682,58 @@
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="c#">
-              //
-              // Lambda style
-              //
-              
-              // listening
-              notification = MPMoviePlayerController.Notifications.ObserveDurationAvailable ((sender, args) =&gt; {
-              /* Access strongly typed args */
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              });
-              
-              // To stop listening:
-              notification.Dispose ();
-              
-              //
-              // Method style
-              //
-              NSObject notification;
-              void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
-              {
-              // Access strongly typed args
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              }
-              
-              void Setup ()
-              {
-              notification = MPMoviePlayerController.Notifications.ObserveDurationAvailable (Callback);
-              }
-              
-              void Teardown ()
-              {
-              notification.Dispose ();
-              }</code>
+//
+// Lambda style
+//
+
+// listening
+notification = MPMoviePlayerController.Notifications.ObserveDurationAvailable ((sender, args) =&gt; {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = MPMoviePlayerController.Notifications.ObserveDurationAvailable (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}</code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
             <code lang="c#">
-              // Lambda style
-              NSNotificationCenter.DefaultCenter.AddObserver (
-              MPMoviePlayerController.DurationAvailableNotification, (notification) =&gt; {Console.WriteLine ("Received the notification MPMoviePlayerController", notification); }
-              
-              
-              // Method style
-              void Callback (NSNotification notification)
-              {
-              Console.WriteLine ("Received a notification MPMoviePlayerController", notification);
-              }
-              
-              void Setup ()
-              {
-              NSNotificationCenter.DefaultCenter.AddObserver (MPMoviePlayerController.DurationAvailableNotification, Callback);
-              }
-            </code>
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        MPMoviePlayerController.DurationAvailableNotification, (notification) =&gt; {Console.WriteLine ("Received the notification MPMoviePlayerController", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification MPMoviePlayerController", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (MPMoviePlayerController.DurationAvailableNotification, Callback);
+}
+</code>
           </example>
         </remarks>
       </Docs>
@@ -980,58 +980,58 @@
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="c#">
-              //
-              // Lambda style
-              //
-              
-              // listening
-              notification = MPMoviePlayerController.Notifications.ObserveLoadStateDidChange ((sender, args) =&gt; {
-              /* Access strongly typed args */
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              });
-              
-              // To stop listening:
-              notification.Dispose ();
-              
-              //
-              // Method style
-              //
-              NSObject notification;
-              void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
-              {
-              // Access strongly typed args
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              }
-              
-              void Setup ()
-              {
-              notification = MPMoviePlayerController.Notifications.ObserveLoadStateDidChange (Callback);
-              }
-              
-              void Teardown ()
-              {
-              notification.Dispose ();
-              }</code>
+//
+// Lambda style
+//
+
+// listening
+notification = MPMoviePlayerController.Notifications.ObserveLoadStateDidChange ((sender, args) =&gt; {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = MPMoviePlayerController.Notifications.ObserveLoadStateDidChange (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}</code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
             <code lang="c#">
-              // Lambda style
-              NSNotificationCenter.DefaultCenter.AddObserver (
-              MPMoviePlayerController.LoadStateDidChangeNotification, (notification) =&gt; {Console.WriteLine ("Received the notification MPMoviePlayerController", notification); }
-              
-              
-              // Method style
-              void Callback (NSNotification notification)
-              {
-              Console.WriteLine ("Received a notification MPMoviePlayerController", notification);
-              }
-              
-              void Setup ()
-              {
-              NSNotificationCenter.DefaultCenter.AddObserver (MPMoviePlayerController.LoadStateDidChangeNotification, Callback);
-              }
-            </code>
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        MPMoviePlayerController.LoadStateDidChangeNotification, (notification) =&gt; {Console.WriteLine ("Received the notification MPMoviePlayerController", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification MPMoviePlayerController", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (MPMoviePlayerController.LoadStateDidChangeNotification, Callback);
+}
+</code>
           </example>
         </remarks>
       </Docs>
@@ -1060,58 +1060,58 @@
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="c#">
-              //
-              // Lambda style
-              //
-              
-              // listening
-              notification = MPMoviePlayerController.Notifications.ObserveMediaPlaybackIsPreparedToPlayDidChange ((sender, args) =&gt; {
-              /* Access strongly typed args */
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              });
-              
-              // To stop listening:
-              notification.Dispose ();
-              
-              //
-              // Method style
-              //
-              NSObject notification;
-              void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
-              {
-              // Access strongly typed args
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              }
-              
-              void Setup ()
-              {
-              notification = MPMoviePlayerController.Notifications.ObserveMediaPlaybackIsPreparedToPlayDidChange (Callback);
-              }
-              
-              void Teardown ()
-              {
-              notification.Dispose ();
-              }</code>
+//
+// Lambda style
+//
+
+// listening
+notification = MPMoviePlayerController.Notifications.ObserveMediaPlaybackIsPreparedToPlayDidChange ((sender, args) =&gt; {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = MPMoviePlayerController.Notifications.ObserveMediaPlaybackIsPreparedToPlayDidChange (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}</code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
             <code lang="c#">
-              // Lambda style
-              NSNotificationCenter.DefaultCenter.AddObserver (
-              MPMoviePlayerController.MediaPlaybackIsPreparedToPlayDidChangeNotification, (notification) =&gt; {Console.WriteLine ("Received the notification MPMoviePlayerController", notification); }
-              
-              
-              // Method style
-              void Callback (NSNotification notification)
-              {
-              Console.WriteLine ("Received a notification MPMoviePlayerController", notification);
-              }
-              
-              void Setup ()
-              {
-              NSNotificationCenter.DefaultCenter.AddObserver (MPMoviePlayerController.MediaPlaybackIsPreparedToPlayDidChangeNotification, Callback);
-              }
-            </code>
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        MPMoviePlayerController.MediaPlaybackIsPreparedToPlayDidChangeNotification, (notification) =&gt; {Console.WriteLine ("Received the notification MPMoviePlayerController", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification MPMoviePlayerController", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (MPMoviePlayerController.MediaPlaybackIsPreparedToPlayDidChangeNotification, Callback);
+}
+</code>
           </example>
         </remarks>
       </Docs>
@@ -1191,58 +1191,58 @@
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="c#">
-              //
-              // Lambda style
-              //
-              
-              // listening
-              notification = MPMoviePlayerController.Notifications.ObserveMoviePlayerReadyForDisplayDidChange ((sender, args) =&gt; {
-              /* Access strongly typed args */
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              });
-              
-              // To stop listening:
-              notification.Dispose ();
-              
-              //
-              // Method style
-              //
-              NSObject notification;
-              void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
-              {
-              // Access strongly typed args
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              }
-              
-              void Setup ()
-              {
-              notification = MPMoviePlayerController.Notifications.ObserveMoviePlayerReadyForDisplayDidChange (Callback);
-              }
-              
-              void Teardown ()
-              {
-              notification.Dispose ();
-              }</code>
+//
+// Lambda style
+//
+
+// listening
+notification = MPMoviePlayerController.Notifications.ObserveMoviePlayerReadyForDisplayDidChange ((sender, args) =&gt; {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = MPMoviePlayerController.Notifications.ObserveMoviePlayerReadyForDisplayDidChange (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}</code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
             <code lang="c#">
-              // Lambda style
-              NSNotificationCenter.DefaultCenter.AddObserver (
-              MPMoviePlayerController.MoviePlayerReadyForDisplayDidChangeNotification, (notification) =&gt; {Console.WriteLine ("Received the notification MPMoviePlayerController", notification); }
-              
-              
-              // Method style
-              void Callback (NSNotification notification)
-              {
-              Console.WriteLine ("Received a notification MPMoviePlayerController", notification);
-              }
-              
-              void Setup ()
-              {
-              NSNotificationCenter.DefaultCenter.AddObserver (MPMoviePlayerController.MoviePlayerReadyForDisplayDidChangeNotification, Callback);
-              }
-            </code>
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        MPMoviePlayerController.MoviePlayerReadyForDisplayDidChangeNotification, (notification) =&gt; {Console.WriteLine ("Received the notification MPMoviePlayerController", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification MPMoviePlayerController", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (MPMoviePlayerController.MoviePlayerReadyForDisplayDidChangeNotification, Callback);
+}
+</code>
           </example>
         </remarks>
       </Docs>
@@ -1295,58 +1295,58 @@
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="c#">
-              //
-              // Lambda style
-              //
-              
-              // listening
-              notification = MPMoviePlayerController.Notifications.ObserveNaturalSizeAvailable ((sender, args) =&gt; {
-              /* Access strongly typed args */
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              });
-              
-              // To stop listening:
-              notification.Dispose ();
-              
-              //
-              // Method style
-              //
-              NSObject notification;
-              void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
-              {
-              // Access strongly typed args
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              }
-              
-              void Setup ()
-              {
-              notification = MPMoviePlayerController.Notifications.ObserveNaturalSizeAvailable (Callback);
-              }
-              
-              void Teardown ()
-              {
-              notification.Dispose ();
-              }</code>
+//
+// Lambda style
+//
+
+// listening
+notification = MPMoviePlayerController.Notifications.ObserveNaturalSizeAvailable ((sender, args) =&gt; {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = MPMoviePlayerController.Notifications.ObserveNaturalSizeAvailable (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}</code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
             <code lang="c#">
-              // Lambda style
-              NSNotificationCenter.DefaultCenter.AddObserver (
-              MPMoviePlayerController.NaturalSizeAvailableNotification, (notification) =&gt; {Console.WriteLine ("Received the notification MPMoviePlayerController", notification); }
-              
-              
-              // Method style
-              void Callback (NSNotification notification)
-              {
-              Console.WriteLine ("Received a notification MPMoviePlayerController", notification);
-              }
-              
-              void Setup ()
-              {
-              NSNotificationCenter.DefaultCenter.AddObserver (MPMoviePlayerController.NaturalSizeAvailableNotification, Callback);
-              }
-            </code>
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        MPMoviePlayerController.NaturalSizeAvailableNotification, (notification) =&gt; {Console.WriteLine ("Received the notification MPMoviePlayerController", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification MPMoviePlayerController", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (MPMoviePlayerController.NaturalSizeAvailableNotification, Callback);
+}
+</code>
           </example>
         </remarks>
       </Docs>
@@ -1375,58 +1375,58 @@
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="c#">
-              //
-              // Lambda style
-              //
-              
-              // listening
-              notification = MPMoviePlayerController.Notifications.ObserveNowPlayingMovieDidChange ((sender, args) =&gt; {
-              /* Access strongly typed args */
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              });
-              
-              // To stop listening:
-              notification.Dispose ();
-              
-              //
-              // Method style
-              //
-              NSObject notification;
-              void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
-              {
-              // Access strongly typed args
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              }
-              
-              void Setup ()
-              {
-              notification = MPMoviePlayerController.Notifications.ObserveNowPlayingMovieDidChange (Callback);
-              }
-              
-              void Teardown ()
-              {
-              notification.Dispose ();
-              }</code>
+//
+// Lambda style
+//
+
+// listening
+notification = MPMoviePlayerController.Notifications.ObserveNowPlayingMovieDidChange ((sender, args) =&gt; {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = MPMoviePlayerController.Notifications.ObserveNowPlayingMovieDidChange (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}</code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
             <code lang="c#">
-              // Lambda style
-              NSNotificationCenter.DefaultCenter.AddObserver (
-              MPMoviePlayerController.NowPlayingMovieDidChangeNotification, (notification) =&gt; {Console.WriteLine ("Received the notification MPMoviePlayerController", notification); }
-              
-              
-              // Method style
-              void Callback (NSNotification notification)
-              {
-              Console.WriteLine ("Received a notification MPMoviePlayerController", notification);
-              }
-              
-              void Setup ()
-              {
-              NSNotificationCenter.DefaultCenter.AddObserver (MPMoviePlayerController.NowPlayingMovieDidChangeNotification, Callback);
-              }
-            </code>
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        MPMoviePlayerController.NowPlayingMovieDidChangeNotification, (notification) =&gt; {Console.WriteLine ("Received the notification MPMoviePlayerController", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification MPMoviePlayerController", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (MPMoviePlayerController.NowPlayingMovieDidChangeNotification, Callback);
+}
+</code>
           </example>
         </remarks>
       </Docs>
@@ -1521,62 +1521,62 @@
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="c#">
-              //
-              // Lambda style
-              //
-              
-              // listening
-              notification = MPMoviePlayerController.Notifications.ObservePlaybackDidFinish ((sender, args) =&gt; {
-              /* Access strongly typed args */
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              
-              Console.WriteLine ("FinishReason", args.FinishReason);
-              });
-              
-              // To stop listening:
-              notification.Dispose ();
-              
-              //
-              // Method style
-              //
-              NSObject notification;
-              void Callback (object sender, MonoTouch.MediaPlayer.MPMoviePlayerFinishedEventArgs args)
-              {
-              // Access strongly typed args
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              
-              Console.WriteLine ("FinishReason", args.FinishReason);
-              }
-              
-              void Setup ()
-              {
-              notification = MPMoviePlayerController.Notifications.ObservePlaybackDidFinish (Callback);
-              }
-              
-              void Teardown ()
-              {
-              notification.Dispose ();
-              }</code>
+//
+// Lambda style
+//
+
+// listening
+notification = MPMoviePlayerController.Notifications.ObservePlaybackDidFinish ((sender, args) =&gt; {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("FinishReason", args.FinishReason);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, MonoTouch.MediaPlayer.MPMoviePlayerFinishedEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("FinishReason", args.FinishReason);
+}
+
+void Setup ()
+{
+    notification = MPMoviePlayerController.Notifications.ObservePlaybackDidFinish (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}</code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
             <code lang="c#">
-              // Lambda style
-              NSNotificationCenter.DefaultCenter.AddObserver (
-              MPMoviePlayerController.PlaybackDidFinishNotification, (notification) =&gt; {Console.WriteLine ("Received the notification MPMoviePlayerController", notification); }
-              
-              
-              // Method style
-              void Callback (NSNotification notification)
-              {
-              Console.WriteLine ("Received a notification MPMoviePlayerController", notification);
-              }
-              
-              void Setup ()
-              {
-              NSNotificationCenter.DefaultCenter.AddObserver (MPMoviePlayerController.PlaybackDidFinishNotification, Callback);
-              }
-            </code>
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        MPMoviePlayerController.PlaybackDidFinishNotification, (notification) =&gt; {Console.WriteLine ("Received the notification MPMoviePlayerController", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification MPMoviePlayerController", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (MPMoviePlayerController.PlaybackDidFinishNotification, Callback);
+}
+</code>
           </example>
         </remarks>
       </Docs>
@@ -1651,58 +1651,58 @@
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="c#">
-              //
-              // Lambda style
-              //
-              
-              // listening
-              notification = MPMoviePlayerController.Notifications.ObservePlaybackStateDidChange ((sender, args) =&gt; {
-              /* Access strongly typed args */
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              });
-              
-              // To stop listening:
-              notification.Dispose ();
-              
-              //
-              // Method style
-              //
-              NSObject notification;
-              void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
-              {
-              // Access strongly typed args
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              }
-              
-              void Setup ()
-              {
-              notification = MPMoviePlayerController.Notifications.ObservePlaybackStateDidChange (Callback);
-              }
-              
-              void Teardown ()
-              {
-              notification.Dispose ();
-              }</code>
+//
+// Lambda style
+//
+
+// listening
+notification = MPMoviePlayerController.Notifications.ObservePlaybackStateDidChange ((sender, args) =&gt; {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = MPMoviePlayerController.Notifications.ObservePlaybackStateDidChange (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}</code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
             <code lang="c#">
-              // Lambda style
-              NSNotificationCenter.DefaultCenter.AddObserver (
-              MPMoviePlayerController.PlaybackStateDidChangeNotification, (notification) =&gt; {Console.WriteLine ("Received the notification MPMoviePlayerController", notification); }
-              
-              
-              // Method style
-              void Callback (NSNotification notification)
-              {
-              Console.WriteLine ("Received a notification MPMoviePlayerController", notification);
-              }
-              
-              void Setup ()
-              {
-              NSNotificationCenter.DefaultCenter.AddObserver (MPMoviePlayerController.PlaybackStateDidChangeNotification, Callback);
-              }
-            </code>
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        MPMoviePlayerController.PlaybackStateDidChangeNotification, (notification) =&gt; {Console.WriteLine ("Received the notification MPMoviePlayerController", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification MPMoviePlayerController", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (MPMoviePlayerController.PlaybackStateDidChangeNotification, Callback);
+}
+</code>
           </example>
         </remarks>
       </Docs>
@@ -1853,58 +1853,58 @@
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="c#">
-              //
-              // Lambda style
-              //
-              
-              // listening
-              notification = MPMoviePlayerController.Notifications.ObserveScalingModeDidChange ((sender, args) =&gt; {
-              /* Access strongly typed args */
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              });
-              
-              // To stop listening:
-              notification.Dispose ();
-              
-              //
-              // Method style
-              //
-              NSObject notification;
-              void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
-              {
-              // Access strongly typed args
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              }
-              
-              void Setup ()
-              {
-              notification = MPMoviePlayerController.Notifications.ObserveScalingModeDidChange (Callback);
-              }
-              
-              void Teardown ()
-              {
-              notification.Dispose ();
-              }</code>
+//
+// Lambda style
+//
+
+// listening
+notification = MPMoviePlayerController.Notifications.ObserveScalingModeDidChange ((sender, args) =&gt; {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = MPMoviePlayerController.Notifications.ObserveScalingModeDidChange (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}</code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
             <code lang="c#">
-              // Lambda style
-              NSNotificationCenter.DefaultCenter.AddObserver (
-              MPMoviePlayerController.ScalingModeDidChangeNotification, (notification) =&gt; {Console.WriteLine ("Received the notification MPMoviePlayerController", notification); }
-              
-              
-              // Method style
-              void Callback (NSNotification notification)
-              {
-              Console.WriteLine ("Received a notification MPMoviePlayerController", notification);
-              }
-              
-              void Setup ()
-              {
-              NSNotificationCenter.DefaultCenter.AddObserver (MPMoviePlayerController.ScalingModeDidChangeNotification, Callback);
-              }
-            </code>
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        MPMoviePlayerController.ScalingModeDidChangeNotification, (notification) =&gt; {Console.WriteLine ("Received the notification MPMoviePlayerController", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification MPMoviePlayerController", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (MPMoviePlayerController.ScalingModeDidChangeNotification, Callback);
+}
+</code>
           </example>
         </remarks>
       </Docs>
@@ -2013,58 +2013,58 @@
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="c#">
-              //
-              // Lambda style
-              //
-              
-              // listening
-              notification = MPMoviePlayerController.Notifications.ObserveSourceTypeAvailable ((sender, args) =&gt; {
-              /* Access strongly typed args */
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              });
-              
-              // To stop listening:
-              notification.Dispose ();
-              
-              //
-              // Method style
-              //
-              NSObject notification;
-              void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
-              {
-              // Access strongly typed args
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              }
-              
-              void Setup ()
-              {
-              notification = MPMoviePlayerController.Notifications.ObserveSourceTypeAvailable (Callback);
-              }
-              
-              void Teardown ()
-              {
-              notification.Dispose ();
-              }</code>
+//
+// Lambda style
+//
+
+// listening
+notification = MPMoviePlayerController.Notifications.ObserveSourceTypeAvailable ((sender, args) =&gt; {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = MPMoviePlayerController.Notifications.ObserveSourceTypeAvailable (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}</code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
             <code lang="c#">
-              // Lambda style
-              NSNotificationCenter.DefaultCenter.AddObserver (
-              MPMoviePlayerController.SourceTypeAvailableNotification, (notification) =&gt; {Console.WriteLine ("Received the notification MPMoviePlayerController", notification); }
-              
-              
-              // Method style
-              void Callback (NSNotification notification)
-              {
-              Console.WriteLine ("Received a notification MPMoviePlayerController", notification);
-              }
-              
-              void Setup ()
-              {
-              NSNotificationCenter.DefaultCenter.AddObserver (MPMoviePlayerController.SourceTypeAvailableNotification, Callback);
-              }
-            </code>
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        MPMoviePlayerController.SourceTypeAvailableNotification, (notification) =&gt; {Console.WriteLine ("Received the notification MPMoviePlayerController", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification MPMoviePlayerController", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (MPMoviePlayerController.SourceTypeAvailableNotification, Callback);
+}
+</code>
           </example>
         </remarks>
       </Docs>
@@ -2185,66 +2185,66 @@
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="c#">
-              //
-              // Lambda style
-              //
-              
-              // listening
-              notification = MPMoviePlayerController.Notifications.ObserveThumbnailImageRequestDidFinish ((sender, args) =&gt; {
-              /* Access strongly typed args */
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              
-              Console.WriteLine ("Image", args.Image);
-              Console.WriteLine ("Time", args.Time);
-              Console.WriteLine ("Error", args.Error);
-              });
-              
-              // To stop listening:
-              notification.Dispose ();
-              
-              //
-              // Method style
-              //
-              NSObject notification;
-              void Callback (object sender, MonoTouch.MediaPlayer.MPMoviePlayerThumbnailEventArgs args)
-              {
-              // Access strongly typed args
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              
-              Console.WriteLine ("Image", args.Image);
-              Console.WriteLine ("Time", args.Time);
-              Console.WriteLine ("Error", args.Error);
-              }
-              
-              void Setup ()
-              {
-              notification = MPMoviePlayerController.Notifications.ObserveThumbnailImageRequestDidFinish (Callback);
-              }
-              
-              void Teardown ()
-              {
-              notification.Dispose ();
-              }</code>
+//
+// Lambda style
+//
+
+// listening
+notification = MPMoviePlayerController.Notifications.ObserveThumbnailImageRequestDidFinish ((sender, args) =&gt; {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("Image", args.Image);
+    Console.WriteLine ("Time", args.Time);
+    Console.WriteLine ("Error", args.Error);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, MonoTouch.MediaPlayer.MPMoviePlayerThumbnailEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("Image", args.Image);
+    Console.WriteLine ("Time", args.Time);
+    Console.WriteLine ("Error", args.Error);
+}
+
+void Setup ()
+{
+    notification = MPMoviePlayerController.Notifications.ObserveThumbnailImageRequestDidFinish (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}</code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
             <code lang="c#">
-              // Lambda style
-              NSNotificationCenter.DefaultCenter.AddObserver (
-              MPMoviePlayerController.ThumbnailImageRequestDidFinishNotification, (notification) =&gt; {Console.WriteLine ("Received the notification MPMoviePlayerController", notification); }
-              
-              
-              // Method style
-              void Callback (NSNotification notification)
-              {
-              Console.WriteLine ("Received a notification MPMoviePlayerController", notification);
-              }
-              
-              void Setup ()
-              {
-              NSNotificationCenter.DefaultCenter.AddObserver (MPMoviePlayerController.ThumbnailImageRequestDidFinishNotification, Callback);
-              }
-            </code>
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        MPMoviePlayerController.ThumbnailImageRequestDidFinishNotification, (notification) =&gt; {Console.WriteLine ("Received the notification MPMoviePlayerController", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification MPMoviePlayerController", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (MPMoviePlayerController.ThumbnailImageRequestDidFinishNotification, Callback);
+}
+</code>
           </example>
         </remarks>
       </Docs>
@@ -2429,62 +2429,62 @@
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="c#">
-              //
-              // Lambda style
-              //
-              
-              // listening
-              notification = MPMoviePlayerController.Notifications.ObserveTimedMetadataUpdated ((sender, args) =&gt; {
-              /* Access strongly typed args */
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              
-              Console.WriteLine ("TimedMetadata", args.TimedMetadata);
-              });
-              
-              // To stop listening:
-              notification.Dispose ();
-              
-              //
-              // Method style
-              //
-              NSObject notification;
-              void Callback (object sender, MonoTouch.MediaPlayer.MPMoviePlayerTimedMetadataEventArgs args)
-              {
-              // Access strongly typed args
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              
-              Console.WriteLine ("TimedMetadata", args.TimedMetadata);
-              }
-              
-              void Setup ()
-              {
-              notification = MPMoviePlayerController.Notifications.ObserveTimedMetadataUpdated (Callback);
-              }
-              
-              void Teardown ()
-              {
-              notification.Dispose ();
-              }</code>
+//
+// Lambda style
+//
+
+// listening
+notification = MPMoviePlayerController.Notifications.ObserveTimedMetadataUpdated ((sender, args) =&gt; {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("TimedMetadata", args.TimedMetadata);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, MonoTouch.MediaPlayer.MPMoviePlayerTimedMetadataEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("TimedMetadata", args.TimedMetadata);
+}
+
+void Setup ()
+{
+    notification = MPMoviePlayerController.Notifications.ObserveTimedMetadataUpdated (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}</code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
             <code lang="c#">
-              // Lambda style
-              NSNotificationCenter.DefaultCenter.AddObserver (
-              MPMoviePlayerController.TimedMetadataUpdatedNotification, (notification) =&gt; {Console.WriteLine ("Received the notification MPMoviePlayerController", notification); }
-              
-              
-              // Method style
-              void Callback (NSNotification notification)
-              {
-              Console.WriteLine ("Received a notification MPMoviePlayerController", notification);
-              }
-              
-              void Setup ()
-              {
-              NSNotificationCenter.DefaultCenter.AddObserver (MPMoviePlayerController.TimedMetadataUpdatedNotification, Callback);
-              }
-            </code>
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        MPMoviePlayerController.TimedMetadataUpdatedNotification, (notification) =&gt; {Console.WriteLine ("Received the notification MPMoviePlayerController", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification MPMoviePlayerController", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (MPMoviePlayerController.TimedMetadataUpdatedNotification, Callback);
+}
+</code>
           </example>
         </remarks>
       </Docs>
@@ -2535,58 +2535,58 @@
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="c#">
-              //
-              // Lambda style
-              //
-              
-              // listening
-              notification = MPMoviePlayerController.Notifications.ObserveTypesAvailable ((sender, args) =&gt; {
-              /* Access strongly typed args */
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              });
-              
-              // To stop listening:
-              notification.Dispose ();
-              
-              //
-              // Method style
-              //
-              NSObject notification;
-              void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
-              {
-              // Access strongly typed args
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              }
-              
-              void Setup ()
-              {
-              notification = MPMoviePlayerController.Notifications.ObserveTypesAvailable (Callback);
-              }
-              
-              void Teardown ()
-              {
-              notification.Dispose ();
-              }</code>
+//
+// Lambda style
+//
+
+// listening
+notification = MPMoviePlayerController.Notifications.ObserveTypesAvailable ((sender, args) =&gt; {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = MPMoviePlayerController.Notifications.ObserveTypesAvailable (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}</code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
             <code lang="c#">
-              // Lambda style
-              NSNotificationCenter.DefaultCenter.AddObserver (
-              MPMoviePlayerController.TypesAvailableNotification, (notification) =&gt; {Console.WriteLine ("Received the notification MPMoviePlayerController", notification); }
-              
-              
-              // Method style
-              void Callback (NSNotification notification)
-              {
-              Console.WriteLine ("Received a notification MPMoviePlayerController", notification);
-              }
-              
-              void Setup ()
-              {
-              NSNotificationCenter.DefaultCenter.AddObserver (MPMoviePlayerController.TypesAvailableNotification, Callback);
-              }
-            </code>
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        MPMoviePlayerController.TypesAvailableNotification, (notification) =&gt; {Console.WriteLine ("Received the notification MPMoviePlayerController", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification MPMoviePlayerController", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (MPMoviePlayerController.TypesAvailableNotification, Callback);
+}
+</code>
           </example>
         </remarks>
       </Docs>
@@ -2669,58 +2669,58 @@
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="c#">
-              //
-              // Lambda style
-              //
-              
-              // listening
-              notification = MPMoviePlayerController.Notifications.ObserveWillEnterFullscreen ((sender, args) =&gt; {
-              /* Access strongly typed args */
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              });
-              
-              // To stop listening:
-              notification.Dispose ();
-              
-              //
-              // Method style
-              //
-              NSObject notification;
-              void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
-              {
-              // Access strongly typed args
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              }
-              
-              void Setup ()
-              {
-              notification = MPMoviePlayerController.Notifications.ObserveWillEnterFullscreen (Callback);
-              }
-              
-              void Teardown ()
-              {
-              notification.Dispose ();
-              }</code>
+//
+// Lambda style
+//
+
+// listening
+notification = MPMoviePlayerController.Notifications.ObserveWillEnterFullscreen ((sender, args) =&gt; {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = MPMoviePlayerController.Notifications.ObserveWillEnterFullscreen (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}</code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
             <code lang="c#">
-              // Lambda style
-              NSNotificationCenter.DefaultCenter.AddObserver (
-              MPMoviePlayerController.WillEnterFullscreenNotification, (notification) =&gt; {Console.WriteLine ("Received the notification MPMoviePlayerController", notification); }
-              
-              
-              // Method style
-              void Callback (NSNotification notification)
-              {
-              Console.WriteLine ("Received a notification MPMoviePlayerController", notification);
-              }
-              
-              void Setup ()
-              {
-              NSNotificationCenter.DefaultCenter.AddObserver (MPMoviePlayerController.WillEnterFullscreenNotification, Callback);
-              }
-            </code>
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        MPMoviePlayerController.WillEnterFullscreenNotification, (notification) =&gt; {Console.WriteLine ("Received the notification MPMoviePlayerController", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification MPMoviePlayerController", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (MPMoviePlayerController.WillEnterFullscreenNotification, Callback);
+}
+</code>
           </example>
         </remarks>
       </Docs>
@@ -2749,64 +2749,64 @@
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="c#">
-              //
-              // Lambda style
-              //
-              
-              // listening
-              notification = MPMoviePlayerController.Notifications.ObserveWillExitFullscreen ((sender, args) =&gt; {
-              /* Access strongly typed args */
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              
-              Console.WriteLine ("AnimationDuration", args.AnimationDuration);
-              Console.WriteLine ("AnimationCurve", args.AnimationCurve);
-              });
-              
-              // To stop listening:
-              notification.Dispose ();
-              
-              //
-              // Method style
-              //
-              NSObject notification;
-              void Callback (object sender, MonoTouch.MediaPlayer.MPMoviePlayerFullScreenEventArgs args)
-              {
-              // Access strongly typed args
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              
-              Console.WriteLine ("AnimationDuration", args.AnimationDuration);
-              Console.WriteLine ("AnimationCurve", args.AnimationCurve);
-              }
-              
-              void Setup ()
-              {
-              notification = MPMoviePlayerController.Notifications.ObserveWillExitFullscreen (Callback);
-              }
-              
-              void Teardown ()
-              {
-              notification.Dispose ();
-              }</code>
+//
+// Lambda style
+//
+
+// listening
+notification = MPMoviePlayerController.Notifications.ObserveWillExitFullscreen ((sender, args) =&gt; {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("AnimationDuration", args.AnimationDuration);
+    Console.WriteLine ("AnimationCurve", args.AnimationCurve);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, MonoTouch.MediaPlayer.MPMoviePlayerFullScreenEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("AnimationDuration", args.AnimationDuration);
+    Console.WriteLine ("AnimationCurve", args.AnimationCurve);
+}
+
+void Setup ()
+{
+    notification = MPMoviePlayerController.Notifications.ObserveWillExitFullscreen (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}</code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
             <code lang="c#">
-              // Lambda style
-              NSNotificationCenter.DefaultCenter.AddObserver (
-              MPMoviePlayerController.WillExitFullscreenNotification, (notification) =&gt; {Console.WriteLine ("Received the notification MPMoviePlayerController", notification); }
-              
-              
-              // Method style
-              void Callback (NSNotification notification)
-              {
-              Console.WriteLine ("Received a notification MPMoviePlayerController", notification);
-              }
-              
-              void Setup ()
-              {
-              NSNotificationCenter.DefaultCenter.AddObserver (MPMoviePlayerController.WillExitFullscreenNotification, Callback);
-              }
-            </code>
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        MPMoviePlayerController.WillExitFullscreenNotification, (notification) =&gt; {Console.WriteLine ("Received the notification MPMoviePlayerController", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification MPMoviePlayerController", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (MPMoviePlayerController.WillExitFullscreenNotification, Callback);
+}
+</code>
           </example>
         </remarks>
       </Docs>
