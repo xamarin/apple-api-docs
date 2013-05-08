@@ -590,8 +590,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.UIKit.UIView</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>Custom view that can be attached when the object becomes the first responder.</summary>
+        <value></value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -1101,10 +1101,66 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="evt" Type="MonoTouch.UIKit.UIEvent" />
       </Parameters>
       <Docs>
-        <param name="touches">Set containing the touches.</param>
+        <param name="touches">Set containing the touches as objects of type <see cref="T:MonoTouch.UIKit.UITouch"/>.</param>
         <param name="evt">The UIEvent that encapsulates all of the touches and the event information.</param>
         <summary>Sent when one or more fingers touches the screen.</summary>
-        <remarks>To be added.</remarks>
+        <remarks>
+
+	  <para>
+	    The <paramref name="touches"/> set containing all of the touch events.
+	  </para>
+
+	  <para>
+
+	    If your application tracks the touches starting with this
+	    method, it should also override both the <see
+	    cref="M:MonoTouch.UIKit.UIResponder.TouchesEnded(MonoTouch.Foundation.NSSet,
+	    MonoTouch.UIKit.UIEvent)" /> and <see
+	    cref="M:MonoTouch.UIKit.UIResponder.TouchesCancelled(MonoTouch.Foundation.NSSet,
+	    MonoTouch.UIKit.UIEvent)" /> methods to track the end of
+	    the touch processing.
+
+	  </para>
+
+	  <para>
+	    UIViews by default only receive a single touch event at
+	    once, if you want to receive multiple touches at the same
+	    time, set the <see
+	    cref="P:MonoTouch.UIView.MultipleTouchEnabled"/> property
+	    to true.
+	  </para>
+
+	  <para>
+	    If you only want to handle a single touch, the following idiom can be used:
+	  </para>
+
+<example>
+<code lang="c#">
+public override void TouchesBegan (NSSet touches, UIEvent evt)
+{
+    var touch = touches.AnyObject as UITouch;
+
+    Console.WriteLine (touch);
+}
+</code>
+</example>
+
+	  <para>
+	    If you want to handle multiple touches, you can use this idiom:
+	  </para>
+
+	  
+<example>
+<code lang="c#">
+public override void TouchesBegan (NSSet touches, UIEvent evt)
+{
+    foreach (UITouch touch in touches.ToArray&lt;UITouch&gt; ()){
+        Console.WriteLine (touch);
+    }
+}
+</code>
+</example>
+</remarks>
       </Docs>
     </Member>
     <Member MemberName="TouchesCancelled">
@@ -1127,7 +1183,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="evt" Type="MonoTouch.UIKit.UIEvent" />
       </Parameters>
       <Docs>
-        <param name="touches">Set containing the touches.</param>
+        <param name="touches">Set containing the touches as objects of type <see cref="T:MonoTouch.UIKit.UITouch"/>.</param>
         <param name="evt">The UIEvent that encapsulates all of the touches and the event information.</param>
         <summary>Sent when the touch processing has been cancelled.</summary>
         <remarks>
@@ -1159,10 +1215,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="evt" Type="MonoTouch.UIKit.UIEvent" />
       </Parameters>
       <Docs>
-        <param name="touches">Set containing the touches.</param>
+        <param name="touches">Set containing the touches as objects of type <see cref="T:MonoTouch.UIKit.UITouch"/>.</param>
         <param name="evt">The UIEvent that encapsulates all of the touches and the event information.</param>
         <summary>Send when one or more fingers are lifted from the screen.</summary>
-        <remarks>To be added.</remarks>
+        <remarks>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="TouchesMoved">
@@ -1185,10 +1242,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="evt" Type="MonoTouch.UIKit.UIEvent" />
       </Parameters>
       <Docs>
-        <param name="touches">Set containing the touches.</param>
+        <param name="touches">Set containing the touches as objects of type <see cref="T:MonoTouch.UIKit.UITouch"/>.</param>
         <param name="evt">The UIEvent that encapsulates all of the touches and the event information.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Sent when one or more fingers move on the screen.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="UndoManager">
