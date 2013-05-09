@@ -15,11 +15,163 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Layers encapsulate position, size and transformation components of a layer as well as implement the CAMediaTiming methods.</summary>
+    <summary>Layers hold the images that are rendered into the screen.</summary>
     <remarks>
+
       <para>
-	When you want to use one of the CALayer subclasses as your UIView's backing layer, you need to add the following code snippet to your class:
+	CALayers hold the image content that is rendered into the
+	screen.  They encapsulate position, styling, size and
+	transformation components.  They also implement the
+	CAMediaTiming methods which allows them to participate in
+	animations.
       </para>
+
+      <para>
+
+	There are serveral subclasses of CALayer that developers can use:
+	<see cref="T:MonoTouch.CoreAnimation.CAEmitterLayer"/>, 
+	<see cref="T:MonoTouch.CoreAnimation.CAGradientLayer"/>, 
+	<see cref="T:MonoTouch.CoreAnimation.CAEAGLLayer/CAOpenGLLayer"/>, 
+	<see cref="T:MonoTouch.CoreAnimation.CAReplicatorLayer"/>, 
+	<see cref="T:MonoTouch.CoreAnimation.CAScrollLayer"/>, 
+	<see cref="T:MonoTouch.CoreAnimation.CAShapeLayer"/>, 
+	<see cref="T:MonoTouch.CoreAnimation.CATextLayer"/>, 
+	<see cref="T:MonoTouch.CoreAnimation.CATiledLayer"/>, 
+	<see cref="T:MonoTouch.CoreAnimation.CATransformLayer"/> and 
+	<see cref="T:MonoTouch.CoreAnimation.QCCompositionLayer"/>.
+
+      </para>
+
+      <format type="text/html">
+        <h2>Layer Content</h2>
+      </format>
+
+      <para>
+
+	There are three ways of providing content to a layer:
+	subclassing the layer class and overriding the draw methods,
+	using a layer delegate to implement the drawing or assigning a
+	static image to the layer.  
+      </para>
+
+      <para>
+	To set the contents of the layer with a static image or from one of the rendering approaches, you must
+	assign a <see cref="T:MonoTouch.CoreGraphics.CGImage"/> to the
+	<see cref="P:MonoTouch.CoreAnimation.CALayer.Contents"/>
+	property.   For static content, you can just assign this property and the changes will be reflected directly.
+      </para>
+
+      <format type="text/html">
+        <h3>Contents by Subclassing CALayer</h3>
+      </format>
+
+      <para>
+	If you choose to subclass the CALayer class, you can either
+	sublcass the <see
+	cref="M:MonoTouch.CoreAnimation.CALayer.Display()"/> method
+	which is then requires to set the <see
+	cref="P:MonoTouch.CoreAnimation.CALayer.Contents"/> property
+	or you can override the <see
+	cref="M:MonoTouch.CoreAnimation.CALayerDelegate.DrawInContext(MonoTouch.CoreGraphics.CGContext)"
+	/> method which provides you with a graphics context that you
+	can use to render into the display.
+
+      </para>
+
+<example>
+<code lang="c#">
+// Overriding DrawInContext
+public class DemoLayer : CALayer {
+  public override void DrawInContext (CGContext context)
+  {
+     base.DrawInContext (context);
+  
+     // Fill in circle
+     context.SetFillColor (Color);
+     context.SetShadowWithColor (SizeF.Empty, 10.0f, glowColor);
+     context.EOFillPath();
+  }
+}
+
+// Overriding Display
+public class DemoLayer2 : CALayer {
+  CGImage image =  UIImage.FromBundle ("demo.png").CGImage;
+
+  public override void Display ()
+  {
+     Contents = image;
+  }
+}
+</code>
+</example>
+
+      <format type="text/html">
+        <h3>Contents by Providing a CALayerDelegate</h3>
+      </format>
+
+      <para>
+
+	This approach can be used if you do not want to change the
+	class uses for your CALayer rendering, all you need to do is
+	assign the <see
+	cref="P:MonoTouch.CoreAnimation.CALayer.Delegate"/> property
+	to an instance of a subclass of <see
+	cref="T:MonoTouch.CoreAnimation.CALayerDelegate"/> where you
+	either override the <see
+	cref="M:MonoTouch.CoreAnimation.CALayerDelegate.DisplayLayer(MonoTouch.CoreAnimation.CALayer)"/>
+	method in which you must set the <see
+	cref="P:MonoTouch.CoreAnimation.CALayer.Contents"/> property,
+	or you override the <see
+	cref="M:MonoTouch.CoreAnimation.CALayerDelegate.DrawLayer(MonoTouch.CoreAnimation.CALayer,MonoTouch.CoreGraphics.CGContext)"/>
+	method and provide your own rendering code there.
+
+      </para>
+
+
+<example>
+<code lang="c#">
+// Overriding DisplayLayer
+public class DemoLayerDelegate : CALayerDelegate {
+  CGImage image =  UIImage.FromBundle ("demo.png").CGImage;
+
+  public override void DisplayLayer (CALayer layer)
+  {
+     layer.Contents = image;
+  }
+}
+
+// Overriding DrawLayer
+public class DemoLayerDelegate2 : CALayerDelegate {
+  public override DrawLayer (CALayer layer, CGContext context)
+  {
+     // Fill in circle
+     context.SetFillColor (Color);
+     context.SetShadowWithColor (SizeF.Empty, 10.0f, glowColor);
+     context.EOFillPath();
+  }
+}
+
+// To use the code:
+
+void SetupViews (UIView view, UIView view2)
+{
+    view.Layer.Delegate = new DemoLayerDelegate ();
+    view2.Layer.Delegate = new DemoLayerDelegate2 ();
+}
+</code>
+</example>
+
+      <format type="text/html">
+        <h2>Using Custom Layers with your UIViews or NSViews.</h2>
+      </format>
+
+      <para>
+	On iOS, every UIView automatically has a CALayer associated
+	with it.  When you want to use one of the CALayer subclasses
+	as your UIView's backing layer, you need to add the following
+	code snippet to your class:
+      </para>
+
       <example>
         <code lang="C#">
 class MyView : UIView {
@@ -82,6 +234,25 @@ public class MyLayer : CALayer {
 }
 	</code>
       </example>
+
+      <para>
+
+	On OSX, CALayers are optional.  To enable them, you must set
+	the <see cref="P:MonoMac.AppKit.NSView.WantsLayer"/> property
+	to true.  You can change the layer for an NSView by setting
+	the <see cref="P:MonoMac.AppKit.NSView.Layer"/> property.
+
+      </para>
+
+      <para>
+
+	On OSX, to change the default layer class used for a given
+	NSView, you can override the <see
+	cref="M:MonoMac.AppKit.MakeBackingLayer"/> method.
+
+      </para>
+
+
     </remarks>
     <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=afab3ce5-a98f-43d8-a981-c803ca8b9738">Example_CoreAnimation</related>
     <related type="recipe" href="http://docs.xamarin.com/ios/Recipes/Animation/CoreAnimation/Animate_a_UIView_using_UIKit">Animate a UIView using UIKit</related>
