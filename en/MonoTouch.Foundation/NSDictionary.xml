@@ -29,7 +29,80 @@
   </Attributes>
   <Docs>
     <summary>Dictionary that provides mapping from keys to values.</summary>
-    <remarks>To be added.</remarks>
+    <remarks>
+      <para>
+	This is an immutable dictionary, to create mutable ones, use the <see cref="T:MonoTouch.Foundation.NSMutableDictionary"/> type.
+      </para>
+      <para>
+      </para>
+
+      <para>
+
+	There is a convenient constructor that takes at least one key
+	and one value, with optional values that will create the
+	dictionary by pairing each key with a value.  If you use .NET
+	objects, the keys and values will first be boxed into
+	NSObjects using <see
+	cref="M:MonoTouch.Foundation.NSObject.FromObject"/>.
+
+      </para>
+
+<example>
+<code lang="c#">
+//
+// Using C# objects, strings and ints, produces
+// a dictionary with 2 NSString keys, "key1" and "key2"
+// and two NSNumbers with the values 1 and 2
+//
+var dict = new NSDictionary ("key1", 1, "key2", 2);
+
+//
+// Using NSObjects directly, gives you fine control
+//
+var key1 = new NSString ("key1");
+vae value1 = new NSNumber ((byte) 1);
+var key2 = new NSString ("key2");
+vae value2 = new NSNumber ((byte) 2);
+
+var dict2 = new NSDictionary (key1, value1, key2, value2);
+</code>
+</example>
+
+      <para>
+
+	Sometimes, you might have already an array of keys and values,
+	so you can use the following factory methods:
+      </para>
+
+<example>
+<code lang="c#">
+var keys = new object [] { "key1", "key2" };
+var values = new object [] { "value1", "value2" }:
+
+var dict = NSDictionary.FromObjectsAndKeys (values, keys);
+</code>
+</example>
+
+      <para>
+
+	The NSDictionary type implements the ICollection, IDictionary
+	and the generic ICollection and IDictionary interfaces, which
+	makes it convenient to use with existing .NET APIs and also
+	provides indexers that take an NSObject, an NSString or a C#
+	string as well as an enumerator.
+
+      </para>
+
+      <para>
+
+	In some cases, where you might be iterating over a loop, or
+	you have not surfaced a bound type, but you have the handle to
+	the key, you can use the <see
+	cref="M:MonoTouch.Foundation.NSDictionary.LowlevelObjectForKey"/>
+	which takes a handle for the key and returns a handle for the returned object. 
+
+      </para>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -94,9 +167,9 @@
         <Parameter Name="other" Type="MonoTouch.Foundation.NSDictionary" />
       </Parameters>
       <Docs>
-        <param name="other">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="other">The source dictionary.</param>
+        <summary>Creates a new NSDictionary from an existing NSDictionary.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -163,9 +236,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="url" Type="MonoTouch.Foundation.NSUrl" />
       </Parameters>
       <Docs>
-        <param name="url">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="url">Url to the resource containing an NSDictionary in PropertyList format.</param>
+        <summary>Creates a new dictionary from the contents of a PropertyList located at a specified URL.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -207,9 +280,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="fileName" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="fileName">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="fileName">File containing a Property List formatted dictionary.</param>
+        <summary>Creates a new dictionary from the contents of a PropertyList located in the specified file.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -231,11 +304,25 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="first">To be added.</param>
-        <param name="second">To be added.</param>
-        <param name="args">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="first">First key.</param>
+        <param name="second">First value.</param>
+        <param name="args">Remaining pais of keys and values.</param>
+        <summary>Creates an NSDictionary from a list of NSObject keys and NSObject values.</summary>
+        <remarks>
+	  <para>
+	    The list of keys and values are used to create the dictionary.   The number of parameters passed to this function must be even.
+	  </para>
+<example>
+<code lang="c#">
+var key1 = new NSString ("key1");
+vae value1 = new NSNumber ((byte) 1);
+var key2 = new NSString ("key2");
+vae value2 = new NSNumber ((byte) 2);
+
+var dict2 = new NSDictionary (key1, value1, key2, value2);
+</code>
+</example>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -257,11 +344,28 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="first">To be added.</param>
-        <param name="second">To be added.</param>
-        <param name="args">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="first">First key.</param>
+        <param name="second">First value.</param>
+        <param name="args">Remaining pais of keys and values.</param>
+        <summary>Creates an NSDictionary from a list of keys and values.</summary>
+        <remarks>
+	  <para>
+	    Each C# object is boxed as an NSObject by calling <see cref="M:MonoTouch.Foundation.NSObject.FromObject"/>.
+	  </para>
+	  <para>
+	    The list of keys and values are used to create the dictionary.   The number of parameters passed to this function must be even.
+	  </para>
+	  <example>
+	    <code lang="c#">
+//
+// Using C# objects, strings and ints, produces
+// a dictionary with 2 NSString keys, "key1" and "key2"
+// and two NSNumbers with the values 1 and 2
+//
+var dict = new NSDictionary ("key1", 1, "key2", 2);
+</code>
+</example>
+	  </remarks>
       </Docs>
     </Member>
     <Member MemberName="ClassHandle">
@@ -294,10 +398,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="key" Type="MonoTouch.Foundation.NSObject" />
       </Parameters>
       <Docs>
-        <param name="key">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="key">Key to lookup in the dictionary.</param>
+        <summary>Determines whether the specified key exists in the dictionary.</summary>
+        <returns></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Count">
@@ -316,9 +420,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Returns the number of keys in the dictionary.</summary>
+        <value></value>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="DescriptionInStringsFileFormat">
@@ -412,10 +516,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="path" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="path">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="path">File containing a Property List formatted dictionary.</param>
+        <summary>Creates a new dictionary from the contents of a PropertyList located in the specified file.</summary>
+        <returns></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="FromObjectAndKey">
@@ -460,11 +564,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="keys" Type="MonoTouch.Foundation.NSObject[]" />
       </Parameters>
       <Docs>
-        <param name="objects">To be added.</param>
-        <param name="keys">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="objects">Array of values for the dictionary.</param>
+        <param name="keys">Array of keys for the dictionary.</param>
+        <summary>Creates a dictionary from a set of values and keys.</summary>
+        <returns></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="FromObjectsAndKeys">
@@ -482,11 +586,17 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="keys" Type="System.Object[]" />
       </Parameters>
       <Docs>
-        <param name="objects">To be added.</param>
-        <param name="keys">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="objects">Array of values for the dictionary.</param>
+        <param name="keys">Array of keys for the dictionary.</param>
+        <summary>Creates a dictionary from a set of values and keys.</summary>
+        <returns></returns>
+        <remarks>
+	  <para>
+	    The keys and values will first be boxed into
+	    NSObjects using <see
+	cref="M:MonoTouch.Foundation.NSObject.FromObject"/>.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="FromObjectsAndKeys">
@@ -505,12 +615,12 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="objects">To be added.</param>
-        <param name="keys">To be added.</param>
-        <param name="count">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="objects">Array of values for the dictionary.</param>
+        <param name="keys">Array of keys for the dictionary.</param>
+        <param name="count">Number of items to use in the creation, the number must be less than or equal to the number of elements on the arrays.</param>
+        <summary>Creates a dictionary from a set of values and keys.</summary>
+        <returns></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="FromObjectsAndKeys">
@@ -529,12 +639,18 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="objects">To be added.</param>
-        <param name="keys">To be added.</param>
-        <param name="count">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="objects">Array of values for the dictionary.</param>
+        <param name="keys">Array of keys for the dictionary.</param>
+        <param name="count">Number of items to use in the creation, the number must be less than or equal to the number of elements on the arrays.</param>
+        <summary>Creates a dictionary from a set of values and keys.</summary>
+        <returns></returns>
+        <remarks>
+	  <para>
+	    The keys and values will first be boxed into
+	    NSObjects using <see
+	cref="M:MonoTouch.Foundation.NSObject.FromObject"/>.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="FromUrl">
@@ -556,10 +672,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="url" Type="MonoTouch.Foundation.NSUrl" />
       </Parameters>
       <Docs>
-        <param name="url">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="url">Url to the resource containing an NSDictionary in PropertyList format.</param>
+        <summary>Creates a new dictionary from the contents of a PropertyList located at a specified URL.</summary>
+        <returns></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="GetEnumerator">
@@ -643,10 +759,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="key" Type="MonoTouch.Foundation.NSObject" />
       </Parameters>
       <Docs>
-        <param name="key">To be added.</param>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <param name="key">Key to lookup</param>
+        <summary>Returns the value associated from a key in the dictionary, or null if the key is not found.</summary>
+        <value></value>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Item">
@@ -663,10 +779,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="key" Type="MonoTouch.Foundation.NSString" />
       </Parameters>
       <Docs>
-        <param name="key">To be added.</param>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <param name="key">Key to lookup</param>
+        <summary>Returns the value associated from a key in the dictionary, or null if the key is not found.</summary>
+        <value></value>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Item">
@@ -683,10 +799,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="key" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="key">To be added.</param>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <param name="key">Key to lookup</param>
+        <summary>Returns the value associated from a key in the dictionary, or null if the key is not found.</summary>
+        <value></value>
+        <remarks>The string will be marshalled as an NSString before performing the lookup.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Keys">
@@ -749,10 +865,16 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="key" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <param name="key">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="key">A handle to an NSObject that might be on the dictionary.</param>
+        <summary>Low-level key lookup.</summary>
+        <returns>Handle to an object, or IntPtr.Zero if the key does not exist in the dictionary.</returns>
+        <remarks>
+	  In some cases, where you might be iterating over a loop, or
+	  you have not surfaced a bound type, but you have the handle to
+	  the key, you can use the <see
+	  cref="M:MonoTouch.Foundation.NSDictionary.LowlevelObjectForKey"/>
+	  which takes a handle for the key and returns a handle for the returned object. 
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="ObjectEnumerator">
