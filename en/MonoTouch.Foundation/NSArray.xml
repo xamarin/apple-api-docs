@@ -171,10 +171,17 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <typeparam name="T">Parameter type, determines the kind of array returned.</typeparam>
         <param name="handle">Pointer (handle) to the unmanaged object.</param>
-        <summary>A constructor used when creating managed representations of unmanaged objects;  Called by the runtime.</summary>
-        <returns>To be added.</returns>
+        <summary>Returns a strongly-typed C# array of the parametrized type from a handle to an NSArray.</summary>
+        <returns>An C# array with the values.</returns>
         <remarks>
-          <para>This constructor is invoked by the runtime infrastructure (<see cref="M:MonoTouch.ObjCRuntime.GetNSObject (System.IntPtr)" />) to create a new managed representation for a pointer to an unmanaged Objective-C object.    You should not invoke this method directly, instead you should call the GetNSObject method as it will prevent two instances of a managed object to point to the same native object.</para>
+          <para>Use this method to get a set of NSObject arrays from a handle to an NSArray</para>
+<example>
+<code lang="c#">
+IntPtr someHandle = ...;
+
+NSString [] values = NSArray.ArrayFromHandle&lt;NSString&gt; (someHandle);
+</code>
+</example>
         </remarks>
       </Docs>
     </Member>
@@ -196,9 +203,23 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="creator" Type="System.Converter&lt;System.IntPtr,T&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="T">To be added.</typeparam>
+        <typeparam name="T">Parameter type, determines the kind of array returned.</typeparam>
+        <param name="creator">Method that can create objects of type T from a given IntPtr.</param>
         <param name="handle">Pointer (handle) to the unmanaged object.</param>
-        <param name="creator">To be added.</param>
+        <summary>Returns a strongly-typed C# array of the parametrized type from a handle to an NSArray.</summary>
+        <returns>An C# array with the values.</returns>
+        <remarks>
+          <para>Use this method to get a set of NSObject arrays from a handle to an NSArray.   Instead of wrapping the results in NSObjects, the code invokes your method to create the return value.</para>
+<example>
+<code lang="c#">
+int myCreator (IntPtr v)
+{
+	return (int) v;
+}
+
+int [] args = NSArray.ArrayFromHandle&lt;int&gt; (someHandle, myCreator);
+</code>
+</example>
         <summary>A constructor used when creating managed representations of unmanaged objects;  Called by the runtime.</summary>
         <returns>To be added.</returns>
         <remarks>
@@ -224,13 +245,18 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="createObject" Type="System.Func&lt;System.IntPtr,T&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="T">To be added.</typeparam>
+        <typeparam name="T">Parameter type, determines the kind of array returned.</typeparam>
+        <param name="creator">Method that can create objects of type T from a given IntPtr.</param>
         <param name="handle">Pointer (handle) to the unmanaged object.</param>
-        <param name="createObject">To be added.</param>
-        <summary>A constructor used when creating managed representations of unmanaged objects;  Called by the runtime.</summary>
-        <returns>To be added.</returns>
+        <summary>Returns a strongly-typed C# array of the parametrized type from a handle to an NSArray.</summary>
+        <returns>An C# array with the values.</returns>
         <remarks>
-          <para>This constructor is invoked by the runtime infrastructure (<see cref="M:MonoTouch.ObjCRuntime.GetNSObject (System.IntPtr)" />) to create a new managed representation for a pointer to an unmanaged Objective-C object.    You should not invoke this method directly, instead you should call the GetNSObject method as it will prevent two instances of a managed object to point to the same native object.</para>
+          <para>Use this method to get a set of NSObject arrays from a handle to an NSArray.   Instead of wrapping the results in NSObjects, the code invokes your method to create the return value.</para>
+<example>
+<code lang="c#">
+int [] args = NSArray.ArrayFromHandle&lt;int&gt; (someHandle, (x) => (int) x);
+</code>
+</example>
         </remarks>
       </Docs>
     </Member>
@@ -317,11 +343,19 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="weakArray" Type="MonoTouch.Foundation.NSArray" />
       </Parameters>
       <Docs>
-        <typeparam name="T">To be added.</typeparam>
-        <param name="weakArray">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <typeparam name="T">Parameter type, determines the kind of array returned.</typeparam>
+        <param name="weakArray">Handle to an weakly typed NSArray.</param>
+        <summary>Returns a strongly-typed C# array of the parametrized type from a weakly typed NSArray.</summary>
+        <returns>An C# array with the values.</returns>
+        <remarks>
+          <para>Use this method to get a set of NSObject arrays from an NSArray.</para>
+<example>
+<code lang="c#">
+NSArray someArray = ...;
+
+NSString [] values = NSArray.FromArray&lt;NSString&gt; (someArray);
+</code>
+</example>
       </Docs>
     </Member>
     <Member MemberName="FromFile">
@@ -363,10 +397,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="vals" Type="System.IntPtr[]" />
       </Parameters>
       <Docs>
-        <param name="vals">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="vals">An array with IntPtr values.</param>
+        <summary>Creates an NSArray containing the elements in the specified array.</summary>
+        <returns></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="FromNSObjects">
@@ -389,10 +423,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="items">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="items">Strongly typed array of NSObjects.</param>
+        <summary>Creates an NSArray from a C# array of NSObjects.</summary>
+        <returns></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="FromNSObjects">
@@ -416,11 +450,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="count">To be added.</param>
-        <param name="items">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="items">Strongly typed array of NSObjects.</param>
+        <param name="count">Number of items to copy from the items array.</param>
+        <summary>Creates an NSArray from a C# array of NSObjects.</summary>
+        <returns></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="FromObjects">
@@ -443,10 +477,12 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="items">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="items">Array of C# objects.</param>
+        <summary>Creates an NSArray from a C# array of NSObjects.</summary>
+        <returns></returns>
+        <remarks>The values will be boxed into
+	NSObjects using <see
+	cref="M:MonoTouch.Foundation.NSObject.FromObject"/>.</remarks>
       </Docs>
     </Member>
     <Member MemberName="FromStrings">
@@ -469,10 +505,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="items">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="items">Array of C# strings.</param>
+        <summary>Creates an NSArray from a C# array of strings.</summary>
+        <returns></returns>
       </Docs>
     </Member>
     <Member MemberName="SetValueForKey">
@@ -541,10 +576,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="handle">Pointer (handle) to the unmanaged object.</param>
-        <summary>Creates a string array from a handle.</summary>
-        <returns>To be added.</returns>
+        <summary>Creates a string array from an NSArray handle.</summary>
+        <returns></returns>
         <remarks>
-
         </remarks>
       </Docs>
     </Member>
