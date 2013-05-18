@@ -167,13 +167,16 @@
       <para><see cref="T:MonoTouch.UIKit.UITableView"/>s are designed to work efficiently with tables with thousands of rows. In order to achieve this, each <see cref="T:MonoTouch.UIKit.UITableView"/> maintains a reusable cache of <see cref="T:MonoTouch.UIKit.UITableViewCell"/>s only a few items larger than can be shown on the screen at any given time.
       </para>
       <para>A <see cref="T:MonoTouch.UIKit.UITableViewSource"/> object is responsible for managing the relationship between the relatively few <see cref="T:MonoTouch.UIKit.UITableViewCell"/>s and the data is to be displayed. The <see cref="T:MonoTouch.UIKit.UITableViewSource"/>'s <see cref="M:MonoTouch.UIKit.UITableViewSource.NumberOfSections"/> and <see cref="M:MonoTouch.UIKit.UITableViewSource.RowsInSection"/> methods allow the <see cref="T:MonoTouch.UIKit.UITableView"/> to request only the data necessary for the cells on the screen. A specific cell is identified by an <see cref="T:MonoTouch.Foundation.NSIndexPath"/>, whose <see cref="P:MonoTouch.Foundation.NSIndexPath.Section"/> and <see cref="P:MonoTouch.Foundation.NSIndexPath.Row"/>properties will specify a unique cell.</para>
-      <para>As cells are about to be scrolled onto the screen, the <see cref="T:MonoTouch.UIKit.UITableView"/> automatically calls the <see cref="M:MonoTouch.UIKit.UITableViewSource.GetRow"/> method of the <see cref="T:MonoTouch.UIKit.UITableViewSource"/> object assigned to the <see cref="P:MonoTouch.UIKit.UITableView.Source"/> property of the <see cref="T:MonoTouch.UIKit.UITableView"/> (or, if the application developer prefers, the <see cref="M:MonoTouch.UIKit.UITableViewDataSource.GetRow"/> method of the <see cref="T:MonoTouch.UIKit.UITableViewDataSource"/> object referred to by the <see cref="P:MonoTouch.UIKit.UITableView.DataSource"/> property).The application developer overrides the <see cref="M:MonoTouch.UIKit.UITableViewSource.GetRow"/> method so that it:</para>
+      <para>As cells are about to be scrolled onto the screen, the <see cref="T:MonoTouch.UIKit.UITableView"/> automatically calls the <see cref="M:MonoTouch.UIKit.UITableViewSource.GetRow"/> method of the <see cref="T:MonoTouch.UIKit.UITableViewSource"/> object assigned to the <see cref="P:MonoTouch.UIKit.UITableView.Source"/> property of the <see cref="T:MonoTouch.UIKit.UITableView"/> (or, if the application developer prefers, the <see cref="M:MonoTouch.UIKit.UITableViewDataSource.GetRow"/> method of the <see cref="T:MonoTouch.UIKit.UITableViewDataSource"/> object referred to by the <see cref="P:MonoTouch.UIKit.UITableView.DataSource"/> property). 
+        <para>The application developer's responsibilities when overriding <see cref="M:MonoTouch.UIKit.UITableViewSource.GetRow"/> changed with the introduction of iOS 6. Application developers targeting iOS 6 and later should register a <see cref="T:MonoTouch.UIKit.UITableViewCell"/> for reuse with the <see cref="T:MonoTouch.UIKit.UITableView"/> by calling either the <see cref="M:MonoTouch.UIKit.UITableView.RegisterClassForCellReuse"/> or <see cref="M:MonoTouch.UIKit.UITableView.RegisterNibForCellReuse"/> method. Once that is done, application developers do not need to check for null in their override of the <see cref="M:MonoTouch.UIKit.UITableViewSource.GetCell"/> method.</para>
+        <para>If application developers are using the <see cref="M:MonoTouch.UIKit.UITableView.RegisterClassForCellReuse"/> with their own subclass of <see cref="T:MonoTouch.UIKit.UITableViewCell"/>, that implementation must override the <see cref="C:MonoTouch.UIKit.UITableViewCell(IntPtr)"/> constructor and call the base constructor (i.e., <c>MyTableViewCell(IntPtr handle) : base(handle){}</c>).</para>
+        <para>The application developer overrides the <see cref="M:MonoTouch.UIKit.UITableViewSource.GetRow"/> method so that it:</para>
       <list type="bullet">
         <item>
           <term>Attempts to retrieve a previously-allocated <see cref="T:MonoTouch.UIKit.UITableViewCell"/> from the <see cref="T:MonoTouch.UIKit.UITableView"/>;</term>
         </item>
         <item>
-          <term>If that fails, initializes a new <see cref="T:MonoTouch.UIKit.UITableViewCell"/> of the appropriate type;</term>
+          <term>If programming in iOS 5 and earlier, if that fails, initializes a new <see cref="T:MonoTouch.UIKit.UITableViewCell"/> of the appropriate type;</term>
         </item>
         <item>
           <term>Change the state of the retrieved-or-created <see cref="T:MonoTouch.UIKit.UITableViewCell"/> so that it reflects the values appropriate for the passed-in <see cref="T:MonoTouch.Foundation.NSIndexPath"/>.
@@ -181,7 +184,7 @@
         </item>
       </list>
       <para>Since the <see cref="M:MonoTouch.UIKit.UITableViewSource.GetCell"/> method will be called whenever a cell comes into view, application developers should avoid unnecessary computation.</para>
-      <para>The <see cref="T:MonoTouch.UIKit.UITableView"/>'s reuse queue is accessed via the <see cref="M:MonoTouch.UIKit.UITableView.DequeueReusableCell"/> method, which takes a <see langword="string"/> identifying the type of <see cref="T:MonoTouch.UIKit.UITableViewCell"/> to retrieve. Only if that method returns <see langword="null"/> should the application developer instantiate a new <see cref="T:MonoTouch.UIKit.UITableViewCell"/>.</para>
+      <para>The <see cref="T:MonoTouch.UIKit.UITableView"/>'s reuse queue is accessed via the <see cref="M:MonoTouch.UIKit.UITableView.DequeueReusableCell"/> method, which takes a <see langword="string"/> identifying the type of <see cref="T:MonoTouch.UIKit.UITableViewCell"/> to retrieve. In iOS 5 and earlier, that method may return <see langword="null"/>, in which case the application developer should instantiate a new <see cref="T:MonoTouch.UIKit.UITableViewCell"/>. In iOS 6 and later, while initializing the <see cref="T:MonoTouch.UIKit.UITableView"/>, the application developer must use either <see cref="M:MonoTouch.UIKit.UITableView.RegisterClassForCellReuse"/> or <see cref="M:MonoTouch.UIKit.UITableView.RegisterNibForCellReuse"/> to associate a <see cref="T:MonoTouch.UIKit.UITableViewCell"/> type and it's reuse identifier so that the method <see cref="M:MonoTouch.UIKit.UITableView.GetCell"/> can instantiate instances as necessary.</para>
       <para>The following shows a simple example of the <see cref="M:MonoTouch.UIKit.UITableViewSource.GetCell"/> method:</para>
       <example>
         <code lang="C#"><![CDATA[
@@ -189,7 +192,8 @@
           {
              //Attempt to retrieve previously-allocated cell
              var cell = tableView.DequeueReusableCell (this.cellTypeIdentifier);
-             if (cell == null) {
+             //The following check and code-block only necessary in iOS <6     
+            if (cell == null) {
                 //No reusable cell, so initialize a new one
                 cell = new UITableViewCell (UITableViewCellStyle.Default, this.cellTypeIdentifier);
                 cell.Tag = Environment.TickCount;
@@ -210,6 +214,7 @@
       <block subset="none" type="note">
         <para>UITableView caches <see cref="T:MonoTouch.UIKit.UITableViewCell"/> objects only for visible rows, but caches the heights of rows, headers and footers for the entire table. It is possible to create custom <see cref="T:MonoTouch.UIKit.UITableViewCell"/> objects with varying heights and custom layouts.</para>
         <para>UITableView overrides <see cref="M:MonoTouch.UIKit.UIView.LayoutSubviews()"/> so that it calls <see cref="M:MonoTouch.UIKit.UITableView.ReloadData"/> only when you create a new instance or when you assign a new <see cref="P:MonoTouch.UIKit.UITableView.Source"/> (or <see cref="P:MonoTouch.UIKit.UITableView.DataSource"/>).Reloading the table view clears current state (including the current selection). However if you explicitly call <see cref="M:MonoTouch.UIKit.UITableView.ReloadData()"/> it clears this state and any subsequent direct or indirect call to <see cref="M:MonoTouch.UIKit.UIView.LayoutSubviews()"/> does not trigger a reload.</para>
+
       </block>
       <altmember cref="T:MonoTouch.UIKit.UICollectionView"/>
     </remarks>
