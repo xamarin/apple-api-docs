@@ -25,8 +25,39 @@
     <remarks>
       <para>A strongly typed implementation of a class that can be used to respond to events raised by the <see cref="T:MonoTouch.UIKit.UIApplication" />.</para>
       <para>
-       Application developers will generally override the <see cref="M:MonoTouch.UIKit.UIApplicationDelegate.FinishedLaunching" /> method, configure the application's main <see cref="T:MonoTouch.UIKit.UIWindow" />, instantiate the top-level <see cref="T:MonoTouch.UIKit.UIViewController" />, and assign it to the <see cref="P:MonoTouch.UIKit.UIWindow.RootViewController" />. 
+
+       Application developers will generally override the <see
+       cref="M:MonoTouch.UIKit.UIApplicationDelegate.FinishedLaunching"
+       /> method, configure the application's main <see
+       cref="T:MonoTouch.UIKit.UIWindow" />, instantiate the top-level
+       <see cref="T:MonoTouch.UIKit.UIViewController" />, and assign
+       it to the <see
+       cref="P:MonoTouch.UIKit.UIWindow.RootViewController" />.
+
       </para>
+
+      <para>
+	This is what a minimal UIApplicationDelegate class looks like:
+      </para>
+
+<example>
+<code lang="c#">
+[Register ("AppDelegate")]
+public partial class AppDelegate : UIApplicationDelegate
+{
+	UIWindow window;
+
+	public override bool FinishedLaunching (UIApplication app, NSDictionary options)
+	{
+		window = new UIWindow (UIScreen.MainScreen.Bounds);
+		window.RootViewController = new UIViewController ();
+		window.MakeKeyAndVisible ();
+		
+		return true;
+	}
+}
+</code>
+</example>
     </remarks>
   </Docs>
   <Members>
@@ -166,7 +197,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="application" Type="MonoTouch.UIKit.UIApplication" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
+        <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -191,7 +222,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="oldStatusBarFrame" Type="System.Drawing.RectangleF" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
+        <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
         <param name="oldStatusBarFrame">To be added.</param>
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
@@ -217,7 +248,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="oldStatusBarOrientation" Type="MonoTouch.UIKit.UIInterfaceOrientation" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
+        <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
         <param name="oldStatusBarOrientation">To be added.</param>
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
@@ -243,7 +274,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="coder" Type="MonoTouch.Foundation.NSCoder" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
+        <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
         <param name="coder">To be added.</param>
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
@@ -268,7 +299,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="application" Type="MonoTouch.UIKit.UIApplication" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
+        <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -293,7 +324,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="error" Type="MonoTouch.Foundation.NSError" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
+        <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
         <param name="error">To be added.</param>
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
@@ -318,9 +349,16 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="application" Type="MonoTouch.UIKit.UIApplication" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
+        <summary>Method invoked after the application has launched to configure the main window and view controller.</summary>
+        <remarks>
+	  <para>
+	    This method should create and configure the toplevel window, make it visible.  The toplevel window should have a UIViewController.
+	  </para>
+	  <para>
+	    This method is deprecated, you should use the overload that takes a launchOptions instead.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="FinishedLaunching">
@@ -343,11 +381,48 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="launchOptions" Type="MonoTouch.Foundation.NSDictionary" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
-        <param name="launchOptions">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
+        <param name="launchOptions">An NSDictionary with the launch options, can be null.   Possible key values are UIApplication's LaunchOption static properties.</param>
+        <summary>Method invoked after the application has launched to configure the main window and view controller.</summary>
         <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <remarks>
+	  <para>
+	    This method should create and configure the toplevel window, make it visible.  The toplevel window should have a UIViewController.
+	  </para>
+	  <para>
+	    The dictionary launchOptions might contain zero or more information bits.   You can use the following keys to retrieve information from it: 
+	    <see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsUrlKey"/>,
+	    <see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsAnnotationKey"/>,
+	    <see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsLocalNotificationKey"/>,
+	    <see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsLocationKey"/>,
+	    <see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsNewsstandDownloadsKey"/>,
+	    <see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsRemoteNotificationKey"/> and
+	    <see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsSourceApplicationKey"/>.
+	  </para>
+
+	  <para>
+	    The following example shows a minimal implementation:
+	  </para>
+
+<example>
+<code lang="c#">
+[Register ("AppDelegate")]
+public partial class AppDelegate : UIApplicationDelegate
+{
+	UIWindow window;
+
+	public override bool FinishedLaunching (UIApplication app, NSDictionary options)
+	{
+		window = new UIWindow (UIScreen.MainScreen.Bounds);
+		window.RootViewController = new UIViewController ();
+		window.MakeKeyAndVisible ();
+		
+		return true;
+	}
+}
+</code>
+</example>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetSupportedInterfaceOrientations">
@@ -370,7 +445,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="forWindow" Type="MonoTouch.UIKit.UIWindow" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
+        <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
         <param name="forWindow">To be added.</param>
         <summary>To be added.</summary>
         <returns>To be added.</returns>
@@ -398,7 +473,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="coder" Type="MonoTouch.Foundation.NSCoder" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
+        <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
         <param name="restorationIdentifierComponents">To be added.</param>
         <param name="coder">To be added.</param>
         <summary>To be added.</summary>
@@ -426,7 +501,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="url" Type="MonoTouch.Foundation.NSUrl" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
+        <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
         <param name="url">To be added.</param>
         <summary>To be added.</summary>
         <returns>To be added.</returns>
@@ -452,7 +527,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="application" Type="MonoTouch.UIKit.UIApplication" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
+        <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -476,7 +551,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="application" Type="MonoTouch.UIKit.UIApplication" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
+        <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -503,7 +578,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="annotation" Type="MonoTouch.Foundation.NSObject" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
+        <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
         <param name="url">To be added.</param>
         <param name="sourceApplication">To be added.<paramref name="url" />).</param>
         <param name="annotation">To be added.</param>
@@ -531,7 +606,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="application" Type="MonoTouch.UIKit.UIApplication" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
+        <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -555,7 +630,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="application" Type="MonoTouch.UIKit.UIApplication" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
+        <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -580,7 +655,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="notification" Type="MonoTouch.UIKit.UILocalNotification" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
+        <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
         <param name="notification">To be added.</param>
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
@@ -606,7 +681,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="userInfo" Type="MonoTouch.Foundation.NSDictionary" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
+        <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
         <param name="userInfo">To be added.</param>
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
@@ -631,7 +706,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="application" Type="MonoTouch.UIKit.UIApplication" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
+        <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -656,7 +731,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="deviceToken" Type="MonoTouch.Foundation.NSData" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
+        <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
         <param name="deviceToken">To be added.</param>
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
@@ -682,7 +757,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="coder" Type="MonoTouch.Foundation.NSCoder" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
+        <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
         <param name="coder">To be added.</param>
         <summary>To be added.</summary>
         <returns>To be added.</returns>
@@ -709,7 +784,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="coder" Type="MonoTouch.Foundation.NSCoder" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
+        <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
         <param name="coder">To be added.</param>
         <summary>To be added.</summary>
         <returns>To be added.</returns>
@@ -736,7 +811,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="newStatusBarFrame" Type="System.Drawing.RectangleF" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
+        <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
         <param name="newStatusBarFrame">To be added.</param>
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
@@ -763,7 +838,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="duration" Type="System.Double" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
+        <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
         <param name="newStatusBarOrientation">To be added.</param>
         <param name="duration">To be added.</param>
         <summary>To be added.</summary>
@@ -790,7 +865,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="coder" Type="MonoTouch.Foundation.NSCoder" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
+        <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
         <param name="coder">To be added.</param>
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
@@ -815,7 +890,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="application" Type="MonoTouch.UIKit.UIApplication" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
+        <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -840,7 +915,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="launchOptions" Type="MonoTouch.Foundation.NSDictionary" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
+        <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
         <param name="launchOptions">To be added.</param>
         <summary>To be added.</summary>
         <returns>To be added.</returns>
@@ -866,7 +941,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="application" Type="MonoTouch.UIKit.UIApplication" />
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
+        <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
       </Docs>
