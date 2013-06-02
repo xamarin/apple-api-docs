@@ -390,17 +390,6 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 	    This method should create and configure the toplevel window, make it visible.  The toplevel window should have a UIViewController.
 	  </para>
 	  <para>
-	    The dictionary launchOptions might contain zero or more information bits.   You can use the following keys to retrieve information from it: 
-	    <see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsUrlKey"/>,
-	    <see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsAnnotationKey"/>,
-	    <see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsLocalNotificationKey"/>,
-	    <see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsLocationKey"/>,
-	    <see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsNewsstandDownloadsKey"/>,
-	    <see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsRemoteNotificationKey"/> and
-	    <see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsSourceApplicationKey"/>.
-	  </para>
-
-	  <para>
 	    The following example shows a minimal implementation:
 	  </para>
 
@@ -417,6 +406,44 @@ public partial class AppDelegate : UIApplicationDelegate
 		window.RootViewController = new UIViewController ();
 		window.MakeKeyAndVisible ();
 		
+		return true;
+	}
+}
+</code>
+</example>
+
+	  <para>
+	    The dictionary launchOptions if set, might contain zero or more information bits.   You can use the following keys to retrieve information from it: 
+	    <see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsUrlKey"/>,
+	    <see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsAnnotationKey"/>,
+	    <see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsLocalNotificationKey"/>,
+	    <see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsLocationKey"/>,
+	    <see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsNewsstandDownloadsKey"/>,
+	    <see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsRemoteNotificationKey"/> and
+	    <see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsSourceApplicationKey"/>.
+	  </para>
+
+<example>
+<code lang="c#">
+[Register ("AppDelegate")]
+public partial class AppDelegate : UIApplicationDelegate
+{
+	UIWindow window;
+
+	public override bool FinishedLaunching (UIApplication app, NSDictionary options)
+	{
+		window = new UIWindow (UIScreen.MainScreen.Bounds);
+		window.RootViewController = new UIViewController ();
+		window.MakeKeyAndVisible ();
+		
+		if (options != null){
+			NSObject result;
+			if (options.TryGetValue (UIApplication.LaunchOptionsLocalNotificationKey, out result)){
+				UILocalNotification notification = result as UILocalNotification;
+
+				Console.WriteLine ("Got a local notification: {0}", notification);
+			}
+		}
 		return true;
 	}
 }
