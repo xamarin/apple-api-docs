@@ -168,9 +168,13 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Numeric value to display as the application badge number.</summary>
+        <value></value>
+        <remarks>
+	  When this value is zero, no badge is displayed.  When this
+	  value is different than zero, the value is displayed as a
+	  badge on the application's icon by the operating system.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="ApplicationState">
@@ -192,9 +196,40 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.UIKit.UIApplicationState</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Reflects the current application state.</summary>
+        <value></value>
+	<remarks>
+
+	  <para> 
+	    When the user taps on the app icon, the app briefly
+	    goes through a transitional state of
+	    UIApplicationState.Inactive on its way to becoming
+	    UIApplicationState.Active. This is where the app gets
+	    itself ready to display to the user.
+	  </para>
+
+	  <para>
+	    When the app is open, the application state is UIApplicationState.Active.
+	  </para>
+
+	  <para>
+	    If the user presses the home button, and is returned to
+	    the springboard (home screen), or the application is
+	    interrupted by something, such as a phone call, the
+	    application state transitions back to
+	    UIApplicationState.Inactive.
+	  </para>
+
+	  <para> 
+	    For the application state of your app to become
+	    UIApplicationState.Background, your application would have
+	    to register for a background process. 
+	  </para>
+
+	  <para>
+	    Reference: http://stackoverflow.com/questions/7937400/need-clarification-about-uiapplicationstate
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="ApplicationSupportsShakeToEdit">
@@ -216,9 +251,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Controls whether shaking the device will bring up the undo/redo buttons.</summary>
+        <value>It defaults to true, so all applications by default support undo/redo by shaking.</value>
+        <remarks>
+	  Set this value to false if you want to disable the default behavior that shows an undo/redo dialog box on shake.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="BackgroundTaskInvalid">
@@ -266,9 +303,12 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Docs>
         <summary>The number of seconds that the application has left to run in the background.</summary>
-        <value>To be added.</value>
+        <value></value>
         <remarks>
           <para tool="threads">This can be used from a background thread.</para>
+	  <para>
+	    
+	  </para>
         </remarks>
       </Docs>
     </Member>
@@ -1272,9 +1312,16 @@ void Setup ()
         <ReturnType>MonoTouch.UIKit.UIWindow</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Returns the application's key window - the window that is currently displayed and receives user input </summary>
+        <value></value>
+        <remarks>
+
+	  The key window is the currently visible window that is also
+	  the one that receives user input.  The key window in turn
+	  will route input events to the <see
+	  cref="T:MonoTouch.UIKit.UIViewController"/> that is defined
+	  in set in the  <see cref="P:MonoTouch.UIKit.UIWindows.RootViewController"/> property.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="LaunchOptionsAnnotationKey">
@@ -1316,27 +1363,15 @@ void Setup ()
         <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Represents the value associated with the constant UIApplicationLaunchOptionsLocalNotificationKey</summary>
-        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <summary>Launch Options Key: application has received a local notification.</summary>
+        <value>Represents the value associated with the constant UIApplicationLaunchOptionsLocalNotificationKey.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.</para>
-          <example>
-            <code lang="c#">
-// Lambda style
-NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.LaunchOptionsLocalNotificationKey, (notification) =&gt; Console.WriteLine ("Received the notification UIApplication", notification);
-
-
-// Method style
-void Callback (NSNotification notification)
-{
-    Console.WriteLine ("Received a notification UIApplication", notification);
-}
-void Setup ()
-{
-    NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.LaunchOptionsLocalNotificationKey, Callback);
-}
-</code>
-          </example>
+	  <para>
+	    The value of this key will be a <see cref="T:MonoTouch.UIKit.UILocalNotification"/> instance.
+	  </para>
+	  <para>
+	    This key will be present on the launch options if a local notification was delivered and the application was not running.
+	  </para>
         </remarks>
       </Docs>
     </Member>
@@ -1401,27 +1436,10 @@ void Setup ()
         <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Represents the value associated with the constant UIApplicationLaunchOptionsRemoteNotificationKey</summary>
-        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <summary>Launch Options Key: application has received a remote notification.</summary>
+        <value>Represents the value associated with the constant UIApplicationLaunchOptionsRemoteNotificationKey.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.</para>
-          <example>
-            <code lang="c#">
-// Lambda style
-NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.LaunchOptionsRemoteNotificationKey, (notification) =&gt; Console.WriteLine ("Received the notification UIApplication", notification);
-
-
-// Method style
-void Callback (NSNotification notification)
-{
-    Console.WriteLine ("Received a notification UIApplication", notification);
-}
-void Setup ()
-{
-    NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.LaunchOptionsRemoteNotificationKey, Callback);
-}
-</code>
-          </example>
+	  The value associated with this key will be an NSDictionary with the payload from the remote notification that was received. 
         </remarks>
       </Docs>
     </Member>
@@ -2943,9 +2961,11 @@ void Setup ()
         <ReturnType>MonoTouch.UIKit.UIWindow[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>All of the application windows.</summary>
+        <value></value>
+        <remarks>
+	  Invoking this property will return a list of all the windows created by this application.
+	</remarks>
       </Docs>
     </Member>
   </Members>
