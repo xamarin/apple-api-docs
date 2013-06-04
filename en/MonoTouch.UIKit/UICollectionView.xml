@@ -125,14 +125,15 @@
       </para>
       <para>The following code, from the "Introduction to Collection Views" sample, shows how component view types are registered and reassigned. Each component role type has an <see cref="T:MonoTouch.Foundation.NSString" /> identifier (for instance, the type <c>AnimalCell</c>, which is used for the cell role, has the identifier "AnimalCell", the others are not shown). The methods <see cref="M:MonoTouch.UIKit.UICollectionView.RegisterClassForCell" /> and <see cref="M:MonoTouch.UIKit.UICollectionView.RegisterClassForSupplementaryView" /> register the classes for the cell and supplementary view roles, while the method <see cref="M:MonoTouch.UIKit.UICollectionViewLayout.RegisterClassForDecorationView" /> registers the decoration view with the  <see cref="T:MonoTouch.UIKit.UICollectionViewLayout" /> that is the <see cref="T:MonoTouch.UIKit.UICollectionView" />'s' <see cref="P:MonoTouch.UIKit.UICollectionView.CollectionViewLayout" /> property.</para>
       <para>
-	It is very important that you provide constructor that takes an IntPtr argument in any subclasses that you register with UICollectionView.   This is required because the classes are actually allocated by the Objective-C runtime, and you must initialize them.   The following example shows the expected constructor that you should provide:
+	It is very important that you provide a constructor that takes a RectangleF argument in any subclasses that you register with UICollectionView.   This is required because the classes are actually allocated by the Objective-C runtime, and you must initialize them.   The following example shows the expected constructor that you should provide:
       </para>
 
       <example>
 <code lang="c#">
 public class AnimalCell : UICollectionViewCell
 {
-  public AnimalCell (IntPtr handle) : base (handle) {}
+[Export ("initWithFrame:")]
+  public AnimalCell (RectangleF frame) : base (frame) {}
 }
 </code>
       </example>
@@ -146,7 +147,8 @@ public class AnimalCell : UICollectionViewCell
             private static NSString classId = new NSString ("AnimalCell");
             public static NSString ClassId { get { return classId; } }
 
-	    public AnimalCell (IntPtr handle) : base (handle) {}
+	  [Export ("initWithFrame:")]
+	    public AnimalCell (RectangleF frame) : base (frame) {}
 
           //..etc...
           }
@@ -1266,12 +1268,13 @@ mySliders.TintColor = UIColor.Red;
         <remarks>
           <para>The <see cref="T:MonoTouch.UIKit.UICollectionView" /> maintains a highly-efficient reuse queue for offscreen components. This requires that the <see cref="T:MonoTouch.UIKit.UICollectionView" /> be responsible for the lifecycle management of its component views. This method (and related methods such as <see cref="M:MonoTouch.UIKit.UICollectionView.RegisterClassForSupplementaryView" />) provide the <see cref="T:MonoTouch.UIKit.UICollectionView" /> the knowledge of which types it needs to instantiate.</para>
           <para>The application developer may pass <see langword="null" /> as the <paramref name="reuseIdentifier" />, in which case the <paramref name="cellType" /> will be "un-registered" and no longer instantiated. The application developer may pass in a <paramref name="reuseIdentifier" /> previously associated with another type, in which case the old type will be "de-registered" and the new <paramref name="cellType" /> will be used.</para>
-	  <para>It is very important that the type that you specify implements a public constructor that takes an IntPtr parameter, this is used to initialize the class from an object allocated by Objective-C.   The following example shows the constructor in use:</para>
+	  <para>It is very important that the type that you specify implements a public constructor that takes a <see cref="T:System.Drawing.RectangleF"/> parameter, this is used to initialize the class from an object allocated by Objective-C.   The following example shows the constructor in use:</para>
       <example>
 <code lang="c#">
 public class AnimalCell : UICollectionViewCell
 {
-  public AnimalCell (IntPtr handle) : base (handle) {}
+[Export ("initWithFrame:")]
+  public AnimalCell (RectangleF frame) : base (frame) {}
 }
 </code>
       </example>
