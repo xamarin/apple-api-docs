@@ -438,8 +438,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="notification">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Cancels a local notification.</summary>
+        <remarks>If the notification is currently displayed, it is removed;   If it is not displayed, the queued notification is dropped.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CanOpenUrl">
@@ -462,12 +462,39 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="url">
-          <para>The url to probe.</para>
+          <para>The URL to probe.</para>
           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
         </param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>Determines whether the given URL can be opened by OpenUrl.</summary>
+        <returns>true if there is an application registered to open the URL, false if not.</returns>
+        <remarks>
+	  <para>
+	    This function probes whether there is a handler for the
+	    provided URL on the system.  For example, if you call this
+	    function with "tel://555-123-1234" on an iPhone, this will
+	    return true, but will return false on an iPod Touch.
+	  </para>
+	  <para>
+
+	    This function does not validate the URL, it merely checks
+	    whether a handler for this URL has been installed on the system.
+
+	  </para>
+
+	  <para>
+
+	    If you want to define your own URL handlers, edit your
+	    Info.plist file and define a new URL type, you then must
+	    update your <see
+	    cref="M:MonoTouch.UIKit.UIApplicationDelegate.FinishedLaunching(MonoTouch.UIKit.UIApplication,MonoTouch.Foundation.NSDictionary)"/>
+	    method (to handle launching the application if it is not
+	    already running) and override the <see
+	    cref="M:MonoTouch.UIKit.UIApplicationDelegate.OpenUrl"/>
+	    method to handle the request to open the URL.
+
+	  </para>
+
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="CheckForIllegalCrossThreadCalls">
@@ -535,8 +562,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Stops invoking the KeepAlive method defined previously with SetKeepAliveTimeout.</summary>
+        <remarks>This method is used by Voice over IP applications when they no longer need the keep-alive timeout method handler to be executed.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CompleteStateRestoration">
@@ -1964,14 +1991,49 @@ void Setup ()
         <Parameter Name="handler" Type="MonoTouch.Foundation.NSAction" />
       </Parameters>
       <Docs>
-        <param name="timeout">To be added.</param>
+        <param name="timeout">Time at which the application should be woken up to keep the VoIP connection going, must be at least 600 seconds.</param>
         <param name="handler">
-          <para>The method that is invoked to keep your network connection open.   Use null to cancel the keep alive timeout. </para>
+          <para>The method that is invoked to keep your network connection open, the method has 10 seconds to run.   Use null to cancel the keep alive timeout. </para>
           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
         </param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>Sets the specified handler as the VoIP keep alive method.</summary>
+        <returns>True if the handler was installed, false if not.</returns>
+        <remarks>
+
+	  <para> This method installs the handler to be executed by
+	    the operating system to keep voice-over-ip connections
+	    alive.  The handler will be invoked at least every 600
+	    seconds (the minimum required value) and should perform
+	    any handshakes required with the VoIP application before
+	    returning control to the operating system.  
+	  </para>
+
+	  <para>
+
+	    When the keep alive handler is called, the handler has 10
+	    seconds of foreground execution time, in which remaining
+	    background time is infinite (as returned by <see
+	    cref="T:MonoTouch.UIKit.UIApplication.BackgroundTimeRemaining"/>).
+	    If you initiate a background task with <see
+	    cref="M:MonoTouch.UIKit.UIApplication.BeginBackgroundTask"/>
+	    the task will get about 60 seconds to run.   
+
+	  </para>
+
+	  <para> Setting the keepAlive time to something significantly
+	    larger than 600 seconds will typically result in the
+	    handler being fired with a frequency of every time/2
+	    interval. Bonus fact: This is consistent with the SIP
+	    REGISTER request, in which the recommended re-registration
+	    interval is (re-register time/2).
+	  </para>
+
+	  <para>
+
+	  <para>
+	    The BackgroundModes key in the application Info.plist file should list "voip"
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetNewsstandIconImage">

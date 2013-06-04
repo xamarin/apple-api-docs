@@ -9,7 +9,75 @@
       </para>
       
       <para>
-	
+
+	iOS Applications start as instances of the UIApplication
+	class, they can either be an instance of UIApplication or a
+	subclass of <see cref="T:MonoTouch.UIKit.UIApplication"/>.
+	This UIApplication object will invoke a number of methods in
+	response to starting up, shutting down, going to the
+	background and other interesting events by calling methods on
+	an instace of the <see
+	cref="T:MonoTouch.UIKit.UIApplicationDelegate"/> class.  Most
+	applications will override the <see
+	cref="M:MonoTouch.UIKit.UIApplicationDelegate.FinishedLaunching"
+	/> which is responsible for creating the main <see
+	cref="T:MonoTouch.UIKit.UIWindow"/> and configuring the
+	topmost <see cref="T:MonoTouch.UIKit.UIViewController"/> to
+	display.
+
+      </para>
+
+      <para>
+
+	Most applications will create a single <see
+	cref="T:MonoTouch.UIKit.UIWindow"/>, windows work in concert
+	with <see cref="T:MonoTouch.UIKit.UIViewController"/> objects
+	which are in charge of orchestrating multiple views, handle
+	rotation and handle various events for you.  This is why on
+	startup, you must create both a window and sets its root view
+	controller, like this:
+
+      </para>
+
+<example>
+<code lang="c#">
+[Register ("AppDelegate")]
+public partial class AppDelegate : UIApplicationDelegate
+{
+	UIWindow window;
+
+	public override bool FinishedLaunching (UIApplication app, NSDictionary options)
+	{
+		window = new UIWindow (UIScreen.MainScreen.Bounds);
+		window.RootViewController = new UIViewController ();
+		window.MakeKeyAndVisible ();
+		
+		return true;
+	}
+}
+</code>
+</example>
+
+      <para>
+
+	Response to user input is implement in UIKit by sublcasses of
+	<see cref="T:MonoTouch.UIKit.UIResponder"/>: UIApplication,
+	UIViewControllers and their subclasses and UIView and their
+	subclasses all inherit from this class.
+      </para>
+
+      <para>
+      </para>
+
+      <para>
+	UIView
+	UIControl
+	UIViewController 
+ 
+	UIApplication
+	UIGestureRecognizer
+	UITouch
+	UIEvent
       </para>
 
     </remarks>
