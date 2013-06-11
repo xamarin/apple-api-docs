@@ -32,7 +32,7 @@
       </format>
       <para>The primary classes used to display table views are:</para>
       <para>
-        <img src="UIKit.UITableView.Classes.png"/>
+        <img href="UIKit.UITableView.Classes.png"/>
       </para>
       <list type="table">
         <listheader>
@@ -159,7 +159,7 @@
       </list>
       <para>Section rows, headers, footers, edit controls and the index are displayed as follows:</para>
       <para>
-        <img src="UIKit.UITableView.Components.png"/>
+        <img href="UIKit.UITableView.Components.png"/>
       </para>
       <format type="text/html">
         <h2>Populating Table Cells</h2>
@@ -168,9 +168,9 @@
       </para>
       <para>A <see cref="T:MonoTouch.UIKit.UITableViewSource"/> object is responsible for managing the relationship between the relatively few <see cref="T:MonoTouch.UIKit.UITableViewCell"/>s and the data is to be displayed. The <see cref="T:MonoTouch.UIKit.UITableViewSource"/>'s <see cref="M:MonoTouch.UIKit.UITableViewSource.NumberOfSections"/> and <see cref="M:MonoTouch.UIKit.UITableViewSource.RowsInSection"/> methods allow the <see cref="T:MonoTouch.UIKit.UITableView"/> to request only the data necessary for the cells on the screen. A specific cell is identified by an <see cref="T:MonoTouch.Foundation.NSIndexPath"/>, whose <see cref="P:MonoTouch.Foundation.NSIndexPath.Section"/> and <see cref="P:MonoTouch.Foundation.NSIndexPath.Row"/>properties will specify a unique cell.</para>
       <para>As cells are about to be scrolled onto the screen, the <see cref="T:MonoTouch.UIKit.UITableView"/> automatically calls the <see cref="M:MonoTouch.UIKit.UITableViewSource.GetRow"/> method of the <see cref="T:MonoTouch.UIKit.UITableViewSource"/> object assigned to the <see cref="P:MonoTouch.UIKit.UITableView.Source"/> property of the <see cref="T:MonoTouch.UIKit.UITableView"/> (or, if the application developer prefers, the <see cref="M:MonoTouch.UIKit.UITableViewDataSource.GetRow"/> method of the <see cref="T:MonoTouch.UIKit.UITableViewDataSource"/> object referred to by the <see cref="P:MonoTouch.UIKit.UITableView.DataSource"/> property). </para>
-        <para>The application developer's responsibilities when overriding <see cref="M:MonoTouch.UIKit.UITableViewSource.GetRow"/> changed with the introduction of iOS 6. Application developers targeting iOS 6 and later should register a <see cref="T:MonoTouch.UIKit.UITableViewCell"/> for reuse with the <see cref="T:MonoTouch.UIKit.UITableView"/> by calling either the <see cref="M:MonoTouch.UIKit.UITableView.RegisterClassForCellReuse"/> or <see cref="M:MonoTouch.UIKit.UITableView.RegisterNibForCellReuse"/> method. Once that is done, application developers do not need to check for null in their override of the <see cref="M:MonoTouch.UIKit.UITableViewSource.GetCell"/> method.</para>
-        <para>If application developers are using the <see cref="M:MonoTouch.UIKit.UITableView.RegisterClassForCellReuse"/> with their own subclass of <see cref="T:MonoTouch.UIKit.UITableViewCell"/>, that implementation must override the <see cref="C:MonoTouch.UIKit.UITableViewCell(IntPtr)"/> constructor and call the base constructor (i.e., <c>MyTableViewCell(IntPtr handle) : base(handle){}</c>).</para>
-        <para>The application developer overrides the <see cref="M:MonoTouch.UIKit.UITableViewSource.GetRow"/> method so that it:</para>
+      <para>The application developer's responsibilities when overriding <see cref="M:MonoTouch.UIKit.UITableViewSource.GetRow"/> changed with the introduction of iOS 6. Application developers targeting iOS 6 and later should register a <see cref="T:MonoTouch.UIKit.UITableViewCell"/> for reuse with the <see cref="T:MonoTouch.UIKit.UITableView"/> by calling either the <see cref="M:MonoTouch.UIKit.UITableView.RegisterClassForCellReuse"/> or <see cref="M:MonoTouch.UIKit.UITableView.RegisterNibForCellReuse"/> method. Once that is done, application developers do not need to check for null in their override of the <see cref="M:MonoTouch.UIKit.UITableViewSource.GetCell"/> method.</para>
+      <para>If application developers are using the <see cref="M:MonoTouch.UIKit.UITableView.RegisterClassForCellReuse"/> with their own subclass of <see cref="T:MonoTouch.UIKit.UITableViewCell"/>, that implementation must override the <see cref="C:MonoTouch.UIKit.UITableViewCell(IntPtr)"/> constructor and call the base constructor (i.e., <c>MyTableViewCell(IntPtr handle) : base(handle){}</c>).</para>
+      <para>The application developer overrides the <see cref="M:MonoTouch.UIKit.UITableViewSource.GetRow"/> method so that it:</para>
       <list type="bullet">
         <item>
           <term>Attempts to retrieve a previously-allocated <see cref="T:MonoTouch.UIKit.UITableViewCell"/> from the <see cref="T:MonoTouch.UIKit.UITableView"/>;</term>
@@ -190,24 +190,24 @@
         <code lang="C#"><![CDATA[
           public override UITableViewCell GetCell (UITableView tableView, NSIndexPath indexPath)
           {
-             //Attempt to retrieve previously-allocated cell
-             var cell = tableView.DequeueReusableCell (this.cellTypeIdentifier);
-             //The following check and code-block only necessary in iOS <6     
-            if (cell == null) {
-                //No reusable cell, so initialize a new one
-                cell = new UITableViewCell (UITableViewCellStyle.Default, this.cellTypeIdentifier);
-                cell.Tag = Environment.TickCount;
-             }
+          //Attempt to retrieve previously-allocated cell
+          var cell = tableView.DequeueReusableCell (this.cellTypeIdentifier);
+          //The following check and code-block only necessary in iOS <6     
+          if (cell == null) {
+          //No reusable cell, so initialize a new one
+          cell = new UITableViewCell (UITableViewCellStyle.Default, this.cellTypeIdentifier);
+          cell.Tag = Environment.TickCount;
+          }
           
-             // Change the state of the cell
-             cell.TextLabel.Text = //...etc...
+          // Change the state of the cell
+          cell.TextLabel.Text = //...etc...
           
-             // return the cell
-             return cell;
+          // return the cell
+          return cell;
           }
           ]]></code>
       </example>
-    <format type="text/html">
+      <format type="text/html">
         <h2>Customizing Table Appearance</h2>
       </format>
       <para>Other than the <see cref="P:MonoTouch.UIKit.UITableView.Style"/> property that specifies whether a <see cref="T:MonoTouch.UIKit.UITableView"/> is grouped or continuous, the appearance of the table is primarily determined by the <see cref="T:MonoTouch.UIKit.UITableViewCell"/>s, the <see cref="T:MonoTouch.UIKit.UITableViewHeaderFooterView"/>s used for section headers and footers, and the <see cref="T:MonoTouch.UIKit.UIView"/>s used for the <see cref="P:MonoTouch.UIKit.UITableView.Header"/> and <see cref="P:MonoTouch.UIKit.UITableView.Footer"/> properties. The API documentation for <see cref="T:MonoTouch.UIKit.UITableViewCell"/> describes customization in detail. </para>
@@ -215,14 +215,16 @@
         <para>UITableView caches <see cref="T:MonoTouch.UIKit.UITableViewCell"/> objects only for visible rows, but caches the heights of rows, headers and footers for the entire table. It is possible to create custom <see cref="T:MonoTouch.UIKit.UITableViewCell"/> objects with varying heights and custom layouts.</para>
         <para>UITableView overrides <see cref="M:MonoTouch.UIKit.UIView.LayoutSubviews()"/> so that it calls <see cref="M:MonoTouch.UIKit.UITableView.ReloadData"/> only when you create a new instance or when you assign a new <see cref="P:MonoTouch.UIKit.UITableView.Source"/> (or <see cref="P:MonoTouch.UIKit.UITableView.DataSource"/>).Reloading the table view clears current state (including the current selection). However if you explicitly call <see cref="M:MonoTouch.UIKit.UITableView.ReloadData()"/> it clears this state and any subsequent direct or indirect call to <see cref="M:MonoTouch.UIKit.UIView.LayoutSubviews()"/> does not trigger a reload.</para>
       </block>
-      <altmember cref="T:MonoTouch.UIKit.UICollectionView"/>
-      </remarks>
+    </remarks>
+   <altmember cref="T:MonoTouch.UIKit.UICollectionView"/>
+  
     <related type="article" href="http://docs.xamarin.com/guides/ios/user_interface/tables">Working with Tables and Cells</related>
     <related type="recipe" href="http://docs.xamarin.com/recipes/ios/content_controls/tables">Tables and UITableViewController</related>
     <related type="sample" href="http://docs.xamarin.com/samples/ByGuid?guid=bacb96ca-e31b-4a41-a363-a716ad982b39">Tables and Lists</related>
     <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=8325839c-471c-4409-8d96-caefe8a95d4a">Example_Data</related>
     <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=23a2571b-45eb-4889-bb67-d88937cb68c1">monocatalog</related>
     <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=a96da854-7c59-4e25-9fb5-78be262620dd">RecipesAndPrinting</related>
+    </Docs>
     <Members>
       <Member MemberName=".ctor">
         <MemberSignature Language="C#" Value="public UITableView ();"/>
@@ -781,10 +783,16 @@
           <Parameter Name="identifier" Type="MonoTouch.Foundation.NSString"/>
         </Parameters>
         <Docs>
-          <param name="identifier">A string identifying the cell object to be reused.</param>
+          <param name="identifier">A string identifying the cell type being requested.</param>
           <summary>Returns a reusable table view cell that was created with the given ReuseIdentifier.</summary>
           <returns>A <see cref="T:MonoTouch.UIKit.UITableViewCell"/> associated with the <paramref name="identifier"/>, or <see langword="null"/> if there is no cells in the queue with that particular <paramref name="identifier"/>.</returns>
-          <remarks>To be added.</remarks>
+          <remarks>
+            <para>The cell reuse cache is important for efficiency and application developers should use it for dynamic tables. </para>
+            <para>Application developers targeting iOS 6 and later should use <see cref="M:MonoTouch.UIKit.UITableView.RegisterClassForCellReuse"/> or <see cref="M:MonoTouch.UIKit.UITableView.RegisterNibForCellReuse"/>. Once a <see cref="T:MonoTouch.UIKit.UITableViewCell"/> class is registered, calls to <see cref="M:MonoTouch.UIKit.UITableView.DequeueReusableCell"/> will return a newly-instantiated object as necessary, rather than returning <see langword="null"/>.</para>
+            <para>Application developers should prefer the use of <see cref="T:MonoTouch.UIKit.UITableView.DequeueReusableCell(MonoTouch.Foundation.NSString,MonoTouch.Foundation.NSIndexPath)"/>, which returns a <see cref="T:MonoTouch.UIKit.UITableViewCell"/> that is properly sized for the index path.</para>
+          </remarks>
+          <altmember cref="M:MonoTouch.UIKit.UITableView.RegisterClassForCellReuse"/>
+          <altmember cref="M:MonoTouch.UIKit.UITableView.RegisterNibForCellReuse"/>
         </Docs>
       </Member>
       <Member MemberName="DequeueReusableCell">
@@ -806,10 +814,16 @@
           <Parameter Name="identifier" Type="System.String"/>
         </Parameters>
         <Docs>
-          <param name="identifier">A string identifying the cell object to be reused.</param>
+          <param name="identifier">A string identifying the cell type being requested.</param>
           <summary>Returns a reusable table view cell that was created with the given ReuseIdentifier.</summary>
           <returns>A <see cref="T:MonoTouch.UIKit.UITableViewCell"/> associated with the <paramref name="identifier"/>, or <see langword="null"/> if there is no cells in the queue with that particular <paramref name="identifier"/>.</returns>
-          <remarks>To be added.</remarks>
+          <remarks>
+            <para>The cell reuse cache is important for efficiency and application developers should use it for dynamic tables. </para>
+            <para>Application developers targeting iOS 6 and later should use <see cref="M:MonoTouch.UIKit.UITableView.RegisterClassForCellReuse"/> or <see cref="M:MonoTouch.UIKit.UITableView.RegisterNibForCellReuse"/>. Once a <see cref="T:MonoTouch.UIKit.UITableViewCell"/> class is registered, calls to <see cref="M:MonoTouch.UIKit.UITableView.DequeueReusableCell"/> will return a newly-instantiated object as necessary, rather than returning <see langword="null"/>.</para>
+            <para>Application developers should prefer the use of <see cref="T:MonoTouch.UIKit.UITableView.DequeueReusableCell(MonoTouch.Foundation.NSString,MonoTouch.Foundation.NSIndexPath)"/>, which returns a <see cref="T:MonoTouch.UIKit.UITableViewCell"/> that is properly sized for the index path.</para>
+          </remarks>
+          <altmember cref="M:MonoTouch.UIKit.UITableView.RegisterClassForCellReuse"/>
+          <altmember cref="M:MonoTouch.UIKit.UITableView.RegisterNibForCellReuse"/>
         </Docs>
       </Member>
       <Member MemberName="DequeueReusableCell">
@@ -832,11 +846,17 @@
           <Parameter Name="indexPath" Type="MonoTouch.Foundation.NSIndexPath"/>
         </Parameters>
         <Docs>
-          <param name="reuseIdentifier">To be added.</param>
-          <param name="indexPath">To be added.</param>
-          <summary>To be added.</summary>
-          <returns>To be added.</returns>
-          <remarks>To be added.</remarks>
+          <param name="reuseIdentifier">A string identifying the cell type being requested.</param>
+          <param name="indexPath">The specific cell being requested.</param>
+          <summary>Returns a reusable table view cell for the given <paramref name="reuseIdentifier"/>, properly sized for the <paramref name="indexPath"/>. </summary>
+          <returns>A <see cref="T:MonoTouch.UIKit.UITableViewCell"/> associated with the <paramref name="identifier"/>. </returns>
+          <remarks>
+            <para>This is the preferred method to call for cell reuse, as it calls <see cref="M:MonoTouch.UIKit.UITableViewSource.GetHeightForRow"/> and returns a properly-sized <see cref="T:MonoTouch.UIKit.UITableViewCell"/>.</para>
+            <para>This method must be preceded by cell registration using <see cref="M:MonoTouch.UIKit.UITableView.RegisterClassForCellReuse"/> or <see cref="M:MonoTouch.UIKit.UITableView.RegisterNibForCellReuse"/>. Otherwise, an <c>NSInternalInconsistencyException</c> exception will be raised at runtime. </para>
+            <para>The cell reuse cache is important for efficiency and application developers should use it for dynamic tables. </para>
+          </remarks>
+          <altmember cref="M:MonoTouch.UIKit.UITableView.RegisterClassForCellReuse"/>
+          <altmember cref="M:MonoTouch.UIKit.UITableView.RegisterNibForCellReuse"/>
         </Docs>
       </Member>
       <Member MemberName="DequeueReusableHeaderFooterView">
@@ -858,10 +878,13 @@
           <Parameter Name="reuseIdentifier" Type="MonoTouch.Foundation.NSString"/>
         </Parameters>
         <Docs>
-          <param name="reuseIdentifier">To be added.</param>
-          <summary>To be added.</summary>
-          <returns>To be added.</returns>
-          <remarks>To be added.</remarks>
+          <param name="reuseIdentifier">A string identify the type of <see cref="T:MonoTouch.UIKit.UITableViewHeaderFooterView"/> being requested.</param>
+          <summary>Returns a reusable <see cref="T:MonoTouch.UIKit.UITableViewHeaderFooterView"/> for the given <paramref name="reuseIdentifier"/>.</summary>
+          <returns>A <see cref="T:MonoTouch.UIKit.UITableViewHeaderFooterView"/> associated with the <paramref name="reuseIdentifier"/>.</returns>
+          <remarks>
+            <para>The table reuse cache is important for efficiency and application developers should use it for dynamic tables.</para>
+            <para>Application developers targeting iOS 6 and later should use <see cref="M:MonoTouch.UIKit.UITableView.RegisterClassForHeaderFooterViewReuse"/> or <see cref="M:MonoTouch.UIKit.UITableView.RegisterNibForHeaderFooterViewReuse"/>. Once a <see cref="T:MonoTouch.UIKit.UITableViewHeaderFooterView"/> class is registered, calls to <see cref="M:MonoTouch.UIKit.UITableView.DequeueReusableHeaderFooterView"/> will return a newly-instantiated object as necessary, rather than returning <see langword="null"/>.</para>
+          </remarks>
         </Docs>
       </Member>
       <Member MemberName="DeselectRow">
@@ -979,10 +1002,13 @@
         </TypeParameters>
         <Parameters/>
         <Docs>
-          <typeparam name="T">To be added.</typeparam>
-          <summary>To be added.</summary>
-          <returns>To be added.</returns>
-          <remarks>To be added.</remarks>
+          <typeparam name="T">The subtype of <see cref="T:MonoTouch.UIKit.UITableView"/> for which the custom appearance is desired.</typeparam>
+          <summary>Returns a <see cref="T:MonoTouch.UIKit.UITableViewAppearance"/> for the specified type <c>T</c>.</summary>
+          <returns>A <see cref="T:MonoTouch.UIKit.UITableViewApearance"/> for the specified type.</returns>
+          <remarks>
+            <para>This method returns a <see cref="T:MonoTouch.UIKit.UITableViewAppearance"/> that allows a custom subclass to have a different appearance than the base class.</para>
+            <para>Because <see langword="static"/> methods in C# are not polymorphic, the type parameter <c>T</c> is required to specify the subclass for which the <see cref="T:MonoTouch.UIKit.UITableViewAppearance"/> is desired.</para>
+          </remarks>
         </Docs>
       </Member>
       <Member MemberName="GetFooterView">
@@ -1029,9 +1055,9 @@
           <Parameter Name="section" Type="System.Int32"/>
         </Parameters>
         <Docs>
-          <param name="section">To be added.</param>
-          <summary>To be added.</summary>
-          <returns>To be added.</returns>
+          <param name="section">A zero-based index specifying which section's header is being requested.</param>
+          <summary>Returns the <see cref="T:MonoTouch.UIKit.UITableViewHeaderFooterView"/> for the specified <paramref name="section"/>. Returns <see langword="null"/> if there is no corresponding view.</summary>
+          <returns>The <see cref="T:MonoTouch.UIKit.UITableViewHeaderFooterView"/> for the specified <paramref name="section"/>. Returns <see langword="null"/> if there is no corresponding view</returns>
           <remarks>To be added.</remarks>
         </Docs>
       </Member>
@@ -1054,9 +1080,9 @@
           <Parameter Name="cell" Type="MonoTouch.UIKit.UITableViewCell"/>
         </Parameters>
         <Docs>
-          <param name="cell">To be added.</param>
-          <summary>To be added.</summary>
-          <returns>To be added.</returns>
+          <param name="cell">The <see cref="T:MonoTouch.UIKit.UITableViewCell"/> for which the index path is desired.</param>
+          <summary>Calculates the index path for the specified <paramref name="cell"/>.</summary>
+          <returns>The <see cref="T:MonoTouch.Foundation.NSIndexPath"/> for the <paramref name="cell"/>.</returns>
           <remarks>To be added.</remarks>
         </Docs>
       </Member>
@@ -1079,9 +1105,9 @@
           <Parameter Name="point" Type="System.Drawing.PointF"/>
         </Parameters>
         <Docs>
-          <param name="point">To be added.</param>
-          <summary>To be added.</summary>
-          <returns>To be added.</returns>
+          <param name="point">A location, in the coordinate system of <c>this</c>, in the row for which the index path is desired.</param>
+          <summary>Returns the <see cref="T:MonoTouch.Foundation.NSIndexPath"/> for the row at the indicated <paramref name="point"/>.</summary>
+          <returns>The <see cref="T:MonoTouch.Foundation.NSIndexPath"/> for the row at the indicated <paramref name="point"/>. Returns <see langword="null"/> if <paramref name="point"/> is not within a row.</returns>
           <remarks>To be added.</remarks>
         </Docs>
       </Member>
@@ -1101,9 +1127,12 @@
           <ReturnType>MonoTouch.Foundation.NSIndexPath</ReturnType>
         </ReturnValue>
         <Docs>
-          <summary>To be added.</summary>
-          <value>To be added.</value>
-          <remarks>To be added.</remarks>
+          <summary>The <see cref="T:MonoTouch.Foundation.NSIndexPath"/> for the currently-selected row.</summary>
+          <value>The <see cref="T:MonoTouch.Foundation.NSIndexPath"/> for the most-recently-selected of the currently-selected rows. Returns <see langword="null"/> if there are no selected rows.</value>
+          <remarks>
+            <para>If the <see cref="T:MonoTouch.UIKit.UITableView"/> contains more than one selected row, this property holds the most-recently-selected of the rows (see also <see cref="P:MonoTouch.UIKit.IndexPathsForSelectedRows"/>).</para>
+          </remarks>
+          <altmember cref="P:MonoTouch.UIKit.UITableView.SelectedRow"/>
         </Docs>
       </Member>
       <Member MemberName="IndexPathsForSelectedRows">
@@ -1125,8 +1154,8 @@
           <ReturnType>MonoTouch.Foundation.NSIndexPath[]</ReturnType>
         </ReturnValue>
         <Docs>
-          <summary>To be added.</summary>
-          <value>To be added.</value>
+          <summary>An array of <see cref="T:MonoTouch.Foundation.NSIndexPath"/>s for the selected rows.</summary>
+          <value>An array of <see cref="T:MonoTouch.Foundation.NSIndexPath"/>s corresponding to the currently-selected set of rows. Returns <see langword="null"/> if there are no selected rows.</value>
           <remarks>To be added.</remarks>
         </Docs>
       </Member>
@@ -1146,8 +1175,8 @@
           <ReturnType>MonoTouch.Foundation.NSIndexPath[]</ReturnType>
         </ReturnValue>
         <Docs>
-          <summary>To be added.</summary>
-          <value>To be added.</value>
+          <summary>An array of <see cref="T:MonoTouch.Foundation.NSIndexPath"/>s for the set of currently-visible rows.</summary>
+          <value>An array of <see cref="T:MonoTouch.Foundation.NSIndexPath"/>s corresponding to the set of currently-visible rows.</value>
           <remarks>To be added.</remarks>
         </Docs>
       </Member>
@@ -1167,10 +1196,11 @@
           <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
         </ReturnValue>
         <Docs>
-          <summary>Represents the value associated with the constant UITableViewIndexSearch</summary>
+          <summary>Represents the value associated with the constant <c>UITableViewIndexSearch</c></summary>
           <value>
           </value>
           <remarks>To be added.</remarks>
+          <altmember cref="M:MonoTouch.UIKit.UITableViewSource.SectionIndexTitles"/>
         </Docs>
       </Member>
       <Member MemberName="InsertRows">
@@ -1193,10 +1223,13 @@
           <Parameter Name="withRowAnimation" Type="MonoTouch.UIKit.UITableViewRowAnimation"/>
         </Parameters>
         <Docs>
-          <param name="atIndexPaths">To be added.</param>
-          <param name="withRowAnimation">To be added.</param>
-          <summary>To be added.</summary>
-          <remarks>To be added.</remarks>
+          <param name="atIndexPaths">An array of <see cref="T:MonoTouch.Foundation.NSIndexPath"/>s that indicate the desired insertion points.</param>
+          <param name="withRowAnimation">What type of animation to use.</param>
+          <summary>Inserts rows into the <see cref="T:MonoTouch.UIKit.UITableView"/>.</summary>
+          <remarks>
+            <para><c>UITableView</c> calls the relevant <see cref="T:MonoTouch.UIKit.UITableViewSource"/> methods (e.g., <see cref="M:MonoTouch.UIKit.UITableViewSource.GetCell"/> and related methods) immediately afterwards to get the cells and other content to display the visible rows.</para>
+            <para>When this method is called within a <see cref="M:MonoTouch.UIKit.UITableView.BeginUpdates"/>-<see cref="M:MonoTouch.UIKit.UITableView.EndUpdates"/> animation block, any insertions of rows or sections are deferred until after deletions have been processed. This happens regardless of the ordering of the insertion and deletion method calls within the animation block..</para>
+          </remarks>
         </Docs>
       </Member>
       <Member MemberName="InsertSections">
@@ -1220,10 +1253,10 @@
         </Parameters>
         <Docs>
           <param name="sections">A set of section identifiers to insert. If a section already exists at a given index, it is moved up down one index location.</param>
-          <param name="withRowAnimation">What type of animation to use when deleting the rows (eg. fade in or slide in from left)</param>
+          <param name="withRowAnimation">What type of animation to use when inserting the rows (eg. fade in or slide in from left)</param>
           <summary>Inserts a section (or sections) from a table view, with an option to animate the operation.</summary>
           <remarks>
-            <para>UITableView calls the relevant <see cref="T:MonoTouch.UIKit.UITableViewSource"/> methods immediately afterwards to get the cells and other content to display the visible rows.</para>
+            <para><c>UITableView</c> calls the relevant <see cref="T:MonoTouch.UIKit.UITableViewSource"/> methods immediately afterwards to get the cells and other content to display the visible rows.</para>
             <para>When this method is called inside an animation block defined by <see cref="M:MonoTouch.UIKit.UITableView.BeginUpdates"/> and <see cref="M:MonoTouch.UIKit.UITableView.EndUpdates"/>, any insertions of rows or sections are deferred until after deletions have been processed. This happens regardless of the ordering of the insertion and deletion method calls within the animation block.</para>
           </remarks>
         </Docs>
@@ -1248,10 +1281,12 @@
           <Parameter Name="toIndexPath" Type="MonoTouch.Foundation.NSIndexPath"/>
         </Parameters>
         <Docs>
-          <param name="fromIndexPath">To be added.</param>
-          <param name="toIndexPath">To be added.</param>
-          <summary>To be added.</summary>
-          <remarks>To be added.</remarks>
+          <param name="fromIndexPath">An <see cref="T:MonoTouch.Foundation.NSIndexPath"/> indicating the original row.</param>
+          <param name="toIndexPath">The desired location.</param>
+          <summary>Moves a row from <paramref name="fromIndexPath"/> to <paramref name="toIndexPath"/>.</summary>
+          <remarks>
+            <para>There is no function for moving an array of rows (in contrast to <see cref="M:MonoTouch.UIKit.UITableView.InsertRows"/> or <see cref="M:MonoTouch.UIKit.UITableView.DeleteRows"/>). The applicatin developer must instead repeatedly call this function. If this function is called within a <see cref="M:MonoTouch.UIKit.UITableView.BeginUpdates"/>-<see cref="M:MonoTouch.UIKit.UITableView.EndUpdates"/> animation block, all the row manipulation will occur as a single animation.</para>
+          </remarks>
         </Docs>
       </Member>
       <Member MemberName="MoveSection">
@@ -1279,7 +1314,7 @@
           <summary>Moves a section to a new location in the table view.</summary>
           <remarks>
             <para>This method can be combined with other MoveSection, <see cref="M:MonoTouch.UIKit.UITableView.InsertSections(MonoTouch.Foundation.NSIndexSet,MonoTouch.UIKit.UITableViewRowAnimation)"/> and <see cref="M:MonoTouch.UIKit.UITableView.DeleteSections(MonoTouch.Foundation.NSIndexSet,MonoTouch.UIKit.UITableViewRowAnimation)"/> operations within an animation block defined by <see cref="M:MonoTouch.UIKit.UITableView.BeginUpdates"/> and <see cref="M:MonoTouch.UIKit.UITableView.EndUpdates"/>, so that all the changes occur in a single animation.</para>
-            <para>Unlike the insertion and deletion methods, moving a section does not use an animation paramter. Moved sections always animate straight from their starting position to their new position. Only one section can be moved per method call, however to move mulitple sections you can call this method repeatedly within a <see cref="M:MonoTouch.UIKit.UITableView.BeginUpdates"/>-<see cref="M:MonoTouch.UIKit.UITableView.EndUpdates"/> animation block.</para>
+            <para>Unlike the insertion and deletion methods, moving a section does not use an animation paramter. Moved sections always animate straight from their starting position to their new position. Only one section can be moved per method call, however to move multiple sections you can call this method repeatedly within a <see cref="M:MonoTouch.UIKit.UITableView.BeginUpdates"/>-<see cref="M:MonoTouch.UIKit.UITableView.EndUpdates"/> animation block.</para>
           </remarks>
         </Docs>
       </Member>
@@ -1453,38 +1488,33 @@
           <param name="reuseIdentifier">The reuse identifier.</param>
           <summary>Registers a type to provide UITableViewCells for a specific reuseIdentifier.</summary>
           <remarks>
-
-	    <para>
-
-	      You can use this method to register the type of a class
-	      that should be instantiated if the UITableView needs to
-	      create a new cell in response to a request in
-	      DequeueReusableCell for the specified reuseIdentifier.
-
-	    </para>
-
-	    <para>
-
-	      Registering types with cell identifiers helps reduce the
-	      amount of code that you have to write in your GetCell
-	      method.  It means that your GetCell method only needs to
-	      call DequeueReusableCell with the reuse identifier, and
-	      if there is no available cell, the UITableView will
-	      create an instance of the specified type and return it.
-
-	    </para>
-
-	    <para> 
-
-	      The type that you register must provide a constructor
-	      that takes an IntPtr constructor and needs to chain to
-	      the <see
-	      cref="C:MonoTouch.UIKit.UITableViewCell(IntPtr)"/>
-	      constructor.
-
-	    </para>
-
-	  </remarks>
+            <para>
+              
+              You can use this method to register the type of a class
+              that should be instantiated if the UITableView needs to
+              create a new cell in response to a request in
+              DequeueReusableCell for the specified reuseIdentifier.
+              
+            </para>
+            <para>
+              
+              Registering types with cell identifiers helps reduce the
+              amount of code that you have to write in your GetCell
+              method.  It means that your GetCell method only needs to
+              call DequeueReusableCell with the reuse identifier, and
+              if there is no available cell, the UITableView will
+              create an instance of the specified type and return it.
+              
+            </para>
+            <para> 
+              
+              The type that you register must provide a constructor
+              that takes an IntPtr constructor and needs to chain to
+              the <see cref="C:MonoTouch.UIKit.UITableViewCell(IntPtr)"/>
+              constructor.
+              
+            </para>
+          </remarks>
         </Docs>
       </Member>
       <Member MemberName="RegisterClassForHeaderFooterViewReuse">
@@ -1506,34 +1536,31 @@
           <param name="reuseIdentifier">The reuse identifier.</param>
           <summary>Registers a type to provide UIViews for headers or footers for a specific reuseIdentifier.</summary>
           <remarks>
-	    <para>
-
-	      You can use this method to register the type of a class
-	      that should be instantiated if the UITableView needs to
-	      create a new header or footer in response to a request in
-	      DequeueReusableHeaderFooterView for the specified reuseIdentifier.
-
-	    </para>
-
-	    <para>
-
-	      Registering types with reuse identifiers helps reduce the
-	      amount of code that you have to write in your GetFooterView or GetHeaderView methods.
-	      It means that your code only needs to
-	      call DequeueReusableHeaderFooterView with the reuse identifier, and
-	      if there is no available cell, the UITableView will
-	      create an instance of the specified type and return it.
-
-	    </para>
-
-	    <para> 
-	      The type that you register must provide a constructor
-	      that takes an IntPtr constructor and needs to chain to
-	      the <see
-	      cref="C:MonoTouch.UIKit.UIView(IntPtr)"/>
-	      constructor.
-	    </para>
-	  </remarks>
+            <para>
+              
+              You can use this method to register the type of a class
+              that should be instantiated if the UITableView needs to
+              create a new header or footer in response to a request in
+              DequeueReusableHeaderFooterView for the specified reuseIdentifier.
+              
+            </para>
+            <para>
+              
+              Registering types with reuse identifiers helps reduce the
+              amount of code that you have to write in your GetFooterView or GetHeaderView methods.
+              It means that your code only needs to
+              call DequeueReusableHeaderFooterView with the reuse identifier, and
+              if there is no available cell, the UITableView will
+              create an instance of the specified type and return it.
+              
+            </para>
+            <para> 
+              The type that you register must provide a constructor
+              that takes an IntPtr constructor and needs to chain to
+              the <see cref="C:MonoTouch.UIKit.UIView(IntPtr)"/>
+              constructor.
+            </para>
+          </remarks>
         </Docs>
       </Member>
       <Member MemberName="RegisterNibforCellReuse">
@@ -1582,10 +1609,10 @@
           <Parameter Name="reuseIdentifier" Type="System.String"/>
         </Parameters>
         <Docs>
-          <param name="nib">To be added.</param>
-          <param name="reuseIdentifier">To be added.</param>
-          <summary>To be added.</summary>
-          <remarks>To be added.</remarks>
+          <param name="nib">A nib object created from a nib file. This value cannot be <see langword="null"/>.</param>
+          <param name="reuseIdentifier">A string to use as an identifier for the cell. This value cannot be <see langword="null"/>.</param>
+          <summary>Registers a nib object (containing a <see cref="T:MonoTouch.UIKit.UITableViewCell"/>) with the given identifer string.</summary>
+          <remarks>After a nib object has been registered with a table view, calling <see cref="M:MonoTouch.UIKit.UITableView.DequeueReusableCell(MonoTouch.Foundation.NSString)"/> with the correct identifer will cause the table view to instantiate the cell from the nib object if there is not already an instance in the reuse queue.</remarks>
         </Docs>
       </Member>
       <Member MemberName="RegisterNibForHeaderFooterViewReuse">
@@ -1608,10 +1635,12 @@
           <Parameter Name="identifier" Type="System.String"/>
         </Parameters>
         <Docs>
-          <param name="nib">To be added.</param>
-          <param name="identifier">To be added.</param>
-          <summary>To be added.</summary>
-          <remarks>To be added.</remarks>
+          <param name="nib">A nib object created from a nib file. This value cannot be <see langword="null"/>.</param>
+          <param name="identifier">A string to use as an identifier for this view. The value cannot be <see langword="null"/>.</param>
+          <summary>Registers a nib object (containing a <see cref="T:MonoTouch.UIKit.UITableViewHeaderFooterView"/>) with the given identifier string.</summary>
+          <remarks>
+            <para>After a nib object has been registered with a table view, as section header and footer views come into view, the appropriate <see cref="T:MonoTouch.UIKit.UITableViewHeaderFooterView"/>s will be instantiated as necessary from the nib object if there is not already an instance in the reuse queue.</para>
+          </remarks>
         </Docs>
       </Member>
       <Member MemberName="ReloadData">
@@ -1870,8 +1899,8 @@
           <ReturnType>MonoTouch.UIKit.UIColor</ReturnType>
         </ReturnValue>
         <Docs>
-          <summary>To be added.</summary>
-          <value>To be added.</value>
+          <summary>The text color to be used in the index.</summary>
+          <value>This value may be <see langword="null"/>.</value>
           <remarks>
             <para id="tool-remark">This member participates in the <see cref="T:MonoTouch.UIKit.UIAppearance"/> styling system.  See the <see cref="P:MonoTouch.UIKit.UITableView.Appearance"/> property and the <see cref="M:MonoTouch.UIKit.UITableView.AppearanceWhenContainedIn"/> method.</para>
           </remarks>
@@ -1897,8 +1926,8 @@
         </ReturnValue>
         <Docs>
           <summary>The number of rows required in a table view before the index list is displayed.</summary>
-          <value>To be added.</value>
-          <remarks>Only <see cref="T:MonoTouch.UIKit.UItableViewStyle"/>.Plain styled tables should have an index. The default value is <see cref="T:MonoTouch.Foundation.NSIntegerMax"/>.</remarks>
+          <value>The default value is 0.</value>
+          <remarks>Only <see cref="T:MonoTouch.UIKit.UItableViewStyle"/>.Plain styled tables should have an index. </remarks>
         </Docs>
       </Member>
       <Member MemberName="SectionIndexTrackingBackgroundColor">
@@ -1923,8 +1952,8 @@
           <ReturnType>MonoTouch.UIKit.UIColor</ReturnType>
         </ReturnValue>
         <Docs>
-          <summary>To be added.</summary>
-          <value>To be added.</value>
+          <summary>Specifies the background color of the index as the application user drags.</summary>
+          <value>This value may be <see langword="null"/>.</value>
           <remarks>
             <para id="tool-remark">This member participates in the <see cref="T:MonoTouch.UIKit.UIAppearance"/> styling system.  See the <see cref="P:MonoTouch.UIKit.UITableView.Appearance"/> property and the <see cref="M:MonoTouch.UIKit.UITableView.AppearanceWhenContainedIn"/> method.</para>
           </remarks>
@@ -2298,5 +2327,4 @@
         </Docs>
       </Member>
     </Members>
-  </Docs>
 </Type>
