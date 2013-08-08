@@ -1065,10 +1065,6 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         </param>
         <summary>Dismisses a presented <see cref="T:MonoTouch.UIKit.UIViewController" />.</summary>
         <remarks>
-          <para>It is the responsibility of the <see cref="T:MonoTouch.UIKit.UIViewController" /> that presents another <see cref="T:MonoTouch.UIKit.UIViewController" /> to dismiss it as appropriate. If this method is called on a presented <see cref="T:MonoTouch.UIKit.UIViewController" /> that is in a stack but is not the head, only the head <see cref="T:MonoTouch.UIKit.UIViewController" /> will be animated during dismissal.</para>
-          <para>
-            After a <see cref="T:MonoTouch.UIKit.UIViewController" /> is dismissed, it’s <see cref="M:MonoTouch.UIKit.UIViewController.ViewDidDisappear" /> method will be called. 
-          </para>
         </remarks>
       </Docs>
     </Member>
@@ -1086,10 +1082,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="animated" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="animated">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="animated"> if the transition is to be animated.</param>
+        <summary>Dismisses a presented .</summary>
+        <returns>A task that represents the asynchronous DismissViewController operation</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Dispose">
@@ -2250,8 +2246,6 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         </param>
         <summary>Presents a <see cref="T:MonoTouch.UIKit.UIViewController" />. On iPhone and iTouch, presentation is always full screen, on iPad, the style is specified with <see cref="P:MonoTouch.UIKit.UIViewController.ModalPresentationStyle" />.</summary>
         <remarks>
-          <para>This method sets the <see cref="P:MonoTouch.UIKit.UIViewController.PresentedViewController" /> property of this <see cref="T:MonoTouch.UIKit.UIViewController" /> to <paramref name="viewControllerToPresent" />, resizes the <see cref="P:MonoTouch.UIKit.UIViewController.View" /> of <paramref name="viewControllerToPresent" />, and then adds the <see cref="T:MonoTouch.UIKit.UIView" /> to the view hierarchy. If <paramref name="animated" /> is <see langword="true" />, the presentation is animated according to the value of the <paramref name="viewControllerToPresent" />’s '<see cref="P:MonoTouch.UIKit.UIViewController.ModalTransitionStyle" />.</para>
-          <para>The <paramref name="completionHandler" /> is called after the execution of the <paramref name="viewControllerToPresent" />’s <see cref="M:MonoTouch.UIKit.UIViewController.ViewDidAppear" /> method.</para>
         </remarks>
       </Docs>
     </Member>
@@ -2270,11 +2264,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="animated" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="viewControllerToPresent">To be added.</param>
-        <param name="animated">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="viewControllerToPresent">The  to be presented.</param>
+        <param name="animated"> if the presentation should be animated.</param>
+        <summary>Presents a . On iPhone and iTouch, presentation is always full screen, on iPad, the style is specified with .</summary>
+        <returns>A task that represents the asynchronous PresentViewController operation</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="ProvidesPresentationContextTransitionStyle">
@@ -2919,7 +2913,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="completionHandler">A function executed when the transition has completed. The method argument <c>finished</c> is <see langword="true" /> if the animation occurred and <see langword="false" /> if it was skipped.</param>
         <summary>Transitions from one child <see cref="T:MonoTouch.UIKit.UIViewController" /> to another. </summary>
         <remarks>
-          <para>This method should only be overridden by custom container <see cref="T:MonoTouch.UIKit.UIViewController" />s. Application developers who override this method must call <c>base.Transition(fromViewController, toViewController, duration, options, animations, completionhandler)</c>.</para>
+          <para copied="true">This method should only be overridden by custom container <see cref="T:MonoTouch.UIKit.UIViewController" />s. Application developers who override this method must call <c>base.Transition(fromViewController, toViewController, duration, options, animations, completionhandler)</c>.</para>
         </remarks>
       </Docs>
     </Member>
@@ -2941,14 +2935,16 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="animations" Type="MonoTouch.Foundation.NSAction" />
       </Parameters>
       <Docs>
-        <param name="fromViewController">To be added.</param>
-        <param name="toViewController">To be added.</param>
-        <param name="duration">To be added.</param>
-        <param name="options">To be added.</param>
-        <param name="animations">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="fromViewController">The  from which the transition originates.</param>
+        <param name="toViewController">The  to which the transition changes.</param>
+        <param name="duration">The duration of the transition, in seconds.</param>
+        <param name="options">Animation options.</param>
+        <param name="animations">An  function to animate the transition. Must not be .</param>
+        <summary>Transitions from one child  to another. </summary>
+        <returns>
+          <para>A task that represents the asynchronous Transition operation.   The value of the TResult parameter is a MonoTouch.UIKit.UICompletionHandler.</para>
+        </returns>
+        <remarks><para copied="true">The TransitionAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="TransitioningDelegate">
@@ -2963,7 +2959,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Docs>
         <summary>To be added.</summary>
-        <value>To be added.</value>
+        <value><para>(More documentation for this node is coming)</para><para tool="nullallowed">This value can be <see langword="null" />.</para></value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -3331,7 +3327,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Docs>
         <summary>To be added.</summary>
-        <value>To be added.</value>
+        <value><para>(More documentation for this node is coming)</para><para tool="nullallowed">This value can be <see langword="null" />.</para></value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>

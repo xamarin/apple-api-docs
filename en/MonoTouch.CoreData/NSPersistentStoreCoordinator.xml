@@ -275,11 +275,50 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <summary>Notification constant for DidImportUbiquitousContentChanges</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:NSPersistentStoreCoordinator+Notifications" />.<see cref="M:NSPersistentStoreCoordinator+Notifications.ObserveDidImportUbiquitousContentChangesNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
+          <example>
+            <code lang="c#">
+//
+// Lambda style
+//
+
+// listening
+notification = NSPersistentStoreCoordinator.Notifications.ObserveDidImportUbiquitousContentChanges ((sender, args) =&gt; {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = NSPersistentStoreCoordinator.Notifications.ObserveDidImportUbiquitousContentChanges (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}</code>
+          </example>
+          <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
             <code lang="c#">
 // Lambda style
-NSNotificationCenter.DefaultCenter.AddObserver (NSPersistentStoreCoordinator.DidImportUbiquitousContentChangesNotification, (notification) =&gt; Console.WriteLine ("Received the notification NSPersistentStoreCoordinator", notification);
+NSNotificationCenter.DefaultCenter.AddObserver (
+        NSPersistentStoreCoordinator.DidImportUbiquitousContentChangesNotification, (notification) =&gt; {Console.WriteLine ("Received the notification NSPersistentStoreCoordinator", notification); }
 
 
 // Method style
@@ -287,6 +326,7 @@ void Callback (NSNotification notification)
 {
     Console.WriteLine ("Received a notification NSPersistentStoreCoordinator", notification);
 }
+
 void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (NSPersistentStoreCoordinator.DidImportUbiquitousContentChangesNotification, Callback);
@@ -338,8 +378,9 @@ void Setup ()
         <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>Represents the value associated with the constant NSPersistentStoreUbiquitousContainerIdentifierKey</summary>
+        <value>
+        </value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -786,8 +827,9 @@ void Setup ()
         <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>Represents the value associated with the constant NSPersistentStoreUbiquitousPeerTokenOption</summary>
+        <value>
+        </value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -807,8 +849,9 @@ void Setup ()
         <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>Represents the value associated with the constant NSPersistentStoreUbiquitousTransitionTypeKey</summary>
+        <value>
+        </value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -850,8 +893,9 @@ void Setup ()
         <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>Represents the value associated with the constant NSPersistentStoreRebuildFromUbiquitousContentOption</summary>
+        <value>
+        </value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -996,8 +1040,9 @@ void Setup ()
         <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>Represents the value associated with the constant NSPersistentStoreRemoveUbiquitousMetadataOption</summary>
+        <value>
+        </value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -1236,11 +1281,50 @@ void Setup ()
         <summary>Notification constant for StoresDidChange</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:NSPersistentStoreCoordinator+Notifications" />.<see cref="M:NSPersistentStoreCoordinator+Notifications.ObserveStoresDidChangeNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
+          <example>
+            <code lang="c#">
+//
+// Lambda style
+//
+
+// listening
+notification = NSPersistentStoreCoordinator.Notifications.ObserveStoresDidChange ((sender, args) =&gt; {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = NSPersistentStoreCoordinator.Notifications.ObserveStoresDidChange (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}</code>
+          </example>
+          <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
             <code lang="c#">
 // Lambda style
-NSNotificationCenter.DefaultCenter.AddObserver (NSPersistentStoreCoordinator.StoresDidChangeNotification, (notification) =&gt; Console.WriteLine ("Received the notification NSPersistentStoreCoordinator", notification);
+NSNotificationCenter.DefaultCenter.AddObserver (
+        NSPersistentStoreCoordinator.StoresDidChangeNotification, (notification) =&gt; {Console.WriteLine ("Received the notification NSPersistentStoreCoordinator", notification); }
 
 
 // Method style
@@ -1248,6 +1332,7 @@ void Callback (NSNotification notification)
 {
     Console.WriteLine ("Received a notification NSPersistentStoreCoordinator", notification);
 }
+
 void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (NSPersistentStoreCoordinator.StoresDidChangeNotification, Callback);
@@ -1277,6 +1362,44 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:NSPersistentStoreCoordinator+Notifications" />.<see cref="M:NSPersistentStoreCoordinator+Notifications.ObserveStoresWillChangeNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
+          <example>
+            <code lang="c#">
+//
+// Lambda style
+//
+
+// listening
+notification = NSPersistentStoreCoordinator.Notifications.ObserveStoresWillChange ((sender, args) =&gt; {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = NSPersistentStoreCoordinator.Notifications.ObserveStoresWillChange (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}</code>
+          </example>
+          <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
             <code lang="c#">
 // Lambda style
@@ -1451,11 +1574,50 @@ void Setup ()
         <summary>Notification constant for WillRemoveStore</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.</para>
+          <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:NSPersistentStoreCoordinator+Notifications" />.<see cref="M:NSPersistentStoreCoordinator+Notifications.ObserveWillRemoveStoreNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
+          <example>
+            <code lang="c#">
+//
+// Lambda style
+//
+
+// listening
+notification = NSPersistentStoreCoordinator.Notifications.ObserveWillRemoveStore ((sender, args) =&gt; {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = NSPersistentStoreCoordinator.Notifications.ObserveWillRemoveStore (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}</code>
+          </example>
+          <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
             <code lang="c#">
 // Lambda style
-NSNotificationCenter.DefaultCenter.AddObserver (NSPersistentStoreCoordinator.WillRemoveStoreNotification, (notification) =&gt; Console.WriteLine ("Received the notification NSPersistentStoreCoordinator", notification);
+NSNotificationCenter.DefaultCenter.AddObserver (
+        NSPersistentStoreCoordinator.WillRemoveStoreNotification, (notification) =&gt; {Console.WriteLine ("Received the notification NSPersistentStoreCoordinator", notification); }
 
 
 // Method style
@@ -1463,6 +1625,7 @@ void Callback (NSNotification notification)
 {
     Console.WriteLine ("Received a notification NSPersistentStoreCoordinator", notification);
 }
+
 void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (NSPersistentStoreCoordinator.WillRemoveStoreNotification, Callback);

@@ -271,8 +271,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Double</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>Represents the value associated with the constant UIApplicationBackgroundFetchIntervalMinimum</summary>
+        <value>
+        </value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -292,8 +293,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Double</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>Represents the value associated with the constant UIApplicationBackgroundFetchIntervalNever</summary>
+        <value>
+        </value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -341,6 +343,44 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveBackgroundRefreshStatusDidChangeNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
+          <example>
+            <code lang="c#">
+//
+// Lambda style
+//
+
+// listening
+notification = UIApplication.Notifications.ObserveBackgroundRefreshStatusDidChange ((sender, args) =&gt; {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = UIApplication.Notifications.ObserveBackgroundRefreshStatusDidChange (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}</code>
+          </example>
+          <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
             <code lang="c#">
 // Lambda style
@@ -411,9 +451,9 @@ void Setup ()
         <value>
         </value>
         <remarks>
-          <para tool="threads">This can be used from a background thread.</para>
           <para>
           </para>
+          <para tool="threads">This can be used from a background thread.</para>
         </remarks>
       </Docs>
     </Member>
@@ -735,6 +775,48 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveContentSizeCategoryChangedNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
+          <example>
+            <code lang="c#">
+//
+// Lambda style
+//
+
+// listening
+notification = UIApplication.Notifications.ObserveContentSizeCategoryChanged ((sender, args) =&gt; {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("NewValue", args.NewValue);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, MonoTouch.UIKit.UIContentSizeCategoryChangedEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("NewValue", args.NewValue);
+}
+
+void Setup ()
+{
+    notification = UIApplication.Notifications.ObserveContentSizeCategoryChanged (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}</code>
+          </example>
+          <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
             <code lang="c#">
 // Lambda style
@@ -769,7 +851,7 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>An instance of the MonoTouch.UIKit.UIApplicationDelegate model class which acts as the class delegate.</summary>
-        <value>The instance of the MonoTouch.UIKit.UIApplicationDelegate model class</value>
+        <value><para>The instance of the MonoTouch.UIKit.UIApplicationDelegate model class</para><para tool="nullallowed">This value can be <see langword="null" />.</para></value>
         <remarks>
           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
@@ -1579,8 +1661,9 @@ void Setup ()
         <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>Represents the value associated with the constant UIApplicationLaunchOptionsBluetoothCentralsKey</summary>
+        <value>
+        </value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -1600,8 +1683,9 @@ void Setup ()
         <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>Represents the value associated with the constant UIApplicationLaunchOptionsBluetoothPeripheralsKey</summary>
+        <value>
+        </value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -2605,8 +2689,9 @@ void Setup ()
         <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>Represents the value associated with the constant UIApplicationStateRestorationSystemVersionKey</summary>
+        <value>
+        </value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -2626,8 +2711,9 @@ void Setup ()
         <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>Represents the value associated with the constant UIApplicationStateRestorationTimestampKey</summary>
+        <value>
+        </value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -2899,6 +2985,44 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveUserDidTakeScreenshotNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
+          <example>
+            <code lang="c#">
+//
+// Lambda style
+//
+
+// listening
+notification = UIApplication.Notifications.ObserveUserDidTakeScreenshot ((sender, args) =&gt; {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = UIApplication.Notifications.ObserveUserDidTakeScreenshot (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}</code>
+          </example>
+          <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
             <code lang="c#">
 // Lambda style
@@ -2968,11 +3092,12 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>An object that can respond to the delegate protocol for this type</summary>
-        <value>The instance that will respond to events and data requests.</value>
+        <value><para>The instance that will respond to events and data requests.</para><para tool="nullallowed">This value can be <see langword="null" />.</para></value>
         <remarks>
           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
           <para>   Methods must be decorated with the [Export ("selectorName")] attribute to respond to each method from the protocol.   Alternatively use the Delegate method which is strongly typed and does not require the [Export] attributes on methods.</para>
+          <para tool="threads">This can be used from a background thread.</para>
         </remarks>
       </Docs>
     </Member>
