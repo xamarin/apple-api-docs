@@ -101,24 +101,24 @@
           <para>The argument value is ignored and merely ensures that the only code that is executed is the construction phase is the basic NSObject allocation and runtime type registration.  Typically the chaining would look like this:</para>
           <example>
             <code lang="C#">
-              //
-              // The NSObjectFlag merely allocates the object and registers the
-              // C# class with the Objective-C runtime if necessary, but no actual
-              // initXxx method is invoked, that is done later in the constructor
-              //
-              // This is taken from MonoTouch's source code:
-              //
-              [Export ("initWithFrame:")]
-              public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
-              {
-              // Invoke the init method now.
-              var initWithFrame = new Selector ("initWithFrame:").Handle;
-              if (IsDirectBinding)
-              Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
-              else
-              Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
-              }
-            </code>
+//
+// The NSObjectFlag merely allocates the object and registers the
+// C# class with the Objective-C runtime if necessary, but no actual
+// initXxx method is invoked, that is done later in the constructor
+//
+// This is taken from MonoTouch's source code:
+//
+[Export ("initWithFrame:")]
+public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
+{
+// Invoke the init method now.
+	var initWithFrame = new Selector ("initWithFrame:").Handle;
+	if (IsDirectBinding)
+		Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+	else
+		Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+}
+</code>
           </example>
         </remarks>
       </Docs>
