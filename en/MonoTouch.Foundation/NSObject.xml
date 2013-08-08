@@ -29,24 +29,21 @@
 	to C# classes.  Merely subclassing from NSObject will produce a
 	class that can be passed to Objective-C.   
       </para>
-
       <para>
 
 	The C# NSObject class and their subclasses are managed
 	representations of the underlying Objective-C instances.  The
 	pointer to the unmanaged code Objective-C object is stored in
-	the <see cref="P:MonoTouch.Foundation.NSObject.Handle"/>
+	the <see cref="P:MonoTouch.Foundation.NSObject.Handle" />
 	property.
 
       </para>
-
       <para>
 	
 	It is important to note that currently, the compiler does not
 	support generic subclasses of NSObject.   
 
       </para>
-
       <format type="text/html">
         <h2>Class Registration</h2>
       </format>
@@ -56,24 +53,21 @@
 	registered with the Objective-C runtime with a name based on
 	the full .NET typename which is an implementation detail.  If
 	you need to ensure that a C# class is exposed with a specific
-	name in the Objective-C runtime, you can apply the <see
-	cref="T:MonoTouch.ObjCRuntime.RegisterAttribute"/> to the
+	name in the Objective-C runtime, you can apply the <see cref="T:MonoTouch.ObjCRuntime.RegisterAttribute" /> to the
 	class and specify the name that you want your class to have.
 
       </para>
-
       <para>
 
 	The above is typically used in cases where either you want to
 	reference the class by name on some Objective-C code, when
 	using Interface Builder XIB and Storyboard files or when you
 	are using an Objective-C serialization setup (for example when
-	using <see cref="T:MonoTouch.Foundation.NSCoder"/>).
+	using <see cref="T:MonoTouch.Foundation.NSCoder" />).
 
       </para>
-
-<example>
-<code lang="c#">
+      <example>
+        <code lang="c#">
 //
 // This exposes the C# class _MySampleView as the Objective-C MyView
 //
@@ -82,12 +76,10 @@ public class _MySampleView : UIView {
 
 }
 </code>
-</example>
-
+      </example>
       <format type="text/html">
         <h2>Objective-C Methods</h2>
       </format>
-
       <para>
 	
 	In general, MonoTouch classes map one to one to the underlying
@@ -99,19 +91,16 @@ public class _MySampleView : UIView {
 	idioms and the .NET Framework Design Guidelines.   
 
       </para>
-
       <para>
 
 	Objective-C methods are surfaced to C# as virtual methods that
-	have the special <see
-	cref="T:MonoTouch.ObjCRuntime.ExportAttribute"/> applied to
+	have the special <see cref="T:MonoTouch.ObjCRuntime.ExportAttribute" /> applied to
 	them.  This attribute is used by the compiler to map C# names
 	to Objective-C names.  These attributes are shown in the API
 	documentation on top of each function, to help you identify
 	which Objective-C method a particular C# method is calling.
 
       </para>
-
       <para>
 	
 	To alter the behavior of a class you use the standard C#
@@ -120,8 +109,8 @@ public class _MySampleView : UIView {
 	optionally call into your base class.
 
       </para>
-<example>
-<code lang="c#">
+      <example>
+        <code lang="c#">
 public class MyView : UISlider {
 	public override void Draw (RectangleF rect)
 	{
@@ -135,15 +124,13 @@ public class MyView : UISlider {
 	}
 }
 </code>
-</example>
-
+      </example>
       <para>
 	
 	By default, only methods that have been overwritten will be
 	exposed to the Objective-C world.  If you want to expose an
 	arbitrary C# method to the Objective-C world, you need to
-	apply the <see
-	cref="T:MonoTouch.ObjCRuntime.ExportAttribute"/> to your
+	apply the <see cref="T:MonoTouch.ObjCRuntime.ExportAttribute" /> to your
 	public method.  And this can be done to both static and
 	instance methods.  Once the attribute is applied, the method
 	will be exposed to Objective-C and the standard data type
@@ -151,9 +138,8 @@ public class MyView : UISlider {
 	made available to those methods.
 
       </para>
-
-<example>
-<code lang="c#">
+      <example>
+        <code lang="c#">
 //
 // Exposes the class StringUtilities to Objective-C with the 
 // method:
@@ -171,19 +157,16 @@ public class StringUtilities : NSObject {
 	}
 }
 </code>
-</example>
-
+      </example>
       <format type="text/html">
         <h2>Lifecycle</h2>
       </format>
-
       <para>
 	The C# NSObject and their subclasses are managed wrappers for
 	the underlying Objective-C object.  These are created either
 	from C#, when you create a new instance by using the "new"
 	operator or when an existing unmanaged object is surfaced to the C# world.
       </para>
-
       <para>
 
 	When you create an object from C# using the "new" operator,
@@ -194,7 +177,6 @@ public class StringUtilities : NSObject {
 	the Dispose method on the object.
 
       </para>
-
       <para>
 
 	C# NSObjects are also created on demand when you invoke a
@@ -207,7 +189,6 @@ public class StringUtilities : NSObject {
 	the object.   
 
       </para>
-
       <para>
 
 	Pure "peers" to framework objects (those objects
@@ -216,7 +197,6 @@ public class StringUtilities : NSObject {
 	by the runtime on demand by using the constructor mentioned before.   
 
       </para>
-
       <para>
 
 	User-subclasses of NSObjects often contain C# state so
@@ -228,7 +208,6 @@ public class StringUtilities : NSObject {
 	you.
 
       </para>
-
       <para>
 
 	The Dispose operation on an NSObject will always drop the
@@ -240,38 +219,30 @@ public class StringUtilities : NSObject {
 	any methods on the object, as it is deemed to be useless.  That is not the case with NSObjects. 
 
       </para>
-
-
       <format type="text/html">
         <h2>Adopting Protocols</h2>
       </format>
-
       <para>
 
 	In MonoTouch, most Objective-C protocols are mapped to classes
-	that have the <see
-	cref="T:MonoTouch.ObjCRuntime.ModelAttribute"/> applied to
+	that have the <see cref="T:MonoTouch.ObjCRuntime.ModelAttribute" /> applied to
 	them.  And the way that you adopt a protocol is by subclassing
 	and overwriting the methods that you want to adopt.
 
       </para>
-
       <para>
 
 	There are some rare cases, where you want to adopt an ad-hoc
 	protocol on your own.  If you need to adopt an Objective-C
-	protocol, you should use the <see
-	cref="T:MonoTouch.ObjCRuntime.AdoptsAttribute"/> on your class
+	protocol, you should use the <see cref="T:MonoTouch.ObjCRuntime.AdoptsAttribute" /> on your class
 	and provide the name of the protocol that you want to adopt.
 	Typically, when adopting a protocol, you will also have to
 	list all of the Objective-C selectors that you are adopting
-	using the <see
-	cref="T:MonoTouch.ObjCRuntime.ExportAttribute"/>.
+	using the <see cref="T:MonoTouch.ObjCRuntime.ExportAttribute" />.
 
       </para>
-
-<example>
-<code lang="c#">
+      <example>
+        <code lang="c#">
 [Adopts ("NSLocking")]
 public class MyLockeingObject : NSObject {
 	[Export ("lock")]
@@ -287,30 +258,25 @@ public class MyLockeingObject : NSObject {
 	}
 }
 </code>
-</example>
-
+      </example>
       <format type="text/html">
         <h2>Key Value Coding</h2>
       </format>
-
       <para>
 	Key Value coding is a mechanism that allows you to access
 	properties of an object by their name, as opposed to accessing
 	them directly with a C# method.
       </para>
-
       <para>
 
 	To expose a C# property to the Key-Value coding system all you
-	need to do is add the <see
-	cref="T:MonoTouch.ObjCRuntime.ExportAttribute"/> to your
+	need to do is add the <see cref="T:MonoTouch.ObjCRuntime.ExportAttribute" /> to your
 	property. The names must only contain ASCII characters, start
 	with a lowercase letter, and must not contain any spaces.
 
       </para>
-
-<example>
-<code lang="c#">
+      <example>
+        <code lang="c#">
 public class CircleLayer : CALayer {
 	[Export ("radius")]
 	public double Radius { get; set; }
@@ -318,22 +284,17 @@ public class CircleLayer : CALayer {
 	// ...
 }
 </code>
-</example>
-
+      </example>
       <para>
 
-	You use the <see
-	cref="M:MonoTouch.Foundation.ValueForKey(MonoTouch.Foundation.NSString);"/>
+	You use the <see cref="M:MonoTouch.Foundation.ValueForKey(MonoTouch.Foundation.NSString);" />
 	to lookup a property using a name, and you use the of
-	functions <see
-	cref="M:MonoTouch.Foundation.SetValueForKey(MonoTouch.Foundation.NSObject,
-	MonoTouch.Foundation.NSString);"/> to set the value for the
+	functions <see cref="M:MonoTouch.Foundation.SetValueForKey(MonoTouch.Foundation.NSObject,&#xA;	MonoTouch.Foundation.NSString);" /> to set the value for the
 	specified property.  For example, you could call
 	foo.ValueForKey ("user") to grab the value of the user
 	property in an object.  
 
       </para>
-
       <para>
 
 	In addition, you can use Key Paths to have the runtime
@@ -343,43 +304,31 @@ public class CircleLayer : CALayer {
 	and then request the address property on the user, then it
 	would request the phone property on the address and finally
 	request the mobile property on the phone and finally use the
-	result as the value.  You use the <see
-	cref="M:MonoTouch.Foundation.ValueForKeyPath(MonoTouch.Foundation.NSString);"/> to lookup a property using
-	a keypath, and you use the <see
-	cref="M:MonoTouch.Foundation.SetValueForKeyPath(MonoTouch.Foundation.NSObject, MonoTouch.Foundation.NSString);"/> to set a value using a
+	result as the value.  You use the <see cref="M:MonoTouch.Foundation.ValueForKeyPath(MonoTouch.Foundation.NSString);" /> to lookup a property using
+	a keypath, and you use the <see cref="M:MonoTouch.Foundation.SetValueForKeyPath(MonoTouch.Foundation.NSObject, MonoTouch.Foundation.NSString);" /> to set a value using a
 	keypath.
 
       </para>
-
-      <para> When using keypaths, if a lookup fails, the <see
-	cref="M:MonoTouch.Foundation.NSObject.SetValueForUndefinedKey(MonoTouch.Foundation.NSObject,MonoTouch.Foundation.NSString)"/>
-	will be invoked when setting a value, and the <see
-	cref="M:MonoTouch.Foundation.NSObject.ValueForUndefinedKey(MonoTouch.Foundation.NSString)"/>
+      <para> When using keypaths, if a lookup fails, the <see cref="M:MonoTouch.Foundation.NSObject.SetValueForUndefinedKey(MonoTouch.Foundation.NSObject,MonoTouch.Foundation.NSString)" />
+	will be invoked when setting a value, and the <see cref="M:MonoTouch.Foundation.NSObject.ValueForUndefinedKey(MonoTouch.Foundation.NSString)" />
 	will be invoked when looking up a value.  Both methods by
 	default raise an Objective-C exception, you can alter that behavior by overriding the methods. 
 	</para>
-
       <format type="text/html">
         <h2>Key Value Observing</h2>
       </format>
-
       <para>
 	Key value observing is a mechanism implemented by NSObject
 	that can be used to monitor changes being done to an NSObject
 	through the Key Value Coding system.
       </para>
-
       <para>
 
 	For your class to observe a notification, you must override
-	the <see
-	cref="M:MonoTouch.Foundation.ObserveValue(MonoTouch.Foundation.NSString,MonoTouch.Foundation.NSObject,MonoTouch.Foundation.NSDictionary,IntPtr)"/>
-	method which will be invoked with the information about the value changes for a specific keypath.   Then you use the <see
-	cref="M:MonoTouch.Foundation.AddObserver(MonoTouch.Foundation.NSObject,MonoTouch.Foundation.NSString,MonoTouch.Foundation.NSKeyValueObservingOptions,IntPtr)"/> to start observing changes and the <see
-	cref="M:MonoTouch.Foundation.RemoveObserver(MonoTouch.Foundation.NSObject,MonoTouch.Foundation.NSString)"/> method to stop receiving notifications. 
+	the <see cref="M:MonoTouch.Foundation.ObserveValue(MonoTouch.Foundation.NSString,MonoTouch.Foundation.NSObject,MonoTouch.Foundation.NSDictionary,IntPtr)" />
+	method which will be invoked with the information about the value changes for a specific keypath.   Then you use the <see cref="M:MonoTouch.Foundation.AddObserver(MonoTouch.Foundation.NSObject,MonoTouch.Foundation.NSString,MonoTouch.Foundation.NSKeyValueObservingOptions,IntPtr)" /> to start observing changes and the <see cref="M:MonoTouch.Foundation.RemoveObserver(MonoTouch.Foundation.NSObject,MonoTouch.Foundation.NSString)" /> method to stop receiving notifications. 
 
       </para>
-
     </remarks>
   </Docs>
   <Members>
@@ -620,6 +569,23 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="key">Name of the Objective-C property.  It must be an ASCII name, start with a lowercase letter and contain no spaces.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Autorelease">
+      <MemberSignature Language="C#" Value="public MonoTouch.Foundation.NSObject Autorelease ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class MonoTouch.Foundation.NSObject Autorelease() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MonoTouch.Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
         <summary>To be added.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
@@ -1086,8 +1052,10 @@ public class EditableCoreTextView : UIView {
       </ReturnValue>
       <Docs>
         <summary>Description of the object, the Objective-C version of ToString.</summary>
-        <value></value>
-        <remarks></remarks>
+        <value>
+        </value>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="DidChange">
@@ -1414,9 +1382,9 @@ public class EditableCoreTextView : UIView {
         <summary>Handle (pointer) to the unmanaged object representation.</summary>
         <value>A pointer</value>
         <remarks>
-	  <para>This IntPtr is a handle to the underlying unmanaged representation for this object.   It is the actual pointer value to the Objective-C "id" value.</para>
-	  <para>This is typicallly used when you want to pass this instance to an unmanaged Objective-C call, or when you want to call any of the Messaging methods on the current class.</para>
-	</remarks>
+          <para>This IntPtr is a handle to the underlying unmanaged representation for this object.   It is the actual pointer value to the Objective-C "id" value.</para>
+          <para>This is typicallly used when you want to pass this instance to an unmanaged Objective-C call, or when you want to call any of the Messaging methods on the current class.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Init">
@@ -1742,8 +1710,8 @@ public class EditableCoreTextView : UIView {
         <param name="delay">The delay in seconds before the method is invoked.</param>
         <summary>Invokes the selector on the current instance and if the <c>obj</c> is not null, it passes this as its single parameter.</summary>
         <remarks>
-<example>
-<code lang="c#">
+          <example>
+            <code lang="c#">
 public override bool FinishedLaunching (UIApplication app, NSDictionary options)
 {
 	window = new UIWindow (UIScreen.MainScreen.Bounds);
@@ -1761,8 +1729,8 @@ void RunDemo (NSString arg)
 	Console.WriteLine ("This is the parameter I got {0}", arg);
 }
 </code>
-</example>
-	</remarks>
+          </example>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="PerformSelector">
@@ -1781,13 +1749,13 @@ void RunDemo (NSString arg)
         <Parameter Name="delay" Type="System.Single" />
       </Parameters>
       <Docs>
-       <param name="sel">The selector to invoke on the current object.</param>
+        <param name="sel">The selector to invoke on the current object.</param>
         <param name="obj">Parameter to pass to the method, or null if the method does not take any arguments.</param>
         <param name="delay">The delay in seconds before the method is invoked.</param>
         <summary>Invokes the selector on the current instance and if the <c>obj</c> is not null, it passes this as its single parameter.</summary>
         <remarks>
-<example>
-<code lang="c#">
+          <example>
+            <code lang="c#">
 public override bool FinishedLaunching (UIApplication app, NSDictionary options)
 {
 	window = new UIWindow (UIScreen.MainScreen.Bounds);
@@ -1805,7 +1773,7 @@ void RunDemo (NSString arg)
 	Console.WriteLine ("This is the parameter I got {0}", arg);
 }
 </code>
-</example>
+          </example>
         </remarks>
       </Docs>
     </Member>
@@ -1901,6 +1869,22 @@ void RunDemo (NSString arg)
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="Release">
+      <MemberSignature Language="C#" Value="public void Release ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Release() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="RemoveObserver">
       <MemberSignature Language="C#" Value="public virtual void RemoveObserver (MonoTouch.Foundation.NSObject observer, MonoTouch.Foundation.NSString keyPath);" />
       <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void RemoveObserver(class MonoTouch.Foundation.NSObject observer, class MonoTouch.Foundation.NSString keyPath) cil managed" />
@@ -1947,6 +1931,23 @@ void RunDemo (NSString arg)
       </Parameters>
       <Docs>
         <param name="sel">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Retain">
+      <MemberSignature Language="C#" Value="public MonoTouch.Foundation.NSObject Retain ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class MonoTouch.Foundation.NSObject Retain() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MonoTouch.Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
         <summary>To be added.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
@@ -2049,7 +2050,8 @@ void RunDemo (NSString arg)
         <param name="value">Value to set on the property.</param>
         <param name="key">Name of the Objective-C property whose value you want to retrieve.  It must be an ASCII name, start with a lowercase letter and contain no spaces.</param>
         <summary>Sets the value of the property specified by the key to the specified value.</summary>
-        <remarks></remarks>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SetValueForKeyPath">
@@ -2076,31 +2078,28 @@ void RunDemo (NSString arg)
         <param name="keyPath">Key-path to use to perform the value lookup.   The keypath consists of a series of lowercase ASCII-strings with no spaces in them separated by dot characters.</param>
         <summary>Sets the value of a property that can be reached using a keypath.</summary>
         <remarks>
-	  <para>
+          <para>
 
 	    The keypath is separated by dots, and each component is
 	    used to lookup a specific key on the object.  The process
 	    is repeated on each returning object until the last
 	    element is processed.  
 	  </para>
-
-	  <para>
+          <para>
 	    If a component of the key path is
-	    not found, the method <see
-	    cref="M:MonoTouch.Foundation.NSObject.SetValueForUndefinedKey(MonoTouch.Foundation.NSObject,MonoTouch.Foundation.NSString)"/>
+	    not found, the method <see cref="M:MonoTouch.Foundation.NSObject.SetValueForUndefinedKey(MonoTouch.Foundation.NSObject,MonoTouch.Foundation.NSString)" />
 	    is invoked, and its default implementation raises an
 	    Objective-C exception.   Subclasses can alter this behavior by overriding that method.
 	  </para>
-
-	  <example>
-<code lang="c#">
+          <example>
+            <code lang="c#">
 string SetMobilePhone (Order order, NSString phone)
 {
 	return order.SetValueForKeyPath ("user.address.phone.mobile", phone);
 }
 </code>
-	  </example>
-	</remarks>
+          </example>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SetValueForKeyPath">
@@ -2240,15 +2239,15 @@ string SetMobilePhone (Order order, NSString phone)
         <summary>Returns the value of the property associated with the specified key.</summary>
         <returns>An NSObject containing the value.</returns>
         <remarks>
-	  <example>
-<code lang="c#">
+          <example>
+            <code lang="c#">
 string GetName (NSObject myObject)
 {
 	return (string) myObject.ValueForKey ("name");
 }
 </code>
-	  </example>
-	</remarks>
+          </example>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ValueForKeyPath">
@@ -2274,30 +2273,28 @@ string GetName (NSObject myObject)
         <summary>Returns the value of a property that can be reached using a keypath.</summary>
         <returns>An NSObject containing the value for the specified keypath.</returns>
         <remarks>
-	  <para>
+          <para>
 
 	    The keypath is separated by dots, and each component is
 	    used to lookup a specific key on the object.  The process
 	    is repeated on each returning object until the last
 	    element is processed.  
 	  </para>
-
-	  <para>
+          <para>
 	    If a component of the key path is
-	    not found, the method <see
-	    cref="M:MonoTouch.Foundation.NSObject.ValueForUndefinedKey(MonoTouch.Foundation.NSString)"/>
+	    not found, the method <see cref="M:MonoTouch.Foundation.NSObject.ValueForUndefinedKey(MonoTouch.Foundation.NSString)" />
 	    is invoked, and its default implementation raises an
 	    Objective-C exception.   Subclasses can alter this behavior by overriding that method.
 	  </para>
-
-	  <example>
-<code lang="c#">
+          <example>
+            <code lang="c#">
 string GetMobilePhone (Order order)
 {
 	return (string) order.ValueForKeyPath ("user.address.phone.mobile");
 }
 </code>
-	  </example></remarks>
+          </example>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ValueForUndefinedKey">
