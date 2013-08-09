@@ -18,39 +18,37 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Used to create menu items that are attached to the editing menu.</summary>
+    <summary>Creates menu items that are attached to the editing menu.</summary>
     <remarks>
-      <para>
-        <see cref="T:MonoTouch.UIKit.UIMenuItem" />s are menu items that appear on the editing menu after the system menu items. <see cref="T:MonoTouch.UIKit.UIMenuItem" />s are managed by a <see cref="T:MonoTouch.UIKit.UIMenuController" /> and should be added to that object's <see cref="P:MonoTouch.UIKit.UIMenuController.MenuItems" /> property. </para>
-      <para>As the following code, taken from the "Touches_GestureRecognizer" sample demonstrates, the <see cref="P:MonoTouch.UIKit.UIMenuItem.Action" /> property is used to associate the <see cref="T:MonoTouch.UIKit.UIMenuItem" /> with a method decorated with the <see cref="T:MonoTouch.Foundation.ExportAttribute" /> attribute.</para>
+      <para><see cref="T:MonoTouch.UIKit.UIMenuItem"/>s are menu items that appear on the editing menu after the system menu items. <see cref="T:MonoTouch.UIKit.UIMenuItem"/>s are managed by a <see cref="T:MonoTouch.UIKit.UIMenuController"/> and should be added to that object's <see cref="P:MonoTouch.UIKit.UIMenuController.MenuItems"/> property. </para>
+      <para>As the following code, taken from the "Touches_GestureRecognizer" sample demonstrates, the <see cref="P:MonoTouch.UIKit.UIMenuItem.Action"/> property is used to associate the <see cref="T:MonoTouch.UIKit.UIMenuItem"/> with a method decorated with the <see cref="T:MonoTouch.Foundation.ExportAttribute"/> attribute.</para>
       <example>
-        <code lang="C#">
-          void ShowResetMenu (UILongPressGestureRecognizer gestureRecognizer)
-          {
-            if (gestureRecognizer.State == UIGestureRecognizerState.Began) {
-              var menuController = UIMenuController.SharedMenuController;
-              var resetMenuItem = new UIMenuItem ("Reset", new Selector ("ResetImage"));
-              var location = gestureRecognizer.LocationInView (gestureRecognizer.View);
-              BecomeFirstResponder ();
-              menuController.MenuItems = new [] { resetMenuItem };
-              menuController.SetTargetRect (new RectangleF (location.X, location.Y, 0, 0), gestureRecognizer.View);
-              menuController.MenuVisible = true;
-              imageForReset = gestureRecognizer.View;
-            }
-          }
-          [Export("ResetImage")]
-          void ResetImage (UIMenuController controller)
-          {
-            var mid = new PointF ((imageForReset.Bounds.Left + imageForReset.Bounds.Right) / 2, (imageForReset.Bounds.Top + imageForReset.Bounds.Bottom) / 2);
-            var locationInSuperview = imageForReset.ConvertPointToView (mid, imageForReset.Superview);
-            imageForReset.Layer.AnchorPoint = new PointF (0.5f, 0.5f);
-            imageForReset.Center =locationInSuperview;
-          
-            UIView.BeginAnimations (null, IntPtr.Zero);
-            imageForReset.Transform = MonoTouch.CoreGraphics.CGAffineTransform.MakeIdentity ();
-            UIView.CommitAnimations ();
-          }
-        </code>
+        <code lang="C#"><![CDATA[
+void ShowResetMenu (UILongPressGestureRecognizer gestureRecognizer)
+{
+  if (gestureRecognizer.State == UIGestureRecognizerState.Began) {
+	    var menuController = UIMenuController.SharedMenuController;
+	    var resetMenuItem = new UIMenuItem ("Reset", new Selector ("ResetImage"));
+	    var location = gestureRecognizer.LocationInView (gestureRecognizer.View);
+	    BecomeFirstResponder ();
+	    menuController.MenuItems = new [] { resetMenuItem };
+	    menuController.SetTargetRect (new RectangleF (location.X, location.Y, 0, 0), gestureRecognizer.View);
+	    menuController.MenuVisible = true;
+	    imageForReset = gestureRecognizer.View;
+	  }
+}
+[Export("ResetImage")]
+void ResetImage (UIMenuController controller)
+{
+  var mid = new PointF ((imageForReset.Bounds.Left + imageForReset.Bounds.Right) / 2, (imageForReset.Bounds.Top + imageForReset.Bounds.Bottom) / 2);
+  var locationInSuperview = imageForReset.ConvertPointToView (mid, imageForReset.Superview);
+  imageForReset.Layer.AnchorPoint = new PointF (0.5f, 0.5f);
+  imageForReset.Center =locationInSuperview;
+
+  UIView.BeginAnimations (null, IntPtr.Zero);
+  imageForReset.Transform = MonoTouch.CoreGraphics.CGAffineTransform.MakeIdentity ();
+  UIView.CommitAnimations ();
+}          ]]></code>
       </example>
     </remarks>
     <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=82ff303e-bd49-43cb-9520-d471c625a3c5">Touches_GestureRecognizers</related>
@@ -127,7 +125,7 @@
           <para>In general, if your constructors invokes the NSObjectFlag.Empty base implementation, then it should be calling an Objective-C init method.   If this is not the case, you should instead chain to the proper constructor in your class. </para>
           <para>The argument value is ignored and merely ensures that the only code that is executed is the construction phase is the basic NSObject allocation and runtime type registration.  Typically the chaining would look like this:</para>
           <example>
-            <code lang="C#">
+            <code lang="C#"><![CDATA[ 
 //
 // The NSObjectFlag merely allocates the object and registers the
 // C# class with the Objective-C runtime if necessary, but no actual
@@ -138,14 +136,14 @@
 [Export ("initWithFrame:")]
 public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 {
-// Invoke the init method now.
-	var initWithFrame = new Selector ("initWithFrame:").Handle;
-	if (IsDirectBinding)
-		Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
-	else
-		Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
-}
-</code>
+ // Invoke the init method now.
+ var initWithFrame = new Selector ("initWithFrame:").Handle;
+ if (IsDirectBinding)
+    Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+ else
+    Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+}              
+              ]]></code>
           </example>
         </remarks>
       </Docs>
