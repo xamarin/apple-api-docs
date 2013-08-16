@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <Type Name="NSLayoutManager" FullName="MonoTouch.UIKit.NSLayoutManager">
   <TypeSignature Language="C#" Value="public class NSLayoutManager : MonoTouch.Foundation.NSObject" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit NSLayoutManager extends MonoTouch.Foundation.NSObject" />
@@ -8,7 +9,7 @@
   <Base>
     <BaseTypeName>MonoTouch.Foundation.NSObject</BaseTypeName>
   </Base>
-  <Interfaces />
+  <Interfaces/>
   <Attributes>
     <Attribute>
       <AttributeName>MonoTouch.Foundation.Register("NSLayoutManager", true)</AttributeName>
@@ -18,8 +19,11 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Responsible for layout of text stored in a <see cref="T:MonoTouch.UIKit.NSTextStorage"/> object.</summary>
-    <remarks>To be added.</remarks>
+    <summary>Responsible for layout of text stored in a <see cref="T:MonoTouch.UIKit.NSTextStorage" /> object.</summary>
+    <remarks>
+      <para>iOS 7 introduced "Text Kit," a broad set of APIs and modifications of existing classes, built on <see cref="N:MonoTouch.CoreText" />, that greatly expands the typographical flexibility of iOS.</para>
+      <para>The <see cref="T:MonoTouch.UIKit.NSLayoutManager" />'s <see cref="P:MonoTouch.UIKit.NSLayoutManager.TextStorage"/> property holds a reference to a <see cref="T:MonoTouch.UIKit.NSTextStorage"/> object, that holds a potentially large amount of styled text. The <see cref="T:MonoTouch.UIKit.NSLayoutManager"/>'s <see cref="P:MonoTouch.UIKit.NSLayoutManager.NSTextContainers"/> property holds an ordered array of <see cref="T:MonoTouch.UIKit.NSTextContainer"/> objects in which it lays out text. The <see cref="T:MonoTouch.UIKit.NSTextContainer"/>s, in turn, hold references to <see cref="T:MonoTouch.UIKit.UITextView"/> objects, which actually display the text.</para>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -37,7 +41,7 @@
           <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
         </Attribute>
       </Attributes>
-      <Parameters />
+      <Parameters/>
       <Docs>
         <summary>Default constructor, initializes a new instance of this class.</summary>
         <remarks>
@@ -93,7 +97,7 @@
           <para>In general, if your constructors invokes the NSObjectFlag.Empty base implementation, then it should be calling an Objective-C init method.   If this is not the case, you should instead chain to the proper constructor in your class. </para>
           <para>The argument value is ignored and merely ensures that the only code that is executed is the construction phase is the basic NSObject allocation and runtime type registration.  Typically the chaining would look like this:</para>
           <example>
-            <code lang="C#">
+            <code lang="C#"><![CDATA[
 //
 // The NSObjectFlag merely allocates the object and registers the
 // C# class with the Objective-C runtime if necessary, but no actual
@@ -111,6 +115,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 	else
 		Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
 }
+              ]]>
 </code>
           </example>
         </remarks>
@@ -158,9 +163,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="container" Type="MonoTouch.UIKit.NSTextContainer" />
       </Parameters>
       <Docs>
-        <param name="container">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="container">An <see cref="T:MonoTouch.UIKit.NSTextContainer" /> to be appended to the <see cref="P:MonoTouch.UIKit.NSLayoutManager.TextContainers"/> property.</param>
+        <summary>Appends a <see cref="T:MonoTouch.UIKit.NSTextContainer" /> to the <see cref="P:MonoTouch.UIKit.NSLayoutManager.TextContainers"/> property.</summary>
+        <remarks/>
+        <altmember cref="M:MonoTouch.UIKit.NSLayoutManager.InsertTextContainer" />
       </Docs>
     </Member>
     <Member MemberName="AllowsNonContiguousLayout">
@@ -182,9 +188,19 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Whether layout can be done for a portion of the document without laying-out being recalculated from the beginning.</summary>
+        <value>The default value is <see langword="false" />.</value>
+        <remarks>
+          <para>Setting this value to <see langword="true" /> allows the <see cref="T:MonoTouch.UIKit.NSLayoutManager"/> to perform noncontiguous layout. In large documents, this can significantly increase performance, since the layout does not need to performed from the beginning of the document.</para>
+          <para>Application developers can use the <c>EnsureLayout...</c> methods with noncontiguous methods to confirm that particular portions of the text are being laid out properly.</para>
+        </remarks>
+        <altmember cref="P:MonoTouch.UIKit.NSLayoutManager.HasNonContiguousLayout" />
+        <altmember cref="M:MonoTouch.UIKit.NSLayoutManager.EnsureGlyphsForCharacterRange" />
+        <altmember cref="M:MonoTouch.UIKit.NSLayoutManager.EnsureGlyphsForGlyphRange" />
+        <altmember cref="M:MonoTouch.UIKit.NSLayoutManager.EnsureLayoutForCharacterRange" />
+        <altmember cref="M:MonoTouch.UIKit.NSLayoutManager.EnsureLayoutForGlyphRange" />
+        <altmember cref="M:MonoTouch.UIKit.NSLayoutManager.EnsureLayoutForTextContainer" />
+        <altmember cref="M:MonoTouch.UIKit.NSLayoutManager.EnsureLayoutForBoundingRect" />
       </Docs>
     </Member>
     <Member MemberName="AttachmentSizeForGlyphAtIndex">
@@ -207,8 +223,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="glyphIndex">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <summary>The size of the attachment cell associated with the glyph at the specified index</summary>
+        <returns>The size of attachment cell at the glyph at <paramref name="glyphIndex" />. Returns {-1.0f, -1.0f} if there is no attachment at the specified glyph.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -234,9 +250,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="glyphRange">To be added.</param>
         <param name="container">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>The bounding rectangle, in container coordinates, for the glyphs in the specified range.</summary>
         <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <para>The returned <see cref="T:System.Drawing.RectangleF" /> includes the area needed for all marks associated with the glyphs, including the area needed for glyphs that draw outside of their line fragment rectangle and for marks such as underlining.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CharacterIndexForGlyphAtIndex">
@@ -259,9 +277,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="glyphIndex">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>The index of the first character associated with the glyph at the specified index.</summary>
         <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <para>If <see cref="P:MonoTouch.UIKit.NSLayoutManager.AllowsNonContiguousLayout" /> is <see langword="false"/>, calling this method will result in generating all glyphs up to and including <paramref name="glyphIndex"/>.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CharacterIndexForPoint">
@@ -288,7 +308,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="point">To be added.</param>
         <param name="container">To be added.</param>
         <param name="partialFraction">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>The index in <see cref="P:MonoTouch.UIKit.NSLayoutManager.TextStorage" /> for the specified point in the <paramref name="container"/>'s coordinate system.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -320,8 +340,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.UIKit.NSLayoutManagerDelegate</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>An instance of the MonoTouch.UIKit.NSLayoutManagerDelegate model class which acts as the class delegate.</summary>
-        <value><para>The instance of the MonoTouch.UIKit.NSLayoutManagerDelegate model class</para><para tool="nullallowed">This value can be <see langword="null" />.</para></value>
+        <summary>An instance of the <see cref="T:MonoTouch.UIKit.NSLayoutManagerDelegate" /> model class which acts as the class delegate.</summary>
+        <value>
+          <para>The instance of the MonoTouch.UIKit.NSLayoutManagerDelegate model class</para>
+          <para tool="nullallowed">This value can be <see langword="null" />.</para>
+        </value>
         <remarks>
           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
@@ -344,12 +367,12 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="disposing">
-          <para>If set to <see langword="true" />, the method is invoked directly and will dispose manage and unmanaged resources;   If set to <see langword="false" /> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</para>
+          <para>If set to <see langword="true" />, the method is invoked directly and will dispose manage and unmanaged resources;   If set to <see langword="false"/> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</para>
         </param>
         <summary>Releases the resources used by the NSLayoutManager object.</summary>
         <remarks>
           <para>This Dispose method releases the resources used by the NSLayoutManager class.</para>
-          <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposing <paramref name="disposing" /> is set to <see langword="true" /> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false" />. </para>
+          <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposing <paramref name="disposing" /> is set to <see langword="true"/> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false"/>. </para>
           <para>Calling the Dispose method when you are finished using the NSLayoutManager ensures that all external resources used by this managed object are released as soon as possible.  Once you have invoked the Dispose method, the object is no longer useful and you should no longer make any calls to it.</para>
           <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at http://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
         </remarks>
@@ -377,8 +400,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="glyphsToShow">To be added.</param>
         <param name="origin">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Draws background marks for the given glyph range.</summary>
+        <remarks>
+          <para>Background marks include text background color, highlighting, and table backgrounds and borders. Application developers can override this function in subclasses to fully customize background drawing.</para>
+          <para><paramref name="glyphsToShow" /> must specify glyphs within a single <see cref="T:MonoTouch.UIKit.NSTextContainer"/>.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="DrawGlyphs">
@@ -403,8 +429,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="glyphsToShow">To be added.</param>
         <param name="origin">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Draws the specified glyph range.</summary>
+        <remarks>
+          <para>This method causes glyph generation and layout, if needed.</para>
+          <para><paramref name="glyphsToShow" /> must specify glyphs within a single <see cref="T:MonoTouch.UIKit.NSTextContainer"/>.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="DrawsOutsideLineFragmentForGlyphAtIndex">
@@ -427,7 +456,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="glyphIndex">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Returns <see langword="true" /> if the specified glyph draws outside of its line fragment rectangle.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -462,8 +491,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="lineRect">To be added.</param>
         <param name="lineGlyphRange">To be added.</param>
         <param name="containerOrigin">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Draws a strikethrough in the given style through the specified glyphs.</summary>
+        <remarks>
+          <para>Application developers should typically use the more convenient <see cref="M:MonoTouch.UIKit.NSLayoutManager.Strikethrough" /> method.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="DrawUnderline">
@@ -496,8 +527,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="lineRect">To be added.</param>
         <param name="lineGlyphRange">To be added.</param>
         <param name="containerOrigin">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Draws an underline in the specified style through the specified glyphs.</summary>
+        <remarks>
+          <para>Application developers should typically use the more convenient <see cref="M:MonoTouch.UIKit.NSLayoutManager.Underline" /> method.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="EnsureGlyphsForCharacterRange">
@@ -520,8 +553,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="charRange">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Forces the <see cref="T:MonoTouch.UIKit.NSLayoutManager" /> to generate glyphs for the specified characters, if it has not already done so.</summary>
+        <remarks>
+          <para>The <see cref="T:MonoTouch.UIKit.NSLayoutManager" /> may calculate glyphs for a range larger than the <paramref name="charRange"/>. If <see cref="P:MonoTouch.UIKit.NSLayoutManager.AllowsNonContinguousLayout"/> is <see langword="false"/>, the range will always extend to the beginning of the text.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="EnsureGlyphsForGlyphRange">
@@ -544,8 +579,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="glyphRange">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Forces the <see cref="T:MonoTouch.UIKit.NSLayoutManager" /> to generate glyphs for the specified glyph range, if it has not already done so.</summary>
+        <remarks>
+          <para>The <see cref="T:MonoTouch.UIKit.NSLayoutManager" /> may calculate glyphs for a range larger than the <paramref name="glyphRange"/>. If <see cref="P:MonoTouch.UIKit.NSLayoutManager.AllowsNonContinguousLayout"/> is <see langword="false"/>, the range will always extend to the beginning of the text.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="EnsureLayoutForBoundingRect">
@@ -570,8 +607,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="bounds">To be added.</param>
         <param name="container">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Forces the <see cref="T:MonoTouch.UIKit.NSLayoutManager" /> to layout the specified rectangle, if it has not already done so.</summary>
+        <remarks>
+          <para>The <see cref="T:MonoTouch.UIKit.NSLayoutManager" /> may layout an area larger than the <paramref name="bounds"/>. If <see cref="P:MonoTouch.UIKit.NSLayoutManager.AllowsNonContinguousLayout"/> is <see langword="false"/>, the range will always extend to the beginning of the text.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="EnsureLayoutForCharacterRange">
@@ -594,8 +633,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="charRange">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Forces the <see cref="T:MonoTouch.UIKit.NSLayoutManager" /> to layout the specified characters, if it has not already done so.</summary>
+        <remarks>
+          <para>The <see cref="T:MonoTouch.UIKit.NSLayoutManager" /> may layout an area larger than the <paramref name="charRange"/>. If <see cref="P:MonoTouch.UIKit.NSLayoutManager.AllowsNonContinguousLayout"/> is <see langword="false"/>, the range will always extend to the beginning of the text.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="EnsureLayoutForGlyphRange">
@@ -618,8 +659,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="glyphRange">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Forces the <see cref="T:MonoTouch.UIKit.NSLayoutManager" /> to layout the specified glyphs, if it has not already done so.</summary>
+        <remarks>
+          <para>The <see cref="T:MonoTouch.UIKit.NSLayoutManager" /> may layout a larger range than the specified <paramref name="glyphRange"/>. If <see cref="P:MonoTouch.UIKit.NSLayoutManager.AllowsNonContinguousLayout"/> is <see langword="false"/>, the range will always extend to the beginning of the text.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="EnsureLayoutForTextContainer">
@@ -642,8 +685,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="container">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Forces the <see cref="T:MonoTouch.UIKit.NSLayoutManager" /> to layout the specified <see cref="T:MonoTouch.UIKit.NSTextContainer"/>, if it has not already done so.</summary>
+        <remarks>
+          <para>The <see cref="T:MonoTouch.UIKit.NSLayoutManager" /> may layout more than the specified <paramref name="container"/>. If <see cref="P:MonoTouch.UIKit.NSLayoutManager.AllowsNonContinguousLayout"/> is <see langword="false"/>, the range will always extend to the beginning of the text.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="EnumerateEnclosingRects">
@@ -718,8 +763,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Drawing.RectangleF</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>The <see cref="T:System.Drawing.RectangleF" /> needed for the insertion point.</summary>
+        <value>Returns the rectangle defining the extra line fragment for the insertion point or {0,0,0,0} if there is no such retangle.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -739,8 +784,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.UIKit.NSTextContainer</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>The <see cref="T:MonoTouch.UIKit.NSTextContainer" /> containing the <see cref="P:MonoTouch.UIKit.NSLayoutManager.ExtraLineFragmentRect"/>.</summary>
+        <value>Returns <see langword="null" /> if the <see cref="P:MonoTouch.UIKit.NSLayoutManager.ExtraLineFragmentRect"/> does not exist (is {0,0,0,0}).</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -760,8 +805,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Drawing.RectangleF</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>The rectangle enclosing the insertion point.</summary>
+        <value>Twice the <see cref="P:MonoTouch.UIKit.NSTextContainer.LineFragmentPadding" />, with the insertion point in the middle.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -781,7 +826,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The index of the first character that has not been laid out.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -802,7 +847,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The index of the first glyph that has not been laid out.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -829,9 +874,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="point">To be added.</param>
         <param name="container">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Primitive method for <see cref="M:MonoTouch.UIKit.NSLayoutManager.GlyphIndexForPoint" />.</summary>
         <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <remarks><para>This method should not be used except when overriding <see cref="T:MonoTouch.UIKit.NSLayoutManager" />. Application developers should use <see cref="M:MonoTouch.UIKit.NSLayoutManager.GlyphIndexForPoint"/>. </para></remarks>
       </Docs>
     </Member>
     <Member MemberName="GetFirstUnlaidCharacterIndex">
@@ -856,8 +901,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="charIndex">To be added.</param>
         <param name="glyphIndex">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>The indices of the first character and glyph that are not laid out.</summary>
+        <remarks>
+          <para>Application developers should be aware that <paramref name="charIndex" /> and <paramref name="glyphIndex"/> may be <see langword="null"/> if the text is fully laid out.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetGlyphRange">
@@ -880,7 +927,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="container">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>The range of glyph indices contained in the specified <see cref="T:MonoTouch.UIKit.NSTextContainer" />.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -908,12 +955,12 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="bidiLevelBuffer" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <param name="glyphRange">To be added.</param>
-        <param name="glyphBuffer">To be added.</param>
-        <param name="props">To be added.</param>
-        <param name="charIndexBuffer">To be added.</param>
-        <param name="bidiLevelBuffer">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="glyphRange">The range of glyphs to be laid out.</param>
+        <param name="glyphBuffer">On return, a pointer to an <c>NSGlyph</c> buffer.</param>
+        <param name="props">On return, a pointer to an <c>NSDictionary</c> of properties.</param>
+        <param name="charIndexBuffer">On return, the indices of the characters for the glyph range.</param>
+        <param name="bidiLevelBuffer">On return, the direction of each glyph for bidirectional text. Values are defined in Unicode Standard Annex #9.</param>
+        <summary>Fills a buffer with glyphs.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -941,14 +988,14 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="charIndexes" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <param name="charIndex">To be added.</param>
-        <param name="alternatePosition">To be added.</param>
-        <param name="inDisplayOrder">To be added.</param>
-        <param name="positions">To be added.</param>
-        <param name="charIndexes">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="charIndex">The index of any character in the line fragment.</param>
+        <param name="alternatePosition">If <see langword="true" />, returns alternate insertion points.</param>
+        <param name="inDisplayOrder">If <see langword="true" />, returns the insertion points in display order rather than logical order.</param>
+        <param name="positions">On return, a pointer to the <c>CGFloat</c>s that are the insertion point indices.</param>
+        <param name="charIndexes">On return, a point to the <c>NSUInteger</c>s that are character indices corresponding to the insertion points.</param>
+        <summary>Calculates the insertion points in a line fragment.</summary>
+        <returns>The number of insertion points returned.</returns>
+        <remarks><para>Application developers must either pass in null pointers to <paramref name="positions" /> or <paramref name="charIndexes"/> or pointers to memory large enough to hold the maximum number of insertion points (the number of characters in the line fragment + 1).</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="GetUsedRectForTextContainer">
@@ -971,7 +1018,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="container">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>The bounding rectangle in the <see cref="T:MonoTouch.UIKit.NSTextContainer" />'s coordinates of the laid out glyphs in the <see cref="T:MonoTouch.UIKit.NSTextContainer"/>.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -996,7 +1043,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="glyphIndex">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>The glyph at the specified index.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -1022,8 +1069,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="glyphIndex">To be added.</param>
-        <param name="isValidIndex">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="isValidIndex">On output, <see langword="false" /> if the index is outside a valid range (i.e., less than 0 or greater than the number of glyphs).</param>
+        <summary>The glyph at the given index.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -1048,7 +1095,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="charIndex">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>The glyph index for the character at the specified index.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -1075,7 +1122,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="point">To be added.</param>
         <param name="container">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>The glyph index for the <paramref name="point" /> in the <paramref name="container"/>'s coordinate system.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -1103,8 +1150,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="point">To be added.</param>
         <param name="container">To be added.</param>
-        <param name="partialFraction">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="partialFraction">On output, the fraction of the distance between the glyph returned and the next glyph.</param>
+        <summary>The glyph index for the <paramref name="point" /> in the <paramref name="container"/>'s coordinate system, plus a fraction of the distance between the location of the glyph returned and the next glyph.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -1131,9 +1178,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="bounds">To be added.</param>
         <param name="container">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>The minimum range that contains all the laid-out glyphs that at least partially overlap the specified <paramref name="bounds" />.</summary>
         <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <remarks><para>This method performs layout if necessary.</para></remarks>
+        <altmember cref="M:MonoTouch.UIKit.NSLayoutManager.GlyphRangeForBoundingRectWithoutAdditionalLayout" />
       </Docs>
     </Member>
     <Member MemberName="GlyphRangeForBoundingRectWithoutAdditionalLayout">
@@ -1158,9 +1206,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="bounds">To be added.</param>
         <param name="container">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>The minimum range that contains all the laid-out glyphs that at least partially overlap the specified <paramref name="bounds" />.</summary>
         <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <remarks><para>The method does not trigger additional layout.</para></remarks>
+        <altmember cref="M:MonoTouch.UIKit.NSLayoutManager.GlyphRangeForBoundingRect" />
       </Docs>
     </Member>
     <Member MemberName="HasNonContiguousLayout">
@@ -1179,9 +1228,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Whether the <see cref="T:MonoTouch.UIKit.NSLayoutManager" /> currently contains any areas of noncontiguous layout.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks><para>Even if <see cref="P:MonoTouch.UIKit.NSLayoutManager.AllowsNonContinguousLayout" /> is <see langword="true"/>, this method may return <see langword="false"/>, for instance, if layout is complete.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="HyphenationFactor">
@@ -1203,9 +1252,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Single</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>The hyphenation threshold.</summary>
+        <value>A value in the range 0 to 1. 0 indicates hyphenation is off, 1.0 causes hyphenation to always be attempted.</value>
+        <remarks>
+        <para>Application developers should prefer to set this value to 0.0, because hyphenation is slow and consumes memory.</para>  
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="InsertTextContainer">
@@ -1230,8 +1281,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="container">To be added.</param>
         <param name="index">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Inserts the specified <see cref="T:MonoTouch.UIKit.NSTextContainer" /> into <see cref="P:MonoTouch.UIKit.NSLayoutManager.TextContainers"/> at the specified <paramref name="index"/>.</summary>
         <remarks>To be added.</remarks>
+        <altmember cref="M:MonoTouch.UIKit.NSLayoutManager.AddTextContainer" />
       </Docs>
     </Member>
     <Member MemberName="InvalidateDisplayForCharacterRange">
@@ -1254,8 +1306,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="charRange">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Invalidates the display for the given character range.</summary>
+        <remarks><para>This method does not automatically trigger layout.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="InvalidateDisplayForGlyphRange">
@@ -1278,8 +1330,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="glyphRange">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Invalidates the display for the given glyph range.</summary>
+        <remarks><para>This method does not automatically trigger layout.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="InvalidateGlyphs">
@@ -1304,10 +1356,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="charRange">To be added.</param>
-        <param name="delta">To be added.</param>
+        <param name="delta">The number of characters added or removed.</param>
         <param name="actualCharRange">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Invalidates the cached glyphs for the given character range.</summary>
+        <remarks><para>This method should typically only be called by a custom typesetter.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="InvalidateLayout">
@@ -1331,9 +1383,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="charRange">To be added.</param>
-        <param name="actualCharRange">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="actualCharRange">If not <see langword="null" />, on output holds the actual range invalidated.</param>
+        <summary>Invalidates the layout for the specified character range.</summary>
+        <remarks><para>This method does not trigger either glyph generation or layout. Application developers will not normally need to call this method.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="IsValidGlyphIndex">
@@ -1356,7 +1408,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="glyphIndex">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Whether the <paramref name="glyphIndex" /> specifies a valid glyph.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -1381,9 +1433,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="glyphIndex">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>The location of the glyph at the specified index, relative to the containing line fragment's origin.</summary>
         <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <remarks><para>This method will layout and generate glyphs for the line fragment containing the glyph at <paramref name="glyphIndex" />.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="NotShownAttributeForGlyphAtIndex">
@@ -1406,9 +1458,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="glyphIndex">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Whether the glyph at the specified index is shown.</summary>
         <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <remarks><para>Glyphs such as tabs and newlines are not typically shown, but effect layout. Spaces are considered shown, as they "show" a characteristic displacement.</para>
+        <para>This method will cause layout up to the specified index. If <see cref="P:MonoTouch.UIKit.NSLayoutManager.AllowsNoncontiguousLayout" /> is <see langword="true"/>, the layout will be confined to the containing line fragment.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="NumberOfGlyphs">
@@ -1427,9 +1480,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.UInt32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The number of glyphs in the <see cref="T:MonoTouch.UIKit.NSLayoutManager" />.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks><para>If <see cref="P:MonoTouch.UIKit.NSLayoutManager.AllowsNonContinuousLayout" /> is <see langword="false"/>, this method will force glyph generation for all characters.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="ProcessEditing">
@@ -1484,7 +1537,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="glyphIndex">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>The <see cref="T:MonoTouch.UIKit.NSGlyphProperty" /> for the glyph at the specified index.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -1509,7 +1562,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="glyphIndex">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>The largest range of glyphs surrounding the glyph at the specified index that can be displayed using only advancement, not pairwise kerning or other adjustments.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -1534,7 +1587,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="index">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Removes the specified <see cref="T:MonoTouch.UIKit.NSTextContainer" /> from the <see cref="P:MonoTouch.UIKit.NSLayoutManager.TextContainers"/> array. Invalidates layout as necessary.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -1560,8 +1613,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="attachmentSize">To be added.</param>
         <param name="glyphRange">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Sets the size for drawing the attachment attached to the specified glyph.</summary>
+        <remarks><para>This method should only be invoked by custom typesetters.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="SetDrawsOutsideLineFragment">
@@ -1586,8 +1639,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="flag">To be added.</param>
         <param name="glyphIndex">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Specifies whether the glyph at the specified index draws outside the bounds of its line segment.</summary>
+        <remarks><para>This method is generally only called by custom typesetters.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="SetExtraLineFragmentRect">
@@ -1614,8 +1667,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="fragmentRect">To be added.</param>
         <param name="usedRect">To be added.</param>
         <param name="container">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Sets the bounds and container for the extra line fragment associated with a final hard line break.</summary>
+        <remarks><para>This method is generally only called by custom typesetters.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="SetGlyphs">
@@ -1674,8 +1727,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="fragmentRect">To be added.</param>
         <param name="glyphRange">To be added.</param>
         <param name="usedRect">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Specifies the line fragment rectangle for the specified glyph range.</summary>
+        <remarks><para>This method is generally only called by custom typesetters.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="SetLocation">
@@ -1700,8 +1753,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="location">To be added.</param>
         <param name="glyphRange">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Sets the location for the first glyph in the specified range.</summary>
+        <remarks>This method is generally only called by custom typesetters.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetNotShownAttribute">
@@ -1726,8 +1779,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="flag">To be added.</param>
         <param name="glyphIndex">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Specifies that the glyph at the specified index should be marked as not shown.</summary>
+        <remarks><para>This method is generally only called by custom typesetters.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="SetTextContainerForRange">
@@ -1752,8 +1805,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="container">To be added.</param>
         <param name="glyphRange">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Specifies the <see cref="T:MonoTouch.UIKit.NSTextContainer" /> in which the specified <paramref name="glyphRange"/> should be laid out.</summary>
+        <remarks><para>This method is generally only called by custom typesetters.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="ShowsControlCharacters">
@@ -1775,7 +1828,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Specifies whether control characters should be shown or not.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -1799,7 +1852,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Specifies whether normally-invisible characters such as whitespace should have visible glyphs.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -1832,7 +1885,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="lineRect">To be added.</param>
         <param name="lineGlyphRange">To be added.</param>
         <param name="containerOrigin">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Strikes-through the specified glyph range.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -1856,8 +1909,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="container">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Invalidates the layout information and glyphs for the specified <see cref="T:MonoTouch.UIKit.NSTextContainer" /> and any following.</summary>
+        <remarks><para>Application developers will typically not need to call this method unless they have subclassed <see cref="T:MonoTouch.UIKit.NSTextContainer" /> (for example, creating a <see cref="T:MonoTouch.UIKit.NSTextContainer"/> subclass that changes shape to accomodate placed graphics).</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="TextContainers">
@@ -1876,9 +1929,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.UIKit.NSTextContainer[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>An array of <see cref="T:MonoTouch.UIKit.NSTextContainer" />s that model the geometric layout of a document.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <para>The <see cref="T:MonoTouch.UIKit.NSLayoutManager" /> lays out the text in its <see cref="P:MonoTouch.UIKit.NSLayoutManager.TextStorage"/> property in the <see cref="T:MonoTouch.UIKit.NSTextContainer"/>s of this property, starting with the <see cref="T:MonoTouch.UIKit.NSTextContainer"/> at index 0. </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="TextStorage">
@@ -1900,7 +1955,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.UIKit.NSTextStorage</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The <see cref="T:MonoTouch.UIKit.NSTextStorage" /> that holds the styled text to be laid out.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -1958,7 +2013,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="lineRect">To be added.</param>
         <param name="lineGlyphRange">To be added.</param>
         <param name="containerOrigin">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Underlines the specified glyph range.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -1981,7 +2036,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Whether the <see cref="T:MonoTouch.UIKit.NSLayoutManager" /> should use the leading provided in the font.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -2006,7 +2061,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Docs>
         <summary>An object that can respond to the delegate protocol for this type</summary>
-        <value><para>The instance that will respond to events and data requests.</para><para tool="nullallowed">This value can be <see langword="null" />.</para></value>
+        <value>
+          <para>The instance that will respond to events and data requests.</para>
+          <para tool="nullallowed">This value can be <see langword="null" />.</para>
+        </value>
         <remarks>
           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
