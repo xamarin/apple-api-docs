@@ -14,8 +14,43 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>To be added.</summary>
-    <remarks>To be added.</remarks>
+    <summary>Represents a single typographic or font layout feature.</summary>
+    <remarks>
+      <para>
+
+	The UIFontFeature represents a specific typographic or font
+	layout feature set to a particular value.  These objects are
+	both strongly typed and immutable and intended to assist
+	developers in choosing which features to enable in a font by
+	providing strong types for them.
+
+      </para>
+
+      <para>
+	
+	Instances of these objects are created to be part of an array
+	of desired features when creating a <see
+	cref="T:MonoTouch.UIKit.UIFontAttribute"/>.   For example:
+
+      </para>
+<example>
+<code lang="c#">
+UIFont CustomizeFont (UIFont font)
+{
+    var originalDescriptor = font.GetFontDescriptor ();
+    var attributes = new UIFontAttributes () {
+          FeatureSettings = new UIFontFeature [] {
+                  new UIFontFeature (CTFontFeatureNumberSpacing.Selector.ProportionalNumbers),
+                  new UIFontFeature ((CTFontFeatureCharacterAlternatives.Selector)1)
+          }
+    }
+    var newDesc = originalDescriptor.CreateWithAttributes (attributes);
+    return UIFont.FromDescriptor (newDesc, 80);
+}
+</code>
+</example>
+
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -29,9 +64,11 @@
         <Parameter Name="featureSelector" Type="MonoTouch.CoreText.CTFontFeatureAllTypographicFeatures+Selector" />
       </Parameters>
       <Docs>
-        <param name="featureSelector">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="featureSelector">The value for this setting.</param>
+        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureAllTypographicFeatures with the given value.</summary>
+        <remarks>
+	  This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureAllTypographicFeatures type using the <see paramref="featureSelector"/> as its parameter.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -45,9 +82,11 @@
         <Parameter Name="featureSelector" Type="MonoTouch.CoreText.CTFontFeatureAlternateKana+Selector" />
       </Parameters>
       <Docs>
-        <param name="featureSelector">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="featureSelector">The value for this setting.</param>
+        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureAlternateKana with the given value.</summary>
+        <remarks>
+	  This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureAlternateKana type using the <see paramref="featureSelector"/> as its parameter.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -61,9 +100,11 @@
         <Parameter Name="featureSelector" Type="MonoTouch.CoreText.CTFontFeatureAnnotation+Selector" />
       </Parameters>
       <Docs>
-        <param name="featureSelector">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="featureSelector">The value for this setting.</param>
+        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureAnnotation with the given value.</summary>
+        <remarks>
+	  This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureAnnotation type using the <see paramref="featureSelector"/> as its parameter.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -77,9 +118,11 @@
         <Parameter Name="featureSelector" Type="MonoTouch.CoreText.CTFontFeatureCaseSensitiveLayout+Selector" />
       </Parameters>
       <Docs>
-        <param name="featureSelector">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="featureSelector">The value for this setting.</param>
+        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureCaseSensitiveLayout with the given value.</summary>
+        <remarks>
+	  This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureCaseSensitiveLayout type using the <see paramref="featureSelector"/> as its parameter.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -93,9 +136,40 @@
         <Parameter Name="featureSelector" Type="MonoTouch.CoreText.CTFontFeatureCharacterAlternatives+Selector" />
       </Parameters>
       <Docs>
-        <param name="featureSelector">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="featureSelector">The value for this setting.</param>
+        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureCharacterAlternatives with the given value.</summary>
+        <remarks>
+	  <para>
+	    This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureCharacterAlternatives type using the <see paramref="featureSelector"/> as its parameter.
+	  </para>
+	  <para>
+	    Character alternatives are font specific, and the only
+	    strongly typed value is the NoAlternatives value.  Any other
+	    integer above 0 is used to specify the specific character
+	    alternative that you want to use.
+	  </para>
+
+	  <para>
+	    It is simpler to use the UIFontFeature constructor that just takes an integer:
+	  </para>
+<example>
+<code lang="c#">
+UIFont CustomizeFont (UIFont font)
+{
+    var originalDescriptor = font.GetFontDescriptor ();
+    var attributes = new UIFontAttributes () {
+          FeatureSettings = new UIFontFeature [] {
+                  new UIFontFeature (CTFontFeatureNumberSpacing.Selector.ProportionalNumbers),
+                  new UIFontFeature (1) // Use the 1st character alternative
+          }
+    }
+    var newDesc = originalDescriptor.CreateWithAttributes (attributes);
+    return UIFont.FromDescriptor (newDesc, 80);
+}
+</code>
+</example>
+
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -109,9 +183,11 @@
         <Parameter Name="featureSelector" Type="MonoTouch.CoreText.CTFontFeatureCharacterShape+Selector" />
       </Parameters>
       <Docs>
-        <param name="featureSelector">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="featureSelector">The value for this setting.</param>
+        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureCharacterShape with the given value.</summary>
+        <remarks>
+	  This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureCharacterShape type using the <see paramref="featureSelector"/> as its parameter.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -125,9 +201,11 @@
         <Parameter Name="featureSelector" Type="MonoTouch.CoreText.CTFontFeatureCJKRomanSpacing+Selector" />
       </Parameters>
       <Docs>
-        <param name="featureSelector">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="featureSelector">The value for this setting.</param>
+        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureCJKRomanSpacing with the given value.</summary>
+        <remarks>
+	  This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureCJKRomanSpacing type using the <see paramref="featureSelector"/> as its parameter.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -141,9 +219,11 @@
         <Parameter Name="featureSelector" Type="MonoTouch.CoreText.CTFontFeatureCJKSymbolAlternatives+Selector" />
       </Parameters>
       <Docs>
-        <param name="featureSelector">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="featureSelector">The value for this setting.</param>
+        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureCJKSymbolAlternatives with the given value.</summary>
+        <remarks>
+	  This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureCJKSymbolAlternatives type using the <see paramref="featureSelector"/> as its parameter.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -157,9 +237,11 @@
         <Parameter Name="featureSelector" Type="MonoTouch.CoreText.CTFontFeatureCJKVerticalRomanPlacement+Selector" />
       </Parameters>
       <Docs>
-        <param name="featureSelector">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="featureSelector">The value for this setting.</param>
+        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureCJKVerticalRomanPlacement with the given value.</summary>
+        <remarks>
+	  This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureCJKVerticalRomanPlacement type using the <see paramref="featureSelector"/> as its parameter.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -173,9 +255,11 @@
         <Parameter Name="featureSelector" Type="MonoTouch.CoreText.CTFontFeatureContextualAlternates+Selector" />
       </Parameters>
       <Docs>
-        <param name="featureSelector">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="featureSelector">The value for this setting.</param>
+        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureContextualAlternates with the given value.</summary>
+        <remarks>
+	  This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureContextualAlternates type using the <see paramref="featureSelector"/> as its parameter.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -189,9 +273,11 @@
         <Parameter Name="featureSelector" Type="MonoTouch.CoreText.CTFontFeatureCursiveConnection+Selector" />
       </Parameters>
       <Docs>
-        <param name="featureSelector">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="featureSelector">The value for this setting.</param>
+        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureCursiveConnection with the given value.</summary>
+        <remarks>
+	  This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureCursiveConnection type using the <see paramref="featureSelector"/> as its parameter.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -205,9 +291,11 @@
         <Parameter Name="featureSelector" Type="MonoTouch.CoreText.CTFontFeatureDesignComplexity+Selector" />
       </Parameters>
       <Docs>
-        <param name="featureSelector">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="featureSelector">The value for this setting.</param>
+        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureDesignComplexity with the given value.</summary>
+        <remarks>
+	  This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureDesignComplexity type using the <see paramref="featureSelector"/> as its parameter.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -221,9 +309,11 @@
         <Parameter Name="featureSelector" Type="MonoTouch.CoreText.CTFontFeatureDiacritics+Selector" />
       </Parameters>
       <Docs>
-        <param name="featureSelector">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="featureSelector">The value for this setting.</param>
+        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureDiacritics with the given value.</summary>
+        <remarks>
+	  This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureDiacritics type using the <see paramref="featureSelector"/> as its parameter.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -237,9 +327,11 @@
         <Parameter Name="featureSelector" Type="MonoTouch.CoreText.CTFontFeatureFractions+Selector" />
       </Parameters>
       <Docs>
-        <param name="featureSelector">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="featureSelector">The value for this setting.</param>
+        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureFractions with the given value.</summary>
+        <remarks>
+	  This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureFractions type using the <see paramref="featureSelector"/> as its parameter.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -253,9 +345,11 @@
         <Parameter Name="featureSelector" Type="MonoTouch.CoreText.CTFontFeatureIdeographicAlternatives+Selector" />
       </Parameters>
       <Docs>
-        <param name="featureSelector">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="featureSelector">The value for this setting.</param>
+        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureIdeographicAlternatives with the given value.</summary>
+        <remarks>
+	  This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureIdeographicAlternatives type using the <see paramref="featureSelector"/> as its parameter.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -269,9 +363,11 @@
         <Parameter Name="featureSelector" Type="MonoTouch.CoreText.CTFontFeatureIdeographicSpacing+Selector" />
       </Parameters>
       <Docs>
-        <param name="featureSelector">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="featureSelector">The value for this setting.</param>
+        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureIdeographicSpacing with the given value.</summary>
+        <remarks>
+	  This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureIdeographicSpacing type using the <see paramref="featureSelector"/> as its parameter.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -285,9 +381,11 @@
         <Parameter Name="featureSelector" Type="MonoTouch.CoreText.CTFontFeatureItalicCJKRoman+Selector" />
       </Parameters>
       <Docs>
-        <param name="featureSelector">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="featureSelector">The value for this setting.</param>
+        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureItalicCJKRoman with the given value.</summary>
+        <remarks>
+	  This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureItalicCJKRoman type using the <see paramref="featureSelector"/> as its parameter.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -301,9 +399,11 @@
         <Parameter Name="featureSelector" Type="MonoTouch.CoreText.CTFontFeatureKanaSpacing+Selector" />
       </Parameters>
       <Docs>
-        <param name="featureSelector">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="featureSelector">The value for this setting.</param>
+        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureKanaSpacing with the given value.</summary>
+        <remarks>
+	  This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureKanaSpacing type using the <see paramref="featureSelector"/> as its parameter.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -317,9 +417,11 @@
         <Parameter Name="featureSelector" Type="MonoTouch.CoreText.CTFontFeatureLetterCase+Selector" />
       </Parameters>
       <Docs>
-        <param name="featureSelector">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="featureSelector">The value for this setting.</param>
+        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureLetterCase with the given value.</summary>
+        <remarks>
+	  This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureLetterCase type using the <see paramref="featureSelector"/> as its parameter.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -333,9 +435,11 @@
         <Parameter Name="featureSelector" Type="MonoTouch.CoreText.CTFontFeatureLigatures+Selector" />
       </Parameters>
       <Docs>
-        <param name="featureSelector">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="featureSelector">The value for this setting.</param>
+        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureLigatures with the given value.</summary>
+        <remarks>
+	  This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureLigatures type using the <see paramref="featureSelector"/> as its parameter.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -349,9 +453,11 @@
         <Parameter Name="featureSelector" Type="MonoTouch.CoreText.CTFontFeatureLinguisticRearrangementConnection+Selector" />
       </Parameters>
       <Docs>
-        <param name="featureSelector">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="featureSelector">The value for this setting.</param>
+        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureLinguisticRearrangementConnection with the given value.</summary>
+        <remarks>
+	  This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureLinguisticRearrangementConnection type using the <see paramref="featureSelector"/> as its parameter.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -365,9 +471,11 @@
         <Parameter Name="featureSelector" Type="MonoTouch.CoreText.CTFontFeatureLowerCase+Selector" />
       </Parameters>
       <Docs>
-        <param name="featureSelector">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="featureSelector">The value for this setting.</param>
+        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureLowerCase with the given value.</summary>
+        <remarks>
+	  This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureLowerCase type using the <see paramref="featureSelector"/> as its parameter.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -381,9 +489,11 @@
         <Parameter Name="featureSelector" Type="MonoTouch.CoreText.CTFontFeatureMathematicalExtras+Selector" />
       </Parameters>
       <Docs>
-        <param name="featureSelector">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="featureSelector">The value for this setting.</param>
+        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureMathematicalExtras with the given value.</summary>
+        <remarks>
+	  This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureMathematicalExtras type using the <see paramref="featureSelector"/> as its parameter.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -397,9 +507,11 @@
         <Parameter Name="featureSelector" Type="MonoTouch.CoreText.CTFontFeatureNumberCase+Selector" />
       </Parameters>
       <Docs>
-        <param name="featureSelector">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="featureSelector">The value for this setting.</param>
+        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureNumberCase with the given value.</summary>
+        <remarks>
+	  This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureNumberCase type using the <see paramref="featureSelector"/> as its parameter.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -413,9 +525,11 @@
         <Parameter Name="featureSelector" Type="MonoTouch.CoreText.CTFontFeatureNumberSpacing+Selector" />
       </Parameters>
       <Docs>
-        <param name="featureSelector">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="featureSelector">The value for this setting.</param>
+        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureNumberSpacing with the given value.</summary>
+        <remarks>
+	  This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureNumberSpacing type using the <see paramref="featureSelector"/> as its parameter.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -429,9 +543,11 @@
         <Parameter Name="featureSelector" Type="MonoTouch.CoreText.CTFontFeatureOrnamentSets+Selector" />
       </Parameters>
       <Docs>
-        <param name="featureSelector">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="featureSelector">The value for this setting.</param>
+        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureOrnamentSets with the given value.</summary>
+        <remarks>
+	  This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureOrnamentSets type using the <see paramref="featureSelector"/> as its parameter.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -445,9 +561,11 @@
         <Parameter Name="featureSelector" Type="MonoTouch.CoreText.CTFontFeatureOverlappingCharacters+Selector" />
       </Parameters>
       <Docs>
-        <param name="featureSelector">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="featureSelector">The value for this setting.</param>
+        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureOverlappingCharacters with the given value.</summary>
+        <remarks>
+	  This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureOverlappingCharacters type using the <see paramref="featureSelector"/> as its parameter.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -461,9 +579,11 @@
         <Parameter Name="featureSelector" Type="MonoTouch.CoreText.CTFontFeatureRubyKana+Selector" />
       </Parameters>
       <Docs>
-        <param name="featureSelector">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="featureSelector">The value for this setting.</param>
+        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureRubyKana with the given value.</summary>
+        <remarks>
+	  This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureRubyKana type using the <see paramref="featureSelector"/> as its parameter.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -477,9 +597,11 @@
         <Parameter Name="featureSelector" Type="MonoTouch.CoreText.CTFontFeatureSmartSwash+Selector" />
       </Parameters>
       <Docs>
-        <param name="featureSelector">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="featureSelector">The value for this setting.</param>
+        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureSmartSwash with the given value.</summary>
+        <remarks>
+	  This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureSmartSwash type using the <see paramref="featureSelector"/> as its parameter.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -493,9 +615,11 @@
         <Parameter Name="featureSelector" Type="MonoTouch.CoreText.CTFontFeatureStyleOptions+Selector" />
       </Parameters>
       <Docs>
-        <param name="featureSelector">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="featureSelector">The value for this setting.</param>
+        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureStyleOptions with the given value.</summary>
+        <remarks>
+	  This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureStyleOptions type using the <see paramref="featureSelector"/> as its parameter.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -509,9 +633,11 @@
         <Parameter Name="featureSelector" Type="MonoTouch.CoreText.CTFontFeatureStylisticAlternatives+Selector" />
       </Parameters>
       <Docs>
-        <param name="featureSelector">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="featureSelector">The value for this setting.</param>
+        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureStylisticAlternatives with the given value.</summary>
+        <remarks>
+	  This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureStylisticAlternatives type using the <see paramref="featureSelector"/> as its parameter.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -525,9 +651,11 @@
         <Parameter Name="featureSelector" Type="MonoTouch.CoreText.CTFontFeatureTextSpacing+Selector" />
       </Parameters>
       <Docs>
-        <param name="featureSelector">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="featureSelector">The value for this setting.</param>
+        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureTextSpacing with the given value.</summary>
+        <remarks>
+	  This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureTextSpacing type using the <see paramref="featureSelector"/> as its parameter.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -541,9 +669,11 @@
         <Parameter Name="featureSelector" Type="MonoTouch.CoreText.CTFontFeatureTransliteration+Selector" />
       </Parameters>
       <Docs>
-        <param name="featureSelector">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="featureSelector">The value for this setting.</param>
+        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureTransliteration with the given value.</summary>
+        <remarks>
+	  This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureTransliteration type using the <see paramref="featureSelector"/> as its parameter.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -557,9 +687,11 @@
         <Parameter Name="featureSelector" Type="MonoTouch.CoreText.CTFontFeatureTypographicExtras+Selector" />
       </Parameters>
       <Docs>
-        <param name="featureSelector">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="featureSelector">The value for this setting.</param>
+        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureTypographicExtras with the given value.</summary>
+        <remarks>
+	  This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureTypographicExtras type using the <see paramref="featureSelector"/> as its parameter.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -573,9 +705,11 @@
         <Parameter Name="featureSelector" Type="MonoTouch.CoreText.CTFontFeatureUnicodeDecomposition+Selector" />
       </Parameters>
       <Docs>
-        <param name="featureSelector">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="featureSelector">The value for this setting.</param>
+        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureUnicodeDecomposition with the given value.</summary>
+        <remarks>
+	  This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureUnicodeDecomposition type using the <see paramref="featureSelector"/> as its parameter.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -589,9 +723,11 @@
         <Parameter Name="featureSelector" Type="MonoTouch.CoreText.CTFontFeatureUpperCase+Selector" />
       </Parameters>
       <Docs>
-        <param name="featureSelector">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="featureSelector">The value for this setting.</param>
+        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureUpperCase with the given value.</summary>
+        <remarks>
+	  This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureUpperCase type using the <see paramref="featureSelector"/> as its parameter.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -605,9 +741,11 @@
         <Parameter Name="featureSelector" Type="MonoTouch.CoreText.CTFontFeatureVerticalPosition+Selector" />
       </Parameters>
       <Docs>
-        <param name="featureSelector">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="featureSelector">The value for this setting.</param>
+        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureVerticalPosition with the given value.</summary>
+        <remarks>
+	  This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureVerticalPosition type using the <see paramref="featureSelector"/> as its parameter.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -621,9 +759,11 @@
         <Parameter Name="featureSelector" Type="MonoTouch.CoreText.CTFontFeatureVerticalSubstitutionConnection+Selector" />
       </Parameters>
       <Docs>
-        <param name="featureSelector">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="featureSelector">The value for this setting.</param>
+        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureVerticalSubstitutionConnection with the given value.</summary>
+        <remarks>
+	  This creates a new instance of the UIFontFeature with the CoreText's CTFontFeatureVerticalSubstitutionConnection type using the <see paramref="featureSelector"/> as its parameter.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -637,9 +777,16 @@
         <Parameter Name="characterAlternatives" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="characterAlternatives">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="characterAlternatives">Requests that the specified item be used as a Character Alternative. </param>
+        <summary>Creates a new UIFontFeature that describes a CoreText CTFontFeatureCharacterAlternatives with the given value.</summary>
+        <remarks>
+
+	  Character alternatives are font specific, and the only
+	  strongly typed value is the NoAlternatives value.  Any other
+	  integer above 0 is used to specify the specific character
+	  alternative that you want to use.
+
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="FontFeature">
@@ -653,9 +800,9 @@
         <ReturnType>MonoTouch.CoreText.FontFeatureGroup</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>The FontFeatureGroup that this UIFontFeature object encapsulates.</summary>
+        <value></value>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="FontFeatureValue">
@@ -669,9 +816,9 @@
         <ReturnType>System.Object</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>The value for the FontFeature.</summary>
+        <value></value>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="MonoTouch.ObjCRuntime.INativeObject.Handle">
@@ -685,9 +832,9 @@
         <ReturnType>System.IntPtr</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Handle to the underlying NSDictionary that is used to store the FontFeature and FontFeatureValue.</summary>
+        <value></value>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="ToString">
@@ -702,9 +849,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>Renders a human readable representation of this object.</summary>
+        <returns></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
   </Members>

@@ -10,8 +10,25 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>To be added.</summary>
-    <remarks>To be added.</remarks>
+    <summary>Attributes used to describe a font, used by <see cref="T:MonoTouch.UIKit.UIFontDescriptor"/></summary>
+    <remarks>
+      <para>
+	This type defines the attributes used to describe a font, like
+	the font family, the font name, the character set, glyph
+	advancement, advanced typesetting features and others.
+      </para>
+      <para>
+	Typically you create objects of this instance to create a <see cref="T:MonoTouch.UIKit.UIFontDescriptor"/>. 
+      </para>
+      <example>
+<code lang="c#">
+var attributes = new UIFontAttributes () {
+    Size = 14,
+    Matrix = MyTransform
+};
+</code>
+      </example>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -23,8 +40,9 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Creates an empty UIFontAttributes.</summary>
+        <remarks>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -38,9 +56,9 @@
         <Parameter Name="dictionary" Type="MonoTouch.Foundation.NSDictionary" />
       </Parameters>
       <Docs>
-        <param name="dictionary">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="dictionary">Dictionary containing UIFontAttributes.</param>
+        <summary>Creates a UIFontAttributes from a weakly typed NSDictionary.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="CascadeList">
@@ -54,9 +72,15 @@
         <ReturnType>MonoTouch.UIKit.UIFontDescriptor[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Specifies the list of sub descriptors to be used before the system default fallbacks.</summary>
+        <value>The default is the list of descriptors based on the user locale.</value>
+        <remarks>
+
+	  By setting this property, developers can override the list
+	  of UIFontDescriptors to be used before using the system
+	  defaults.
+
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="CharacterSet">
@@ -70,9 +94,9 @@
         <ReturnType>MonoTouch.Foundation.NSCharacterSet</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Describes the character set supported by the specified font.</summary>
+        <value></value>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Face">
@@ -86,9 +110,9 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>The font face.</summary>
+        <value></value>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Family">
@@ -102,9 +126,9 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>The font family.</summary>
+        <value></value>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="FeatureSettings">
@@ -118,9 +142,43 @@
         <ReturnType>MonoTouch.UIKit.UIFontFeature[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Typographic and layout feature settings.</summary>
+        <value></value>
+        <remarks>
+	  <para>
+
+	    This property is an array of UIFontFeature objects, each
+	    representing a font-specific typograph or layout feature
+	    that can be enabled in the font.  For background on Font
+	    Features, you can read
+	    https://developer.apple.com/fonts/registry
+
+	  </para>
+	  <para>
+
+	    The following example shows how to configure the font to
+	    use proportional numbers as well as informing the
+	    rendering engine to use the 1st Character Alternatives available in this font. 
+	  </para>
+
+<example>
+<code lang="c#">
+UIFont CustomizeFont (UIFont font)
+{
+    var originalDescriptor = font.GetFontDescriptor ();
+    var attributes = new UIFontAttributes () {
+          FeatureSettings = new UIFontFeature [] {
+                  new UIFontFeature (CTFontFeatureNumberSpacing.Selector.ProportionalNumbers),
+                  new UIFontFeature ((CTFontFeatureCharacterAlternatives.Selector)1)
+          }
+    }
+    var newDesc = originalDescriptor.CreateWithAttributes (attributes);
+    return UIFont.FromDescriptor (newDesc, 80);
+}
+</code>
+</example>
+
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="FixedAdvance">
@@ -134,9 +192,9 @@
         <ReturnType>System.Nullable&lt;System.Single&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Override for font's fixed advance for individual glyphs.</summary>
+        <value>Default value is 0, null if not set.</value>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Matrix">
@@ -150,9 +208,9 @@
         <ReturnType>System.Nullable&lt;MonoTouch.CoreGraphics.CGAffineTransform&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Affine transformation matrix for the font.</summary>
+        <value>The default is the identity matrix;   Null if not set.</value>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Name">
@@ -166,9 +224,9 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Font name.</summary>
+        <value></value>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Size">
@@ -182,9 +240,9 @@
         <ReturnType>System.Nullable&lt;System.Single&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Font size.</summary>
+        <value>Null if not set.</value>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="TextStyle">
@@ -198,9 +256,9 @@
         <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Text style.</summary>
+        <value></value>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Traits">
@@ -214,9 +272,9 @@
         <ReturnType>MonoTouch.UIKit.UIFontTraits</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Font traits.</summary>
+        <value></value>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Variation">
@@ -246,9 +304,9 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Font visible name.</summary>
+        <value></value>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="WeakFeatureSettings">
@@ -262,9 +320,9 @@
         <ReturnType>MonoTouch.Foundation.NSDictionary[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Weakly-typed version of the FeatureSettings properties</summary>
+        <value></value>
+        <remarks>This uses the raw, untyped version of the FeatureSettings.</remarks>
       </Docs>
     </Member>
   </Members>
