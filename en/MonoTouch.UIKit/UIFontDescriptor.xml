@@ -20,34 +20,72 @@
   <Docs>
     <summary>Describes properties of a font, use to create fonts with certain features.   Provides ways of finding fonts matching a description as well.</summary>
     <remarks>
-      <para>
-	Developers create UIFontDescriptors with a set of parameters
-	they are interested in (font faces, font families, font
-	attributes, fallbacks).  You can consider these descriptors
-	queries, which you can later use to create a concrete UIFont wit
-	by using the <see
-	cref="M:MonoTouch.UIKit.UIFontDescriptor.GetMatchingFontDescriptorsWithMandatoryKeys"/>
-	method.
-      </para>
+
+      <para> Developers create UIFontDescriptors with a set of
+	parameters they are interested in (font faces, font families,
+	font attributes, fallbacks).  You can consider these
+	descriptors queries, which you can later use to create a
+	concrete UIFont wit by using the <see
+	cref="M:MonoTouch.UIKit.UIFont.FromDescriptor"/> method.
+	</para>
+
 
       <para>
 
-	Given a UIFontDescriptor, you can use any of the Create
-	methods to add some attributes and return a more specific
-	UIFontDescriptor.
+	These objects are immutable, once created, they can not be
+	changed.  But given a UIFontDescriptor, you can create a more
+	precise font descriptor instance with new information.  You
+	can create a new UIFontDescriptor with more detailed font
+	attributes using the <see
+	cref="M:MonoTouch.UIKit.UIFontDescriptor.CreateWithAttributes"/>
+	method, extend one by explicitly setting a font face or font family using the <see
+	cref="M:MonoTouch.UIKit.UIFontDescriptor.CreateWithFace"/> and <see
+	cref="M:MonoTouch.UIKit.UIFontDescriptor.CreateWithFamily"/> methods, specify a desired font size or a transformation matrix with the <see
+	cref="M:MonoTouch.UIKit.UIFontDescriptor.CreateWithSize"/> and <see
+	cref="M:MonoTouch.UIKit.UIFontDescriptor.CreateWithMatrix"/> methods, or request that certain symbolic traits be present with <see
+	cref="M:MonoTouch.UIKit.UIFontDescriptor.CreateWithTraits"/>.
 
       </para>
 
       <para>
 	
-	You can use the <see
-	cref="M:M:MonoTouch.UIKit.UIFontDescriptor.PreferredForStyle"/>
-	method to obtain a UIFontDescriptor that contains the
-	properties based on the user global preference on their
-	device.
+	You should use the <see
+	cref="M:MonoTouch.UIKit.UIFontDescriptor.PreferredForStyle"/>
+	method to obtain a UIFontDescriptor for the common font
+	presets.  This method will return a UIFontDescriptor that
+	contains the properties based on the user global preference on
+	their device.
 
       </para>
 
+      <para>
+
+	You can use the <see
+	cref="M:MonoTouch.UIKit.UIFontDescriptor.GetMatchingFontDescriptorsWithMandatoryKeys"/>
+	method to get a set of UIFontDescriptors that match your
+	current query.
+
+      </para>
+
+      <para>
+	The following example shows how to create two fonts: one with
+	the preferred font for body text, and then a bold version of
+	the same font:
+      </para>
+
+      <example>
+	<code lang="c#">
+
+// Creates a UIFont for the body text
+var bodyDescriptor = UIFontDescriptor.PreferredForStyle (UIFontTextStyle.Body);
+UIFont bodyFont = UIFont.FromDescriptor (bodyDescriptor, pointSize: 0);
+	  
+// Creates a bold version of it:
+var boldDescritptor = bodyDescriptor.CreateWithTraits (UIFontDescriptorSymbolicTraits.Bold);
+UIFont boldBodyFont = UIFont.FromDescriptor (bodyDescriptor, 0);
+
+	</code>
+      </example>
     </remarks>
   </Docs>
   <Members>
@@ -696,8 +734,14 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 	    UIFontDescriptors that contains both the user desired size
 	    combined with the system font for the specified style.
 	  </para>
-	  <para>
-	  </para>
+      <example>
+	<code lang="c#">
+
+// Creates a UIFont for the body text
+var bodyDescriptor = UIFontDescriptor.PreferredForStyle (UIFontTextStyle.Body);
+UIFont bodyFont = UIFont.FromDescriptor (bodyDescriptor, pointSize: 0);
+	</code>
+      </example>
 	</remarks>
       </Docs>
     </Member>
