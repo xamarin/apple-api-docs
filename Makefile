@@ -18,3 +18,6 @@ TOP := $(shell pwd)
 install:
 	mdoc assemble -o MonoTouch-lib en
 	cp MonoTouch-lib.{tree,zip} /Library/Frameworks/Mono.framework/External/monodoc/
+
+fixdos:
+	git status | grep modified  | awk '{print $$3}' | xargs perl -pi -e 's/\r\n/\n/g'
