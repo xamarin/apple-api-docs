@@ -25,9 +25,30 @@
     <summary>Coordinates the UIKit Dynamics of a set of <see cref="T:MonoTouch.UIKit.IUIDynamicItem" />s and <see cref="T:MonoTouch.UIKit.UIDynamicBehavior" />s.</summary>
     <remarks>
       <para>
-        <see cref="T:MonoTouch.UIKit.UIDynamicAnimator" /> provides the overall context for the physics-inspired "UI Dynamics" behaviors introduced in iOS 7. Additionally, it defines the coordinate system for the dynamics and wraps the underlying animation engine. Finally, it keeps track of the <see cref="T:MonoTouch.UIKit.UIDynamicBehavior" />s  and <see cref="T:MonoTouch.UIKit.IUIDynamicItems" /> that define the particular behaviors and items for which dynamics are desired.</para>
+        <see cref="T:MonoTouch.UIKit.UIDynamicAnimator" /> provides the overall context for the physics-inspired "UI Dynamics" behaviors introduced in iOS 7. Additionally, it defines the coordinate system for the dynamics and wraps the underlying animation engine. Finally, it keeps track of the <see cref="T:MonoTouch.UIKit.UIDynamicBehavior" />s  and <see cref="T:MonoTouch.UIKit.IUIDynamicItem" /> that define the particular behaviors and items for which dynamics are desired.</para>
       <para>It is the application developer's responsibility to create a configuration that can be solved by the physics-like behavior of UI Dynamics.</para>
-    </remarks>
+      <para>The following example shows how you can add a couple of behaviors to an animator:</para>
+      <example>
+	<code lang="c#">
+public override void ViewDidLoad ()
+{
+	base.ViewDidLoad ();
+
+	var gravityBehavior = new UIGravityBehavior (square);
+	var collisionBehavior = new UICollisionBehavior (square) {
+		TranslatesReferenceBoundsIntoBoundary = true
+	};
+	collisionBehavior.BeganBoundaryContact += BeganContact;
+	collisionBehavior.EndedBoundaryContact += EndedContact;
+
+	animator = new UIDynamicAnimator (View);
+
+	// Add the two behaviors at once
+	animator.AddBehaviors (gravityBehavior, collisionBehavior);
+}
+</code>
+</example>
+</remarks>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -227,9 +248,25 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="behavior" Type="MonoTouch.UIKit.UIDynamicBehavior" />
       </Parameters>
       <Docs>
-        <param name="behavior">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="behavior">Behavior to add to the animator.</param>
+        <summary>Adds the specified behavior to the animator.</summary>
+        <remarks>
+	  <para>The following example shows how you can add a simple behavior to an animator:</para>
+	  <example>
+	    <code lang="c#">
+// 
+// Add gravity to the "simpleView" subview, this will make it fall
+//
+public override void ViewDidLoad ()
+{
+	base.ViewDidLoad ();
+	animator = new UIDynamicAnimator (View);
+
+	animator.AddBehavior (new UIGravityBehavior (simpleView));
+}
+	    </code>
+	  </example>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="AddBehaviors">
@@ -252,9 +289,31 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="behaviors">To be added.</param>
+        <param name="behaviors">Behaviors that you want to add to the animator</param>
         <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <remarks>
+	  <para>The following example shows how you can add a couple of behaviors to an animator:</para>
+	  <example>
+	    <code lang="c#">
+public override void ViewDidLoad ()
+{
+	base.ViewDidLoad ();
+
+	var gravityBehavior = new UIGravityBehavior (square);
+	var collisionBehavior = new UICollisionBehavior (square) {
+		TranslatesReferenceBoundsIntoBoundary = true
+	};
+	collisionBehavior.BeganBoundaryContact += BeganContact;
+	collisionBehavior.EndedBoundaryContact += EndedContact;
+
+	animator = new UIDynamicAnimator (View);
+
+	// Add the two behaviors at once
+	animator.AddBehaviors (gravityBehavior, collisionBehavior);
+}
+	    </code>
+	  </example>
+</remarks>
       </Docs>
     </Member>
     <Member MemberName="Behaviors">
@@ -273,9 +332,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.UIKit.UIDynamicBehavior[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Array containing the current list of behaviors running on this UIDynamicAnimator.</summary>
+        <value></value>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="ClassHandle">
@@ -529,9 +588,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="behavior" Type="MonoTouch.UIKit.UIDynamicBehavior" />
       </Parameters>
       <Docs>
-        <param name="behavior">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="behavior">Behavior to be removed from the animator.</param>
+        <summary>Removes the specified behavior from the animator.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="RemoveBehaviors">
@@ -554,9 +613,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="behaviors">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="behaviors">Array of behaviors to be removed from the animator.</param>
+        <summary>Removes the listed behaviors from the animator.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Running">
