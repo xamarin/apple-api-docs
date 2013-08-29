@@ -9,8 +9,26 @@
     <BaseTypeName>System.Enum</BaseTypeName>
   </Base>
   <Docs>
-    <summary>To be added.</summary>
-    <remarks>To be added.</remarks>
+    <summary>An enumeration whose values specify the various dynamic type sizes that can be chosen by the application user.</summary>
+    <remarks>
+      <para>After the application user has set the "Text Size Property" in Settings, the application will receive a notification via <see cref="M:MonoTouch.UIKit.UIApplication+Notifications.ObserveContentSizeCategoryChanged"/>. It is the application developer's responsibility, at that point, to invalidate the layout in all view elements that implement Dynamic Type. The simplest way to do that is to have a method that re-sets the font in all components that support Dynamic Type:</para>
+      <example>
+        <code lang="C#"><![CDATA[
+ UIApplication.Notifications.ObserveContentSizeCategoryChanged((s,e) => {
+	SetDynamicTypeFonts();
+});
+
+//Call this when initializing, and also in response to ObserveContentSizeCategoryChanged notifications
+private void SetDynamicTypeFonts()
+{
+	headlineLabel.Font = UIFont.PreferredFontForTextStyle(UIFontTextStyle.Headline);
+	bodyText = UIFont.PreferredFontForTextStyle(UIFontTextStyle.Body);
+  //...etc...
+}
+          ]]>
+        </code>
+        </example>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName="ExtraExtraLarge">
