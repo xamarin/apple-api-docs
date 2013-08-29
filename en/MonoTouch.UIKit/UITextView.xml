@@ -164,24 +164,24 @@
           <para>The argument value is ignored and merely ensures that the only code that is executed is the construction phase is the basic NSObject allocation and runtime type registration.  Typically the chaining would look like this:</para>
           <example>
             <code lang="C#">
-              //
-              // The NSObjectFlag merely allocates the object and registers the
-              // C# class with the Objective-C runtime if necessary, but no actual
-              // initXxx method is invoked, that is done later in the constructor
-              //
-              // This is taken from MonoTouch's source code:
-              //
-              [Export ("initWithFrame:")]
-              public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
-              {
-              // Invoke the init method now.
-              var initWithFrame = new Selector ("initWithFrame:").Handle;
-              if (IsDirectBinding)
-              Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
-              else
-              Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
-              }
-            </code>
+//
+// The NSObjectFlag merely allocates the object and registers the
+// C# class with the Objective-C runtime if necessary, but no actual
+// initXxx method is invoked, that is done later in the constructor
+//
+// This is taken from MonoTouch's source code:
+//
+[Export ("initWithFrame:")]
+public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
+{
+// Invoke the init method now.
+	var initWithFrame = new Selector ("initWithFrame:").Handle;
+	if (IsDirectBinding)
+		Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+	else
+		Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+}
+</code>
           </example>
         </remarks>
       </Docs>
@@ -337,9 +337,9 @@
           <para>The following example shows how the AppearanceWhenContainedIn method works</para>
           <example>
             <code lang="C#">
-              var mySliders = UISlider.AppearanceWhenContainedIn (typeof (UINavigationBar), typeof (UIPopoverController));
-              mySliders.TintColor = UIColor.Red;
-            </code>
+var mySliders = UISlider.AppearanceWhenContainedIn (typeof (UINavigationBar), typeof (UIPopoverController));
+mySliders.TintColor = UIColor.Red;
+</code>
           </example>
           <para>For more information, see the documentation for the <see cref="T:MonoTouch.UIKit.UIAppearance" /> class.</para>
         </remarks>
@@ -2484,58 +2484,58 @@ void Setup ()
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="c#">
-              //
-              // Lambda style
-              //
-              
-              // listening
-              notification = UITextView.Notifications.ObserveTextDidBeginEditing ((sender, args) =&gt; {
-              /* Access strongly typed args */
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              });
-              
-              // To stop listening:
-              notification.Dispose ();
-              
-              //
-              // Method style
-              //
-              NSObject notification;
-              void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
-              {
-              // Access strongly typed args
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              }
-              
-              void Setup ()
-              {
-              notification = UITextView.Notifications.ObserveTextDidBeginEditing (Callback);
-              }
-              
-              void Teardown ()
-              {
-              notification.Dispose ();
-              }</code>
+//
+// Lambda style
+//
+
+// listening
+notification = UITextView.Notifications.ObserveTextDidBeginEditing ((sender, args) =&gt; {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = UITextView.Notifications.ObserveTextDidBeginEditing (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}</code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
             <code lang="c#">
-              // Lambda style
-              NSNotificationCenter.DefaultCenter.AddObserver (
-              UITextView.TextDidBeginEditingNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UITextView", notification); }
-              
-              
-              // Method style
-              void Callback (NSNotification notification)
-              {
-              Console.WriteLine ("Received a notification UITextView", notification);
-              }
-              
-              void Setup ()
-              {
-              NSNotificationCenter.DefaultCenter.AddObserver (UITextView.TextDidBeginEditingNotification, Callback);
-              }
-            </code>
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        UITextView.TextDidBeginEditingNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UITextView", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UITextView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UITextView.TextDidBeginEditingNotification, Callback);
+}
+</code>
           </example>
         </remarks>
       </Docs>
@@ -2563,680 +2563,59 @@ void Setup ()
           <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UITextView+Notifications" />.<see cref="M:UITextView+Notifications.ObserveTextDidChangeNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="C#"><![CDATA[
-              //
-              // Lambda style
-              //
-              
-              // listening
-              notification = UITextView.Notifications.ObserveTextDidChange ((sender, args) =&gt; {
-              /* Access strongly typed args */
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              });
-              
-              // To stop listening:
-              notification.Dispose ();
-              
-              //
-              // Method style
-              //
-              NSObject notification;
-              void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
-              {
-              // Access strongly typed args
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              }
-              
-              void Setup ()
-              {
-              notification = UITextView.Notifications.ObserveTextDidChange (Callback);
-              }
-              
-              void Teardown ()
-              {
-              notification.Dispose ();
-              }
+            <code lang="c#">
+//
+// Lambda style
+//
 
+// listening
+notification = UITextView.Notifications.ObserveTextDidChange ((sender, args) =&gt; {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = UITextView.Notifications.ObserveTextDidChange (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}</code>
+          </example>
+          <para>The following example shows how to use the notification with the DefaultCenter API:</para>
+          <example>
+            <code lang="c#">
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        UITextView.TextDidChangeNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UITextView", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UITextView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UITextView.TextDidChangeNotification, Callback);
+}
 </code>
-          </example>
-          <para>The following example shows how to use the notification with the DefaultCenter API:</para>
-          <example>
-            <code lang="c#">
-              // Lambda style
-              NSNotificationCenter.DefaultCenter.AddObserver (
-              UITextView.TextDidChangeNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UITextView", notification); }
-              
-              
-              // Method style
-              void Callback (NSNotification notification)
-              {
-              Console.WriteLine ("Received a notification UITextView", notification);
-              }
-              
-              void Setup ()
-              {
-              NSNotificationCenter.DefaultCenter.AddObserver (UITextView.TextDidChangeNotification, Callback);
-              }
-            </code>
-          </example>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="TextDidEndEditingNotification">
-      <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSString TextDidEndEditingNotification { get; }"/>
-      <MemberSignature Language="ILAsm" Value=".property class MonoTouch.Foundation.NSString TextDidEndEditingNotification"/>
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Attributes>
-        <Attribute>
-          <AttributeName>MonoTouch.Foundation.Field("UITextViewTextDidEndEditingNotification", "UIKit")</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Notification constant for TextDidEndEditing</summary>
-        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
-        <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter"/> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UITextView+Notifications"/>.<see cref="M:UITextView+Notifications.ObserveTextDidEndEditingNotification"/> method which offers strongly typed access to the parameters of the notification.</para>
-          <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
-          <example>
-            <code lang="c#">
-              //
-              // Lambda style
-              //
-              
-              // listening
-              notification = UITextView.Notifications.ObserveTextDidEndEditing ((sender, args) =&gt; {
-              /* Access strongly typed args */
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              });
-              
-              // To stop listening:
-              notification.Dispose ();
-              
-              //
-              // Method style
-              //
-              NSObject notification;
-              void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
-              {
-              // Access strongly typed args
-              Console.WriteLine ("Notification: {0}", args.Notification);
-              }
-              
-              void Setup ()
-              {
-              notification = UITextView.Notifications.ObserveTextDidEndEditing (Callback);
-              }
-              
-              void Teardown ()
-              {
-              notification.Dispose ();
-              }</code>
-          </example>
-          <para>The following example shows how to use the notification with the DefaultCenter API:</para>
-          <example>
-            <code lang="c#">
-              // Lambda style
-              NSNotificationCenter.DefaultCenter.AddObserver (
-              UITextView.TextDidEndEditingNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UITextView", notification); }
-              
-              
-              // Method style
-              void Callback (NSNotification notification)
-              {
-              Console.WriteLine ("Received a notification UITextView", notification);
-              }
-              
-              void Setup ()
-              {
-              NSNotificationCenter.DefaultCenter.AddObserver (UITextView.TextDidEndEditingNotification, Callback);
-              }
-            </code>
-          </example>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="TextFontKey">
-      <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSString TextFontKey { get; }"/>
-      <MemberSignature Language="ILAsm" Value=".property class MonoTouch.Foundation.NSString TextFontKey"/>
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Attributes>
-        <Attribute>
-          <AttributeName>MonoTouch.Foundation.Field("UITextInputTextFontKey", "UIKit")</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="TextInputView">
-      <MemberSignature Language="C#" Value="public virtual MonoTouch.UIKit.UIView TextInputView { get; }"/>
-      <MemberSignature Language="ILAsm" Value=".property instance class MonoTouch.UIKit.UIView TextInputView"/>
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Attributes>
-        <Attribute>
-          <AttributeName>get: MonoTouch.Foundation.Export("textInputView")</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>MonoTouch.UIKit.UIView</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="TextInRange">
-      <MemberSignature Language="C#" Value="public virtual string TextInRange (MonoTouch.UIKit.UITextRange range);"/>
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance string TextInRange(class MonoTouch.UIKit.UITextRange range) cil managed"/>
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Attributes>
-        <Attribute>
-          <AttributeName>MonoTouch.Foundation.Export("textInRange:")</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="range" Type="MonoTouch.UIKit.UITextRange"/>
-      </Parameters>
-      <Docs>
-        <param name="range">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="TextStorage">
-      <MemberSignature Language="C#" Value="public virtual MonoTouch.UIKit.NSTextStorage TextStorage { get; }"/>
-      <MemberSignature Language="ILAsm" Value=".property instance class MonoTouch.UIKit.NSTextStorage TextStorage"/>
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Attributes>
-        <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Since(7, 0)</AttributeName>
-        </Attribute>
-        <Attribute>
-          <AttributeName>get: MonoTouch.Foundation.Export("textStorage", MonoTouch.ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
-        </Attribute>
-        <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Since(7, 0)</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>MonoTouch.UIKit.NSTextStorage</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Tokenizer">
-      <MemberSignature Language="C#" Value="public MonoTouch.UIKit.UITextInputTokenizer Tokenizer { get; }"/>
-      <MemberSignature Language="ILAsm" Value=".property instance class MonoTouch.UIKit.UITextInputTokenizer Tokenizer"/>
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>MonoTouch.UIKit.UITextInputTokenizer</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="TypingAttributes">
-      <MemberSignature Language="C#" Value="public virtual MonoTouch.Foundation.NSDictionary TypingAttributes { get; set; }"/>
-      <MemberSignature Language="ILAsm" Value=".property instance class MonoTouch.Foundation.NSDictionary TypingAttributes"/>
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Attributes>
-        <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Since(6, 0)</AttributeName>
-        </Attribute>
-        <Attribute>
-          <AttributeName>get: MonoTouch.Foundation.Export("typingAttributes")</AttributeName>
-        </Attribute>
-        <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Since(6, 0)</AttributeName>
-        </Attribute>
-        <Attribute>
-          <AttributeName>set: MonoTouch.Foundation.Export("setTypingAttributes:")</AttributeName>
-        </Attribute>
-        <Attribute>
-          <AttributeName>set: MonoTouch.ObjCRuntime.Since(6, 0)</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>MonoTouch.Foundation.NSDictionary</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="UnmarkText">
-      <MemberSignature Language="C#" Value="public virtual void UnmarkText ();"/>
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void UnmarkText() cil managed"/>
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Attributes>
-        <Attribute>
-          <AttributeName>MonoTouch.Foundation.Export("unmarkText")</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters/>
-      <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ViewForZoomingInScrollView">
-      <MemberSignature Language="C#" Value="public MonoTouch.UIKit.UIScrollViewGetZoomView ViewForZoomingInScrollView { get; set; }"/>
-      <MemberSignature Language="ILAsm" Value=".property instance class MonoTouch.UIKit.UIScrollViewGetZoomView ViewForZoomingInScrollView"/>
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>MonoTouch.UIKit.UIScrollViewGetZoomView</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Delegate invoked by the object to get a value.</summary>
-        <value>To be added.</value>
-        <remarks>You assign a function, delegate or anonymous method to this property to return a value to the object.   If you assign a value to this property, it this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="WeakDelegate">
-      <MemberSignature Language="C#" Value="public virtual MonoTouch.Foundation.NSObject WeakDelegate { get; set; }"/>
-      <MemberSignature Language="ILAsm" Value=".property instance class MonoTouch.Foundation.NSObject WeakDelegate"/>
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Attributes>
-        <Attribute>
-          <AttributeName>get: MonoTouch.Foundation.Export("delegate", MonoTouch.ObjCRuntime.ArgumentSemantic.Assign)</AttributeName>
-        </Attribute>
-        <Attribute>
-          <AttributeName>set: MonoTouch.Foundation.Export("setDelegate:", MonoTouch.ObjCRuntime.ArgumentSemantic.Assign)</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>MonoTouch.Foundation.NSObject</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>An object that can respond to the delegate protocol for this type</summary>
-        <value>
-          <para>The instance that will respond to events and data requests.</para>
-          <para tool="nullallowed">This value can be <see langword="null"/>.</para>
-        </value>
-        <remarks>
-          <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
-          <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
-          <para>   Methods must be decorated with the [Export ("selectorName")] attribute to respond to each method from the protocol.   Alternatively use the Delegate method which is strongly typed and does not require the [Export] attributes on methods.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="WeakInputDelegate">
-      <MemberSignature Language="C#" Value="public virtual MonoTouch.Foundation.NSObject WeakInputDelegate { get; set; }"/>
-      <MemberSignature Language="ILAsm" Value=".property instance class MonoTouch.Foundation.NSObject WeakInputDelegate"/>
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Attributes>
-        <Attribute>
-          <AttributeName>get: MonoTouch.Foundation.Export("inputDelegate")</AttributeName>
-        </Attribute>
-        <Attribute>
-          <AttributeName>set: MonoTouch.Foundation.Export("setInputDelegate:")</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>MonoTouch.Foundation.NSObject</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="WeakLinkTextAttributes">
-      <MemberSignature Language="C#" Value="public virtual MonoTouch.Foundation.NSDictionary WeakLinkTextAttributes { get; set; }"/>
-      <MemberSignature Language="ILAsm" Value=".property instance class MonoTouch.Foundation.NSDictionary WeakLinkTextAttributes"/>
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Attributes>
-        <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Since(7, 0)</AttributeName>
-        </Attribute>
-        <Attribute>
-          <AttributeName>get: MonoTouch.Foundation.Export("linkTextAttributes", MonoTouch.ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
-        </Attribute>
-        <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Since(7, 0)</AttributeName>
-        </Attribute>
-        <Attribute>
-          <AttributeName>set: MonoTouch.Foundation.Export("setLinkTextAttributes:", MonoTouch.ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
-        </Attribute>
-        <Attribute>
-          <AttributeName>set: MonoTouch.ObjCRuntime.Since(7, 0)</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>MonoTouch.Foundation.NSDictionary</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="WeakTokenizer">
-      <MemberSignature Language="C#" Value="public virtual MonoTouch.Foundation.NSObject WeakTokenizer { get; }"/>
-      <MemberSignature Language="ILAsm" Value=".property instance class MonoTouch.Foundation.NSObject WeakTokenizer"/>
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Attributes>
-        <Attribute>
-          <AttributeName>get: MonoTouch.Foundation.Export("tokenizer")</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>MonoTouch.Foundation.NSObject</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="WillEndDragging">
-      <MemberSignature Language="C#" Value="public event EventHandler&lt;MonoTouch.UIKit.WillEndDraggingEventArgs&gt; WillEndDragging;"/>
-      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler`1&lt;class MonoTouch.UIKit.WillEndDraggingEventArgs&gt; WillEndDragging"/>
-      <MemberType>Event</MemberType>
-      <AssemblyInfo>
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.EventHandler&lt;MonoTouch.UIKit.WillEndDraggingEventArgs&gt;</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Event raised by the object.</summary>
-        <remarks>If you assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ZoomingEnded">
-      <MemberSignature Language="C#" Value="public event EventHandler&lt;MonoTouch.UIKit.ZoomingEndedEventArgs&gt; ZoomingEnded;"/>
-      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler`1&lt;class MonoTouch.UIKit.ZoomingEndedEventArgs&gt; ZoomingEnded"/>
-      <MemberType>Event</MemberType>
-      <AssemblyInfo>
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.EventHandler&lt;MonoTouch.UIKit.ZoomingEndedEventArgs&gt;</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Event raised by the object.</summary>
-        <remarks>If you assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ZoomingStarted">
-      <MemberSignature Language="C#" Value="public event EventHandler&lt;MonoTouch.UIKit.UIScrollViewZoomingEventArgs&gt; ZoomingStarted;"/>
-      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler`1&lt;class MonoTouch.UIKit.UIScrollViewZoomingEventArgs&gt; ZoomingStarted"/>
-      <MemberType>Event</MemberType>
-      <AssemblyInfo>
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.EventHandler&lt;MonoTouch.UIKit.UIScrollViewZoomingEventArgs&gt;</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Event raised by the object.</summary>
-        <remarks>If you assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="TextBackgroundColorKey">
-      <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSString TextBackgroundColorKey { get; }"/>
-      <MemberSignature Language="ILAsm" Value=".property class MonoTouch.Foundation.NSString TextBackgroundColorKey"/>
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Attributes>
-        <Attribute>
-          <AttributeName>MonoTouch.Foundation.Field("UITextInputTextBackgroundColorKey", "UIKit")</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>The property holds the key that should be used to retrieve the background color of text from a <see cref="T:MonoTouch.Foundation.NSDictionary"/>.</summary>
-        <value>
-        </value>
-        <remarks>To be added.
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="TextColor">
-      <MemberSignature Language="C#" Value="public virtual MonoTouch.UIKit.UIColor TextColor { get; set; }"/>
-      <MemberSignature Language="ILAsm" Value=".property instance class MonoTouch.UIKit.UIColor TextColor"/>
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Attributes>
-        <Attribute>
-          <AttributeName>get: MonoTouch.Foundation.Export("textColor", MonoTouch.ObjCRuntime.ArgumentSemantic.Retain)</AttributeName>
-        </Attribute>
-        <Attribute>
-          <AttributeName>set: MonoTouch.Foundation.Export("setTextColor:", MonoTouch.ObjCRuntime.ArgumentSemantic.Retain)</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>MonoTouch.UIKit.UIColor</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>The color of the <see cref="P:MonoTouch.UIKit.UITextField.Text"/>.</summary>
-        <value>
-        </value>
-        <remarks>
-          <para>Assignment to this property will affect all the text in the <see cref="T:MonoTouch.UIKit.UITextView"/>. If multiple text-styles are desired, the application developer must use the <see cref="P:MonoTouch.UIKit.UITextView.AttributedText"/> property.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="TextColorKey">
-      <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSString TextColorKey { get; }"/>
-      <MemberSignature Language="ILAsm" Value=".property class MonoTouch.Foundation.NSString TextColorKey"/>
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Attributes>
-        <Attribute>
-          <AttributeName>MonoTouch.Foundation.Field("UITextInputTextColorKey", "UIKit")</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>The property holds the key that should be used to retrieve the value of the text color from a <see cref="T:MonoTouch.Foundation.NSDictionary"/>.</summary>
-        <value>
-        </value>
-        <remarks>To be added.
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="TextContainer">
-      <MemberSignature Language="C#" Value="public virtual MonoTouch.UIKit.NSTextContainer TextContainer { get; }"/>
-      <MemberSignature Language="ILAsm" Value=".property instance class MonoTouch.UIKit.NSTextContainer TextContainer"/>
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Attributes>
-        <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Since(7, 0)</AttributeName>
-        </Attribute>
-        <Attribute>
-          <AttributeName>get: MonoTouch.Foundation.Export("textContainer", MonoTouch.ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>MonoTouch.UIKit.NSTextContainer</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="TextContainerInset">
-      <MemberSignature Language="C#" Value="public virtual MonoTouch.UIKit.UIEdgeInsets TextContainerInset { get; set; }"/>
-      <MemberSignature Language="ILAsm" Value=".property instance valuetype MonoTouch.UIKit.UIEdgeInsets TextContainerInset"/>
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Attributes>
-        <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Since(7, 0)</AttributeName>
-        </Attribute>
-        <Attribute>
-          <AttributeName>get: MonoTouch.Foundation.Export("textContainerInset", MonoTouch.ObjCRuntime.ArgumentSemantic.Assign)</AttributeName>
-        </Attribute>
-        <Attribute>
-          <AttributeName>set: MonoTouch.Foundation.Export("setTextContainerInset:", MonoTouch.ObjCRuntime.ArgumentSemantic.Assign)</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>MonoTouch.UIKit.UIEdgeInsets</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="TextDidBeginEditingNotification">
-      <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSString TextDidBeginEditingNotification { get; }"/>
-      <MemberSignature Language="ILAsm" Value=".property class MonoTouch.Foundation.NSString TextDidBeginEditingNotification"/>
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Attributes>
-        <Attribute>
-          <AttributeName>MonoTouch.Foundation.Field("UITextViewTextDidBeginEditingNotification", "UIKit")</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Notification constant for TextDidBeginEditing</summary>
-        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
-        <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter"/> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UITextView+Notifications"/>.<see cref="M:UITextView+Notifications.ObserveTextDidBeginEditingNotification"/> method which offers strongly typed access to the parameters of the notification.</para>
-          <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
-          <example>
-            <code lang="C#"><![CDATA[
-            //
-            // Lambda style
-            //
-            
-            // listening
-            notification = UITextView.Notifications.ObserveTextDidBeginEditing ((sender, args) = {
-               /* Access strongly typed args */
-              Console.WriteLine ("Notification: {0}", args.Notification);
-            });
-            
-            // To stop listening:
-            notification.Dispose ();
-            
-            //
-            // Method style
-            //
-            NSObject notification;
-            void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
-            {
-              // Access strongly typed args
-              Console.WriteLine ("Notification: {0}", args.Notification);
-            }
-            
-            void Setup ()
-            {
-              notification = UITextView.Notifications.ObserveTextDidBeginEditing (Callback);
-            }
-            
-            void Teardown ()
-            {
-              notification.Dispose ();
-            }
-          ]]></code>
-          </example>
-          <para>The following example shows how to use the notification with the DefaultCenter API:</para>
-          <example>
-            <code lang="C#"><![CDATA[
-            // Lambda style
-            NSNotificationCenter.DefaultCenter.AddObserver (
-               UITextView.TextDidBeginEditingNotification, (notification) = {Console.WriteLine ("Received the notification UITextView", notification); }
-            
-            
-            // Method style
-            void Callback (NSNotification notification)
-            {
-               Console.WriteLine ("Received a notification UITextView", notification);
-            }
-            
-            void Setup ()
-            {
-               NSNotificationCenter.DefaultCenter.AddObserver (UITextView.TextDidBeginEditingNotification, Callback);
-            }
-          ]]></code>
           </example>
         </remarks>
       </Docs>
@@ -3264,60 +2643,59 @@ void Setup ()
           <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UITextView+Notifications" />.<see cref="M:UITextView+Notifications.ObserveTextDidEndEditingNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="C#"><![CDATA[
-            //
-            // Lambda style
-            //
-            
-            // listening
-            notification = UITextView.Notifications.ObserveTextDidEndEditing ((sender, args) = {
-               /* Access strongly typed args */
-               Console.WriteLine ("Notification: {0}", args.Notification);
-            });
-            
-            // To stop listening:
-            notification.Dispose ();
-            
-            //
-            // Method style
-            //
-            NSObject notification;
-            void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
-            {
-               // Access strongly typed args
-               Console.WriteLine ("Notification: {0}", args.Notification);
-            }
-            
-            void Setup ()
-            {
-               notification = UITextView.Notifications.ObserveTextDidEndEditing (Callback);
-            }
-            
-            void Teardown ()
-            {
-               notification.Dispose ();
-            }
-          ]]></code>
+            <code lang="c#">
+//
+// Lambda style
+//
+
+// listening
+notification = UITextView.Notifications.ObserveTextDidEndEditing ((sender, args) =&gt; {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = UITextView.Notifications.ObserveTextDidEndEditing (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}</code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="C#"><![CDATA[
-            // Lambda style
-            NSNotificationCenter.DefaultCenter.AddObserver (
-               UITextView.TextDidEndEditingNotification, (notification) = {Console.WriteLine ("Received the notification UITextView", notification); }
-              
-            
-            // Method style
-            void Callback (NSNotification notification)
-            {
-               Console.WriteLine ("Received a notification UITextView", notification);
-            }
-            
-            void Setup ()
-            {
-               NSNotificationCenter.DefaultCenter.AddObserver (UITextView.TextDidEndEditingNotification, Callback);
-            }
-            ]]></code>
+            <code lang="c#">
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        UITextView.TextDidEndEditingNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UITextView", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UITextView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UITextView.TextDidEndEditingNotification, Callback);
+}
+</code>
           </example>
         </remarks>
       </Docs>
