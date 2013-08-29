@@ -25,7 +25,38 @@
     <summary>Coordinates the UIKit Dynamics of a set of <see cref="T:MonoTouch.UIKit.IUIDynamicItem" />s and <see cref="T:MonoTouch.UIKit.UIDynamicBehavior" />s.</summary>
     <remarks>
       <para>
-        <see cref="T:MonoTouch.UIKit.UIDynamicAnimator" /> provides the overall context for the physics-inspired "UI Dynamics" behaviors introduced in iOS 7. Additionally, it defines the coordinate system for the dynamics and wraps the underlying animation engine. Finally, it keeps track of the <see cref="T:MonoTouch.UIKit.UIDynamicBehavior" />s  and <see cref="T:MonoTouch.UIKit.IUIDynamicItems" /> that define the particular behaviors and items for which dynamics are desired.</para>
+
+	The dynamic animator is responsible for coordinating physics
+	simulations attached to a UIView.  These physics simulations
+	are implemented as subclasses of the <see
+	cref="T:MonoTouch.UIKit.UIDynamicBehavior" /> class, and
+	include various predefined simulations for gravity, collision
+	detection, attaching, snapping, forces and controling item
+	properties.
+
+      </para>
+
+      <para> 
+	<see cref="T:MonoTouch.UIKit.UIDynamicAnimator" /> It provides the overall context for managing the physics
+	simulation attached to a UIView. Additionally, it defines the
+	coordinate system for the dynamics and wraps the underlying
+	animation engine. Finally, it keeps track of the <see
+	cref="T:MonoTouch.UIKit.UIDynamicBehavior" />s and <see
+	cref="T:MonoTouch.UIKit.IUIDynamicItems" /> that define the
+	particular behaviors and items for which dynamics are desired.
+	</para>
+
+      <para>
+	Adding behaviors to a dynamic animator will cause the behavior
+	to run as part of the physics simulation that UIKit runs.  To
+	stop a behavior from running (and be part of the simulation),
+	you must remove the behavior from the dynamic animator (use
+	<see cref="M:MonoTouch.UIKit.UIDynamicAnimator.RemoveBehavior"
+	/> or <see
+	cref="M:MonoTouch.UIKit.UIDynamicAnimator.RemoveAllBehaviors"
+	/>.
+      </para>
+
       <para>It is the application developer's responsibility to create a configuration that can be solved by the physics-like behavior of UI Dynamics.</para>
       <para>The following example shows how you can add a couple of behaviors to an animator:</para>
       <example>
@@ -34,20 +65,41 @@ public override void ViewDidLoad ()
 {
 	base.ViewDidLoad ();
 
+	// Create a dynamic animator for the specified UIView
+	// in this case, the property "View" of UIViewController
+	//
+	animator = new UIDynamicAnimator (View);
+	
+	// Creates two dynamic behaviors
+
+	// Create a gravity behavior that operates on the `square' UIView
 	var gravityBehavior = new UIGravityBehavior (square);
+
+	// Create a collision behavior that operates on the same `square' UIVew
 	var collisionBehavior = new UICollisionBehavior (square) {
 		TranslatesReferenceBoundsIntoBoundary = true
 	};
+
+	// Detect collision, hook up to the events raised by that behavior
 	collisionBehavior.BeganBoundaryContact += BeganContact;
 	collisionBehavior.EndedBoundaryContact += EndedContact;
 
-	animator = new UIDynamicAnimator (View);
-
-	// Add the two behaviors at once
+	// Add the two behaviors to the dynamic animator
 	animator.AddBehaviors (gravityBehavior, collisionBehavior);
+
+	// The simulation will start running
 }
 </code>
 </example>
+      <para>
+	These are the predefined behaviors that extend the <see cref="T:MonoTouch.UIKit.UIDynamicBehavior"/> class:
+	<see cref="T:MonoTouch.UIKit.UIAttachmentBehavior"/>,
+	<see cref="T:MonoTouch.UIKit.UICollisionBehavior"/>,
+	<see cref="T:MonoTouch.UIKit.UIDynamicItemBehavior"/>,
+	<see cref="T:MonoTouch.UIKit.UIGravityBehavior"/>,
+	<see cref="T:MonoTouch.UIKit.UIPushBehavior"/> and
+	<see cref="T:MonoTouch.UIKit.UISnapBehavior"/>.
+      </para>
 </remarks>
   </Docs>
   <Members>
@@ -565,8 +617,8 @@ public override void ViewDidLoad ()
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Removes all of the behaviors attached to this animator.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="RemoveBehavior">
