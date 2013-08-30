@@ -15,7 +15,7 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>To be added.</summary>
+    <summary>Holds a key for restoring storyboards.</summary>
     <remarks>To be added.</remarks>
   </Docs>
   <Members>
@@ -38,7 +38,28 @@
         <summary>Represents the value associated with the constant UIStateRestorationViewControllerStoryboardKey</summary>
         <value>
         </value>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <para>Application developers who wish to implement state restoration would use this method in the following manner:</para>
+           <example>
+        <code lang="C#"><![CDATA[
+          [Adopts ("UIViewControllerRestoration")]
+          class MyUIViewController : UIViewController {
+          
+             [Export ("viewControllerWithRestorationIdentifierPath:")]
+             static UIViewController FromIdentifierPath (string [] identifierComponents, NSCoder coder)
+             {
+                var sb = (UIStoryboard) coder.DecodeObject (UIStateRestoration.ViewControllerStoryboardKey);
+                if (sb != null){
+                   var vc = (MyUIViewController) sb.InstantiateViewController ("MyViewController");
+                   vc.RestorationIdentifier = identifierComponents [identifierComponents.Length-1];
+                   vc.RestorationClass = Class.GetHandle (typeof (MyViewController));
+                }
+             }
+          }
+]]></code>
+      </example>
+
+        </remarks>
       </Docs>
     </Member>
   </Members>
