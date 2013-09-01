@@ -52,6 +52,46 @@
         
       </para>
       <para tool="threads">The members of this class can be used from a background thread.</para>
+
+      <format type="text/html">
+        <h2>Modifying a Font Instance</h2>
+      </format>
+
+      <para> Starting with iOS7, you can modify an existing font
+	instance by using font descriptors.  To do this, you fetch the
+	immutable <see
+	cref="P:MonoTouch.UIKit.UIFont.FontDescriptor"/> property from
+	your font and use it to create a new font descriptor with your
+	desired changes, which then you use to can pass to the <see
+	cref="M:MonoTouch.UIKit.UIFont.FromDescriptor"/> method to
+	create the altered font.
+      </para>
+
+      <para> The following example shows how to alter the existing
+	font to set enable the CoreText font features for proportional
+	numbers and to use the character alternative: 
+      </para>
+
+      <example>
+	<code lang="c#">
+UIFont CustomizeFont (UIFont font)
+{
+    var originalDescriptor = font.GetFontDescriptor ();
+
+    // This font has a character alternative, at index 1, use that:
+    const int characterAlternative = 1;
+
+    var attributes = new UIFontAttributes () {
+          FeatureSettings = new UIFontFeature [] {
+                  new UIFontFeature (CTFontFeatureNumberSpacing.Selector.ProportionalNumbers),
+                  new UIFontFeature (characterAlternative)
+          }
+    }
+    var newDesc = originalDescriptor.CreateWithAttributes (attributes);
+    return UIFont.FromDescriptor (newDesc, 80);
+}
+        </code>
+      </example>
     </remarks>
     <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=23a2571b-45eb-4889-bb67-d88937cb68c1">monocatalog</related>
     <related type="recipe" href="http://docs.xamarin.com/ios/Recipes/Standard_Controls/Fonts/Enumerate_Fonts">Enumerate Fonts</related>
