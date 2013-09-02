@@ -256,12 +256,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.UIKit.UIFontDescriptor[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>Specifies the list of sub descriptors to be used before the system default fallbacks.</summary>
+        <value>The default is the list of descriptors based on the user locale.</value>
         <remarks>
-          <para>(More documentation for this node is coming)</para>
-          <para tool="threads">This can be used from a background thread.</para>
-        </remarks>
+	  <para tool="threads">This can be used from a background thread.</para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="CharacterSet">
@@ -275,10 +274,12 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.Foundation.NSCharacterSet</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>Describes the character set supported by the specified font.</summary>
+        <value>
+        </value>
         <remarks>
-          <para>(More documentation for this node is coming)</para>
+        </remarks>
+        <remarks>
           <para tool="threads">This can be used from a background thread.</para>
         </remarks>
       </Docs>
@@ -536,10 +537,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>The font face.</summary>
+        <value></value>
         <remarks>
-          <para>(More documentation for this node is coming)</para>
           <para tool="threads">This can be used from a background thread.</para>
         </remarks>
       </Docs>
@@ -555,10 +555,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>The font family.</summary>
+        <value></value>
         <remarks>
-          <para>(More documentation for this node is coming)</para>
           <para tool="threads">This can be used from a background thread.</para>
         </remarks>
       </Docs>
@@ -574,10 +573,41 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.UIKit.UIFontFeature[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>Typographic and layout feature settings.</summary>
+        <value>
+        </value>
         <remarks>
-          <para>(More documentation for this node is coming)</para>
+          <para>
+
+	    This property is an array of UIFontFeature objects, each
+	    representing a font-specific typograph or layout feature
+	    that can be enabled in the font.  For background on Font
+	    Features, you can read
+	    https://developer.apple.com/fonts/registry
+
+	  </para>
+          <para>
+
+	    The following example shows how to configure the font to
+	    use proportional numbers as well as informing the
+	    rendering engine to use the 1st Character Alternatives available in this font. 
+	  </para>
+          <example>
+            <code lang="c#">
+UIFont CustomizeFont (UIFont font)
+{
+    var originalDescriptor = font.GetFontDescriptor ();
+    var attributes = new UIFontAttributes () {
+          FeatureSettings = new UIFontFeature [] {
+                  new UIFontFeature (CTFontFeatureNumberSpacing.Selector.ProportionalNumbers),
+                  new UIFontFeature ((CTFontFeatureCharacterAlternatives.Selector)1)
+          }
+    }
+    var newDesc = originalDescriptor.CreateWithAttributes (attributes);
+    return UIFont.FromDescriptor (newDesc, 80);
+}
+</code>
+          </example>
           <para tool="threads">This can be used from a background thread.</para>
         </remarks>
       </Docs>
@@ -593,10 +623,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Nullable&lt;System.Single&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>Override for font's fixed advance for individual glyphs.</summary>
+        <value>Default value is 0, null if not set.</value>
         <remarks>
-          <para>(More documentation for this node is coming)</para>
           <para tool="threads">This can be used from a background thread.</para>
         </remarks>
       </Docs>
@@ -616,8 +645,6 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <value>
         </value>
         <remarks>
-          <para>
-          </para>
           <para tool="threads">This can be used from a background thread.</para>
         </remarks>
       </Docs>
@@ -761,13 +788,12 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="mandatoryKeys">
-          <para>To be added.</para>
+          <para>Mandatory keys that must be present.</para>
           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
         </param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <summary>Retrieve a UIFontDescriptor with an explicit set of features.</summary>
+        <returns></returns>
         <remarks>
-          <para>(More documentation for this node is coming)</para>
           <para tool="threads">This can be used from a background thread.</para>
         </remarks>
       </Docs>
@@ -793,10 +819,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="mandatoryKeys">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <summary>Retrieve a UIFontDescriptor with an explicit set of features.</summary>
+        <returns></returns>
         <remarks>
-          <para>(More documentation for this node is coming)</para>
           <para tool="threads">This can be used from a background thread.</para>
         </remarks>
       </Docs>
@@ -820,11 +845,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="anAttribute" Type="MonoTouch.Foundation.NSString" />
       </Parameters>
       <Docs>
-        <param name="anAttribute">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="anAttribute">Attribute to retrieve.</param>
+        <summary>Low-level/weak API to retrieve properties from the UIFontDescriptor.</summary>
+        <returns></returns>
         <remarks>
-          <para>(More documentation for this node is coming)</para>
           <para tool="threads">This can be used from a background thread.</para>
         </remarks>
       </Docs>
