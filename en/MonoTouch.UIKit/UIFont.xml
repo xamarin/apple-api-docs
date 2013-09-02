@@ -54,23 +54,23 @@
       <para tool="threads">The members of this class can be used from a background thread.</para>
 
       <format type="text/html">
-        <h2>Modifying a Font Instance</h2>
+        <h2>Activating Typographic Features</h2>
       </format>
 
-      <para> Starting with iOS7, you can modify an existing font
-	instance by using font descriptors.  To do this, you fetch the
-	immutable <see
+      <para> Starting with iOS7, you can retrieve a new font based on
+	an existing font instance by using font descriptors.  To do
+	this, you fetch the immutable <see
 	cref="P:MonoTouch.UIKit.UIFont.FontDescriptor"/> property from
 	your font and use it to create a new font descriptor with your
 	desired changes, which then you use to can pass to the <see
 	cref="M:MonoTouch.UIKit.UIFont.FromDescriptor"/> method to
-	create the altered font.
+	create the altered font.  
       </para>
 
       <para> The following example shows how to alter the existing
-	font to set enable the CoreText font features for proportional
-	numbers and to use the character alternative: 
-      </para>
+	font to set enable the CoreText typographic features for
+	proportional numbers and to use the character alternative:
+	</para>
 
       <example>
 	<code lang="c#">
@@ -92,6 +92,47 @@ UIFont CustomizeFont (UIFont font)
 }
         </code>
       </example>
+
+      <format type="text/html">
+        <h2>Limiting Character Coverage of a Font</h2>
+      </format>
+
+      <para>
+
+	The following example alters a font descriptor by altering the
+	character set supported by the font and forces the system to
+	use a glyph from the list of fallback fonts in the system.
+	For example, if you were to use the Menlo font, the following
+	example would remove the use of the Melon Snowman character
+	(At Unicode 0x2603), and fall back to the system snowman:
+
+      </para>
+
+      <example>
+	<code lang="c#">
+var label = new UILabel (new RectangleF (0, 300, 200, 100)) {
+	Text = "Hello \u2603 there!",
+	TextColor = UIColor.White,
+	Font = MyFonts.Menlo
+};
+
+var originalDescriptor = label.Font.FontDescriptor;
+var originalCharSet = originalDescriptor.CharacterSet;
+
+// Make a copy of the character set to modify
+var charSetCopy = originalCharSet.MutableCopy () as NSMutableCharacterSet;
+
+// Remove the snowman
+charSetCopy.RemoveCharacters (new NSRange (0x2603, 1));
+
+// Create new descriptor
+var removedSnowmanDescriptor = originalDescriptor.CreateWithAttributes (new UIFontAttributes () { 
+	CharacterSet =  originalCharSet
+});
+
+// Create the font and set it on our label
+label.Font = UIFont.FromDescriptor (removedSnowmanDescriptor, 0);
+
     </remarks>
     <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=23a2571b-45eb-4889-bb67-d88937cb68c1">monocatalog</related>
     <related type="recipe" href="http://docs.xamarin.com/ios/Recipes/Standard_Controls/Fonts/Enumerate_Fonts">Enumerate Fonts</related>
