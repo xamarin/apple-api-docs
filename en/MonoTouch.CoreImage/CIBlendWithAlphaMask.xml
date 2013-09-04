@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <Type Name="CIBlendWithAlphaMask" FullName="MonoTouch.CoreImage.CIBlendWithAlphaMask">
-  <TypeSignature Language="C#" Value="public class CIBlendWithAlphaMask : MonoTouch.CoreImage.CIBlendFilter"/>
-  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit CIBlendWithAlphaMask extends MonoTouch.CoreImage.CIBlendFilter"/>
+  <TypeSignature Language="C#" Value="public class CIBlendWithAlphaMask : MonoTouch.CoreImage.CIBlendWithMask"/>
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit CIBlendWithAlphaMask extends MonoTouch.CoreImage.CIBlendWithMask"/>
   <AssemblyInfo>
     <AssemblyName>monotouch</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <Base>
-    <BaseTypeName>MonoTouch.CoreImage.CIBlendFilter</BaseTypeName>
+    <BaseTypeName>MonoTouch.CoreImage.CIBlendWithMask</BaseTypeName>
   </Base>
   <Interfaces/>
   <Attributes>
@@ -16,8 +16,64 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>A <see cref="T:MonoTouch.CoreImage.CIBlendFilter" /> that uses a mask image to blend it foreground and background images.</summary>
-    <remarks>To be added.</remarks>
+    <summary>A <see cref="T:MonoTouch.CoreImage.CIBlendWithMask" /> that uses a mask image to blend it foreground and background images.</summary>
+    <remarks>
+      <para>The following example shows this filter in use</para>
+      <example>
+        <code lang="C#">
+// Create the CIImages from a file
+CIImage flower = CIImage.FromCGImage (UIImage.FromFile ("flower.png").CGImage);
+CIImage clouds = CIImage.FromCGImage (UIImage.FromFile ("clouds.jpg").CGImage);
+CIImage xamarinAlpha = CIImage.FromCGImage (UIImage.FromFile ("XamarinAlpha.png").CGImage);
+
+// Create a CIBlendWithAlphaMask filter with our three input images 
+var blend_with_alpha_mask = new CIBlendWithAlphaMask () {
+	BackgroundImage = clouds,
+	Image = flower,
+	Mask = xamarinAlpha
+};
+
+// Get the blended image from the filter
+var output = blend_with_alpha_mask.OutputImage;
+
+// To render the results, we need to create a context, and then
+// use one of the context rendering APIs, in this case, we render the
+// result into a CoreGraphics image, which is merely a useful representation
+//
+var context = CIContext.FromOptions (null);
+
+var cgimage = context.CreateCGImage (output, output.Extent);
+
+// The above cgimage can be added to a screen view, for example, this
+// would add it to a UIImageView on the screen:
+myImageView.Image = UIImage.FromImage (cgimage);
+        </code>
+      </example>
+      <para>
+	With the following background, image and mask inputs:
+      </para>
+      <para>
+        <img href="clouds.jpg" />
+      </para>
+      <para>
+        <img href="flower.png" />
+      </para>
+      <para>
+        <img href="XamarinAlpha.png" />
+      </para>
+      <para>
+         Produces the following output:
+      </para>
+      <para>
+        <img href="blend_with_alpha_mask.png" />
+      </para>
+      <para>
+        "Sunrise near Atkeison Plateau" © 2012 Charles Atkeison, used under a Creative Commons Attribution-ShareAlike license: http://creativecommons.org/licenses/by-sa/3.0/
+      </para>
+      <para>
+      	"Flower" © 2012 Milica Sekulic, used under a Creative Commons Attribution-ShareAlike license: http://creativecommons.org/licenses/by-sa/3.0/ 
+      </para>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
