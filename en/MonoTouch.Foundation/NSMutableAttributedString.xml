@@ -598,10 +598,28 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="range" Type="MonoTouch.Foundation.NSRange" />
       </Parameters>
       <Docs>
-        <param name="dictionaryAttrsHandle">To be added.</param>
-        <param name="range">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="dictionaryAttrsHandle">Handle to an NSDictionary with the attributes to set.</param>
+        <param name="range">Range to apply the attributes to.</param>
+        <summary>Low-level version of SetAttributes for high throughput attribute setting.</summary>
+        <remarks>
+	  <para>
+	    In general, you should use the <see
+	    cref="M:MonoTouch.Foundation.NSAttributedString.GetAttributes"/>
+	    methods, which will return a high-level NSDictionary.
+	  </para>
+
+	  <para>
+	    This is the low-level interface to NSMutableAttributedString and
+	    in general is only used when you must subclass and override the behavior.  You are
+	    expected to consume the provided IntPtr that represents a handle to
+	    an NSDictionary.  This API is kept as a low-level API,
+	    since it is consumed by NSTextStorage which might call
+	    this method thousands of times per character insertion, so
+	    it is very important that this is kept as fast as
+	    possible.
+
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="ReadFromData">
