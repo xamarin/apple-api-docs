@@ -845,9 +845,30 @@ void Setup ()
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveContentSizeCategoryChangedNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+                  <para>After the application user has set the "Text Size Property" in Settings, the application will receive a notification via <see cref="M:MonoTouch.UIKit.UIApplication+Notifications.ObserveContentSizeCategoryChanged"/>. It is the application developer's responsibility, at that point, to invalidate the layout in all view elements that implement Dynamic Type. The simplest way to do that is to have a method that re-sets the font in all components that support Dynamic Type:</para>
+      <example>
+        <code lang="C#"><![CDATA[
+ UIApplication.Notifications.ObserveContentSizeCategoryChanged((s,e) => {
+	SetDynamicTypeFonts();
+});
+
+//Call this when initializing, and also in response to ObserveContentSizeCategoryChanged notifications
+private void SetDynamicTypeFonts()
+{
+	headlineLabel.Font = UIFont.PreferredFontForTextStyle(UIFontTextStyle.Headline);
+	bodyText.Font = UIFont.PreferredFontForTextStyle(UIFontTextStyle.Body);
+  //...etc...
+}
+          ]]>
+        </code>
+        </example>
+
+          
+          
+          
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 //
 // Lambda style
 //
@@ -886,8 +907,8 @@ void Teardown ()
 }</code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
-          <example>
-            <code lang="c#">
+          ]]><example>
+            <code lang="C#"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
         UIApplication.ContentSizeCategoryChangedNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIApplication", notification); }
@@ -903,7 +924,7 @@ void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.ContentSizeCategoryChangedNotification, Callback);
 }
-</code>
+]]></code>
           </example>
         </remarks>
       </Docs>
