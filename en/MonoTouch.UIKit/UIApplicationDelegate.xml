@@ -755,10 +755,52 @@ public partial class AppDelegate : UIApplicationDelegate
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="application">To be added.</param>
-        <param name="completionHandler">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="application">Handle to the UIApplication.</param>
+        <param name="completionHandler">Callback to invoke to notify the operating system of the result of the background fetch operation.</param>
+        <summary>Background support: Invoked by the operating system to allow an application to download data.</summary>
+        <remarks>
+	  <para>
+
+	    This method is part of iOS 7.0 new background fetch
+	    support.  This method is invoked if your Entitlements list
+	    the "fetch" background operation and after you have
+	    enabled fetching by calling the <see
+	    cref="M:MonoTouch.UIKit.UIApplication.SetMinimumBackgroundFetchInterval"/>
+	    method.
+
+	  </para>
+
+	  <para>
+
+	    Once that happens the operating system will determine the
+	    appropriate time to wake up your application to allow it
+	    to download data.  When it does that, it will first call
+	    the <see
+	    cref="M:MonoTouch.UIKit.UIApplicationDelegate.FinishedLaunching"/>
+	    method and then will invoke this method.
+
+	  </para>
+
+	  <para>
+
+	    This method should download the data from the network and
+	    before it completes, it must invoke the provided callback
+	    with the appropriate status code to notify the operating
+	    system of the background fetch operation (new data was
+	    downloaded, there was a network connection problem or no
+	    new data was found).
+
+	  </para>
+
+	  <para>
+
+	    Important: failure to call the provided callback method
+	    with the result code before this method completes will
+	    cause your application to be terminated.
+
+	  </para>
+
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="ProtectedDataDidBecomeAvailable">
