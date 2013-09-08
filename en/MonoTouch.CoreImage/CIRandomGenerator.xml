@@ -16,7 +16,40 @@
   </Attributes>
   <Docs>
     <summary>A <see cref="T:MonoTouch.CoreImage.CIFilter" /> whose pixels are randomly colored.</summary>
-    <remarks>Each of the color components is independently uniformly distributed.</remarks>
+    <remarks>
+      <para>Each of the color components is independently uniformly distributed</para>
+      <para>The following example shows this filter in use</para>
+      <example>
+        <code lang="C#">
+// Create a CIRandomGenerator filter with the input image
+var random_generator = new CIRandomGenerator ();
+
+// Get the altered image from the filter
+var output = new CICrop {
+	Image = random_generator.OutputImage,
+	Rectangle = new CIVector (0, 0, 400, 300)
+}.OutputImage;
+
+// To render the results, we need to create a context, and then
+// use one of the context rendering APIs, in this case, we render the
+// result into a CoreGraphics image, which is merely a useful representation
+//
+var context = CIContext.FromOptions (null);
+
+var cgimage = context.CreateCGImage (output, output.Extent);
+
+// The above cgimage can be added to a screen view, for example, this
+// would add it to a UIImageView on the screen:
+myImageView.Image = UIImage.FromImage (cgimage);
+        </code>
+      </example>
+      <para>
+         Produces the following output:
+      </para>
+      <para>
+        <img href="random_generator.png" />
+      </para>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
