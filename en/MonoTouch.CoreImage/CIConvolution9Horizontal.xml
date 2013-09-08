@@ -1,12 +1,12 @@
 <Type Name="CIConvolution9Horizontal" FullName="MonoTouch.CoreImage.CIConvolution9Horizontal">
-  <TypeSignature Language="C#" Value="public class CIConvolution9Horizontal : MonoTouch.CoreImage.CIFilter" />
-  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit CIConvolution9Horizontal extends MonoTouch.CoreImage.CIFilter" />
+  <TypeSignature Language="C#" Value="public class CIConvolution9Horizontal : MonoTouch.CoreImage.CIConvolutionCore" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit CIConvolution9Horizontal extends MonoTouch.CoreImage.CIConvolutionCore" />
   <AssemblyInfo>
     <AssemblyName>monotouch</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <Base>
-    <BaseTypeName>MonoTouch.CoreImage.CIFilter</BaseTypeName>
+    <BaseTypeName>MonoTouch.CoreImage.CIConvolutionCore</BaseTypeName>
   </Base>
   <Interfaces />
   <Attributes>
@@ -16,7 +16,51 @@
   </Attributes>
   <Docs>
     <summary>A filter that performs a horizontal convolution of 9 elements.</summary>
-    <remarks>To be added.</remarks>
+    <remarks>
+      <para>The following example shows this filter in use</para>
+      <example>
+        <code lang="C#">
+// Create the CIImage from a file
+CIImage heron = CIImage.FromCGImage (UIImage.FromFile ("heron.jpg").CGImage);
+
+// Create a CIConvolution9Horizontal filter with the input image
+var convolution_9_horizontal = new CIConvolution9Horizontal () {
+	Image = heron,
+	Weights = new CIVector (new float [] {1, -1, 1, 0, 1, 0, -1, 1, -1}),
+};
+
+// Get the altered image from the filter
+var output = convolution_9_horizontal.OutputImage;
+
+// To render the results, we need to create a context, and then
+// use one of the context rendering APIs, in this case, we render the
+// result into a CoreGraphics image, which is merely a useful representation
+//
+var context = CIContext.FromOptions (null);
+
+var cgimage = context.CreateCGImage (output, output.Extent);
+
+// The above cgimage can be added to a screen view, for example, this
+// would add it to a UIImageView on the screen:
+myImageView.Image = UIImage.FromImage (cgimage);
+        </code>
+      </example>
+      <para>
+        With the following image input:
+      </para>
+      <para>
+        <img href="heron.jpg" />
+      </para>
+      <para>
+         Produces the following output:
+      </para>
+      <para>
+        <img href="convolution_9_horizontal.png" />
+      </para>
+      <para>
+      	"canon" © 2012 cuatrok77 hernandez, used under a Creative Commons Attribution-ShareAlike license: http://creativecommons.org/licenses/by-sa/3.0/
+      </para>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
