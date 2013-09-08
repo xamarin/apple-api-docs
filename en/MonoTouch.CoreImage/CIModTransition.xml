@@ -16,7 +16,60 @@
   </Attributes>
   <Docs>
     <summary>A <see cref="T:MonoTouch.CoreImage.CITransitionFilter" /> that reveals the background image via a series of irregularly shaped holes.</summary>
-    <remarks>To be added.</remarks>
+    <remarks>
+      <para>The following example shows this filter in use</para>
+      <example>
+        <code lang="C#">
+// Create the CIImage from a file
+CIImage heron = CIImage.FromCGImage (UIImage.FromFile ("heron.jpg").CGImage);
+CIImage clouds = CIImage.FromCGImage (UIImage.FromFile ("clouds.jpg").CGImage);
+
+// Create a CIModTransition filter with the input image
+var mod_transition = new CIModTransition ()
+{
+	Image = heron,
+	TargetImage = clouds,
+	Time = 0.5f
+};
+
+// Get the altered image from the filter
+var output = mod_transition.OutputImage;
+
+// To render the results, we need to create a context, and then
+// use one of the context rendering APIs, in this case, we render the
+// result into a CoreGraphics image, which is merely a useful representation
+//
+var context = CIContext.FromOptions (null);
+
+var cgimage = context.CreateCGImage (output, output.Extent);
+
+// The above cgimage can be added to a screen view, for example, this
+// would add it to a UIImageView on the screen:
+myImageView.Image = UIImage.FromImage (cgimage);
+        </code>
+      </example>
+      <para>
+        With the following image input:
+      </para>
+      <para>
+        <img href="heron.jpg" />
+      </para>
+       <para>
+        <img href="clouds.jpg" />
+      </para>
+      <para>
+         Produces the following output:
+      </para>
+      <para>
+        <img href="mod_transition.png" />
+      </para>
+      <para>
+      	"canon" © 2012 cuatrok77 hernandez, used under a Creative Commons Attribution-ShareAlike license: http://creativecommons.org/licenses/by-sa/3.0/ 
+      </para>
+      <para>
+      	"Sunrise near Atkeison Plateau" © 2012 Charles Atkeison, used under a Creative Commons Attribution-ShareAlike license: http://creativecommons.org/licenses/by-sa/3.0/ 
+      </para>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
