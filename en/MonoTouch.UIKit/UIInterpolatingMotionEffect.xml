@@ -18,8 +18,53 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>A <see cref="T:MonoTouch.UIKit.UIMotionEffect" /> that maps vertical and horizontal tilt into values on a keypath.</summary>
-    <remarks>To be added.</remarks>
+    <summary>A <see cref="T:MonoTouch.UIKit.UIMotionEffect" /> that maps the device vertical and horizontal tilt into values on a keypath.</summary>
+    <remarks>
+      <para>
+	Objects of the instance UIInterpolatingMotionEffect by are
+	able to take the values of the hardware tilt and map those
+	into a range (specified by the properties MinimumRelativeValue
+	and MaximumRelativeValue) and then it applies that to the
+	object referenced by the keypath.
+      </para>
+      <para>
+
+	The following example adds two square vies, a reference one,
+	and a semi-transparent one that has two interpolating motion
+	effect handlers, one for the center.X position and one for
+	center.y.
+
+      </para>
+      <example>
+	<code lang="c#">
+class MotionSquareViewController : UIViewController {
+	public MotionSquareViewController () : base() {
+	}
+
+	public override void ViewDidLoad ()
+	{
+		var reference = new UIView (new RectangleF (110, 110, 90, 90)) {
+			BackgroundColor =  UIColor.Blue
+		};
+		var tracking = new UIView (new RectangleF (100, 100, 100, 100)) {
+			BackgroundColor =  UIColor.FromRGBA (.5f, .5f, .5f, .5f)
+		};
+		View.AddSubviews (reference, tracking);
+		var mx = new UIInterpolatingMotionEffect ("center.x", UIInterpolatingMotionEffectType.TiltAlongHorizontalAxis) {
+			MinimumRelativeValue = new NSNumber (-100),
+			MaximumRelativeValue = new NSNumber (100)
+		};
+		var my = new UIInterpolatingMotionEffect ("center.y", UIInterpolatingMotionEffectType.TiltAlongVerticalAxis) {
+			MinimumRelativeValue = new NSNumber (-100),
+			MaximumRelativeValue = new NSNumber (100)
+		};
+		tracking.AddMotionEffect (mx);
+		tracking.AddMotionEffect (my);
+	}
+}
+	</code>
+      </example>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -246,7 +291,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Docs>
         <summary>The minimum value for the <see cref="P:MonoTouch.UIKit.UIInterpolatingMotionEffect.KeyPath" />.</summary>
-        <value>To be added.</value>
+        <value></value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -267,8 +312,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Docs>
         <summary>The tilt direction being monitored.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <value></value>
+        <remarks></remarks>
       </Docs>
     </Member>
   </Members>
