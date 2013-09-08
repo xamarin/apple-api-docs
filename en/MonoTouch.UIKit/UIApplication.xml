@@ -17,18 +17,118 @@
   <Docs>
     <summary>Encapsulates the main processing loop for a MonoTouch application.</summary>
     <remarks>
-      <para>
-        The <see cref="T:MonoTouch.UIKit.UIApplication" /> encapsulates the central administrative properties of an application running on iOS. Application developers must not instantiate new <see cref="T:MonoTouch.UIKit.UIApplication" />s using constructors, but instead must use the static <see cref="P:MonoTouch.UIKit.UIApplication.SharedApplication" /> singleton property. 
+
+      <para> 
+	The <see cref="T:MonoTouch.UIKit.UIApplication" />
+	encapsulates the central administrative properties of an
+	application running on iOS. Application developers must not
+	instantiate new <see cref="T:MonoTouch.UIKit.UIApplication"
+	/>s using constructors, but instead must use the static <see
+	cref="P:MonoTouch.UIKit.UIApplication.SharedApplication" />
+	singleton property.  </para>
+
+      <para> 
+	Unlike with most classes in the <see
+        cref="N:MonoTouch.UIKit" /> namespace, events relating to the
+        <see cref="T:MonoTouch.UIKit.UIApplication" /> cannot be
+        handled using C#-style events but rather only by the
+        Objective-C style <see
+        cref="T:MonoTouch.UIKit.UIApplicationDelegate" /> delegate
+        style.  </para>
+
+      <para> 
+	The <see cref="T:MonoTouch.UIKit.UIApplication" /> object
+        is responsible for maintaining the highest-level context of
+        the application, such as the <see
+        cref="P:MonoTouch.UIKit.UIApplication.ApplicationState" />,
+        the set of open windows (<see
+        cref="P:MonoTouch.UIKit.UIApplication.Windows" />), and
+        functions relating to notifications (see also <see
+        cref="T:MonoTouch.UIKit.UIAppearance+Notifications.xml"
+        />). Additionally, the <see
+        cref="M:MonoTouch.UIKit.UIApplication.OpenUrl" /> method may
+        be used to launch another application.  </para>
+
+      <para> 
+	The <see cref="T:MonoTouch.UIKit.UIApplication" /> class
+        contains methods relating to background processing, such as
+        <see cref="M:MonoTouch.UIKit.UIApplication.EnsureUIThread" />,
+        <see
+        cref="M:MonoTouch.UIKit.UIApplication.BeginBackgroundTask" />,
+        and <see
+        cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundTask" />.
+        </para>
+
+      <format type="text/html">
+        <h2>Background Fetch</h2>
+      </format>
+
+      <para> 
+
+	Starting with iOS 7, applications can request that they be
+	woken up to download data from the server in the background.
+	When this feature is enabled, the operating system will resume
+	your application or launch your application at some point to
+	allow your application to download any new contents it needs
+	from the server.
+
       </para>
+
       <para>
-        Unlike with most classes in the <see cref="N:MonoTouch.UIKit" /> namespace, events relating to the <see cref="T:MonoTouch.UIKit.UIApplication" /> cannot be handled using C#-style events but rather only by the Objective-C style <see cref="T:MonoTouch.UIKit.UIApplicationDelegate" /> delegate style. 
+
+	To use this, applications need to have the "fetch" background
+	operation requested on their requested Entitlements as well as
+	calling the <see
+	cref="T:MonoTouch.UIKit.UIApplication.SetMinimumBackgroundFetchInterval"/>
+	method with the desired wake up interval at launch.   
+
       </para>
+
       <para>
-        The <see cref="T:MonoTouch.UIKit.UIApplication" /> object is responsible for maintaining the highest-level context of the application, such as the <see cref="P:MonoTouch.UIKit.UIApplication.ApplicationState" />, the set of open windows (<see cref="P:MonoTouch.UIKit.UIApplication.Windows" />), and functions relating to notifications (see also <see cref="T:MonoTouch.UIKit.UIAppearance+Notifications.xml" />). Additionally, the <see cref="M:MonoTouch.UIKit.UIApplication.OpenUrl" /> method may be used to launch another application.
+
+	When the operating system determines that your application
+	should be resumed to download data, the <see
+	cref="T:MonoTouch.UIKit.UIApplicationDelegate.PerformFetch"/>
+	method will be invoked.  This method should perform any
+	downloads and then notify the operating system of the result
+	of the operation.
+
       </para>
+
       <para>
-        The <see cref="T:MonoTouch.UIKit.UIApplication" /> class contains methods relating to background processing, such as <see cref="M:MonoTouch.UIKit.UIApplication.EnsureUIThread" />, <see cref="M:MonoTouch.UIKit.UIApplication.BeginBackgroundTask" />, and <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundTask" />. 
+
+	Applications do not really have control of when the
+	application will be launched.  The actual launch time is
+	determined by a set of heuristics based that the operating
+	system tracks based on how the user users your application, as
+	well as tracking the status of previous download operations
+	that your application has done.
+
       </para>
+
+      <format type="text/html">
+        <h2>Remote Notifications</h2>
+      </format>
+
+      <para> 
+
+	Starting with iOS 7, applications can request that they be
+	woken up when a remote notification is received.  When this
+	feature is enabled, the operating system will resume your
+	application and invoke the <see
+	cref="T:MonoTouch.UIKit.UIApplicationDelegate.DidReceiveRemotNotification"/>
+	overload that takes a completion handler parameter and let it
+	run.
+
+      </para>
+
+      <para>
+
+	To use this, applications need to have the "remote-notification" background
+	operation requested on their requested Entitlements as.
+
+      </para>
+
     </remarks>
   </Docs>
   <Members>
