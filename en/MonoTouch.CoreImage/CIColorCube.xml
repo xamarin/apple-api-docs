@@ -20,17 +20,36 @@
       <para>The following example shows this filter in use</para>
       <example>
         <code lang="C#">
-var data = new NSData ();
-	
-var cube = new CIColorCube ()
-{
-	Image = flower,
-	CubeDimension = Convert.ToSingle (Math.Pow (2F, 2F)),
-//CubeData = 
+// Create the CIImage from a file
+CIImage flower = CIImage.FromCGImage (UIImage.FromFile ("flower.png").CGImage);
+
+// Setup the color cube data
+float [] color_cube_data = {
+	0, 0, 0, 1,
+	.1f, 0, 1, 1,
+	0, 1, 0, 1,
+	1, 1, 0, 1,
+	0, 0, 1, 1,
+	1, 0, 1, 1,
+	0, 1, 1, 1,
+	1, 1, 1, 1
 };
 
-var output = cube.OutputImage;
-	
+var byteArray = new byte[color_cube_data.Length * 4];
+Buffer.BlockCopy(color_cube_data, 0, byteArray, 0, byteArray.Length);
+var data = NSData.FromArray (byteArray);
+
+// Create a CIColorCube filter with the input image
+var color_cube = new CIColorCube ()
+{
+	Image = flower,
+	CubeDimension = 2,
+	CubeData = data
+};
+
+// Get the altered image from the filter
+var output = color_cube.OutputImage;
+
 // To render the results, we need to create a context, and then
 // use one of the context rendering APIs, in this case, we render the
 // result into a CoreGraphics image, which is merely a useful representation
@@ -54,7 +73,7 @@ myImageView.Image = UIImage.FromImage (cgimage);
          Produces the following output:
       </para>
       <para>
-        <img href="result.png" />
+        <img href="color_cube.png" />
       </para>
       <para>
       	"Flower" © 2012 Milica Sekulic, used under a Creative Commons Attribution-ShareAlike license: http://creativecommons.org/licenses/by-sa/3.0/ 
