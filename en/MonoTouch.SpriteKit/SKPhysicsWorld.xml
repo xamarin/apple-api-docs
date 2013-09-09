@@ -18,10 +18,51 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>To be added.</summary>
-    <remarks>To be added.</remarks>
+    <summary>Manages the physics for a <see cref="T:MonoTouch.SpriteKit.SKScene"/>.</summary>
+    <remarks>
+      <para>Every <see cref="T:MonoTouch.SpriteKit.SKScene"/> has a <see cref="P:MonoTouch.SpriteKit.SKScene.PhysicsWorld"/> property that holds a <see cref="T:MonoTouch.SpriteKit.SKPhysicsWorld"/> object that manages the physics for that scene.</para>
+      <para>The <see cref="T:MonoTouch.SpriteKit.SKPhysicsWorld"/> has several responsibilities:</para>
+      <para>
+        <list type="bullet">
+          <item>
+            <term>Providing global values such as <see cref="P:MonoTouch.SpriteKit.SKPhysicsWorld.Gravity"/>.</term>
+          </item>
+          <item>
+            <term>Connecting <see cref="T:MonoTouch.SpriteKit.SKPhysicsBody"/>s with the <see cref="M:MonoTouch.SpriteKit.SKPhysicsWorld.AddJoint"/> method.</term>
+          </item>
+          <item>
+            <term>Raising events when <see cref="T:MonoTouch.SpriteKit.SKPhysicsBody"/> begin or end contact with each other (see the <see cref="P:MonoTouch.SpriteKit.SKPhysicsWorld.ContactDelegate"/> property and the <see cref="E:MonoTouch.SpriteKit.SKPhysicsWorld.DidBeginContact"/> and <see cref="E:MonoTouch.SpriteKit.SKPhysicsWorld.DidEndContact"/> methods).</term>
+          </item>
+          <item>
+            <term>Enumerating bodies that intersect geometry (<see cref="M:MonoTouch.SpriteKit.SKPhysicsWorld.EnumerateBodies"/> and <see cref="M:MonoTouch.SpriteKit.SKPhysicsWorld.GetBody"/> methods).</term>
+          </item>
+        </list>
+      </para>
+    </remarks>
   </Docs>
   <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public SKPhysicsWorld ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("init")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters />
+      <Docs>
+        <summary>Default constructor, initializes a new instance of this class.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public SKPhysicsWorld (MonoTouch.Foundation.NSCoder coder);" />
       <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class MonoTouch.Foundation.NSCoder coder) cil managed" />
@@ -137,7 +178,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="joint">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Adds a <see cref="T:MonoTouch.SpriteKit.SKJoint"/> to the physics simulation.</summary>
+        <!-- TODO: Currently segfaults! https://bugzilla.xamarin.com/show_bug.cgi?id=14511 -->
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -187,7 +229,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.EventHandler</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Event raised by the object.</summary>
+        <summary>Event raised by the object when two <see cref="T:MonoTouch.SpriteKit.SKPhysicsBody"/>s make contact.</summary>
+        <!-- TODO: Currently useless per https://bugzilla.xamarin.com/show_bug.cgi?id=14510 -->
         <remarks>If you assign a value to this event, this will reset the value for the WeakContactDelegate property to an internal handler that maps delegates to events.</remarks>
       </Docs>
     </Member>
@@ -202,7 +245,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.EventHandler</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Event raised by the object.</summary>
+        <summary>Event raised by the object when two <see cref="T:MonoTouch.SpriteKit.SKPhysicsBody"/>s end their contact.</summary>
         <remarks>If you assign a value to this event, this will reset the value for the WeakContactDelegate property to an internal handler that maps delegates to events.</remarks>
       </Docs>
     </Member>
@@ -252,7 +295,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="enumeratorHandler" Type="MonoTouch.SpriteKit.SKPhysicsWorldBodiesEnumeratorHandler">
           <Attributes>
             <Attribute>
-              <AttributeName>MonoTouch.ObjCRuntime.BlockProxy(typeof(MonoTouch.ObjCRuntime.Trampolines/NIDSKPhysicsWorldBodiesEnumeratorHandler))</AttributeName>
+              <AttributeName>MonoTouch.ObjCRuntime.BlockProxy(typeof(MonoTouch.Trampolines/NIDSKPhysicsWorldBodiesEnumeratorHandler))</AttributeName>
             </Attribute>
           </Attributes>
         </Parameter>
@@ -260,8 +303,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="point">To be added.</param>
         <param name="enumeratorHandler">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Enumerates every <see cref="T:MonoTouch.SpriteKit.SKPhysicsBody"/> that contains a point.</summary>
+        <remarks>
+          <para>Note that because <see cref="T:MonoTouch.SpriteKit.SKPhysicsWorldBodiesEnumeratorHandler"/> has an <c>out</c> parameter, application developers cannot use lambda expressions to specify the <paramref name="enumerationHandler"/>.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="EnumerateBodies">
@@ -284,7 +329,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="enumeratorHandler" Type="MonoTouch.SpriteKit.SKPhysicsWorldBodiesEnumeratorHandler">
           <Attributes>
             <Attribute>
-              <AttributeName>MonoTouch.ObjCRuntime.BlockProxy(typeof(MonoTouch.ObjCRuntime.Trampolines/NIDSKPhysicsWorldBodiesEnumeratorHandler))</AttributeName>
+              <AttributeName>MonoTouch.ObjCRuntime.BlockProxy(typeof(MonoTouch.Trampolines/NIDSKPhysicsWorldBodiesEnumeratorHandler))</AttributeName>
             </Attribute>
           </Attributes>
         </Parameter>
@@ -292,8 +337,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="rect">To be added.</param>
         <param name="enumeratorHandler">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Enumerates every <see cref="T:MonoTouch.SpriteKit.SKPhysicsBody"/> whose area intersects a rectangle.</summary>
+        <remarks>
+          <para>Note that because <see cref="T:MonoTouch.SpriteKit.SKPhysicsWorldBodiesEnumeratorHandler"/> has an <c>out</c> parameter, application developers cannot use lambda expressions to specify the <paramref name="enumerationHandler"/>.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="EnumerateBodies">
@@ -317,7 +364,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="enumeratorHandler" Type="MonoTouch.SpriteKit.SKPhysicsWorldBodiesAlongRayStartEnumeratorHandler">
           <Attributes>
             <Attribute>
-              <AttributeName>MonoTouch.ObjCRuntime.BlockProxy(typeof(MonoTouch.ObjCRuntime.Trampolines/NIDSKPhysicsWorldBodiesAlongRayStartEnumeratorHandler))</AttributeName>
+              <AttributeName>MonoTouch.ObjCRuntime.BlockProxy(typeof(MonoTouch.Trampolines/NIDSKPhysicsWorldBodiesAlongRayStartEnumeratorHandler))</AttributeName>
             </Attribute>
           </Attributes>
         </Parameter>
@@ -326,8 +373,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="start">To be added.</param>
         <param name="end">To be added.</param>
         <param name="enumeratorHandler">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Enumerates every <see cref="T:MonoTouch.SpriteKit.SKPhysicsBody"/> that intersects a ray defined by two points.</summary>
+        <remarks>
+          <para>Note that this method returns bodies along a ray, which starts at <paramref name="start"/> but extends infinitely past <paramref name="end"/>.</para>
+          <para>Note that because <see cref="T:MonoTouch.SpriteKit.SKPhysicsWorldBodiesEnumeratorHandler"/> has an <c>out</c> parameter, application developers cannot use lambda expressions to specify the <paramref name="enumerationHandler"/>.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetBody">
@@ -350,9 +400,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="point">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Returns the first <see cref="T:MonoTouch.SpriteKit.SKPhysicsBody"/> found that contains a point.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
+        <altmember cref="M:MonoTouch.SpriteKit.SKPhysicsWorld.EnumerateBodies(System.Drawing.PointF,MonoTouch.SpriteKit.SKPhysicsWorldBodiesEnumeratorHandler)"/>
       </Docs>
     </Member>
     <Member MemberName="GetBody">
@@ -375,9 +426,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="rect">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Returns the first <see cref="T:MonoTouch.SpriteKit.SKPhysicsBody"/> whose shape intersects a rectangle.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
+        <altmember cref="M:MonoTouch.SpriteKit.SKPhysicsWorld.EnumerateBodies(System.Drawing.RectangleF,MonoTouch.SpriteKit.SKPhysicsWorldBodiesEnumeratorHandler)"/>
       </Docs>
     </Member>
     <Member MemberName="GetBody">
@@ -402,9 +454,12 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="rayStart">To be added.</param>
         <param name="rayEnd">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Returns the first <see cref="T:MonoTouch.SpriteKit.SKPhysicsBody"/> that intersects a ray defined by two points.</summary>
         <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <remarks>
+           <para>Note that this method returns bodies along a ray, which starts at <paramref name="start"/> but extends infinitely past <paramref name="end"/>.</para>
+        </remarks>
+        <altmember cref="M:MonoTouch.SpriteKit.SKPhysicsWorld.EnumerateBodies(System.Drawing.PointF, System.Drawing.PointF,MonoTouch.SpriteKit.SKPhysicsWorldBodiesEnumeratorHandler)"/>
       </Docs>
     </Member>
     <Member MemberName="Gravity">
@@ -426,9 +481,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Drawing.PointF</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>A vector representing gravitational acceleration.</summary>
+        <value>The default value of (0, -9.8) mimics Earth standard gravity of 9.78 m/sec^2. Setting the value to (0,0) effectively turns off gravity.</value>
         <remarks>To be added.</remarks>
+        <altmember cref="P:MonoTouch.SpriteKite.SKPhysicsBody.AffectedByGravity"/>
       </Docs>
     </Member>
     <Member MemberName="RemoveAllJoints">
@@ -448,7 +504,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Removes all <see cref="T:MonoTouch.SpriteKit.SKPhysicsJoint"/>s.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -472,7 +528,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="joint">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Removes the specified <see cref="T:MonoTouch.SpriteKit.SKPhysicsJoint"/>.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -495,9 +551,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Single</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>The rate at which the physics simulation runs.</summary>
+        <value>The default value is 1.0. A value of 0.0 pauses the simulation.</value>
+        <remarks>
+          <para>This is a multiplier for the rate at which time passes in the physics simulation. For instance, a value of 2.0 will cause the physics to run twice as fast, while a value of 0.5 will halve the rate.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="WeakContactDelegate">
