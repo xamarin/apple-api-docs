@@ -32,7 +32,22 @@
   </Attributes>
   <Docs>
     <summary>A delegate object for <see cref="T:MonoTouch.SpriteKit.SKPhysicsWorld"/> that provides events when <see cref="T:MonoTouch.SpriteKit.SKPhysicsBody"/>s begin and end contact with each other.</summary>
-    <remarks>To be added.</remarks>
+    <remarks><para>The following example reverses gravity when a <see cref="T:MonoTouch.SpriteKit.SKPhysicsBody"/> named "Ball" encounters one of the bodies named either "TopWall" or "BottomWall":</para>
+      <example>
+        <code lang="C#"><![CDATA[
+public override void DidBeginContact(SKPhysicsContact contact)
+{
+	if(contact.BodyA.Node.Name == "Ball" || contact.BodyB.Node.Name == "Ball")
+	{
+		if(contact.BodyA.Node.Name == "BottomWall" || contact.BodyB.Node.Name == "BottomWall" || contact.BodyA.Node.Name == "TopWall" || contact.BodyB.Node.Name == "TopWall")
+		{
+			world.Gravity = new PointF(0, -world.Gravity.Y);
+		}
+	}
+}        
+          ]]></code>
+        </example>
+          </remarks>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -172,7 +187,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="contact">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Contact initiated.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -196,7 +211,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="contact">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Contact ended.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
