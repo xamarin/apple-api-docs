@@ -598,9 +598,29 @@ void Setup ()
           <para>The method that will be invoked shortly before your application's remaining background quota reaches zero.</para>
           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
         </param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <summary>Runs a task in the background.</summary>
+        <returns></returns>
         <remarks>
+          <para>
+          Some applications contain tasks that shouldn't be interrupted by iOS should the application change state. One way to protect these tasks from being interrupted is to register them with iOS as long-running tasks. Application developers can use this pattern anywhere in their application where they don't want a task being interrupted by the user putting the app into the background. Candidates for this pattern would be tasks such as sending a new user's registration information to a server, or verifying login information.
+        </para>
+          <para>
+            The following code snippet  demonstrates registering a task to run in the background:</para>
+            <example>
+              <code lang="C#"><![CDATA[
+            </example>
+
+int taskID = UIApplication.SharedApplication.BeginBackgroundTask( () => {});
+
+//runs on main or background thread
+FinishLongRunningTask(taskID);
+
+UIApplication.SharedApplication.EndBackgroundTask(taskID);
+]]></code>
+          </example>
+<para>          
+            The registration process pairs a task with a unique identifier, <c>taskID</c>, and then wraps it in matching <see cref="M:MonoTouch.UIKit.UIApplication.BeginBackgroundTask"/> and <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundTask"/> calls. iOS will terminate the application if a <see cref="M:MonoTouch.UIKit.UIApplication.BeginBackgroundTask"/> does not have a matching <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundTask"/>call.
+             </para>
           <para tool="threads">This can be used from a background thread.</para>
         </remarks>
       </Docs>
