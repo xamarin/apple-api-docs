@@ -18,8 +18,27 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>The base class for motion-based visual effects on views, such as the parallax effect introduced in iOS 7.</summary>
-    <remarks>To be added.</remarks>
+    <summary>The base class for motion-based visual effects on views linked to the device tilt.</summary>
+    <remarks>
+      <para>
+	This is an abstract class for doing motion effects on your
+	application.  When subclassing, you must at least implement
+	the <see
+	cref="M:MonoTouch.UIKit.UIMotionEffect.ComputeKeyPathsAndRelativeValues"/>
+	method which returns a dictionary of changes that contain a
+	list of keypaths along with the new value that will be applied
+	to the view that this effect is attached to.
+      </para>
+      <para>
+	In general, you will want to use the <see
+	cref="M:MonoTouch.UIKit.UIInterpolatingMotionEffect"/> class
+	which provides a way of interpolating the device tilt values
+	to a linear value.
+      </para>
+      <para>
+	This class maps the hardware tilt into the range -1 to 1.
+      </para>
+    </remarks>
     <altmember cref="T:MonoTouch.UIKit.UIInterpolatingMotionEffect" />
   </Docs>
   <Members>
@@ -175,10 +194,25 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="viewerOffset" Type="MonoTouch.UIKit.UIOffset" />
       </Parameters>
       <Docs>
-        <param name="viewerOffset">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="viewerOffset">Tilt of the device.   The component ranges from -1 to 1 on each dimension.</param>
+        <summary>Method returning an NSDictionary containing changes to be applied to a view in response to a motion event.</summary>
+        <returns>NSDictionary containing one key for each keyPath to alter on the host view.   The value for each key is the actual change to be applied to the object.</returns>
+        <remarks>
+	  <para>
+	    Methods overriding this implementation can return more than one value to alter on the hosting view.   For example:
+	  </para>
+	  <example>
+	    <code lang="c#">
+public override NSDictionary ComputeKeyPathsAndRelativeValues (UIOffset offset)
+{
+	return new NSDictionary (
+		"center.x", new NSNumber (offset*10),
+		"center.y", new NSNumber (offset*10)
+	};
+}
+	    </code>
+	  </example>
+	</remarks>
       </Docs>
     </Member>
   </Members>
