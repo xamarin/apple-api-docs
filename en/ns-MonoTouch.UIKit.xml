@@ -40,7 +40,7 @@
       </para>
 
 <example>
-<code lang="c#">
+<code lang="C#">
 [Register ("AppDelegate")]
 public partial class AppDelegate : UIApplicationDelegate
 {
@@ -105,15 +105,28 @@ public partial class AppDelegate : UIApplicationDelegate
 	cref="T:MonoTouch.UIKit.UIWebView"/> control).
 
       </para>
-      
       <format type="text/html">
         <h3>Dynamic Type</h3>
       </format>
-<!--
-      <para>
-	Designed type styles, optimized for legibility, user picks size, accessibility, 
-      </para>
 
+      <para>
+        In iOS 7, Apple introduced system-wide dynamic type, a set of fonts optimized for legibility at different magnifications. The end user selects the preferred size of dynamic text in device Settings. Applications receive the <c>ContentizeCategoryChanged</c> notification (see <see cref="M:MonoTouch.UIKit.UIApplication+Notifications.ObserveContentSizeCategoryChanged" />) and should reset the font size throughout their application's text views. The system-selected optimal fonts adjust such things as stroke weight and kerning as well as size, so application developers should use <see cref="T:MonoTouch.UIKit.UIFont"/>s <c>Preferred*</c> properties (e.g., <see cref="P:MonoTouch.UIKit.UIFont.PreferredBody"/>, <see cref="P:MonoTouch.UIKit.UIFont.PreferredHeadline"/>, etc. ), as shown in the following example:</para>
+      <example>
+        <code lang="C#"><![CDATA[
+UIApplication.Notifications.ObserveContentSizeCategoryChanged((s,e) => {
+	SetDynamicTypeFonts();
+});
+
+//Call this when initializing, and also in response to ObserveContentSizeCategoryChanged notifications
+private void SetDynamicTypeFonts()
+{
+	headlineLabel.Font = UIFont.PreferredHeadline;
+	bodyText.Font = UIFont.PreferredBody;
+  //...etc...
+}
+         ]]></code>
+      </example>
+      <!-- TODO
       <format type="text/html">
         <h3>Font descriptors</h3>
       </format>
@@ -124,7 +137,8 @@ public partial class AppDelegate : UIApplicationDelegate
 
       <format type="text/html">
         <h3>Symbolic Traits</h3>
-      </format>
+    </format>
+
       <format type="text/html">
         <h3>Exclusion Paths</h3>
       </format>
@@ -157,8 +171,12 @@ public partial class AppDelegate : UIApplicationDelegate
       <para>
 	Observe change.   For Auto-layout, invalidate intrinsic content size.   Use NeedsLayout if you laid objects manually to call the re-layout method.  Invalidate font descriptors.
       </para>
-      -->
-
+     
+       <format type="text/html">
+        <h3>UI Dynamics</h3>
+      </format>
+      
     </remarks>
+--> 
   </Docs>
 </Namespace>
