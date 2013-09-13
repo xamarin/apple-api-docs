@@ -369,9 +369,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="level" Type="MonoTouch.MapKit.MKOverlayLevel" />
       </Parameters>
       <Docs>
-        <param name="overlay">To be added.</param>
-        <param name="level">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="overlay">The overlay to add to the map.</param>
+        <param name="level">Specifies the Z-order of the overlay.</param>
+        <summary>Adds an overlay to the map.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -425,9 +425,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="level" Type="MonoTouch.MapKit.MKOverlayLevel" />
       </Parameters>
       <Docs>
-        <param name="overlays">To be added.</param>
-        <param name="level">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="overlays">The overlays to add to the map.</param>
+        <param name="level">The Z-order of the overlays.</param>
+        <summary>Adds multiple overlays to the map.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -617,9 +617,27 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>MonoTouch.MapKit.MKMapCamera</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Defines the perspective of the map.</summary>
+        <value>The default value is <see langword="null"/>.</value>
+        <remarks>
+          <para>
+            The following example shows how this property can be set to provide 3D imagery:</para>
+      <example>
+        <code lang="C#"><![CDATA[
+var target = new CLLocationCoordinate2D(37.7952, -122.4028);
+var viewPoint = new CLLocationCoordinate2D(37.8009, -122.4100);
+//Enable 3D buildings
+mapView.ShowsBuildings = true;
+mapView.PitchEnabled = true;
+
+var camera = MKMapCamera.CameraLookingAtCenterCoordinate(target, viewPoint, 500);
+mapView.Camera = camera;
+          ]]></code>
+      </example>
+      <para><img href="MKMapCamera.png"/></para>
+        </remarks>
+        <altmember cref="M:MonoTouch.MapKit.MKMapView.SetCamera"/>
+        <altmember cref="P:MonoTouch.MapKit.MKMapView.PitchEnabled"/>
       </Docs>
     </Member>
     <Member MemberName="CenterCoordinate">
@@ -1070,9 +1088,9 @@ mySliders.TintColor = UIColor.Red;
         <Parameter Name="overlay2" Type="MonoTouch.MapKit.MKOverlay" />
       </Parameters>
       <Docs>
-        <param name="overlay1">To be added.</param>
-        <param name="overlay2">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="overlay1">The first overlay.</param>
+        <param name="overlay2">The second overlay.</param>
+        <summary>Swaps the index position of two overlays, changing their z-order.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -1245,7 +1263,7 @@ mySliders.TintColor = UIColor.Red;
         <param name="overlay">To be added.</param>
         <param name="index">To be added.</param>
         <param name="level">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Adds an overlay at a specific z-index relative to other overlays.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -1431,9 +1449,36 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>MonoTouch.MapKit.MKRendererForOverlayDelegate</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Delegate invoked by the object to get a value.</summary>
+        <summary>The delegate that is used to specify the renderer for an overlay.</summary>
         <value>To be added.</value>
-        <remarks>You assign a function, delegate or anonymous method to this property to return a value to the object.   If you assign a value to this property, it this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+        <remarks>
+          <para>Application developers have to specify the <see cref="T:MonoTouch.MapKit.MKOverlayRenderer"/> used to render a <see cref="T:MonoTouch.MapKit.MKOverlay"/>. This calculation is done dynamically using this delegate, which passes an overlay instance in, as shown in the following example:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+var olRenderers = new Dictionary<MKOverlay, MKOverlayRenderer>();
+mapView.OverlayRenderer = (mv, ol) => olRenderers[ol];
+//...etc...
+var directions = new MKDirections(req);
+directions.CalculateDirections((response, error) => { 
+	if(error == null)
+	{
+		var route = response.Routes[0];
+		var rteLine = new MKPolylineRenderer(route.Polyline) {
+			LineWidth = 5.0f,
+			StrokeColor = UIColor.Purple
+		};
+    //Add renderer to dictionary used by mapView.OverlayRenderer delegate
+		olRenderers[route] = rteLine;
+		mapView.AddOverlay(route.Polyline, MKOverlayLevel.AboveRoads);
+	}
+	else
+	{
+		Console.WriteLine(error);
+	}
+});
+              ]]></code>
+           </example>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Overlays">
@@ -1487,7 +1532,7 @@ mySliders.TintColor = UIColor.Red;
       </Parameters>
       <Docs>
         <param name="level">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>The overlays in the specified <paramref name="level"/>.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -1520,8 +1565,8 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>Whether the view uses the angle defined by the <see cref="P:MonoTouch.MapKit.MKMapView.Camera"/>.</summary>
+        <value>The default value is <see langword="true"/>.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -1731,7 +1776,7 @@ mySliders.TintColor = UIColor.Red;
       </Parameters>
       <Docs>
         <param name="overlay">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>The <see cref="T:MonoTouch.MapKit.MKOverlayRenderer"/> associated with the specified <paramref name="overlay"/>.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -1764,8 +1809,8 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>Whether the view uses the heading defined by the <see cref="P:MonoTouch.MapKit.MKMapView.Camera"/>.</summary>
+        <value>The default value is <see langword="true"/>.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -1869,9 +1914,10 @@ mySliders.TintColor = UIColor.Red;
       </Parameters>
       <Docs>
         <param name="camera">To be added.</param>
-        <param name="animated">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="animated">If <see langword="true"/>, animate the transition.</param>
+        <summary>Sets the <see cref="P:MonoTouch.MapKit.MKMapView.Camera"/> property, optionally animating.</summary>
         <remarks>To be added.</remarks>
+        <altmember cref="P:MonoTouch.MapKit.MKMapView.Camera"/>
       </Docs>
     </Member>
     <Member MemberName="SetCenterCoordinate">
@@ -2041,7 +2087,7 @@ mySliders.TintColor = UIColor.Red;
       <Docs>
         <param name="annotations">To be added.</param>
         <param name="animated">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Sets the visible region of the map such that the specified annotations can all be seen.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -2073,9 +2119,12 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>Whether 3D geometry (if available) is rendered.</summary>
+        <value>The default value is <see langword="true"/>.</value>
         <remarks>To be added.</remarks>
+        <altmember cref="P:MonoTouch.MapKit.MKMapView.Camera"/>
+        <altmember cref="P:MonoTouch.MapKit.MKMapView.PitchEnabled"/>
+        <altmember cref="T:MonoTouch.MapKit.MKCamera"/>
       </Docs>
     </Member>
     <Member MemberName="ShowsPointsOfInterest">
@@ -2106,8 +2155,8 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>Whether the map should display features that are marked as points of interest.</summary>
+        <value>The default value is <see langword="true"/>.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
