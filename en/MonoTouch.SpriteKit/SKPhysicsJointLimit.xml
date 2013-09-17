@@ -159,9 +159,23 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="bodyB">To be added.</param>
         <param name="anchorA">To be added.</param>
         <param name="anchorB">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Factory method for creating a rope-like connection between two physics body.</summary>
         <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <para>The <see cref="T:MonoTouch.SpriteKit.SKNode"/>s associated with <paramref name="bodyA"/> and <paramref name="bodyB"/> must be added to the <see cref="T:MonoTouch.SpriteKit.SKScene"/> prior to calling this method or Sprite Kit will crash. The following example demonstrates the proper order:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+var node1 = CreateNodeSomehow();
+var node2 = CreateNodeSomehow();
+//var joint = SKPhysicsJointLimit.Create(node1.PhysicsBody, node2.PhysicsBody, node1.Position, node2.Position); //NO. This will crash.
+mySkScene.AddChild(node1);
+mkSkScene.AddChild(node2);
+var joint SKPhysicsJointLimit.Create(node1.PhysicsBody, node2.PhysicsBody, node1.Position, node2.Position); //YES. Works fine.
+mySkScene.PhysicsWorld.AddJoint(joint);            
+              ]]></code>
+          </example>
+          <para>(Other types of <see cref="T:MonoTouch.SpriteKit.SKPhysicsJoint"/> can be created prior to the nodes being added to the scene-graph, although the nodes must be added to the scene-graph before <see cref="M:MonoTouch.SpriteKit.SKPhysicsWorld.AddJoint"/> is called.)</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="MaxLength">
