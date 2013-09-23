@@ -32,6 +32,19 @@ mapView.Camera = camera;
           ]]></code>
       </example>
       <para><img href="MKMapCamera.png"/></para>
+      <format type="text/html"><h3>Overlays</h3></format>
+      <para>iOS distinguishes between the <see cref="T:MonoTouch.MapKit.MKOverlay"/>, which represents the geometry of an overlay, and it's visual presentation. Prior to iOS 7, overlays were rendered using <see cref="T:MonoTouch.MapKit.MKOverlayView"/>s. In iOS 7, these classes have been deprecated, and overlays now use the more efficient subclasses of <see cref="T:MonoTouch.MapKit.MKOverlayRenderer"/>. </para>
+      <para>To create an overlay and its renderer, application developers must add the overlay to the <see cref="T:MonoTouch.MapKit.MKMapView"/> and return the renderer either using the <see cref="M:MonoTouch.MapKit.MKMapView.OverlayRenderer"/> property or by overriding the <see cref="M:MonoTouch.MapKit.MKMapViewDelegate.OverlayRenderer"/> method.</para>
+      <example>
+        <code lang="C#"><![CDATA[
+MKPolygon hotelOverlay = MKPolygon.FromCoordinates(coordinates);
+mkMap.AddOverlay (hotelOverlay);
+var polygon = MKPolygon.FromCoordinates(coordinates);
+var renderer = new MKPolygonRenderer(polygon) { FillColor = UIColor.Red, Alpha = 0.5f };
+mkMap.OverlayRenderer = (view, overlay) => renderer;
+          ]]></code>
+      </example>
+      <para><img href="MKOverlayRenderer.png"/></para>
     </remarks>
     <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=167dc2bb-abca-4dc6-b6db-af97a040b57b">Example_ContentControls</related>
     <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=423dbd0e-5321-482d-996e-bfa2d870c082">MapCallouts</related>
@@ -2324,7 +2337,7 @@ directions.CalculateDirections((response, error) => {
           <AttributeName>MonoTouch.ObjCRuntime.Since(4, 0)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>System.Obsolete("Starting with iOS 7 it is recommnended to use RendererForOverlay", false)</AttributeName>
+          <AttributeName>System.Obsolete("Starting with iOS 7, application developers must use OverlayRenderer", false)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -2335,7 +2348,7 @@ directions.CalculateDirections((response, error) => {
       </Parameters>
       <Docs>
         <param name="overlay">The overlay to return the view for.</param>
-        <summary>Returns the view for an overlay</summary>
+        <summary>Returns the view for an overlay. (iOS 7+ must use <see cref="M:MonoTouch.MapKit.MKMapView.OverlayRenderer"/>)</summary>
         <returns>The view associated with a particular overlay.</returns>
         <remarks>If the overlay's view is not currently visible on the screen, this method will return null.</remarks>
       </Docs>

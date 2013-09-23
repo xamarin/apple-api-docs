@@ -21,6 +21,18 @@
     <summary>The visual representation of a <see cref="T:MonoTouch.MapKit.MKOverlay" />.</summary>
     <remarks>
       <para>This class, introduced in iOS 7, replaces <see cref="T:MonoTouch.MapKit.MKOverlayView" />. It has higher performance and renders the overlay beneath map labels. The map-related methods are the same as that of <see cref="T:MonoTouch.MapKit.MKOverlayView" />.</para>
+       <para>iOS distinguishes between the <see cref="T:MonoTouch.MapKit.MKOverlay"/>, which represents the geometry of an overlay, and it's visual presentation. Prior to iOS 7, overlays were rendered using <see cref="T:MonoTouch.MapKit.MKOverlayView"/>s. In iOS 7, these classes have been deprecated, and overlays now use the more efficient subclasses of <see cref="T:MonoTouch.MapKit.MKOverlayRenderer"/>. </para>
+      <para>To create an overlay and its renderer, application developers must add the overlay to the <see cref="T:MonoTouch.MapKit.MKMapView"/> and return the renderer either using the <see cref="M:MonoTouch.MapKit.MKMapView.OverlayRenderer"/> property or by overriding the <see cref="M:MonoTouch.MapKit.MKMapViewDelegate.OverlayRenderer"/> method.</para>
+      <example>
+        <code lang="C#"><![CDATA[
+MKPolygon hotelOverlay = MKPolygon.FromCoordinates(coordinates);
+mkMap.AddOverlay (hotelOverlay);
+var polygon = MKPolygon.FromCoordinates(coordinates);
+var renderer = new MKPolygonRenderer(polygon) { FillColor = UIColor.Red, Alpha = 0.5f };
+mkMap.OverlayRenderer = (view, overlay) => renderer;
+          ]]></code>
+      </example>
+      <para><img href="MKOverlayRenderer.png"/></para>
     </remarks>
   </Docs>
   <Members>
