@@ -27,8 +27,40 @@
 
 <example>
 <code lang="c#">
-Type typeToLookup = typeof (UITableView);
-Class myClass = Class.GetHandle (typeToLookup);
+// 
+// If you know that the type subclasses NSObject, 
+// you can just call new Class (Type):
+//
+
+Class GetClassForType (Type type)
+{
+	return new Class (type);
+}
+</code>
+</example>
+
+	<para>
+
+	  The following example shows how you can use the native
+	  handle to check whether the type subclasses NSObject, and
+	  thus whether obtaining an Objective-C class from a Type instance is valid:
+
+	</para>
+<example>
+<code lang="c#">
+//
+// Using low-level handles, allows for error checking in case the 
+// type does not subclass NSObject:
+//
+Class GetClassForType (Type type)
+{
+    Type typeToLookup = typeof (type);
+    IntPtr myClassHandle = Class.GetHandle (typeToLookup);
+    if (myClassHandle != IntPtr.Zero)
+        return new Class (myClassHandle);
+    else
+        return null;
+}
 </code>
 </example>
     </remarks>
