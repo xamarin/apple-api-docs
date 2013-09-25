@@ -18,8 +18,89 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>To be added.</summary>
-    <remarks>To be added.</remarks>
+    <summary>Encapsulates a JavaScript engine.</summary>
+    <remarks>
+      <para>The <see cref="T:MonoTouch.JavaScriptCore.JSContext"/> is the central object of the <c>JavaScriptCore</c> namespace. The <see cref="T:MonoTouch.JavaScriptCore.JSContext"/> maintains a JavaScript environment (manipulated by the <see cref="P:MonoTouch.JavaScriptCore.JSContext.Item"/> property) and evaluates scripts with the <see cref="M:MonoTouch.JavaScriptCore.JSContext.EvaluateScript"/> method.</para>
+      <para>Application developers will often want to assign a delegate to the <see cref="P:MonoTouch.JavaScriptCore.JSContext.ExceptionHandler"/> property to gain access, in their Xamarin.iOS code, of exceptions raised in the JavaScript realm.</para>
+      <para>The following example shows the basic use of <see cref="T:MonoTouch.JavaScriptCore.JSContext"/>. The context is instantiated and a simple exception handler is assigned. One of the <see cref="M:MonoTouch.JavaScriptCore.JSValue.From"/> method overloads is used to assign values to the JavaScript variables <c>arg1</c> and <c>arg2</c>. The <see cref="M:MonoTouch.JavaScriptCore.JSContext.EvaluateScript"/> method evaluates the JavaScript and returns the result, which is converted back into a .NET object with the <see cref="M:MonoTouch.JavaScriptCore.JSResult.ToInt32"/> method. </para>
+      <example>
+        <code lang="C#"><![CDATA[
+jsContext = new JSContext();
+
+jsContext.ExceptionHandler = (context, exception) => {
+	Console.WriteLine(exception);
+};
+
+jsContext[new NSString("arg1")] = JSValue.From(2, jsContext);
+jsContext[new NSString("arg2")] = JSValue.From(2, jsContext);
+
+var jsResult = jsContext.EvaluateScript("arg1 + arg2;");
+
+var four = jsResult.ToInt32();
+          ]]></code>
+      </example>
+      <format type="text/html"><h3>Calling C# code from JavaScript</h3></format>
+      <para>Currently, C# methods cannot be exposed directly to JavaScript via JavaScript Core. The recommended technique for calling C# code from Xamarin.iOS is to use REST, as shown in the  following: </para>
+      <para>In the JavaScript code, use <c>XMLHttpRequest</c> and standard JSON techniques to post and parse a query to a REST service running on the local device:</para>
+      <example>
+        <code lang="JavaScript"><![CDATA[
+<html>
+    <head>
+        <title></title>
+        <script type="text/javascript">
+           function callCSharp(msg) {
+                var request = new XMLHttpRequest();
+                request.open('GET','http://127.0.0.1:1711/', false);
+                request.send();
+
+                if(request.status == 200){
+                    alert(JSON.parse(request.responseText));
+                }else{
+                    alert("Error");
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <div onclick="callCSharp('this is a test')" class="button">
+            Click Me
+        </div>
+    </body>
+</html>
+        ]]>
+        </code>
+      </example>
+      <para>In the application, use <see cref="T:System.Net.HttpListener"/> to listen and respond to that request:</para>
+      <example>
+        <code lang="C#"><![CDATA[
+//Wire up listener
+listener = new HttpListener();
+listener.Prefixes.Add("http://*:1711/");
+listener.Start();
+listener.BeginGetContext(new AsyncCallback(Callback), listener);
+
+//....etc...
+
+void Callback(IAsyncResult result)
+{
+	//Get the listener context
+	var context = listener.EndGetContext(result);
+
+	//Start listening for the next request
+	listener.BeginGetContext(new AsyncCallback(Callback), listener);
+
+	var response = CalculateResponse();
+	var responseBytes = System.Text.Encoding.UTF8.GetBytes(response);
+
+	context.Response.ContentType = "text/json";
+	context.Response.StatusCode = HttpStatusCode.OK;
+	context.Response.ContentLength64 = responseBytes.Length;
+	context.Response.OutputStream.Write(responseBytes, 0, responseBytes.Length);
+	context.Response.OutputStream.Close();
+}
+          ]]></code>
+        </example>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
