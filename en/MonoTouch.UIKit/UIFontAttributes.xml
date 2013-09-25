@@ -194,13 +194,11 @@ var attributes = new UIFontAttributes () {
             <code lang="c#">
 UIFont CustomizeFont (UIFont font)
 {
-    var originalDescriptor = font.GetFontDescriptor ();
-    var attributes = new UIFontAttributes () {
-          FeatureSettings = new UIFontFeature [] {
-                  new UIFontFeature (CTFontFeatureNumberSpacing.Selector.ProportionalNumbers),
-                  new UIFontFeature ((CTFontFeatureCharacterAlternatives.Selector)1)
-          }
-    }
+    var originalDescriptor = font.FontDescriptor;
+    var attributes = new UIFontAttributes (
+	new UIFontFeature (CTFontFeatureNumberSpacing.Selector.ProportionalNumbers),
+	new UIFontFeature ((CTFontFeatureCharacterAlternatives.Selector)1));
+
     var newDesc = originalDescriptor.CreateWithAttributes (attributes);
     return UIFont.FromDescriptor (newDesc, 80);
 }

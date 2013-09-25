@@ -68,17 +68,14 @@
         <code lang="c#">
 UIFont CustomizeFont (UIFont font)
 {
-    var originalDescriptor = font.GetFontDescriptor ();
+    var originalDescriptor = font.FontDescriptor;
 
     // This font has a character alternative, at index 1, use that:
     const int characterAlternative = 1;
 
-    var attributes = new UIFontAttributes () {
-          FeatureSettings = new UIFontFeature [] {
-                  new UIFontFeature (CTFontFeatureNumberSpacing.Selector.ProportionalNumbers),
-                  new UIFontFeature (characterAlternative)
-          }
-    }
+    var attributes = new UIFontAttributes (
+	new UIFontFeature (CTFontFeatureNumberSpacing.Selector.ProportionalNumbers),
+	new UIFontFeature (characterAlternative));
     var newDesc = originalDescriptor.CreateWithAttributes (attributes);
     return UIFont.FromDescriptor (newDesc, 80);
 }
