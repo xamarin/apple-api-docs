@@ -39,6 +39,14 @@ var jsResult = jsContext.EvaluateScript("arg1 + arg2;");
 var four = jsResult.ToInt32();
           ]]></code>
       </example>
+      <para>The <see cref="T:MonoTouch.JavaScriptCore.JSContext"/> contains the global JavaScript context, including variables set by JavaScript calculations, as shown in the following example:</para>
+      <example>
+        <code lang="C#"><![CDATA[
+jsContext.EvaluateScript("sum = 2 + 2;");
+var four = jsContext[(NSString)"sum"].ToInt32();
+          ]]></code>
+      </example>
+      
       <format type="text/html"><h3>Calling C# code from JavaScript</h3></format>
       <para>Currently, C# methods cannot be exposed directly to JavaScript via JavaScript Core. The recommended technique for calling C# code from Xamarin.iOS is to use REST, as shown in the  following: </para>
       <para>In the JavaScript code, use <c>XMLHttpRequest</c> and standard JSON techniques to post and parse a query to a REST service running on the local device:</para>
@@ -70,7 +78,7 @@ var four = jsResult.ToInt32();
         ]]>
         </code>
       </example>
-      <para>In the application, use <see cref="T:System.Net.HttpListener"/> to listen and respond to that request:</para>
+      <para>In the application, use <see cref="T:System.Net.HttpListener"/> to listen and respond to that request: </para>
       <example>
         <code lang="C#"><![CDATA[
 //Wire up listener
@@ -99,7 +107,8 @@ void Callback(IAsyncResult result)
 	context.Response.OutputStream.Close();
 }
           ]]></code>
-        </example>
+      </example>
+      <para>An alternative technique is to poll the <see cref="T:MonoTouch.JavaScriptCore.JSContext"/> for a flag set by a JavaScript calculation.</para>
     </remarks>
   </Docs>
   <Members>

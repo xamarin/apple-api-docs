@@ -21,15 +21,41 @@
   <Docs>
     <summary>A <see cref="T:MonoTouch.UIKit.UIControl" /> that displays a scrollable multi-line text editor.</summary>
     <remarks>
+      <para>The <see cref="T:MonoTouch.UIKit.UITextView" /> is a scrollable, multi-line text view that can display styled text and can be editable.</para>
+      <format type="text/html">
+        <h2>Editing</h2>
+      </format>
+      <para>If <see cref="P:MonoTouch.UIKit.UITextView.Editable" /> is <see langword="true"/>, the text view will be editable by the application user. When the application user taps on the view, it becomes the first responder and displays the system keyboard. It is the application developer's responsibility to ensure that the keyboard does not obscure functionality (e.g., by scrolling or rearranging views). To make the keyboard disappear, the application developer must have the <see cref="T:MonoTouch.UIKit.UITextView"/> resign first responder status (by calling <see cref="M:MonoTouch.UIKit.UIResponder.ResignFirstResponder"/>).</para>
+      <para>Application developers can use <see cref="T:MonoTouch.UIKit.UIKeyboard.Notifications" /> to calculate the necessary scrolling or rearranging of views associated with the appearance and disappearance of the keyboard. </para>
+      <para>Since the <see cref="T:MonoTouch.UIKit.UITextView" /> is multiline, unlike the <see cref="T:MonoTouch.UIKit.UITextField"/>, the keyboard's <c>return</c> key cannot be replaced by a <c>done</c> key and there is no equivalent to the <see cref="P:MonoTouch.UIKit.UITextField.ShouldReturn"/> property. A common idiom for a <see cref="T:MonoTouch.UIKit.UITextView"/> is to "end editing when the user touches anywhere outside the text field." This can be done by overriding <see cref="M:MonoTouch.UIResponder.TouchesBegan"/> in the containing <see cref="T:MonoTouch.UIKit.UIView"/> and calling <see cref="M:MonoTouch.UIKit.UIView.EndEditing"/>, as shown in the following example:</para>
+      <example>
+        <code lang="C#"><![CDATA[
+public class MyView : UIView
+{
+	UITextView textView;
+
+	public MyView()
+	{
+		textView = new UITextView(new RectangleF(10, 44, UIScreen.MainScreen.Bounds.Width - 20, 300)){
+			Editable = true
+		};
+		AddSubview(textView);
+	}
+
+	public override void TouchesBegan(NSSet touches, UIEvent evt)
+	{
+		EndEditing(true);
+	}
+}
+          ]]></code>
+      </example>
       <format type="text/html">
         <h2>Text Kit</h2>
       </format>
       <para>iOS 7 introduced "Text Kit," a broad set of APIs and modifications of existing classes, built on <see cref="N:MonoTouch.CoreText" />, that greatly expands the typographical flexibility of iOS.</para>
-      <para>
-        <see cref="T:MonoTouch.UIKit.UITextView" />s are intended to display large amounts of text. The text is stored in <see cref="T:MonoTouch.UIKit.NSTextStorage" /> objects and layout of the text is managed by a <see cref="T:MonoTouch.UIKit.NSLayoutManager" />, which lays out the text in an area defined by <see cref="T:MonoTouch.UIKit.NSTextContainer" /> objects. </para>
-      <para>Mapped to the Model-View-Controller pattern, the <see cref="T:MonoTouch.UIKit.NSLayoutManager" /> is the Controller, the <see cref="T:MonoTouch.UIKit.UITextView" /> is the View, and <see cref="T:MonoTouch.UIKit.NSTextStorage" /> and <see cref="T:MonoTouch.UIKit.NSTextContainer" />s are Model elements.</para>
-      <para>
-        <see cref="T:MonoTouch.UIKit.NSTextStorage" /> is a subclass of <see cref="T:MonoTouch.Foundation.NSMutableAttributedString" /> and is responsible for holding the string, with various text styles. <see cref="T:MonoTouch.UIKit.NSTextContainer" /> objects are responsible for modeling the geometric layout of the page. The <see cref="T:MonoTouch.UIKit.NSLayoutManager" /> translates characters in the <see cref="T:MonoTouch.UIKit.NSTextStorage" /> into glyphs, lays those out in lines according to the constraints of the <see cref="T:MonoTouch.UIKit.NSTextContainer" />s, and coordinates the display of one or more <see cref="T:MonoTouch.UIKit.UITextView" /> objects.</para>
+      <para><see cref="T:MonoTouch.UIKit.UITextView" />s are intended to display large amounts of text. The text is stored in <see cref="T:MonoTouch.UIKit.NSTextStorage"/> objects and layout of the text is managed by a <see cref="T:MonoTouch.UIKit.NSLayoutManager"/>, which lays out the text in an area defined by <see cref="T:MonoTouch.UIKit.NSTextContainer"/> objects. </para>
+      <para>Mapped to the Model-View-Controller pattern, the <see cref="T:MonoTouch.UIKit.NSLayoutManager" /> is the Controller, the <see cref="T:MonoTouch.UIKit.UITextView"/> is the View, and <see cref="T:MonoTouch.UIKit.NSTextStorage"/> and <see cref="T:MonoTouch.UIKit.NSTextContainer"/>s are Model elements.</para>
+      <para><see cref="T:MonoTouch.UIKit.NSTextStorage" /> is a subclass of <see cref="T:MonoTouch.Foundation.NSMutableAttributedString"/> and is responsible for holding the string, with various text styles. <see cref="T:MonoTouch.UIKit.NSTextContainer"/> objects are responsible for modeling the geometric layout of the page. The <see cref="T:MonoTouch.UIKit.NSLayoutManager"/> translates characters in the <see cref="T:MonoTouch.UIKit.NSTextStorage"/> into glyphs, lays those out in lines according to the constraints of the <see cref="T:MonoTouch.UIKit.NSTextContainer"/>s, and coordinates the display of one or more <see cref="T:MonoTouch.UIKit.UITextView"/> objects.</para>
       <para>The following example shows the basic use of two important Text Kit features: multiple text styles and exclusion paths:</para>
       <example>
         <code lang="C#"><![CDATA[
@@ -77,9 +103,9 @@
 }
             ]]></code>
       </example>
-      <para>iOS 6 added multiple text-style capability to <see cref="T:MonoTouch.UIKit.UITextView" />. To use multiple styles, application developers must use the <see cref="P:MonoTouch.UIKit.UITextView.AttributedText" /> property. The <see cref="P:MonoTouch.UIKit.UITextView.Font" />, <see cref="P:MonoTouch.UIKit.UITextView.TextColor" />, and <see cref="P:MonoTouch.UIKit.UITextView.TextAlignment" /> properties apply to all the text in the <see cref="T:MonoTouch.UIKit.UITextView" />.</para>
+      <para>iOS 6 added multiple text-style capability to <see cref="T:MonoTouch.UIKit.UITextView" />. To use multiple styles, application developers must use the <see cref="P:MonoTouch.UIKit.UITextView.AttributedText"/> property. The <see cref="P:MonoTouch.UIKit.UITextView.Font"/>, <see cref="P:MonoTouch.UIKit.UITextView.TextColor"/>, and <see cref="P:MonoTouch.UIKit.UITextView.TextAlignment"/> properties apply to all the text in the <see cref="T:MonoTouch.UIKit.UITextView"/>.</para>
       <format type="text/html">
-        <br />
+        <br/>
       </format>
       <para>
         The MonoTouch API supports two styles of event notification: the Objective-C style that uses a delegate class or the C# style using event notifications.  
@@ -164,24 +190,24 @@
           <para>The argument value is ignored and merely ensures that the only code that is executed is the construction phase is the basic NSObject allocation and runtime type registration.  Typically the chaining would look like this:</para>
           <example>
             <code lang="C#">
-//
-// The NSObjectFlag merely allocates the object and registers the
-// C# class with the Objective-C runtime if necessary, but no actual
-// initXxx method is invoked, that is done later in the constructor
-//
-// This is taken from MonoTouch's source code:
-//
-[Export ("initWithFrame:")]
-public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
-{
-// Invoke the init method now.
-	var initWithFrame = new Selector ("initWithFrame:").Handle;
-	if (IsDirectBinding)
-		Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
-	else
-		Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
-}
-</code>
+              //
+              // The NSObjectFlag merely allocates the object and registers the
+              // C# class with the Objective-C runtime if necessary, but no actual
+              // initXxx method is invoked, that is done later in the constructor
+              //
+              // This is taken from MonoTouch's source code:
+              //
+              [Export ("initWithFrame:")]
+              public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
+              {
+              // Invoke the init method now.
+              var initWithFrame = new Selector ("initWithFrame:").Handle;
+              if (IsDirectBinding)
+              Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+              else
+              Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+              }
+            </code>
           </example>
         </remarks>
       </Docs>
@@ -287,9 +313,18 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Whether the application user can change the style of the text.</summary>
+        <value>The default value is <see langword="false" />.</value>
+        <remarks>When <see langword="true" />, the application user can change the style of the currently-selected text.</remarks>
+        <altmember cref="P:MonoTouch.UIKit.UITextView.AttributedText" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.DataDetectorTypes" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.Editable" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.Font" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.Text" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.TextAlignment" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.TextContainerInsert" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.TextColor" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.TypingAttributes" />
       </Docs>
     </Member>
     <Member MemberName="Appearance">
@@ -337,9 +372,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <para>The following example shows how the AppearanceWhenContainedIn method works</para>
           <example>
             <code lang="C#">
-var mySliders = UISlider.AppearanceWhenContainedIn (typeof (UINavigationBar), typeof (UIPopoverController));
-mySliders.TintColor = UIColor.Red;
-</code>
+              var mySliders = UISlider.AppearanceWhenContainedIn (typeof (UINavigationBar), typeof (UIPopoverController));
+              mySliders.TintColor = UIColor.Red;
+            </code>
           </example>
           <para>For more information, see the documentation for the <see cref="T:MonoTouch.UIKit.UIAppearance" /> class.</para>
         </remarks>
@@ -377,7 +412,7 @@ mySliders.TintColor = UIColor.Red;
         <value>
         </value>
         <remarks>
-          <para>Application developers must use this property if they desire the use of multiple text styles in the <see cref="T:MonoTouch.UIKit.UITextView" />. The following example uses <see cref="M:MonoTouch.Foundation.NSMutableAttributableString.AddAttribute" /> to modify the color and font in a various ranges, as shown in the image.</para>
+          <para>Application developers must use this property if they desire the use of multiple text styles in the <see cref="T:MonoTouch.UIKit.UITextView" />. The following example uses <see cref="M:MonoTouch.Foundation.NSMutableAttributableString.AddAttribute"/> to modify the color and font in a various ranges, as shown in the image.</para>
           <example>
             <code lang="C#"><![CDATA[
   //UITextView default
@@ -400,6 +435,15 @@ mySliders.TintColor = UIColor.Red;
             <img href="MonoTouch.UIKit.UITextView.AttributedText.png" />
           </para>
         </remarks>
+        <altmember cref="P:MonoTouch.UIKit.UITextView.AllowsEditingTextAttributes" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.DataDetectorTypes" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.Editable" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.Font" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.Text" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.TextAlignment" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.TextContainerInsert" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.TextColor" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.TypingAttributes" />
       </Docs>
     </Member>
     <Member MemberName="AutocapitalizationType">
@@ -421,9 +465,11 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>MonoTouch.UIKit.UITextAutocapitalizationType</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>How input is converted to all capitalization.</summary>
+        <value>The default value is <see cref="E:MonoTouch.UIKit.UITextAutocapitalizationType.Sentences" /></value>
+        <remarks>
+          <para>The application user can ignore this value by setting Settings-&gt;General-&gt;Keyboard-&gt;Auto-Capitalization to off.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AutocorrectionType">
@@ -445,10 +491,11 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>MonoTouch.UIKit.UITextAutocorrectionType</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>A property that controls when words will be autocapitalized.</summary>
-        <value>
+        <summary>A property that controls when words will be automatically corrected.</summary>
+        <value>The default value is <see cref="E:MonoTouch.UIKit.UITextAutocorrectionType.Default" />
         </value>
-        <remarks>To be added.
+        <remarks>
+          <para>The application user can ignore this value by setting Settings-&gt;General-&gt;Keyboard-&gt;Auto-Correction to off.</para>
         </remarks>
       </Docs>
     </Member>
@@ -471,8 +518,8 @@ mySliders.TintColor = UIColor.Red;
         <summary>This property holds the text position for the beginning of the document. Read-only.</summary>
         <value>
         </value>
-        <remarks>To be added.
-        </remarks>
+        <remarks/>
+        <altmember cref="P:MonoTouch.UIKit.UITextView.EndOfDocument" />
       </Docs>
     </Member>
     <Member MemberName="Changed">
@@ -534,9 +581,14 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Whether inserting new text erases the current contents.</summary>
+        <value>The default value is <see langword="false" />.</value>
+        <remarks>
+          <para>If this value is <see langword="true" /> and the <see cref="T:MonoTouch.UIKit.UITextView"/> is in editing mode, inserting text will replace the existing contents and set this property to <see langword="false"/>.</para>
+        </remarks>
+        <altmember cref="M:MonoTouch.UIKit.UITextView.ScrollRangeToVisible" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.Selectable" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.SelectedRange" />
       </Docs>
     </Member>
     <Member MemberName="ComparePosition">
@@ -564,8 +616,7 @@ mySliders.TintColor = UIColor.Red;
         <summary>Returns a value that shows how one location in a document that compares to another location: before, identical, or after.</summary>
         <returns>
         </returns>
-        <remarks>To be added.
-        </remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="CurrentInputModeDidChangeNotification">
@@ -627,10 +678,20 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>This property holds a value that determines what text in the document can be converted into clickable links.</summary>
-        <value>
+        <value>The default value is <see cref="E:MonoTouch.UIKit.UIDataDetectorTypes.None" />
         </value>
-        <remarks>To be added.
+        <remarks>
+          <para>Setting this value to something other the <see cref="E:MonoTouch.UIKit.UIDataDetectorTypes.None" /> will convert appropriate text (phone numbers, URLs, calendar events, and addresses) into clickable links. On clicking, the operating system will open the appropriate application to handle that type of link.</para>
         </remarks>
+        <altmember cref="P:MonoTouch.UIKit.UITextView.AllowsEditingTextAttributes" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.AttributedText" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.Editable" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.Font" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.Text" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.TextAlignment" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.TextContainerInsert" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.TextColor" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.TypingAttributes" />
       </Docs>
     </Member>
     <Member MemberName="DecelerationEnded">
@@ -704,8 +765,7 @@ void Setup ()
       <Parameters />
       <Docs>
         <summary>Deletes one character backwards from the cursor.</summary>
-        <remarks>To be added.
-        </remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="DictationRecognitionFailed">
@@ -787,12 +847,12 @@ void Setup ()
       </Parameters>
       <Docs>
         <param name="disposing">
-          <para>If set to <see langword="true" />, the method is invoked directly and will dispose manage and unmanaged resources;   If set to <see langword="false" /> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</para>
+          <para>If set to <see langword="true" />, the method is invoked directly and will dispose manage and unmanaged resources;   If set to <see langword="false"/> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</para>
         </param>
         <summary>Releases the resources used by the UITextView object.</summary>
         <remarks>
           <para>This Dispose method releases the resources used by the UITextView class.</para>
-          <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposing <paramref name="disposing" /> is set to <see langword="true" /> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false" />. </para>
+          <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposing <paramref name="disposing" /> is set to <see langword="true"/> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false"/>. </para>
           <para>Calling the Dispose method when you are finished using the UITextView ensures that all external resources used by this managed object are released as soon as possible.  Once you have invoked the Dispose method, the object is no longer useful and you should no longer make any calls to it.</para>
           <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at http://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
         </remarks>
@@ -850,8 +910,17 @@ void Setup ()
         <summary>This property determines if the text view is editable or not.</summary>
         <value>
         </value>
-        <remarks>To be added.
+        <remarks>
         </remarks>
+        <altmember cref="P:MonoTouch.UIKit.UITextView.AllowsEditingTextAttributes" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.AttributedText" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.DataDetectorTypes" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.Font" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.Text" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.TextAlignment" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.TextContainerInsert" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.TextColor" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.TypingAttributes" />
       </Docs>
     </Member>
     <Member MemberName="EnablesReturnKeyAutomatically">
@@ -874,9 +943,9 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>If <see langword="true" />, then the return key on the keyboard will be disabled when there is no text in the text view.</summary>
-        <value>
+        <value>The default value is <see langword="false" />.
         </value>
-        <remarks>To be added.
+        <remarks>
         </remarks>
       </Docs>
     </Member>
@@ -892,7 +961,7 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>Raised when editing has finished in this UITextView.</summary>
-        <remarks />
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="EndOfDocument">
@@ -914,8 +983,9 @@ void Setup ()
         <summary>This property holds the text position for the end of the document. Read-only.</summary>
         <value>
         </value>
-        <remarks>To be added.
+        <remarks>
         </remarks>
+        <altmember cref="P:MonoTouch.UIKit.BeginningOfDocument" />
       </Docs>
     </Member>
     <Member MemberName="Font">
@@ -938,10 +1008,19 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>This property holds the font that will be used to display the text.</summary>
-        <value>The default font is 17-point Helvetica.</value>
+        <value>The default value is <see langword="null" /> (the default font is <see cref="P:MonoTouch.UIKit.UIFont.PreferredBody"/>).</value>
         <remarks>
-          <para>Assignment to this property will affect all the text in the <see cref="T:MonoTouch.UIKit.UITextView" />. If multiple text-styles are desired, the application developer must use the <see cref="P:MonoTouch.UIKit.UITextView.AttributedText" /> property.</para>
+          <para>Assignment to this property will affect all the text in the <see cref="T:MonoTouch.UIKit.UITextView" />. If multiple text-styles are desired, the application developer must use the <see cref="P:MonoTouch.UIKit.UITextView.AttributedText"/> property.</para>
         </remarks>
+        <altmember cref="P:MonoTouch.UIKit.UITextView.AllowsEditingTextAttributes" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.AttributedText" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.DataDetectorTypes" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.Editable" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.Text" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.TextAlignment" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.TextContainerInsert" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.TextColor" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.TypingAttributes" />
       </Docs>
     </Member>
     <Member MemberName="GetAppearance&lt;T&gt;">
@@ -989,8 +1068,7 @@ void Setup ()
         <param name="direction">The direction of storage.</param>
         <summary>Determines the writing direction from a position within the text.</summary>
         <returns>The writing direction (i.e. left-to-right, or right-to-left)</returns>
-        <remarks>To be added.
-        </remarks>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="GetCaretRectForPosition">
@@ -1042,7 +1120,7 @@ void Setup ()
       <Docs>
         <param name="position">A location in the text.</param>
         <param name="range">The range of text in a document.</param>
-        <summary>Returns the number of characters in some text between <paramref name="position" /> and the start of the <paramref name="range" />.</summary>
+        <summary>Returns the number of characters in some text between <paramref name="position" /> and the start of the <paramref name="range"/>.</summary>
         <returns>
         </returns>
         <remarks>To be added.
@@ -1071,7 +1149,7 @@ void Setup ()
       <Docs>
         <param name="byExtendingPosition">A location in some text.</param>
         <param name="direction">The direction of the layout.</param>
-        <summary>Returns a range that represents the distance from <paramref name="byExtendingPosition" /> to as far as is possible in <paramref name="direction" />.</summary>
+        <summary>Returns a range that represents the distance from <paramref name="byExtendingPosition" /> to as far as is possible in <paramref name="direction"/>.</summary>
         <returns>
         </returns>
         <remarks>To be added.
@@ -1154,7 +1232,7 @@ void Setup ()
       <Docs>
         <param name="point">A point within the control.</param>
         <param name="withinRange">The range of text within in the control.</param>
-        <summary>Returns the position in <paramref name="withinRange" /> that is closest to <paramref name="withinRange" />.</summary>
+        <summary>Returns the position in <paramref name="withinRange" /> that is closest to <paramref name="withinRange"/>.</summary>
         <returns>
         </returns>
         <remarks>To be added.
@@ -1211,9 +1289,11 @@ void Setup ()
       </Parameters>
       <Docs>
         <param name="placeholder">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>When overridden, customizes the placement of the dictation placeholder.</summary>
+        <returns>The rectangle in which the dictation placeholder animation will display.</returns>
+        <remarks>
+          <para>Application developers who override this method should return a rectangle that is located where they will insert the dictation results.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetOffsetFromPosition">
@@ -1384,9 +1464,9 @@ void Setup ()
         <Parameter Name="range" Type="MonoTouch.UIKit.UITextRange" />
       </Parameters>
       <Docs>
-        <param name="range">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="range">The <see cref="T:MonoTouch.UIKit.UITextRange" /> for which the selection rectangles are desired.</param>
+        <summary>The selection rectangles for the <paramref name="range" />.</summary>
+        <returns>An array (possibly empty) of the <see cref="T:MonoTouch.UIKit.UITextSelectionRect" />s in the <paramref name="range"/>.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -1517,8 +1597,8 @@ void Setup ()
         <ReturnType>MonoTouch.UIKit.UITextInputDelegate</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>A delegate object that can respond to text and selection changes.</summary>
+        <value>The default value is a system-provided <see cref="T:MonoTouch.UIKit.UITextInputDelegate" />.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -1607,9 +1687,12 @@ void Setup ()
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The dictation-results placeholder that will be used during dictation processing.</summary>
         <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <para>The result of this method is passed to <see cref="M:MonoTouch.UIKit.UITextView.GetFrameForDictationResultPlaceholder" />.</para>
+          <para>Application developers who override this method must also override <see cref="M:MonoTouch.UIKit.UITextView.RemoveDictationResultPlaceholder" />.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="InsertText">
@@ -1631,8 +1714,8 @@ void Setup ()
         <Parameter Name="text" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="text">This method will insert text into the view at the position indicated by the cursor.</param>
-        <summary>To be added.</summary>
+        <param name="text">The text to insert.</param>
+        <summary>This method will insert text into the view at the position indicated by the cursor.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -1711,9 +1794,9 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>An <see cref="T:MonoTouch.UIKit.NSLayoutManager" /> to control the layout of the text.</summary>
-        <value>By default, <see cref="P:MonoTouch.UIKit.NSLayoutManager.AllowsNonContiguousLayout" /> is <see langword="true" />.</value>
+        <value>By default, <see cref="P:MonoTouch.UIKit.NSLayoutManager.AllowsNonContiguousLayout" /> is <see langword="true"/>.</value>
         <remarks>
-          <para>The default <see cref="T:MonoTouch.UIKit.NSLayoutManager" /> for a <see cref="T:MonoTouch.UIKit.UITextView" /> allows non-contiguous layout, which can be confusing, as the default value for <see cref="P:MonoTouch.UIKit.NSLayoutManager.AllowsNonContiguousLayout" /> is <see langword="false" />.</para>
+          <para>The default <see cref="T:MonoTouch.UIKit.NSLayoutManager" /> for a <see cref="T:MonoTouch.UIKit.UITextView"/> allows non-contiguous layout, which can be confusing, as the default value for <see cref="P:MonoTouch.UIKit.NSLayoutManager.AllowsNonContiguousLayout"/> is <see langword="false"/>.</para>
         </remarks>
       </Docs>
     </Member>
@@ -1759,7 +1842,7 @@ void Setup ()
         <ReturnType>MonoTouch.Foundation.NSDictionary</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>A <see cref="T:MonoTouch.Foundation.NSDictionary" /> of attributes describing style of the <see cref="P:MonoTouch.UIKit.UITextField.MarkedTextRange" />.</summary>
+        <summary>A <see cref="T:MonoTouch.Foundation.NSDictionary" /> of attributes describing style of the <see cref="P:MonoTouch.UIKit.UITextField.MarkedTextRange"/>.</summary>
         <value>
         </value>
         <remarks>To be added.
@@ -1789,10 +1872,12 @@ void Setup ()
         <Parameter Name="willInsertResult" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="placeholder">To be added.</param>
-        <param name="willInsertResult">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="placeholder">The placeholder that is no longer needed.</param>
+        <param name="willInsertResult">The value of this will be <see langword="true" /> if the dictation was interpreted.</param>
+        <summary>Informs the <see cref="T:MonoTouch.UIKit.UITextView" /> that the placeholder is no longer needed.</summary>
+        <remarks>
+          <para>Application developers who override this method must also override <see cref="M:MonoTouch.UIKit.UITextView.RemoveDictationResultPlaceholder" />.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ReplaceText">
@@ -1916,6 +2001,9 @@ void Setup ()
         <summary>Scrolls the text view until the <paramref name="range" /> is visible.</summary>
         <remarks>To be added.
         </remarks>
+        <altmember cref="P:MonoTouch.UIKit.UITextView.ClearsOnInsertion" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.Selectable" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.SelectedRange" />
       </Docs>
     </Member>
     <Member MemberName="SecureTextEntry">
@@ -1972,9 +2060,12 @@ void Setup ()
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>Whether the application user can select content and interact with links and text attachments.</summary>
+        <value>The default value is <see langword="true" />.</value>
         <remarks>To be added.</remarks>
+        <altmember cref="P:MonoTouch.UIKit.UITextView.ClearsOnInsertion" />
+        <altmember cref="M:MonoTouch.UIKit.UITextView.ScrollRangeToVisible" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.SelectedRange" />
       </Docs>
     </Member>
     <Member MemberName="SelectedRange">
@@ -2001,8 +2092,11 @@ void Setup ()
         </value>
         <remarks>
           <para>This property can have three possible values:
-            <list type="bullet"><item><term><see langword="null" /></term><description>There is no current selection</description></item><item><term>A zero length <see cref="T:MonoTouch.UIKit.UITextRange" /></term><description>This indicates the insertion point</description></item><item><term>A <see cref="T:MonoTouch.UIKit.UITextRange" /> of length &gt; 0</term><description>This indicates the currently selected text.</description></item></list></para>
+            <list type="bullet"><item><term><see langword="null" /></term><description>There is no current selection</description></item><item><term>A zero length <see cref="T:MonoTouch.UIKit.UITextRange"/></term><description>This indicates the insertion point</description></item><item><term>A <see cref="T:MonoTouch.UIKit.UITextRange"/> of length &gt; 0</term><description>This indicates the currently selected text.</description></item></list></para>
         </remarks>
+        <altmember cref="P:MonoTouch.UIKit.UITextView.ClearsOnInsertion" />
+        <altmember cref="M:MonoTouch.UIKit.UITextView.ScrollRangeToVisible" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.Selectable" />
       </Docs>
     </Member>
     <Member MemberName="SelectedTextRange">
@@ -2029,7 +2123,7 @@ void Setup ()
         </value>
         <remarks>
           <para>This property can have three possible values:
-            <list type="bullet"><item><term><see langword="null" /></term><description>There is no current selection</description></item><item><term>A zero length <see cref="T:MonoTouch.UIKit.UITextRange" /></term><description>This indicates the insertion point</description></item><item><term>A <see cref="T:MonoTouch.UIKit.UITextRange" /> of length &gt; 0</term><description>This indicates the currently selected text.</description></item></list></para>
+            <list type="bullet"><item><term><see langword="null" /></term><description>There is no current selection</description></item><item><term>A zero length <see cref="T:MonoTouch.UIKit.UITextRange"/></term><description>This indicates the insertion point</description></item><item><term>A <see cref="T:MonoTouch.UIKit.UITextRange"/> of length &gt; 0</term><description>This indicates the currently selected text.</description></item></list></para>
         </remarks>
       </Docs>
     </Member>
@@ -2070,7 +2164,7 @@ void Setup ()
       <Docs>
         <param name="writingDirection">To be added.</param>
         <param name="range">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Specifies the base writing direction.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -2158,9 +2252,11 @@ void Setup ()
       <Docs>
         <param name="inRange">To be added.</param>
         <param name="replacementText">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>Called prior to an edit. Can be overridden to selectively filter edits.</summary>
+        <returns>The default value is <see langword="true" />.</returns>
+        <remarks>
+          <para>This method is called prior to a replacement being made in the text. Application developers can override this method and, if they return <see langword="false" />, the replacement will not be made.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ShouldEndEditing">
@@ -2258,7 +2354,8 @@ void Setup ()
         <summary>This property controls if spell checking will be enabled or disabled during input.</summary>
         <value>
         </value>
-        <remarks>To be added.
+        <remarks>
+          <para>If the application user has turned spell-checking off with Settings-&gt;General-&gt;Keyboard-&gt;Check Spelling, this property will be ignored.</para>
         </remarks>
       </Docs>
     </Member>
@@ -2304,6 +2401,15 @@ void Setup ()
         </value>
         <remarks>To be added.
         </remarks>
+        <altmember cref="P:MonoTouch.UIKit.UITextView.AllowsEditingTextAttributes" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.AttributedText" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.DataDetectorTypes" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.Editable" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.Font" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.TextAlignment" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.TextContainerInsert" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.TextColor" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.TypingAttributes" />
       </Docs>
     </Member>
     <Member MemberName="TextAlignment">
@@ -2329,9 +2435,18 @@ void Setup ()
         <value>
         </value>
         <remarks>
-          <para>Assignment to this property will affect all the text in the <see cref="T:MonoTouch.UIKit.UITextView" />. If multiple text-styles are desired, the application developer must use the <see cref="P:MonoTouch.UIKit.UITextView.AttributedText" /> property.</para>
-          <para>The value of this property applies both the the <see cref="P:MonoTouch.UIKit.UITextField.Text" /> and <see cref="P:MonoTouch.UIKit.UITextField.Placeholder" />.</para>
+          <para>Assignment to this property will affect all the text in the <see cref="T:MonoTouch.UIKit.UITextView" />. If multiple text-styles are desired, the application developer must use the <see cref="P:MonoTouch.UIKit.UITextView.AttributedText"/> property.</para>
+          <para>The value of this property applies both the the <see cref="P:MonoTouch.UIKit.UITextField.Text" /> and <see cref="P:MonoTouch.UIKit.UITextField.Placeholder"/>.</para>
         </remarks>
+        <altmember cref="P:MonoTouch.UIKit.UITextView.AllowsEditingTextAttributes" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.AttributedText" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.DataDetectorTypes" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.Editable" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.Font" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.Text" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.TextContainerInsert" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.TextColor" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.TypingAttributes" />
       </Docs>
     </Member>
     <Member MemberName="TextBackgroundColorKey">
@@ -2350,8 +2465,8 @@ void Setup ()
         <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>The constant that should be used as the key value when retrieving the text background color from a <see cref="T:MonoTouch.Foundation.NSDictionary" />.</summary>
+        <value>The constant is the <see cref="T:MonoTouch.Foundation.NSString" /> "UITextInputTextBackgroundColorKey"	.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -2376,7 +2491,18 @@ void Setup ()
       <Docs>
         <summary>To be added.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <para>Assignment to this property will affect all the text in the <see cref="T:MonoTouch.UIKit.UITextView" />. If multiple text-styles are desired, the application developer must use the <see cref="P:MonoTouch.UIKit.UITextView.AttributedText"/> property.</para>
+        </remarks>
+        <altmember cref="P:MonoTouch.UIKit.UITextView.AllowsEditingTextAttributes" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.AttributedText" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.DataDetectorTypes" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.Editable" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.Font" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.Text" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.TextAlignment" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.TextContainerInsert" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.TypingAttributes" />
       </Docs>
     </Member>
     <Member MemberName="TextColorKey">
@@ -2395,8 +2521,8 @@ void Setup ()
         <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>The constant that should be used as the key value when retrieving the text color from a <see cref="T:MonoTouch.Foundation.NSDictionary" />.</summary>
+        <value>The constant is the <see cref="T:MonoTouch.Foundation.NSString" /> "UITextInputTextColorKey"	.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -2422,7 +2548,7 @@ void Setup ()
         <ReturnType>MonoTouch.UIKit.NSTextContainer</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Defines the area in which text should be displayed.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -2455,9 +2581,18 @@ void Setup ()
         <ReturnType>MonoTouch.UIKit.UIEdgeInsets</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>Defines the <see cref="P:MonoTouch.UIKit.UITextView.TextContainer" />'s layout area as insets from the <see cref="T:MonoTouch.UITextView"/>'s content area.</summary>
+        <value>The default value is {8, 0, 8, 0} (8 logical pixels inset at top and bottom, no inset on edges).</value>
         <remarks>To be added.</remarks>
+        <altmember cref="P:MonoTouch.UIKit.UITextView.AllowsEditingTextAttributes" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.AttributedText" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.DataDetectorTypes" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.Editable" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.Font" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.Text" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.TextAlignment" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.TextColor" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.TypingAttributes" />
       </Docs>
     </Member>
     <Member MemberName="TextDidBeginEditingNotification">
@@ -2480,10 +2615,10 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UITextView+Notifications" />.<see cref="M:UITextView+Notifications.ObserveTextDidBeginEditingNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UITextView+Notifications" />.<see cref="M:UITextView+Notifications.ObserveTextDidBeginEditingNotification"/> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 //
 // Lambda style
 //
@@ -2515,11 +2650,11 @@ void Setup ()
 void Teardown ()
 {
     notification.Dispose ();
-}</code>
+}]]></code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
         UITextView.TextDidBeginEditingNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UITextView", notification); }
@@ -2535,7 +2670,7 @@ void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (UITextView.TextDidBeginEditingNotification, Callback);
 }
-</code>
+]]></code>
           </example>
         </remarks>
       </Docs>
@@ -2560,10 +2695,10 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UITextView+Notifications" />.<see cref="M:UITextView+Notifications.ObserveTextDidChangeNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UITextView+Notifications" />.<see cref="M:UITextView+Notifications.ObserveTextDidChangeNotification"/> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 //
 // Lambda style
 //
@@ -2595,11 +2730,11 @@ void Setup ()
 void Teardown ()
 {
     notification.Dispose ();
-}</code>
+}]]></code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
         UITextView.TextDidChangeNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UITextView", notification); }
@@ -2615,7 +2750,7 @@ void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (UITextView.TextDidChangeNotification, Callback);
 }
-</code>
+]]></code>
           </example>
         </remarks>
       </Docs>
@@ -2640,10 +2775,10 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UITextView+Notifications" />.<see cref="M:UITextView+Notifications.ObserveTextDidEndEditingNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UITextView+Notifications" />.<see cref="M:UITextView+Notifications.ObserveTextDidEndEditingNotification"/> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 //
 // Lambda style
 //
@@ -2675,11 +2810,11 @@ void Setup ()
 void Teardown ()
 {
     notification.Dispose ();
-}</code>
+}]]></code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
         UITextView.TextDidEndEditingNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UITextView", notification); }
@@ -2695,7 +2830,7 @@ void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (UITextView.TextDidEndEditingNotification, Callback);
 }
-</code>
+]]></code>
           </example>
         </remarks>
       </Docs>
@@ -2795,7 +2930,7 @@ void Setup ()
         <ReturnType>MonoTouch.UIKit.NSTextStorage</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Holds the attribute text being displayed.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -2846,9 +2981,18 @@ void Setup ()
         <ReturnType>MonoTouch.Foundation.NSDictionary</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>The attributes to be applied to newly-typed text.</summary>
+        <value>The default value is <see langword="null" />.</value>
         <remarks>To be added.</remarks>
+        <altmember cref="P:MonoTouch.UIKit.UITextView.AllowsEditingTextAttributes" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.AttributedText" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.DataDetectorTypes" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.Editable" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.Font" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.Text" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.TextAlignment" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.TextContainerInsert" />
+        <altmember cref="P:MonoTouch.UIKit.UITextView.TextColor" />
       </Docs>
     </Member>
     <Member MemberName="UnmarkText">
@@ -2939,7 +3083,7 @@ void Setup ()
         <ReturnType>MonoTouch.Foundation.NSObject</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>An object that can respond to the delegate protocol for inserted text.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
