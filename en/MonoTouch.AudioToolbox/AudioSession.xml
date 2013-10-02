@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <Type Name="AudioSession" FullName="MonoTouch.AudioToolbox.AudioSession">
   <TypeSignature Language="C#" Value="public static class AudioSession" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract sealed beforefieldinit AudioSession extends System.Object" />
@@ -12,6 +13,7 @@
   <Docs>
     <summary>Interface to to control the audio context of your application</summary>
     <remarks>
+      <para>Both the <see cref="T:MonoTouch.AVFoundation.AudioSession" /> and <see cref="T:MonoTouch.AVFoundation.AVAudioSession" /> reference the same underlying singleton object. Properties in <see cref="T:MonoTouch.AVFoundation.AudioSession" /> were deprecated in iOS 7.0, and <see cref="T:MonoTouch.AVFoundation.AVAudioSession" /> appears to be the preferred path forward.</para>
       <para>
 
 	You use the various AudioSession methods to control how the
@@ -73,7 +75,7 @@
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>System.Obsolete("AudioSession[Get|Set]Property are deprecated in iOS7")</AttributeName>
+          <AttributeName>System.Obsolete("AudioSession[Get|Set]Property are deprecated in iOS7. Use AVAudioSession.InputAvailable instead.")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -236,7 +238,7 @@ void Setup ()
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>System.Obsolete("AudioSession[Get|Set]Property are deprecated in iOS7")</AttributeName>
+          <AttributeName>System.Obsolete("AudioSession[Get|Set]Property are deprecated in iOS7. Use AVAudioSession.Category instead.")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -272,7 +274,7 @@ void Setup ()
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>System.Obsolete("AudioSession[Get|Set]Property are deprecated in iOS7")</AttributeName>
+          <AttributeName>System.Obsolete("AudioSession[Get|Set]Property are deprecated in iOS7. Use AVAudioSession.InputLatency instead.")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -299,7 +301,7 @@ void Setup ()
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>System.Obsolete("AudioSession[Get|Set]Property are deprecated in iOS7")</AttributeName>
+          <AttributeName>System.Obsolete("AudioSession[Get|Set]Property are deprecated in iOS7. Use AVAudioSession.CurrentHardwareInputNumberOfChannels instead.")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -326,7 +328,7 @@ void Setup ()
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>System.Obsolete("AudioSession[Get|Set]Property are deprecated in iOS7")</AttributeName>
+          <AttributeName>System.Obsolete("AudioSession[Get|Set]Property are deprecated in iOS7. Use AVAudioSession.IOBufferDuration instead.")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -353,7 +355,7 @@ void Setup ()
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>System.Obsolete("AudioSession[Get|Set]Property are deprecated in iOS7")</AttributeName>
+          <AttributeName>System.Obsolete("AudioSession[Get|Set]Property are deprecated in iOS7. Use AVAudioSession.OutputLatency instead.")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -380,7 +382,7 @@ void Setup ()
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>System.Obsolete("AudioSession[Get|Set]Property are deprecated in iOS7")</AttributeName>
+          <AttributeName>System.Obsolete("AudioSession[Get|Set]Property are deprecated in iOS7. Use AVAudioSession.CurrentHardwareOutputNumberOfChannels instead.")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -448,7 +450,7 @@ void Setup ()
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>System.Obsolete("AudioSession[Get|Set]Property are deprecated in iOS7")</AttributeName>
+          <AttributeName>System.Obsolete("AudioSession[Get|Set]Property are deprecated in iOS7. Use AVAudioSession.SampleRate instead.")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -475,7 +477,7 @@ void Setup ()
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>System.Obsolete("Deprecated in iOS7")</AttributeName>
+          <AttributeName>System.Obsolete("Deprecated in iOS7; use Initialize(CFRunLoop, string)")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -499,7 +501,7 @@ void Setup ()
 
 	    When you call this variation of Initialize, both the <see cref="E:MonoTouch.AudioToolbox.AudioSession.Interrupted" />
 	    and <see cref="E:MonoTouch.AudioToolbox.AudioSession.Resumed" />
-	    events are raised on the main loop.  Use the <see cref="P:MonoTouch.AudioToolbox.AudioSession.Initialize(MonoTouch.CoreFoundation.CFRunLoop&#xA;	    runLoop, System.String runMode)" /> if you want to specify
+	    events are raised on the main loop.  Use the <see cref="P:MonoTouch.AudioToolbox.AudioSession.Initialize(MonoTouch.CoreFoundation.CFRunLoop&#xA;     runLoop, System.String runMode)" /> if you want to specify
 	    a different runloop.
 
 	  </para>
@@ -534,7 +536,7 @@ AudioSession.Category = AudioSessionCategory.MediaPlayback;
       </Parameters>
       <Docs>
         <param name="runLoop">The runloop to execute on.</param>
-        <param name="runMode">Run loop mode (see NSRunLoop for the various modes).</param>
+        <param name="runMode">Run loop mode (see <see cref="T:MonoTouch.Foundation.CFRunLoop" /> for the various modes).</param>
         <summary>Initializes the Audio Session.</summary>
         <remarks>
           <para>
@@ -557,13 +559,15 @@ AudioSession.Category = AudioSessionCategory.MediaPlayback;
 
 	  </para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
+var myRunLoop = CFRunLoop.Current;
+var myRunMode = CFRunLoop.CFDefaultRunLoopMode;
 //
 // Initialize the audio session for audio playback
 //
 AudioSession.Initialize (myRunLoop, myRunMode);
 AudioSession.Category = AudioSessionCategory.MediaPlayback;
-</code>
+]]></code>
           </example>
         </remarks>
       </Docs>
@@ -580,7 +584,7 @@ AudioSession.Category = AudioSessionCategory.MediaPlayback;
           <AttributeName>MonoTouch.ObjCRuntime.Since(5, 0)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>System.Obsolete("AudioSession[Get|Set]Property are deprecated in iOS7")</AttributeName>
+          <AttributeName>System.Obsolete("AudioSession[Get|Set]Property are deprecated in iOS7. Use AVAudioSession.InputGainSettable instead.")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -625,7 +629,7 @@ AudioSession.Category = AudioSessionCategory.MediaPlayback;
           <AttributeName>MonoTouch.ObjCRuntime.Since(5, 0)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>System.Obsolete("AudioSession[Get|Set]Property are deprecated in iOS7")</AttributeName>
+          <AttributeName>System.Obsolete("AudioSession[Get|Set]Property are deprecated in iOS7. Use AVAudioSession.InputGain instead.")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -801,7 +805,7 @@ AudioSession.Category = AudioSessionCategory.MediaPlayback;
           <AttributeName>MonoTouch.ObjCRuntime.Since(5, 0)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>System.Obsolete("AudioSession[Get|Set]Property are deprecated in iOS7")</AttributeName>
+          <AttributeName>System.Obsolete("AudioSession[Get|Set]Property are deprecated in iOS7. Use AVAudioSession.Mode instead.")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -836,7 +840,7 @@ AudioSession.Category = AudioSessionCategory.MediaPlayback;
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>System.Obsolete("AudioSession[Get|Set]Property are deprecated in iOS7")</AttributeName>
+          <AttributeName>System.Obsolete("AudioSession[Get|Set]Property are deprecated in iOS7. Use AVAudioSession.OtherAudioPlaying instead.")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1016,7 +1020,7 @@ AudioSession.Category = AudioSessionCategory.MediaPlayback;
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>System.Obsolete("AudioSession[Get|Set]Property are deprecated in iOS7")</AttributeName>
+          <AttributeName>System.Obsolete("AudioSession[Get|Set]Property are deprecated in iOS7. Use AVAudioSession.PreferredIOBufferDuration instead.")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1046,7 +1050,7 @@ AudioSession.Category = AudioSessionCategory.MediaPlayback;
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>System.Obsolete("AudioSession[Get|Set]Property are deprecated in iOS7")</AttributeName>
+          <AttributeName>System.Obsolete("AudioSession[Get|Set]Property are deprecated in iOS7. Use AVAudioSession.PreferredHardwareSampleRate instead.")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
