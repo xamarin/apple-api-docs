@@ -1,24 +1,109 @@
+<?xml version="1.0"?>
 <Namespace Name="MonoTouch.AVFoundation">
   <Docs>
     <summary>High level audio playback and recording.</summary>
-
     <remarks>
-
       <para>
-	This namespace contains high-level recording and playback
-	capabilities for audio and video.   
+        This namespace contains high-level recording and playback
+        capabilities for audio and video.   
       </para>
-
       <para>
-
-	This library sits on top of CoreMedia, CoreAudio and CoreVideo
-	but does not provide any user interface elements for UIKit.
-	It is a toolkit for recording and playing back audio and
-	video.
-
+        This library sits on top of CoreMedia, CoreAudio and CoreVideo
+        but does not provide any user interface elements for UIKit.
+        It is a toolkit for recording and playing back audio and
+        video.
       </para>
+      <para>AV Foundation uses background processing extensively. Application developers should take care to ensure thread safety and use <see cref="M:MonoTouch.Foundation.NSObject.InvokeOnMainThread"/> or other technique when updating their user interface.</para>
+      <para>AVFoundation is not necessary for some common tasks:</para>
+      <list type="table">
+        <listheader>
+          <term>Task</term>
+          <description>Technique</description>
+        </listheader>
+        <item>
+          <term>Display video</term>
+          <description>Use Media Player's <see cref="T:MonoTouch.MediaPlayer.MPMoviePlayerController"/> or <see cref="T:MonoTouch.MediaPlayer.MPMoviePlayerViewController"/>.</description>
+        </item>
+        <item>
+          <term>Capture a photograph or video</term>
+          <description>Use UIKit's <see cref="T:MonoTouch.UIKit.UIImagePickerController"/></description>
+        </item>
+        <item>
+          <term>Play audio files</term>
+          <description>Use AV Foundation's <see cref="T:MonoTouch.AVFoundation.AVAudioPlayer"/>.</description>
+        </item>
+        <item>
+          <term>Capture audio files</term>
+          <description>Use AV Foundation's <see cref="T:MonoTouch.AVFoundation.AVAudioRecorder"/>, as discussed below in "Capture Audio Files".</description>
+        </item>
+        <item>
+          <term>Complex video display or audio playback</term>
+          <description>Use AV Foundation, as discussed below in "Playback".</description>
+        </item>
+        <item>
+          <term>Media file reading, writing, and capture</term>
+          <description>Use AV Foundation, as discussed below in "tk". tk include thumbnail generation tk</description>
+        </item>
+        <item>
+          <term>Custom media capture</term>
+          <description>Use AV Foundation, as discussed below in "tk".</description>
+        </item>
+        <item>
+          <term>Media editing</term>
+          <description>Use AV Foundation, as discussed below in "tk".</description>
+        </item>
+        <item>
+          <term>Speech synthesis</term>
+          <description>Use AV Foundation, as discussed below in "tk".</description>
+        </item>
+      </list>
+      <para>The core class in AV Foundation is <see cref="T:MonoTouch.AVFoundation.AVAsset"/>. An <see cref="T:MonoTouch.AVFoundation.AVAsset"/> represents one or more media assets. These are held in its <see cref="P:MonoTouch.AVFoundation.AVAsset.Tracks"/> property. Additionally, <see cref="T:MonoTouch.AVFoundation.AVAsset"/>s include metadata, track grouping, and preferences about the media.</para>
+      <para>Because media assets such as movies are large, instantiating an <see cref="T:MonoTouch.AVFoundation.AVAsset"/> will not automatically load the file. Properties are loaded when they are queried or via explicit calls to <see cref="M:MonoTouch.AVFoundation.AVAsset.LoadValuesTaskAsync"/> or <see cref="M:MonoTouch.AVFoundation.AVAsset.LoadValuesAsynchronously"/>.</para>
+      <format type="text/html"><h3>Playback</h3></format>
+      <para><see cref="T:MonoTouch.AVFoundation.Player"/> objects use <see cref="T:MonoTouch.AVFoundation.AVPlayerItem"/> objects to play media. An <see cref="T:MonoTouch.AVFoundation.AVPlayerItem"/> encapsulates the presentation state of an <see cref="T:MonoTouch.AVFoundation.AVAsset"/>.</para>
+      <para><img href="AssetPlayerItemPlayer.png" /></para>
+      <format type="text/html"><h3>Capture Audio Files</h3></format>
+      <para>The application developer must call the static methods <see cref="M:MonoTouch.AVFoundation.AudioSession.Initialize"/>, <see cref="M:MonoTouch.AVFoundation.SetActive"/>, and set the <see cref="P:MonoTouch.AVFoundation.AudioSession.Category"/> property to <see cref="P:MonoTouch.AVFoundation.AudioSessionCategory.RecordAudio"/> prior to recording, as shown in the following sample:</para>
+      <example>
+        <code lang="C#"><![CDATA[
+AudioSession.Initialize();
+AudioSession.Category = AudioSessionCategory.RecordAudio;
+AudioSession.SetActive(true);
 
-  </remarks>
+var fileName = string.Format ("Myfile{0}.aac", DateTime.Now.ToString ("yyyyMMddHHmmss"));
+var tempRecording = NSBundle.MainBundle.BundlePath + "/../tmp/" + fileName;
+           
+this.audioFilePath = NSUrl.FromFilename(tempRecording);
 
+var audioSettings = new AudioSettings() {
+	SampleRate = 44100.0f, 
+	Format = AudioFormatType.MPEG4AAC,
+	NumberChannels = 1,
+	AudioQuality = AVAudioQuality.High
+};
+
+NSError error;
+var recorder = AVAudioRecorder.Create(this.audioFilePath, audioSettings, out error);
+if ((recorder == null) || (error != null)) {
+	Console.WriteLine (error);
+	return false;
+}
+
+if (!recorder.PrepareToRecord ()) {
+	recorder.Dispose ();
+	recorder = null;
+	return false;
+}
+
+recorder.FinishedRecording += delegate (object sender, AVStatusEventArgs e) {
+	recorder.Dispose ();
+	recorder = null;
+	Console.WriteLine ("Done Recording (status: {0})", e.Status);
+};
+
+recorder.Record();          
+          ]]></code>
+        </example>
+    </remarks>
   </Docs>
 </Namespace>
