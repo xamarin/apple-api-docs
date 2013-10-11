@@ -21,38 +21,96 @@
     <summary>Coordinates a recording session.</summary>
     <remarks>
       <para>
-
 	The AVCaptureSession object coordinates the recording of video
 	or audio input and passing the recorded information to one or
-	more output objects.  An iPhone 3 for example will have two
-	input devices, one for the camera and one for the microphone.
-	An iPhone 4 would have three input devices, one for the
-	microphone, one for the back camera and one for the front
-	camera.    
-
+	more output objects.  As the iOS line has advanced, different devices have gained multiple capture devices (in particular, gained multiple cameras). Application developers can use <see cref="M:MonoTouch.AVFoundation.AVCaptureDevice.DefaultDeviceWithMediaType"/> or <see cref="M:MonoTouch.AVFoundation.AVCaptureDevice.DevicesWithMediaType"/>, passing in the constants defined in <see cref="T:MonoTouch.AVFoundation.AVMediaType"/>.
       </para>
       <para>
-	
-	To record, you must create instances of the <see cref="T:MonoTouch.AVFoundation.AVCaptureInput" /> class, usually by creating instances of the concrete <see cref="T:MonoTouch.AVFoundation.AVCaptureDeviceInput" />.   
-      </para>
+        Configuring capture consists of setting the <see cref="P:MonoTouch.AVFoundation.AVCaptureSession.Inputs"/> and <see cref="P:MonoTouch.AVFoundation.AVCaptureSession.Outputs"/> properties of the <see cref="T:MonoTouch.AVFoundation.AVCaptureSession"/>. Notice that multiple <see cref="T:MonoTouch.AVFoundation.AVCaptureInput"/>s and <see cref="T:MonoTouch.AVFoundation.AVCaptureOutput"/>s are possible. For instance, to capture both audio and video, one would use two capture inputs:</para>
+      <example>
+        <code lang="C#"><![CDATA[
+ var session = new AVCaptureSession();
+
+var camera = AVCaptureDevice.DefaultDeviceWithMediaType(AVMediaType.Video);
+var  mic = AVCaptureDevice.DefaultDeviceWithMediaType(AVMediaType.Audio);
+if(camera == null || mic == null){
+    throw new Exception("Can't find devices");
+}
+
+if(session.CanAddInput(camera)){
+    session.AddInput(camera);
+}
+if(session.CanAddInput(mic)){
+   session.AddInput(mic);
+}
+          ]]></code>
+      </example>
+      <para>Video can be captured directly to file with <see cref="T:MonoTouch.AVFoundation.AVCaptureMovieFileOutput"/>. However, this class has no display-able data and cannot be used simultaneously with <see cref="T:MonoTouch.AVFoundation.AVCaptureVideoDataOutput"/>. Instead, application developers can use it in combination with a <see cref="T:MonoTouch.AVFoundation.AVCaptureVideoPreviewLayer"/>, as shown in the following example:</para>
+      <example>
+        <code lang="C#"><![CDATA[
+var layer = new AVCaptureVideoPreviewLayer(session);
+layer.LayerVideoGravity = AVLayerVideoGravity.ResizeAspectFill;
+layer.VideoGravity = AVCaptureVideoPreviewLayer.GravityResizeAspectFill;
+
+var cameraView = new UIView();
+cameraView.Layer.AddSublayer(layer);
+
+var filePath = System.IO.Path.Combine( Path.GetTempPath(), "temporary.mov");
+var fileUrl = NSUrl.FromFilename( filePath );
+
+var movieFileOutput = new AVCaptureMovieFileOutput();
+var recordingDelegate = new MyRecordingDelegate();
+session.AddOutput(movieFileOutput);
+
+movieFileOutput.StartRecordingToOutputFile( fileUrl, recordingDelegate);
+          ]]></code>
+      </example>
+      <para>Application developers should note that the function <see cref="T:MonoTouch.AVFoundation.AVCaptureMovieFileOutput.StopRecording"/> is asynchronous; developers should wait until the <see cref="M:MonoTouch.AVFoundation.AVCaptureFileOutputRecordingDelegate.FinishedRecording"/> delegate method before manipulating the file (for instance, before saving it to the Photos album with <see cref="M:MonoTouch.UIKit.UIVide.SaveToPhotosAlbum"/> or <see cref="M:MonoTouch.AssetsLibrary.ALAssetsLibrary.WriteVideoToSavedPhotosAlbumAsync"/>).</para>
+            <example>
+        <code lang="C#"><![CDATA[
+public class MyRecordingDelegate : AVCaptureFileOutputRecordingDelegate {
+public override void FinishedRecording(AVCaptureFileOutput captureOutput, NSUrl outputFileUrl, NSObject[] connections, NSError error)
+{
+	if(UIVideo.IsCompatibleWithSavedPhotosAlbum(outputFileUrl.Path))
+	{
+		var library = new ALAssetsLibrary();
+		library.WriteVideoToSavedPhotosAlbum(outputFileUrl, (path, e2) => {
+			if(e2 != null)
+			{
+				new UIAlertView("Error", e2.ToString(), null, "OK", null).Show();
+			}
+			else
+			{
+				new UIAlertView("Saved", "Saved to Photos", null, "OK", null).Show();
+				File.Delete(outputFileUrl.Path);
+			}
+		});
+	}
+	else
+	{
+		new UIAlertView("Incompatible", "Incompatible", null, "OK", null).Show();
+	}
+
+}
+}          ]]></code>
+        </example>
       <para>
 
-	You can the configure one or more output ports for the
+	Application developers can configure one or more output ports for the
 	captured data, and these can be still frames, video frames
-	with timing information, audio samples, quicktime movie files
-	or you can render it directly to a CoreAnimation layer.
+	with timing information, audio samples, quicktime movie files, or can be rendered directly to a CoreAnimation layer.
 
       </para>
       <para>
 
-	Once you have configured the input and output components of
-	your session, you start the actual processing by calling the
+	Once the input and output components of
+	the session are set, the actual processing is begun by calling the
 	<see cref="M:MonoTouch.AVFoundation.AVCaptureSession.StartRunning()" />
 	method.
 
       </para>
       <example>
-        <code lang="C#">
+        <code lang="C#"><![CDATA[
 
 void SetupCapture ()
 	/ configure the capture session for low resolution, change this if your code
@@ -133,7 +191,7 @@ public class OutputRecorder : AVCaptureVideoDataOutputSampleBufferDelegate {
         }
 }
 
-	</code>
+	]]></code>
       </example>
     </remarks>
     <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=9fa28988-64fe-4365-b2b7-95542daf4f9b">avcaptureframes</related>
@@ -299,7 +357,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="output" Type="MonoTouch.AVFoundation.AVCaptureOutput" />
       </Parameters>
       <Docs>
-        <param name="output">To be added.</param>
+        <param name="output">The <see cref="T:MonoTouch.AVFoundation.AVCaptureOutput"/> to be added.</param>
         <summary>Adds an output to the capture session.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -332,9 +390,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Whether the <see cref="T:MonoTouch.AVFoundation.AVCaptureSession"/> uses the app's shared audio session.</summary>
+        <value>The default value in iOS 7 and later is <see langword="true"/>.</value>
+        <remarks>
+          <para>If this value is <see langword="true"/>, simultaneous audio playback and capture is possible.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="BeginConfiguration">
@@ -355,7 +415,81 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Parameters />
       <Docs>
         <summary>Initiates a transaction to change the configuration of the Capture Session.</summary>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <para>This method and <see cref="M:MonoTouch.AVFoundation.AVCaptureSession.CommitConfiguration"/> must be used if the application developer wishes to change the configuration of a running session. For instance, to swap between front and back cameras, code such as the following can be used:</para>
+                <example>
+            <code lang="C#"><![CDATA[
+AVCaptureMovieFileOutput movieFileOutput;
+
+AVCaptureDevice CurrentCamera { get; set; }
+AVCaptureDevice BackCamera { get; set; }
+AVCaptureDevice FrontCamera { get; set; }
+AVCaptureDevice Mic { get; set; }
+
+bool HasBackCamera { get { return BackCamera != null; } }
+bool HasFrontCamera { get { return FrontCamera != null; } }
+bool HasMic { get { return Mic != null; } }
+
+void SetDeviceProperties()
+{
+	//Set up the devices
+	foreach(var device in AVCaptureDevice.DevicesWithMediaType(AVMediaType.Video))
+	{
+		if(device.Position == AVCaptureDevicePosition.Back)
+		{
+			BackCamera = device;
+		}
+		else
+		{
+			FrontCamera = device;
+		}
+	}
+	Mic = AVCaptureDevice.DefaultDeviceWithMediaType(AVMediaType.Audio);
+}
+
+protected void StopRecording()
+{
+	if(movieFileOutput != null && movieFileOutput.Recording)
+	{
+		movieFileOutput.StopRecording();
+	}
+	RecordingFinished(this, new EventArgs());
+}
+
+public bool SwapCameras()
+{
+	StopRecording();
+	if(HasBackCamera && HasFrontCamera)
+	{
+		var nextCamera = CurrentCamera == BackCamera ? FrontCamera : BackCamera;
+		NSError error = null;
+		var newInput = new AVCaptureDeviceInput(nextCamera, out error);
+		if(error != null)
+		{
+			throw new Exception(error.ToString());
+		}
+		session.BeginConfiguration();
+		//Remove current video input
+		foreach(AVCaptureDeviceInput input in session.Inputs)
+		{
+			if(input.Device.HasMediaType(AVMediaType.Video))
+			{
+				session.RemoveInput(input);
+			}
+		}
+		if(session.CanAddInput(newInput))
+		{
+			session.AddInput(newInput);
+		}
+		session.CommitConfiguration();
+		CurrentCamera = nextCamera;
+		CameraConfigured(this, new TArgs<AVCaptureDevice>(CurrentCamera));
+	}
+	return CurrentCamera == FrontCamera;
+}
+          ]]></code>
+        </example>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CanAddInput">
@@ -427,10 +561,22 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="preset" Type="MonoTouch.Foundation.NSString" />
       </Parameters>
       <Docs>
-        <param name="preset">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="preset">One of the <c>AVCaptureSession.Preset*</c> constants.</param>
+        <summary>Whether the session supports a particular set of predefined capture settings.</summary>
         <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <para>The <paramref name="preset"/> must be one of the <c>AVCaptureSession.Preset*</c> values.</para>
+        </remarks>
+        <altmember cref="P:MonoTouch.AVFoundation.AVCaptureSession.Preset1280x720"/>
+        <altmember cref="P:MonoTouch.AVFoundation.AVCaptureSession.Preset355x288"/>
+        <altmember cref="P:MonoTouch.AVFoundation.AVCaptureSession.Preset640x480"/>
+        <altmember cref="P:MonoTouch.AVFoundation.AVCaptureSession.PresetHigh"/>
+        <altmember cref="P:MonoTouch.AVFoundation.AVCaptureSession.PresetiFrame1280x720"/>
+        <altmember cref="P:MonoTouch.AVFoundation.AVCaptureSession.PresetiFrame960x540"/>
+        <altmember cref="P:MonoTouch.AVFoundation.AVCaptureSession.PresetInputPriority"/>
+        <altmember cref="P:MonoTouch.AVFoundation.AVCaptureSession.PresetLow"/>
+        <altmember cref="P:MonoTouch.AVFoundation.AVCaptureSession.PresetMedium"/>
+        <altmember cref="P:MonoTouch.AVFoundation.AVCaptureSession.PresetPhoto"/>
       </Docs>
     </Member>
     <Member MemberName="ClassHandle">
@@ -466,7 +612,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Applies atomically all the configuration changes that were made to the Capture Session since BeginConfiguration.</summary>
+        <summary>Applies atomically all the configuration changes that were made to the Capture Session since <see cref="M:MonoTouch.AVFoundation.AVCaptureSession.BeginConfiguration"/>.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -822,7 +968,7 @@ void Setup ()
         <ReturnType>MonoTouch.CoreMedia.CMClock</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>A read-only clock that provides a timebase for synchronizing timestamps from multiple input devices.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -1272,7 +1418,19 @@ void Setup ()
       <Docs>
         <summary>The session preset.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <para>The value must be one of the <c>AVCaptureSession.Preset*</c> values.</para>
+        </remarks>
+        <altmember cref="P:MonoTouch.AVFoundation.AVCaptureSession.Preset1280x720"/>
+        <altmember cref="P:MonoTouch.AVFoundation.AVCaptureSession.Preset355x288"/>
+        <altmember cref="P:MonoTouch.AVFoundation.AVCaptureSession.Preset640x480"/>
+        <altmember cref="P:MonoTouch.AVFoundation.AVCaptureSession.PresetHigh"/>
+        <altmember cref="P:MonoTouch.AVFoundation.AVCaptureSession.PresetiFrame1280x720"/>
+        <altmember cref="P:MonoTouch.AVFoundation.AVCaptureSession.PresetiFrame960x540"/>
+        <altmember cref="P:MonoTouch.AVFoundation.AVCaptureSession.PresetInputPriority"/>
+        <altmember cref="P:MonoTouch.AVFoundation.AVCaptureSession.PresetLow"/>
+        <altmember cref="P:MonoTouch.AVFoundation.AVCaptureSession.PresetMedium"/>
+        <altmember cref="P:MonoTouch.AVFoundation.AVCaptureSession.PresetPhoto"/>
       </Docs>
     </Member>
     <Member MemberName="StartRunning">
@@ -1313,8 +1471,8 @@ void Setup ()
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Stops the flow of inputs and outputs.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Asynchronously stops the flow of inputs and outputs.</summary>
+        <remarks><para>Application developers should note that the function <see cref="T:MonoTouch.AVFoundation.AVCaptureMovieFileOutput.StopRecording"/> is asynchronous; developers should wait until the <see cref="M:MonoTouch.AVFoundation.AVCaptureFileOutputRecordingDelegate.FinishedRecording"/> delegate method before manipulating the file (for instance, before saving it to the Photos album with <see cref="M:MonoTouch.UIKit.UIVide.SaveToPhotosAlbum"/> or <see cref="M:MonoTouch.AssetsLibrary.ALAssetsLibrary.WriteVideoToSavedPhotosAlbumAsync"/>).</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="UsesApplicationAudioSession">
@@ -1345,9 +1503,11 @@ void Setup ()
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Whether the session should use the application's shared audio session.</summary>
+        <value>The default value in iOS 7 and later is <see langword="true"/>.</value>
+        <remarks>
+          <para>If <see langword="false"/>, the capture session will create a separate private <see cref="T:MonoTouch.AVFoundation.AVAudioSession"/> for recording, which may create interruptions if the app is doing simultaneous audio playback.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="WasInterruptedNotification">
