@@ -19,7 +19,9 @@
   </Attributes>
   <Docs>
     <summary>A hardware device capable of capturing audiovisual data.</summary>
-    <remarks>To be added.</remarks>
+    <remarks>
+      <para>Once a capture session has begun, application developers must bracket configuration changes with calls to <see cref="M:MonoTouch.AVFoundation.AVCaptureDevice.LockForConfiguration"/> and <see cref="T:MonoTouch.AVFoundation.AVCaptureDevice.UnlockForConfiguration"/>.</para>
+    </remarks>
     <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=9fa28988-64fe-4365-b2b7-95542daf4f9b">avcaptureframes</related>
   </Docs>
   <Members>
@@ -146,9 +148,12 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.AVFoundation.AVCaptureDeviceFormat</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The currently active format of the <see cref="T:MonoTouch.AVFoundation.AVCaptureDevice"/>.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <para>Application developers should generally use <see cref="M:MonoTouch.AVFoundation.AVCaptureSession.SessionPreset"/> and the <c>Preferred*</c> methods of <see cref="M:MonoTouch.AVFoundation.AVAudioSession.SharedInstance"/> to set capture format. However, devices may have formats beyond the presets, in which case this property may be set.</para>
+          <para>Attempting to set an unavailable format will throw an <see cref="T:MonoTouch.Foundation.NSInvalidArgumentException"/></para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ActiveVideoMaxFrameDuration">
@@ -179,9 +184,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.CoreMedia.CMTime</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>The maximum frame duration.</summary>
+        <value>The default value varies based on the configuration.</value>
+        <remarks>
+          <para>This value can be reset to its default for the current configuration by setting it to <see cref="P:MonoTouch.AVFoundation.CMTime.Invalid"/>. This value will be overwritten by a change to the <see cref="P:MonoTouch.AVFoundation.AVCaptureSession.SessionPreset"/>.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ActiveVideoMinFrameDuration">
@@ -212,9 +219,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.CoreMedia.CMTime</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>The minimum frame duration.</summary>
+        <value>The default value varies by configuration.</value>
+        <remarks>
+          <para>This value can be reset to its default for the current configuration by setting it to <see cref="P:MonoTouch.AVFoundation.CMTime.Invalid"/>. This value will be overwritten by a change to the <see cref="P:MonoTouch.AVFoundation.AVCaptureSession.SessionPreset"/>.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AdjustingExposure">
@@ -233,7 +242,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Whether the device is currently adjusting its exposure setting.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -254,7 +263,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Whether the device is currently adjusting its focus.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -275,7 +284,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Whether the device is currently adjusting its white balance.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -308,9 +317,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.AVFoundation.AVCaptureAutoFocusRangeRestriction</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Limits the range over which autofocus will be attempted.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks><para>Application developers can adjust this to decrease energy consumption and to help avoid incorrect autofocus decisions.</para></remarks>
+        <altmember cref="P:MonoTouch.AVFoundation.AVCaptureDevice.AutoFocusRangeRestrictionSupported"/>
       </Docs>
     </Member>
     <Member MemberName="AutoFocusRangeRestrictionSupported">
@@ -335,9 +345,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Whether the device's autofocus can be restricted to specified ranges.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
+        <altmember cref="P:MonoTouch.AVFoundation.AutoFocusRangeRestriction"/>
       </Docs>
     </Member>
     <Member MemberName="AutomaticallyEnablesLowLightBoostWhenAvailable">
@@ -368,9 +379,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Whether the system should automatically enable "boost mode" (ISO 3200) in low light.</summary>
+        <value>The default value is <see langword="false"/>.</value>
+        <remarks>
+          <para>The default ISO equivalence for the iPhone 5 is 800. The "boost mode" increases sensitivity to ISO 3200, at the cost of increased sensor noise.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CancelVideoZoomRamp">
@@ -393,8 +406,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Smoothly cancels an in-progress video zoom.</summary>
+        <remarks><para>This method is equivalent to calling <see cref="M:MonoTouch.AVFoundation.AVCaptureDevice.RampToVideoZoom"/> with a <c>rate</c> of 0. The zoom does not end immediately, but stops smoothly.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="ClassHandle">
@@ -429,9 +442,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Whether the <see cref="T:MonoTouch.AVFoundation.AVCaptureDevice"/> is available for use.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <para>Although this value may change from <see langword="true"/> to <see langword="false"/> when a device is disconnected, it will not change from <see langword="false"/> to <see langword="true"/> when the device is reconnected. In that situation, the physical device will be represented by a different instance of <see cref="T:MonoTouch.AVFoundation.AVCaptureDevice"/>.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="DefaultDeviceWithMediaType">
@@ -454,7 +469,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="mediaType">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>The default device for the <paramref name="mediaType"/>, which should be a value from <see cref="T:MonoTouch.AVFoundation.AVMediaType"/>.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -475,7 +490,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.AVFoundation.AVCaptureDevice[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The currently available capture devices of the system.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -500,7 +515,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="mediaType">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>An array of available <see cref="T:MonoTouch.AVFoundation.AVCaptureDevice"/>s that can capture <paramref name="mediaType"/>.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -525,7 +540,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="deviceUniqueID">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>The device whose <see cref="P:MonoTouch.AVFoundation.AVCaptureDevice.UniqueID"/> matches <paramref name="deviceUniqueID"/>.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -575,7 +590,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.AVFoundation.AVCaptureExposureMode</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The current exposure mode of the <see cref="T:MonoTouch.AVFoundation.AVCaptureDevice"/>.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -599,9 +614,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Drawing.PointF</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The point within the field-of-view that is the "point of interest" for exposure.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
+        <altmember cref="P:MonoTouch.AVFoundation.AVCaptureDevice.FocusPointOfInterest"/>
       </Docs>
     </Member>
     <Member MemberName="ExposurePointOfInterestSupported">
@@ -620,7 +636,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Whether the device supports the <see cref="P:MonoTouch.AVFoundation.AVCaptureDevice.ExposurePointOfInterest"/>.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -647,7 +663,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Whether the flash will go off when a still is captured.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -674,7 +690,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Whether the flash is available for use.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -698,7 +714,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.AVFoundation.AVCaptureFlashMode</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The current <see cref="T:MonoTouch.AVFoundation.AVCaptureFlashMode"/>.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -722,7 +738,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.AVFoundation.AVCaptureFocusMode</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The current <see cref="T:MonoTouch.AVFoundation.AVCaptureFocusMode"/>.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -746,9 +762,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Drawing.PointF</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The point in the field-of-view that is the "point of interest" for autofocus.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
+        <altmember cref="P:MonoTouch.AVFoundation.AVCaptureDevice.ExposurePointOfInterest"/>
       </Docs>
     </Member>
     <Member MemberName="FocusPointOfInterestSupported">
@@ -767,7 +784,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Whether <see cref="P:MonoTouch.AVFoundation.AVCaptureDevice.FocusPointOfInterest"/> is available.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -794,7 +811,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.AVFoundation.AVCaptureDeviceFormat[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The <see cref="T:MonoTouch.AVFoundation.AVCaptureDeviceFormat"/>s supported by the device.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -821,8 +838,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="avMediaTypeToken" Type="MonoTouch.Foundation.NSString" />
       </Parameters>
       <Docs>
-        <param name="avMediaTypeToken">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="avMediaTypeToken">Should be one of the constants defined in <see cref="T:MonoTouch.AVFoundation.AVMediaType"/>.</param>
+        <summary>Whether the app is permitted to capture the <paramref name="avMediaTypeToken"/>.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -847,7 +864,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="mediaType">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Whether the device can capture the <paramref name="mediaType"/>.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -872,7 +889,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="exposureMode">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Whether the <paramref name="exposureMode"/> is supported.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -897,7 +914,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="flashMode">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Whether the <paramref name="flashMode"/> is supported.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -922,7 +939,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="focusMode">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Whether the <paramref name="focusMode"/> is supported.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -947,7 +964,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="torchMode">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Whether the <paramref name="torchMode"/> is supported.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -972,7 +989,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="whiteBalanceMode">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Whether the <paramref name="whiteBalanceMode"/> is supported.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -993,7 +1010,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>A localized, human-readable name (e.g., "Back Camera") for the <see cref="T:MonoTouch.AVFoundation.AVCaptureDevice"/>.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -1018,9 +1035,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="error">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Gains exclusive access to the device configuration.</summary>
         <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <para>Modifying the configuration of the device after the session starts requires bracketing the configuration calls with this and <see cref="M:MonoTouch.AVFoundation.AVCaptureDevice.UnlockForConfiguration"/>. If these methods are not properly called and matched, attempts to change the configuration will result in exceptions.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="LowLightBoostEnabled">
@@ -1045,9 +1064,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Whether the low-light "boost mode" (ISO 3200) is enabled.</summary>
+        <value>The default is <see langword="false"/>.</value>
+        <remarks>
+          <para>The default sensitivity of the iPhone 5 is equivalent to ISO 800. The "boost mode" increases sensitivity to ISO 3200, at the cost of increased sensor noise.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="LowLightBoostSupported">
@@ -1072,7 +1093,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Whether the device supports ISO 3200 "low-light boost mode".</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -1121,9 +1142,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Identifies the model of the <see cref="T:MonoTouch.AVFoundation.AVCaptureDevice"/>.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks><para>This value will remain constant across iOS devices and device models. For instance, the camera model in an iPhone and an iPad may be the same model of <see cref="T:MonoTouch.AVFoundation.AVCaptureDevice"/>.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="Position">
@@ -1142,7 +1163,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.AVFoundation.AVCaptureDevicePosition</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The physical position of the device.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -1169,7 +1190,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Whether a zoom transition is in progress.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -1197,9 +1218,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="rate" Type="System.Single" />
       </Parameters>
       <Docs>
-        <param name="factor">To be added.</param>
-        <param name="rate">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="factor">The magnification factor, with 1.0 indicating full-frame.</param>
+        <param name="rate">The zoom rate, in powers of 2 per second.</param>
+        <summary>Smoothly zooms the video capture.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -1234,7 +1255,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="avMediaTypeToken">To be added.</param>
         <param name="completion">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Requests the application user's permission, if necessary, to capture the <paramref name="avMediaTypeToken"/>.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -1286,9 +1307,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="outError" Type="MonoTouch.Foundation.NSError&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="torchLevel">To be added.</param>
+        <param name="torchLevel">A value between 0 (off) and 1.0 (maximum brightness).</param>
         <param name="outError">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Specifies the torch / flashlight level.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -1321,7 +1342,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Whether autofocus should be slowed down,for instance, for video capture.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -1348,7 +1369,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Whether autofocus can be slowed down.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -1453,7 +1474,7 @@ void Setup ()
       </Parameters>
       <Docs>
         <param name="preset">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Whether the <see cref="T:MonoTouch.AVFoundation.AVCaptureDevice"/> supports the <paramref name="preset"/>.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -1480,7 +1501,7 @@ void Setup ()
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Whether the torch / flashlight is active.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -1507,7 +1528,7 @@ void Setup ()
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Whether the <see cref="T:MonoTouch.AVFoundation.AVCaptureDevice"/> has a torch / flashlight.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -1534,7 +1555,7 @@ void Setup ()
         <ReturnType>System.Single</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The current level, from 0 for off to 1 for maximum brightness, of the torch / flashlight.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -1558,7 +1579,7 @@ void Setup ()
         <ReturnType>MonoTouch.AVFoundation.AVCaptureTorchMode</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The current <see cref="T:MonoTouch.AVFoundation.AVCaptureTorchMode"/>.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -1579,9 +1600,12 @@ void Setup ()
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>A unique identifier for this <see cref="T:MonoTouch.AVFoundation.AVCaptureDevice"/>.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
+        <altmember cref="P:MonoTouch.AVFoundation.AVCaptureDevice.LocalizedName"/>
+        <altmember cref="P:MonoTouch.AVFoundation.AVCaptureDevice.ModelID"/>
+        
       </Docs>
     </Member>
     <Member MemberName="UnlockForConfiguration">
@@ -1601,8 +1625,10 @@ void Setup ()
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>With <see cref="M:MonoTouch.AVFoundation.AVCaptureDevice.LockForConfiguration"/>, commits the requested configuration changes.</summary>
+        <remarks>
+          <para>After the <see cref="T:MonoTouch.AVFoundation.AVSession"/> has started, all changes to the <see cref="T:MonoTouch.AVFoundation.AVCaptureDevice"/> configuration must be bracketed with calls to <see cref="M:MonoTouch.AVFoundation.AVCaptureDevice.LockForConfiguration"/> and <see cref="T:MonoTouch.AVFoundation.AVCaptureDevice.UnlockForConfiguration"/>. Configuration changes that are performed outside of such calls will throw exceptions.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="VideoZoomFactor">
@@ -1633,9 +1659,9 @@ void Setup ()
         <ReturnType>System.Single</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>The current zoom of the video capture.</summary>
+        <value>A value of 1.0 is full-frame (fully zoomed out).</value>
+        <remarks><para>This value is a reciprocal of the amount of zoom. For instance, a value of 2.0 indicates a zoom that includes half the field of view.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="WasConnectedNotification">
@@ -1817,7 +1843,7 @@ void Setup ()
         <ReturnType>MonoTouch.AVFoundation.AVCaptureWhiteBalanceMode</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The active <see cref="T:MonoTouch.AVFoundation.AVCaptureWhiteBalanceMode"/>.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
