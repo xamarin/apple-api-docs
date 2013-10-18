@@ -19,7 +19,37 @@
   </Attributes>
   <Docs>
     <summary>An immutable item of metadata for an <see cref="T:MonoTouch.AVFoundation.AVAsset" />.</summary>
-    <remarks>To be added.</remarks>
+    <remarks>
+      <para>Metadata uses the concept of a "Key Space" that is a group of related identifiers, something like a programmatic namespace. These key spaces are defined in <see cref="T:MonoTouch.AVFoundation.AVMetadata"/>:</para>
+      <list type="table">
+        <listheader>
+          <term>Key Space</term>
+          <description>Constant</description>
+        </listheader>
+        <item>
+          <term>Common (contains standard version of most keys in most key spaces)</term>
+          <description><see cref="P:MonoTouch.AVFoundation.AVMetadata.KeySpaceCommon"/></description>
+        </item>
+        <item>
+          <term>ID 3</term>
+          <description><see cref="P:MonoTouch.AVFoundation.AVMetadata.KeySpaceID3"/></description>
+        </item>
+        <item>
+          <term>iTunes</term>
+          <description><see cref="P:MonoTouch.AVFoundation.AVMetadata.KeySpaceiTunes"/></description>
+        </item>
+        <item>
+          <term>QuickTime User Data</term>
+          <description><see cref="P:MonoTouch.AVFoundation.AVMetadata.KeySpaceQuickTimeUserData"/></description>
+        </item>
+        <item>
+          <term>QuickTime Metadata</term>
+          <description><see cref="P:MonoTouch.AVFoundation.AVMetadata.KeySpaceQuickTimeMetadata"/></description>
+        </item>
+        
+        </list>
+    </remarks>
+    <altmember cref="T:MonoTouch.AVFoundation.AVMutableMetadataItem"/>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -171,9 +201,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The key in the "Common" key space that most closely matches the <see cref="P:MonoTouch.AVFoundation.AVMetadataItem.Key"/> property.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks><para>If the <see cref="P:MonoTouch.AVFoundation.AVMetadataItem.KeySpace"/> is <see cref="P:MonoTouch.AVFoundation.AVMetaData.KeySpaceCommon"/>, the values will be equivalent.</para></remarks>
+        
       </Docs>
     </Member>
     <Member MemberName="DataValue">
@@ -192,7 +223,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.Foundation.NSData</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The data, as a series of bytes.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -213,8 +244,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.Foundation.NSDate</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>The data, formatted as a <see cref="T:MonoTouch.Foundation.NSDate"/>.</summary>
+        <value>Will be <see langword="null"/> if the data cannot be formatted properly.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -266,7 +297,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.CoreMedia.CMTime</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The duration of the item to which the metadata applies.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -287,7 +318,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.Foundation.NSDictionary</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Any additional attributes supplied by the metadata item.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -317,7 +348,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="metadataItems">To be added.</param>
         <param name="preferredLanguages">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>The <paramref name="metadataItems"/> whose <see cref="P:MonoTouch.AVFoundation.AVMetadataItem.Locale"/> is in <paramref name="preferredLanguages"/>.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -347,7 +378,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="metadataItems">To be added.</param>
         <param name="metadataItemFilter">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>The <paramref name="metadataItems"/> which do not contain user-identifying information.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -373,10 +404,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="keySpace" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="metadataItems">To be added.</param>
-        <param name="key">To be added.</param>
-        <param name="keySpace">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="metadataItems">The items to be filtered.</param>
+        <param name="key">May be <see langword="null"/>, in which case all items in <paramref name="keySpace"/> will pass.</param>
+        <param name="keySpace">May be <see langword="null"/>, in which case all items in <paramref name="key"/> will pass.</param>
+        <summary>The <paramref name="metadataItems"/> that match the <paramref name="key"/> and the <paramref name="keySpace"/>.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -403,7 +434,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="arrayToFilter">To be added.</param>
         <param name="locale">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>The items in <paramref name="arrayToFilter"/> whose <see cref="P:MonoTouch.AVFoundation.AVMetadataItem.Locale"/> matches <paramref name="locale"/>.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -424,7 +455,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.Foundation.NSObject</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The <see cref="T:MonoTouch.AVFoundation.AVMetadataItem"/>'s identifier.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -445,9 +476,38 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The key space to which the <see cref="T:MonoTouch.AVFoundation.AVMetadataItem"/> belongs.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>
+             <para>Metadata uses the concept of a "Key Space" that is a group of related identifiers, something like a programmatic namespace. These key spaces are defined in <see cref="T:MonoTouch.AVFoundation.AVMetadata"/>:</para>
+      <list type="table">
+        <listheader>
+          <term>Key Space</term>
+          <description>Constant</description>
+        </listheader>
+        <item>
+          <term>Common (contains standard version of most keys in most key spaces)</term>
+          <description><see cref="P:MonoTouch.AVFoundation.AVMetadata.KeySpaceCommon"/></description>
+        </item>
+        <item>
+          <term>ID 3</term>
+          <description><see cref="P:MonoTouch.AVFoundation.AVMetadata.KeySpaceID3"/></description>
+        </item>
+        <item>
+          <term>iTunes</term>
+          <description><see cref="P:MonoTouch.AVFoundation.AVMetadata.KeySpaceiTunes"/></description>
+        </item>
+        <item>
+          <term>QuickTime User Data</term>
+          <description><see cref="P:MonoTouch.AVFoundation.AVMetadata.KeySpaceQuickTimeUserData"/></description>
+        </item>
+        <item>
+          <term>QuickTime Metadata</term>
+          <description><see cref="P:MonoTouch.AVFoundation.AVMetadata.KeySpaceQuickTimeMetadata"/></description>
+        </item>
+        
+        </list>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="LoadValuesAsynchronously">
@@ -521,9 +581,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.Foundation.NSLocale</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The <see cref="T:MonoTouch.AVFoundation.NSLocale"/> to which <see cref="T:MonoTouch.AVFoundation.AVMetadataItem"/> belongs.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
+        <altmember cref="M:MonoTouch.AVFoundation.AVMetadataItem.FilterWithLocale"/>
       </Docs>
     </Member>
     <Member MemberName="NumberValue">
@@ -542,8 +603,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.Foundation.NSNumber</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>The metadata value, as a number.</summary>
+        <value>This property will be <see langword="null"/> if the value cannot be formatted as a number.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -569,7 +630,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="key">To be added.</param>
         <param name="error">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Whether the <paramref name="key"/> can be immediately retrieved, with no blocking.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -590,7 +651,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The value, formatted as a string.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -611,7 +672,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.CoreMedia.CMTime</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The timestamp of the metadata.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -632,7 +693,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.Foundation.NSObject</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The value of the <see cref="T:MonoTouch.AVFoundation.AVMetadataItem"/>.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
