@@ -325,6 +325,100 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="DidSaveNotification">
+      <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSString DidSaveNotification { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class MonoTouch.Foundation.NSString DidSaveNotification" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Field("NSManagedObjectContextDidSaveNotification", "CoreData")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Notification constant for DidSave</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:NSManagedObjectContext+Notifications" />.<see cref="M:NSManagedObjectContext+Notifications.ObserveDidSaveNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
+          <example>
+            <code lang="c#">
+//
+// Lambda style
+//
+
+// listening
+notification = NSManagedObjectContext.Notifications.ObserveDidSave ((sender, args) =&gt; {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("InsertedObjects", args.InsertedObjects);
+    Console.WriteLine ("UpdatedObjects", args.UpdatedObjects);
+    Console.WriteLine ("DeletedObjects", args.DeletedObjects);
+    Console.WriteLine ("RefreshedObjects", args.RefreshedObjects);
+    Console.WriteLine ("InvalidatedObjects", args.InvalidatedObjects);
+    Console.WriteLine ("InvalidatedAllObjects", args.InvalidatedAllObjects);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, MonoTouch.CoreData.NSManagedObjectChangeEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("InsertedObjects", args.InsertedObjects);
+    Console.WriteLine ("UpdatedObjects", args.UpdatedObjects);
+    Console.WriteLine ("DeletedObjects", args.DeletedObjects);
+    Console.WriteLine ("RefreshedObjects", args.RefreshedObjects);
+    Console.WriteLine ("InvalidatedObjects", args.InvalidatedObjects);
+    Console.WriteLine ("InvalidatedAllObjects", args.InvalidatedAllObjects);
+}
+
+void Setup ()
+{
+    notification = NSManagedObjectContext.Notifications.ObserveDidSave (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}</code>
+          </example>
+          <para>The following example shows how to use the notification with the DefaultCenter API:</para>
+          <example>
+            <code lang="c#">
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        NSManagedObjectContext.DidSaveNotification, (notification) =&gt; {Console.WriteLine ("Received the notification NSManagedObjectContext", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification NSManagedObjectContext", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (NSManagedObjectContext.DidSaveNotification, Callback);
+}
+</code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
     <Member MemberName="Dispose">
       <MemberSignature Language="C#" Value="protected override void Dispose (bool disposing);" />
       <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Dispose(bool disposing) cil managed" />
@@ -536,6 +630,100 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <summary>To be added.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ObjectsDidChangeNotification">
+      <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSString ObjectsDidChangeNotification { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class MonoTouch.Foundation.NSString ObjectsDidChangeNotification" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Field("NSManagedObjectContextObjectsDidChangeNotification", "CoreData")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Notification constant for ObjectsDidChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:NSManagedObjectContext+Notifications" />.<see cref="M:NSManagedObjectContext+Notifications.ObserveObjectsDidChangeNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
+          <example>
+            <code lang="c#">
+//
+// Lambda style
+//
+
+// listening
+notification = NSManagedObjectContext.Notifications.ObserveObjectsDidChange ((sender, args) =&gt; {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("InsertedObjects", args.InsertedObjects);
+    Console.WriteLine ("UpdatedObjects", args.UpdatedObjects);
+    Console.WriteLine ("DeletedObjects", args.DeletedObjects);
+    Console.WriteLine ("RefreshedObjects", args.RefreshedObjects);
+    Console.WriteLine ("InvalidatedObjects", args.InvalidatedObjects);
+    Console.WriteLine ("InvalidatedAllObjects", args.InvalidatedAllObjects);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, MonoTouch.CoreData.NSManagedObjectChangeEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("InsertedObjects", args.InsertedObjects);
+    Console.WriteLine ("UpdatedObjects", args.UpdatedObjects);
+    Console.WriteLine ("DeletedObjects", args.DeletedObjects);
+    Console.WriteLine ("RefreshedObjects", args.RefreshedObjects);
+    Console.WriteLine ("InvalidatedObjects", args.InvalidatedObjects);
+    Console.WriteLine ("InvalidatedAllObjects", args.InvalidatedAllObjects);
+}
+
+void Setup ()
+{
+    notification = NSManagedObjectContext.Notifications.ObserveObjectsDidChange (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}</code>
+          </example>
+          <para>The following example shows how to use the notification with the DefaultCenter API:</para>
+          <example>
+            <code lang="c#">
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        NSManagedObjectContext.ObjectsDidChangeNotification, (notification) =&gt; {Console.WriteLine ("Received the notification NSManagedObjectContext", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification NSManagedObjectContext", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (NSManagedObjectContext.ObjectsDidChangeNotification, Callback);
+}
+</code>
+          </example>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ObjectWithID">
@@ -1104,6 +1292,86 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <summary>To be added.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WillSaveNotification">
+      <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSString WillSaveNotification { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class MonoTouch.Foundation.NSString WillSaveNotification" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Field("NSManagedObjectContextWillSaveNotification", "CoreData")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Notification constant for WillSave</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:NSManagedObjectContext+Notifications" />.<see cref="M:NSManagedObjectContext+Notifications.ObserveWillSaveNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
+          <example>
+            <code lang="c#">
+//
+// Lambda style
+//
+
+// listening
+notification = NSManagedObjectContext.Notifications.ObserveWillSave ((sender, args) =&gt; {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = NSManagedObjectContext.Notifications.ObserveWillSave (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}</code>
+          </example>
+          <para>The following example shows how to use the notification with the DefaultCenter API:</para>
+          <example>
+            <code lang="c#">
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        NSManagedObjectContext.WillSaveNotification, (notification) =&gt; {Console.WriteLine ("Received the notification NSManagedObjectContext", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification NSManagedObjectContext", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (NSManagedObjectContext.WillSaveNotification, Callback);
+}
+</code>
+          </example>
+        </remarks>
       </Docs>
     </Member>
   </Members>
