@@ -409,7 +409,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.UIKit.UIBackgroundRefreshStatus</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Whether background processing is allowed, denied, or restricted.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -443,7 +443,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveBackgroundRefreshStatusDidChangeNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 //
 // Lambda style
 //
@@ -475,11 +475,11 @@ void Setup ()
 void Teardown ()
 {
     notification.Dispose ();
-}</code>
+}]]></code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
         UIApplication.BackgroundRefreshStatusDidChangeNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIApplication", notification); }
@@ -495,7 +495,7 @@ void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.BackgroundRefreshStatusDidChangeNotification, Callback);
 }
-</code>
+]]></code>
           </example>
         </remarks>
       </Docs>
@@ -598,31 +598,31 @@ void Setup ()
           <para>The method that will be invoked shortly before your application's remaining background quota reaches zero.</para>
           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
         </param>
-        <summary>Runs a task in the background.</summary>
-        <returns>
-        </returns>
+        <summary>Requests that the app be allowed to process in the background.</summary>
+        <returns>An id that, when passed to <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundTask"/>, indicates that background processing has ended.</returns>
         <remarks>
-          <para>
-          Some applications contain tasks that shouldn't be interrupted by iOS should the application change state. One way to protect these tasks from being interrupted is to register them with iOS as long-running tasks. Application developers can use this pattern anywhere in their application where they don't want a task being interrupted by the user putting the app into the background. Candidates for this pattern would be tasks such as sending a new user's registration information to a server, or verifying login information.
-        </para>
-          <para>
-            The following code snippet  demonstrates registering a task to run in the background:</para>
+          <para>This method, with <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundTask"/>, bookends code that should be allowed to continue running in the background when another app is in the foreground. The returned <see langword="int"/> should be passed to <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundTask"/> at the appropriate time. </para>
+          <para>This method does not cause the app to enter a background state or launch asynchronous code, despite its name. Rather, it requests that the system make background processing available.</para>
+          <para>This method may be called multiple times and may be called from background threads. Background processing will continue either until the allowed background time (generally 3 or 10 minutes total) expires or until <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundtask"/> has been called for all started tasks.</para>
+          <para>The <paramref name="expirationHandler"/> is only called if allowed background time is close to expiring (3-4 seconds).</para>
           <example>
             <code lang="C#"><![CDATA[
-            </example>
-
-int taskID = UIApplication.SharedApplication.BeginBackgroundTask( () => {});
-
-//runs on main or background thread
-FinishLongRunningTask(taskID);
-
-UIApplication.SharedApplication.EndBackgroundTask(taskID);
-]]></code>
-          </example>
-          <para>          
-            The registration process pairs a task with a unique identifier, <c>taskID</c>, and then wraps it in matching <see cref="M:MonoTouch.UIKit.UIApplication.BeginBackgroundTask" /> and <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundTask" /> calls. iOS will terminate the application if a <see cref="M:MonoTouch.UIKit.UIApplication.BeginBackgroundTask" /> does not have a matching <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundTask" />call.
-             </para>
-          <para tool="threads">This can be used from a background thread.</para>
+Task.Factory.StartNew( () => {
+    //expirationHandler only called if background time allowed exceeded
+    var taskId = UIApplication.SharedApplication.BeginBackgroundTask(() => Console.WriteLine("Exhausted time"));
+    while(myFlag == true)
+    {
+        Console.WriteLine(UIApplication.SharedApplication.TimeRemaining);
+        myFlag = SomeCalculationNeedsMoreTime();
+    }
+    //Only called if loop terminated due to myFlag and not expiration of time
+    UIApplication.SharedApplication.EndBackgroundTask(taskId);
+});              
+              ]]>
+             
+            </code>
+            </example> 
+       <para tool="threads">This can be used from a background thread.</para>
         </remarks>
       </Docs>
     </Member>
@@ -655,11 +655,35 @@ UIApplication.SharedApplication.EndBackgroundTask(taskID);
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="taskName">To be added.</param>
-        <param name="expirationHandler">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="taskName">A name for the task (useful for debugging).</param>
+        <param name="expirationHandler">Called shortly before the allowed background time for the app expires.</param>
+        <summary>Requests that the app be allowed to process in the background.</summary>
+        <returns>An id that, when passed to <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundTask"/>, indicates that background processing has ended.</returns>
+        <remarks>
+          <para>This method, with <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundTask"/>, bookends code that should be allowed to continue running in the background when another app is in the foreground. The returned <see langword="int"/> should be passed to <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundTask"/> at the appropriate time. </para>
+          <para>This method does not cause the app to enter a background state or launch asynchronous code, despite its name. Rather, it requests that the system make background processing available.</para>
+          <para>This method may be called multiple times and may be called from background threads. Background processing will continue either until the allowed background time (generally 3 or 10 minutes total) expires or until <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundtask"/> has been called for all started tasks.</para>
+          <para>The <paramref name="expirationHandler"/> is only called if allowed background time is close to expiring (3-4 seconds).</para>
+          <example>
+            <code lang="C#"><![CDATA[
+Task.Factory.StartNew( () => {
+    //expirationHandler only called if background time allowed exceeded
+    var taskId = UIApplication.SharedApplication.BeginBackgroundTask("bgTask", () => Console.WriteLine("Exhausted time"));
+    while(myFlag == true)
+    {
+        Console.WriteLine(UIApplication.SharedApplication.TimeRemaining);
+        myFlag = SomeCalculationNeedsMoreTime();
+    }
+    //Only called if loop terminated due to myFlag and not expiration of time
+    UIApplication.SharedApplication.EndBackgroundTask(taskId);
+});              
+              ]]>
+             
+            </code>
+          </example> 
+               <para tool="threads">This can be used from a background thread.</para>
+  
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="BeginIgnoringInteractionEvents">
@@ -713,8 +737,10 @@ UIApplication.SharedApplication.EndBackgroundTask(taskID);
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Indicates that the application should start listening for remote-control events.</summary>
+        <remarks>
+        <para>Remote-control events are generated by external devices such as headsets intended to control multimedia playback.</para>  
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CancelAllLocalNotifications">
@@ -737,7 +763,7 @@ UIApplication.SharedApplication.EndBackgroundTask(taskID);
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Cancels the delivery of scheduled local notifications.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -908,8 +934,10 @@ UIApplication.SharedApplication.EndBackgroundTask(taskID);
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Indicates to the system that state restoration is complete.</summary>
+        <remarks>
+        <para>Application developers should call this method after they have finished state restoration.</para>  
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ContentSizeCategoryChangedNotification">
@@ -1571,9 +1599,10 @@ void Setup ()
         <ReturnType>MonoTouch.UIKit.UIRemoteNotificationType</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Returns a bit-masked <see cref="T:MonoTouch.UIKit.UIRemoteNotificationType"/> indicating which types of notifications the app accepts.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
+        <altmember cref="M:MonoTouch.UIKit.UIApplication.RegisterForRemoteNotificationTypes"/>
       </Docs>
     </Member>
     <Member MemberName="EndBackgroundTask">
@@ -1601,9 +1630,10 @@ void Setup ()
         <Parameter Name="taskId" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="taskId">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="taskId">The value returned by the matching <see cref="M:MonoTouch.UIKit.UIApplication.BeginBackgroundTask"/> method.</param>
+        <summary>Indicates to the system that background processing has ended for the <paramref name="taskId"/>.</summary>
         <remarks>
+          <para>This method, with <see cref="M:MonoTouch.UIKit.UIApplication.BeginBackgroundTask"/>, bookends code that should be allowed to run in the background. It does not affect the actual state of any threads. (See <see cref="M:MonoTouch.UIKit.UIApplication.BeginBackgroundTask"/> for discussion.)</para>
           <para tool="threads">This can be used from a background thread.</para>
         </remarks>
       </Docs>
@@ -1649,8 +1679,9 @@ void Setup ()
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Indicates that the application should nto receive further remote-control events.</summary>
         <remarks>To be added.</remarks>
+        <altmember cref="M:MonoTouch.UIKit.UIApplication.BeginReceivingRemoteControlEvents"/>
       </Docs>
     </Member>
     <Member MemberName="EnsureUIThread">
@@ -1704,8 +1735,11 @@ void Setup ()
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Indicates that the application is restoring state asynchronously.</summary>
+        <remarks>
+          <para>State restoration occurs on the main thread. Application developers who wish to do state restoration asynchronously should call this method and pair it with calls to <see cref="M:MonoTouch.UIKit.UIApplication.CompleteStateRestoration"/> to indicate to the system that state restoration is occurring asynchronously.</para>  
+          <para>If this method is called and the application crashes before the matching <see cref="M:MonoTouch.UIKit.UIApplication.CompleteStateRestoration"/> is called, all retained state will be discarded on next startup. This behavior prevents the crash from re-occurring.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="IdleTimerDisabled">
@@ -1727,9 +1761,11 @@ void Setup ()
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>If <see langword="true"/>, indicates that the screen should not dim even when no input is occurring.</summary>
+        <value>The default value is <see langword="false"/>.</value>
+        <remarks>
+        <para>The idle timer dims the screen after some amount of time has passed without user interaction. Application developers who wish to keep the screen fully powered can set this property to <see langword="true"/>. For instance, games whose input is restricted to the accelerometer may set this value to <see langword="true"/>.</para>  
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="IgnoreSnapshotOnNextApplicationLaunch">
@@ -1752,8 +1788,12 @@ void Setup ()
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Instructs the system not to use a UI snapshot during relaunch.</summary>
+        <remarks>
+          <para>This method method be called from within the state-preservation process.</para>
+          <para>Normally, the system takes a snapshot of the UI during state-preservation and presents this during state-restoration. Generally, this makes the application user feel that the system is relaunching quickly. App developers can call this method during state-preservation if the UI would not be appropriate during relaunch.</para>
+          <para>If this method is called, during state-restoration the app's default launch image will be displayed.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="IsIgnoringInteractionEvents">
@@ -1772,9 +1812,12 @@ void Setup ()
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Whether the receiver is ignoring touch events.</summary>
+        <value><see langword="true"/> if there have been more calls to <see cref="M:MonoTouch.UIKit.UIApplication.BeginIgnoringInteractionEvents"/> than calls to <see cref="M:MonoTouch.UIKit.UIApplication.EndIgnoringInteractionEvents"/>.</value>
+        <remarks>
+          </remarks>
+        <altmember cref="M:MonoTouch.UIKit.UIApplication.BeginIgnoringInteractionEvents"/>
+        <altmember cref="M:MonoTouch.UIKit.UIApplication.EndIgnoringInteractionEvents"/>
       </Docs>
     </Member>
     <Member MemberName="KeyWindow">
@@ -2169,9 +2212,13 @@ void Setup ()
       </Parameters>
       <Docs>
         <param name="url">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>Opens the specified URL, launching the app that's registered to handle the scheme.</summary>
+        <returns><see langword="true"/> if the URL was successfully opened.</returns>
+        <remarks>
+          <para>If another app is registered to handle the URL scheme, calling this method will launch the other application, which may cause the current application to quit or at least be sent to the background.</para>
+        </remarks>
+        <altmember cref="M:MonoTouch.UIKit.UIApplication.CanOpenUrl"/>
+        <altmember cref="M:MonoTouch.UIKit.UIApplicationDelegate.HandleOpenUrl"/>
       </Docs>
     </Member>
     <Member MemberName="PreferredContentSizeCategory">
@@ -2196,8 +2243,8 @@ void Setup ()
         <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>The font size preferred by the application user.</summary>
+        <value>One of the values defined in <see cref="T:MonoTouch.UIKit.UIContentSizeCategory"/>.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -2224,8 +2271,10 @@ void Setup ()
       </Parameters>
       <Docs>
         <param name="notification">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Immediately presents a local notification.</summary>
+        <remarks>
+        <para>The notification is presented immediately, ignoring the <see cref="P:MonoTouch.UIKit.UILocalNotification.FireDate"/> property of the <paramref name="notification"/>.</para>  
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ProtectedDataAvailable">
@@ -2250,9 +2299,12 @@ void Setup ()
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Whether content protection is available.</summary>
+        <value><see langword="true"/> if data protection is enabled and the device is locked. Otherwise, <see langword="false"/>.</value>
+        <remarks>
+          <para>If this method returns <see langword="false"/>, the application will not be allowed to read or write files whose <see cref="P:MonoTouch.NSFoundation.NSFileManager.FileProtectionKey"/> is <see cref="P:MonoTouch.NSFoundation.NSFileManager.FileProtectionComplete"/> or <see cref="P:MonoTouch.NSFoundation.NSFileManager.FileProtectionCompleteUnlessOpen"/>.</para>
+        </remarks>
+        <altmember cref="P:MonoTouch.UIKit.UIApplication.ProtectedDataDidBecomeAvailable"/>
       </Docs>
     </Member>
     <Member MemberName="ProtectedDataDidBecomeAvailable">
@@ -2277,7 +2329,7 @@ void Setup ()
         <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Indicates that the state of protected data has changed.</summary>
         <value>To be added.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
@@ -2339,6 +2391,8 @@ void Setup ()
 </code>
           </example>
         </remarks>
+        <altmember cref="P:MonoTouch.UIKit.UIApplication.ProtectedDataAvailable"/>
+
       </Docs>
     </Member>
     <Member MemberName="ProtectedDataWillBecomeUnavailable">
@@ -2363,7 +2417,7 @@ void Setup ()
         <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Indicates that the state of protected data has changed.</summary>
         <value>To be added.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
@@ -2425,6 +2479,7 @@ void Setup ()
 </code>
           </example>
         </remarks>
+        <altmember cref="P:MonoTouch.UIKit.UIApplication.ProtectedDataAvailable"/>
       </Docs>
     </Member>
     <Member MemberName="RegisterForRemoteNotificationTypes">
@@ -2447,8 +2502,14 @@ void Setup ()
       </Parameters>
       <Docs>
         <param name="types">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Begins the registration of the application to receive the specified types of notification from Apple Push Service.</summary>
+        <remarks>
+        <para>Only notifications of the types registered by this method will display, even if different types (e.g., an alert) is specified in the notification's payload.</para>  
+        </remarks>
+        <altmember cref="M:MonoTouch.UIKit.UIApplicationDelegate.RegisteredForRemoteNotifications"/>
+        <altmember cref="M:MonoTouch.UIKit.UIApplicationDelegate.FailedToRegisterForRemoteNotifications"/>
+        <altmember cref="P:MonoTouch.UIKit.UIApplication.EnabledRemoteNotificationTypes"/>
+        
       </Docs>
     </Member>
     <Member MemberName="RegisterObjectForStateRestoration">
@@ -2476,8 +2537,10 @@ void Setup ()
       <Docs>
         <param name="uistateRestoringObject">To be added.</param>
         <param name="restorationIdentifier">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Registers the <paramref name="uistateRestoringObject"/> as eligible for state restoration.</summary>
+        <remarks>
+            <para>Calling this method allows the object to be saved and restored but does not automatically trigger preservation/restoration. Application developers must write the object at the appropriate time, for instance <see cref="M:MonoTouch.UIKit.UIViewController.EncodeRestorableState"/>. </para>  
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ScheduledLocalNotifications">
@@ -2508,9 +2571,11 @@ void Setup ()
         <ReturnType>MonoTouch.UIKit.UILocalNotification[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>An array of <see cref="T:MonoTouch.UIKit.UILocalNotification"/>s that are currently scheduled.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>
+        <para>If application developers set this property, the local notifications are replaced via a series of calls to <see cref="M:MonoTouch.UIKit.UIApplication.CancelLocalNotification"/> and <see cref="M:MonoTouch.UIKit.UIApplication.ScheduleLocalNotification"/>.</para>  
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ScheduleLocalNotification">
@@ -2536,7 +2601,7 @@ void Setup ()
       </Parameters>
       <Docs>
         <param name="notification">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Schedules the <paramref name="notification"/> for delivery.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -2566,9 +2631,13 @@ void Setup ()
         <param name="target">To be added.</param>
         <param name="sender">To be added.</param>
         <param name="forEvent">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>Send an action message to the specified <paramref name="target"/>.</summary>
+        <returns><see langword="true"/> if the responder handled the message.</returns>
+        <remarks>
+          <para>This method allows application developers to trigger native action methods. </para>
+          
+        </remarks>
+        <altmember cref="M:MonoTouch.UIKit.UIApplication.SendEvent"/>
       </Docs>
     </Member>
     <Member MemberName="SendEvent">
@@ -2591,8 +2660,11 @@ void Setup ()
       </Parameters>
       <Docs>
         <param name="uievent">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Sends an event to the application.</summary>
+        <remarks>
+          <para>This method allows application developers to create native <see cref="T:MonoTouch.UIKit.UIEvent"/>s that are then handled normally.</para>
+        </remarks>
+        <altmember cref="M:MonoTouch.UIKit.UIApplication.SendAction"/>
       </Docs>
     </Member>
     <Member MemberName="SetKeepAliveTimeout">
@@ -2723,8 +2795,8 @@ void Setup ()
         <Parameter Name="image" Type="MonoTouch.UIKit.UIImage" />
       </Parameters>
       <Docs>
-        <param name="image">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="image">The image to be used, or <see langword="null"/> to set the icon stored in the app bundle.</param>
+        <summary>Sets the icon to be used in Newsstand.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -2751,9 +2823,9 @@ void Setup ()
         <Parameter Name="animation" Type="MonoTouch.UIKit.UIStatusBarAnimation" />
       </Parameters>
       <Docs>
-        <param name="state">To be added.</param>
-        <param name="animation">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="state"><see langword="true"/> to hide the status bar, <see langword="false"/> to reveal it.</param>
+        <param name="animation">The animation to use.</param>
+        <summary>Hides or shows the status bar.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -2777,9 +2849,9 @@ void Setup ()
         <Parameter Name="animated" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="hidden">To be added.</param>
+        <param name="hidden"><see langword="true"/> to hide the status bar, <see langword="false"/> to reveal it.</param>
         <param name="animated">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Hides or shows the animation bar, and whether it should be animated.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -2805,8 +2877,10 @@ void Setup ()
       <Docs>
         <param name="orientation">To be added.</param>
         <param name="animated">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Sets the status bar to <paramref name="orientation"/>.</summary>
+        <remarks>
+          <para>This method should not be used if the application is expected to handle rotation automatically. Once this method is called, the status bar will not change automatically in response to rotation.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SetStatusBarStyle">
@@ -2831,7 +2905,7 @@ void Setup ()
       <Docs>
         <param name="statusBarStyle">To be added.</param>
         <param name="animated">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Sets the style of the status bar, optionally animating the change.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -3069,8 +3143,8 @@ void Setup ()
         <ReturnType>System.Drawing.RectangleF</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>The Frame of the status bar.</summary>
+        <value>Will be <see cref="P:System.Drawing.RectangleF.Zero"/> if the status bar is hidden.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -3115,7 +3189,7 @@ void Setup ()
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Whether the status bar is visible.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -3139,9 +3213,10 @@ void Setup ()
         <ReturnType>MonoTouch.UIKit.UIInterfaceOrientation</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The orientation of the status bar.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
+        <altmember cref="M:MonoTouch.UIKit.UIApplication.SetStatusBarOrientation"/>
       </Docs>
     </Member>
     <Member MemberName="StatusBarOrientationAnimationDuration">
@@ -3160,7 +3235,7 @@ void Setup ()
         <ReturnType>System.Double</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The length of the animation used when the status bar rotates.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -3206,7 +3281,7 @@ void Setup ()
         <ReturnType>MonoTouch.UIKit.UIStatusBarStyle</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The current <see cref="T:MonoTouch.UIKit.UIStatusBarStyle"/>.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -3240,7 +3315,7 @@ void Setup ()
       </Parameters>
       <Docs>
         <param name="window">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>A bitmask indicating which orientations are supported.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -3284,7 +3359,7 @@ void Setup ()
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The application will no longer receive notifications from Apple Push Service.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -3396,7 +3471,7 @@ void Setup ()
         <ReturnType>MonoTouch.UIKit.UIUserInterfaceLayoutDirection</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The layout direction (right-to-left or left-to-right) of the UI.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
