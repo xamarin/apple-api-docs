@@ -8,7 +8,6 @@
 	in this namespace give you access to the underlying animation
 	framwork that powers the UIKit.
       </para>
-
       <para>
 	The UIKit controls are implemented on top of CoreAnimation
 	which interfaces directly with the OpenGL and CoreGraphics to
@@ -24,7 +23,6 @@
 	cref="M:MonoTouch.UIKit.UIView.Draw(System.Drawing.RectangleF)"/>
 	method, you are drawing into the CoreAnimation layer.    
       </para>
-
       <para>
 
 	Just like UIView's can contain other UIViews, CALayers can
@@ -85,15 +83,50 @@
 	functionality, CoreAnimation provides a set of APIs to animate
 	layers.
       </para>
-
-      <para>
-	There are two kinds of animations supported by CoreAnimation:
+      <para>Prior to iOS 4, animations were specified as transactions: application developers would bracket the specification of their animations between calls to <see cref="M:MonoTouch.UIKit.UIView.BeginAnimations"/> and <see cref="M:MonoTouch.UIKit.UIView.CommitAnimations"/>. Reacting to animation events (such as continuation after the animation finishes) requires the use of a delegate object and custom selectors.  This technique is still available, but Apple recommends the use of "block-based" animations in modern apps. In C# terminology, these would be called "delegate-based" animations, where the delegate (or anonymous function) is of type <see cref="T:MonoTouch.Foundation.NSAction"/>. Additionally, Xamarin.iOS provides asynchronous wrappers for the commonly-used animation functions, so application developers can use C# 5+'s <c>async-await</c> facilities.</para>
+      <para>The following example shows the different techniques:</para>
+      <example>
+        <code lang="C#"><![CDATA[
+//Transaction-based (recommended only for iOS < 4)
+UIView.BeginAnimations("transactional");
+UIView.SetAnimationDuration(2.0);
+imgView.Layer.Position = newPosition;
+UIView.SetAnimationDelegate (this);
+UIView.SetAnimationDidStopSelector (new Selector ("positionAnimationFinished:"));
+UIView.CommitAnimations();
+//...etc...
+[Export("positionAnimationFinished:")]
+void SlideStopped ()
+{
+    Console.WriteLine("Animation finished; logic continues here");
+}
+          ]]>
+        </code>
+        <para>Block-based</para>
+        <code lang="C#"><![CDATA[
+//Block-based, with animations in lambda, continuation as delegate (either technique works in either position)
+UIView.Animate(2.0, () => imgView.Layer.Position = newPosition, SlideStopped);
+//...etc...
+void SlideStopped() { 
+     Console.WriteLine("Animation finished; logic continues here");
+}
+          ]]></code>
+      <para>Asynchronous</para>
+        <code lang="C#"><![CDATA[
+async void MyAnimateAsync {
+    await UIView.AnimateAsync(2.0, () => imgView.Layer.Position = newPosition);
+    Console.WriteLine("Animation finished; logic continues here");
+}          
+        ]]></code>
+      </example>
+      <para>These UIKit-based techniques should satisfy most animation use-cases (also, Sprite Kit provides both animation and physics-modeling appropriate for high frame-rate use-cases such as games). However, in addition to these UIKit-based techniques, application developers who create their own <see cref="T:MonoTouch.CoreAnimation.CALayer"/>s have access to lower-level animation techniques: 
 	Implicit Animations and Explicit Animations.
       </para>
+     <para>N.B.: Layer animations are disabled in <see cref="T:MonoTouch.UIKit.UIView"/>s except in <see cref="T:MonoTouch.UIKit.UIView"/> animation blocks. (See discussion below.) </para>
 
       <para>
 
-	Implicit Animations take place when you change one or more of
+	Implicit Animations take place when app developers change one or more of
 	the properties in a layer and CoreAnimation will apply those
 	changes gradually by interpolating the values from the current
 	value to the new value over a predetermined period of time
@@ -103,7 +136,7 @@
       </para>
 
       <example>
-	<code lang="c#">
+	<code lang="C#"><![CDATA[
 //
 // The following method sets the opacity to zero on the image's Layer
 // and will trigger a 0.25 animation to vanish the image by setting the
@@ -113,20 +146,18 @@ void HideImage (UIImageView image)
 {
     view.Layer.Opacity = 0;
 }
-	</code>
+]]></code>
       </example>
-
       <para>
 	
-	If you want more control over the animation, you can use
-	Explicit Animation.  To do this, you create an instance of one
+	Application developers who want more control can use
+	Explicit Animation.  To do this, they create an instance of one
 	of the animation classes <see
 	cref="T:MonoTouch.CoreAnimation.CAPropertyAnimation"/>, <see
 	cref="T:MonoTouch.CoreAnimation.CATransition"/>, <see
 	cref="T:MonoTouch.CoreAnimation.CAAnimationGroup"/>, <see
 	cref="T:MonoTouch.CoreAnimation.CABasicAnimation"/> or <see
-	cref="T:MonoTouch.CoreAnimation.CAKeyFrameAnimation"/>.  Then
-	you attach the animation to a layer, by calling the <see
+	cref="T:MonoTouch.CoreAnimation.CAKeyFrameAnimation"/>.  The animation is attached to a layer, by calling the <see
 	cref="M:MonoTouch.CoreAnimation.CALayer.AddAnimation(MonoTouch.CoreAnimation.CAAnimation,string)"/>
 	method.
 
@@ -134,8 +165,8 @@ void HideImage (UIImageView image)
 
       <para>
 
-	Unlike implicit animations which happen when you make changes
-	to your object properties, explicit animations do not alter
+	Unlike implicit animations which happen in reaction to changes
+	in the layer's properties, explicit animations do not alter
 	the properties of your objects.  Instead they alter the
 	properties of a copy of your scene graph stored in the <see
 	cref="P:MonoTouch.CoreAnimation.CALayer.PresentationLayer"/>.
@@ -147,7 +178,7 @@ void HideImage (UIImageView image)
       </para>
 
       <example>
-	<code lang="c#">
+	<code lang="C#"><![CDATA[
 //
 // Notice that we set the final position for the layer before we start
 // animating from 0 to 120 since this is an explicit animation and we
@@ -158,41 +189,26 @@ layer.Position = new PointF (0, 120);
 var positionAnimation = (CAKeyFrameAnimation) CAKeyFrameAnimation.FromKeyPath ("position.y");
 positionAnimation.Values = new NSNumber [] { 0, 30, 60, 120 };
 layer.AddAnimation (positionAnimation, "myAnimation");
-	</code>
+        ]]>  
+        </code>
       </example>
-
-      <para>
-
-	Animations are part of transactions.  And transactions, just
-	like animations can be either implicit (when you set on of the
-	animatable properties in a layer) or explicit when you
-	initiate a transaction by calling the <see
-	cref="M:MonoTouch.CoreAnimation.CATransaction.Begin()"/>
-	method and completed when you call the <see
-	cref="M:MonoTouch.CoreAnimation.CATransaction.Commit()"/> method. 
-
-      </para>
-
-      <para> You can group your animations by making them part of a
-	transaction, see the following example that changes both the
-	layer position and the opacity of the layer with different timings:
-
-      </para>
+      <block subset="none" type="type">Layer Animations of <see cref="T:MonoTouch.UIKit.UIView"/>s
+      </block>
+      <para>Layer-based animations are disabled by <see cref="T:MonoTouch.UIKit.UIView"/>s except within <see cref="T:MonoTouch.UIKit.UIView"/> animation blocks. Layer-based animations within such blocks ignore the blocks' duration and operate at their own specified duration, either the implicit default of 0.25 seconds or an explicit length. This is shown in the following example, in which the <see cref="T:MonoTouch.UIKit.UIView"/> animation block's duration is 1.0, but in actuality, the layer-based implicit opacity animation ends in 0.25 seconds and the re-positioning runs for 10 seconds.</para>
       <example>
-	<code lang="c#">
-//
-// This makes the opacity gradually go to zero over the course of 4 seconds
-// and the position is changed over the course of 2 seconds.
-void HideAndMoveImage (UIImageView image, PointF newPosition)
-{
-    CATransaction.AnimationDuration = 4;
-    view.Layer.Opacity = 0;
-    CATransaction.AnimationDuration = 2;
-    view.layer.Position = newPosition;
-}
-	</code>
-      </example>
+        <code lang="C#"><![CDATA[
+UIView.AnimateAsync(1.0, () => {
+	imgView.Layer.Opacity = 0.0f;
 
-    </remarks>
+	var theAnim = CABasicAnimation.FromKeyPath("position");
+	theAnim.From = NSObject.FromObject(firstPosition);
+	theAnim.To =  NSObject.FromObject(secondPosition);
+	theAnim.Duration = 10.0;
+
+	imgView.Layer.AddAnimation(theAnim, "AnimateFrame");
+});
+          ]]></code>
+        </example>
+       </remarks>
   </Docs>
 </Namespace>

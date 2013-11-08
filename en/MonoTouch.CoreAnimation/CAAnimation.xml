@@ -16,7 +16,25 @@
   </Attributes>
   <Docs>
     <summary>Base class for animations.</summary>
-    <remarks />
+    <remarks >
+ <para>Layer-based animations are disabled by <see cref="T:MonoTouch.UIKit.UIView"/>s except within <see cref="T:MonoTouch.UIKit.UIView"/> animation blocks. Layer-based animations within such blocks ignore the blocks' duration and operate at their own specified duration, either the implicit default of 0.25 seconds or an explicit length. This is shown in the following example, in which the <see cref="T:MonoTouch.UIKit.UIView"/> animation block's duration is 1.0, but in actuality, the layer-based implicit opacity animation ends in 0.25 seconds and the re-positioning runs for 10 seconds.</para>
+      <example>
+        <code lang="C#"><![CDATA[
+UIView.AnimateAsync(1.0, () => {
+	imgView.Layer.Opacity = 0.0f;
+
+	var theAnim = CABasicAnimation.FromKeyPath("position");
+	theAnim.From = NSObject.FromObject(firstPosition);
+	theAnim.To =  NSObject.FromObject(secondPosition);
+	theAnim.Duration = 10.0;
+
+	imgView.Layer.AddAnimation(theAnim, "AnimateFrame");
+});
+          ]]></code>
+        </example>
+
+
+     </remarks>
     <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=109bd2a4-3437-4919-b556-3b44433ccc70">ViewTransitions</related>
     <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=afab3ce5-a98f-43d8-a981-c803ca8b9738">Example_CoreAnimation</related>
   </Docs>
@@ -277,8 +295,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Double</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>The begin time of the animation, in seconds, relative to its parent (if applicable).</summary>
+        <value>The default value is 0.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -298,7 +316,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Double</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Application developers should use <see cref="M:MonoTouch.CoreAnimation.CAAnimation.BeginTime"/> rather than this deprecated method.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -426,7 +444,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="key">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>As part of key-value observing, indicates that the value represented by <paramref name="key"/> has changed.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -947,7 +965,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="key">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>With key-value observing, indicates that the value associated with <paramref name="key"/> is about to change.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
