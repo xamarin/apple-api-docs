@@ -586,9 +586,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>This will send the Objective-C 'autorelease' message to the object.</summary>
+        <returns>The same object.</returns>
+        <remarks>Do not use unless you've also called Retain, or otherwise have a reference Xamarin.iOS does not know about.</remarks>
       </Docs>
     </Member>
     <Member MemberName="AwakeFromNib">
@@ -1894,8 +1894,8 @@ void RunDemo (NSString arg)
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>This will send the Objective-C 'release' message to the object.</summary>
+        <remarks>Do not use unless you've also called Retain, or otherwise have references Xamarin.iOS does not know about.</remarks>
       </Docs>
     </Member>
     <Member MemberName="RemoveObserver">
@@ -1961,9 +1961,20 @@ void RunDemo (NSString arg)
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>This will send the Objective-C 'retain' message to the object.</summary>
+        <returns>The same object. This allows for chaining calls like this: obj.Retain ().Autorelease ()</returns>
+        <remarks>This is intended to be used when an autoreleased object must be returned to Objective-C code:
+
+			<example>
+				<code lang="c#"><code>
+					[Export ("copyWithZone:")]
+					public override NSObject CopyWithZone (NSZone zone)
+					{
+						return this.Clone ().Retain ().Autorelease ();
+					}
+				</code>
+			</example>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="RetainCount">
