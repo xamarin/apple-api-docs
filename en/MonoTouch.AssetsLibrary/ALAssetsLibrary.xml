@@ -172,10 +172,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="name">To be added.</param>
-        <param name="resultBlock">To be added.</param>
-        <param name="failureBlock">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="name">The name of the asset group to be created.</param>
+        <param name="resultBlock">Executed if there is no error during the asset creation.</param>
+        <param name="failureBlock">Executed if there was a failure, such as from the user denying the application from accessing the library.</param>
+        <summary>Creates an asset group (such as an album of photographs) to the <see cref="T:MonoTouch.AssetsLibrary.ALAssetsLibrary"/>.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -212,11 +212,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="assetURL">To be added.</param>
-        <param name="resultBlock">To be added.</param>
-        <param name="failureBlock">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="assetURL">The Asset URL to retrieve (see <see cref="M:MonoTouch.AssetsLibrary.ALAsset.AssetUrl"/>).</param>
+        <param name="resultBlock">Executed if the <see cref="T:MonoTouch.AssetsLibrary.ALAsset"/> is retrieved successfully.</param>
+        <param name="failureBlock">Executed if the asset was not returned (for instance, if the user refuses the application acccess to the library).</param>
+        <summary>Asynchronously retrieves the specified asset and passes it to the <paramref name="resultBlock"/>.</summary>
+        <remarks><para>This method executes asynchronously.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="AuthorizationStatus">
@@ -241,8 +241,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.AssetsLibrary.ALAuthorizationStatus</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>Reflects the permissions of the application to access the <see cref="T:MonoTouch.AssetsLibrary.ALAssetsLibrary"/>.</summary>
+        <value>The current status of the application.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -390,7 +390,7 @@ void Setup ()
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Disables notifications and asset retrieval from shared photo streams.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -427,10 +427,10 @@ void Setup ()
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="types">To be added.</param>
-        <param name="enumerationBlock">To be added.</param>
-        <param name="failureBlock">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="types">A bitmask of <see cref="T:MonoTouch.AssetsLibrary.ALAssetsGroupType"/> values.</param>
+        <param name="enumerationBlock">Executed on each of the successfully retrieved groups. Additionally executed once with an <see langword="null"/> <code>group</code> argument.</param>
+        <param name="failureBlock">Execution if there is a failure retrieving asset groups.</param>
+        <summary>Executes <paramref name="enumerationBlock"/>, passing in each of the retrieved <see cref="T:MonoTouch.AssetsLibrary.ALAssetsLibrary"/> items.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -470,11 +470,11 @@ void Setup ()
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="groupURL">To be added.</param>
-        <param name="resultBlock">To be added.</param>
-        <param name="failureBlock">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="groupURL">The <see cref="P:MonoTouch.AssetsLibrary.ALAssetGroup.PropertyURL"/> of the <see cref="T:MonoTouch.AssetsLibrary.ALAssetGroup"/>.</param>
+        <param name="resultBlock">Executed on the retrieved <see cref="T:MonoTouch.AssetsLibrary.ALAssetGroup"/>.</param>
+        <param name="failureBlock">Executed if there was a failure retrieving the <see cref="T:MonoTouch.AssetsLibrary.ALAssetGroup"/>.</param>
+        <summary>Asynchronously retrieves an <see cref="T:MonoTouch.AssetsLibrary.ALAssetGroup"/> and executes the <paramref name="resultBLock"/> on it.</summary>
+        <remarks><para>This function executes asynchronously.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="InsertedAssetGroupsKey">
@@ -580,10 +580,13 @@ void Setup ()
         <Parameter Name="videoPathURL" Type="MonoTouch.Foundation.NSUrl" />
       </Parameters>
       <Docs>
-        <param name="videoPathURL">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="videoPathURL">A URL locating a video.</param>
+        <summary>Whether the video at <paramref name="videoPathURL"/> can be saved in the Photos Album.</summary>
         <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <para>Application developers implementing custom Audio-Video capture or editing video files should use this method prior to attempting to add the video to the Photos Album.</para>
+          
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="WriteImageToSavedPhotosAlbum">
@@ -711,10 +714,10 @@ void Setup ()
         <Parameter Name="completionBlock" Type="MonoTouch.AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate" />
       </Parameters>
       <Docs>
-        <param name="imageData">To be added.</param>
-        <param name="orientation">To be added.</param>
-        <param name="completionBlock">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="imageData">Data buffer containing an encoded image.</param>
+        <param name="orientation">The orientation of the image.</param>
+        <param name="completionBlock">Executed after the image is saved successfully.</param>
+        <summary>Saves the image in the specified <paramref name="orientation"/> to the user's Photos directory.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -742,7 +745,7 @@ void Setup ()
         <param name="imageData">To be added.</param>
         <param name="metadata">To be added.</param>
         <param name="completionBlock">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Application developers should not use this obsolete method. Instead, they should use <see cref="M:MonoTouch.AssetsLibrary.ALAssetsLibrary.WriteImageToSavedPhotosAlbum(MonoTouch.CoreGraphics.CGImage, MonoTouch.Foundation.NSDictionary, MonoTouch.AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate)"/> or <see cref="M:MonoTouch.AssetsLibrary.ALAssetsLibrary.WriteImageToSavedPhotosAlbumAsync(MonoTouch.CoreGraphics.CGImage, MonoTouch.Foundation.NSDictionary)"/>.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -849,7 +852,7 @@ void Setup ()
       <Docs>
         <param name="videoPathURL">To be added.</param>
         <param name="completionBlock">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Writes the video at <paramref name="videoPathURL"/> to the user's Photos directory and executes the <paramref name="completionBlock"/> if successful.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -868,13 +871,12 @@ void Setup ()
       </Parameters>
       <Docs>
         <param name="videoPathURL">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Asynchronously writes the video at <paramref name="videoPathURL"/> to the user's Photo's directory.</summary>
         <returns>
           <para>A task that represents the asynchronous WriteVideoToSavedPhotosAlbum operation.   The value of the TResult parameter is a MonoTouch.AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate.</para>
         </returns>
         <remarks>
           <para copied="true">The WriteVideoToSavedPhotosAlbumAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
-          <para copied="true">To be added.</para>
         </remarks>
       </Docs>
     </Member>
