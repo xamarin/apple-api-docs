@@ -334,7 +334,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Whether the application may edit the asset.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -393,8 +393,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.AssetsLibrary.ALAsset</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>The original version, if the <see cref="T:MonoTouch.AssetsLibrary.ALAsset"/> is a modification.</summary>
+        <value><see langword="null"/> if the <c>this</c> is not a modified version.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -469,11 +469,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="imageData">To be added.</param>
-        <param name="metadata">To be added.</param>
-        <param name="completionBlock">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="imageData">The data to be used for the modified version.</param>
+        <param name="metadata">Metadata to be saved with the modified image.</param>
+        <param name="completionBlock">Executed when the asset is successfully modified.</param>
+        <summary>Changes the data to <paramref name="imageData"/> and the metadata to <paramref name="metadata"/>. On success, executes <paramref name="completionBlock"/>.</summary>
+        <remarks><para>Application developers should check the <see cref="P:MonoTouch.AssetsLibrary.ALAsset.Editable"/> property prior to calling this method.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="SetImageDataAsync">
@@ -493,9 +493,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="imageData">To be added.</param>
         <param name="metadata">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Asynchronously modifies the data and metadata of the <see cref="T:MonoTouch.AssetsLibrary.ALAsset"/>.</summary>
         <returns>
           <para>A task that represents the asynchronous SetImageData operation.   The value of the TResult parameter is a MonoTouch.AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate.</para>
+          <para>Application developers should check the <see cref="P:MonoTouch.AssetsLibrary.ALAsset.Editable"/> property priot to using this method.</para>
         </returns>
         <remarks>
         </remarks>
@@ -530,10 +531,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="videoPathURL">To be added.</param>
-        <param name="completionBlock">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="videoPathURL">A URL specifying the locaiton of the modified videofile.</param>
+        <param name="completionBlock">Executed when the modified asset is saved successfully.</param>
+        <summary>Modifies the <see cref="T:MonoTouch.AssetsLibrary.ALAsset"/> to refer to the <paramref name="videoPathURL"/>.</summary>
+        <remarks><para>Application developers should check the <see cref="P:MonoTouch.AssetsLibrary.ALAsset.EditableProperty"/> before using this method.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="SetVideoAtPathAsync">
@@ -551,13 +552,13 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="videoPathURL">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Asynchronously modifies the asset to point to the specified <paramref name="videoPathURL"/>.</summary>
         <returns>
           <para>A task that represents the asynchronous SetVideoAtPath operation.   The value of the TResult parameter is a MonoTouch.AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate.</para>
         </returns>
         <remarks>
           <para copied="true">The SetVideoAtPathAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
-          <para copied="true">To be added.</para>
+        <para>Application developers should check the <see cref="P:MonoTouch.AssetsLibrary.ALAsset.Editable"/> property prior to calling this method.</para>  
         </remarks>
       </Docs>
     </Member>
@@ -676,8 +677,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="imageData">To be added.</param>
         <param name="metadata">To be added.</param>
         <param name="completionBlock">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Modifies and writes an image asset to the user's Photos directory.</summary>
+        <remarks><para>Application developers should check the <see cref="P:MonoTouch.AssetsLibrary.ALAsset.Editable"/> property prior to calling htis method.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="WriteModifiedImageToSavedToPhotosAlbumAsync">
@@ -697,9 +698,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="imageData">To be added.</param>
         <param name="metadata">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Asynchronously modifies and writes an image asset to the user's Photos directory.</summary>
         <returns>
           <para>A task that represents the asynchronous WriteModifiedImageToSavedToPhotosAlbum operation.   The value of the TResult parameter is a MonoTouch.AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate.</para>
+          <para>Application developers should check the <see cref="P:MonoTouch.AssetsLibrary.ALAsset.Editable"/> property prior to calling htis method.</para>
         </returns>
         <remarks>
         </remarks>
@@ -737,7 +739,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="videoPathURL">URL to store the video at.</param>
         <param name="completionBlock">Callback invoked the write operation has completed.</param>
         <summary>Writes the video to the specified path.</summary>
-        <remarks>This method invokes the provided completionBlock callback when the write has completed</remarks>
+        <remarks>
+          <para> This method invokes the provided <paramref name="completionBlock"/> callback when the write has completed.</para>
+        <para>Application developers should check the <see cref="P:MonoTouch.AssetsLibrary.ALAsset.Editable"/> property prior to calling htis method.</para>  
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="WriteModifiedVideoToSavedPhotosAlbumAsync">
