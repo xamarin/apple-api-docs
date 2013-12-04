@@ -165,12 +165,12 @@
       </para>
       <example>
         <code lang="C#"><![CDATA[
-          var recognizer = new UIPanGestureRecognizer ((g) => {
-              Console.WriteLine ("Panning detected");
-              Console.WriteLine ("Gesture recognizer state: {0}", g.State);
-          });
-          
-          myView.AddGestureRecognizer (recognizer);
+var recognizer = new UIPanGestureRecognizer ((g) => {
+  Console.WriteLine ("Panning detected");
+  Console.WriteLine ("Gesture recognizer state: {0}", g.State);
+});
+
+myView.AddGestureRecognizer (recognizer);
         ]]></code>
       </example>
       <para>
@@ -250,7 +250,7 @@
       </para>
       <example>
         <code lang="C#"><![CDATA[
-          var myView = new UIView (new RectangleF (0, 0, 100, 100));
+var myView = new UIView (new RectangleF (0, 0, 100, 100));
 ]]></code>
       </example>
       <para>
@@ -356,8 +356,8 @@
         <see cref="P:MonoTouch.UIKit.UIView.Center" /></para>
       <example>
         <code lang="C#"><![CDATA[
-          view.Bounds = new RectangleF (0, 0, 100, 100);
-          view.Center = new PointF (200, 200);
+view.Bounds = new RectangleF (0, 0, 100, 100);
+view.Center = new PointF (200, 200);
 ]]></code>
       </example>
       <para>
@@ -413,12 +413,12 @@
       </para>
       <example>
         <code lang="C#"><![CDATA[
-          UIView.BeginAnimations (null);
-          UIView.SetAnimationDuration (5);
-          UIView.SetAnimationCurve (UIViewAnimationCurve.EaseOut);
-          view.Bounds = new RectangleF (0, 0, 100, 100);
-          view.Position = new PointF (200, 200);
-          UIView.CommitAnimations ();
+UIView.BeginAnimations (null);
+UIView.SetAnimationDuration (5);
+UIView.SetAnimationCurve (UIViewAnimationCurve.EaseOut);
+view.Bounds = new RectangleF (0, 0, 100, 100);
+view.Position = new PointF (200, 200);
+UIView.CommitAnimations ();
 ]]></code>
       </example>
       <para>
@@ -430,15 +430,15 @@
       </para>
       <example>
         <code lang="C#"><![CDATA[
-          UIView.Animate (duration, delay, UIViewAnimationOption.Autoreverse,
-              delegate {
-                  view.Bounds = new RectangleF (0, 0, 100, 100);
-                  view.Position = new PointF (200, 200);
-               },
-               delegate {
-                   Console.WriteLine ("Animation completed");
-               }
-          );
+UIView.Animate (duration, delay, UIViewAnimationOption.Autoreverse,
+  delegate {
+      view.Bounds = new RectangleF (0, 0, 100, 100);
+      view.Position = new PointF (200, 200);
+   },
+   delegate {
+       Console.WriteLine ("Animation completed");
+   }
+);
           ]]></code>
       </example>
       <para>
@@ -479,22 +479,22 @@
       </para>
       <example>
         <code lang="C#"><![CDATA[
-          //
-          // This performs an expensive computation in the background, and then
-          // updates the main UI when done.
-          //
-          void DoSomeWork (UIView view)
-          {
-              double sum = 0;
-              for (int i = 0; i &lt; Int32.MaxValue; i++)
-                  sum += i * i;
-          
-              // Now invoke the update on the main UI.
-              view.BeginInvokeOnMainThread (delegate {
-                  view.BackgroundColor = UIColor.Green;
-                  statusLabel.Text = "Sum is: " + sum;
-              });
-          }
+//
+// This performs an expensive computation in the background, and then
+// updates the main UI when done.
+//
+void DoSomeWork (UIView view)
+{
+  double sum = 0;
+  for (int i = 0; i &lt; Int32.MaxValue; i++)
+      sum += i * i;
+
+  // Now invoke the update on the main UI.
+  view.BeginInvokeOnMainThread (delegate {
+      view.BackgroundColor = UIColor.Green;
+      statusLabel.Text = "Sum is: " + sum;
+  });
+}
           ]]></code>
       </example>
       <para>
@@ -504,17 +504,17 @@
         a trip to the main loop pump:
       </para>
       <example>
-        <code lang="c#">
-          static NSObject Invoker = new NSObject();
-          public static void EnsureInvokedOnMainThread (Action action)
-          {
-          if (NSThread.Current.IsMainThread) {
-          action ();
-          return;
-          }
-          Invoker.BeginInvokeOnMainThread (() =&gt; action());
-          }
-        </code>
+        <code lang="C#"><![CDATA[
+static NSObject Invoker = new NSObject();
+public static void EnsureInvokedOnMainThread (Action action)
+{
+    if (NSThread.Current.IsMainThread) {
+        action ();
+        return;
+    }
+    Invoker.BeginInvokeOnMainThread (() => action());
+}
+        ]]></code>
       </example>
       <format type="text/html">
         <h2>How to Subclass UIView</h2>
@@ -534,13 +534,14 @@
         would typically do this like this:
       </para>
       <example>
-        <code lang="c#">
-          public class MyView : UIView {
-          public MyView (RectangleF frame) : base (frame)
-          {
-          // Your initialization code goes here
-          }
-          }
+        <code lang="C#"><![CDATA[
+public class MyView : UIView {
+    public MyView (RectangleF frame) : base (frame)
+    {
+        // Your initialization code goes here
+    }
+}
+          ]]>
         </code>
       </example>
       <para>
@@ -550,14 +551,15 @@
         implementing the selector "initWithCoder:", like this:
       </para>
       <example>
-        <code lang="c#">
-          public class MyView : UIView {
-          [Export ("initWithCoder:")]
-          public MyView (NSCoder coder) : base (coder)
-          {
-          // Your initialization code goes here
-          }
-          }
+        <code lang="C#"><![CDATA[
+public class MyView : UIView {
+    [Export ("initWithCoder:")]
+    public MyView (NSCoder coder) : base (coder)
+    {
+        // Your initialization code goes here
+    }
+}
+          ]]>
         </code>
       </example>
       <para>
@@ -597,29 +599,31 @@
         overridden Draw method that draws a triangle:
       </para>
       <example>
-        <code lang="c#">
-          public override void Draw (RectangleF rect)
-          {
-          base.Draw (rect);
-          
-          var context = UIGraphics.GetCurrentContext ();
-          
-          context.SetLineWidth(4);
-          UIColor.Red.SetFill ();
-          UIColor.Blue.SetStroke ();
-          
-          var path = new CGPath ();
-          
-          path.AddLines(new PointF[]{
-          new PointF(100,200),
-          new PointF(160,100), 
-          new PointF(220,200)});
-          
-          path.CloseSubpath();
-          
-          context.AddPath(path);		
-          context.DrawPath(CGPathDrawingMode.FillStroke);
-          }
+        <code lang="C#"><![CDATA[
+public override void Draw (RectangleF rect)
+{
+    base.Draw (rect);
+
+    var context = UIGraphics.GetCurrentContext ();
+
+    context.SetLineWidth(4);
+    UIColor.Red.SetFill ();
+    UIColor.Blue.SetStroke ();
+
+    var path = new CGPath ();
+
+    path.AddLines(new PointF[]{
+        new PointF(100,200),
+        new PointF(160,100), 
+        new PointF(220,200)
+    });
+
+    path.CloseSubpath();
+
+    context.AddPath(path);		
+    context.DrawPath(CGPathDrawingMode.FillStroke);
+}
+          ]]>
         </code>
       </example>
       <para>
@@ -658,14 +662,15 @@
         respond to the requiresConstraintBasedLayout selector, like this:
       </para>
       <example>
-        <code lang="c#">
-          class MyView : UIView {
-          [Export ("requiresConstraintBasedLayout")]
-          bool UseNewLayout ()
-          {
-          return true;
-          }
-          }
+        <code lang="C#"><![CDATA[
+class MyView : UIView {
+    [Export ("requiresConstraintBasedLayout")]
+    bool UseNewLayout ()
+    {
+        return true;
+    }
+}
+          ]]>
         </code>
       </example>
       <para>
@@ -752,14 +757,15 @@
         returns true, like this:
       </para>
       <example>
-        <code lang="c#">
-          class MyView : UIView {
-          [Export ("requiresConstraintBasedLayout")]
-          static bool RequiresConstraintBasedLayout ()
-          {
-          return true;
-          }
-          }
+        <code lang="C#"><![CDATA[
+class MyView : UIView {
+    [Export ("requiresConstraintBasedLayout")]
+    static bool RequiresConstraintBasedLayout ()
+    {
+        return true;
+    }
+}
+          ]]>
         </code>
       </example>
       <format type="text/html">
@@ -807,28 +813,27 @@
         the <see cref="P:MonoTouch.CoreAnimation.CALayer.CornerRadius" /> of its layer:
       </para>
       <example>
-        <code lang="c#">
-          view.Layer.CornerRadius = 4;
-        </code>
+        <code lang="C#"><![CDATA[
+view.Layer.CornerRadius = 4;
+        ]]></code>
       </example>
       <para>
         You can add drop shadows by modifying a variety of properties:
       </para>
       <example>
-        <code lang="c#">
-          view.Layer.ShadowColor = new CGColor (1, 0, 0);
-          view.Layer.ShadowOpacity = 1.0f;
-          view.Layer.ShadowOffset = new SizeF (0, 4);
-        </code>
+        <code lang="C#"><![CDATA[
+view.Layer.ShadowColor = new CGColor (1, 0, 0);
+view.Layer.ShadowOpacity = 1.0f;
+view.Layer.ShadowOffset = new SizeF (0, 4);
+        ]]></code>
       </example>
       <para>
         You can even apply a 3D transformation to the layer:
       </para>
       <example>
-        <code lang="c#">
-          view.Layer.Transform = CATransform3D.MakeRotation (
-          (float)(Math.PI / 2), 1, 1, 1);
-        </code>
+        <code lang="C#"><![CDATA[
+view.Layer.Transform = CATransform3D.MakeRotation ((float)(Math.PI / 2), 1, 1, 1);
+        ]]></code>
       </example>
       <para>
         Note that this transformation is a full 3D transform, with a
@@ -850,29 +855,30 @@
         layer, and therefore the view, always displays the color blue:
       </para>
       <example>
-        <code lang="c#">
-          public class BlueView : UIView
-          {
-          [Export ("layerClass")]
-          public static Class GetLayerClass ()
-          {
-          return new Class (typeof (BlueLayer));
-          }
-          
-          public override void Draw (RectangleF rect)
-          {
-          // Do nothing, the Layer will do all the drawing
-          }
-          }
-          
-          public class BlueLayer : CALayer
-          {
-          public override void DrawInContext (CGContext ctx)
-          {
-          ctx.SetFillColor (0, 0, 1, 1);
-          ctx.FillRect (Bounds);
-          }
-          }
+        <code lang="C#"><![CDATA[
+public class BlueView : UIView
+{
+    [Export ("layerClass")]
+    public static Class GetLayerClass ()
+    {
+        return new Class (typeof (BlueLayer));
+    }
+
+    public override void Draw (RectangleF rect)
+    {
+        // Do nothing, the Layer will do all the drawing
+    }
+}
+
+public class BlueLayer : CALayer
+{
+    public override void DrawInContext (CGContext ctx)
+    {
+        ctx.SetFillColor (0, 0, 1, 1);
+        ctx.FillRect (Bounds);
+    }
+}
+          ]]>
         </code>
       </example>
       <para>
@@ -1483,20 +1489,20 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <para>The <paramref name="constraints" /> must refer only to the receiving view or its subviews.</para>
           <para>In the following example, <format type="text/html"><a href="https://developer.apple.com/library/mac/#documentation/UserExperience/Conceptual/AutolayoutPG/Articles/formatLanguage.html#//apple_ref/doc/uid/TP40010853-CH3-SW1">Visual Format Language</a></format> specifies that the <c>blueView</c> be horizontally attched to the leading and trailing edge (sides), that the <c>blueView</c> and <c>greenView</c> be vertically attached to the leading and trailing edges (top and bottom) and separated by 30 pixels, and that the <c>greenView</c> be the same width as the <c>blueView</c> and attached to both the leading and trailing edges. The result is shown in the following image.</para>
           <example>
-            <code lang="C#">
-              mainView.AddSubview(blueView);
-              mainView.AddSubview(greenView);
-              
-              greenView.TranslatesAutoresizingMaskIntoConstraints = false;
-              blueView.TranslatesAutoresizingMaskIntoConstraints = false;
-              
-              var viewsDictionary = NSDictionary.FromObjectsAndKeys(new NSObject[] { greenView, blueView}, new NSObject[] { new NSString("green"), new NSString("blue")});
-              var metrics = new NSDictionary();
-              
-              mainView.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|-[blue]-|",0, new NSDictionary(), viewsDictionary));
-              mainView.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|-[blue]-(==30)-[green(==blue)]-|",0, new NSDictionary(), viewsDictionary));
-              mainView.AddConstraints(NSLayoutConstraint.FromVisualFormat("|-[green(==blue)]-|",0, new NSDictionary(), viewsDictionary));
-              
+            <code lang="C#"><![CDATA[
+mainView.AddSubview(blueView);
+mainView.AddSubview(greenView);
+
+greenView.TranslatesAutoresizingMaskIntoConstraints = false;
+blueView.TranslatesAutoresizingMaskIntoConstraints = false;
+
+var viewsDictionary = NSDictionary.FromObjectsAndKeys(new NSObject[] { greenView, blueView}, new NSObject[] { new NSString("green"), new NSString("blue")});
+var metrics = new NSDictionary();
+
+mainView.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|-[blue]-|",0, new NSDictionary(), viewsDictionary));
+mainView.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|-[blue]-(==30)-[green(==blue)]-|",0, new NSDictionary(), viewsDictionary));
+mainView.AddConstraints(NSLayoutConstraint.FromVisualFormat("|-[green(==blue)]-|",0, new NSDictionary(), viewsDictionary));
+              ]]>
             </code>
           </example>
           <para>
@@ -1576,7 +1582,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <para>This method, when called within the <c>animations</c> action of a call to <see cref="M:MonoTouch.UIKit.UIView.AnimateKeyframes"/>, specifies a keyframe in an animation sequence. Both the <paramref name="frameStartTime"/> and <paramref name="frameDuration"/> parameters range fro m 0 to 1 and specify durations relative to the enclosing <see cref="M:MonoTouch.UIKit.UIView.AnimateKeyframes"/> <c>duration</c> parameter.</para>
           <para>For instance, in the following example (which shows the use of both passed-in <see cref="T:MonoTouch.Foundation.NSAction"/> parameters and a C# lambda expression), the third keyframe's <paramref name="frameStartTime"/> and <paramref name="frameDuration"/> are both set to 0.5; since the the containing <see cref="M:MonoTouch.UIKit.UIView.AnimateKeyframesAsync"/>'s <paramref name="duration"/> is set to 3 seconds, this animation will start at 1.5 seconds and take 1.5 seconds to complete.</para>
           <example>
-            <code lang="C#">
+            <code lang="C#"><![CDATA[
 var animationSucceeded = await UIView.AnimateKeyframesAsync(
 		duration : 3,
 		delay : 0,
@@ -1588,6 +1594,7 @@ var animationSucceeded = await UIView.AnimateKeyframesAsync(
 			UIView.AddKeyframeWithRelativeStartTime(0.5, 0.5, keyframe3);
 		}
 	);
+    ]]>
             </code>
             </example>
         </remarks>
@@ -1676,8 +1683,9 @@ var animationSucceeded = await UIView.AnimateKeyframesAsync(
             This is merely a convenience routine that allows the application developer to add a number of views in a single call.
           </para>
           <example>
-            <code lang="c#">
-              myView.AddSubviews (label, button, entry, image1, image2);
+            <code lang="C#"><![CDATA[
+myView.AddSubviews (label, button, entry, image1, image2);
+            ]]>
             </code>
           </example>
         </remarks>
@@ -2413,22 +2421,25 @@ async void AnimateAsync()
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
-            <code lang="c#">
-              // Lambda style
-              NSNotificationCenter.DefaultCenter.AddObserver (
-              UIView.AnnouncementDidFinishNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIView", notification); }
-              
-              
-              // Method style
-              void Callback (NSNotification notification)
-              {
-              Console.WriteLine ("Received a notification UIView", notification);
-              }
-              
-              void Setup ()
-              {
-              NSNotificationCenter.DefaultCenter.AddObserver (UIView.AnnouncementDidFinishNotification, Callback);
-              }
+            <code lang="C#"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+    UIView.AnnouncementDidFinishNotification, (notification) => {
+        Console.WriteLine ("Received the notification UIView", notification); 
+    });
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UIView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UIView.AnnouncementDidFinishNotification, Callback);
+}
+              ]]>
             </code>
           </example>
         </remarks>
@@ -2523,9 +2534,10 @@ async void AnimateAsync()
           <para>The returned object represents the UIAppearance proxy where you can set appearance properties for instances of UIView when those instances are contained in the hierarchy specified by the <paramref name="containers" /> parameter.</para>
           <para>The following example shows how the AppearanceWhenContainedIn method works</para>
           <example>
-            <code lang="C#">
+            <code lang="C#"><![CDATA[
 var mySliders = UISlider.AppearanceWhenContainedIn (typeof (UINavigationBar), typeof (UIPopoverController));
 mySliders.TintColor = UIColor.Red;
+]]>
 </code>
           </example>
           <para>For more information, see the documentation for the <see cref="T:MonoTouch.UIKit.UIAppearance" /> class.</para>
@@ -2557,14 +2569,15 @@ mySliders.TintColor = UIColor.Red;
           <para>Application developers may wish to use the more powerful Auto Layout capability rather than the older Autoresizing Mask capability.</para>
           <para>The <see cref="M:MonoTouch.UIKit.UIView.AutoresizingMask" /> is a powerful feature that handles a good deal of the complexity of resizing views, such as occurs during device rotation. However, it is not necessarily a complete solution. For instance, when using a <see cref="T:MonoTouch.UIKit.UIScrollView" />,  logic may require the <see cref="P:MonoTouch.UIKit.UIScrollView.ContentSize" /> to be resized. In such situations, application developers may subscribe to the <c>UIDeviceOrientationDidChangeNotification</c> and implement a custom method with additional resizing logic:</para>
           <example>
-            <code>
-              //During initialization, subscribe to orientation changes              
-              NSNotificationCenter.DefaultCenter.AddObserver ("UIDeviceOrientationDidChangeNotification", DeviceRotated);
-              
-              protected void DeviceRotated (NSNotification notification)
-              {
-              //Code to resize UIScrollView.ContentSize and other custom on-rotation logic
-              }
+            <code lang="C#"><![CDATA[
+//During initialization, subscribe to orientation changes              
+NSNotificationCenter.DefaultCenter.AddObserver ("UIDeviceOrientationDidChangeNotification", DeviceRotated);
+
+protected void DeviceRotated (NSNotification notification)
+{
+    //Code to resize UIScrollView.ContentSize and other custom on-rotation logic
+}
+              ]]>
             </code>
           </example>
         </remarks>
@@ -2647,19 +2660,20 @@ mySliders.TintColor = UIColor.Red;
           <para>Application developers should prefer to use the more compact syntax of the <see cref="M:MonoTouch.UIKit.UIView.Animate" /> method.</para>
           <para>Older versions of iOS used a matched set of <see cref="M:MonoTouch.UIKit.UIView.BeginAnimations" /> and <see cref="M:MonoTouch.UIKit.UIView.CommitAnimations" /> to specify an animation block. The following code, taken from the "Animate a UIView using UIKit" recipe, shows the technique:</para>
           <example>
-            <code lang="C#">
-              UIView.BeginAnimations ("slideAnimation");
-              
-              UIView.SetAnimationDuration (2);
-              UIView.SetAnimationCurve (UIViewAnimationCurve.EaseInOut);
-              UIView.SetAnimationRepeatCount (2);
-              UIView.SetAnimationRepeatAutoreverses (true);
-              UIView.SetAnimationDelegate (this);
-              UIView.SetAnimationDidStopSelector (
-                new Selector ("slideAnimationFinished:"));
-              _imageView.Center = new PointF (UIScreen.MainScreen.Bounds.Right -
-                _imageView.Frame.Width / 2, _imageView.Center.Y);
-              UIView.CommitAnimations ();
+            <code lang="C#"><![CDATA[
+UIView.BeginAnimations ("slideAnimation");
+
+UIView.SetAnimationDuration (2);
+UIView.SetAnimationCurve (UIViewAnimationCurve.EaseInOut);
+UIView.SetAnimationRepeatCount (2);
+UIView.SetAnimationRepeatAutoreverses (true);
+UIView.SetAnimationDelegate (this);
+UIView.SetAnimationDidStopSelector (
+  new Selector ("slideAnimationFinished:"));
+_imageView.Center = new PointF (UIScreen.MainScreen.Bounds.Right -
+  _imageView.Frame.Width / 2, _imageView.Center.Y);
+UIView.CommitAnimations ();
+              ]]>
             </code>
           </example>
         </remarks>
@@ -2906,22 +2920,24 @@ mySliders.TintColor = UIColor.Red;
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
-            <code lang="c#">
-              // Lambda style
-              NSNotificationCenter.DefaultCenter.AddObserver (
-              UIView.ClosedCaptioningStatusDidChangeNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIView", notification); }
-              
-              
-              // Method style
-              void Callback (NSNotification notification)
-              {
-              Console.WriteLine ("Received a notification UIView", notification);
-              }
-              
-              void Setup ()
-              {
-              NSNotificationCenter.DefaultCenter.AddObserver (UIView.ClosedCaptioningStatusDidChangeNotification, Callback);
-              }
+            <code lang="C#"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+    UIView.ClosedCaptioningStatusDidChangeNotification, (notification) => {
+        Console.WriteLine ("Received the notification UIView", notification); 
+    });
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UIView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UIView.ClosedCaptioningStatusDidChangeNotification, Callback);
+}
+              ]]>
             </code>
           </example>
         </remarks>
@@ -2961,19 +2977,20 @@ mySliders.TintColor = UIColor.Red;
           <para>Application developers should prefer to use the more compact syntax of the <see cref="M:MonoTouch.UIKit.UIView.Animate" /> method.</para>
           <para>Older versions of iOS used a matched set of <see cref="M:MonoTouch.UIKit.UIView.BeginAnimations" /> and <see cref="M:MonoTouch.UIKit.UIView.CommitAnimations" /> to specify an animation block. The following code, taken from the "Animate a UIView using UIKit" recipe, shows the technique:</para>
           <example>
-            <code lang="C#">
-              UIView.BeginAnimations ("slideAnimation");
-              
-              UIView.SetAnimationDuration (2);
-              UIView.SetAnimationCurve (UIViewAnimationCurve.EaseInOut);
-              UIView.SetAnimationRepeatCount (2);
-              UIView.SetAnimationRepeatAutoreverses (true);
-              UIView.SetAnimationDelegate (this);
-              UIView.SetAnimationDidStopSelector (
-                new Selector ("slideAnimationFinished:"));
-              _imageView.Center = new PointF (UIScreen.MainScreen.Bounds.Right -
-                _imageView.Frame.Width / 2, _imageView.Center.Y);
-              UIView.CommitAnimations ();
+            <code lang="C#"><![CDATA[
+  UIView.BeginAnimations ("slideAnimation");
+  
+  UIView.SetAnimationDuration (2);
+  UIView.SetAnimationCurve (UIViewAnimationCurve.EaseInOut);
+  UIView.SetAnimationRepeatCount (2);
+  UIView.SetAnimationRepeatAutoreverses (true);
+  UIView.SetAnimationDelegate (this);
+  UIView.SetAnimationDidStopSelector (
+    new Selector ("slideAnimationFinished:"));
+  _imageView.Center = new PointF (UIScreen.MainScreen.Bounds.Right -
+    _imageView.Frame.Width / 2, _imageView.Center.Y);
+  UIView.CommitAnimations ();
+              ]]>
             </code>
           </example>
         </remarks>
@@ -3014,11 +3031,12 @@ mySliders.TintColor = UIColor.Red;
             The <see cref="P:MonoTouch.UIKit.NSLayoutConstraint.DebugDescription" /> property can be helpful in debugging Auto Layout issues. 
           </para>
           <example>
-            <code lang="C#">
-              foreach(var c in mainView.Constraints)
-              {
-              Console.WriteLine(c.DebugDescription);
-              }              
+            <code lang="C#"><![CDATA[
+foreach(var c in mainView.Constraints)
+{
+    Console.WriteLine(c.DebugDescription);
+}              
+              ]]>
             </code>
           </example>
         </remarks>
@@ -3450,29 +3468,30 @@ mySliders.TintColor = UIColor.Red;
             pixel.
           </para>
           <example>
-            <code lang="c#">
-              public override void Draw (RectangleF rect)
-              {
-              base.Draw (rect);
-              
-              var context = UIGraphics.GetCurrentContext ();
-              
-              context.SetLineWidth(4);
-              UIColor.Red.SetFill ();
-              UIColor.Blue.SetStroke ();
-              
-              var path = new CGPath ();
-              
-              path.AddLines(new PointF[]{
-              new PointF(100,200),
-              new PointF(160,100), 
-              new PointF(220,200)});
-              
-              path.CloseSubpath();
-              
-              context.AddPath(path);		
-              context.DrawPath(CGPathDrawingMode.FillStroke);
-              }
+            <code lang="C#"><![CDATA[
+public override void Draw (RectangleF rect)
+{
+    base.Draw (rect);
+
+    var context = UIGraphics.GetCurrentContext ();
+
+    context.SetLineWidth(4);
+    UIColor.Red.SetFill ();
+    UIColor.Blue.SetStroke ();
+
+    var path = new CGPath ();
+
+    path.AddLines(new PointF[]{
+    new PointF(100,200),
+    new PointF(160,100), 
+    new PointF(220,200)});
+
+    path.CloseSubpath();
+
+    context.AddPath(path);		
+    context.DrawPath(CGPathDrawingMode.FillStroke);
+}
+              ]]>
             </code>
           </example>
           <para tool="threads">This can be used from a background thread.</para>
@@ -4304,19 +4323,20 @@ mySliders.TintColor = UIColor.Red;
           <para>This method is a debugging oriented helper method and is not guaranteed to return the complete set (or any) <see cref="T:MonoTouch.UIKit.NSLayoutConstraint" />s. </para>
           <para>If this method is called directly from within <see cref="M:MonoTouch.UIKit.UIViewController.ViewDidLoad" />, it will generally return an empty array. If it is invoked as shown in the following example, it appears to be more likely to provide a comprehensive answer.</para>
           <example>
-            <code lang="C#">
-              mainView.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|-[blue]-|", 0, new NSDictionary(), viewsDictionary));
-              mainView.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|-[blue]-(==30)-[green(==blue)]-|", 0, new NSDictionary(), viewsDictionary));
-              mainView.AddConstraints(NSLayoutConstraint.FromVisualFormat("|-[green(==blue)]-|", 0, new NSDictionary(), viewsDictionary));
-              
-              System.Threading.ThreadPool.QueueUserWorkItem(delegate {
-                InvokeOnMainThread(delegate {
-                  foreach(var c2 in blueView.GetConstraintsAffectingLayout(UILayoutConstraintAxis.Horizontal))
-                  {
-                    Console.WriteLine(c2);
-                  }
-                });
-              });
+            <code lang="C#"><![CDATA[
+mainView.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|-[blue]-|", 0, new NSDictionary(), viewsDictionary));
+mainView.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|-[blue]-(==30)-[green(==blue)]-|", 0, new NSDictionary(), viewsDictionary));
+mainView.AddConstraints(NSLayoutConstraint.FromVisualFormat("|-[green(==blue)]-|", 0, new NSDictionary(), viewsDictionary));
+
+System.Threading.ThreadPool.QueueUserWorkItem(delegate {
+  InvokeOnMainThread(delegate {
+    foreach(var c2 in blueView.GetConstraintsAffectingLayout(UILayoutConstraintAxis.Horizontal))
+    {
+      Console.WriteLine(c2);
+    }
+  });
+});
+              ]]>
             </code>
           </example>
         </remarks>
@@ -4368,22 +4388,25 @@ mySliders.TintColor = UIColor.Red;
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
-            <code lang="c#">
-              // Lambda style
-              NSNotificationCenter.DefaultCenter.AddObserver (
-              UIView.GuidedAccessStatusDidChangeNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIView", notification); }
-              
-              
-              // Method style
-              void Callback (NSNotification notification)
-              {
-              Console.WriteLine ("Received a notification UIView", notification);
-              }
-              
-              void Setup ()
-              {
-              NSNotificationCenter.DefaultCenter.AddObserver (UIView.GuidedAccessStatusDidChangeNotification, Callback);
-              }
+            <code lang="C#"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+    UIView.GuidedAccessStatusDidChangeNotification, (notification) => {
+        Console.WriteLine ("Received the notification UIView", notification); 
+    }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UIView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UIView.GuidedAccessStatusDidChangeNotification, Callback);
+}
+              ]]>
             </code>
           </example>
         </remarks>
@@ -4685,22 +4708,25 @@ mySliders.TintColor = UIColor.Red;
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
-            <code lang="c#">
-              // Lambda style
-              NSNotificationCenter.DefaultCenter.AddObserver (
-              UIView.InvertColorsStatusDidChangeNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIView", notification); }
-              
-              
-              // Method style
-              void Callback (NSNotification notification)
-              {
-              Console.WriteLine ("Received a notification UIView", notification);
-              }
-              
-              void Setup ()
-              {
-              NSNotificationCenter.DefaultCenter.AddObserver (UIView.InvertColorsStatusDidChangeNotification, Callback);
-              }
+            <code lang="C#"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+    UIView.InvertColorsStatusDidChangeNotification, (notification) => {
+        Console.WriteLine ("Received the notification UIView", notification); 
+    });
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UIView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UIView.InvertColorsStatusDidChangeNotification, Callback);
+}
+              ]]>
             </code>
           </example>
         </remarks>
@@ -4905,22 +4931,25 @@ mySliders.TintColor = UIColor.Red;
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
-            <code lang="c#">
-              // Lambda style
-              NSNotificationCenter.DefaultCenter.AddObserver (
-              UIView.MonoAudioStatusDidChangeNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIView", notification); }
-              
-              
-              // Method style
-              void Callback (NSNotification notification)
-              {
-              Console.WriteLine ("Received a notification UIView", notification);
-              }
-              
-              void Setup ()
-              {
-              NSNotificationCenter.DefaultCenter.AddObserver (UIView.MonoAudioStatusDidChangeNotification, Callback);
-              }
+            <code lang="C#"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+    UIView.MonoAudioStatusDidChangeNotification, (notification) => {
+        Console.WriteLine ("Received the notification UIView", notification); 
+    });
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UIView", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UIView.MonoAudioStatusDidChangeNotification, Callback);
+}
+              ]]>
             </code>
           </example>
         </remarks>
@@ -6496,16 +6525,17 @@ mySliders.TintColor = UIColor.Red;
           <para>The reference parameter <paramref name="actualFontSize" /> is assigned the font size that is ultimately used by the calculation.</para>
           <para>The following example code shows the use of this method. The output is "Metrics are {Width=100, Height=15} with required font size of: 7.5."</para>
           <example>
-            <code lang="C#">
-              var v = new UIView();
-              var str = "Hark! I hear the cannons roar!";
-              var font = UIFont.FromName("Helvetica", 12);
-              var minFontSize = 6;
-              Single actualFontSize = 0;
-              var forWidth = 100;
-              var lineBreakMode = UILineBreakMode.WordWrap;
-              var textSize = v.StringSize(str, font, minFontSize, ref actualFontSize, forWidth, lineBreakMode);
-              Console.WriteLine("Metrics are {0} with required font size of: {1}", textSize, actualFontSize);
+            <code lang="C#"><![CDATA[
+var v = new UIView();
+var str = "Hark! I hear the cannons roar!";
+var font = UIFont.FromName("Helvetica", 12);
+var minFontSize = 6;
+Single actualFontSize = 0;
+var forWidth = 100;
+var lineBreakMode = UILineBreakMode.WordWrap;
+var textSize = v.StringSize(str, font, minFontSize, ref actualFontSize, forWidth, lineBreakMode);
+Console.WriteLine("Metrics are {0} with required font size of: {1}", textSize, actualFontSize);
+            ]]>
             </code>
           </example>
         </remarks>
@@ -7155,14 +7185,15 @@ mySliders.TintColor = UIColor.Red;
             The transform is applied prior to Auto Layout constraints being applied. For instance, the following code shows constraints that, with default transforms, lay out three equally sized subviews with 30-pixel vertical spacing. A scaling transform is applied to the green view and a rotational transform to the yellow. The following image shows the result: the transforms are applied and then the Auto Layout constraints are resolved. The result is that the views are resized such that their width and height match the constraints. This effectively overrides the scaling transform on the green view while rotating and scaling the yellow view such that it's alignment rectangle satisfies the constraints.
           </para>
           <example>
-            <code lang="C#">
-              mainView.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|-[blue]-|", 0, new NSDictionary(), viewsDictionary));
-              mainView.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|-[blue]-(==30)-[green(==blue)]-(==30)-[yellow(==blue)]-|", 0, new NSDictionary(), viewsDictionary));
-              mainView.AddConstraints(NSLayoutConstraint.FromVisualFormat("|-[green(==blue)]-|", 0, new NSDictionary(), viewsDictionary));
-              mainView.AddConstraints(NSLayoutConstraint.FromVisualFormat("|-[yellow(==blue)]-|", 0, new NSDictionary(), viewsDictionary));
-              
-              greenView.Transform = CGAffineTransform.MakeScale(2F, 2F);
-              yellowView.Transform = CGAffineTransform.MakeRotation((float)(Math.PI / 10));		
+            <code lang="C#"><![CDATA[
+mainView.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|-[blue]-|", 0, new NSDictionary(), viewsDictionary));
+mainView.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|-[blue]-(==30)-[green(==blue)]-(==30)-[yellow(==blue)]-|", 0, new NSDictionary(), viewsDictionary));
+mainView.AddConstraints(NSLayoutConstraint.FromVisualFormat("|-[green(==blue)]-|", 0, new NSDictionary(), viewsDictionary));
+mainView.AddConstraints(NSLayoutConstraint.FromVisualFormat("|-[yellow(==blue)]-|", 0, new NSDictionary(), viewsDictionary));
+
+greenView.Transform = CGAffineTransform.MakeScale(2F, 2F);
+yellowView.Transform = CGAffineTransform.MakeRotation((float)(Math.PI / 10));		
+]]>
             </code>
           </example>
           <para>
