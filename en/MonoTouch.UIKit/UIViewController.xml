@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Type Name="UIViewController" FullName="MonoTouch.UIKit.UIViewController">
   <TypeSignature Language="C#" Value="public class UIViewController : MonoTouch.UIKit.UIResponder, System.Collections.IEnumerable" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit UIViewController extends MonoTouch.UIKit.UIResponder implements class System.Collections.IEnumerable" />
@@ -56,34 +56,34 @@
       </para>
       <example>
         <code lang="C#"><![CDATA[
-          public override bool FinishedLaunching (UIApplication app, NSDictionary options)
-          {
-            // create a new window instance based on the screen size
-            window = new UIWindow (UIScreen.MainScreen.Bounds);
+public override bool FinishedLaunching (UIApplication app, NSDictionary options)
+{
+       // create a new window instance based on the screen size
+       window = new UIWindow (UIScreen.MainScreen.Bounds);
           
-            viewController = new HelloWorld_iPhoneViewController ("HelloWorld_iPhoneViewController", null);
-            window.RootViewController = viewController;
-            window.MakeKeyAndVisible ();
+       viewController = new HelloWorld_iPhoneViewController ("HelloWorld_iPhoneViewController", null);
+       window.RootViewController = viewController;
+       window.MakeKeyAndVisible ();
           
-            return true;
-          }
+       return true;
+}
 ]]></code>
       </example>
       <para>
         By contrast, the following code taken from the "iOS Standard Controls" sample demonstrates how a <see cref="T:MonoTouch.UIKit.UITableViewController" /> uses an application-defined <c>NavItemGroup</c> to manage a series of other <see cref="T:MonoTouch.UIKit.UIViewController" />s. In this code, the second parameter to the <c>NavItem</c> constructor is the specific <see cref="T:MonoTouch.UIKit.UIViewController" /> subtype desired when that item is selected in the table:</para>
       <example>
         <code lang="C#"><![CDATA[
-          navGroup = new NavItemGroup ("Toolbars");
-          navItems.Add (navGroup);
-          navGroup.Items.Add (new NavItem ("Toolbar 1", "", typeof(Toolbar.Toolbar1_iPhone)));
-          navGroup.Items.Add (new NavItem ("Programmatic Toolbar", "", typeof(Toolbar.ProgrammaticToolbar_Controller)));
-          navGroup.Items.Add (new NavItem ("Toolbar Items", "", typeof(Toolbar.ToolbarItems)));
-          
-          // create a table source from our nav items
-          tableSource = new NavItemTableSource (this.NavigationController, navItems);
-          
-          // set the source on the table to our data source
-          base.TableView.Source = tableSource;
+navGroup = new NavItemGroup ("Toolbars");
+navItems.Add (navGroup);
+navGroup.Items.Add (new NavItem ("Toolbar 1", "", typeof(Toolbar.Toolbar1_iPhone)));
+navGroup.Items.Add (new NavItem ("Programmatic Toolbar", "", typeof(Toolbar.ProgrammaticToolbar_Controller)));
+navGroup.Items.Add (new NavItem ("Toolbar Items", "", typeof(Toolbar.ToolbarItems)));
+  
+// create a table source from our nav items
+tableSource = new NavItemTableSource (this.NavigationController, navItems);
+  
+// set the source on the table to our data source
+base.TableView.Source = tableSource;
 ]]></code>
       </example>
       <format type="text/html">
@@ -104,14 +104,7 @@
         </item>
         <item>
           <term>
-            <list type="bullet">
-              <item>
-                <term>The Controller reacts to events both from the View and from the Model. A <see cref="T:MonoTouch.UIKit.UIViewController" /> might, for instance, handle a <see cref="M:MonoTouch.UIKit.UIControl.TouchUpInside" /> input event by requesting the Model to convert between Celsius and Fahrenheit temperature units. Conversely it might respond to a Model “too hot” event by changing the display (making visible a warning icon or somesuch). </term>
-              </item>
-              <term>
-                <item>The View updates its display in reaction to new data provided by Model events. View classes should be as passive as possible. One of the most common mistakes in non-maintainable software is a View class that acts as a Controller or that "reaches into" the Model for data rather than accepting values passed in as event arguments. </item>
-              </term>
-            </list>
+The Controller reacts to events both from the View and from the Model. A <see cref="T:MonoTouch.UIKit.UIViewController" /> might, for instance, handle a <see cref="M:MonoTouch.UIKit.UIControl.TouchUpInside" /> input event by requesting the Model to convert between Celsius and Fahrenheit temperature units. Conversely it might respond to a Model “too hot” event by changing the display (making visible a warning icon or somesuch).  The View updates its display in reaction to new data provided by Model events. View classes should be as passive as possible. One of the most common mistakes in non-maintainable software is a View class that acts as a Controller or that "reaches into" the Model for data rather than accepting values passed in as event arguments. 
           </term>
         </item>
       </list>
@@ -137,12 +130,12 @@
       </para>
       <example>
         <code lang="C#"><![CDATA[
-          if (UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone) {
-            homeScreen = new Screens.HomeScreen_iPhone();
-          } else {
-            homeScreen = new Screens.HomeScreen_iPad();
-          }
-          window.RootViewController = homeScreen;
+if (UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone) {
+    homeScreen = new Screens.HomeScreen_iPhone();
+} else {
+    homeScreen = new Screens.HomeScreen_iPad();
+}
+window.RootViewController = homeScreen;
 ]]></code>
       </example>
       <format type="text/html">
@@ -157,20 +150,20 @@
       </para>
       <example>
         <code lang="C#"><![CDATA[
-          [Adopts ("UIViewControllerRestoration")]
-          class MyUIViewController : UIViewController {
-          
-             [Export ("viewControllerWithRestorationIdentifierPath:")]
-             static UIViewController FromIdentifierPath (string [] identifierComponents, NSCoder coder)
-             {
-                var sb = (UIStoryboard) coder.DecodeObject (UIStateRestoration.ViewControllerStoryboardKey);
-                if (sb != null){
-                   var vc = (MyUIViewController) sb.InstantiateViewController ("MyViewController");
-                   vc.RestorationIdentifier = identifierComponents [identifierComponents.Length-1];
-                   vc.RestorationClass = Class.GetHandle (typeof (MyViewController));
-                }
-             }
-          }
+[Adopts ("UIViewControllerRestoration")]
+class MyUIViewController : UIViewController {
+
+ [Export ("viewControllerWithRestorationIdentifierPath:")]
+ static UIViewController FromIdentifierPath (string [] identifierComponents, NSCoder coder)
+ {
+    var sb = (UIStoryboard) coder.DecodeObject (UIStateRestoration.ViewControllerStoryboardKey);
+    if (sb != null){
+       var vc = (MyUIViewController) sb.InstantiateViewController ("MyViewController");
+       vc.RestorationIdentifier = identifierComponents [identifierComponents.Length-1];
+       vc.RestorationClass = Class.GetHandle (typeof (MyViewController));
+    }
+ }
+}
 ]]></code>
       </example>
       <para>
@@ -327,7 +320,7 @@
           <para>In general, if your constructors invokes the NSObjectFlag.Empty base implementation, then it should be calling an Objective-C init method.   If this is not the case, you should instead chain to the proper constructor in your class. </para>
           <para>The argument value is ignored and merely ensures that the only code that is executed is the construction phase is the basic NSObject allocation and runtime type registration.  Typically the chaining would look like this:</para>
           <example>
-            <code lang="C#">
+            <code lang="C#"><![CDATA[
 //
 // The NSObjectFlag merely allocates the object and registers the
 // C# class with the Objective-C runtime if necessary, but no actual
@@ -345,6 +338,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 	else
 		Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
 }
+]]>
 </code>
           </example>
         </remarks>
@@ -424,13 +418,13 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           </para>
           <example>
             <code lang="C#"><![CDATA[
-              var myView = new MyViewController (new RectangleF (0, 0, 320, 320)){
-                new ImageGallery (region [0]),
-                new ImageGallery (region [1]),
-                new UILabel (new RectangleF (10, 10, 200, 200)){
-                  Text = "Images from our Trip"
-                }
-              };
+  var myView = new MyViewController (new RectangleF (0, 0, 320, 320)){
+    new ImageGallery (region [0]),
+    new ImageGallery (region [1]),
+    new UILabel (new RectangleF (10, 10, 200, 200)){
+      Text = "Images from our Trip"
+    }
+  };
 ]]></code>
           </example>
         </remarks>
@@ -640,17 +634,16 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           </para>
           <example>
             <code lang="C#"><![CDATA[
-              commentViewIsVisible = false;
-              commentViewController.WillMoveToParentViewController (null);
-              commentViewController.BeginAppearanceTransition (false, true);
-              UIView.Animate (0.5f, () => {
-                commentView.Alpha = 0.5f;
-                }, () => { 
-                  commentView.RemoveFromSuperview ();
-                  commentViewController.EndAppearanceTransition ();
-                  commentViewController.RemoveFromParentViewController ();
-                }
-              );
+commentViewIsVisible = false;
+commentViewController.WillMoveToParentViewController (null);
+commentViewController.BeginAppearanceTransition (false, true);
+UIView.Animate (0.5f, () => {
+    commentView.Alpha = 0.5f;
+}, () => { 
+    commentView.RemoveFromSuperview ();
+    commentViewController.EndAppearanceTransition ();
+    commentViewController.RemoveFromParentViewController ();
+});
               ]]></code>
           </example>
         </remarks>
@@ -1021,16 +1014,17 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <remarks>
           <para>This method is automatically called when the system is running low on memory. Application developers who override this method in order to release resources must call <c>base.DidReceiveMemoryWarning()</c>, as shown in the following code, taken from the “Media Notes” sample:</para>
           <example>
-            <code lang="C#">
-              public override void DidReceiveMemoryWarning ()
-              {
-                photoMap.Clear ();
-                View = null;
-                photoImageView = null;
-                toolbar = null;
-                syncIsNeeded = true;
-                base.DidReceiveMemoryWarning();
-              }
+            <code lang="C#"><![CDATA[
+public override void DidReceiveMemoryWarning ()
+{
+    photoMap.Clear ();
+    View = null;
+    photoImageView = null;
+    toolbar = null;
+    syncIsNeeded = true;
+    base.DidReceiveMemoryWarning();
+}
+  ]]>
             </code>
           </example>
         </remarks>
@@ -1408,17 +1402,17 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           </para>
           <example>
             <code lang="C#"><![CDATA[
-              commentViewIsVisible = false;
-              commentViewController.WillMoveToParentViewController (null);
-              commentViewController.BeginAppearanceTransition (false, true);
-              UIView.Animate (0.5f, () => {
-                commentView.Alpha = 0.5f;
-              }, () => { 
-                commentView.RemoveFromSuperview ();
-                commentViewController.EndAppearanceTransition ();
-                commentViewController.RemoveFromParentViewController ();
-              });
-              ]]></code>
+commentViewIsVisible = false;
+commentViewController.WillMoveToParentViewController (null);
+commentViewController.BeginAppearanceTransition (false, true);
+UIView.Animate (0.5f, () => {
+    commentView.Alpha = 0.5f;
+}, () => { 
+    commentView.RemoveFromSuperview ();
+    commentViewController.EndAppearanceTransition ();
+    commentViewController.RemoveFromParentViewController ();
+});
+]]></code>
           </example>
         </remarks>
         <altmember cref="M:MonoTouch.UIKit.UIViewController.EndAppearanceTransition" />
@@ -2726,17 +2720,17 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <para>Application developeres may specify a <see cref="T:MonoTouch.UIKit.UISearchDisplayController" /> using Interface Builder or programmatically. To assign the <see cref="M:MonoTouch.UIKit.UIViewController.SearchDisplayController" /> property, the <see cref="T:MonoTouch.UIKit.UIViewController" /> must have a field of type <see cref="T:MonoTouch.UIKit.UISearchBar" /> decorated with <c>[Outlet]</c> (<see cref="T:MonoTouch.Foundation.OutletAttribute" />) and must initialize a new <see cref="T:MonoTouch.UIKit.UISearchDisplayController" /> with a reference to that <see cref="T:MonoTouch.UIKit.UISearchBar" />. As shown in the following code, the assignment of the <see cref="T:MonoTouch.UIKit.UISearchDisplayController" /> to <see cref="P:MonoTouch.UIKit.UIViewControlle.SearchDisplayController" /> is done implicitly during initialization, and does not involve the application developer assigning the reference to the newly-created <see cref="T:MonoTouch.UIKit.UISearchDisplayController" />:</para>
           <example>
             <code lang="C#"><![CDATA[
-              public override void ViewDidLoad ()
-              {
-                base.ViewDidLoad ();
-              
-                //this.SearchDisplayController == null
-                //n.b.: No assignment 
-                new UISearchDisplayController (mySearchBar, this);
-                //this.SearchDisplayController != null         
-                Console.WriteLine ("SearchDisplayController = '{0}'", this.SearchDisplayController);
-              }
-              ]]></code>
+public override void ViewDidLoad ()
+{
+    base.ViewDidLoad ();
+
+    //this.SearchDisplayController == null
+    //n.b.: No assignment 
+    new UISearchDisplayController (mySearchBar, this);
+    //this.SearchDisplayController != null         
+    Console.WriteLine ("SearchDisplayController = '{0}'", this.SearchDisplayController);
+}
+]]></code>
           </example>
         </remarks>
       </Docs>
@@ -3615,13 +3609,13 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <para>When this property is at it's default value of <see langword="false" />, the <see cref="T:MonoTouch.UIKit.UIViewController" />'s <see cref="P:MonoTouch.UIKit.UIViewController.View" />'s <see cref="P:MonoTouch.UIKit.UIView.Frame" /> is sized so that it does not include the area under the device's status bar (the area at the stop of the screen that shows, e.g., signal and carrier, battery charge, etc.). If set to <see langword="true" /> and <see cref="P:MonoTouch.UIKit.UIApplication.StatusBarStyle" /> is set to <see cref="M:MonoTouch.UIKit.UIStatusBarStyle.BlackTranslucent" />, the <see cref="P:MonoTouch.UIKit.UIViewController.View" /> will be visible behind the status bar.</para>
           <example>
             <code lang="C#"><![CDATA[
-              public override void ViewDidLoad ()
-              {
-                base.ViewDidLoad ();
-              
-                WantsFullScreenLayout = true;
-                UIApplication.SharedApplication.StatusBarStyle = UIStatusBarStyle.BlackTranslucent;
-              }
+public override void ViewDidLoad ()
+{
+    base.ViewDidLoad ();
+
+    WantsFullScreenLayout = true;
+    UIApplication.SharedApplication.StatusBarStyle = UIStatusBarStyle.BlackTranslucent;
+}
 ]]></code>
           </example>
         </remarks>
