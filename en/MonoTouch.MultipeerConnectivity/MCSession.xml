@@ -254,8 +254,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="peerID" Type="MonoTouch.MultipeerConnectivity.MCPeerID" />
       </Parameters>
       <Docs>
-        <param name="peerID">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="peerID">The ID of the peer whose connection should be cancelled.</param>
+        <summary>Cancel's a pending connection to the <paramref name="peerID"/>.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -291,8 +291,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.MultipeerConnectivity.MCPeerID[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>An array of the currently connected devices.</summary>
+        <value>The array will be non-null, but of length 0, if no peers are connected.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -313,13 +313,15 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Parameters>
         <Parameter Name="peerID" Type="MonoTouch.MultipeerConnectivity.MCPeerID" />
-        <Parameter Name="data" Type="MonoTouch.Foundation.NSData" />
+        <Parameter Name="peerConnectionData" Type="MonoTouch.Foundation.NSData" />
       </Parameters>
       <Docs>
-        <param name="peerID">To be added.</param>
-        <param name="data">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="peerID">The remote peer's identifier.</param>
+        <param name="peerConnectionData">The <c>connectionData</c> value passed in to <see cref="T:MonoTouch.MultipeerConnectivity.MSSessionNearbyConnectionDataForPeerCompletionHandler"/>.</param>
+        <summary>Initiates a connection to a peer identified by <paramref name="peerID"/>.</summary>
+        <remarks>
+          <para>Application developers may use a non-Multipeer Connectivity discovery technique, such as Bonjour / <see cref="T:MonoTouch.Foundation.NSNetService"/>, and manually manage peer connection. However, the <paramref name="peerID"/> used here and in <see cref="M:MonoTouch.MultipeerConnectivity.MCSession.NearbyConnectionDataForPeer"/> must originate from a <see cref="T:MonoTouch.Foundation.NSKeyedArchiver"/> serializing an <see cref="T:MonoTouch.MultipeerConnectivity.MCPeerID"/> on the remote peer. (This raises the question: if discovery and enough message-passing code to transmit the <paramref name="peerID"/> is done by Bonjour, what's the advantage of using MPC for further communication? One answer might be the evolution of a legacy system, another answer might lie in the simpler message- and resource-passing of MPC.)</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Delegate">
@@ -362,7 +364,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Disconnects this peer from the session.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -408,8 +410,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.MultipeerConnectivity.MCEncryptionPreference</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>What type, if any, encryption s preferred.</summary>
+        <value>The default value is <see cref="F:MonoTouch.MultipeerConnectivity.MCEncryptionPreference.Optional"/>.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -430,8 +432,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Docs>
         <summary>Represents the value associated with the constant kMCSessionMaximumNumberOfPeers</summary>
-        <value>
-        </value>
+        <value>The value is 8.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -452,7 +453,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Docs>
         <summary>Represents the value associated with the constant kMCSessionMinimumNumberOfPeers</summary>
-        <value>
+        <value>The value is 2.
         </value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -473,7 +474,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.MultipeerConnectivity.MCPeerID</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The peer ID associated with this device.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -504,10 +505,28 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="peerID">To be added.</param>
-        <param name="completionHandler">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="peerID">Created from data serialized on a remote peer.</param>
+        <param name="completionHandler">The completion handler called after processing is complete.</param>
+        <summary>Creates the necessary data for a  manually-managed peer connection.</summary>
+        <remarks>
+          <para>Application developers may use a non-Multipeer Connectivity discovery technique, such as Bonjour / <see cref="T:MonoTouch.Foundation.NSNetService"/>, and manually manage peer connection. However, the <paramref name="peerID"/> used here and in <see cref="M:MonoTouch.MultipeerConnectivity.MCSession.ConnectPeer"/> must originate from a <see cref="T:MonoTouch.Foundation.NSKeyedArchiver"/> serializing an <see cref="T:MonoTouch.MultipeerConnectivity.MCPeerID"/> on the remote peer. (This raises the question: if discovery and enough message-passing code to transmit the <paramref name="peerID"/> is done by Bonjour, what's the advantage of using MPC for further communication? One answer might be the evolution of a legacy system, another answer might lie in the simpler message- and resource-passing of MPC.)</para>
+          <para>Once the application developer has the <paramref name="peerID"/>, the rest of the code to connect a peer would be:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//User code: Perhaps using Bonjour or other discovery and messaging service
+var peerID = DeserializedPeerID();
+//Request connection data, with completionHandler lambda as continuation
+session.NearbyConnectionDataForPeer(peerID, (connectionData, error) => { 
+    if(error != null){
+        //Note: peerID is serialized version, connectionData is passed in to continuation
+        session.ConnectPeer(peerID, connectionData);
+    }else{
+         throw new Exception(error);
+    }
+});              
+              ]]></code>
+            </example>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SecurityIdentity">
@@ -526,8 +545,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.Foundation.NSArray</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>The security identity of this peer.</summary>
+        <value>Location [0] holds a <c>SecIdentityRef</c> for the local peer. Additional values (if they exist) will be for connected peers.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -557,9 +576,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="peerIDs">To be added.</param>
         <param name="mode">To be added.</param>
         <param name="error">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>Enqueues for delivery the <paramref name="data"/> to the peers in <paramref name="peerIDs"/>.</summary>
+        <returns><see langword="true"/> if the message was enqueued for delivery.</returns>
+        <remarks>
+          <para>Note that the return value only indicates successful enqueueing of the data for transmission, not a confirmation of delivery.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SendResource">
@@ -594,9 +615,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="resourceName">To be added.</param>
         <param name="peerID">To be added.</param>
         <param name="completionHandler">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>Enqueues for delivery to <paramref name="peerID"/> the resource at <paramref name="resourceUrl"/>.</summary>
+        <returns><see langword="true"/> if the resource was enqueued for delivery.</returns>
+        <remarks>
+          <para>Note that the return value only indicates successful enqueueing of the resource for transmission, not a confirmation of delivery. Delivery success or failure is passed in to the <paramref name="completionHandler"/>.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="StartStream">
@@ -623,8 +646,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="streamName">To be added.</param>
         <param name="peerID">To be added.</param>
         <param name="error">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <summary>Creates a named stream to <paramref name="peerID"/>.</summary>
+        <returns>A byte stream or <see langword="null"/> if the stream could not be created.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
