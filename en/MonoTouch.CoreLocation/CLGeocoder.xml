@@ -242,6 +242,19 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="completionHandler">Method to invoke when the request completes.</param>
         <summary>Request a latitude/longitude location from a human readable address.</summary>
         <remarks>
+          <para>Application developers should consider using the <see cref="M:MonoTouch.MultipeerConnectivity.CLGeocoder.GeocodeAddressAsync"/> methods, which provide a <see cref="T:System.Threading.Tasks.Task"/>-based asynchronous interface.</para>
+        <example><code lang="C#"><![CDATA[
+var addressString = "2 Park Plaza, Boston, MA, USA 02116";
+var geocoder = new CLGeocoder();
+
+geocoder.GeocodeAddress(addressString, (addresses, error) => {
+	foreach(var address in addresses)
+	{
+		Console.WriteLine(address);
+	}
+});           
+              ]]></code></example>
+          
         </remarks>
       </Docs>
     </Member>
@@ -297,18 +310,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <summary>Request a latitude/longitude location from a human readable address book entry.</summary>
         <returns>
           <para>A task that represents the asynchronous GeocodeAddress operation.   The value of the TResult parameter is a MonoTouch.CoreLocation.CLGeocodeCompletionHandler.</para>
-          <example><code lang="C#"><![CDATA[
-var addressString = "2 Park Plaza, Boston, MA, USA 02116";
-var geocoder = new CLGeocoder();
-var taskCoding = geocoder.GeocodeAddressAsync(addressString);
-taskCoding.ContinueWith((addresses) => {
-	foreach(var address in addresses.Result)
-	{
-		Console.WriteLine(address);
-	}
-});              
-              ]]></code></example>
-        </returns>
+          </returns>
         <remarks>
         </remarks>
       </Docs>
@@ -331,10 +333,20 @@ taskCoding.ContinueWith((addresses) => {
         <summary>Request a latitude/longitude location from a human readable address and region.</summary>
         <returns>
           <para>A task that represents the asynchronous GeocodeAddress operation.   The value of the TResult parameter is a MonoTouch.CoreLocation.CLGeocodeCompletionHandler.</para>
+        <example><code lang="C#"><![CDATA[
+var addressString = "2 Park Plaza, Boston, MA, USA 02116";
+var geocoder = new CLGeocoder();
+var taskCoding = geocoder.GeocodeAddressAsync(addressString);
+taskCoding.ContinueWith((addresses) => {
+	foreach(var address in addresses.Result)
+	{
+		Console.WriteLine(address);
+	}
+});              
+              ]]></code></example>
         </returns>
         <remarks>
           <para copied="true">The GeocodeAddressAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
-          <para copied="true">To be added.</para>
         </remarks>
       </Docs>
     </Member>
