@@ -140,10 +140,13 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="myPeerID">To be added.</param>
-        <param name="info">To be added.</param>
-        <param name="serviceType">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="info">A small dictionary to aide discovery (see <see cref="P:MonoTouch.MultipeerConnectivity.MCNearbyServiceAdvertiser.DiscoveryInfo"/>).</param>
+        <param name="serviceType">A string between 1 and 15 characters long, identifying the protocol being used.</param>
+        <summary>Creates an object identified as <paramref name="myPeerID"/> for the specific <paramref name="serviceType"/>.</summary>
+        <remarks>  
+           <para>The <paramref name="serviceType"/> must be a string, between 1 and 15 characters long, identifying the network protocol being advertised. A common pattern is "{company_name}-{apptype}", e.g., <c>xamarin-txtchat</c>.</para>
+          <para>The <paramref name="info"/> dictionary has size and content limitations (see <see cref="P:MonoTouch.MultipeerConnectivity.MCNearbyServiceAdvertiser.DiscoveryInfo"/>). </para>
+</remarks>
       </Docs>
     </Member>
     <Member MemberName="ClassHandle">
@@ -201,9 +204,14 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.Foundation.NSDictionary</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>A small dictionary of data available to aide peer discovery and negotiation.</summary>
+        <value>This will contain the data passed in to the <see cref="C:MonoTouch.MultipeerConnectivity.MCNearbyServiceAdvertiser(Monotouch.MultipeerConnectivity.MCPeerID,MonoTouch.Foundation.NSDictionary,string)"/> constructor.</value>
+        <remarks>
+                 <para>The total size of keys and data in this dictionary should be less than ~400 bytes so that it can fit into a single Bluetooth data packet.</para>
+          <para>The dictionary should map <see langword="string"/>s to <see langword="string"/>s. Each key-value pair must be no more than 255 bytes with the equals sign inserted between them (i.e., <c>System.Text.ASCIIEncoding.Unicode.GetByteCount(String.Format("{0}={1}",key,value)) &lt;= 255 </c>). Keys may not contain equals signs.</para>
+          <para>The dictionary is advertised as a Bonjour TXT record (see <format type="text/html"><a href="http://tools.ietf.org/html/rfc6763">RFC 6763, Section 6</a></format>).</para>
+     
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Dispose">
@@ -248,8 +256,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.MultipeerConnectivity.MCPeerID</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>The identity by which this device will be known on the peer network.</summary>
+        <value>This will contain the data passed in to the <see cref="C:MonoTouch.MultipeerConnectivity.MCNearbyServiceAdvertiser(Monotouch.MultipeerConnectivity.MCPeerID,MonoTouch.Foundation.NSDictionary,string)"/> constructor.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -269,8 +277,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>The network protocol this peer supports.</summary>
+        <value>This will contain the data passed in to the <see cref="C:MonoTouch.MultipeerConnectivity.MCNearbyServiceAdvertiser(Monotouch.MultipeerConnectivity.MCPeerID,MonoTouch.Foundation.NSDictionary,string)"/> constructor.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -291,7 +299,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Begins advertising this peer device for connection.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -312,7 +320,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Stops advertising this peer device for connection.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>

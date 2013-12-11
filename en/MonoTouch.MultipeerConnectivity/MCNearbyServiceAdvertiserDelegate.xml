@@ -176,7 +176,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="advertiser">To be added.</param>
         <param name="error">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Indicates that advertising peer availability failed.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -211,9 +211,20 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="advertiser">To be added.</param>
         <param name="peerID">To be added.</param>
         <param name="context">To be added.</param>
-        <param name="invitationHandler">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="invitationHandler">Continuation that the app developer must call.</param>
+        <summary>Indicates an invitation has been received to join a session.</summary>
+        <remarks>
+          <para>When overriding this method, application developers must invoke the <paramref name="invitationHandler"/>, passing in an appropriate <see cref="T:MonoTouch.MultipeerConnectivity.MCSession"/> and a boolean indicating whether the invitation should be accepted or not.</para>
+          <example>
+            <code lang="C#"><![CDATA[
+public override void DidReceiveInvitationFromPeer(MCNearbyServiceAdvertiser advertiser, MCPeerID peerID, NSData context, MCNearbyServiceAdvertiserInvitationHandler invitationHandler)
+{
+	parent.statusLbl.Text = "Received Invite";
+  invitationHandler(true, parent.Session);
+}              
+              ]]></code>
+            </example>
+        </remarks>
       </Docs>
     </Member>
   </Members>
