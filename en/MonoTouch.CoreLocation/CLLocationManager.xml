@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <Type Name="CLLocationManager" FullName="MonoTouch.CoreLocation.CLLocationManager">
   <TypeSignature Language="C#" Value="public class CLLocationManager : MonoTouch.Foundation.NSObject" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi CLLocationManager extends MonoTouch.Foundation.NSObject" />
@@ -8,19 +9,26 @@
   <Base>
     <BaseTypeName>MonoTouch.Foundation.NSObject</BaseTypeName>
   </Base>
-  <Interfaces />
+  <Interfaces/>
   <Attributes>
     <Attribute>
       <AttributeName>MonoTouch.Foundation.Register("CLLocationManager", true)</AttributeName>
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Manages the delivery of location and heading events to your application.</summary>
+    <summary>Manages the delivery of location, region, and heading events to your application.</summary>
     <remarks>
+      <!-- tk basic of location updates -->
+      <!-- tk basics of region monitoring -->
+      <!-- tk discussion of ranging -->
       <block subset="none" type="behaviors">
-        <format type="text/html"><h2>Background Updating and Deferred Mode</h2></format>
+        <format type="text/html">
+          <h2>Background Updating and Deferred Mode</h2>
+        </format>
         <para>Locations can be updated while the application is in the background. This requires that the <c>info.plist</c> be modified using either Xamarin Studio's visual editor:</para>
-        <para><img src="CoreLocation.CLLocationManager.BackgroundModesEnabled"/></para>
+        <para>
+          <img src="CoreLocation.CLLocationManager.BackgroundModesEnabled" />
+        </para>
         <para>Or by adding the key manually:</para>
         <example>
           <code lang="C#"><![CDATA[
@@ -32,11 +40,23 @@
         </example>
         <para>Power consumption is an important consideration for all backgrounding scenarios. In the case of location data, GPS-enabled hardware may be able to record and cache accurate location but defer the delivery to the application for some amount of time. This "deferred mode" has several constraints:  </para>
         <table type="bullet">
-          <item><term>GPS hardware must be available</term></item>
-          <item><term>The <see cref="P:MonoTouch.CoreLocation.CLLocationManager.Delegate"/> property must be assigned to an object whose class implements the <see cref="M:MonoTouch.CoreLocation.CLLocationManagerDelegate.LocationsUpdated"/> method.</term></item>
-          <item><term>The <see cref="P:MonoTouch.CoreLocation.CLLocationManager.DesiredAccuracy"/> property must be set to <see cref="P:MonoTouch.CoreLocation.CLLocation.AccuracyBest"/> or <see cref="P:MonoTouch.CoreLocation.CLLocation.AccuracyBestForNavigation"/>.</term></item>
+          <item>
+            <term>GPS hardware must be available</term>
+          </item>
+          <item>
+            <term>The <see cref="P:MonoTouch.CoreLocation.CLLocationManager.Delegate" /> property must be assigned to an object whose class implements the <see cref="M:MonoTouch.CoreLocation.CLLocationManagerDelegate.LocationsUpdated"/> method.</term>
+          </item>
+          <item>
+            <term>The <see cref="P:MonoTouch.CoreLocation.CLLocationManager.DesiredAccuracy" /> property must be set to <see cref="P:MonoTouch.CoreLocation.CLLocation.AccuracyBest"/> or <see cref="P:MonoTouch.CoreLocation.CLLocation.AccuracyBestForNavigation"/>.</term>
+          </item>
         </table>
-        <para>If those conditions are satisfied, the application can request deferred delivery when backgrounded by calling the <see cref="M:MonoTouch.CoreLocation.CLLocationManager.AllowDeferredLocationUpdatesUntil"/> method.</para>
+        <para>If those conditions are satisfied, the application can request deferred delivery when backgrounded by calling the <see cref="M:MonoTouch.CoreLocation.CLLocationManager.AllowDeferredLocationUpdatesUntil" /> method.</para>
+      </block>
+      <block subset="note" type="behaviors">
+        <format type="text/html">
+          <h2>Importance of Delegate object</h2>
+        </format>
+        <para>Generally, when using Xamarin.iOS, developers can freely choose whether to use C# <c>event</c>s or Apple-style "delegate objects" to react to object lifecycle events. Several <see cref="T:MonoTouch.CoreLocation.CLLocationManager" /> methods, however, require the delegate-object pattern. For instance, <see cref="M:MonoTouch.CoreLocation.CLLocationManager.AllowDeferredLocationUpdatesUntil"/> will raise a runtime exception if the <see cref="P:MonoTouch.CoreLocation.CLLocationManager.Delegate"/> property is not set to an object whose class implements <see cref="M:MonoTouch.CoreLocation.CLLocationManagerDelegate.LocationsUpdated"/> method.</para>
       </block>
     </remarks>
     <related type="article" href="http://docs.xamarin.com/guides/cross-platform/application_fundamentals/backgrounding/part_4_ios_backgrounding_walkthroughs/location_walkthrough/">Background Location Walkthrough</related>
@@ -58,7 +78,7 @@
           <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
         </Attribute>
       </Attributes>
-      <Parameters />
+      <Parameters/>
       <Docs>
         <summary>Default constructor that initializes a new instance of this class with no parameters.</summary>
         <remarks>
@@ -114,7 +134,7 @@
           <para>In general, if your constructors invokes the NSObjectFlag.Empty base implementation, then it should be calling an Objective-C init method.   If this is not the case, you should instead chain to the proper constructor in your class. </para>
           <para>The argument value is ignored and merely ensures that the only code that is executed is the construction phase is the basic NSObject allocation and runtime type registration.  Typically the chaining would look like this:</para>
           <example>
-            <code lang="C#">
+            <code lang="C#"><![CDATA[
 //
 // The NSObjectFlag merely allocates the object and registers the
 // C# class with the Objective-C runtime if necessary, but no actual
@@ -125,14 +145,15 @@
 [Export ("initWithFrame:")]
 public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 {
-// Invoke the init method now.
-	var initWithFrame = new Selector ("initWithFrame:").Handle;
-	if (IsDirectBinding)
-		Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
-	else
-		Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+    // Invoke the init method now.
+    var initWithFrame = new Selector ("initWithFrame:").Handle;
+    if (IsDirectBinding)
+        Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+    else
+        Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+    }
 }
-</code>
+            ]]></code>
           </example>
         </remarks>
       </Docs>
@@ -189,9 +210,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Docs>
         <summary>Used to provide the operating system clues for better power consumption / accuracy.</summary>
-        <value>The default value is <see cref="P:MonoTouch.CoreLocation.CLActivityType.Other"/>.</value>
+        <value>The default value is <see cref="P:MonoTouch.CoreLocation.CLActivityType.Other" />.</value>
         <remarks>
-        <para>Application developers should set this property when possible. It provides clues to the system about the application's need. For instance, if set to <see cref="P:MonoTouch.CoreLocation.CLActivityType.AutomativeNavigation"/> and the device has not moved for awhile, the system might power down updates until movement is detected.</para>  
+          <para>Application developers should set this property when possible. It provides clues to the system about the application's need. For instance, if set to <see cref="P:MonoTouch.CoreLocation.CLActivityType.AutomativeNavigation" /> and the device has not moved for awhile, the system might power down updates until movement is detected.</para>
         </remarks>
       </Docs>
     </Member>
@@ -220,13 +241,13 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="distance">A distance, in meters, after which location updates should be delivered.</param>
         <param name="timeout">A time, in seconds, after which location updates should be delivered.</param>
-        <summary>Suggests that location updates are deferred until either <paramref name="distance"/> has been traveled or <paramref name="timeout"/> has passed.</summary>
+        <summary>Suggests that location updates are deferred until either <paramref name="distance" /> has been traveled or <paramref name="timeout"/> has passed.</summary>
         <remarks>
-          <para>Application developers must implement <see cref="M:MonoTouch.CoreLocation.CLLocationManagerDelegate"/> and assign the <see cref="P:MonoTouch.CoreLocation.CLLocationManager.Delegate"/> property prior to calling this method, or they will receive a runtime exception.</para>
+          <para>Application developers must implement <see cref="M:MonoTouch.CoreLocation.CLLocationManagerDelegate" /> and assign the <see cref="P:MonoTouch.CoreLocation.CLLocationManager.Delegate"/> property prior to calling this method, or they will receive a runtime exception.</para>
           <para>Application developers who require GPS-accurate location information when their application is in the background, but do not need that information in near-real-time should use this method to defer delivery. Deferred delivery consumes significantly less power.</para>
           <para>This method is only a request. Location updates may occur even if the application is in deferred mode. If updates occur when the application is in deferred mode, the application will stay in deferred mode.</para>
           <para>If the application is in the foreground, location updates are not delayed.</para>
-          <para>This method requires GPS hardware to be available, <see cref="P:MonoTouch.CoreLocation.CLLocationManager.DistanceFilter"/> to be <see cref="P:MonoTouch.CoreLocation.CLLocationDistance.None"/>, and <see cref="P:MonoTouch.CoreLocation.CLLocationManager.DesiredAccuracy"/> be either <see cref="P:MonoTouch.CoreLocation.CLLocation.AccuracyBest"/> or <see cref="P:MonoTouch.CoreLocation.CLLocation.AccuracyBestForNavigation"/>.</para>
+          <para>This method requires GPS hardware to be available, <see cref="P:MonoTouch.CoreLocation.CLLocationManager.DistanceFilter" /> to be <see cref="P:MonoTouch.CoreLocation.CLLocationDistance.None"/>, and <see cref="P:MonoTouch.CoreLocation.CLLocationManager.DesiredAccuracy"/> be either <see cref="P:MonoTouch.CoreLocation.CLLocation.AccuracyBest"/> or <see cref="P:MonoTouch.CoreLocation.CLLocation.AccuracyBestForNavigation"/>.</para>
         </remarks>
       </Docs>
     </Member>
@@ -346,7 +367,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Docs>
         <summary>The accuracy preferred by the app. (Coarser accuracies consume less power.)</summary>
-        <value>The default value is <see cref="P:MonoTouch.CoreLocation.CLLocation.AccuracyBest"/>.</value>
+        <value>The default value is <see cref="P:MonoTouch.CoreLocation.CLLocation.AccuracyBest" />.</value>
         <remarks>
           <para>Application developers should set this value to the coarsest resolution suitable to their needs.</para>
         </remarks>
@@ -415,11 +436,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
-      <Parameters />
+      <Parameters/>
       <Docs>
         <summary>Turns off deferred background location updates.</summary>
         <remarks>To be added.</remarks>
-        <altmember cref="M:MonoTouch.CoreLocation.CLLocationManager.AllowDeferredLocationUpdatesUntil"/>
+        <altmember cref="M:MonoTouch.CoreLocation.CLLocationManager.AllowDeferredLocationUpdatesUntil" />
       </Docs>
     </Member>
     <Member MemberName="DismissHeadingCalibrationDisplay">
@@ -437,7 +458,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
-      <Parameters />
+      <Parameters/>
       <Docs>
         <summary>Removes the heading calibration view from the display.</summary>
         <remarks>To be added.</remarks>
@@ -458,12 +479,12 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="disposing">
-          <para>If set to <see langword="true" />, the method is invoked directly and will dispose manage and unmanaged resources;   If set to <see langword="false" /> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</para>
+          <para>If set to <see langword="true" />, the method is invoked directly and will dispose manage and unmanaged resources;   If set to <see langword="false"/> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</para>
         </param>
         <summary>Releases the resources used by the CLLocationManager object.</summary>
         <remarks>
           <para>This Dispose method releases the resources used by the CLLocationManager class.</para>
-          <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposing <paramref name="disposing" /> is set to <see langword="true" /> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false" />. </para>
+          <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposing <paramref name="disposing" /> is set to <see langword="true"/> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false"/>. </para>
           <para>Calling the Dispose method when you are finished using the CLLocationManager ensures that all external resources used by this managed object are released as soon as possible.  Once you have invoked the Dispose method, the object is no longer useful and you should no longer make any calls to it.</para>
           <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at http://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
         </remarks>
@@ -489,9 +510,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Docs>
         <summary>The minimum horizontal distance, in meters, the device has to move before issuing a location update.</summary>
-        <value>The default value is <see cref="P:MonoTouch.CoreLocation.CLLocationDistance.None"/>.</value>
+        <value>The default value is <see cref="P:MonoTouch.CoreLocation.CLLocationDistance.None" />.</value>
         <remarks>
-        <para>If this value is set to <see cref="P:MonoTouch.CoreLocation.CLLocationDistance.None"/>, the app will receive all location updates.</para>  
+          <para>If this value is set to <see cref="P:MonoTouch.CoreLocation.CLLocationDistance.None" />, the app will receive all location updates.</para>
         </remarks>
       </Docs>
     </Member>
@@ -533,10 +554,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Docs>
         <summary>The most recent heading (direction in which the device is traveling).</summary>
-        <value>This value may be <see langword="null"/> if heading updates have not been started.</value>
+        <value>This value may be <see langword="null" /> if heading updates have not been started.</value>
         <remarks>
-          <para>Heading information is only available on devices with a hardware magnetometer. (See <see cref="P:MonoTouch.CoreLocation.CLLocationManager.HeadingAvailable"/>.)</para>
-          
+          <para>Heading information is only available on devices with a hardware magnetometer. (See <see cref="P:MonoTouch.CoreLocation.CLLocationManager.HeadingAvailable" />.)</para>
         </remarks>
       </Docs>
     </Member>
@@ -551,7 +571,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Whether the <see cref="P:MonoTouch.CoreLocation.CLLocationManager.Heading"/> property is not <see langword="null"/>.</summary>
+        <summary>Whether the <see cref="P:MonoTouch.CoreLocation.CLLocationManager.Heading" /> property is not <see langword="null"/>.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -640,19 +660,21 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <returns>True if the device supports it, false otherwise.</returns>
         <remarks>
           <para>
-	    This method merely determines whether region monitoring is
-	    available in the hardware, it does not determine whether the
-	    user has enabled location services or whether the
-	    application has been granted permission to use this.  You
-	    must request permission separately.
-	  </para>
-          <para>
-	    To determine whether you have permission to access
-	    location services, use <see cref="T:MonoTouch.CoreLocation.CLLocationManager" />.
+            This method merely determines whether region monitoring is
+            available in the hardware, it does not determine whether the
+            user has enabled location services or whether the
+            application has been granted permission to use this.  You
+            must request permission separately.
           </para>
-          <example><code lang="C#"><![CDATA[
+          <para>
+            To determine whether you have permission to access
+            location services, use <see cref="T:MonoTouch.CoreLocation.CLLocationManager" />.
+          </para>
+          <example>
+            <code lang="C#"><![CDATA[
 var isAvail = CLLocationManager.IsMonitoringAvailable(typeof(CLCircularRegion));                
-                ]]></code></example>
+                ]]></code>
+          </example>
         </remarks>
       </Docs>
     </Member>
@@ -675,16 +697,16 @@ var isAvail = CLLocationManager.IsMonitoringAvailable(typeof(CLCircularRegion));
         <returns>True if the device supports it, false otherwise.</returns>
         <remarks>
           <para>
-	    This method merely determines whether region monitoring is
-	    available in the hardware, it does not determine whether the
-	    user has enabled location services or whether the
-	    application has been granted permission to use this.  You
-	    must request permission separately.
-	  </para>
+            This method merely determines whether region monitoring is
+            available in the hardware, it does not determine whether the
+            user has enabled location services or whether the
+            application has been granted permission to use this.  You
+            must request permission separately.
+          </para>
           <para>
-	    To determine whether you have permission to access
-	    location services, use <see cref="T:MonoTouch.CoreLocation.CLLocationManager" />.
-	  </para>
+            To determine whether you have permission to access
+            location services, use <see cref="T:MonoTouch.CoreLocation.CLLocationManager" />.
+          </para>
         </remarks>
       </Docs>
     </Member>
@@ -704,7 +726,7 @@ var isAvail = CLLocationManager.IsMonitoringAvailable(typeof(CLCircularRegion));
         <ReturnType>MonoTouch.CoreLocation.CLLocation</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The most recently-retrieved <see cref="T:MonoTouch.CoreLocation.CLLocation"/>.</summary>
+        <summary>The most recently-retrieved <see cref="T:MonoTouch.CoreLocation.CLLocation" />.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -721,7 +743,7 @@ var isAvail = CLLocationManager.IsMonitoringAvailable(typeof(CLCircularRegion));
       </ReturnValue>
       <Docs>
         <summary>Whether location services are available.</summary>
-        <value><see langword="true"/> if the necessary hardware exists and the user has allowed the app's request for access.</value>
+        <value><see langword="true" /> if the necessary hardware exists and the user has allowed the app's request for access.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -847,10 +869,10 @@ var isAvail = CLLocationManager.IsMonitoringAvailable(typeof(CLCircularRegion));
         <ReturnType>MonoTouch.Foundation.NSSet</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The set of <see cref="T:MonoTouch.CoreLocation.CLRegion"/>s being monitored by the app.</summary>
+        <summary>The set of <see cref="T:MonoTouch.CoreLocation.CLRegion" />s being monitored by the app.</summary>
         <value>To be added.</value>
         <remarks>
-        <para>The <see cref="T:MonoTouch.CoreLocation.CLRegion"/>s objects returned by this method may be different than those created by the app. Application developers should use the <see cref="P:MonoTouch.CoreLocation.CLRegion.Identifier"/> property to determine equality.</para>  
+          <para>The <see cref="T:MonoTouch.CoreLocation.CLRegion" />s objects returned by this method may be different than those created by the app. Application developers should use the <see cref="P:MonoTouch.CoreLocation.CLRegion.Identifier"/> property to determine equality.</para>
         </remarks>
       </Docs>
     </Member>
@@ -898,9 +920,9 @@ var isAvail = CLLocationManager.IsMonitoringAvailable(typeof(CLCircularRegion));
       </ReturnValue>
       <Docs>
         <summary>Whether the system is allowed to pause location updates (for instance, if the device has not moved in awhile).</summary>
-        <value>The default value is <see langword="true"/>.</value>
+        <value>The default value is <see langword="true" />.</value>
         <remarks>
-        <para>Application developers can make pauses more logical by assigning <see cref="P:MonoTouch.CoreLocation.CLLocationManager.ActivityType"/> appropriately.</para>  
+          <para>Application developers can make pauses more logical by assigning <see cref="P:MonoTouch.CoreLocation.CLLocationManager.ActivityType" /> appropriately.</para>
         </remarks>
       </Docs>
     </Member>
@@ -938,7 +960,7 @@ var isAvail = CLLocationManager.IsMonitoringAvailable(typeof(CLCircularRegion));
         <summary>Application developers should not use this deprecated property.</summary>
         <value>To be added.</value>
         <remarks>
-          <para>Application developers should not use this deprecated property.</para>  
+          <para>Application developers should not use this deprecated property.</para>
           <para>Prior to iOS 6, this property was displayed to the user when they were prompted as to whether to allow location services.</para>
         </remarks>
       </Docs>
@@ -965,7 +987,7 @@ var isAvail = CLLocationManager.IsMonitoringAvailable(typeof(CLCircularRegion));
         <ReturnType>MonoTouch.Foundation.NSSet</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The set of <see cref="T:MonoTouch.CoreLocation.CLRegion"/>s being tracked using ranging.</summary>
+        <summary>The set of <see cref="T:MonoTouch.CoreLocation.CLRegion" />s being tracked using ranging.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -1040,7 +1062,7 @@ var isAvail = CLLocationManager.IsMonitoringAvailable(typeof(CLCircularRegion));
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Application developers should use <see cref="M:MonoTouch.CoreLocation.CLLocationManager.IsMonitoringAvailable"/> rather than this deprecated method.</summary>
+        <summary>Application developers should use <see cref="M:MonoTouch.CoreLocation.CLLocationManager.IsMonitoringAvailable" /> rather than this deprecated method.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -1070,7 +1092,7 @@ var isAvail = CLLocationManager.IsMonitoringAvailable(typeof(CLCircularRegion));
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Application developers should use <see cref="M:MonoTouch.CoreLocation.CLLocationManager.IsMonitoringAvailable"/> rather than this deprecated method.</summary>
+        <summary>Application developers should use <see cref="M:MonoTouch.CoreLocation.CLLocationManager.IsMonitoringAvailable" /> rather than this deprecated method.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -1098,9 +1120,9 @@ var isAvail = CLLocationManager.IsMonitoringAvailable(typeof(CLCircularRegion));
       </Parameters>
       <Docs>
         <param name="region">The region whose state is being queried.</param>
-        <summary>Asynchronously requests information on the state of the <paramref name="region"/>.</summary>
+        <summary>Asynchronously requests information on the state of the <paramref name="region" />.</summary>
         <remarks>
-          <para>Application developers must have assigned the <see cref="P:MonoTouch.CoreLocation.CLLocationManager.Delegate"/> property to an object that implements <see cref="M:MonoTouch.CoreLocation.CLLocationManagerDelegate.DidDetermineState"/> prior to calling this method. The <see cref="M:MonoTouch.CoreLocation.CLLocationManagerDelegate.DidDetermineState"/> method will be called at some point subsequently.</para>
+          <para>Application developers must have assigned the <see cref="P:MonoTouch.CoreLocation.CLLocationManager.Delegate" /> property to an object that implements <see cref="M:MonoTouch.CoreLocation.CLLocationManagerDelegate.DidDetermineState"/> prior to calling this method. The <see cref="M:MonoTouch.CoreLocation.CLLocationManagerDelegate.DidDetermineState"/> method will be called at some point subsequently.</para>
         </remarks>
       </Docs>
     </Member>
@@ -1143,9 +1165,9 @@ var isAvail = CLLocationManager.IsMonitoringAvailable(typeof(CLCircularRegion));
       </ReturnValue>
       <Docs>
         <summary>Whether "significant location change" monitoring (e.g., via cell tower switch) is available.</summary>
-        <value><see langword="true"/> if such monitoring is available.</value>
+        <value><see langword="true" /> if such monitoring is available.</value>
         <remarks>
-        <para>"Significant location change" monitoring is the lowest-power location monitoring mode and is done primarily via tracking cellphone tower changes. This type of monitoring is primarily useful for applications that are satisfied by approximate location data. </para>  
+          <para>"Significant location change" monitoring is the lowest-power location monitoring mode and is done primarily via tracking cellphone tower changes. This type of monitoring is primarily useful for applications that are satisfied by approximate location data. </para>
         </remarks>
       </Docs>
     </Member>
@@ -1172,9 +1194,9 @@ var isAvail = CLLocationManager.IsMonitoringAvailable(typeof(CLCircularRegion));
       </Parameters>
       <Docs>
         <param name="region">The region to be monitored.</param>
-        <summary>Begins monitoring <paramref name="region"/> for entry and exit.</summary>
+        <summary>Begins monitoring <paramref name="region" /> for entry and exit.</summary>
         <remarks>
-          <para>An application may monitor up to 20 uniquely-named (defined by <see cref="P:MonoTouch.CoreLocation.CLRegion.Identifier"/>) regions. The speed with which region notifications are delivered is dependent on network connectivity.</para>
+          <para>An application may monitor up to 20 uniquely-named (defined by <see cref="P:MonoTouch.CoreLocation.CLRegion.Identifier" />) regions. The speed with which region notifications are delivered is dependent on network connectivity.</para>
           <para>Region entry/exit notifications typically arrive within 3-5 minutes. Regions of less than 400m radius work better on iPhone 4S and later devices. (Notification speed seems fastest on devices with M7 coprocessors.)</para>
         </remarks>
       </Docs>
@@ -1208,8 +1230,8 @@ var isAvail = CLLocationManager.IsMonitoringAvailable(typeof(CLCircularRegion));
         <param name="region">Region to monitor</param>
         <param name="desiredAccuracy">Accuracy in meters.</param>
         <summary>Starts monitoring the region.</summary>
-        <remarks> 
-          <para>An application may monitor up to 20 uniquely-named (defined by <see cref="P:MonoTouch.CoreLocation.CLRegion.Identifier"/>) regions. The speed with which region notifications are delivered is dependent on network connectivity.</para>
+        <remarks>
+          <para>An application may monitor up to 20 uniquely-named (defined by <see cref="P:MonoTouch.CoreLocation.CLRegion.Identifier" />) regions. The speed with which region notifications are delivered is dependent on network connectivity.</para>
           <para>Region entry/exit notifications typically arrive within 3-5 minutes. Regions of less than 400m radius work better on iPhone 4S and later devices. (Notification speed seems fastest on devices with M7 coprocessors.)</para>
         </remarks>
       </Docs>
@@ -1232,11 +1254,11 @@ var isAvail = CLLocationManager.IsMonitoringAvailable(typeof(CLCircularRegion));
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
-      <Parameters />
+      <Parameters/>
       <Docs>
         <summary>Starts monitoring for significant changes.</summary>
         <remarks>
-        <para>This is the most energy-efficient monitoring mode and primarily relies on cellphone-tower changes. It is most appropriate for applications that do not have precise location-monitoring needs. </para>  
+          <para>This is the most energy-efficient monitoring mode and primarily relies on cellphone-tower changes. It is most appropriate for applications that do not have precise location-monitoring needs. </para>
         </remarks>
       </Docs>
     </Member>
@@ -1263,9 +1285,9 @@ var isAvail = CLLocationManager.IsMonitoringAvailable(typeof(CLCircularRegion));
       </Parameters>
       <Docs>
         <param name="region">The region being checked.</param>
-        <summary>Starts delivering notifications about beacons in <paramref name="region"/>.</summary>
+        <summary>Starts delivering notifications about beacons in <paramref name="region" />.</summary>
         <remarks>
-        <para>Prior to calling this method, application developers must assign to <see cref="P:MonoTouch.CoreLocation.CLLocationManager.Delegate"/> an object that implements the <see cref="M:MonoTouch.CoreLocation.CLLocationManagerDelegate.DidRangeBeacons"/> and <see cref="M:MonoTouch.CoreLocation.CLLocationManagerDelegate.RangingBeaconsDidFailForRegion"/> methods.</para>  
+          <para>Prior to calling this method, application developers must assign to <see cref="P:MonoTouch.CoreLocation.CLLocationManager.Delegate" /> an object that implements the <see cref="M:MonoTouch.CoreLocation.CLLocationManagerDelegate.DidRangeBeacons"/> and <see cref="M:MonoTouch.CoreLocation.CLLocationManagerDelegate.RangingBeaconsDidFailForRegion"/> methods.</para>
         </remarks>
       </Docs>
     </Member>
@@ -1284,11 +1306,11 @@ var isAvail = CLLocationManager.IsMonitoringAvailable(typeof(CLCircularRegion));
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
-      <Parameters />
+      <Parameters/>
       <Docs>
         <summary>Starts updating the heading.</summary>
         <remarks>
-          <para>Heading information is only available on devices with a hardware magnetometer. (See <see cref="P:MonoTouch.CoreLocation.CLLocationManager.HeadingAvailable"/>.)</para>
+          <para>Heading information is only available on devices with a hardware magnetometer. (See <see cref="P:MonoTouch.CoreLocation.CLLocationManager.HeadingAvailable" />.)</para>
         </remarks>
       </Docs>
     </Member>
@@ -1307,7 +1329,7 @@ var isAvail = CLLocationManager.IsMonitoringAvailable(typeof(CLCircularRegion));
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
-      <Parameters />
+      <Parameters/>
       <Docs>
         <summary>Starts updating the location</summary>
         <remarks>To be added.</remarks>
@@ -1363,7 +1385,7 @@ var isAvail = CLLocationManager.IsMonitoringAvailable(typeof(CLCircularRegion));
       </Parameters>
       <Docs>
         <param name="region">To be added.</param>
-        <summary>Stops monitoring the <paramref name="region"/>.</summary>
+        <summary>Stops monitoring the <paramref name="region" />.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -1385,7 +1407,7 @@ var isAvail = CLLocationManager.IsMonitoringAvailable(typeof(CLCircularRegion));
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
-      <Parameters />
+      <Parameters/>
       <Docs>
         <summary>Starts monitoring significant location changes.</summary>
         <remarks>To be added.</remarks>
@@ -1414,7 +1436,7 @@ var isAvail = CLLocationManager.IsMonitoringAvailable(typeof(CLCircularRegion));
       </Parameters>
       <Docs>
         <param name="region">To be added.</param>
-        <summary>Stops tracking beacons in the <paramref name="region"/>.</summary>
+        <summary>Stops tracking beacons in the <paramref name="region" />.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -1433,7 +1455,7 @@ var isAvail = CLLocationManager.IsMonitoringAvailable(typeof(CLCircularRegion));
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
-      <Parameters />
+      <Parameters/>
       <Docs>
         <summary>Stops updating the heading.</summary>
         <remarks>To be added.</remarks>
@@ -1454,7 +1476,7 @@ var isAvail = CLLocationManager.IsMonitoringAvailable(typeof(CLCircularRegion));
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
-      <Parameters />
+      <Parameters/>
       <Docs>
         <summary>Stops updating the location.</summary>
         <remarks>To be added.</remarks>
