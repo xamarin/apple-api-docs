@@ -60,9 +60,23 @@ locationManager.DidRangeBeacons += (lm, rangeEvents) => {
 				}
 			};
             ]]></code>
+             <code lang="F#"><![CDATA[
+locationManager.DidRangeBeacons.Add(fun rangeEvents ->
+    let s = match rangeEvents.Beacons.[0].Proximity with
+        | CLProximity.Far  -> "You're getting colder!"
+        | CLProximity.Near -> "You're getting warmer!"
+        | CLProximity.Immediate -> "You're red hot!"
+        | CLProximity.Unknown -> "I can't tell"
+        | _ -> raise(ArgumentOutOfRangeException("Unknown argument"))
+    Console.WriteLine(s)   
+)
+locationManager.StartRangingBeacons(beaconRegion)       
+        ]]></code>
         </example>
       <para>Applications can broadcast themselves as beacons by passing the <see cref="P:MonoTouch.CoreLocation.CLBeaconRegion.PeripheralData" /> property of a <see cref="T:MonoTouch.CoreLocation.CLBeaconRegion" /> to <see cref="M:MonoTouch.CoreBluetooth.CBPeripheralManager.StartAdvertising" />.</para>
     </remarks>
+    <related type="article" href="http://blog.xamarin.com/play-find-the-monkey-with-ios7-ibeacons">Play 'Find the Monkey' with iOS 7 iBeacons</related>
+
   </Docs>
   <Members>
     <Member MemberName=".ctor">

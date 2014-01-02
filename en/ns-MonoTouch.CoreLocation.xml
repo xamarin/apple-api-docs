@@ -1,6 +1,38 @@
 <Namespace Name="MonoTouch.CoreLocation">
   <Docs>
-    <summary>Determine the device current latitude and longitude and location event notification.</summary>
-    <remarks></remarks>
+    <summary>Classes for tracking and monitoring location, regions (including iBeacons), and geocoding</summary>
+    <remarks>
+      <para>The Core Location namespace revolves around tracking and monitoring user location, the device's entry-and-exit from regions (either fixed or iBeacon-based), and geocoding between addresses and locations.</para>
+      <para>Geocoding use-cases center on the <see cref="T:MonoTouch.CoreLocation.CLGeocoder"/> class. Geocoding is simple:</para>
+      <example>
+        <code lang="C#"><![CDATA[
+async void GeocodeToConsoleAsync (string address) {
+    var geoCoder = new CLGeocoder();
+    var placemarks = await geoCoder.GeocodeAddressAsync(address);
+    foreach (var placemark in placemarks) {
+	      Console.WriteLine(placemark);
+    }   
+]]></code>
+      </example>
+      <para>As is reverse-geocoding:</para>
+      <example>
+        <code lang="C#"><![CDATA[
+async void ReverseGeocodeToConsoleAsync (CLLocation location) {
+    var geoCoder = new CLGeocoder();
+    var placemarks = await geoCoder.ReverseGeocodeLocationAsync(location);
+    foreach (var placemark in placemarks) {
+	      Console.WriteLine(placemark);
+    }          
+}
+          ]]></code>
+      </example>
+      <para>Other use-cases typically will start with the <see cref="T:MonoTouch.CoreLocation.CLLocationManager"/> class:</para>
+      <table type="bullet">
+        <item><term>Tracking the device's location</term></item>
+        <item><term>Region monitoring (Geofencing)</term></item>
+        <item><term>iBeacon ranging</term></item>
+      </table>
+      <para>These use-cases are discussed in the <see cref="T:MonoTouch.CoreLocation.CLLocationManager"/> class documentation.</para>
+    </remarks>
   </Docs>
 </Namespace>
