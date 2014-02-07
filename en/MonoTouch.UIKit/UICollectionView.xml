@@ -131,62 +131,62 @@
 	It is very important that you provide a constructor that takes a RectangleF argument in any subclasses that you register with UICollectionView.   This is required because the classes are actually allocated by the Objective-C runtime, and you must initialize them.   The following example shows the expected constructor that you should provide:
       </para>
       <example>
-        <code lang="c#">
+        <code lang="C#"><![CDATA[
 public class AnimalCell : UICollectionViewCell
 {
 [Export ("initWithFrame:")]
   public AnimalCell (RectangleF frame) : base (frame) {}
 }
-</code>
+]]></code>
       </example>
       <para>The overridden methods <see cref="M:MonoTouch.UIKit.UICollectionViewDataSource.GetCell" /> and <see cref="M:MonoTouch.UIKit.UICollectionViewSource.GetViewForSupplementaryElement" /> show the re-assignment code. The <see cref="T:MonoTouch.Foundation.NSIndexPath" /> that is passed as the <c>indexPath</c> argument contains the <see cref="P:MonoTouch.Foundation.NSIndexPath.Section" /> and <see cref="P:MonoTouch.Foundation.NSIndexPath.Item" /> integers that allow the application developer to locate a specific data item and appropriately assign the cell's relevant visual elements. (Application developers familiar with <see cref="T:MonoTouch.UIKit.UITableView" /> will note that <see cref="P:MonoTouch.Foundation.NSIndexPath.Item" /> and <see cref="P:MonoTouch.Foundation.NSIndexPath.Row" /> are the same value.)</para>
       <para>Since these methods, particularly the <see cref="M:MonoTouch.UIKit.UICollectionViewDataSource.GetCell" /> method, are called many times during scrolling, the application developer should avoid unnecessary processing during these calls.</para>
       <example>
         <code lang="C#">
-          public class AnimalCell : UICollectionViewCell
-          {
-            private static NSString classId = new NSString ("AnimalCell");
-            public static NSString ClassId { get { return classId; } }
+public class AnimalCell : UICollectionViewCell
+{
+  private static NSString classId = new NSString ("AnimalCell");
+  public static NSString ClassId { get { return classId; } }
 
-	  [Export ("initWithFrame:")]
-	    public AnimalCell (RectangleF frame) : base (frame) {}
+[Export ("initWithFrame:")]
+  public AnimalCell (RectangleF frame) : base (frame) {}
 
-          //..etc...
-          }
-          
-          
-          public class SimpleCollectionViewController : UICollectionViewController
-          {
-            public override void ViewDidLoad ()
-            {
-              Base.ViewDidLoad ();
-          
-              var cv = CollectionView;
-          
-              cv.RegisterClassForCell (typeof(AnimalCell), AnimalCell.ClassId);
-              cv.RegisterClassForSupplementaryView (typeof(HeaderView), UICollectionElementKindSection.Header, HeaderView.ClassId);
-              cv.CollectionViewLayout.RegisterClassForDecorationView (typeof(DecorationView), DecorationView.ClassId);
-            }
-          
-            public override UICollectionViewCell GetCell (UICollectionView collectionView, MonoTouch.Foundation.NSIndexPath indexPath)
-            {
-              var animalCell = (AnimalCell)collectionView.DequeueReusableCell (AnimalCell.ClassId, indexPath);
-              var animal = animals [indexPath.Section * (animals.Count / SectionCount) + indexPath.Item];
-          
-              animalCell.Image = animal.Image;
-          
-              return animalCell;
-            }
-          
-          
-            public override UICollectionReusableView GetViewForSupplementaryElement (UICollectionView collectionView, NSString elementKind, NSIndexPath indexPath)
-            {
-              var headerView = (HeaderView)collectionView.DequeueReusableSupplementaryView (elementKind, HeaderView.ClassId, indexPath);
-              headerView.Text = "Supplementary View Section " + indexPath.Section.ToString ();
-              return headerView;
-            }
-            //...etc...
-          }
+//..etc...
+}
+
+
+public class SimpleCollectionViewController : UICollectionViewController
+{
+  public override void ViewDidLoad ()
+  {
+    Base.ViewDidLoad ();
+
+    var cv = CollectionView;
+
+    cv.RegisterClassForCell (typeof(AnimalCell), AnimalCell.ClassId);
+    cv.RegisterClassForSupplementaryView (typeof(HeaderView), UICollectionElementKindSection.Header, HeaderView.ClassId);
+    cv.CollectionViewLayout.RegisterClassForDecorationView (typeof(DecorationView), DecorationView.ClassId);
+  }
+
+  public override UICollectionViewCell GetCell (UICollectionView collectionView, MonoTouch.Foundation.NSIndexPath indexPath)
+  {
+    var animalCell = (AnimalCell)collectionView.DequeueReusableCell (AnimalCell.ClassId, indexPath);
+    var animal = animals [indexPath.Section * (animals.Count / SectionCount) + indexPath.Item];
+
+    animalCell.Image = animal.Image;
+
+    return animalCell;
+  }
+
+
+  public override UICollectionReusableView GetViewForSupplementaryElement (UICollectionView collectionView, NSString elementKind, NSIndexPath indexPath)
+  {
+    var headerView = (HeaderView)collectionView.DequeueReusableSupplementaryView (elementKind, HeaderView.ClassId, indexPath);
+    headerView.Text = "Supplementary View Section " + indexPath.Section.ToString ();
+    return headerView;
+  }
+  //...etc...
+}
         </code>
       </example>
       <para>Rather than registering program classes, application developers may choose to register nibs defined with XCode's Interface Builder. The relevant methods are shown in the following table.</para>
@@ -1358,12 +1358,13 @@ mySliders.TintColor = UIColor.Red;
           <para>The application developer may pass <see langword="null" /> as the <paramref name="reuseIdentifier" />, in which case the <paramref name="cellType" /> will be "un-registered" and no longer instantiated. The application developer may pass in a <paramref name="reuseIdentifier" /> previously associated with another type, in which case the old type will be "de-registered" and the new <paramref name="cellType" /> will be used.</para>
           <para>It is very important that the type that you specify implements a public constructor that takes a <see cref="T:System.Drawing.RectangleF" /> parameter, this is used to initialize the class from an object allocated by Objective-C.   The following example shows the constructor in use:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 public class AnimalCell : UICollectionViewCell
 {
 [Export ("initWithFrame:")]
   public AnimalCell (RectangleF frame) : base (frame) {}
 }
+]]>
 </code>
           </example>
         </remarks>
