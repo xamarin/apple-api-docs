@@ -17,10 +17,83 @@
   <Docs>
     <summary>Coordinates an audio playback or capture session.</summary>
     <remarks>
-      <para>Application developers should use the singleton object retrieved by <see cref="M:MonoTouch.AVFoundation.AVAudioSession.SharedInstance" />.</para>
-      <para>Because the audio hardware of an iOS device is shared between all apps, audio settings can only be "preferred" (see <c>SetPreferred*</c> methods) and the application developer must account for use-cases where these preferences are overridden. Additionally, the interaction of an app with other apps and system services is largely specified by the <see cref="P:MonoTouch.AVFoundation.AVAudioSession.Category" /> property, whose value will be one of the <c>Category*</c> constant values.</para>
-      <para>As is common in AV Foundation, many methods in <see cref="T:MonoTouch.AVFoundation.AVAudioSession" /> are asynchronous and properties may take some time to reflect their final status. Application developers should be familiar with asynchronous programming techniques.</para>
-      <para>The <see cref="T:MonoTouch.AVFoundation.AVAudioSession" />, like the <see cref="T:MonoTouch.AVFoundation.AVCaptureSession" /> and <see cref="T:MonoTouch.AVFoundation.AVAssetExportSession" /> is a coordinating object between some number of <see cref="P:MonoTouch.AVFoundation.AVAudioSession.InputDataSources" /> and <see cref="P:MonoTouch.AVFoundation.AVAudioSession.OutputDataSources" />.</para>
+
+      <para> Application developers should use the singleton object
+	retrieved by <see
+	cref="M:MonoTouch.AVFoundation.AVAudioSession.SharedInstance"
+	/>.
+      </para>
+
+      <para> 
+	Because the audio hardware of an iOS device is shared
+	between all apps, audio settings can only be "preferred" (see
+	<c>SetPreferred*</c> methods) and the application developer
+	must account for use-cases where these preferences are
+	overridden. 
+      </para>
+
+      <para> 
+	The interaction of an app with other apps and system
+	services is determined by your audio category.   You can use the <see
+	cref="M:MonoTouch.AVFoundation.AVAudioSession.SetCategory" /> method to set this
+      </para>
+
+      <para>
+
+	You should also control the Mode (using <see
+	cref="M:MonoTouch.AVFoundation.AVAudioSession.SetMode" /> to
+	describe how your application will use audio.
+
+      </para>
+
+      <para>
+	As is common in AV Foundation, many methods in <see
+	cref="T:MonoTouch.AVFoundation.AVAudioSession" /> are
+	asynchronous and properties may take some time to reflect
+	their final status. Application developers should be familiar
+	with asynchronous programming techniques.
+      </para>
+
+      <para>
+	The <see cref="T:MonoTouch.AVFoundation.AVAudioSession"/>,
+	like the <see
+	cref="T:MonoTouch.AVFoundation.AVCaptureSession"/> and <see
+	cref="T:MonoTouch.AVFoundation.AVAssetExportSession"/> is a
+	coordinating object between some number of <see
+	cref="P:MonoTouch.AVFoundation.AVAudioSession.InputDataSources"/>
+	and <see
+	cref="P:MonoTouch.AVFoundation.AVAudioSession.OutputDataSources"/>.
+	</para>
+
+	<para>
+
+	  You can register to a few notifications that are posted by the audio system, by using the convenience methods in <see cref="T:MonoTouch.AVFoundation.AVAudioSession+Notifications"/>. 
+
+	</para>
+
+	<example>
+void Setup ()
+{
+	AVAudioSession.SharedInstance ().Init ();
+	NSError error;
+	if (!AVAudioSession.SharedInstance ().SetCategory (AVAudioSession.CategoryPlayback, out error)) {
+		ReportError (error);
+		return;
+	}
+	AVAudioSession.Notifications.ObserveInterruption (ToneInterruptionListener);
+	
+	if (!AVAudioSession.SharedInstance ().SetActive (true, out error)) {
+		ReportError (error);
+		return;
+	}
+	
+	void ToneInterruptionListener (object sender, AVAudioSessionInterruptionEventArgs interruptArgs)
+	{
+		//
+	}
+}
+	</example>
+
     </remarks>
   </Docs>
   <Members>
@@ -203,8 +276,15 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Docs>
         <summary>The classification of the app, used to balance its demands with other apps on the device.</summary>
-        <value>Values should be one of the <c>Category*</c> constants defined in <see cref="T:MonoTouch.AVFoundation.AVAudioSession" />.</value>
-        <remarks>To be added.</remarks>
+        <value>Values should be one of 
+	<see cref="P:MonoTouch.AVFoundation.AVAudioSession.CategoryAmbient"/>, 
+	<see cref="P:MonoTouch.AVFoundation.AVAudioSession.CategorySoloAmbient"/>, 
+	<see cref="P:MonoTouch.AVFoundation.AVAudioSession.CategoryPlayback"/>, 
+	<see cref="P:MonoTouch.AVFoundation.AVAudioSession.CategoryRecord"/>, 
+	<see cref="P:MonoTouch.AVFoundation.AVAudioSession.CategoryPlayAndRecord"/>, 
+	<see cref="P:MonoTouch.AVFoundation.AVAudioSession.CategoryAudioProcessing"/>, 
+	<see cref="P:MonoTouch.AVFoundation.AVAudioSession.CategoryMultiRoute"/> properties.</value>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="CategoryAmbient">
@@ -406,7 +486,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <summary>Represents the value associated with the constant AVAudioSessionCategorySoloAmbient</summary>
         <value>
         </value>
-        <remarks>To be added.</remarks>
+        <remarks>This is the default category if you do not set the category.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ClassHandle">
@@ -1822,10 +1902,9 @@ void Setup ()
       </Parameters>
       <Docs>
         <param name="portOverride">To be added.</param>
-        <param name="outError">To be added.</param>
+        <param name="outError">On failure, this contains the error details.</param>
         <summary>Requests to temporarily change the output audio port.</summary>
-        <returns>
-          <see langword="true" /> if the request was successful.</returns>
+        <returns><see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -2566,9 +2645,10 @@ void Setup ()
       </Parameters>
       <Docs>
         <param name="beActive">To be added.</param>
-        <param name="outError">To be added.</param>
+        <param name="outError">On failure, this contains the error details.</param>
         <summary>Activates or deactivates the app's audio session.</summary>
-        <returns>To be added.</returns>
+        <param name="outError">To be added.</param>
+        <returns><see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -2593,9 +2673,9 @@ void Setup ()
       </Parameters>
       <Docs>
         <param name="beActive">To be added.</param>
-        <param name="outError">To be added.</param>
+        <param name="outError">On failure, this contains the error details.</param>
+        <returns>true on success, false on error.   If there is an error the outError parameter contains the new instance of NSError describing the problem.</returns>
         <summary>Activates or deactivates the app's audio session.</summary>
-        <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -2628,9 +2708,9 @@ void Setup ()
       <Docs>
         <param name="beActive">To be added.</param>
         <param name="flags">To be added.</param>
-        <param name="outError">To be added.</param>
+        <param name="outError">On failure, this contains the error details.</param>
         <summary>Application developers should not use this deprecated method.</summary>
-        <returns>To be added.</returns>
+        <returns><see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -2660,9 +2740,9 @@ void Setup ()
       <Docs>
         <param name="active">To be added.</param>
         <param name="options">To be added.</param>
-        <param name="outError">To be added.</param>
+        <param name="outError">On failure, this contains the error details.</param>
         <summary>Activates or deactivates the app's audio session.</summary>
-        <returns>To be added.</returns>
+        <returns><see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -2687,9 +2767,9 @@ void Setup ()
       </Parameters>
       <Docs>
         <param name="theCategory">To be added.</param>
-        <param name="outError">To be added.</param>
+        <param name="outError">On failure, this contains the error details.</param>
         <summary>Application developers should not use this deprecated method. Instead use <see cref="M:MonoTouch.AVFoundation.AVAudioSession(bool, out NSError)" />.</summary>
-        <returns>To be added.</returns>
+        <returns><see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -2713,10 +2793,18 @@ void Setup ()
         <Parameter Name="outError" Type="MonoTouch.Foundation.NSError&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="theCategory">To be added.</param>
-        <param name="outError">To be added.</param>
+        <param name="theCategory">One of 
+	<see cref="P:MonoTouch.AVFoundation.AVAudioSession.CategoryAmbient"/>, 
+	<see cref="P:MonoTouch.AVFoundation.AVAudioSession.CategorySoloAmbient"/>, 
+	<see cref="P:MonoTouch.AVFoundation.AVAudioSession.CategoryPlayback"/>, 
+	<see cref="P:MonoTouch.AVFoundation.AVAudioSession.CategoryRecord"/>, 
+	<see cref="P:MonoTouch.AVFoundation.AVAudioSession.CategoryPlayAndRecord"/>, 
+	<see cref="P:MonoTouch.AVFoundation.AVAudioSession.CategoryAudioProcessing"/>, 
+	<see cref="P:MonoTouch.AVFoundation.AVAudioSession.CategoryMultiRoute"/>.
+	</param>
+        <param name="outError">On failure, this contains the error details.</param>
         <summary>Requests a change to the <see cref="P:MonoTouch.AVFoundation.AVAudioSession.Category" />.</summary>
-        <returns>To be added.</returns>
+        <returns>true on success, false on error.   If there is an error the outError parameter contains the new instance of NSError describing the problem.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -2744,11 +2832,18 @@ void Setup ()
         <Parameter Name="outError" Type="MonoTouch.Foundation.NSError&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="category">To be added.</param>
+        <param name="category">One of 
+	<see cref="P:MonoTouch.AVFoundation.AVAudioSession.CategoryAmbient"/>, 
+	<see cref="P:MonoTouch.AVFoundation.AVAudioSession.CategorySoloAmbient"/>, 
+	<see cref="P:MonoTouch.AVFoundation.AVAudioSession.CategoryPlayback"/>, 
+	<see cref="P:MonoTouch.AVFoundation.AVAudioSession.CategoryRecord"/>, 
+	<see cref="P:MonoTouch.AVFoundation.AVAudioSession.CategoryPlayAndRecord"/>, 
+	<see cref="P:MonoTouch.AVFoundation.AVAudioSession.CategoryAudioProcessing"/>, 
+	<see cref="P:MonoTouch.AVFoundation.AVAudioSession.CategoryMultiRoute"/>.</param>
         <param name="options">To be added.</param>
-        <param name="outError">To be added.</param>
+        <param name="outError">On failure, this contains the error details.</param>
         <summary>Requests a change to the <see cref="P:MonoTouch.AVFoundation.AVAudioSession.Category" />.</summary>
-        <returns>To be added.</returns>
+        <returns><see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -2776,9 +2871,9 @@ void Setup ()
       </Parameters>
       <Docs>
         <param name="dataSource">To be added.</param>
-        <param name="outError">To be added.</param>
+        <param name="outError">On failure, this contains the error details.</param>
         <summary>Selects the specified <paramref name="dataSource" />.</summary>
-        <returns>To be added.</returns>
+        <returns><see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -2806,9 +2901,9 @@ void Setup ()
       </Parameters>
       <Docs>
         <param name="gain">To be added.</param>
-        <param name="outError">To be added.</param>
+        <param name="outError">On failure, this contains the error details.</param>
         <summary>Requests a specific gain level.</summary>
-        <returns>To be added.</returns>
+        <returns><see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -2835,10 +2930,18 @@ void Setup ()
         <Parameter Name="error" Type="MonoTouch.Foundation.NSError&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="mode">The value should be one of the <c>Mode*</c> constants defined in <see cref="T:MonoTouch.AVFoundation.AVAudioSession" />.</param>
-        <param name="error">To be added.</param>
+        <param name="mode">The value should be one of 
+	<see cref="T:MonoTouch.AVFoundation.AVAudioSession.ModeDefault"/>,
+	<see cref="T:MonoTouch.AVFoundation.AVAudioSession.ModeVoiceChat"/>,
+	<see cref="T:MonoTouch.AVFoundation.AVAudioSession.ModeGameCha"/>,
+	<see cref="T:MonoTouch.AVFoundation.AVAudioSession.ModeVideoRecording"/>,
+	<see cref="T:MonoTouch.AVFoundation.AVAudioSession.ModeMeasurement"/>,
+	<see cref="T:MonoTouch.AVFoundation.AVAudioSession.ModeMoviePlayback"/> or
+	<see cref="T:MonoTouch.AVFoundation.AVAudioSession.ModeVideoChat"/>.
+      </param>
+        <param name="error">On failure, this contains the error details.</param>
         <summary>Requests a specific mode.</summary>
-        <returns>To be added.</returns>
+        <returns><see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -2866,9 +2969,9 @@ void Setup ()
       </Parameters>
       <Docs>
         <param name="dataSource">To be added.</param>
-        <param name="outError">To be added.</param>
+        <param name="outError">On failure, this contains the error details.</param>
         <summary>Selects the specific output <paramref name="dataSource" />.</summary>
-        <returns>To be added.</returns>
+        <returns><see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -2893,9 +2996,9 @@ void Setup ()
       </Parameters>
       <Docs>
         <param name="sampleRate">To be added.</param>
-        <param name="outError">To be added.</param>
+        <param name="outError">On failure, this contains the error details.</param>
         <summary>Sets the preferred sample rate, in Hz.</summary>
-        <returns>To be added.</returns>
+        <returns><see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -2923,9 +3026,9 @@ void Setup ()
       </Parameters>
       <Docs>
         <param name="sampleRate">To be added.</param>
-        <param name="outError">To be added.</param>
+        <param name="outError">On failure, this contains the error details.</param>
         <summary>Application developers should not use this deprecated method. Instead use <see cref="M:MonoTouch.AVFoundation.AVAudioSession.SetPreferredSampleRate(Double, out NSError)" /></summary>
-        <returns>To be added.</returns>
+        <returns><see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -2953,9 +3056,9 @@ void Setup ()
       </Parameters>
       <Docs>
         <param name="inPort">To be added.</param>
-        <param name="outError">To be added.</param>
+        <param name="outError">On failure, this contains the error details.</param>
         <summary>Sets the preferred input data source.</summary>
-        <returns>To be added.</returns>
+        <returns><see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -2983,9 +3086,9 @@ void Setup ()
       </Parameters>
       <Docs>
         <param name="count">To be added.</param>
-        <param name="outError">To be added.</param>
+        <param name="outError">On failure, this contains the error details.</param>
         <summary>Sets the preferred number of input channels.</summary>
-        <returns>To be added.</returns>
+        <returns><see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -3010,9 +3113,9 @@ void Setup ()
       </Parameters>
       <Docs>
         <param name="duration">To be added.</param>
-        <param name="outError">To be added.</param>
+        <param name="outError">On failure, this contains the error details.</param>
         <summary>Application developers should not use this deprecated method. Instead use <see cref="M:MonoTouch.AVFoundation.AVAudioSession.SetPreferredIOBufferDuration(bool, out NSError)" /></summary>
-        <returns>To be added.</returns>
+        <returns><see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -3037,9 +3140,9 @@ void Setup ()
       </Parameters>
       <Docs>
         <param name="duration">To be added.</param>
-        <param name="outError">To be added.</param>
+        <param name="outError">On failure, this contains the error details.</param>
         <summary>Sets the preferred duration, in seconds, of the IO buffer.</summary>
-        <returns>To be added.</returns>
+        <returns><see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -3067,9 +3170,9 @@ void Setup ()
       </Parameters>
       <Docs>
         <param name="count">To be added.</param>
-        <param name="outError">To be added.</param>
+        <param name="outError">On failure, this contains the error details.</param>
         <summary>Sets the preferred number of output channels.</summary>
-        <returns>To be added.</returns>
+        <returns><see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -3097,9 +3200,9 @@ void Setup ()
       </Parameters>
       <Docs>
         <param name="sampleRate">To be added.</param>
-        <param name="error">To be added.</param>
+        <param name="error">On failure, this contains the error details.</param>
         <summary>Sets the preferred sample rate, in Hz.</summary>
-        <returns>To be added.</returns>
+        <returns><see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>

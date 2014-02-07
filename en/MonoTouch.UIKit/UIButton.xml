@@ -129,8 +129,30 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="type">Button type to create.</param>
-        <summary>Preferred constructor for UIButtons.</summary>
+        <summary>Preferred constructor for UIButtons, but can not be used when subclassing.</summary>
         <remarks>
+	  <para>
+	    This constructor should only be used in user code when you plan on using the C# syntax to initialize properties after the object has been created, like this:
+	  </para>
+	  <example>
+            <code lang="C#">
+var b = new UIButton (UIButtonType.Custom) {
+    AdjustsImageWhenHighlighted = true,
+    ContentEdgeInsets = myInsets;
+};
+	    </code>
+	  </example>
+	  <para>
+
+	    This constructor can not be used when subclassing as it is
+	    not a real constructor, but instead a convenience
+	    constructor that calls the static <see
+	    cref="M:MonoTouch.UIKit.UIButton.FromType"/> method and
+	    then wraps the result into this object.  So you should
+	    avoid subclassing UIButton and then calling into this
+	    constructor from your subclass constructor.
+
+	  </para>
         </remarks>
       </Docs>
     </Member>
