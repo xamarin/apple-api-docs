@@ -586,9 +586,22 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>This will send the Objective-C 'autorelease' message to the object.</summary>
-        <returns>The same object.</returns>
-        <remarks>Do not use unless you've also called Retain, or otherwise have a reference Xamarin.iOS does not know about.</remarks>
+        <summary>[Dangerous] Invokes the low-level Objective-C autorelease method on the object.</summary>
+        <returns>Self</returns>
+        <remarks>
+	  <para>
+	    In general, you should not ever have to call this method
+	    unless you are doing some very explicit memory management
+	    on your own.  In particular, you should never call this
+	    method on an NSObject that has been surfaced to managed
+	    code without previously calling the <see
+	    cref="M:MonoTouch.Foundation.NSObject.Retain"/> method.
+	  </para>
+	  <para>
+	    This method is present to support advanced uses of the
+	    runtime and is not intended for general consumption.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="AwakeFromNib">
@@ -1894,8 +1907,22 @@ void RunDemo (NSString arg)
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>This will send the Objective-C 'release' message to the object.</summary>
-        <remarks>Do not use unless you've also called Retain, or otherwise have references Xamarin.iOS does not know about.</remarks>
+        <summary>[Dangerous] Invokes the low-level Objective-C release method on the object.</summary>
+        <remarks>
+	  <para>
+	    This will invoke the Objective-C release method on the object, effectively decrementing its use count.   
+	  </para>
+	  <para>
+
+	    In general, you should not ever have to call this method
+	    unless you are doing some very explicit memory management
+	    on your own.  In particular, you should never call this
+	    method on an NSObject that has been surfaced to managed
+	    code without previously calling the <see
+	    cref="M:MonoTouch.Foundation.NSObject.Retain"/> method.
+
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="RemoveObserver">
