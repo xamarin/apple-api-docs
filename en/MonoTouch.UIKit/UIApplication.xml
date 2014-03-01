@@ -1,3 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Type Name="UIApplication" FullName="MonoTouch.UIKit.UIApplication">
   <TypeSignature Language="C#" Value="public class UIApplication : MonoTouch.UIKit.UIResponder" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit UIApplication extends MonoTouch.UIKit.UIResponder" />
@@ -176,7 +177,7 @@
           <para>In general, if your constructors invokes the NSObjectFlag.Empty base implementation, then it should be calling an Objective-C init method.   If this is not the case, you should instead chain to the proper constructor in your class. </para>
           <para>The argument value is ignored and merely ensures that the only code that is executed is the construction phase is the basic NSObject allocation and runtime type registration.  Typically the chaining would look like this:</para>
           <example>
-            <code lang="C#">
+            <code lang="C#"><![CDATA[
 //
 // The NSObjectFlag merely allocates the object and registers the
 // C# class with the Objective-C runtime if necessary, but no actual
@@ -194,7 +195,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 	else
 		Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
 }
-</code>
+]]></code>
           </example>
         </remarks>
       </Docs>
@@ -599,12 +600,12 @@ void Setup ()
           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
         </param>
         <summary>Requests that the app be allowed to process in the background.</summary>
-        <returns>An id that, when passed to <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundTask"/>, indicates that background processing has ended.</returns>
+        <returns>An id that, when passed to <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundTask" />, indicates that background processing has ended.</returns>
         <remarks>
-          <para>This method, with <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundTask"/>, bookends code that should be allowed to continue running in the background when another app is in the foreground. The returned <see langword="int"/> should be passed to <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundTask"/> at the appropriate time. </para>
+          <para>This method, with <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundTask" />, bookends code that should be allowed to continue running in the background when another app is in the foreground. The returned <see langword="int" /> should be passed to <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundTask" /> at the appropriate time. </para>
           <para>This method does not cause the app to enter a background state or launch asynchronous code, despite its name. Rather, it requests that the system make background processing available.</para>
-          <para>This method may be called multiple times and may be called from background threads. Background processing will continue either until the allowed background time (generally 3 or 10 minutes total) expires or until <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundtask"/> has been called for all started tasks.</para>
-          <para>The <paramref name="expirationHandler"/> is only called if allowed background time is close to expiring (3-4 seconds).</para>
+          <para>This method may be called multiple times and may be called from background threads. Background processing will continue either until the allowed background time (generally 3 or 10 minutes total) expires or until <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundtask" /> has been called for all started tasks.</para>
+          <para>The <paramref name="expirationHandler" /> is only called if allowed background time is close to expiring (3-4 seconds).</para>
           <example>
             <code lang="C#"><![CDATA[
 Task.Factory.StartNew( () => {
@@ -618,11 +619,9 @@ Task.Factory.StartNew( () => {
     //Only called if loop terminated due to myFlag and not expiration of time
     UIApplication.SharedApplication.EndBackgroundTask(taskId);
 });              
-              ]]>
-             
-            </code>
-            </example> 
-       <para tool="threads">This can be used from a background thread.</para>
+              ]]></code>
+          </example>
+          <para tool="threads">This can be used from a background thread.</para>
         </remarks>
       </Docs>
     </Member>
@@ -658,12 +657,12 @@ Task.Factory.StartNew( () => {
         <param name="taskName">A name for the task (useful for debugging).</param>
         <param name="expirationHandler">Called shortly before the allowed background time for the app expires.</param>
         <summary>Requests that the app be allowed to process in the background.</summary>
-        <returns>An id that, when passed to <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundTask"/>, indicates that background processing has ended.</returns>
+        <returns>An id that, when passed to <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundTask" />, indicates that background processing has ended.</returns>
         <remarks>
-          <para>This method, with <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundTask"/>, bookends code that should be allowed to continue running in the background when another app is in the foreground. The returned <see langword="int"/> should be passed to <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundTask"/> at the appropriate time. </para>
+          <para>This method, with <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundTask" />, bookends code that should be allowed to continue running in the background when another app is in the foreground. The returned <see langword="int" /> should be passed to <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundTask" /> at the appropriate time. </para>
           <para>This method does not cause the app to enter a background state or launch asynchronous code, despite its name. Rather, it requests that the system make background processing available.</para>
-          <para>This method may be called multiple times and may be called from background threads. Background processing will continue either until the allowed background time (generally 3 or 10 minutes total) expires or until <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundtask"/> has been called for all started tasks.</para>
-          <para>The <paramref name="expirationHandler"/> is only called if allowed background time is close to expiring (3-4 seconds).</para>
+          <para>This method may be called multiple times and may be called from background threads. Background processing will continue either until the allowed background time (generally 3 or 10 minutes total) expires or until <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundtask" /> has been called for all started tasks.</para>
+          <para>The <paramref name="expirationHandler" /> is only called if allowed background time is close to expiring (3-4 seconds).</para>
           <example>
             <code lang="C#"><![CDATA[
 Task.Factory.StartNew( () => {
@@ -677,12 +676,9 @@ Task.Factory.StartNew( () => {
     //Only called if loop terminated due to myFlag and not expiration of time
     UIApplication.SharedApplication.EndBackgroundTask(taskId);
 });              
-              ]]>
-             
-            </code>
-          </example> 
-               <para tool="threads">This can be used from a background thread.</para>
-  
+              ]]></code>
+          </example>
+          <para tool="threads">This can be used from a background thread.</para>
         </remarks>
       </Docs>
     </Member>
@@ -739,7 +735,7 @@ Task.Factory.StartNew( () => {
       <Docs>
         <summary>Indicates that the application should start listening for remote-control events.</summary>
         <remarks>
-        <para>Remote-control events are generated by external devices such as headsets intended to control multimedia playback.</para>  
+          <para>Remote-control events are generated by external devices such as headsets intended to control multimedia playback.</para>
         </remarks>
       </Docs>
     </Member>
@@ -936,7 +932,7 @@ Task.Factory.StartNew( () => {
       <Docs>
         <summary>Indicates to the system that state restoration is complete.</summary>
         <remarks>
-        <para>Application developers should call this method after they have finished state restoration.</para>  
+          <para>Application developers should call this method after they have finished state restoration.</para>
         </remarks>
       </Docs>
     </Member>
@@ -969,13 +965,13 @@ Task.Factory.StartNew( () => {
           <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveContentSizeCategoryChangedNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 //
 // Lambda style
 //
 
 // listening
-notification = UIApplication.Notifications.ObserveContentSizeCategoryChanged ((sender, args) =&gt; {
+notification = UIApplication.Notifications.ObserveContentSizeCategoryChanged ((sender, args) => {
     /* Access strongly typed args */
     Console.WriteLine ("Notification: {0}", args.Notification);
 
@@ -1005,14 +1001,14 @@ void Setup ()
 void Teardown ()
 {
     notification.Dispose ();
-}</code>
+}]]></code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
-        UIApplication.ContentSizeCategoryChangedNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIApplication", notification); }
+        UIApplication.ContentSizeCategoryChangedNotification, (notification) => {Console.WriteLine ("Received the notification UIApplication", notification); }
 
 
 // Method style
@@ -1025,7 +1021,7 @@ void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.ContentSizeCategoryChangedNotification, Callback);
 }
-</code>
+]]></code>
           </example>
         </remarks>
       </Docs>
@@ -1076,13 +1072,13 @@ void Setup ()
           <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveDidBecomeActiveNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 //
 // Lambda style
 //
 
 // listening
-notification = UIApplication.Notifications.ObserveDidBecomeActive ((sender, args) =&gt; {
+notification = UIApplication.Notifications.ObserveDidBecomeActive ((sender, args) => {
     /* Access strongly typed args */
     Console.WriteLine ("Notification: {0}", args.Notification);
 });
@@ -1108,14 +1104,14 @@ void Setup ()
 void Teardown ()
 {
     notification.Dispose ();
-}</code>
+}]]></code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
-        UIApplication.DidBecomeActiveNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIApplication", notification); }
+        UIApplication.DidBecomeActiveNotification, (notification) => {Console.WriteLine ("Received the notification UIApplication", notification); }
 
 
 // Method style
@@ -1128,7 +1124,7 @@ void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.DidBecomeActiveNotification, Callback);
 }
-</code>
+]]></code>
           </example>
         </remarks>
       </Docs>
@@ -1156,13 +1152,13 @@ void Setup ()
           <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveDidChangeStatusBarFrameNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 //
 // Lambda style
 //
 
 // listening
-notification = UIApplication.Notifications.ObserveDidChangeStatusBarFrame ((sender, args) =&gt; {
+notification = UIApplication.Notifications.ObserveDidChangeStatusBarFrame ((sender, args) => {
     /* Access strongly typed args */
     Console.WriteLine ("Notification: {0}", args.Notification);
 
@@ -1192,14 +1188,14 @@ void Setup ()
 void Teardown ()
 {
     notification.Dispose ();
-}</code>
+}]]></code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
-        UIApplication.DidChangeStatusBarFrameNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIApplication", notification); }
+        UIApplication.DidChangeStatusBarFrameNotification, (notification) => {Console.WriteLine ("Received the notification UIApplication", notification); }
 
 
 // Method style
@@ -1212,7 +1208,7 @@ void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.DidChangeStatusBarFrameNotification, Callback);
 }
-</code>
+]]></code>
           </example>
         </remarks>
       </Docs>
@@ -1240,13 +1236,13 @@ void Setup ()
           <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveDidChangeStatusBarOrientationNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 //
 // Lambda style
 //
 
 // listening
-notification = UIApplication.Notifications.ObserveDidChangeStatusBarOrientation ((sender, args) =&gt; {
+notification = UIApplication.Notifications.ObserveDidChangeStatusBarOrientation ((sender, args) => {
     /* Access strongly typed args */
     Console.WriteLine ("Notification: {0}", args.Notification);
 
@@ -1276,14 +1272,14 @@ void Setup ()
 void Teardown ()
 {
     notification.Dispose ();
-}</code>
+}]]></code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
-        UIApplication.DidChangeStatusBarOrientationNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIApplication", notification); }
+        UIApplication.DidChangeStatusBarOrientationNotification, (notification) => {Console.WriteLine ("Received the notification UIApplication", notification); }
 
 
 // Method style
@@ -1296,7 +1292,7 @@ void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.DidChangeStatusBarOrientationNotification, Callback);
 }
-</code>
+]]></code>
           </example>
         </remarks>
       </Docs>
@@ -1330,13 +1326,13 @@ void Setup ()
           <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveDidEnterBackgroundNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 //
 // Lambda style
 //
 
 // listening
-notification = UIApplication.Notifications.ObserveDidEnterBackground ((sender, args) =&gt; {
+notification = UIApplication.Notifications.ObserveDidEnterBackground ((sender, args) => {
     /* Access strongly typed args */
     Console.WriteLine ("Notification: {0}", args.Notification);
 });
@@ -1362,14 +1358,14 @@ void Setup ()
 void Teardown ()
 {
     notification.Dispose ();
-}</code>
+}]]></code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
-        UIApplication.DidEnterBackgroundNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIApplication", notification); }
+        UIApplication.DidEnterBackgroundNotification, (notification) => {Console.WriteLine ("Received the notification UIApplication", notification); }
 
 
 // Method style
@@ -1382,7 +1378,7 @@ void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.DidEnterBackgroundNotification, Callback);
 }
-</code>
+]]></code>
           </example>
         </remarks>
       </Docs>
@@ -1410,13 +1406,13 @@ void Setup ()
           <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveDidFinishLaunchingNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 //
 // Lambda style
 //
 
 // listening
-notification = UIApplication.Notifications.ObserveDidFinishLaunching ((sender, args) =&gt; {
+notification = UIApplication.Notifications.ObserveDidFinishLaunching ((sender, args) => {
     /* Access strongly typed args */
     Console.WriteLine ("Notification: {0}", args.Notification);
 
@@ -1452,14 +1448,14 @@ void Setup ()
 void Teardown ()
 {
     notification.Dispose ();
-}</code>
+}]]></code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
-        UIApplication.DidFinishLaunchingNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIApplication", notification); }
+        UIApplication.DidFinishLaunchingNotification, (notification) => {Console.WriteLine ("Received the notification UIApplication", notification); }
 
 
 // Method style
@@ -1472,7 +1468,7 @@ void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.DidFinishLaunchingNotification, Callback);
 }
-</code>
+]]></code>
           </example>
         </remarks>
       </Docs>
@@ -1500,13 +1496,13 @@ void Setup ()
           <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveDidReceiveMemoryWarningNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 //
 // Lambda style
 //
 
 // listening
-notification = UIApplication.Notifications.ObserveDidReceiveMemoryWarning ((sender, args) =&gt; {
+notification = UIApplication.Notifications.ObserveDidReceiveMemoryWarning ((sender, args) => {
     /* Access strongly typed args */
     Console.WriteLine ("Notification: {0}", args.Notification);
 });
@@ -1532,14 +1528,14 @@ void Setup ()
 void Teardown ()
 {
     notification.Dispose ();
-}</code>
+}]]></code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
-        UIApplication.DidReceiveMemoryWarningNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIApplication", notification); }
+        UIApplication.DidReceiveMemoryWarningNotification, (notification) => {Console.WriteLine ("Received the notification UIApplication", notification); }
 
 
 // Method style
@@ -1552,7 +1548,7 @@ void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.DidReceiveMemoryWarningNotification, Callback);
 }
-</code>
+]]></code>
           </example>
         </remarks>
       </Docs>
@@ -1599,10 +1595,10 @@ void Setup ()
         <ReturnType>MonoTouch.UIKit.UIRemoteNotificationType</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Returns a bit-masked <see cref="T:MonoTouch.UIKit.UIRemoteNotificationType"/> indicating which types of notifications the app accepts.</summary>
+        <summary>Returns a bit-masked <see cref="T:MonoTouch.UIKit.UIRemoteNotificationType" /> indicating which types of notifications the app accepts.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
-        <altmember cref="M:MonoTouch.UIKit.UIApplication.RegisterForRemoteNotificationTypes"/>
+        <altmember cref="M:MonoTouch.UIKit.UIApplication.RegisterForRemoteNotificationTypes" />
       </Docs>
     </Member>
     <Member MemberName="EndBackgroundTask">
@@ -1630,10 +1626,10 @@ void Setup ()
         <Parameter Name="taskId" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="taskId">The value returned by the matching <see cref="M:MonoTouch.UIKit.UIApplication.BeginBackgroundTask"/> method.</param>
-        <summary>Indicates to the system that background processing has ended for the <paramref name="taskId"/>.</summary>
+        <param name="taskId">The value returned by the matching <see cref="M:MonoTouch.UIKit.UIApplication.BeginBackgroundTask" /> method.</param>
+        <summary>Indicates to the system that background processing has ended for the <paramref name="taskId" />.</summary>
         <remarks>
-          <para>This method, with <see cref="M:MonoTouch.UIKit.UIApplication.BeginBackgroundTask"/>, bookends code that should be allowed to run in the background. It does not affect the actual state of any threads. (See <see cref="M:MonoTouch.UIKit.UIApplication.BeginBackgroundTask"/> for discussion.)</para>
+          <para>This method, with <see cref="M:MonoTouch.UIKit.UIApplication.BeginBackgroundTask" />, bookends code that should be allowed to run in the background. It does not affect the actual state of any threads. (See <see cref="M:MonoTouch.UIKit.UIApplication.BeginBackgroundTask" /> for discussion.)</para>
           <para tool="threads">This can be used from a background thread.</para>
         </remarks>
       </Docs>
@@ -1681,7 +1677,7 @@ void Setup ()
       <Docs>
         <summary>Indicates that the application should nto receive further remote-control events.</summary>
         <remarks>To be added.</remarks>
-        <altmember cref="M:MonoTouch.UIKit.UIApplication.BeginReceivingRemoteControlEvents"/>
+        <altmember cref="M:MonoTouch.UIKit.UIApplication.BeginReceivingRemoteControlEvents" />
       </Docs>
     </Member>
     <Member MemberName="EnsureUIThread">
@@ -1737,8 +1733,8 @@ void Setup ()
       <Docs>
         <summary>Indicates that the application is restoring state asynchronously.</summary>
         <remarks>
-          <para>State restoration occurs on the main thread. Application developers who wish to do state restoration asynchronously should call this method and pair it with calls to <see cref="M:MonoTouch.UIKit.UIApplication.CompleteStateRestoration"/> to indicate to the system that state restoration is occurring asynchronously.</para>  
-          <para>If this method is called and the application crashes before the matching <see cref="M:MonoTouch.UIKit.UIApplication.CompleteStateRestoration"/> is called, all retained state will be discarded on next startup. This behavior prevents the crash from re-occurring.</para>
+          <para>State restoration occurs on the main thread. Application developers who wish to do state restoration asynchronously should call this method and pair it with calls to <see cref="M:MonoTouch.UIKit.UIApplication.CompleteStateRestoration" /> to indicate to the system that state restoration is occurring asynchronously.</para>
+          <para>If this method is called and the application crashes before the matching <see cref="M:MonoTouch.UIKit.UIApplication.CompleteStateRestoration" /> is called, all retained state will be discarded on next startup. This behavior prevents the crash from re-occurring.</para>
         </remarks>
       </Docs>
     </Member>
@@ -1761,10 +1757,10 @@ void Setup ()
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>If <see langword="true"/>, indicates that the screen should not dim even when no input is occurring.</summary>
-        <value>The default value is <see langword="false"/>.</value>
+        <summary>If <see langword="true" />, indicates that the screen should not dim even when no input is occurring.</summary>
+        <value>The default value is <see langword="false" />.</value>
         <remarks>
-        <para>The idle timer dims the screen after some amount of time has passed without user interaction. Application developers who wish to keep the screen fully powered can set this property to <see langword="true"/>. For instance, games whose input is restricted to the accelerometer may set this value to <see langword="true"/>.</para>  
+          <para>The idle timer dims the screen after some amount of time has passed without user interaction. Application developers who wish to keep the screen fully powered can set this property to <see langword="true" />. For instance, games whose input is restricted to the accelerometer may set this value to <see langword="true" />.</para>
         </remarks>
       </Docs>
     </Member>
@@ -1813,11 +1809,12 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>Whether the receiver is ignoring touch events.</summary>
-        <value><see langword="true"/> if there have been more calls to <see cref="M:MonoTouch.UIKit.UIApplication.BeginIgnoringInteractionEvents"/> than calls to <see cref="M:MonoTouch.UIKit.UIApplication.EndIgnoringInteractionEvents"/>.</value>
+        <value>
+          <see langword="true" /> if there have been more calls to <see cref="M:MonoTouch.UIKit.UIApplication.BeginIgnoringInteractionEvents" /> than calls to <see cref="M:MonoTouch.UIKit.UIApplication.EndIgnoringInteractionEvents" />.</value>
         <remarks>
-          </remarks>
-        <altmember cref="M:MonoTouch.UIKit.UIApplication.BeginIgnoringInteractionEvents"/>
-        <altmember cref="M:MonoTouch.UIKit.UIApplication.EndIgnoringInteractionEvents"/>
+        </remarks>
+        <altmember cref="M:MonoTouch.UIKit.UIApplication.BeginIgnoringInteractionEvents" />
+        <altmember cref="M:MonoTouch.UIKit.UIApplication.EndIgnoringInteractionEvents" />
       </Docs>
     </Member>
     <Member MemberName="KeyWindow">
@@ -2213,12 +2210,13 @@ void Setup ()
       <Docs>
         <param name="url">To be added.</param>
         <summary>Opens the specified URL, launching the app that's registered to handle the scheme.</summary>
-        <returns><see langword="true"/> if the URL was successfully opened.</returns>
+        <returns>
+          <see langword="true" /> if the URL was successfully opened.</returns>
         <remarks>
           <para>If another app is registered to handle the URL scheme, calling this method will launch the other application, which may cause the current application to quit or at least be sent to the background.</para>
         </remarks>
-        <altmember cref="M:MonoTouch.UIKit.UIApplication.CanOpenUrl"/>
-        <altmember cref="M:MonoTouch.UIKit.UIApplicationDelegate.HandleOpenUrl"/>
+        <altmember cref="M:MonoTouch.UIKit.UIApplication.CanOpenUrl" />
+        <altmember cref="M:MonoTouch.UIKit.UIApplicationDelegate.HandleOpenUrl" />
       </Docs>
     </Member>
     <Member MemberName="PreferredContentSizeCategory">
@@ -2244,7 +2242,7 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>The font size preferred by the application user.</summary>
-        <value>One of the values defined in <see cref="T:MonoTouch.UIKit.UIContentSizeCategory"/>.</value>
+        <value>One of the values defined in <see cref="T:MonoTouch.UIKit.UIContentSizeCategory" />.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -2273,7 +2271,7 @@ void Setup ()
         <param name="notification">To be added.</param>
         <summary>Immediately presents a local notification.</summary>
         <remarks>
-        <para>The notification is presented immediately, ignoring the <see cref="P:MonoTouch.UIKit.UILocalNotification.FireDate"/> property of the <paramref name="notification"/>.</para>  
+          <para>The notification is presented immediately, ignoring the <see cref="P:MonoTouch.UIKit.UILocalNotification.FireDate" /> property of the <paramref name="notification" />.</para>
         </remarks>
       </Docs>
     </Member>
@@ -2300,11 +2298,12 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>Whether content protection is available.</summary>
-        <value><see langword="true"/> if data protection is enabled and the device is locked. Otherwise, <see langword="false"/>.</value>
+        <value>
+          <see langword="true" /> if data protection is enabled and the device is locked. Otherwise, <see langword="false" />.</value>
         <remarks>
-          <para>If this method returns <see langword="false"/>, the application will not be allowed to read or write files whose <see cref="P:MonoTouch.NSFoundation.NSFileManager.FileProtectionKey"/> is <see cref="P:MonoTouch.NSFoundation.NSFileManager.FileProtectionComplete"/> or <see cref="P:MonoTouch.NSFoundation.NSFileManager.FileProtectionCompleteUnlessOpen"/>.</para>
+          <para>If this method returns <see langword="false" />, the application will not be allowed to read or write files whose <see cref="P:MonoTouch.NSFoundation.NSFileManager.FileProtectionKey" /> is <see cref="P:MonoTouch.NSFoundation.NSFileManager.FileProtectionComplete" /> or <see cref="P:MonoTouch.NSFoundation.NSFileManager.FileProtectionCompleteUnlessOpen" />.</para>
         </remarks>
-        <altmember cref="P:MonoTouch.UIKit.UIApplication.ProtectedDataDidBecomeAvailable"/>
+        <altmember cref="P:MonoTouch.UIKit.UIApplication.ProtectedDataDidBecomeAvailable" />
       </Docs>
     </Member>
     <Member MemberName="ProtectedDataDidBecomeAvailable">
@@ -2336,13 +2335,13 @@ void Setup ()
           <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveProtectedDataDidBecomeAvailable" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 //
 // Lambda style
 //
 
 // listening
-notification = UIApplication.Notifications.ObserveProtectedDataDidBecomeAvailable ((sender, args) =&gt; {
+notification = UIApplication.Notifications.ObserveProtectedDataDidBecomeAvailable ((sender, args) => {
     /* Access strongly typed args */
     Console.WriteLine ("Notification: {0}", args.Notification);
 });
@@ -2368,14 +2367,14 @@ void Setup ()
 void Teardown ()
 {
     notification.Dispose ();
-}</code>
+}]]></code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
-        UIApplication.ProtectedDataDidBecomeAvailable, (notification) =&gt; {Console.WriteLine ("Received the notification UIApplication", notification); }
+        UIApplication.ProtectedDataDidBecomeAvailable, (notification) => {Console.WriteLine ("Received the notification UIApplication", notification); }
 
 
 // Method style
@@ -2388,11 +2387,10 @@ void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.ProtectedDataDidBecomeAvailable, Callback);
 }
-</code>
+]]></code>
           </example>
         </remarks>
-        <altmember cref="P:MonoTouch.UIKit.UIApplication.ProtectedDataAvailable"/>
-
+        <altmember cref="P:MonoTouch.UIKit.UIApplication.ProtectedDataAvailable" />
       </Docs>
     </Member>
     <Member MemberName="ProtectedDataWillBecomeUnavailable">
@@ -2424,13 +2422,13 @@ void Setup ()
           <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveProtectedDataWillBecomeUnavailable" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 //
 // Lambda style
 //
 
 // listening
-notification = UIApplication.Notifications.ObserveProtectedDataWillBecomeUnavailable ((sender, args) =&gt; {
+notification = UIApplication.Notifications.ObserveProtectedDataWillBecomeUnavailable ((sender, args) => {
     /* Access strongly typed args */
     Console.WriteLine ("Notification: {0}", args.Notification);
 });
@@ -2456,14 +2454,14 @@ void Setup ()
 void Teardown ()
 {
     notification.Dispose ();
-}</code>
+}]]></code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
-        UIApplication.ProtectedDataWillBecomeUnavailable, (notification) =&gt; {Console.WriteLine ("Received the notification UIApplication", notification); }
+        UIApplication.ProtectedDataWillBecomeUnavailable, (notification) => {Console.WriteLine ("Received the notification UIApplication", notification); }
 
 
 // Method style
@@ -2476,10 +2474,10 @@ void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.ProtectedDataWillBecomeUnavailable, Callback);
 }
-</code>
+]]></code>
           </example>
         </remarks>
-        <altmember cref="P:MonoTouch.UIKit.UIApplication.ProtectedDataAvailable"/>
+        <altmember cref="P:MonoTouch.UIKit.UIApplication.ProtectedDataAvailable" />
       </Docs>
     </Member>
     <Member MemberName="RegisterForRemoteNotificationTypes">
@@ -2504,12 +2502,11 @@ void Setup ()
         <param name="types">To be added.</param>
         <summary>Begins the registration of the application to receive the specified types of notification from Apple Push Service.</summary>
         <remarks>
-        <para>Only notifications of the types registered by this method will display, even if different types (e.g., an alert) is specified in the notification's payload.</para>  
+          <para>Only notifications of the types registered by this method will display, even if different types (e.g., an alert) is specified in the notification's payload.</para>
         </remarks>
-        <altmember cref="M:MonoTouch.UIKit.UIApplicationDelegate.RegisteredForRemoteNotifications"/>
-        <altmember cref="M:MonoTouch.UIKit.UIApplicationDelegate.FailedToRegisterForRemoteNotifications"/>
-        <altmember cref="P:MonoTouch.UIKit.UIApplication.EnabledRemoteNotificationTypes"/>
-        
+        <altmember cref="M:MonoTouch.UIKit.UIApplicationDelegate.RegisteredForRemoteNotifications" />
+        <altmember cref="M:MonoTouch.UIKit.UIApplicationDelegate.FailedToRegisterForRemoteNotifications" />
+        <altmember cref="P:MonoTouch.UIKit.UIApplication.EnabledRemoteNotificationTypes" />
       </Docs>
     </Member>
     <Member MemberName="RegisterObjectForStateRestoration">
@@ -2537,9 +2534,9 @@ void Setup ()
       <Docs>
         <param name="uistateRestoringObject">To be added.</param>
         <param name="restorationIdentifier">To be added.</param>
-        <summary>Registers the <paramref name="uistateRestoringObject"/> as eligible for state restoration.</summary>
+        <summary>Registers the <paramref name="uistateRestoringObject" /> as eligible for state restoration.</summary>
         <remarks>
-            <para>Calling this method allows the object to be saved and restored but does not automatically trigger preservation/restoration. Application developers must write the object at the appropriate time, for instance <see cref="M:MonoTouch.UIKit.UIViewController.EncodeRestorableState"/>. </para>  
+          <para>Calling this method allows the object to be saved and restored but does not automatically trigger preservation/restoration. Application developers must write the object at the appropriate time, for instance <see cref="M:MonoTouch.UIKit.UIViewController.EncodeRestorableState" />. </para>
         </remarks>
       </Docs>
     </Member>
@@ -2571,10 +2568,10 @@ void Setup ()
         <ReturnType>MonoTouch.UIKit.UILocalNotification[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>An array of <see cref="T:MonoTouch.UIKit.UILocalNotification"/>s that are currently scheduled.</summary>
+        <summary>An array of <see cref="T:MonoTouch.UIKit.UILocalNotification" />s that are currently scheduled.</summary>
         <value>To be added.</value>
         <remarks>
-        <para>If application developers set this property, the local notifications are replaced via a series of calls to <see cref="M:MonoTouch.UIKit.UIApplication.CancelLocalNotification"/> and <see cref="M:MonoTouch.UIKit.UIApplication.ScheduleLocalNotification"/>.</para>  
+          <para>If application developers set this property, the local notifications are replaced via a series of calls to <see cref="M:MonoTouch.UIKit.UIApplication.CancelLocalNotification" /> and <see cref="M:MonoTouch.UIKit.UIApplication.ScheduleLocalNotification" />.</para>
         </remarks>
       </Docs>
     </Member>
@@ -2601,7 +2598,7 @@ void Setup ()
       </Parameters>
       <Docs>
         <param name="notification">To be added.</param>
-        <summary>Schedules the <paramref name="notification"/> for delivery.</summary>
+        <summary>Schedules the <paramref name="notification" /> for delivery.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -2631,13 +2628,13 @@ void Setup ()
         <param name="target">To be added.</param>
         <param name="sender">To be added.</param>
         <param name="forEvent">To be added.</param>
-        <summary>Send an action message to the specified <paramref name="target"/>.</summary>
-        <returns><see langword="true"/> if the responder handled the message.</returns>
+        <summary>Send an action message to the specified <paramref name="target" />.</summary>
+        <returns>
+          <see langword="true" /> if the responder handled the message.</returns>
         <remarks>
           <para>This method allows application developers to trigger native action methods. </para>
-          
         </remarks>
-        <altmember cref="M:MonoTouch.UIKit.UIApplication.SendEvent"/>
+        <altmember cref="M:MonoTouch.UIKit.UIApplication.SendEvent" />
       </Docs>
     </Member>
     <Member MemberName="SendEvent">
@@ -2662,9 +2659,9 @@ void Setup ()
         <param name="uievent">To be added.</param>
         <summary>Sends an event to the application.</summary>
         <remarks>
-          <para>This method allows application developers to create native <see cref="T:MonoTouch.UIKit.UIEvent"/>s that are then handled normally.</para>
+          <para>This method allows application developers to create native <see cref="T:MonoTouch.UIKit.UIEvent" />s that are then handled normally.</para>
         </remarks>
-        <altmember cref="M:MonoTouch.UIKit.UIApplication.SendAction"/>
+        <altmember cref="M:MonoTouch.UIKit.UIApplication.SendAction" />
       </Docs>
     </Member>
     <Member MemberName="SetKeepAliveTimeout">
@@ -2795,7 +2792,7 @@ void Setup ()
         <Parameter Name="image" Type="MonoTouch.UIKit.UIImage" />
       </Parameters>
       <Docs>
-        <param name="image">The image to be used, or <see langword="null"/> to set the icon stored in the app bundle.</param>
+        <param name="image">The image to be used, or <see langword="null" /> to set the icon stored in the app bundle.</param>
         <summary>Sets the icon to be used in Newsstand.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -2823,7 +2820,8 @@ void Setup ()
         <Parameter Name="animation" Type="MonoTouch.UIKit.UIStatusBarAnimation" />
       </Parameters>
       <Docs>
-        <param name="state"><see langword="true"/> to hide the status bar, <see langword="false"/> to reveal it.</param>
+        <param name="state">
+          <see langword="true" /> to hide the status bar, <see langword="false" /> to reveal it.</param>
         <param name="animation">The animation to use.</param>
         <summary>Hides or shows the status bar.</summary>
         <remarks>To be added.</remarks>
@@ -2849,7 +2847,8 @@ void Setup ()
         <Parameter Name="animated" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="hidden"><see langword="true"/> to hide the status bar, <see langword="false"/> to reveal it.</param>
+        <param name="hidden">
+          <see langword="true" /> to hide the status bar, <see langword="false" /> to reveal it.</param>
         <param name="animated">To be added.</param>
         <summary>Hides or shows the animation bar, and whether it should be animated.</summary>
         <remarks>To be added.</remarks>
@@ -2877,7 +2876,7 @@ void Setup ()
       <Docs>
         <param name="orientation">To be added.</param>
         <param name="animated">To be added.</param>
-        <summary>Sets the status bar to <paramref name="orientation"/>.</summary>
+        <summary>Sets the status bar to <paramref name="orientation" />.</summary>
         <remarks>
           <para>This method should not be used if the application is expected to handle rotation automatically. Once this method is called, the status bar will not change automatically in response to rotation.</para>
         </remarks>
@@ -2958,13 +2957,13 @@ void Setup ()
           <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveSignificantTimeChangeNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 //
 // Lambda style
 //
 
 // listening
-notification = UIApplication.Notifications.ObserveSignificantTimeChange ((sender, args) =&gt; {
+notification = UIApplication.Notifications.ObserveSignificantTimeChange ((sender, args) => {
     /* Access strongly typed args */
     Console.WriteLine ("Notification: {0}", args.Notification);
 });
@@ -2990,14 +2989,14 @@ void Setup ()
 void Teardown ()
 {
     notification.Dispose ();
-}</code>
+}]]></code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
-        UIApplication.SignificantTimeChangeNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIApplication", notification); }
+        UIApplication.SignificantTimeChangeNotification, (notification) => {Console.WriteLine ("Received the notification UIApplication", notification); }
 
 
 // Method style
@@ -3010,7 +3009,7 @@ void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.SignificantTimeChangeNotification, Callback);
 }
-</code>
+]]></code>
           </example>
         </remarks>
       </Docs>
@@ -3144,7 +3143,7 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>The Frame of the status bar.</summary>
-        <value>Will be <see cref="P:System.Drawing.RectangleF.Zero"/> if the status bar is hidden.</value>
+        <value>Will be <see cref="P:System.Drawing.RectangleF.Zero" /> if the status bar is hidden.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -3216,7 +3215,7 @@ void Setup ()
         <summary>The orientation of the status bar.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
-        <altmember cref="M:MonoTouch.UIKit.UIApplication.SetStatusBarOrientation"/>
+        <altmember cref="M:MonoTouch.UIKit.UIApplication.SetStatusBarOrientation" />
       </Docs>
     </Member>
     <Member MemberName="StatusBarOrientationAnimationDuration">
@@ -3281,7 +3280,7 @@ void Setup ()
         <ReturnType>MonoTouch.UIKit.UIStatusBarStyle</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The current <see cref="T:MonoTouch.UIKit.UIStatusBarStyle"/>.</summary>
+        <summary>The current <see cref="T:MonoTouch.UIKit.UIStatusBarStyle" />.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -3392,13 +3391,13 @@ void Setup ()
           <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveUserDidTakeScreenshotNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 //
 // Lambda style
 //
 
 // listening
-notification = UIApplication.Notifications.ObserveUserDidTakeScreenshot ((sender, args) =&gt; {
+notification = UIApplication.Notifications.ObserveUserDidTakeScreenshot ((sender, args) => {
     /* Access strongly typed args */
     Console.WriteLine ("Notification: {0}", args.Notification);
 });
@@ -3424,14 +3423,14 @@ void Setup ()
 void Teardown ()
 {
     notification.Dispose ();
-}</code>
+}]]></code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
-        UIApplication.UserDidTakeScreenshotNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIApplication", notification); }
+        UIApplication.UserDidTakeScreenshotNotification, (notification) => {Console.WriteLine ("Received the notification UIApplication", notification); }
 
 
 // Method style
@@ -3444,7 +3443,7 @@ void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.UserDidTakeScreenshotNotification, Callback);
 }
-</code>
+]]></code>
           </example>
         </remarks>
       </Docs>
@@ -3534,13 +3533,13 @@ void Setup ()
           <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveWillChangeStatusBarFrameNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 //
 // Lambda style
 //
 
 // listening
-notification = UIApplication.Notifications.ObserveWillChangeStatusBarFrame ((sender, args) =&gt; {
+notification = UIApplication.Notifications.ObserveWillChangeStatusBarFrame ((sender, args) => {
     /* Access strongly typed args */
     Console.WriteLine ("Notification: {0}", args.Notification);
 
@@ -3570,14 +3569,14 @@ void Setup ()
 void Teardown ()
 {
     notification.Dispose ();
-}</code>
+}]]></code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
-        UIApplication.WillChangeStatusBarFrameNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIApplication", notification); }
+        UIApplication.WillChangeStatusBarFrameNotification, (notification) => {Console.WriteLine ("Received the notification UIApplication", notification); }
 
 
 // Method style
@@ -3590,7 +3589,7 @@ void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.WillChangeStatusBarFrameNotification, Callback);
 }
-</code>
+]]></code>
           </example>
         </remarks>
       </Docs>
@@ -3618,13 +3617,13 @@ void Setup ()
           <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveWillChangeStatusBarOrientationNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 //
 // Lambda style
 //
 
 // listening
-notification = UIApplication.Notifications.ObserveWillChangeStatusBarOrientation ((sender, args) =&gt; {
+notification = UIApplication.Notifications.ObserveWillChangeStatusBarOrientation ((sender, args) => {
     /* Access strongly typed args */
     Console.WriteLine ("Notification: {0}", args.Notification);
 
@@ -3654,14 +3653,14 @@ void Setup ()
 void Teardown ()
 {
     notification.Dispose ();
-}</code>
+}]]></code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
-        UIApplication.WillChangeStatusBarOrientationNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIApplication", notification); }
+        UIApplication.WillChangeStatusBarOrientationNotification, (notification) => {Console.WriteLine ("Received the notification UIApplication", notification); }
 
 
 // Method style
@@ -3674,7 +3673,7 @@ void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.WillChangeStatusBarOrientationNotification, Callback);
 }
-</code>
+]]></code>
           </example>
         </remarks>
       </Docs>
@@ -3708,13 +3707,13 @@ void Setup ()
           <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveWillEnterForegroundNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 //
 // Lambda style
 //
 
 // listening
-notification = UIApplication.Notifications.ObserveWillEnterForeground ((sender, args) =&gt; {
+notification = UIApplication.Notifications.ObserveWillEnterForeground ((sender, args) => {
     /* Access strongly typed args */
     Console.WriteLine ("Notification: {0}", args.Notification);
 });
@@ -3740,14 +3739,14 @@ void Setup ()
 void Teardown ()
 {
     notification.Dispose ();
-}</code>
+}]]></code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
-        UIApplication.WillEnterForegroundNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIApplication", notification); }
+        UIApplication.WillEnterForegroundNotification, (notification) => {Console.WriteLine ("Received the notification UIApplication", notification); }
 
 
 // Method style
@@ -3760,7 +3759,7 @@ void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.WillEnterForegroundNotification, Callback);
 }
-</code>
+]]></code>
           </example>
         </remarks>
       </Docs>
@@ -3788,13 +3787,13 @@ void Setup ()
           <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveWillResignActiveNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 //
 // Lambda style
 //
 
 // listening
-notification = UIApplication.Notifications.ObserveWillResignActive ((sender, args) =&gt; {
+notification = UIApplication.Notifications.ObserveWillResignActive ((sender, args) => {
     /* Access strongly typed args */
     Console.WriteLine ("Notification: {0}", args.Notification);
 });
@@ -3820,14 +3819,14 @@ void Setup ()
 void Teardown ()
 {
     notification.Dispose ();
-}</code>
+}]]></code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
-        UIApplication.WillResignActiveNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIApplication", notification); }
+        UIApplication.WillResignActiveNotification, (notification) => {Console.WriteLine ("Received the notification UIApplication", notification); }
 
 
 // Method style
@@ -3840,7 +3839,7 @@ void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.WillResignActiveNotification, Callback);
 }
-</code>
+]]></code>
           </example>
         </remarks>
       </Docs>
@@ -3868,13 +3867,13 @@ void Setup ()
           <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveWillTerminateNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 //
 // Lambda style
 //
 
 // listening
-notification = UIApplication.Notifications.ObserveWillTerminate ((sender, args) =&gt; {
+notification = UIApplication.Notifications.ObserveWillTerminate ((sender, args) => {
     /* Access strongly typed args */
     Console.WriteLine ("Notification: {0}", args.Notification);
 });
@@ -3900,14 +3899,14 @@ void Setup ()
 void Teardown ()
 {
     notification.Dispose ();
-}</code>
+}]]></code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
-        UIApplication.WillTerminateNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIApplication", notification); }
+        UIApplication.WillTerminateNotification, (notification) => {Console.WriteLine ("Received the notification UIApplication", notification); }
 
 
 // Method style
@@ -3920,7 +3919,7 @@ void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.WillTerminateNotification, Callback);
 }
-</code>
+]]></code>
           </example>
         </remarks>
       </Docs>
