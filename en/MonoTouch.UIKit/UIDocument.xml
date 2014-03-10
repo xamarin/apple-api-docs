@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <Type Name="UIDocument" FullName="MonoTouch.UIKit.UIDocument">
   <TypeSignature Language="C#" Value="public class UIDocument : MonoTouch.Foundation.NSObject" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit UIDocument extends MonoTouch.Foundation.NSObject" />
@@ -83,7 +82,7 @@
           <para>In general, if your constructors invokes the NSObjectFlag.Empty base implementation, then it should be calling an Objective-C init method.   If this is not the case, you should instead chain to the proper constructor in your class. </para>
           <para>The argument value is ignored and merely ensures that the only code that is executed is the construction phase is the basic NSObject allocation and runtime type registration.  Typically the chaining would look like this:</para>
           <example>
-            <code lang="C#"><![CDATA[
+            <code lang="C#">
 //
 // The NSObjectFlag merely allocates the object and registers the
 // C# class with the Objective-C runtime if necessary, but no actual
@@ -101,7 +100,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 	else
 		Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
 }
-]]></code>
+</code>
           </example>
           <para tool="threads">This can be used from a background thread.</para>
         </remarks>
@@ -198,7 +197,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>An async version of <see cref="M:MonoTouch.UIKit.UIDocument.AutoSave"/>.</summary>
+        <summary>Called by the system immediately prior to automatic saving of UIDocument's with unsaved changes.</summary>
         <returns>
           <para>A task that represents the asynchronous AutoSave operation.   The value of the TResult parameter is a MonoTouch.UIKit.UIOperationHandler.</para>
         </returns>
@@ -298,7 +297,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>An async version of <see cref="M:MonoTouch.UIKit.UIDocument.Close"/>.</summary>
+        <summary>Asynchronously closes the document after saving any changes.</summary>
         <returns>
           <para>A task that represents the asynchronous Close operation.   The value of the TResult parameter is a MonoTouch.UIKit.UIOperationHandler.</para>
         </returns>
@@ -755,7 +754,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>An async version of <see cref="M:MonoTouch.UIKit.UIDocument.Open"/>.</summary>
+        <summary>Asynchronously opens a document.</summary>
         <returns>
           <para>A task that represents the asynchronous Open operation.   The value of the TResult parameter is a MonoTouch.UIKit.UIOperationHandler.</para>
         </returns>
@@ -808,7 +807,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>An async version of the <see cref="M:MonoTouch.UIKit.UIDocument.PerformAsynchronousFileAccess"/> method.</summary>
+        <summary>Schedules a read or write operation on a background thread.</summary>
         <returns>A task that represents the asynchronous PerformAsynchronousFileAccess operation</returns>
         <remarks>
           <para>(More documentation for this node is coming)</para>
@@ -895,7 +894,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="url">To be added.</param>
-        <summary>An async version of the <see cref="M:MonoTouch.UIKit.UIDocument.RevertToContentsOfUrl"/> method.</summary>
+        <summary>Reverts the UIDocument to the most recent document data stored on-disk.</summary>
         <returns>
           <para>A task that represents the asynchronous RevertToContentsOfUrl operation.   The value of the TResult parameter is a MonoTouch.UIKit.UIOperationHandler.</para>
         </returns>
@@ -958,7 +957,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="url">To be added.</param>
         <param name="saveOperation">To be added.</param>
-        <summary>An async version of the <see cref="M:MonoTouch.UIKit.UIDocument.Save"/> method.</summary>
+        <summary>Saves the document data to the specified location in the application sandbox.</summary>
         <returns>
           <para>A task that represents the asynchronous Save operation.   The value of the TResult parameter is a MonoTouch.UIKit.UIOperationHandler.</para>
         </returns>
@@ -1015,13 +1014,13 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIDocument+Notifications" />.<see cref="M:UIDocument+Notifications.ObserveStateChangedNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="C#"><![CDATA[
+            <code lang="c#">
 //
 // Lambda style
 //
 
 // listening
-notification = UIDocument.Notifications.ObserveStateChanged ((sender, args) => {
+notification = UIDocument.Notifications.ObserveStateChanged ((sender, args) =&gt; {
     /* Access strongly typed args */
     Console.WriteLine ("Notification: {0}", args.Notification);
 });
@@ -1047,14 +1046,14 @@ void Setup ()
 void Teardown ()
 {
     notification.Dispose ();
-}]]></code>
+}</code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="C#"><![CDATA[
+            <code lang="c#">
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
-        UIDocument.StateChangedNotification, (notification) => {Console.WriteLine ("Received the notification UIDocument", notification); }
+        UIDocument.StateChangedNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIDocument", notification); }
 
 
 // Method style
@@ -1067,7 +1066,7 @@ void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (UIDocument.StateChangedNotification, Callback);
 }
-]]></code>
+</code>
           </example>
         </remarks>
       </Docs>
@@ -1148,7 +1147,7 @@ void Setup ()
       <Docs>
         <param name="changeCountToken">To be added.</param>
         <param name="saveOperation">To be added.</param>
-        <summary>When overridden, can customize the change count with reference to the specified <paramref name="changeCountToken"/>.</summary>
+        <summary>When overridden, can customize the change count with reference to the specified <paramref name="changeCountToken" />.</summary>
         <remarks>
           <para>(More documentation for this node is coming)</para>
           <para tool="threads">This can be used from a background thread.</para>

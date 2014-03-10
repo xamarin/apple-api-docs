@@ -1,7 +1,6 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
 <Type Name="UIView" FullName="MonoTouch.UIKit.UIView">
-  <TypeSignature Language="C#" Value="public class UIView : MonoTouch.UIKit.UIResponder, IDisposable, MonoTouch.UIKit.IUIDynamicItem, System.Collections.IEnumerable" />
-  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit UIView extends MonoTouch.UIKit.UIResponder implements class MonoTouch.ObjCRuntime.INativeObject, class MonoTouch.UIKit.IUIDynamicItem, class System.Collections.IEnumerable, class System.IDisposable" />
+  <TypeSignature Language="C#" Value="public class UIView : MonoTouch.UIKit.UIResponder, IDisposable, MonoTouch.Foundation.INSCoding, MonoTouch.UIKit.IUIDynamicItem, System.Collections.IEnumerable" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit UIView extends MonoTouch.UIKit.UIResponder implements class MonoTouch.Foundation.INSCoding, class MonoTouch.ObjCRuntime.INativeObject, class MonoTouch.UIKit.IUIDynamicItem, class System.Collections.IEnumerable, class System.IDisposable" />
   <AssemblyInfo>
     <AssemblyName>monotouch</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -10,6 +9,9 @@
     <BaseTypeName>MonoTouch.UIKit.UIResponder</BaseTypeName>
   </Base>
   <Interfaces>
+    <Interface>
+      <InterfaceName>MonoTouch.Foundation.INSCoding</InterfaceName>
+    </Interface>
     <Interface>
       <InterfaceName>MonoTouch.UIKit.IUIDynamicItem</InterfaceName>
     </Interface>
@@ -1013,7 +1015,7 @@ public class BlueLayer : CALayer
           <para>In general, if your constructors invokes the NSObjectFlag.Empty base implementation, then it should be calling an Objective-C init method.   If this is not the case, you should instead chain to the proper constructor in your class. </para>
           <para>The argument value is ignored and merely ensures that the only code that is executed is the construction phase is the basic NSObject allocation and runtime type registration.  Typically the chaining would look like this:</para>
           <example>
-            <code lang="C#"><![CDATA[
+            <code lang="C#">
 //
 // The NSObjectFlag merely allocates the object and registers the
 // C# class with the Objective-C runtime if necessary, but no actual
@@ -1031,7 +1033,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 	else
 		Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
 }
-]]></code>
+</code>
           </example>
         </remarks>
       </Docs>
@@ -1996,7 +1998,6 @@ async void HideAsync()
         <param name="completion">To be added.</param>
         <summary>Animates the specified <paramref name="animations" /> action, in which keyframe animations may be used.</summary>
         <remarks>
-          <para>The application developer must use <see cref="M:MonoTouch.UIKit.UIView.AddKeyframeWithRelativeStartTime" /> within the <paramref name="animations" /> block for keyframe animation. Otherwise, the animations will run normally (linearly over <paramref name="durations" />).</para>
         </remarks>
       </Docs>
     </Member>
@@ -2027,7 +2028,7 @@ async void HideAsync()
         <param name="delay">To be added.</param>
         <param name="options">To be added.</param>
         <param name="animations">To be added.</param>
-        <summary>Animates as an asynchronous operation the <paramref name="animations" />, in which keyframe operations may be used.</summary>
+        <summary>Animates the specified  action, in which keyframe animations may be used.</summary>
         <returns>
           <para>A task that represents the asynchronous AnimateKeyframes operation.   The value of the TResult parameter is a MonoTouch.UIKit.UICompletionHandler.</para>
         </returns>
@@ -2244,7 +2245,7 @@ async void AnimateAsync()
       <Docs>
         <param name="duration">Duration in seconds for the animation.</param>
         <param name="animation">Code containing the changes that you will apply to your view.</param>
-        <summary>Animates the property changes that take place in the specified block as an asynchronous operation.</summary>
+        <summary>Animates the property changes that take place in the specificied block and invokes a completion callback when the animation completes.</summary>
         <returns>
           <para>A task that represents the asynchronous AnimateNotify operation.   The value of the TResult parameter is a MonoTouch.UIKit.UICompletionHandler.</para>
         </returns>
@@ -2314,7 +2315,7 @@ async void AnimateAsync()
         <param name="initialSpringVelocity">The initial velocity of the spring, in points per second.</param>
         <param name="options">Animation options.</param>
         <param name="animations">The changes to be applied to the view.</param>
-        <summary>Animates the specified property changes with an added spring-like effect. An asynchronous operation.</summary>
+        <summary>Animates the specified property changes with an added spring-like effect.</summary>
         <returns>
           <para>A task that represents the asynchronous AnimateNotify operation.   The value of the Result parameter is a MonoTouch.UIKit.UICompletionHandler.</para>
         </returns>
@@ -2408,7 +2409,7 @@ async void AnimateAsync()
         <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>An accessibility notification that an announcement has ended.</summary>
+        <summary>Notification constant for AnnouncementDidFinish</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
@@ -2523,10 +2524,10 @@ void Setup ()
           <para>The returned object represents the UIAppearance proxy where you can set appearance properties for instances of UIView when those instances are contained in the hierarchy specified by the <paramref name="containers" /> parameter.</para>
           <para>The following example shows how the AppearanceWhenContainedIn method works</para>
           <example>
-            <code lang="C#"><![CDATA[
+            <code lang="C#">
 var mySliders = UISlider.AppearanceWhenContainedIn (typeof (UINavigationBar), typeof (UIPopoverController));
 mySliders.TintColor = UIColor.Red;
-]]></code>
+</code>
           </example>
           <para>For more information, see the documentation for the <see cref="T:MonoTouch.UIKit.UIAppearance" /> class.</para>
         </remarks>
@@ -5260,7 +5261,7 @@ void Setup ()
         <param name="views">To be added.</param>
         <param name="options">To be added.</param>
         <param name="parallelAnimations">To be added.</param>
-        <summary>Performs, as an async operation, a system-provided animation and optional parallel animations.</summary>
+        <summary>Performs a system-provided animation and optional parallel animations.</summary>
         <returns>
           <para>A task that represents the asynchronous PerformSystemAnimation operation.   The value of the TResult parameter is a MonoTouch.UIKit.UICompletionHandler.</para>
         </returns>

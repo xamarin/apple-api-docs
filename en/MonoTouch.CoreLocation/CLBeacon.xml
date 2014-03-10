@@ -1,6 +1,6 @@
 <Type Name="CLBeacon" FullName="MonoTouch.CoreLocation.CLBeacon">
-  <TypeSignature Language="C#" Value="public class CLBeacon : MonoTouch.Foundation.NSObject" />
-  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit CLBeacon extends MonoTouch.Foundation.NSObject" />
+  <TypeSignature Language="C#" Value="public class CLBeacon : MonoTouch.Foundation.NSObject, IDisposable, MonoTouch.Foundation.INSCopying, MonoTouch.Foundation.INSSecureCoding" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit CLBeacon extends MonoTouch.Foundation.NSObject implements class MonoTouch.Foundation.INSCoding, class MonoTouch.Foundation.INSCopying, class MonoTouch.Foundation.INSSecureCoding, class MonoTouch.ObjCRuntime.INativeObject, class System.IDisposable" />
   <AssemblyInfo>
     <AssemblyName>monotouch</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -8,7 +8,17 @@
   <Base>
     <BaseTypeName>MonoTouch.Foundation.NSObject</BaseTypeName>
   </Base>
-  <Interfaces />
+  <Interfaces>
+    <Interface>
+      <InterfaceName>MonoTouch.Foundation.INSCopying</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>MonoTouch.Foundation.INSSecureCoding</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>System.IDisposable</InterfaceName>
+    </Interface>
+  </Interfaces>
   <Attributes>
     <Attribute>
       <AttributeName>MonoTouch.Foundation.Register("CLBeacon", true)</AttributeName>
@@ -22,8 +32,8 @@
     <remarks>
       <para>Beacons are Bluetooth (often Bluetooth LE) devices that can be detected by apps. Currently, beacons are iOS devices, but Apple has stated that they intend to release a Bluetooth profile for beacons. (Current non-Apple iBeacon devices use formats apparently based on reverse-engineered signals.) </para>
       <para>Beacons can be used to created <see cref="T:MonoTouch.CoreLocation.CLRegion" />s that can be monitored for entry and exit, as shown in the following code:</para>
-        <example>
-          <code lang="C#"><![CDATA[
+      <example>
+        <code lang="C#"><![CDATA[
 locationManager = new CLLocationManager();
 NSUuid beaconId = new NSUuid("E437C1AF-36CE-4BBC-BBE2-6CE802977C46");
 var beaconRegion = new CLBeaconRegion(beaconId, "My Beacon");
@@ -35,10 +45,10 @@ locationManager.RegionEntered += (s,e) => {
 };
 locationManager.StartMonitoring(beaconRegion);            
             ]]></code>
-        </example>
+      </example>
       <para>iBeacons also support "ranging" for determining physical proximity with a higher precision with the <see cref="P:MonoTouch.Foundation.CLBeacon.Proximity" /> property. The following example shows the basic use of ranging:</para>
-        <example>
-          <code lang="C#"><![CDATA[
+      <example>
+        <code lang="C#"><![CDATA[
 locationManager.StartRangingBeacons(beaconRegion);
 locationManager.DidRangeBeacons += (lm, rangeEvents) => {
 				switch(rangeEvents.Beacons[0].Proximity)
@@ -60,7 +70,7 @@ locationManager.DidRangeBeacons += (lm, rangeEvents) => {
 				}
 			};
             ]]></code>
-             <code lang="F#"><![CDATA[
+        <code lang="F#"><![CDATA[
 locationManager.DidRangeBeacons.Add(fun rangeEvents ->
     let s = match rangeEvents.Beacons.[0].Proximity with
         | CLProximity.Far  -> "You're getting colder!"
@@ -72,11 +82,10 @@ locationManager.DidRangeBeacons.Add(fun rangeEvents ->
 )
 locationManager.StartRangingBeacons(beaconRegion)       
         ]]></code>
-        </example>
+      </example>
       <para>Applications can broadcast themselves as beacons by passing the <see cref="P:MonoTouch.CoreLocation.CLBeaconRegion.PeripheralData" /> property of a <see cref="T:MonoTouch.CoreLocation.CLBeaconRegion" /> to <see cref="M:MonoTouch.CoreBluetooth.CBPeripheralManager.StartAdvertising" />.</para>
     </remarks>
     <related type="article" href="http://blog.xamarin.com/play-find-the-monkey-with-ios7-ibeacons">Play 'Find the Monkey' with iOS 7 iBeacons</related>
-
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -212,10 +221,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Double</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The accuracy of <see cref="P:MonoTouch.CoreLocation.CLBeacon.Proximity"/>, in meters.</summary>
+        <summary>The accuracy of <see cref="P:MonoTouch.CoreLocation.CLBeacon.Proximity" />, in meters.</summary>
         <value>To be added.</value>
-        <remarks><para>Application developers should not use this value to try to indicate a precise location. It should be used to tell the difference between multiple beacons with the same <see cref="P:MonoTouch.CoreLocation.CLBeacon.Proximity"/> value.</para>
-        <para>Even if both the device and the beacon are stationary, this value may vary over time due to radio interference.</para>  
+        <remarks>
+          <para>Application developers should not use this value to try to indicate a precise location. It should be used to tell the difference between multiple beacons with the same <see cref="P:MonoTouch.CoreLocation.CLBeacon.Proximity" /> value.</para>
+          <para>Even if both the device and the beacon are stationary, this value may vary over time due to radio interference.</para>
         </remarks>
       </Docs>
     </Member>
@@ -233,6 +243,31 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <summary>The handle for this class.</summary>
         <value>The pointer to the Objective-C class.</value>
         <remarks>Each MonoTouch class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Copy">
+      <MemberSignature Language="C#" Value="public virtual MonoTouch.Foundation.NSObject Copy (MonoTouch.Foundation.NSZone zone);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class MonoTouch.Foundation.NSObject Copy(class MonoTouch.Foundation.NSZone zone) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("copyWithZone:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>MonoTouch.Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="zone" Type="MonoTouch.Foundation.NSZone" />
+      </Parameters>
+      <Docs>
+        <param name="zone">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Dispose">
@@ -367,7 +402,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <summary>The average received signal strength, measured in decibels.</summary>
         <value>To be added.</value>
-        <remarks><para>The average RSSI value of those samples received from the beacon since the last time range (see <see cref="P:MonoTouch.CoreLocation.CLBeacon.Proximity"/>) was reported to the app.</para></remarks>
+        <remarks>
+          <para>The average RSSI value of those samples received from the beacon since the last time range (see <see cref="P:MonoTouch.CoreLocation.CLBeacon.Proximity" />) was reported to the app.</para>
+        </remarks>
       </Docs>
     </Member>
   </Members>

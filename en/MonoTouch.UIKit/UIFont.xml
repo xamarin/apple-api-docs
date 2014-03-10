@@ -1,7 +1,6 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
 <Type Name="UIFont" FullName="MonoTouch.UIKit.UIFont">
-  <TypeSignature Language="C#" Value="public class UIFont : MonoTouch.Foundation.NSObject" />
-  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit UIFont extends MonoTouch.Foundation.NSObject" />
+  <TypeSignature Language="C#" Value="public class UIFont : MonoTouch.Foundation.NSObject, IDisposable, MonoTouch.Foundation.INSCopying" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit UIFont extends MonoTouch.Foundation.NSObject implements class MonoTouch.Foundation.INSCopying, class MonoTouch.ObjCRuntime.INativeObject, class System.IDisposable" />
   <AssemblyInfo>
     <AssemblyName>monotouch</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -9,7 +8,14 @@
   <Base>
     <BaseTypeName>MonoTouch.Foundation.NSObject</BaseTypeName>
   </Base>
-  <Interfaces />
+  <Interfaces>
+    <Interface>
+      <InterfaceName>MonoTouch.Foundation.INSCopying</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>System.IDisposable</InterfaceName>
+    </Interface>
+  </Interfaces>
   <Attributes>
     <Attribute>
       <AttributeName>MonoTouch.Foundation.Register("UIFont", true)</AttributeName>
@@ -201,7 +207,7 @@ label.Font = UIFont.FromDescriptor (removedSnowmanDescriptor, 0);
           <para>In general, if your constructors invokes the NSObjectFlag.Empty base implementation, then it should be calling an Objective-C init method.   If this is not the case, you should instead chain to the proper constructor in your class. </para>
           <para>The argument value is ignored and merely ensures that the only code that is executed is the construction phase is the basic NSObject allocation and runtime type registration.  Typically the chaining would look like this:</para>
           <example>
-            <code lang="C#"><![CDATA[
+            <code lang="C#">
 //
 // The NSObjectFlag merely allocates the object and registers the
 // C# class with the Objective-C runtime if necessary, but no actual
@@ -219,7 +225,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 	else
 		Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
 }
-]]></code>
+</code>
           </example>
           <para tool="threads">This can be used from a background thread.</para>
         </remarks>
@@ -372,6 +378,34 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <value>The pointer to the Objective-C class.</value>
         <remarks>
           <para>Each MonoTouch class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Copy">
+      <MemberSignature Language="C#" Value="public virtual MonoTouch.Foundation.NSObject Copy (MonoTouch.Foundation.NSZone zone);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class MonoTouch.Foundation.NSObject Copy(class MonoTouch.Foundation.NSZone zone) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("copyWithZone:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>MonoTouch.Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="zone" Type="MonoTouch.Foundation.NSZone" />
+      </Parameters>
+      <Docs>
+        <param name="zone">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>
+          <para>(More documentation for this node is coming)</para>
           <para tool="threads">This can be used from a background thread.</para>
         </remarks>
       </Docs>
