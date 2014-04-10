@@ -485,7 +485,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
         <param name="launchOptions">An NSDictionary with the launch options, can be null.   Possible key values are UIApplication's LaunchOption static properties.</param>
         <summary>Method invoked after the application has launched to configure the main window and view controller.</summary>
-        <returns>To be added.</returns>
+        <returns>False if the application is unable to handle the specified url, true otherwise.</returns>
         <remarks>
           <para>
 	    This method should create and configure the toplevel window, make it visible.  The toplevel window should have a UIViewController.
@@ -513,14 +513,131 @@ public partial class AppDelegate : UIApplicationDelegate
           </example>
           <para>
 	    The dictionary launchOptions if set, might contain zero or more information bits.   You can use the following keys to retrieve information from it: 
-	    <see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsUrlKey" />,
-	    <see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsAnnotationKey" />,
-	    <see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsLocalNotificationKey" />,
-	    <see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsLocationKey" />,
-	    <see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsNewsstandDownloadsKey" />,
-	    <see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsRemoteNotificationKey" /> and
-	    <see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsSourceApplicationKey" />.
 	  </para>
+          <list type="table">
+            <listheader>
+              <term>Dictionary Key for launchOptions</term>
+              <description>Description</description>
+            </listheader>
+            <item>
+              <term><see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsUrlKey" /></term>
+              <description>The application was launched in response to open a URL.  the value associated with the key contains the URL to open.</description>
+            </item>
+            <item>
+              <term><see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsAnnotationKey" /></term>
+              <description>Use this key to find out if custom data was passed to the program by the opening application.   The value of this key will be a property list. </description>
+            </item>
+            <item>
+              <term><see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsLocalNotificationKey" /></term>
+              <description>
+		<para>
+		  The value of this key will be a <see cref="T:MonoTouch.UIKit.UILocalNotification" /> instance.
+		</para>
+		<para>
+		  This key will be present on the launch options if a local notification was delivered and the application was not running.
+		</para>
+	      </description>
+            </item>
+            <item>
+              <term><see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsLocationKey" /></term>
+              <description>
+		<para>
+		  Application was started up in response to a location event.
+		</para>
+		<para>
+		  The value of this key will be an NSNumber.   The application should respond by creating a <see cref="T:MonoTouch.CoreLocation.CLLocationManager" /> instance to and get the information from that object.
+		</para>
+	      </description>
+            </item>
+            <item>
+              <term><see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsNewsstandDownloadsKey" /></term>
+              <description>
+		<para>This key indicates that Newsstand has completed downloading the requested data. </para>
+		<para>The value in the dictionary for this key, contains an array of strings that represent <see cref="T:MonoTouch.Newsstand.NKAssetDownload" /> objects.</para>
+	      </description>
+            </item>
+            <item>
+              <term><see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsRemoteNotificationKey" /></term>
+              <description>The value associated with this key will be an NSDictionary with the payload from the remote notification that was received. </description>
+            </item>
+            <item>
+              <term><see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsSourceApplicationKey" /></term>
+              <description>The value associated with the key is the bundle-id of the application that launched this application.</description>
+            </item>
+            <item>
+              <term><see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsBluetoothPeripheralsKey" /></term>
+              <description>
+		<para>
+		  If this key is present, this means that the
+		  Bluetooth subsystem has launched the application to
+		  restore a previous operation that was being done by
+		  an <see
+		  cref="T:MonoTouch.CoreBluetooth.CBPeripheralManager"/>
+		  objects.
+		</para>
+		<para>
+		  The value of the key is an array of strings, each being the keys that you used when you created a CBPeripheralManager.
+		</para>
+	      </description>
+            </item>
+	    <item>
+              <term><see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsBluetoothCentralsKey" /></term>
+              <description>
+		<para>
+		  If this key is present, this means that the
+		  Bluetooth subsystem has launched the application to
+		  restore a previous operation that was being done by
+		  an <see
+		  cref="T:MonoTouch.CoreBluetooth.CBCentralManager"/>
+		  objects.
+		</para>
+		<para>
+		  The value of the key is an array of strings, each being the keys that you used when you created a CBPeripheralManager.
+		</para>
+	      </description>
+            </item>
+          </list>
+
+	  <para>
+
+	    If the application is designed to handle urls, it should
+	    lookup the <see
+	    cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsUrlKey"
+	    /> key in the launchOptions to extract the url that is
+	    being launched, and return true at the end of the method
+	    to indicate that the application is able to load that url,
+	    or false if it is not.
+
+	  </para>
+
+	  <example>
+        <code lang="C#"><![CDATA[
+[Register ("AppDelegate")]
+public partial class AppDelegate : UIApplicationDelegate
+{
+    UIWindow window;
+
+    public override bool WillFinishLaunching (UIApplication app, NSDictionary options)
+    {
+        if (options != null){
+	    NSObject urlObject;
+	    if (options.TryGetValue (UIApplication.LaunchOptionsUrlKey, out urlObject)){
+	        var url = urlObject as NSUrl;
+
+		// Examine the url here
+		return CanHandle (url);
+	    }
+        }
+    	return true;
+    }
+}
+]]></code>
+	  </example>
+
+	  <para>
+	    The following example shows how to retrieve the UILocatioNotification at startup.
+	  </para>
+
           <example>
             <code lang="C#"><![CDATA[
 [Register ("AppDelegate")]
@@ -1240,10 +1357,144 @@ public partial class AppDelegate : UIApplicationDelegate
       </Parameters>
       <Docs>
         <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
-        <param name="launchOptions">To be added.</param>
+        <param name="launchOptions">An NSDictionary with the launch options, can be null.   Possible key values are UIApplication's LaunchOption static properties.</param>
         <summary>Indicates that launching has begun, but state restoration has not yet occurred.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <returns>False if the application is unable to handle the specified url, true otherwise.</returns>
+        <remarks>
+	  <para>
+
+	    This is the first method called when your UIApplication
+	    has been created, and by the time this is called, the
+	    storyboard or NIB files would have been loaded.  When you
+	    return from this call, the state restoration protocol will
+	    take place, and after that, the <see
+	    cref="M:MonoTouch.UIKit.UIApplicationDelegate.FinishedLaunching"/>
+	    method will be invoked to complete the application
+	    startup.
+	  </para>
+          <para>
+	    The dictionary launchOptions if set, might contain zero or more information bits.   You can use the following keys to retrieve information from it: 
+	  </para>
+          <list type="table">
+            <listheader>
+              <term>Dictionary Key for launchOptions</term>
+              <description>Description</description>
+            </listheader>
+            <item>
+              <term><see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsUrlKey" /></term>
+              <description>The application was launched in response to open a URL.  the value associated with the key contains the URL to open.</description>
+            </item>
+            <item>
+              <term><see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsAnnotationKey" /></term>
+              <description>Use this key to find out if custom data was passed to the program by the opening application.   The value of this key will be a property list. </description>
+            </item>
+            <item>
+              <term><see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsLocalNotificationKey" /></term>
+              <description>
+		<para>
+		  The value of this key will be a <see cref="T:MonoTouch.UIKit.UILocalNotification" /> instance.
+		</para>
+		<para>
+		  This key will be present on the launch options if a local notification was delivered and the application was not running.
+		</para>
+	      </description>
+            </item>
+            <item>
+              <term><see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsLocationKey" /></term>
+              <description>
+		<para>
+		  Application was started up in response to a location event.
+		</para>
+		<para>
+		  The value of this key will be an NSNumber.   The application should respond by creating a <see cref="T:MonoTouch.CoreLocation.CLLocationManager" /> instance to and get the information from that object.
+		</para>
+	      </description>
+            </item>
+            <item>
+              <term><see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsNewsstandDownloadsKey" /></term>
+              <description>
+		<para>This key indicates that Newsstand has completed downloading the requested data. </para>
+		<para>The value in the dictionary for this key, contains an array of strings that represent <see cref="T:MonoTouch.Newsstand.NKAssetDownload" /> objects.</para>
+	      </description>
+            </item>
+            <item>
+              <term><see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsRemoteNotificationKey" /></term>
+              <description>The value associated with this key will be an NSDictionary with the payload from the remote notification that was received. </description>
+            </item>
+            <item>
+              <term><see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsSourceApplicationKey" /></term>
+              <description>The value associated with the key is the bundle-id of the application that launched this application.</description>
+            </item>
+            <item>
+              <term><see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsBluetoothPeripheralsKey" /></term>
+              <description>
+		<para>
+		  If this key is present, this means that the
+		  Bluetooth subsystem has launched the application to
+		  restore a previous operation that was being done by
+		  an <see
+		  cref="T:MonoTouch.CoreBluetooth.CBPeripheralManager"/>
+		  objects.
+		</para>
+		<para>
+		  The value of the key is an array of strings, each being the keys that you used when you created a CBPeripheralManager.
+		</para>
+	      </description>
+            </item>
+	    <item>
+              <term><see cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsBluetoothCentralsKey" /></term>
+              <description>
+		<para>
+		  If this key is present, this means that the
+		  Bluetooth subsystem has launched the application to
+		  restore a previous operation that was being done by
+		  an <see
+		  cref="T:MonoTouch.CoreBluetooth.CBCentralManager"/>
+		  objects.
+		</para>
+		<para>
+		  The value of the key is an array of strings, each being the keys that you used when you created a CBPeripheralManager.
+		</para>
+	      </description>
+            </item>
+          </list>
+
+	  <para>
+
+	    If the application is designed to handle urls, it should
+	    lookup the <see
+	    cref="P:MonoTouch.UIKit.UIApplication.LaunchOptionsUrlKey"
+	    /> key in the launchOptions to extract the url that is
+	    being launched, and return true at the end of the method
+	    to indicate that the application is able to load that url,
+	    or false if it is not.
+
+	  </para>
+
+	  <example>
+        <code lang="C#"><![CDATA[
+[Register ("AppDelegate")]
+public partial class AppDelegate : UIApplicationDelegate
+{
+    UIWindow window;
+
+    public override bool WillFinishLaunching (UIApplication app, NSDictionary options)
+    {
+        if (options != null){
+	    NSObject urlObject;
+	    if (options.TryGetValue (UIApplication.LaunchOptionsUrlKey, out urlObject)){
+	        var url = urlObject as NSUrl;
+
+		// Examine the url here
+		return CanHandle (url);
+	    }
+        }
+    	return true;
+    }
+}
+]]></code>
+	  </example>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="WillTerminate">
