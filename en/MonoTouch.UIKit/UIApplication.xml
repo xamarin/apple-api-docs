@@ -22,7 +22,7 @@
 	encapsulates the central administrative properties of an
 	application running on iOS. Application developers must not
 	instantiate new <see cref="T:MonoTouch.UIKit.UIApplication" />s using constructors, but instead must use the static <see cref="P:MonoTouch.UIKit.UIApplication.SharedApplication" />
-	singleton property.  </para>
+        singleton property. Application developers may subclass <see cref="T:MonoTouch.UIKit.UIApplication"/> and use the <c>principalClassName</c> argument to the <see cref="M:MonoTouch.UIKit.UIApplication.Main(string[],string,string)"/> method to specify their subclass. In that situation, developers must create a public constructor for their subclass that the runtime will call appropriately. Subsequently, the <see cref="P:MonoTouch.UIKit.UIApplication.SharedApplication"/> singleton will refer to the instance of their subclass.</para>
       <para> 
 	Unlike with most classes in the <see cref="N:MonoTouch.UIKit" /> namespace, events relating to the
         <see cref="T:MonoTouch.UIKit.UIApplication" /> cannot be
@@ -2128,6 +2128,30 @@ void Setup ()
         <param name="delegateClassName">The name of the UIApplicationDelegate class, if null, it uses the UIApplicationDelegate instance specified in the main NIB file for this program..</param>
         <summary>Launches the main application loop with the given command line parameters.</summary>
         <remarks>
+          <para>The <paramref name="principalClassName"/> is typically only specified if the application developer subclasses <see cref="T:MonoTouch.UIKit.UIApplication"/>, as shown in the following example:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+public class Application
+{
+	static void Main(string[] args)
+	{
+		UIApplication.Main(args, "MyApp", "MyAppDelegate");
+	}
+}
+
+[Register("MyApp")]
+public class MyApp : UIApplication
+{
+//...etc...
+}          
+
+[Register("MyAppDelegate")]
+public  class AppDelegate : UIApplicationDelegate
+{
+//..etc...
+}
+              ]]></code>
+            </example>
         </remarks>
       </Docs>
     </Member>
