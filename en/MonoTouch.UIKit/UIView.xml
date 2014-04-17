@@ -937,9 +937,18 @@ public class BlueLayer : CALayer
 	control the desaturation when some views are no longer active.
 
       </para>
+      <!--
       <format type="text/html">
         <h2>Dynamics</h2>
       </format>
+-->
+      <format type="text/html">
+        <h2>View Hierarchies</h2>
+      </format>
+      <para>iOS user interfaces are built from <see cref="T:MonoTouch.UIKit.UIView"/> hierarchies. Parent-child relationships determine not only the visual aspects of the UI, but determine how the application responds to touch events and orientation changes.</para>
+      <para>View relationships may be built programmatically or via XIB files. <see cref="T:MonoTouch.UIKit.UIView"/>s may have many <see cref="P:MonoTouch.UIKit.UIView.Subviews"/> but only one <see cref="P:MonoTouch.UIKit.UIView.Superview"/>.</para>
+      <para>The most common way to add subviews is to use <see cref="M:MonoTouch.UIKit.UIView.AddSubview"/>, which appends the child view to the list of <see cref="P:MonoTouch.UIKit.UIView.Subviews"/>. More precise control of ordering during insertion may be done with the <see cref="M:MonoTouch.UIKit.UIView.InsertSubview"/>, <see cref="M:MonoTouch.UIKit.UIView.InsertSubviewAbove"/>, and <see cref="M:MonoTouch.UIKit.UIView.InsertSubviewBelow"/> methods.</para>
+      <para>The ordering of <see cref="P:MonoTouch.UIKit.UIView.Subviews"/> may be manipulated with the <see cref="M:MonoTouch.UIKit.UIView.BringSubviewToFront"/>, <see cref="M:MonoTouch.UIKit.UIView.SendSubviewToBack"/>, and <see cref="M:MonoTouch.UIKit.UIView.ExchangeSubview"/> methods.</para>
     </remarks>
     <related type="recipe" href="http://docs.xamarin.com/ios/Recipes/Animation/CoreAnimation/Animate_a_UIView_using_UIKit">Animate a UIView using UIKit</related>
   </Docs>
@@ -1057,7 +1066,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="frame">Frame used by the view, expressed in iOS points.</param>
         <summary>Initializes the UIView with the specified frame.</summary>
         <remarks>
-          <para>This constructor is used to programmatically create a new instance of UIView with the specified dimension in the frame.   The object will only be displayed once it has been added to a view hierarchy by calling AddSubview in a containing view.</para>
+          <para>This constructor is used to programmatically create a new instance of UIView with the specified dimension in the frame.   The object will only be displayed once it has been added to a view hierarchy by calling <see cref="M:MonoTouch.UIKit.UIView.AddSubview"/> in a containing view.</para>
           <para>This constructor is not invoked when deserializing objects from storyboards or XIB filesinstead the constructor that takes an NSCoder parameter is invoked.</para>
         </remarks>
       </Docs>
@@ -1648,9 +1657,25 @@ var animationSucceeded = await UIView.AnimateKeyframesAsync(
         </param>
         <summary>Adds the specified view as a subview of this view.</summary>
         <remarks>
-          <para>Since <see cref="T:MonoTouch.UIKit.UIView" />s can only have direct ancestore, this will overwrite the existing <see cref="P:MonoTouch.UIKit.UIView.Superview" /> of the <paramref name="view" />.</para>
-        </remarks>
+          
+          <para><see cref="M:MonoTouch.UIKit.UIView.AddSubview"/> appends the <paramref name="view"/> to the end of <c>this</c> <see cref="T:MonoTouch.UIKit.UIView"/>'s <see cref="P:MonoTouch.UIKit.UIView.Subviews"/>. The methods <see cref="M:MonoTouch.UIKit.UIView.InsertSubview"/>, <see cref="M:MonoTouch.UIKit.UIView.InsertSubviewBelow"/>, and <see cref="M:MonoTouch.UIKit.UIView.InsertSubviewAbove"/> can be used to control the order.</para>
+          <para>To remove a <see cref="T:MonoTouch.UIKit.UIView"/> from <see cref="P:MonoTouch.UIKit.UIView.Subviews"/>, call <see cref="M:MonoTouch.UIKit.UIView.RemoveFromSuperview"/> on the child <see cref="T:MonoTouch.UIKit.UIView"/>.</para>
+          <para>Since <see cref="T:MonoTouch.UIKit.UIView" />s can only have direct ancestor, this will overwrite the existing <see cref="P:MonoTouch.UIKit.UIView.Superview" /> of the <paramref name="view" />.</para>
+          <para>A number of methods are called when a subview is added or removed:</para>
+          <list type="bullet">
+            <item><term><see cref="M:MonoTouch.UIKit.UIView.WillMoveToSuperview"/></term><description>TK</description></item>
+            <item><term><see cref="M:MonoTouch.UIKit.UIView.WillMoveToWindow"/></term></item>
+            <item><term><see cref="M:MonoTouch.UIKit.UIView.WillRemoveSubview"/></term></item>
+            <item><term><see cref="M:MonoTouch.UIKit.UIView.SubviewAdded"/></term></item>
+            <item><term><see cref="M:MonoTouch.UIKit.UIView.MovedToSuperview"/></term></item>
+            <item><term><see cref="M:MonoTouch.UIKit.UIView.MovedToWindow"/></term></item>
+          </list>  
+          <para>The following diagram shows the sequence of calls resulting from a call to <see cref="M:MonoTouch.UIKit.UIView.AddSubview"/>. Note that the calls to <see cref="M:MonoTouch.UIKit.UIView.WillMoveToWindow"/> and <see cref="M:MonoTouch.UIKit.UIView.MovedToWindow"/> occur shortly after <see cref="M:MonoTouch.UIKit.UIView.AddSubview"/> has completed.</para>
+          <para><img src="UIView.AddSubviewSequence.png"/></para>     
+          </remarks>
       </Docs>
+      <altmember cref="P:MonoTouch.UIKit.UIView.Subviews"/>
+      <altmember cref="M:MonoTouch.UIKit.UIView.RemoveFromSuperview"/>
     </Member>
     <Member MemberName="AddSubviews">
       <MemberSignature Language="C#" Value="public void AddSubviews (MonoTouch.UIKit.UIView[] views);" />
