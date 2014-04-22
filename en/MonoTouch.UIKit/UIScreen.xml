@@ -16,7 +16,10 @@
   </Attributes>
   <Docs>
     <summary>Information about the screen.</summary>
-    <remarks>To be added.</remarks>
+    <remarks>
+      <para>This class contains the bounding rectangle of the device's screen and, if the display is being mirrored to an external display, information about that screen.</para>
+      <para>The <see cref="P:MonoTouch.UIKit.UIScreen.MainScreen"/> singleton represent the device's physical screen. All of the currently-attached screens are available in the <see cref="P:MonoTouch.UIKit.UIScreen.Screens"/> static array: the <see cref="P:MonoTouch.UIKit.UIScreen.MainScreen"/> is always at index 0.</para>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -153,8 +156,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Docs>
         <summary>The RectangleF for the Frame for the app window. Read-only.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <value>The Frame of the application.</value>
+        <remarks>
+          <para>The <see cref="P:MonoTouch.UIKit.UIDevice.ApplicationFrame"/> is the <see cref="P:MonoTouch.UIKit.UIScreen.Bounds"/> minus the size of the status bar, if it is visible.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AvailableModes">
@@ -200,9 +205,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Drawing.RectangleF</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The bounding RectangleF of the screen, in points. Read-only.</summary>
+        <summary>The bounding RectangleF of the screen, in logical pixels. Read-only.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks><para>The <see cref="P:MonoTouch.UIKit.UIScreen.Bounds"/> includes the area of the status bar. The <see cref="P:MonoTouch.UIKit.UIScreen.ApplicationFrame"/> does not contain the area of the status bar.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="Brightness">
@@ -234,8 +239,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Docs>
         <summary>The brightness level of this UIScreen.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <value>Ranges from 0.0 (minimum brightness) to 1.0.</value>
+        <remarks>
+          <para>This value affects the screen only when the application is in the foreground. The system-wide brightness is used when other applications are in the foreground. In other words, applications do not need to store and reset the brightness as they are activated and de-activated.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="BrightnessDidChangeNotification">
@@ -267,7 +274,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIScreen+Notifications" />.<see cref="M:UIScreen+Notifications.ObserveBrightnessDidChangeNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 //
 // Lambda style
 //
@@ -299,11 +306,11 @@ void Setup ()
 void Teardown ()
 {
     notification.Dispose ();
-}</code>
+}]]></code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
         UIScreen.BrightnessDidChangeNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIScreen", notification); }
@@ -319,6 +326,7 @@ void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (UIScreen.BrightnessDidChangeNotification, Callback);
 }
+]]>
 </code>
           </example>
         </remarks>
@@ -337,9 +345,9 @@ void Setup ()
       <Parameters />
       <Docs>
         <summary>Captures a screenshot of the entire screen.</summary>
-        <returns>A screenshot as a UIImage.</returns>
+        <returns>A screenshot as a <see cref="T:MonoTouch.UIKit.UIImage"/>.</returns>
         <remarks>
-          <para>
+           <para>
 	    This API will only capture UIKit and Quartz drawing,
 	    because it uses the screen's CALayer's RenderInContext
 	    method to perform the screenshot.  It will not capture
@@ -506,8 +514,10 @@ void WillRefresh ()
       </ReturnValue>
       <Docs>
         <summary>The active screen mode of this UIScreen.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <value>The <see cref="T:MonoTouch.UIKit.UIScreenMode"/> contains the pixel aspect ratio and size.</value>
+        <remarks><para>Application developers should note that the <see cref="P:MonoTouch.UIKit.UIScreenMode.Size"/> value is constant. That is, it's <see cref="P:System.Drawing.SizeF.Height"/> and <see cref="P:System.Drawing.SizeF.Width"/> do not switch due to the device's orientation.</para></remarks>
+        <altmember cref="P:MonoTouch.UIKit.UIScreen.AvailableModes"/>
+        <altmember cref="P:MonoTouch.UIKit.UIScreen.PreferredMode"/>
       </Docs>
     </Member>
     <Member MemberName="DidConnectNotification">
@@ -533,7 +543,7 @@ void WillRefresh ()
           <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIScreen+Notifications" />.<see cref="M:UIScreen+Notifications.ObserveDidConnectNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 //
 // Lambda style
 //
@@ -565,11 +575,11 @@ void Setup ()
 void Teardown ()
 {
     notification.Dispose ();
-}</code>
+}]]></code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
         UIScreen.DidConnectNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIScreen", notification); }
@@ -585,7 +595,7 @@ void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (UIScreen.DidConnectNotification, Callback);
 }
-</code>
+]]></code>
           </example>
         </remarks>
       </Docs>
@@ -613,7 +623,7 @@ void Setup ()
           <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIScreen+Notifications" />.<see cref="M:UIScreen+Notifications.ObserveDidDisconnectNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 //
 // Lambda style
 //
@@ -645,11 +655,11 @@ void Setup ()
 void Teardown ()
 {
     notification.Dispose ();
-}</code>
+}]]></code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
         UIScreen.DidDisconnectNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIScreen", notification); }
@@ -665,7 +675,7 @@ void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (UIScreen.DidDisconnectNotification, Callback);
 }
-</code>
+]]></code>
           </example>
         </remarks>
       </Docs>
@@ -740,7 +750,7 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>The UIScreen that is being mirrored by an external display. Read-only.</summary>
-        <value>To be added.</value>
+        <value><see langword="null"/> if there is no currently-attached external display.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -767,7 +777,7 @@ void Setup ()
           <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIScreen+Notifications" />.<see cref="M:UIScreen+Notifications.ObserveModeDidChangeNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 //
 // Lambda style
 //
@@ -799,11 +809,11 @@ void Setup ()
 void Teardown ()
 {
     notification.Dispose ();
-}</code>
+}]]></code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
         UIScreen.ModeDidChangeNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIScreen", notification); }
@@ -819,7 +829,7 @@ void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (UIScreen.ModeDidChangeNotification, Callback);
 }
-</code>
+]]></code>
           </example>
         </remarks>
       </Docs>
@@ -853,7 +863,7 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>The technique used to compensate for overscan on an external screen.</summary>
-        <value>To be added.</value>
+        <value>The default value is <see cref="P:MonoTouch.UIKit.UIScreenOverscanCompensation.Scale"/>.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -882,6 +892,8 @@ void Setup ()
         <summary>The preferred display mode for this UIScreen. Read-only.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
+        <altmember cref="P:MonoTouch.UIKit.UIScreen.AvailableModes"/>
+        <altmember cref="P:MonoTouch.UIKit.UIScreen.CurrentMode"/>
       </Docs>
     </Member>
     <Member MemberName="Scale">
@@ -907,8 +919,10 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>The natural scale factor of this UIScreen. Read-only.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <value>1.0 for standard-resolution displays, 2.0 for Retina displays.</value>
+        <remarks>
+          <para>This property holds the scale necessary to convert between "logical" coordinate space (measured in points) and the screen's coordinate space. On standard-resolution displays, the value is 1.0. On Retina displays, this value is 2.0, so a logical point comprises 4 pixels.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Screens">
@@ -934,8 +948,8 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>All the screens attached the device.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <value>The main screen is always at index 0.</value>
+        <remarks>The main screen is always at index 0 in this array.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SnapshotView">
@@ -962,8 +976,10 @@ void Setup ()
       <Docs>
         <param name="afterScreenUpdates">To be added.</param>
         <summary>Creates a snapshot of the current screen's contents.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <returns>A new <see cref="T:MonoTouch.UIKit.UIView"/> based on the current screen contents.</returns>
+        <remarks>
+          <para>The <see cref="T:MonoTouch.UIKit.UIView"/> created by this method will contain an image based on the screen's current contents. Application developers can manipulate the resulting <see cref="T:MonoTouch.UIKit.UIView"/> normally, except that attempts to manipulate the <see cref="T:MonoTouch.UIKit.CoreAnimation.CGImage"/> of it's <see cref="P:MonoTouch.UIKit.UIView.Layer"/>'s <see cref="P:CoreAnimation.CALayer.Contents"/> will silently fail.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="WantsSoftwareDimming">
@@ -995,8 +1011,8 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>Whether this UIScreen can be dimmed lower than hardware capacity by software emulation.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <value>The default value is <see langword="false"/>.</value>
+        <remarks><para>Setting this value to <see langword="true"/> may have a performance impact.</para></remarks>
       </Docs>
     </Member>
   </Members>
