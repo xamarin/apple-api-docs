@@ -2749,7 +2749,7 @@ UIView.CommitAnimations ();
         <ReturnType>System.Drawing.RectangleF</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The usable frame of the view</summary>
+        <summary>The usable frame of the view, specified using the view's own coordinate system.</summary>
         <value>
         </value>
         <remarks>
@@ -2772,6 +2772,20 @@ UIView.CommitAnimations ();
             When the Bound property is changed, the size of the view is affected
             relative to the <see cref="P:MonoTouch.UIKit.UIView.Center" /> property.
           </para>
+          <para>The <see cref="P:MonoTouch.UIKit.UIView.Bounds"/> property is relative to <c>this</c> <see cref="T:MonoTouch.UIKit.UIView"/>'s coordinate system. For instance, the following example shows a view (a <see cref="T:MonoTouch.UIKit.UIImageView"/>, actually) that has been rotated 45 degrees. The value of <c>flowerView.Bounds</c> remains [{0,0},{100,100}]. In contrast, the <see cref="P:MonoTouch.UIKit.UIView.Frame"/> property is expressed in terms of the containing view's coordinate system. In this case, after the rotation has been applied, the value of <c>flowerView.Frame</c> becomes [{79.3,79.3}, {141.4, 141.4}].</para>
+          <example>
+            <code lang="C#"><![CDATA[
+var flowerView = new UIImageView(new RectangleF(100, 100, 100, 100)) {
+	Image = UIImage.FromFile("flower.png"),
+	ContentMode = UIViewContentMode.Center,
+	ClipsToBounds = true
+};
+
+flowerView.Transform = CGAffineTransform.MakeRotation((float) Math.PI / 4);
+view.AddSubview(flowerView);            
+              ]]></code>
+</example>
+          <para><img href="UIKit.UIView.Frame.png"/></para>
           <para tool="threads">This can be used from a background thread.</para>
         </remarks>
       </Docs>
@@ -4125,6 +4139,22 @@ public override void Draw (RectangleF rect)
         <summary>Coordinates of the view relative to its container.</summary>
         <value>The value of this property is in points, not pixels.</value>
         <remarks>
+          <para>The <see cref="P:MonoTouch.UIKit.UIView.Frame"/> property is expressed in terms of the <see cref="P:MonoTouch.UIKit.UIView.Superview"/>'s coordinate system. (The <see cref="P:MonoTouch.UIKit.UIView.Bounds"/> property is expressed in terms of <c>this</c> <see cref="T:MonoTouch.UIKit.UIView"/>'s coordinate system.)</para>
+          <para>The following example shows just one way the <see cref="P:MonoTouch.UIKit.UIView.Frame"/>'s coordinate system and values can vary from that of the <see cref="P:MonoTouch.UIKit.UIView"/>'s <see cref="P:MonoTouch.UIKit.UIView.Bounds"/>. In this case, a <see cref="T:MonoTouch.UIKit.UIImageView"/> is placed with an initial <see cref="P:MonoTouch.UIKit.UIView.Frame"/> originating at {100,100} and of size {100,100}. Once rotated, both the origin and size of the <see cref="P:MonoTouch.UIKit.UIView.Frame"/> bounding box shift: the origin to accomodate the rotation and the sizes in order to contain the diagonal of the {100,100} box. The <see cref="P:MonoTouch.UIKit.UIView.Bounds"/> of the <c>flowerView</c> remains [{0,0},{100,100}].</para>
+            <example>
+            <code lang="C#"><![CDATA[
+var flowerView = new UIImageView(new RectangleF(100, 100, 100, 100)) {
+	Image = UIImage.FromFile("flower.png"),
+	ContentMode = UIViewContentMode.Center,
+	ClipsToBounds = true
+};
+
+flowerView.Transform = CGAffineTransform.MakeRotation((float) Math.PI / 4);
+view.AddSubview(flowerView);            
+              
+              ]]></code>
+            </example>
+          <para><img href="UIKit.UIView.Frame.png"/></para>
           <para>
             
             When changes are done to this property, the <see cref="P:MonoTouch.UIKit.UIView.Center" /> is updated with
@@ -4141,7 +4171,7 @@ public override void Draw (RectangleF rect)
           </para>
           <para>
             
-            At least on iOS 6, changing this property causes the a
+            At least on iOS 6 and later, changing this property causes the a
             re-layout of the subviews, even if the dimensions are the
             same.  This can cause performance problems as some views
             (like UITableView) can perform some very expensive
@@ -4169,6 +4199,7 @@ public override void Draw (RectangleF rect)
             changing this property can have unintended consequences.   In those cases, you should instead update <see cref="P:MonoTouch.UIKit.UIView.Center" /> and <see cref="P:MonoTouch.UIKit.UIView.Bounds" /> directly.
             
           </para>
+          
         </remarks>
       </Docs>
     </Member>
