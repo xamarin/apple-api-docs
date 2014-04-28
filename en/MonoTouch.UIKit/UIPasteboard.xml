@@ -72,6 +72,51 @@
 	cref="P:MonoTouch.UIKit.UIPasteboard.Colors"/> to set and get
 	strings, images, Urls or Colors on the pasteboard.
       </para>
+
+      <example>
+	<code lang="c#">
+//
+// Setting the contents of the pasteboard to "Hello World"
+// by specifying the UTI type for text.
+//
+var text = new NSString ("Hello world")
+UIPasteboard.General.SetValue (text, MonoTouch.MobileCoreServices.UTType.Text);
+
+// 
+// Setting the contents of the pasteboard to "So hello"
+// using the convenience property:
+//
+UIPasteboard.General.String = "So hello";
+	</code>
+      </example>
+      <format type="text/html">
+	<h2>Pasteboard Types</h2>
+      </format>
+      <para>
+
+	Whenever possible, you should use an UTI type to set the type
+	of the information that is being stored on the pasteboard.
+	You can find a list of common iOS/Mac UTI types on the <see
+	cref="T:MonoTouch.MobileCoreServices.UTType"/> type.
+
+      </para>
+
+      <para>
+	UTI types are merely strings separated by dots.  For example
+	the UTI type for an image is "public.image".  Apple maintains
+	the "public.*" directory of UTI types.  	
+      </para>
+
+      <para>
+
+	Apple recommends that if you need to use your own data type to
+	use an inverse domain to name them.   For example, "com.xamarin.t-shirt-application.sales-information". 
+
+      </para>
+
+      <related type="article" href="https://developer.apple.com/library/mac/documentation/FileManagement/Conceptual/understanding_utis/understand_utis_intro/understand_utis_intro.html">Introduction to Uniform Type Identifiers Overview</related>
+      <reated type="article" href="http://en.wikipedia.org/wiki/Uniform_Type_Identifier">"Uniform Type Identifier" on Wikipedia</reated>
+
     </remarks>
   </Docs>
   <Members>
@@ -381,7 +426,7 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>The color of the first pasteboard item.</summary>
-        <value>To be added.</value>
+        <value>The first value when fetching, or sets all the values when setting to the single specified value.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -405,7 +450,7 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>The colors used by all pasteboard items.</summary>
-        <value>To be added.</value>
+        <value>The first value when fetching, or sets all the values when setting to the single specified value.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -577,8 +622,19 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>The general pasteboard, used for copy-paste operations.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <value></value>
+        <remarks>
+	  <para>
+	    The General pasteboard can be used to share information
+	    information across processes.  While it can be used for
+	    sharing information with other processes, you can also use
+	    it to share hold information for your own application.
+	  </para>
+	  <para>
+	    You should put information into this pasteboard in
+	    response to user requests.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetDataForPasteboardType">
@@ -1072,8 +1128,8 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>The string value of the first pasteboard item.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <value>The first value when fetching, or sets all the values when setting to the single specified value.</value>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Strings">
@@ -1096,7 +1152,7 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>The string values of all the pasteboard items.</summary>
-        <value>To be added.</value>
+        <value>The first value when fetching, or sets all the values when setting to the single specified value.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>

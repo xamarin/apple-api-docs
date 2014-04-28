@@ -21,30 +21,33 @@
       <para>The application can add or delete additional menu items using the <see cref="P:MonoTouch.UIKit.UIMenuController.MenuItems" />. The following code, taken from the "Touches Gesture Recognizers" sample shows the code necessary to create a modified context menu:</para>
       <example>
         <code lang="C#"><![CDATA[
-          var menuController = UIMenuController.SharedMenuController;
-          var resetMenuItem = new UIMenuItem ("Reset", new Selector ("ResetImage"));
-          var location = gestureRecognizer.LocationInView (gestureRecognizer.View);
-          BecomeFirstResponder ();
-          menuController.MenuItems = new [] { resetMenuItem };
-          menuController.SetTargetRect (new RectangleF (location.X, location.Y, 0, 0), gestureRecognizer.View);
-          menuController.MenuVisible = true;
-          menuController.Animated = true;
-          imageForReset = gestureRecognizer.View;
+void Setup ()
+{
+     var menuController = UIMenuController.SharedMenuController;
+     var resetMenuItem = new UIMenuItem ("Reset", new Selector ("ResetImage"));
+     var location = gestureRecognizer.LocationInView (gestureRecognizer.View);
+     BecomeFirstResponder ();
+     menuController.MenuItems = new [] { resetMenuItem };
+     menuController.SetTargetRect (new RectangleF (location.X, location.Y, 0, 0), gestureRecognizer.View);
+     menuController.MenuVisible = true;
+     menuController.Animated = true;
+     imageForReset = gestureRecognizer.View;
+}         
+
+...
           
-          ...
-          
-          [Export("ResetImage")]
-          void ResetImage (UIMenuController controller)
-          {
-          var mid = new PointF ((imageForReset.Bounds.Left + imageForReset.Bounds.Right) / 2, (imageForReset.Bounds.Top + imageForReset.Bounds.Bottom) / 2);
-          var locationInSuperview = imageForReset.ConvertPointToView (mid, imageForReset.Superview);
-          imageForReset.Layer.AnchorPoint = new PointF (0.5f, 0.5f);
-          imageForReset.Center =locationInSuperview;
-          
-          UIView.BeginAnimations (null, IntPtr.Zero);
-          imageForReset.Transform = MonoTouch.CoreGraphics.CGAffineTransform.MakeIdentity ();
-          UIView.CommitAnimations ();
-          }
+[Export("ResetImage")]
+void ResetImage (UIMenuController controller)
+{
+     var mid = new PointF ((imageForReset.Bounds.Left + imageForReset.Bounds.Right) / 2, (imageForReset.Bounds.Top + imageForReset.Bounds.Bottom) / 2);
+     var locationInSuperview = imageForReset.ConvertPointToView (mid, imageForReset.Superview);
+     imageForReset.Layer.AnchorPoint = new PointF (0.5f, 0.5f);
+     imageForReset.Center =locationInSuperview;
+     
+     UIView.BeginAnimations (null, IntPtr.Zero);
+     imageForReset.Transform = MonoTouch.CoreGraphics.CGAffineTransform.MakeIdentity ();
+     UIView.CommitAnimations ();
+}
         ]]></code>
       </example>
     </remarks>
@@ -502,10 +505,13 @@ void Setup ()
         <Parameter Name="animated" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="visible">To be added.</param>
-        <param name="animated">To be added.</param>
-        <summary>Specifies the visibility of the editing menu.</summary>
-        <remarks>To be added.</remarks>
+        <param name="visible">If true, shows the editing menu;  if false hides it.</param>
+        <param name="animated">Determines whether the menu display should be animated or not.</param>
+        <summary>Displays or hides the editing menu menu.</summary>
+        <remarks>
+	  Before the menu is displayed, it is important that the view or view controller that will display the menu are the first responder (you can achieve this by calling <see cref="M:MonoTouch.UIKit.UIResponder.BecomeFirstResponder"/>.   The view or view controller must implement <see cref="M:MonoTouch.UIKit.UIResponder.CanBecomeFirstResponder"/> and it must return true and your view or view controller must implement <see
+	    cref="T:MonoTouch.UIKit.UIResponder.CanPerform"/> to determine which menu items will be shown.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetTargetRect">

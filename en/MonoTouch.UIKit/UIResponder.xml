@@ -142,11 +142,84 @@
         <h4>Standard Edit Actions</h4>
       </format>
       <para>
-	The following methods are part of the standard edit protocol.  You can implement these in your UIResponder to participate in these standard operations: <see cref="M:MonoTouch.UIKit.UIResponder.Copy"/>, <see cref="M:MonoTouch.UIKit.UIResponder.Cut"/>, <see cref="M:MonoTouch.UIKit.UIResponder.Delete"/>, <see cref="M:MonoTouch.UIKit.UIResponder.Select"/>, <see cref="M:MonoTouch.UIKit.UIResponder.SelectAll"/> and <see cref="M:MonoTouch.UIKit.UIResponder.Paste"/>.   
+	The following methods are part of the standard edit protocol.
+	You can implement these in your UIResponder to participate in
+	these standard operations: <see
+	cref="M:MonoTouch.UIKit.UIResponder.Copy"/>, <see
+	cref="M:MonoTouch.UIKit.UIResponder.Cut"/>, <see
+	cref="M:MonoTouch.UIKit.UIResponder.Delete"/>, <see
+	cref="M:MonoTouch.UIKit.UIResponder.Select"/>, <see
+	cref="M:MonoTouch.UIKit.UIResponder.SelectAll"/> and <see
+	cref="M:MonoTouch.UIKit.UIResponder.Paste"/>.
       </para>
       <para>
-	The following methods are used to change the styling of text: <see cref="M:MonoTouch.UIKit.UIResponder.ToggleBoldface"/>, <see cref="M:MonoTouch.UIKit.UIResponder.ToggleItalics"/> and <see cref="M:MonoTouch.UIKit.UIResponder.ToggleUnderline"/>.
+	The following methods are used to change the styling of text:
+	<see cref="M:MonoTouch.UIKit.UIResponder.ToggleBoldface"/>,
+	<see cref="M:MonoTouch.UIKit.UIResponder.ToggleItalics"/> and
+	<see cref="M:MonoTouch.UIKit.UIResponder.ToggleUnderline"/>.
       </para>
+
+      <para>
+
+	If you are implementing a UIResponder subclass (like your own
+	UIView) and you want it to display the standard editing menu,
+	you must: override <see
+	cref="T:MonoTouch.UIKit.UIResponder.CanBecomeFirstResponder"/>
+	and return true, override the <see
+	cref="T:MonoTouch.UIKit.UIResponder.CanPerform"/> method and
+	return true for all actions that you support and override the
+	methods that actually carry out the action (the ones listed in
+	"Standard Edit Actions" above)
+
+      </para>
+
+      <example>
+<code lang="c#">
+//
+// Selectable label: a label that shows the "Copy" menu when the user
+// long presses
+//
+public class SelectableLabel : UILabel {
+
+    public SelectableLabel (RectangleF rect) : base (rect)
+    {
+    	UserInteractionEnabled = true;
+    	var gesture = new UILongPressGestureRecognizer (LongPress);
+    	AddGestureRecognizer (gesture);
+    }
+    
+    void LongPress (UILongPressGestureRecognizer r)
+    {
+    	var location = r.LocationInView (r.View);
+    	var menu = UIMenuController.SharedMenuController;
+    
+    	r.View.BecomeFirstResponder ();
+    
+    	menu.SetTargetRect (r.View.Frame, r.View);
+    	menu.SetMenuVisible (true, true);
+    }
+    			
+    
+    public override bool CanBecomeFirstResponder { 
+    	get { return true; } 
+    }
+
+    Selector copyAction = new Selector ("copy");
+
+    public override bool CanPerform (Selector action, NSObject withSender)
+    {
+    	if (action == copyAction);
+    		return true;
+    	return false;
+    }
+    
+    public override void Copy (NSObject sender)
+    {
+    	UIPasteboard.General.String = this.Text;
+    }
+}
+</code>
+      </example>
     </remarks>
     <altmember cref="T:MonoTouch.UIKit.UIResponder_NSObjectExtension" />
   </Docs>
@@ -492,14 +565,65 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="withSender" Type="MonoTouch.Foundation.NSObject" />
       </Parameters>
       <Docs>
-        <param name="action">To be added.</param>
+        <param name="action">The selector that represents the action that is being probed.  For editing operations, these selectors are "copy:", "cut:", "delete:", "paste:", "select:", "selectAll:", "toggleBoldface:", "toggleItalics:", "toggleUnderline:".</param>
         <param name="withSender">
           <para>The object invoking this method.</para>
           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
         </param>
-        <summary>Requests that this UIResponder enable or disable the specified command.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>Determines if this UIResponder can perform the specified action.  Typically used to probe for editing commands.</summary>
+        <returns>True if the specified action can be performed with the specified sender.</returns>
+        <remarks>
+	  <para>
+	    This method should return true if the action specified by the selector can be performed by the object.
+	  </para>
+	  <example>
+	    <code lang="c#">
+//
+// Selectable label: a label that shows the "Copy" menu when the user
+// long presses
+//
+public class SelectableLabel : UILabel {
+
+    public SelectableLabel (RectangleF rect) : base (rect)
+    {
+    	UserInteractionEnabled = true;
+    	var gesture = new UILongPressGestureRecognizer (LongPress);
+    	AddGestureRecognizer (gesture);
+    }
+    
+    void LongPress (UILongPressGestureRecognizer r)
+    {
+    	var location = r.LocationInView (r.View);
+    	var menu = UIMenuController.SharedMenuController;
+    
+    	r.View.BecomeFirstResponder ();
+    
+    	menu.SetTargetRect (r.View.Frame, r.View);
+    	menu.SetMenuVisible (true, true);
+    }
+    			
+    
+    public override bool CanBecomeFirstResponder { 
+    	get { return true; } 
+    }
+
+    Selector copyAction = new Selector ("copy");
+
+    public override bool CanPerform (Selector action, NSObject withSender)
+    {
+    	if (action == copyAction);
+    		return true;
+    	return false;
+    }
+    
+    public override void Copy (NSObject sender)
+    {
+    	UIPasteboard.General.String = this.Text;
+    }
+}
+	    </code>
+	  </example>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="CanResignFirstResponder">
@@ -751,11 +875,19 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="sender" Type="MonoTouch.Foundation.NSObject" />
       </Parameters>
       <Docs>
-        <param name="action">To be added.</param>
+        <param name="action">The selector that represents the action that is being probed.  For editing operations, these selectors are "copy:", "cut:", "delete:", "paste:", "select:", "selectAll:", "toggleBoldface:", "toggleItalics:", "toggleUnderline:".</param>
         <param name="sender">Object calling this method.</param>
         <summary>Returns the object that responds to an action.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <returns>The object that can handle the action.</returns>
+        <remarks>
+	  <para> 
+	    The default implementation of this method calls the <see
+	    cref="T:MonoTouch.UIKit.UIResponder.CanPerform"/> method, and if it returns true, it returns this instance.   
+	  </para>
+	  <para>
+	    This method can be overwritten to provide a different behavior than the default.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="InputAccessoryView">
