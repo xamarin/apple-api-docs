@@ -18,6 +18,30 @@
     <summary>Identifiers for iOS-provided activities.</summary>
     <remarks>
       <para>These identifiers correspond to the <see cref="P:MonoTouch.UIKit.UIActivity.Type" /> property of the iOS-provided <see cref="T:MonoTouch.UIKit.UIActivity" />s. </para>
+      <para>They are typically used as values for the <see cref="P:MonoTouch.UIKit.UIActivity.Type"/> or as parameters in the constructor for <see cref="C:MonoTouch.UIKit.UIActivityViewController"/>.</para>
+      <example>
+	<code lang="c#">
+//
+// Share an image 
+//
+var imageToShare = UIImage.FromFile ("demo.png");
+var activityItems = new NSObject[] { imageToShare };
+var controller = new UIActivityViewController (activityItems, null);
+this.PresentViewController(controller, true, null)
+
+// 
+// Now share the image, but explicitly exclude posting as a message
+//
+controller = new UIActivityViewController (activityItems, null) {
+    ExcludedActivityTypes = new NSString[] {
+        UIActivityType.PostToWeibo,
+        UIActivityType.Message
+    }
+};
+this.PresentViewController(controller, true, null)
+
+	</code>
+      </example>
     </remarks>
     <altmember cref="T:MonoTouch.UIKit.UIActivity" />
     <altmember cref="T:MonoTouch.UIKit.UIActivityViewController" />
@@ -45,10 +69,10 @@
         <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Represents the value associated with the constant UIActivityTypeAddToReadingList</summary>
+        <summary>This activity adds a URL to the Safari Reading List.</summary>
         <value>
         </value>
-        <remarks>To be added.</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="AirDrop">
@@ -73,10 +97,19 @@
         <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Represents the value associated with the constant UIActivityTypeAirDrop</summary>
+        <summary>Makes the provided object available over AirDrop.</summary>
         <value>
         </value>
-        <remarks>To be added.</remarks>
+        <remarks>
+	  The object must hold an individual <see
+	  cref="T:MonoTouch.AssetLibrary.ALAsset"/>, <see
+	  cref="T:MonoTouch.Foundation.NSAttributedString"/>, <see
+	  cref="T:MonoTouch.Foundation.NSString"/>, <see
+	  cref="T:MonoTouch.Foundation.NSUrl"/>, <see
+	  cref="T:MonoTouch.UIKit.UIImage"/>.  Or you can provide a
+	  collection of those objects by passing an NSDictionary or an
+	  NSArray with those objects.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="AssignToContact">
@@ -95,10 +128,11 @@
         <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Represents the value associated with the constant UIActivityTypeAssignToContact</summary>
+        <summary>Assigns a UIImage to a contact.</summary>
         <value>
         </value>
-        <remarks>To be added.</remarks>
+        <remarks>The value provided must be a <see
+	  cref="T:MonoTouch.UIKit.UIImage"/>.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CopyToPasteboard">
@@ -117,10 +151,17 @@
         <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Represents the value associated with the constant UIActivityTypeCopyToPasteboard</summary>
+        <summary>Makes the object available on the pasteboard.</summary>
         <value>
         </value>
-        <remarks>To be added.</remarks>
+        <remarks>
+	  The object must hold an individual <see
+	  cref="T:MonoTouch.Foundation.NSString"/>, <see
+	  cref="T:MonoTouch.Foundation.NSUrl"/>, <see
+	  cref="T:MonoTouch.UIKit.UIColor"/>, <see
+	  cref="T:MonoTouch.UIKit.UIImage"/>.  Or you can provide a
+	  collection of those objects by passing an NSDictionary with those objects.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Mail">
@@ -139,10 +180,15 @@
         <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Represents the value associated with the constant UIActivityTypeMail</summary>
+        <summary>Sends the provided content by email.</summary>
         <value>
         </value>
-        <remarks>To be added.</remarks>
+        <remarks>
+	  The object must hold an individual <see
+	  cref="T:MonoTouch.Foundation.NSString"/>, <see
+	  cref="T:MonoTouch.Foundation.NSUrl"/> (pointing to a local file) or a <see
+	  cref="T:MonoTouch.UIKit.UIImage"/>.  
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Message">
@@ -333,10 +379,18 @@
         <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Represents the value associated with the constant UIActivityTypePrint</summary>
+        <summary>Used to print the provided object.</summary>
         <value>
         </value>
-        <remarks>To be added.</remarks>
+        <remarks>
+	  The object must hold an individual <see
+	  cref="T:MonoTouch.Foundation.NSData"/>, <see
+	  cref="T:MonoTouch.Foundation.NSUrl"/> (pointing to a local resource), <see
+	  cref="T:MonoTouch.UIKit.UIImage"/>,  <see
+	  cref="T:MonoTouch.UIKit.UIPrintPageRenderer"/>, <see
+	  cref="T:MonoTouch.UIKit.UIPrintFormatter"/> or <see
+	  cref="T:MonoTouch.UIKit.UIPrintInfo"/>.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="SaveToCameraRoll">
