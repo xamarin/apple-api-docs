@@ -18,7 +18,27 @@
   </Interfaces>
   <Docs>
     <summary>Graphics context and primitives to draw in them.</summary>
-    <remarks>To be added.</remarks>
+    <remarks>
+      <para>A <see cref="T:MonoTouch.CoreGraphics.CGContext"/> is a Quartz 2D destination for drawing. It holds parameters and their states (set with functions such as <see cref="M:MonoTouch.CoreGraphics.CGContext.SetFillColor"/>) and device information (for instance, <see cref="M:MonoTouch.CoreGraphics.CGContext.ConvertSizeToDeviceSpace"/>). <see cref="T:MonoTouch.CoreGraphics.CGContext"/>s may represent a screen area, a bitmap, a PDF document, or a printer.</para> 
+      <para>There are a limited number of <see cref="T:MonoTouch.CoreGraphics.CGContext"/>s available and application developer's should be conscientious about disposing of them after use. Generally, that means putting the drawing code in <c>using</c> blocks, as shown in the following example:</para>
+      <example>
+        <code lang="C#"><![CDATA[
+public override void Draw (RectangleF rect)
+{
+    base.Draw (rect);
+    using (var context = UIGraphics.GetCurrentContext ())
+    {
+        // draw a rectangle using a path
+				var myRectangleButtonPath = new CGPath ();
+				myRectangleButtonPath.AddRect (new RectangleF (new PointF (100, 10), new SizeF (200, 400)));
+				context.AddPath (myRectangleButtonPath);
+				context.DrawPath (CGPathDrawingMode.Stroke);
+    }
+}          
+          ]]></code>
+      </example>
+      <para>The example additionally shows the very common pattern of an overridden <see cref="M:MonoTouch.UIKit.UIView.Draw"/> method in a custom <see cref="T:MonoTouch.UIKit.UIView"/> and the use of <see cref="M:MonoTouch.UIKit.UIGraphics.GetCurrentContext"/> to retrieve the current <see cref="T:MonoTouch.CoreGraphics.CGContext"/> on which to draw.</para>
+    </remarks>
     <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=2c1eba2d-8abc-408e-8ee8-a03ffac6ffde">avTouch</related>
     <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=064a9ab4-1e58-4cf6-a1c2-aab04997aa57">Example_Drawing</related>
     <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=e980347f-d1db-4de0-9d6a-b9dc714dc58a">QuartzSample</related>
@@ -118,14 +138,48 @@
         <Parameter Name="y" Type="System.Single" />
       </Parameters>
       <Docs>
-        <param name="cp1x">To be added.</param>
-        <param name="cp1y">To be added.</param>
-        <param name="cp2x">To be added.</param>
-        <param name="cp2y">To be added.</param>
-        <param name="x">To be added.</param>
-        <param name="y">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="cp1x">The x-value of the first control point.</param>
+        <param name="cp1y">The y-value of the first control point.</param>
+        <param name="cp2x">The x-value of the second control point.</param>
+        <param name="cp2y">The y-value of the second control point.</param>
+        <param name="x">The x-value at which the Bézier curve should end.</param>
+        <param name="y">The y-value at which the Bézier curve should end.</param>
+        <summary>Adds a cubic Bézier curve at the current point, with the specified control parameters.</summary>
+        <remarks>
+          <para>All coordinates are in user space coordinates.</para>  
+          <example>
+            <code lang="C#"><![CDATA[
+public override void Draw (RectangleF rect)
+{
+	base.Draw (rect);
+	using (var ctxt = UIGraphics.GetCurrentContext ()) {
+		var startingPoint = new PointF (100, 100);
+		var controlPoint1 = new PointF (20, 100);
+		var controlPoint2 = new PointF (4, 110);
+		var endingPoint = new PointF (120, 120);
+
+		ctxt.SetStrokeColor (UIColor.Red.CGColor);
+		ctxt.MoveTo (startingPoint.X, startingPoint.Y);
+		ctxt.AddCurveToPoint (controlPoint1.X, controlPoint1.Y, controlPoint2.X, controlPoint2.Y, endingPoint.X, endingPoint.Y);
+		ctxt.StrokePath ();
+
+		//Illustrate parameters
+		ctxt.SetStrokeColor (UIColor.Black.CGColor);
+		var sz = new SizeF (2, 2);
+		Func<PointF,PointF> offset = (PointF pt) => new PointF(pt.X - 1, pt.Y - 1);
+		ctxt.AddEllipseInRect (new RectangleF (offset(startingPoint),sz));
+		ctxt.AddEllipseInRect (new RectangleF (offset(controlPoint1), sz));
+		ctxt.AddEllipseInRect (new RectangleF (offset(controlPoint2), sz));
+		ctxt.AddEllipseInRect (new RectangleF (offset(endingPoint), sz));
+		ctxt.StrokePath();
+	}
+}
+              ]]></code>
+          </example>
+          <para><img href="CGContext.AddCurveToPoint.png"/></para>
+          <para><img href="B%C3%A9zier_3_big.gif"/></para>
+          <para>(Animated image by Phil Tregoning. Image via http://commons.wikimedia.org/wiki/File:B%C3%A9zier_3_big.gif)</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AddEllipseInRect">
@@ -142,9 +196,11 @@
         <Parameter Name="rect" Type="System.Drawing.RectangleF" />
       </Parameters>
       <Docs>
-        <param name="rect">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="rect">The bounding rectangle of the ellipse.</param>
+        <summary>Adds an ellipse that fits in the specified <paramref name="rect"/>.</summary>
+        <remarks>
+        <para>The ellipse is centered in the <paramref name="rect"/>, with major and minor axes defined such that the ellipse touches the <paramref name="rect"/>'s edges. The ellipse is a complete subpath, with control points specified in clockwise order.</para>  
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AddLines">
@@ -161,9 +217,32 @@
         <Parameter Name="points" Type="System.Drawing.PointF[]" />
       </Parameters>
       <Docs>
-        <param name="points">To be added.</param>
+        <param name="points">An array of two or more <see cref="T:System.Drawing.PointF"/>s. Straight segments are added between sequential points.</param>
         <summary>Adds the given lines to the current path.</summary>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <para>Lines are added to the current path, with the first line segment beginning at <paramref name="points"/>[0]. A line is not added from the <see cref="M:MonoTouch.CoreGraphics.CGContext.GetPathCurrentPoint"/>. In the following example, the current location of the <see cref="T:MonoTouch.CoreGraphics.CGContext"/> is {20,20} after the call to <see cref="M:MonoTouch.CoreGraphics.CGContext.MoveTo"/>, but as shown in the image, only two line segments are added.</para>  
+          <example>
+            <code lang="C#"><![CDATA[
+using (var ctxt = UIGraphics.GetCurrentContext ()) {
+	var startingPoint = new PointF (20, 20);
+	ctxt.MoveTo (startingPoint.X, startingPoint.Y);
+	ctxt.SetStrokeColor (UIColor.Red.CGColor);
+	var sz = new SizeF (2, 2);
+	Func<PointF,PointF> offset = (PointF pt) => new PointF (pt.X - 1, pt.Y - 1);
+	ctxt.AddEllipseInRect (new RectangleF (offset (startingPoint), sz));
+
+	ctxt.AddLines (new PointF[] {
+		new PointF (30, 30),
+		new PointF (60, 30),
+		new PointF (40, 40)
+	});
+
+	ctxt.StrokePath ();
+}              
+              ]]></code>
+          </example>
+          <para><img href="CGContext.AddLines.png"/></para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AddLineToPoint">
@@ -181,10 +260,12 @@
         <Parameter Name="y" Type="System.Single" />
       </Parameters>
       <Docs>
-        <param name="x">To be added.</param>
-        <param name="y">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="x">The X-value at which the line segment should end.</param>
+        <param name="y">The Y-value at which the line segment should end.</param>
+        <summary>Appends a line from the current point (see <see cref="M:MonoTouch.CoreGraphics.CGContext.GetPathCurrentPoint"/>) to the specified coordinates in user space.</summary>
+        <remarks>
+        <para></para>  
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AddPath">
@@ -201,7 +282,7 @@
         <Parameter Name="path" Type="MonoTouch.CoreGraphics.CGPath" />
       </Parameters>
       <Docs>
-        <param name="path">To be added.</param>
+        <param name="path">The <see cref="T:MonoTouch.CoreGraphics.CGPath"/> to be added.</param>
         <summary>Adds the specified path to the current path.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -227,8 +308,39 @@
         <param name="cpy">Y value for the control point.</param>
         <param name="x">X value for the end of the curve.</param>
         <param name="y">Y value for the end of the curve.</param>
-        <summary>Adds a quadratic bezier curve to the current path.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Adds a quadratic Bézier curve to the current path.</summary>
+        <remarks>
+   <para>All coordinates are in user space coordinates.</para>  
+          <example>
+            <code lang="C#"><![CDATA[
+public override void Draw (RectangleF rect)
+{
+	base.Draw (rect);
+	using (var ctxt = UIGraphics.GetCurrentContext ()) {
+		var startingPoint = new PointF (100, 100);
+		var controlPoint = new PointF (20, 100);
+		var endingPoint = new PointF (120, 120);
+
+		ctxt.SetStrokeColor (UIColor.Red.CGColor);
+		ctxt.MoveTo (startingPoint.X, startingPoint.Y);
+		ctxt.AddQuadCurveToPoint (c.X, c.Y, endingPoint.X, endingPoint.Y);
+		ctxt.StrokePath ();
+
+		//Illustrate control point
+		ctxt.SetStrokeColor (UIColor.Black.CGColor);
+		var sz = new SizeF (2, 2);
+		Func<PointF,PointF> offset = (PointF pt) => new PointF (pt.X - 1, pt.Y - 1);
+		ctxt.AddEllipseInRect (new RectangleF (offset (startingPoint), sz));
+		ctxt.AddEllipseInRect (new RectangleF (offset (c), sz));
+		ctxt.AddEllipseInRect (new RectangleF (offset (endingPoint), sz));
+		ctxt.StrokePath ();
+	}
+}              ]]></code>
+          </example>
+          <para><img href="CGContext.AddQuadCurveToPoint.png"/></para>
+          <para><img href="B%C3%A9zier_2_big.gif"/></para>
+          <para>(Animated image by Phil Tregoning. Image via http://commons.wikimedia.org/wiki/File:B%C3%A9zier_2_big.gif)</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AddRect">
