@@ -145,18 +145,18 @@
 	The following methods are part of the standard edit protocol.
 	You can implement these in your UIResponder to participate in
 	these standard operations: <see
-	cref="M:MonoTouch.UIKit.UIResponder.Copy"/>, <see
-	cref="M:MonoTouch.UIKit.UIResponder.Cut"/>, <see
-	cref="M:MonoTouch.UIKit.UIResponder.Delete"/>, <see
-	cref="M:MonoTouch.UIKit.UIResponder.Select"/>, <see
-	cref="M:MonoTouch.UIKit.UIResponder.SelectAll"/> and <see
-	cref="M:MonoTouch.UIKit.UIResponder.Paste"/>.
+	cref="M:MonoTouch.UIKit.UIResponder.Copy(MonoTouch.Foundation.NSObject)"/>, <see
+	cref="M:MonoTouch.UIKit.UIResponder.Cut(MonoTouch.Foundation.NSObject)"/>, <see
+	cref="M:MonoTouch.UIKit.UIResponder.Delete(MonoTouch.Foundation.NSObject)"/>, <see
+	cref="M:MonoTouch.UIKit.UIResponder.Select(MonoTouch.Foundation.NSObject)"/>, <see
+	cref="M:MonoTouch.UIKit.UIResponder.SelectAll(MonoTouch.Foundation.NSObject)"/> and <see
+	cref="M:MonoTouch.UIKit.UIResponder.Paste(MonoTouch.Foundation.NSObject)"/>.
       </para>
       <para>
 	The following methods are used to change the styling of text:
-	<see cref="M:MonoTouch.UIKit.UIResponder.ToggleBoldface"/>,
-	<see cref="M:MonoTouch.UIKit.UIResponder.ToggleItalics"/> and
-	<see cref="M:MonoTouch.UIKit.UIResponder.ToggleUnderline"/>.
+	<see cref="M:MonoTouch.UIKit.UIResponder.ToggleBoldface(MonoTouch.Foundation.NSObject)"/>,
+	<see cref="M:MonoTouch.UIKit.UIResponder.ToggleItalics(MonoTouch.Foundation.NSObject)"/> and
+	<see cref="M:MonoTouch.UIKit.UIResponder.ToggleUnderline(MonoTouch.Foundation.NSObject)"/>.
       </para>
 
       <para>
@@ -737,6 +737,53 @@ public class SelectableLabel : UILabel {
 	  <para>
 	    Applications overriding this method should expose the selected information and pass it to the <see cref="P:MonoTouch.UIKit.UIPasteboard"/>. 
 	  </para>
+      <example>
+<code lang="c#">
+//
+// Selectable label: a label that shows the "Copy" menu when the user
+// long presses
+//
+public class SelectableLabel : UILabel {
+
+    public SelectableLabel (RectangleF rect) : base (rect)
+    {
+    	UserInteractionEnabled = true;
+    	var gesture = new UILongPressGestureRecognizer (LongPress);
+    	AddGestureRecognizer (gesture);
+    }
+    
+    void LongPress (UILongPressGestureRecognizer r)
+    {
+    	var location = r.LocationInView (r.View);
+    	var menu = UIMenuController.SharedMenuController;
+    
+    	r.View.BecomeFirstResponder ();
+    
+    	menu.SetTargetRect (r.View.Frame, r.View);
+    	menu.SetMenuVisible (true, true);
+    }
+    			
+    
+    public override bool CanBecomeFirstResponder { 
+    	get { return true; } 
+    }
+
+    Selector copyAction = new Selector ("copy");
+
+    public override bool CanPerform (Selector action, NSObject withSender)
+    {
+    	if (action == copyAction);
+    		return true;
+    	return false;
+    }
+    
+    public override void Copy (NSObject sender)
+    {
+    	UIPasteboard.General.String = this.Text;
+    }
+}
+</code>
+      </example>
 	</remarks>
       </Docs>
     </Member>
