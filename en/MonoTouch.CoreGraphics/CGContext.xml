@@ -404,11 +404,11 @@ public override void Draw (RectangleF rect)
 	    context with <see cref="M:MonoTouch.UIKit.UIGraphics.BeginImageContext" /> or <see cref="M:MonoTouch.UIKit.UIGraphics.BeginImageContextWithOptions" />).
 	  </para>
           <para>
-	    Those are really CGBitmapContext objects and by converting it, you can access the various bitmap properties
+	    Those are really CGBitmapContext objects and by converting it, application developers can access the various bitmap properties
 	    on it.
 	  </para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 UIGraphics.BeginImageContextWithOptions (image.Size, false, UIScreen.MainScreen.Scale);
 CGBitmapContext effectInContext = UIGraphics.GetCurrentContext ().AsBitmapContext ()
  
@@ -421,7 +421,7 @@ var effectInBuffer = new vImageBuffer () {
         Height = effectInContext.Height,
         BytesPerRow = effectInContext.BytesPerRow
 };
- 
+]]>
 </code>
           </example>
         </remarks>
@@ -441,7 +441,7 @@ var effectInBuffer = new vImageBuffer () {
         <Parameter Name="rect" Type="System.Nullable&lt;System.Drawing.RectangleF&gt;" />
       </Parameters>
       <Docs>
-        <param name="rect">A rectangle defining the bounds of the new page.  If you pass null the bounds of the media box for the current context will be used.</param>
+        <param name="rect">A rectangle defining the bounds of the new page.  If <see langword="null"/>, the bounds of the media box for the current context will be used.</param>
         <summary>Begins a new page in a page-based graphics context.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -474,8 +474,50 @@ var effectInBuffer = new vImageBuffer () {
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>With <see cref="M:MonoTouch.CoreGraphics.CGContext.EndTransparencyLayer"/>, encloses operations on a fully transparent layer.</summary>
+        <remarks>
+          <para>Transparency layers are used to combine multiple objects so that they are treated as a single composite graphic in the overall drawing context.</para>  
+          <para>Note the difference in appearance, between the top set of objects drawn with a transparency layer (the top half) and those drawn without (the bottom half). With a transparency layer, the drop-shadow is applied to the set of objects, while without a transparency layer, the drop-shadow is applied to the objects individually. </para>
+          <para><img href="CGContext.TransparencyLayer.png"/></para>
+          <example>
+            <code lang="C#"><![CDATA[
+void DrawLayerMaybeTransparent (CGContext context, RectangleF rect, bool useTransparentLayer)
+{
+  //Create a shadow to be applied, either to the transparency layer as a whole, or individually
+	var shadowOffset = new SizeF (10, -20);
+	context.SetShadow (shadowOffset, 0);
+	if (useTransparentLayer) {
+		context.BeginTransparencyLayer ();
+	}
+	context.SetRGBFillColor (0, 1, 0, 1);
+	context.FillRect (new RectangleF(rect.Width / 3 + 50, rect.Top + rect.Height / 2, rect.Width / 4, rect.Height / 4));
+	context.SetRGBFillColor (0, 0, 1, 1);
+	context.FillRect (new RectangleF(rect.Width / 3 - 50, rect.Top + rect.Height / 2 - 100, rect.Width / 4, rect.Height / 4));
+	//Make a little translucent, so shadow behavior is clearer
+  context.SetRGBFillColor (1, 0, 0, 0.8f);
+	context.FillRect (new RectangleF(rect.Width / 3, rect.Top + rect.Height / 2 - 50, rect.Width / 4, rect.Height / 4));
+	if (useTransparentLayer) {
+		context.EndTransparencyLayer ();
+	}
+}
+
+public override void Draw (RectangleF rect)
+{
+	base.Draw (rect);
+
+	var topHalf = new RectangleF (0, this.Bounds.Height / 2, this.Bounds.Width, this.Bounds.Height / 2);
+	var bottomHalf = new RectangleF (0, 0, this.Bounds.Width, this.Bounds.Height / 2);
+	using (var ctxt = UIGraphics.GetCurrentContext ()) {
+    //Set coordinate system for compatibility with UIKit
+		ctxt.ScaleCTM (1, -1);
+		ctxt.TranslateCTM (0, -Bounds.Height);
+		DrawLayerMaybeTransparent (ctxt, topHalf, true);
+		DrawLayerMaybeTransparent (ctxt, bottomHalf, false);
+	}
+}              
+              ]]></code>
+            </example>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="BeginTransparencyLayer">
