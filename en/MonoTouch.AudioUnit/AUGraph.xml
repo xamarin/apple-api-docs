@@ -15,7 +15,42 @@
   </Interfaces>
   <Docs>
     <summary>An audio processing graph.</summary>
-    <remarks>To be added.</remarks>
+    <remarks>
+      <example>
+	<code lang="c#">
+void createAUGraph ()
+{
+        AUGraphError result = 0;
+        int samplerNode, ioNode;
+
+        var sampler = new AudioComponentDescription () {
+                ComponentManufacturer = AudioComponentManufacturerType.Apple,
+		ComponentType = AudioComponentType.MusicDevice,
+		ComponentSubType = (int)AudioTypeMusicDevice.Sampler;
+        };
+
+        processingGraph = new AUGraph ();
+        samplerNode = processingGraph.AddNode (sampler);
+
+	var output = new AudioComponentDescription () {
+                ComponentManufacturer = AudioComponentManufacturerType.Apple,
+		ComponentType = AudioComponentType.Output;
+		ComponentSubType = (int)AudioTypeOutput.Remote;
+	};
+        ioNode = processingGraph.AddNode (output);
+
+        processingGraph.Open ();
+
+        result = processingGraph.ConnnectNodeInput (samplerNode, 0, ioNode, 0);
+        if (result != AUGraphError.OK)
+                throw new Exception ("Unable to open the audio processing graph.  Error code: " + result);
+        samplerUnit = processingGraph.GetNodeInfo (samplerNode);
+        ioUnit = processingGraph.GetNodeInfo (ioNode);
+}
+
+	</code>
+      </example>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -27,8 +62,8 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Creates a new AudioUnit graph.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="AddNode">
@@ -45,10 +80,10 @@
         <Parameter Name="description" Type="MonoTouch.AudioUnit.AudioComponentDescription" />
       </Parameters>
       <Docs>
-        <param name="description">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="description">Description for the node that you want to add.</param>
+        <summary>Adds a node matching the description to the graph.</summary>
+        <returns></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="AddRenderNotify">
@@ -65,10 +100,10 @@
         <Parameter Name="callback" Type="MonoTouch.AudioUnit.RenderDelegate" />
       </Parameters>
       <Docs>
-        <param name="callback">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="callback">Method to call every time the audio graph renders.</param>
+        <summary>Registers a method to be invoked every time the audio graph renders.</summary>
+        <returns>Status code.</returns>
+        <remarks>Use RemoveRenderNotify to remove the notification.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ClearConnections">
@@ -494,10 +529,10 @@
         <Parameter Name="callback" Type="MonoTouch.AudioUnit.RenderDelegate" />
       </Parameters>
       <Docs>
-        <param name="callback">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="callback">callbackk to be removed.</param>
+        <summary>Removes a previously registered callback from being called every time the audio graph is rendered.</summary>
+        <returns></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="RenderCallback">
@@ -551,9 +586,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>Starts the audio graph.</summary>
+        <returns></returns>
+        <remarks>Starts processing the audio graph from the root node.   The graph must be initialized before starting</remarks>
       </Docs>
     </Member>
     <Member MemberName="Stop">
@@ -602,8 +637,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <summary>Updates the state of the AudioUnit graph.</summary>
+        <returns></returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
