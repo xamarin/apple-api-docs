@@ -11,7 +11,25 @@
   <Interfaces />
   <Docs>
     <summary>When passed to <see cref="M:MonoTouch.CoreImage.CIImage.GetAutoAdjustmentFilters" />, limits the results.</summary>
-    <remarks>To be added.</remarks>
+    <remarks>
+      <para>The sample below shows a typical use.</para>
+      <example>
+	<code lang="c#">
+void PrepareFixes (CIImage img)
+{
+    var opt = new CIAutoAdjustmentFilterOptions () {
+    	RedEye = true,
+    	AutoAdjustCrop = true
+    };
+    CIImage img = null;
+    foreach (var filter in img.GetAutoAdjustmentFilters (opt)) {
+    	filter.Image = img;
+    	img = filter.OutputImage;
+    }
+}
+</code>
+	  </example>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -23,8 +41,8 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Creates an empty filter.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Enhance">
@@ -38,8 +56,15 @@
         <ReturnType>System.Nullable&lt;System.Boolean&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Set to false if you want to prevent filters that perform enhancements to be returned.</summary>
+        <remarks>
+
+	  By default an invocation to <see
+	  cref="M:MonoTouch.CoreImage.CIImage.GetAutoAdjustmentFilters"
+	  /> will return filters that include enhancement filters.  To
+	  prevent this, set this property to false.
+
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Features">
@@ -53,8 +78,10 @@
         <ReturnType>MonoTouch.CoreImage.CIFeature[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Provides a set of features to use during Red-Eye filters.</summary>
+        <remarks>
+	  If this array is empty, CoreImage will use the CIDetector class to detect where the face is on the image and use the result.
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="ImageOrientation">
@@ -68,8 +95,8 @@
         <ReturnType>System.Nullable&lt;MonoTouch.CoreImage.CIImageOrientation&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Provides image orientation information to the auto-enhance system.</summary>
+        <remarks>Some adjustments depend on image orientation to work, providing this hint helps the auto correction software pick the best results.</remarks>
       </Docs>
     </Member>
     <Member MemberName="RedEye">
@@ -83,8 +110,13 @@
         <ReturnType>System.Nullable&lt;System.Boolean&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Set to false if you want to prevent the filter that performs red-eye removal from being returned.</summary>
+	<remarks>
+	  By default an invocation to <see
+	  cref="M:MonoTouch.CoreImage.CIImage.GetAutoAdjustmentFilters"
+	  /> will return filters that include red-eye removal.  To
+	  prevent this, set this property to false.
+	</remarks>
       </Docs>
     </Member>
   </Members>
