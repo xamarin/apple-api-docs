@@ -179,6 +179,86 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <remarks>Each MonoTouch class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="ConfigurationChangeNotification">
+      <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSString ConfigurationChangeNotification { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class MonoTouch.Foundation.NSString ConfigurationChangeNotification" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Field("AVAudioEngineConfigurationChangeNotification", "AVFoundation")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Notification constant for ConfigurationChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:AVAudioEngine+Notifications" />.<see cref="M:AVAudioEngine+Notifications.ObserveConfigurationChangeNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
+          <example>
+            <code lang="c#">
+//
+// Lambda style
+//
+
+// listening
+notification = AVAudioEngine.Notifications.ObserveConfigurationChange ((sender, args) =&gt; {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, MonoTouch.Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = AVAudioEngine.Notifications.ObserveConfigurationChange (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}</code>
+          </example>
+          <para>The following example shows how to use the notification with the DefaultCenter API:</para>
+          <example>
+            <code lang="c#">
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        AVAudioEngine.ConfigurationChangeNotification, (notification) =&gt; {Console.WriteLine ("Received the notification AVAudioEngine", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification AVAudioEngine", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (AVAudioEngine.ConfigurationChangeNotification, Callback);
+}
+</code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
     <Member MemberName="Connect">
       <MemberSignature Language="C#" Value="public virtual void Connect (MonoTouch.AVFoundation.AVAudioNode sourceNode, MonoTouch.AVFoundation.AVAudioNode targetNode, MonoTouch.AVFoundation.AVAudioFormat format);" />
       <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Connect(class MonoTouch.AVFoundation.AVAudioNode sourceNode, class MonoTouch.AVFoundation.AVAudioNode targetNode, class MonoTouch.AVFoundation.AVAudioFormat format) cil managed" />
@@ -424,6 +504,30 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Attributes>
       <ReturnValue>
         <ReturnType>MonoTouch.AVFoundation.AVAudioMixerNode</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="MusicSequence">
+      <MemberSignature Language="C#" Value="public virtual MonoTouch.AudioToolbox.MusicSequence MusicSequence { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class MonoTouch.AudioToolbox.MusicSequence MusicSequence" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: MonoTouch.Foundation.Export("musicSequence")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: MonoTouch.Foundation.Export("setMusicSequence:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>MonoTouch.AudioToolbox.MusicSequence</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>To be added.</summary>
