@@ -1,6 +1,48 @@
 <Namespace Name="MonoTouch.SceneKit">
   <Docs>
-    <summary>To be added.</summary>
-    <remarks>To be added.</remarks>
+    <summary>3D Graphics Based On Scene-Graphs.</summary>
+    <remarks>
+      <para>Scene Kit is a framework for 3D graphics, based on hierarchical scene-graphs.</para>
+      <para>The fundamental classes in Scene Kit are <see cref="T:MonoTouch.SceneKit.SCNScene"/>, which holds all content, and  <see cref="T:MonoTouch.CoreGraphics.SceneKit.SCNView"/>, a <see cref="T:MonoTouch.UIKit.UIView"/> that renders an <see cref="T:MonoTouch.SceneKit.SCNScene"/>.</para>
+      <para>An <see cref="T:MonoTouch.SceneKit.SCNScene"/> has a <see cref="P:MonoTouch.SceneKit.SCNScene.RootNode"/> property of type <see cref="T:MonoTouch.SceneKit.SCNNode"/>. <see cref="T:MonoTouch.SceneKit.SCNNode"/>'s have <see cref="P:MonoTouch.SceneKit.SCNNode.ChildNode"/>s and implement <c><![CDATA[System.Collections.Generic.IEnumerable`1<class MonoTouch.SceneKit.SCNNode>]]></c>. Properties of <see cref="T:MonoTouch.SceneKit.SCNNode"/> include <see cref="P:MonoTouch.SceneKit.SCNNode.Camera"/>, of type <see cref="T:MonoTouch.SceneKit.SCNCamera"/>, <see cref="P:MonoTouch.SceneKit.SCNNode.Geometry"/>, of type <see cref="T:MonoTouch.SceneKit.SCNGeometry"/>, and <see cref="P:MonoTouch.SceneKit.SCNNode.Light"/>, of type <see cref="T:MonoTouch.SceneKit.SCNLight"/>.</para>
+      <para>Additionally, every <see cref="T:MonoTouch.SceneKit.SCNNode"/> has a <see cref="P:MonoTouch.SceneKit.SCNNode.Position"/> property that defines a location in space relative to the <see cref="T:MonoTouch.SceneKit.SCNNode"/>'s <see cref="P:MonoTouch.SceneKit.SCNNode.ParentNode"/> and <see cref="P:MonoTouch.SceneKit.SCNNode.FirstMaterial"/> and <see cref="P:MonoTouch.SceneKit.SCNNode.Materials"/> that create the <see cref="T:MonoTouch.SceneKit.SCNNode"/>'s appearance.</para>
+      <para>The following example shows a minimal Scene Kit view:</para>
+      <example>
+        <code lang="C#"><![CDATA[
+public MySceneView (RectangleF frame) : base(frame)
+{
+	BackgroundColor = UIColor.Blue;
+	this.Scene = new SCNScene ();
+
+	var material = new SCNMaterial ();
+	material.Diffuse.Contents = UIImage.FromFile("textureX.png");
+	material.Specular.Contents = UIColor.Gray;
+	material.LocksAmbientWithDiffuse = true;
+
+	Scene.RootNode.Geometry = new SCNBox {
+		Width = 1,
+		Height = 1,
+		Length = 1,
+		ChamferRadius = 0.2f,
+		FirstMaterial = material
+	};
+
+	Scene.RootNode.Light = new SCNLight {
+		LightType = SCNLightType.Ambient,
+		Color = UIColor.Gray,
+	};
+
+	var camera = new SCNCamera ();
+	var cameraNode = new SCNNode () {
+		Camera = camera,
+		Position = new SCNVector3 (3, 3, 3),
+		Constraints = new SCNConstraint[] { SCNLookAtConstraint.Create(Scene.RootNode) }
+	};
+	Scene.RootNode.AddChildNode (cameraNode);
+}          
+          ]]></code>
+      </example>
+      <para><img src="SceneKit.Namespace.Image1.png"/></para>
+    </remarks>
   </Docs>
 </Namespace>
