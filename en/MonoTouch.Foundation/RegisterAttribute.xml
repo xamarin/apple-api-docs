@@ -17,10 +17,28 @@
   <Docs>
     <summary>Used to register a class to the Objective-C runtime.</summary>
     <remarks>
-      <para>All classes derived from the <see cref="T:MonoTouch.Foundation.NSObject" /> class are exposed to the Objective-C world.   But in some cases you might want to expose the class with a different name to the runtime.</para>
-      <para>
-It is used internally by MonoTouch.
-</para>
+
+      <para>While all classes derived from the <see
+      cref="T:MonoTouch.Foundation.NSObject" /> class are exposed to
+      the Objective-C world, in some cases you might want to expose
+      the class using a different name to the runtime.</para>
+
+<example>
+<code lang="c#">
+// This class is never surfaced to Objective-C's runtime
+class NotSurfaced {}
+
+// This class is automatically surfaced to Objective-C's 
+// runtime, since it is a subclass of NSObject, and it
+// is visible by the Objective-C runtime as "AutomaticallySurfaced"
+class AutomaticallySurfaced : NSObject {}
+
+// This class is surfaced to the Objective-C runtime with
+// the name 'MyName'
+[Register ("MyName")]
+class InternalName : NSObject {}
+</code>
+</example>
     </remarks>
   </Docs>
   <Members>
