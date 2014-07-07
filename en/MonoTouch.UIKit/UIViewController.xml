@@ -350,6 +350,56 @@ class MyUIViewController : UIViewController {
         </list>
       </para>
       <format type="text/html">
+        <h3>Adaptive Layout and Rotation</h3>
+      </format>
+      <para>
+	Starting with iOS 8 a series of idioms were introduced into
+	iOS 8 to assist developers in creating applications and
+	UIViewControllers that would work with different form factors,
+	like both iPhone and iPad.  
+      </para>
+      <para>
+	This replaces the pre-iOS8 design that focused on supporting
+	two different form factors (iPhone or iPad) in a particular
+	orientation as well as supporting the transitions from one
+	interface orientation to the other.
+      </para>
+      <para>
+
+	New applications should take a number of variables into
+	consideration when laying out the elements on their UI.  These
+	include the available size in the canvas, UserInterfaceIdiom
+	(iPad or iPhone), the display scale, and both the vertical and
+	horizontal size classes.  The first one is the size of your
+	main view, while the rest are stored in the  <see
+	cref="P:MonoTouch.UIKIt.UIViewController.TraitCollection"/>.
+
+      </para>
+
+      <para>
+	Rotation is now considered a class size change.  For example
+	an iPhone held in portrait mode has a regular height and a
+	compact width.  When you switch it to landscape, it becomes a
+	compact height and a regular width.
+      </para>
+
+      <para>
+	Applications can override <see
+	cref="M:MonoTouch.UIKit.UIViewController.TraitCollectionDidChange"/>
+	to react to changes to any of the user interface traits.  This
+	method will be invoked during rotations or changes to the user
+	interface that affect the size class of the application.
+      </para>
+
+      <para>
+
+	The <see
+	cref="M:MonoTouch.UIKit.UIViewController.ViewWillTransitionToSize"/>
+	method is invoked when rotation takes place.
+
+      </para>
+
+      <format type="text/html">
         <h3>MVC, MVP, and MVVM</h3>
       </format>
       <para>
@@ -3833,9 +3883,17 @@ void Setup ()
         <Parameter Name="previousTraitCollection" Type="MonoTouch.UIKit.UITraitCollection" />
       </Parameters>
       <Docs>
-        <param name="previousTraitCollection">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="previousTraitCollection">The previous set of traits.  When this method is invoked, the <see
+	cref="P:MonoTouch.UIKIt.UIViewController.TraitCollection"/> property has already been updated to reflect the new active traits.</param>
+        <summary>Method invoked when the trait collection for the view controller changed.</summary>
+        <remarks>
+	  <para>
+	    You can override this method to adjust your user interface
+	    to react to changes to your user interface traits, like
+	    your horizontal and vertical size classes for your
+	    application.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="Transition">
@@ -4250,8 +4308,8 @@ void Setup ()
         <Parameter Name="coordinator" Type="MonoTouch.UIKit.IUIViewControllerTransitionCoordinator" />
       </Parameters>
       <Docs>
-        <param name="toSize">To be added.</param>
-        <param name="coordinator">To be added.</param>
+        <param name="toSize">New size that the view will be transitioning to.</param>
+        <param name="coordinator">User .</param>
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
       </Docs>

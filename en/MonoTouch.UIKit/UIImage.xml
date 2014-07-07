@@ -32,19 +32,38 @@
 	image - they are immutable. The methods <see cref="M:MonoTouch.UIKit.UIImage.AsJPEG()" /> or <see cref="M:MonoTouch.UIKit.UIImage.AsPNG()" /> will provide the
 	underlying image data as a JPEG or PNG.
       </para>
-      <para>To avoid issues with excessive memory use, UIImages
-      objects should not be larger than 1024x1024 in size. Code-based
-      manipulations such as resizing are not subject to this
-      restriction.</para>
-      <para>It is possible that the system may purge UIImage objects
-      to free up memory. If the UIImage is required later on by an
-      application, it will be loaded again from its source
-      file.</para>
-      <para>The following image formats are supported by the UIImage
-      class:
+
+      <para>
+	To avoid issues with excessive memory use, UIImages objects
+	should not be larger than 1024x1024 in size. Code-based
+	manipulations such as resizing are not subject to this
+	restriction.
+      </para>
+
+      <para>
+	It is possible that the system may purge UIImage objects to
+	free up memory. If the UIImage is required later on by an
+	application, it will be loaded again from its source file.
+      </para>
+
+      <para>
+	The following image formats are supported by the UIImage
+	class:
 
       <list type="bullet"><item><term>.tiff</term></item><item><term>.jpg, .jpeg</term></item><item><term>.gif</term></item><item><term>.bmp</term></item><item><term>.ico</term></item><item><term>.cur</term></item><item><term>.xbm</term></item></list></para>
-      <para tool="threads">The members of this class can be used from a background thread.</para>
+
+      <para>
+
+	Starting with iOS 8, the <see
+	cref="M:MonoTouch.UIKIt.UIImage.FromBundle(System.String,MonoTouch.Foundation.NSBundle,MonoTouch.UIKIt.UITraitCollection)"/>
+	method can be used to load a UIImage that takes into
+	consideration a <see
+	cref="T:MonoTouch.UIKit.UITraitCollection"/>.  This can
+	automatically load the proper image for the specified
+	resolution.
+
+      </para>
+      <para>Most of the members of this class can be used from a background thread, with a couple of exceptions (FromBundle methods that retrieve images from the bundle and use the built-in memory cache).</para>
     </remarks>
     <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=064a9ab4-1e58-4cf6-a1c2-aab04997aa57">Example_Drawing</related>
     <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=23a2571b-45eb-4889-bb67-d88937cb68c1">monocatalog</related>
@@ -1711,7 +1730,6 @@ void Setup ()
         </returns>
         <remarks>
           <para>The underlying UIKit implementation keeps a cache of all images requested.   If you do not want UIKit to keep a cache, use FromFile or FromFileUncached.</para>
-          <para tool="threads">This can be used from a background thread.</para>
         </remarks>
       </Docs>
     </Member>
@@ -2088,20 +2106,18 @@ void Setup ()
         <Parameter Name="traitCollection" Type="MonoTouch.UIKit.UITraitCollection" />
       </Parameters>
       <Docs>
-        <param name="name">To be added.</param>
+        <param name="name">Loads an image from the bundle with the specified path name.</param>
         <param name="bundle">
-          <para>To be added.</para>
+          <para>Bundle to use to lookup the image, or null for the main bundle.</para>
           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
         </param>
         <param name="traitCollection">
-          <para>To be added.</para>
+          <para>Trait collection to use to match the image against.</para>
           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
         </param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <summary>Loads an image from the specified bundle using a cache and the specified user interface traits.</summary>
+        <returns>The image, or null if there is no image in the specified bundle with the specific traits.</returns>
         <remarks>
-          <para>(More documentation for this node is coming)</para>
-          <para tool="threads">This can be used from a background thread.</para>
         </remarks>
       </Docs>
     </Member>
