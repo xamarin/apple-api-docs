@@ -18,8 +18,22 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>To be added.</summary>
-    <remarks>To be added.</remarks>
+    <summary>MonoTouch.HealthKit.HKHealthStore A connection to the system-wide database of health-related information.</summary>
+    <remarks>
+      <para>Individual <see cref="T:MonoTouch.HealthKit.HKHealthStore"/> instances represent connections to the underlying data store. Instantiating a <see cref="T:MonoTouch.HealthKit.HKHealthStore"/> does not necessarily imply that the user has granted any amount of access for reading or querying data. App devs must call <see cref="M:MonoTouch.HealthKit.HKHealthStore.RequestAuthorizationToShare"/> or <see cref="M:MonoTouch.HealthKit.HKHealthStore.RequestAuthorizationToShareAsync"/> prior to access.</para>
+      <example>
+        <code lang="C#"><![CDATA[
+var temperatureKey = HKQuantityTypeIdentifierKey.BodyTemperature;
+var tempQuantityType = HKObjectType.GetQuantityType (temperatureKey);
+
+var hks = new HKHealthStore ();
+var success = await hks.RequestAuthorizationToShareAsync (new NSSet (new [] { tempQuantityType }), new NSSet ());
+if (success)
+{
+//...etc....
+          ]]></code>
+        </example>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -541,7 +555,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="obj">To be added.</param>
         <param name="completion">To be added.</param>
         <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <para>If the application does not have an <c>entitlements.plist</c> with the <c>com.apple.healthkit</c> entitlement, the <see cref="T:MonoTouch.Foundation.NSError"/> will be set to "Missing com.apple.developer.healthkit entitlement."</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SaveObjectAsync">
