@@ -12,11 +12,14 @@ add masterdoc support?
      2013-12: Larry O'Brien <larry.obrien@xamarin.com/>
      Effort to bring schema into accord with "facts on the ground"     
      
+     2014-08: Larry O'Brien
+     Added apistyle attribute for unified API support
 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
   <!-- define attributes -->
   <xs:attribute name="argnames" type="xs:string" />
+  <xs:attribute name="apistyle" type="xs:string"/>
   <xs:attribute name="cref" type="xs:string" />
   <xs:attribute name="Deprecated" type="xs:boolean" />
   <xs:attribute name="FullName" type="xs:string" />
@@ -72,7 +75,7 @@ add masterdoc support?
   <xs:element name="permille" />
   <xs:element name="pi" />
   <xs:element name="pre" />
-  <xs:element name="ReturnType" type="xs:string" />
+  
   <xs:element name="TypeExcluded" type="xs:string" />
 
   <!-- define complex elements -->
@@ -113,7 +116,8 @@ add masterdoc support?
         <xs:element ref="AssemblyCulture" minOccurs="0" />
         <xs:element ref="Attributes" minOccurs="0" />
       </xs:sequence>
-    </xs:complexType>
+      <xs:attribute ref="apistyle"/>
+     </xs:complexType>
   </xs:element>
 
   <xs:element name="Attribute">
@@ -467,6 +471,7 @@ add masterdoc support?
     <xs:complexType>
       <xs:attribute ref="Language" />
       <xs:attribute ref="Value" />
+      <xs:attribute ref="apistyle" />
     </xs:complexType>
   </xs:element>
 
@@ -482,7 +487,8 @@ add masterdoc support?
       <xs:sequence>
         <xs:element ref="MemberSignature" minOccurs="1" maxOccurs="unbounded" />
         <xs:element ref="MemberType" maxOccurs="1" />
-        <xs:element ref="AssemblyInfo" minOccurs="0" maxOccurs="1" />
+        <!-- AssemblyInfo can occur twice: once for classic APIStyle and once for unified -->
+        <xs:element ref="AssemblyInfo" minOccurs="0" maxOccurs="2" />
         <xs:element ref="Attributes" minOccurs="0" maxOccurs="1" />
         <xs:element ref="ReturnValue" minOccurs="0" maxOccurs="1" />
         <xs:element ref="TypeParameters" minOccurs="0" maxOccurs="1" />
@@ -495,6 +501,7 @@ add masterdoc support?
       </xs:sequence>
       <xs:attribute ref="MemberName" />
       <xs:attribute ref="Deprecated" />
+       <xs:attribute ref="apistyle"/>
     </xs:complexType>
   </xs:element>
 
@@ -613,6 +620,7 @@ add masterdoc support?
       <xs:attribute ref="Name" />
       <xs:attribute ref="Type" />
       <xs:attribute ref="RefType" />
+      <xs:attribute ref="apistyle"/>
     </xs:complexType>
   </xs:element>
 
@@ -687,11 +695,19 @@ add masterdoc support?
       </xs:choice>
     </xs:complexType>
   </xs:element>
-
+  
+  <xs:element name="ReturnType">
+    <xs:complexType mixed="true">
+      <xs:attribute ref="apistyle"/>
+    </xs:complexType>
+  </xs:element>
+  
+  
   <xs:element name="ReturnValue">
     <xs:complexType>
       <xs:sequence>
-        <xs:element ref="ReturnType" minOccurs="0" maxOccurs="1" />
+        <!-- ReturnType can occur once for each apistyle -->
+        <xs:element ref="ReturnType" minOccurs="0" maxOccurs="2" />
         <xs:element ref="Attributes" minOccurs="0" />
       </xs:sequence>
     </xs:complexType>
@@ -926,6 +942,7 @@ add masterdoc support?
       <xs:attribute ref="Language" use="required" />
       <xs:attribute ref="Value" use="required" />
       <xs:attribute ref="Maintainer" />
+      <xs:attribute ref="apistyle"/>
     </xs:complexType>
   </xs:element>
 
