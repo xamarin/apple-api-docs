@@ -1780,11 +1780,27 @@ var animationSucceeded = await UIView.AnimateKeyframesAsync(
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="frameStartTime">To be added.</param>
-        <param name="frameDuration">To be added.</param>
-        <param name="animations">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="frameStartTime">The starting time of the animation, relative to the containing action (0-1)</param>
+        <param name="frameDuration">The duration of the animation, relative to the containing action (0-1).</param>
+        <param name="animations">The action defining the ending state of the keyframe.</param>
+        <summary>Adds a single keyframe to an animation.</summary>
+        <remarks><para>This method, when called within the <c>animations</c> action of a call to <see cref="M:MonoTouch.UIKit.UIView.AnimateKeyframes" />, specifies a keyframe in an animation sequence. Both the <paramref name="frameStartTime" /> and <paramref name="frameDuration" /> parameters range fro m 0 to 1 and specify durations relative to the enclosing <see cref="M:MonoTouch.UIKit.UIView.AnimateKeyframes" /><c>duration</c> parameter.</para>
+          <para>For instance, in the following example (which shows the use of both passed-in <see cref="T:MonoTouch.Foundation.NSAction" /> parameters and a C# lambda expression), the third keyframe's <paramref name="frameStartTime" /> and <paramref name="frameDuration" /> are both set to 0.5; since the the containing <see cref="M:MonoTouch.UIKit.UIView.AnimateKeyframesAsync" />'s <paramref name="duration" /> is set to 3 seconds, this animation will start at 1.5 seconds and take 1.5 seconds to complete.</para>
+          <example>
+            <code lang="C#"><![CDATA[
+var animationSucceeded = await UIView.AnimateKeyframesAsync(
+		duration : 3,
+		delay : 0,
+		options: UIViewKeyframeAnimationOptions.AllowUserInteraction,
+		animations: () => {
+			UIView.AddKeyframeWithRelativeStartTime(0, 0.25, () => label.Frame = new RectangleF(label.Frame.Left + 250, label.Frame.Top, label.Frame.Width, label.Frame.Height)
+				);
+			UIView.AddKeyframeWithRelativeStartTime(0.25, 0.25, keyframe2);
+			UIView.AddKeyframeWithRelativeStartTime(0.5, 0.5, keyframe3);
+		}
+	);
+    ]]></code>
+          </example></remarks>
       </Docs>
     </Member>
     <Member MemberName="AddMotionEffect">
@@ -2082,7 +2098,7 @@ myView.AddSubviews (label, button, entry, image1, image2);
       <Docs>
         <param name="duration">Duration in seconds for the animation.</param>
         <param name="animation">Code containing the changes that you will apply to your view.</param>
-        <summary>Animates the property changes that take place in the specified block.</summary>
+        <summary>Animates the property changes that take place in the specified action.</summary>
         <remarks>
           <para>
             This uses the CurveEaseOut and TransitionNone flags for the animation.
@@ -2126,10 +2142,18 @@ UIView.Animate (3, () => { label.Alpha = 0; });
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="duration">To be added.</param>
-        <param name="animation">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="duration">Duration in seconds for the animation.</param>
+        <param name="animation">Code containing the changes that you will apply to your view.</param>
+        <summary>Animates the property changes that take place in the specified action.</summary>
+        <remarks><para>
+            This uses the CurveEaseOut and TransitionNone flags for the animation.
+          </para>
+          <example>
+            <code lang="C#"><![CDATA[
+// Animates hiding the label by setting the alpha to zero over three seconds.
+UIView.Animate (3, () => { label.Alpha = 0; });
+            ]]></code>
+          </example></remarks>
       </Docs>
     </Member>
     <Member MemberName="Animate" apistyle="classic">
@@ -2150,7 +2174,7 @@ UIView.Animate (3, () => { label.Alpha = 0; });
       <Docs>
         <param name="duration">Duration in seconds for the animation.</param>
         <param name="animation">Code containing the changes that you will apply to your view.</param>
-        <param name="completion">Code that is invoke when the animation completes.</param>
+        <param name="completion">Code that is invoked when the animation completes.</param>
         <summary>Animates the property changes that take place in the specificied block and invokes a completion callback when the animation completes.</summary>
         <remarks>
           <para>
@@ -2187,11 +2211,19 @@ completion: () => { view.RemoveFromSuperview (); });
         <Parameter Name="completion" Type="System.Action" />
       </Parameters>
       <Docs>
-        <param name="duration">To be added.</param>
-        <param name="animation">To be added.</param>
-        <param name="completion">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="duration">Duration in seconds for the animation.</param>
+        <param name="animation">Code containing the changes that you will apply to your view.</param>
+        <param name="completion">Code that is invoked when the animation completes.</param>
+        <summary>Animates the property changes that take place in the specificied block and invokes a completion callback when the animation completes.</summary>
+        <remarks><para>
+            This uses the CurveEaseOut and TransitionNone flags for the animation.
+          </para>
+          <example>
+            <code lang="C#"><![CDATA[
+// Animates hiding the label by setting the alpha to zero over three seconds.
+UIView.Animate (3, () => { label.Alpha = 0; });
+            ]]></code>
+          </example></remarks>
       </Docs>
     </Member>
     <Member MemberName="Animate" apistyle="classic">
@@ -2216,7 +2248,7 @@ completion: () => { view.RemoveFromSuperview (); });
         <param name="delay">Delay before the animation begins.</param>
         <param name="options">Animation options</param>
         <param name="animation">Code containing the changes that you will apply to your view.</param>
-        <param name="completion">Code that is invoke when the animation completes.</param>
+        <param name="completion">Code that is invoked when the animation completes.</param>
         <summary>Animates the property changes that take place in the specified block and invokes a completion callback when the animation completes.</summary>
         <remarks>
           <example>
@@ -2254,11 +2286,11 @@ UIView.Animate (
         <Parameter Name="completion" Type="System.Action" />
       </Parameters>
       <Docs>
-        <param name="duration">To be added.</param>
-        <param name="delay">To be added.</param>
-        <param name="options">To be added.</param>
-        <param name="animation">To be added.</param>
-        <param name="completion">To be added.</param>
+        <param name="duration">Duration in seconds for the animation.</param>
+        <param name="delay">Delay before the animation begins.</param>
+        <param name="options">Animation options</param>
+        <param name="animation">Code containing the changes that you will apply to your view.</param>
+        <param name="completion">Code that is invoked when the animation completes.</param>
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
       </Docs>
