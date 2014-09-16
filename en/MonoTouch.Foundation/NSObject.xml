@@ -546,12 +546,28 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="observer" Type="System.Action&lt;MonoTouch.Foundation.NSObservedChange&gt;" />
       </Parameters>
       <Docs>
-        <param name="key">To be added.</param>
-        <param name="options">To be added.</param>
-        <param name="observer">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="key">Key-path to use to perform the value lookup. The keypath consists of a series of lowercase ASCII-strings with no spaces in them separated by dot characters.</param>
+        <param name="options">Flags indicating which notifications you are interested in receiving (New, Old, Initial, Prior).</param>
+        <param name="observer">Method that will receive the observed changes.   It will receive a <see cref="T:MonoTouch.Foundation.NSObservedChanged" /> parameter with the information that was changed.</param>
+        <summary>Registers an object for being observed externally using an arbitrary method.</summary>
         <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <para>When the object is registered for observation, changes to the object specified in the keyPath that match the flags requested in options will be sent to the specied method (a lambda or method that matches the signature).</para>
+          <para>This version provides the convenience of exposing the changes as part of the strongly typed <see cref="T:MonoTouch.Foundation.NSObservedChanged" /> object that is received by the target.</para>
+          <para></para>
+          <example>
+            <code lang="c#">void Setup ()
+{
+    AddObserver (rateKey, NSKeyValueObservingOptions.Old | NSKeyValueObservingOptions.New, (observed) =&gt; {
+        Console.WriteLine ("Change: {0}", observed.Change);
+        Console.WriteLine ("NewValue: {0}", observed.NewValue);
+        Console.WriteLine ("OldValue: {0}", observed.OldValue);
+        Console.WriteLine ("Indexes: {0}", observed.Indexes);
+        Console.WriteLine ("IsPrior: {0}", observed.IsPrior);
+    });
+}</code>
+          </example>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AddObserver">
@@ -573,12 +589,29 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="observer" Type="System.Action&lt;MonoTouch.Foundation.NSObservedChange&gt;" />
       </Parameters>
       <Docs>
-        <param name="key">To be added.</param>
-        <param name="options">To be added.</param>
-        <param name="observer">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="key">Key-path to use to perform the value lookup. The keypath consists of a series of lowercase ASCII-strings with no spaces in them separated by dot characters.</param>
+        <param name="options">Flags indicating which notifications you are interested in receiving (New, Old, Initial, Prior).</param>
+        <param name="observer">Method that will receive the observed changes.   It will receive a <see cref="T:MonoTouch.Foundation.NSObservedChanged" /> parameter with the information that was changed.</param>
+        <summary>Registers an object for being observed externally using an arbitrary method.</summary>
         <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <para>When the object is registered for observation, changes to the object specified in the keyPath that match the flags requested in options will be sent to the specied method (a lambda or method that matches the signature).</para>
+          <para>This version provides the convenience of exposing the changes as part of the strongly typed <see cref="T:MonoTouch.Foundation.NSObservedChanged" /> object that is received by the target.</para>
+          <para></para>
+          <example>
+            <code lang="c#">void Setup ()
+{
+    AddObserver (rateKey, NSKeyValueObservingOptions.Old | NSKeyValueObservingOptions.New, (observed) =&gt; {
+        Console.WriteLine ("Change: {0}", observed.Change);
+        Console.WriteLine ("NewValue: {0}", observed.NewValue);
+        Console.WriteLine ("OldValue: {0}", observed.OldValue);
+        Console.WriteLine ("Indexes: {0}", observed.Indexes);
+        Console.WriteLine ("IsPrior: {0}", observed.IsPrior);
+    });
+}</code>
+          </example>
+          <para></para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AddObserver">
@@ -606,13 +639,28 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="context" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <param name="observer">To be added.</param>
+        <param name="observer">The object that will receive the notifications</param>
         <param name="keyPath">Key-path to use to perform the value lookup.   The keypath consists of a series of lowercase ASCII-strings with no spaces in them separated by dot characters.</param>
-        <param name="options">To be added.</param>
-        <param name="context">To be added.</param>
-        <summary>
-        </summary>
-        <remarks>To be added.</remarks>
+        <param name="options">Flags indicating which notifications you are interested in receiving (New, Old, Initial, Prior).Context data passed to the <see cref="T:MonoTouch.Foundation.NSObjectObserveValue" /> method when one of the properties change.</param>
+        <summary>Registers an object for being observed externally (using NSString keyPath).</summary>
+        <remarks>
+          <para>When the object is registered for observation, changes to the object specified in the keyPath that match the flags requested in options will be sent to the <see cref="T:MonoTouch.Foundation.NSObjectObserveValue" /> method in the observer object.</para>
+          <para></para>
+          <example>
+            <code lang="c#">class MySampleViewController : UIViewController {
+    void Setup ()
+    {
+        Player.AddObserver (this, (NSString)"rate",
+            NSKeyValueObservingOptions.Old | NSKeyValueObservingOptions.New,
+            IntPtr.Zero);
+    }
+    public override void ObserveValue (NSString keyPath, NSObject ofObject, NSDictionary change, IntPtr ctx)
+    {
+        // Handle change.
+    }
+}</code>
+          </example>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AddObserver">
@@ -635,12 +683,34 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="context" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <param name="observer">To be added.</param>
-        <param name="keyPath">To be added.</param>
-        <param name="options">To be added.</param>
-        <param name="context">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="observer">The object that will receive the notifications</param>
+        <param name="keyPath">Key-path to use to perform the value lookup. The keypath consists of a series of lowercase ASCII-strings with no spaces in them separated by dot characters.</param>
+        <param name="options">Flags indicating which notifications you are interested in receiving (New, Old, Initial, Prior).</param>
+        <param name="context">Context data passed to
+        the <see cref="T:MonoTouch.Foundation.NSObjectObserveValue" />
+        method when one of the properties change.</param>
+        <summary>Registers an object for being observed externally (using string keyPath).</summary>
+        <remarks>
+          <para>When the object is registered for observation, changes
+          to the object specified in the keyPath that match the flags
+          requested in options will be sent to the
+          <see cref="T:MonoTouch.Foundation.NSObjectObserveValue" /> method in the observer object.</para>
+          <para></para>
+          <example>
+            <code lang="c#">class MySampleViewController : UIViewController {</code>
+            <code lang="c#">    void Setup ()</code>
+            <code lang="c#">    {</code>
+            <code lang="c#">        Player.AddObserver (this, (NSString)"rate",</code>
+            <code lang="c#">            NSKeyValueObservingOptions.Old | NSKeyValueObservingOptions.New,</code>
+            <code lang="c#">            IntPtr.Zero);</code>
+            <code lang="c#">    }</code>
+            <code lang="c#">    public override void ObserveValue (NSString keyPath, NSObject ofObject, NSDictionary change, IntPtr ctx)</code>
+            <code lang="c#">    {</code>
+            <code lang="c#">        // Handle change.</code>
+            <code lang="c#">    }</code>
+            <code lang="c#">}</code>
+          </example>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Alloc">
@@ -773,25 +843,19 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <summary>Invokes asynchrously the specified code on the main UI thread.</summary>
         <remarks>
           <para>
-
 	    You use this method from a thread to invoke the code
 	    encapsulated by the NSAction delegate in the UI thread.
 	    This is required for most operations that affect UIKit or
 	    AppKit as neither one of those APIs is thread safe.
-
 	  </para>
           <para>
-
 	    The code is executed when the main thread goes back to its
 	    main loop for processing events.
-
 	  </para>
           <para>
-
 	    Unlike <see cref="M:MonoTouch.Foundation.NSObject.InvokeOnMainThread(MonoTouch.Foundation.NSAction)" />
 	    this method merely queues the invocation and returns
 	    immediately to the caller.
-
 	  </para>
           <example>
             <code lang="c#">
@@ -801,13 +865,11 @@ void StartDownload ()
 	status.Text = "Downloading file...";
 	ThreadPool.QueueUserWorkItem (BackgroundDownload);
 }
-
 // This is the background helper
 BackgroundDownload ()
 {
 	var wc = new WebClient ();
 	wc.DownloadFile (myUrl, "/tmp/largeFile.txt");
-
 	// When the download is complete, notify the UI
 	BeginInvokeOnMainThread (delegate {
 		status.Text = "Download has been completed";
@@ -860,26 +922,20 @@ BackgroundDownload ()
         <summary>Invokes asynchrously the specified code on the main UI thread.</summary>
         <remarks>
           <para>
-
 	    You use this method from a thread to invoke the code in
 	    the specified object that is exposed with the specified
 	    selector in the UI thread.  This is required for most
 	    operations that affect UIKit or AppKit as neither one of
 	    those APIs is thread safe.
-
 	  </para>
           <para>
-
 	    The code is executed when the main thread goes back to its
 	    main loop for processing events.
-
 	  </para>
           <para>
-
 	    Unlike <see cref="M:MonoTouch.Foundation.NSObject.InvokeOnMainThread(MonoTouch.ObjCRuntime.Selector,MonoTouch.Foundation.NSObject)" />
 	    this method merely queues the invocation and returns
 	    immediately to the caller.
-
 	  </para>
         </remarks>
       </Docs>
@@ -1049,7 +1105,6 @@ BackgroundDownload ()
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (NSObject.ChangeNotificationIsPriorKey, (notification) =&gt; Console.WriteLine ("Received the notification NSObject", notification);
 
-
 // Method style
 void Callback (NSNotification notification)
 {
@@ -1143,16 +1198,13 @@ void Setup ()
 	    it implements the specified protocol.
 	  </para>
           <para>
-
 	    You can compare the IntPtr value with the result of
 	    creating an AdoptsAttribute with the specified protocol
 	    and fetching its ProtocolHandle.
-
 	  </para>
           <example>
             <code lang="c#">
 static AdoptsAttribute myProtocol = new AdoptsAttribute ("MyProtocol");
-
 public override ConformsToProtocol (IntPtr protocol)
 {
 	if (protocol == myProtocol.ProtocolHandle)
@@ -1162,11 +1214,9 @@ public override ConformsToProtocol (IntPtr protocol)
 </code>
           </example>
           <para>
-
 	    Although typically you would merely decorare your class
 	    with the <see cref="T:MonoTouch.ObjCRuntime.AdoptsAttribute" /> and let
 	    the runtime do this for you, like this:
-
 	  </para>
           <example>
             <code lang="c#">
@@ -1574,10 +1624,8 @@ public class EditableCoreTextView : UIView {
         <returns>Boxed object or null if the type can not be boxed.</returns>
         <remarks>
           <para>
-
 	    This method can box the following types from a core
 	    runtime type to an NSObject type by boxing the values.
-
 	  </para>
           <para>
 	    bool, char, sbyte, byte, short, ushort, int, int32,
@@ -1587,14 +1635,12 @@ public class EditableCoreTextView : UIView {
 	    IntPtr are boxed as NSValue containing a pointer.
 	  </para>
           <para>
-
 	    System.Drawing.SizeF, System.Drawing.RectangleF,
 	    System.Drawing.PointF,
 	    MonoTouch.CoreGraphics.CGAffineTransform,
 	    MonoTouch.UIKit.UIEdgeInsets and
 	    MonoTouch.CoreAnimation.CATransform3D are boxed as an
 	    NSValue containing the corresponding type.
-
 	  </para>
           <para>
 	    NSObjects and subclasses are returned as-is.
@@ -1919,26 +1965,20 @@ public class EditableCoreTextView : UIView {
         <summary>Invokes synchronously the specified code on the main UI thread.</summary>
         <remarks>
           <para>
-
 	    You use this method from a thread to invoke the code
 	    encapsulated by the NSAction delegate in the UI thread.
 	    This is required for most operations that affect UIKit or
 	    AppKit as neither one of those APIs is thread safe.
-
 	  </para>
           <para>
-
 	    The code is executed when the main thread goes back to its
 	    main loop for processing events.
-
 	  </para>
           <para>
-
 	    Unlike <see cref="M:MonoTouch.Foundation.NSObject.BeginInvokeOnMainThread(MonoTouch.Foundation.NSAction)" />
 	    this method waits for the main thread to execute the
 	    method, and does not return until the code pointed by
 	    action has completed running.
-
 	  </para>
         </remarks>
       </Docs>
@@ -1985,25 +2025,19 @@ public class EditableCoreTextView : UIView {
         <summary>Invokes synchrously the specified code on the main UI thread.</summary>
         <remarks>
           <para>
-
 	    You use this method from a thread to invoke the code in
 	    the specified object that is exposed with the specified
 	    selector in the UI thread.  This is required for most
 	    operations that affect UIKit or AppKit as neither one of
 	    those APIs is thread safe.
-
 	  </para>
           <para>
-
 	    The code is executed when the main thread goes back to its
 	    main loop for processing events.
-
 	  </para>
           <para>
-
 	    Unlike <see cref="M:MonoTouch.Foundation.NSObject.BeginInvokeOnMainThread(MonoTouch.ObjCRuntime.Selector,MonoTouch.Foundation.NSObject)" />
 	    this method waits for the main thread to execute the method, and does not return until the code pointed by action has completed.
-
 	  </para>
         </remarks>
       </Docs>
@@ -2021,7 +2055,6 @@ public class EditableCoreTextView : UIView {
       <Docs>
         <summary>Determines whether this class is a direct binding to an Objective-C class, or if this is a subclass of a direct binding.</summary>
         <remarks>
-
 	  This property is central to the way that MonoTouch exposes
 	  virtual methods to C# programmers.  This property is used
 	  internally by the binding engine to determine whether a
@@ -2030,7 +2063,6 @@ public class EditableCoreTextView : UIView {
 	  subclassed the object (MyNSMutableDictionary).  The binding
 	  system uses this to dispatch method invocations either to
 	  the base class, or the current class.
-
 	</remarks>
       </Docs>
     </Member>
@@ -2087,13 +2119,11 @@ public class EditableCoreTextView : UIView {
       <Docs>
         <summary>Promotes a regular peer object (IsDirectBinding is true) into a toggleref object.</summary>
         <remarks>
-
 	  This turns a regular peer object (one that has
 	  IsDirectBinding set to true) into a toggleref object.  This
 	  is necessary when you are storing to a backing field whose
 	  objc_c semantics is not copy or retain.  This is an internal
 	  method.
-
 	</remarks>
       </Docs>
     </Member>
@@ -2151,7 +2181,6 @@ public class EditableCoreTextView : UIView {
 	    an NSMutableCharacterSet.
 	  </para>
           <para> 
-
 	    Types that implement the NSMutableCopying protocol
 	    include: <see cref="T:MonoTouch.AVFoundation.AVAudioMix" />, <see cref="T:MonoTouch.AVFoundation.AVAudioMixInputParameters" />,
 	    <see cref="T:MonoTouch.AVFoundation.AVComposition" />, <see cref="T:MonoTouch.AVFoundation.AVMetadataItem" />, <see cref="T:MonoTouch.AVFoundation.AVVideoComposition" />, <see cref="T:MonoTouch.AVFoundation.AVVideoCompositionInstruction" />,
@@ -2232,12 +2261,10 @@ public override bool FinishedLaunching (UIApplication app, NSDictionary options)
 {
 	window = new UIWindow (UIScreen.MainScreen.Bounds);
 	window.MakeKeyAndVisible ();
-
 	// Invoke our method in 10 seconds
 	PerformSelector (new MonoTouch.ObjCRuntime.Selector ("demo:"), new NSString ("hello world"), 10);
 	return true;
 }
-
 // This registers the method "RunDemo" as responding to the selector "demo:"
 [Export ("demo:")]
 void RunDemo (NSString arg)
@@ -2279,12 +2306,10 @@ public override bool FinishedLaunching (UIApplication app, NSDictionary options)
 {
 	window = new UIWindow (UIScreen.MainScreen.Bounds);
 	window.MakeKeyAndVisible ();
-
 	// Invoke our method in 10 seconds
 	PerformSelector (new MonoTouch.ObjCRuntime.Selector ("demo:"), new NSString ("hello world"), 10);
 	return true;
 }
-
 // This registers the method "RunDemo" as responding to the selector "demo:"
 [Export ("demo:")]
 void RunDemo (NSString arg)
@@ -2423,13 +2448,11 @@ void RunDemo (NSString arg)
 	    This will invoke the Objective-C release method on the object, effectively decrementing its use count.   
 	  </para>
           <para>
-
 	    In general, you should not ever have to call this method
 	    unless you are doing some very explicit memory management
 	    on your own.  In particular, you should never call this
 	    method on an NSObject that has been surfaced to managed
 	    code without previously calling the <see cref="M:MonoTouch.Foundation.NSObject.Retain" /> method.
-
 	  </para>
         </remarks>
       </Docs>
@@ -2595,17 +2618,19 @@ void RunDemo (NSString arg)
         <summary>This will send the Objective-C 'retain' message to the object.</summary>
         <returns>The same object. This allows for chaining calls like this: obj.Retain ().Autorelease ()</returns>
         <remarks>
-	  <para>
+          <para>
 	    This is intended to be used when an autoreleased object must be returned to Objective-C code:
 	  </para>
-	  <example><code lang="C#"><![CDATA[
+          <example>
+            <code lang="C#"><![CDATA[
 [Export ("copyWithZone:")]
 public override NSObject CopyWithZone (NSZone zone)
 {
     return this.Clone ().Retain ().Autorelease ();
 }
-]]></code></example>
-</remarks>
+]]></code>
+          </example>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="RetainCount">
@@ -2634,12 +2659,10 @@ public override NSObject CopyWithZone (NSZone zone)
         <value>
         </value>
         <remarks>
-
 	  This property is exposed for debugging purposes, but in
 	  general it might not be very useful, since the object might
 	  have been added to an NSAutoReleasePool.  Unfortunatelly, it
 	  is not a precise measuring tool.
-
 	</remarks>
       </Docs>
     </Member>
@@ -2752,7 +2775,6 @@ public override NSObject CopyWithZone (NSZone zone)
         <summary>Sets the value of a property that can be reached using a keypath.</summary>
         <remarks>
           <para>
-
 	    The keypath is separated by dots, and each component is
 	    used to lookup a specific key on the object.  The process
 	    is repeated on each returning object until the last
@@ -2968,7 +2990,6 @@ string GetName (NSObject myObject)
         <returns>An NSObject containing the value for the specified keypath.</returns>
         <remarks>
           <para>
-
 	    The keypath is separated by dots, and each component is
 	    used to lookup a specific key on the object.  The process
 	    is repeated on each returning object until the last
