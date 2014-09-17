@@ -12,17 +12,10 @@ Scripts included in the repository
   - **make all**: run xmllint with the bundled monodoc-ecma.xsl to
       verify the syntax of the documentation in the repository
 
-Visualizing the documentation with macdoc
-----------
+Using DocWriter
+---------------
 
-Run macdoc by passing the absolute path to the en/ directory
-(i.e. where the index.xml file is) preprended with the character '+'.
-
-    ./macdoc.app/Contents/MacOS/macdoc '+/path/to/ios-api-docs/en/'
-
-You need a recent macdoc. You can compile it yourself by cloning
-https://github.com/mono/monomac and running the build process
-there. Macdoc is under the samples directory.
+Use github.com/xamarin/DocWriter to author documentation.   
 
 Unbreaking list
 ----------
@@ -35,3 +28,15 @@ In case macdoc blows up when trying to load the documentation or you can't compi
 
   - **parse error**: run `make all` to check for syntax errors in the
       documentation files
+
+Using MacDoc?
+---------------
+
+Run macdoc by passing the absolute path to the en/ directory
+(i.e. where the index.xml file is) preprended with the character '+'.
+
+    ./macdoc.app/Contents/MacOS/macdoc '+/path/to/ios-api-docs/en/'
+
+You need a recent macdoc. You can compile it yourself by cloning
+https://github.com/mono/monomac and running the build process
+there. Macdoc is under the samples directory.
