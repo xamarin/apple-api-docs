@@ -43,12 +43,7 @@
       <para>The constraint engine will set the value of the <see cref="P:MonoTouch.UIKit.NSLayoutConstraint.FirstAttribute" /> such that it satisfies the constraint <c>FirstAttribute &lt;Relation&gt; &lt;Constant&gt; + &lt;Multiplier&gt; * &lt;SecondAttribute&gt;</c>.  For instance, in the following code from the "Media Notes" sample, <c>tconstraint2</c> is a constraint that specifies that the top of the <c>toolbar</c> is going to be equal to the top of the <c>View</c> plus the value of the <c>toolbarVerticalOffset</c>, while <c>tconstraint1</c> specifies that the width of the <c>toolbar</c> will be equal to the width of the <c>View</c>. Both of these constraints have a <see cref="M:MonoTouch.UIKit.NSLayoutConstraint.Priority" /> of <c>1.0</c>.</para>
       <example>
         <code lang="C#"><![CDATA[
-          var tconstraint2 = NSLayoutConstraint.Create (toolbar, NSLayoutAttribute.Top, NSLayoutRelation.Equal,
-                                                             View, NSLayoutAttribute.Top, 1.0f, toolbarVerticalOffset);
-            toolbarTopConstraint = tconstraint2;
-            var tconstraint1 = NSLayoutConstraint.Create (toolbar, NSLayoutAttribute.Width, NSLayoutRelation.Equal,
-                                                             View, NSLayoutAttribute.Width, 1.0f, 0.0f);
-        ]]></code>
+var tconstraint2 = NSLayoutConstraint.Create (]]></code>
       </example>
     </remarks>
     <related type="sample" href="http://samples.xamarin.com/iOS/Samples/ByGuid?guid=FAE04EC0-301F-11D3-BF4B-00C04F79EFBC">Media Notes</related>
@@ -205,9 +200,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="constraints" Type="MonoTouch.UIKit.NSLayoutConstraint[]" />
       </Parameters>
       <Docs>
-        <param name="constraints">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="constraints">Constraints to activate.</param>
+        <summary>Activates all of the constraints passed.</summary>
+        <remarks>This method has the same effect as setting the <see cref="P:MonoTouch.UIKit.NSLayoutConstraint.Active" /> property to <see langword="true" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Active">
@@ -241,7 +236,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Controls whether the constraint is active.  Active constraints are used as part of the auto-layout process, those that are not are ignored.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -291,8 +286,12 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Docs>
         <summary>Indicates the constant float applied to the constraint.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <value>
+          <para />
+        </value>
+        <remarks>
+          <para />
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Create">
@@ -327,19 +326,30 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="constant" Type="System.nfloat" apistyle="unified" />
       </Parameters>
       <Docs>
-        <param name="view1">To be added.</param>
-        <param name="attribute1">To be added.</param>
-        <param name="relation">To be added.</param>
+        <param name="view1">First view in the constraint.</param>
+        <param name="attribute1">Attribute for the first view.</param>
+        <param name="relation">Relationships between the <paramref name="view1" /> and the <paramref name="view2" />.</param>
         <param name="view2">
-          <para>The other item that the contraint will reference.</para>
-          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+          <para>Second view in the constraint.</para>
+          <para>This parameter can be <see langword="null" />.</para>
         </param>
-        <param name="attribute2">To be added.</param>
-        <param name="multiplier">To be added.</param>
-        <param name="constant">To be added.</param>
+        <param name="attribute2">Attribute for the second view.</param>
+        <param name="multiplier">Multiplier applied to the second attribute.</param>
+        <param name="constant">Constants to add.</param>
         <summary>Factory method for creating a constraint.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <returns>
+          <para>New constraint with the specified parameters.</para>
+          <para></para>
+        </returns>
+        <remarks>
+          <para>Creates a constraint relationship between the <paramref name="view1" /> and the <paramref name="view2" /> that satisfies the following linear equation:</para>
+          <para></para>
+          <para>
+            <paramref name="attribute1" /> = <paramref name="multiplier" /> x <paramref name="attribute2" /> + <paramref name="constant" /></para>
+          <para>
+            <paramref name="&lt;br&gt;" />
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Create">
@@ -374,16 +384,27 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="constant" Type="System.nfloat" apistyle="unified" />
       </Parameters>
       <Docs>
-        <param name="view1">To be added.</param>
-        <param name="attribute1">To be added.</param>
-        <param name="relation">To be added.</param>
-        <param name="view2">To be added.</param>
-        <param name="attribute2">To be added.</param>
-        <param name="multiplier">To be added.</param>
-        <param name="constant">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="view1">First view in the constraint.</param>
+        <param name="attribute1">Attribute for the first view.</param>
+        <param name="relation">Relationships between the <paramref name="view1" /> and the <paramref name="view2" />.</param>
+        <param name="view2">
+          <para>Second view in the constraint.</para>
+          <para>This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="attribute2">Attribute for the second view.</param>
+        <param name="multiplier">Multiplier applied to the second attribute.</param>
+        <param name="constant">Constants to add.</param>
+        <summary>Factory method for creating a constraint.</summary>
+        <returns>New constraint with the specified parameters.</returns>
+        <remarks>
+          <para>Creates a constraint relationship between the <paramref name="view1" /> and the <paramref name="view2" /> that satisfies the following linear equation:</para>
+          <para></para>
+          <para>
+            <paramref name="attribute1" /> = <paramref name="multiplier" /> x <paramref name="attribute2" /> + <paramref name="constant" /></para>
+          <para>
+            <paramref name="&lt;br&gt;" />
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="DeactivateConstraints">
@@ -411,9 +432,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="constraints" Type="MonoTouch.UIKit.NSLayoutConstraint[]" />
       </Parameters>
       <Docs>
-        <param name="constraints">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="constraints">Constraints to deactivate.</param>
+        <summary>Deactivates all of the constraints passed.</summary>
+        <remarks>This method has the same effect as setting the <see cref="P:MonoTouch.UIKit.NSLayoutConstraint.Active" /> property to <see langword="false" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Dispose">
@@ -465,8 +486,12 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Docs>
         <summary>The attribute of the first item participating in the constraint.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <value>
+          <para />
+        </value>
+        <remarks>
+          <para />
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="FirstItem">
@@ -489,8 +514,12 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Docs>
         <summary>The first item participating in the constraint.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <value>
+          <para />
+        </value>
+        <remarks>
+          <para />
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="FromVisualFormat">
@@ -520,10 +549,13 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="format">Visual format to use to create the constraints.</param>
         <param name="formatOptions">options.</param>
-        <param name="viewsAndMetrics">Pairs of names and values.   The names should be strings (or NSStrings) and the values should be either UIViews or numbers (any C# number or NSNumber).   This binds the provided name with the view or binds the name with the number as a metric.</param>
+        <param name="viewsAndMetrics">
+          <para>Pairs of names and values.   The names should be strings (or NSStrings) and the values should be either UIViews, numbers (any C# number or NSNumber) or <see cref="T:MonoTouch.ObjCRuntime.INativeObject" /> instances that are suitable to be passed to the underlying engine. </para>
+          <para></para>
+          <para> This binds the provided name with the view or binds the name with the number as a metric.</para>
+        </param>
         <summary>Factory method for creating a constraint using Visual Format Language.</summary>
-        <returns>
-        </returns>
+        <returns>An array of layout constraints that are suitable to be added to a UIView using <see cref="M:MonoTouch.UIKit.UIView.AddConstraints" /> method.</returns>
         <remarks>
           <example>
             <code lang="c#">
@@ -566,8 +598,7 @@ NSLayoutConstraint.FromVisualFormat ("|-8-[messageView]-8-|", NSLayoutOptions.No
         </param>
         <param name="views">Dictionary containing mappings of names to UIViews.</param>
         <summary>Factory method for creating a constraint using Visual Format Language.</summary>
-        <returns>
-        </returns>
+        <returns>An array of layout constraints that are suitable to be added to a UIView using <see cref="M:MonoTouch.UIKit.UIView.AddConstraints" /> method.</returns>
         <remarks>
           <para>It is easier to use the <see cref="M:MonoTouch.UIKit.NSLayoutConstraint.FromVisualFormat(System.String,MonoTouch.UIKit.NSLayoutFormatOptions,System.Object[])" /> overload as it combines support for both metrics and views in a single call.</para>
         </remarks>
@@ -596,8 +627,12 @@ NSLayoutConstraint.FromVisualFormat ("|-8-[messageView]-8-|", NSLayoutOptions.No
       </ReturnValue>
       <Docs>
         <summary>Applied to the second attribute participating in the constraint.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <value>
+          <para />
+        </value>
+        <remarks>
+          <para />
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Priority">
@@ -671,8 +706,12 @@ NSLayoutConstraint.FromVisualFormat ("|-8-[messageView]-8-|", NSLayoutOptions.No
       </ReturnValue>
       <Docs>
         <summary>The attribute of the second item participating in the constraint.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <value>
+          <para />
+        </value>
+        <remarks>
+          <para />
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SecondItem">
@@ -695,8 +734,12 @@ NSLayoutConstraint.FromVisualFormat ("|-8-[messageView]-8-|", NSLayoutOptions.No
       </ReturnValue>
       <Docs>
         <summary>The second item participating in the constraint.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <value>
+          <para />
+        </value>
+        <remarks>
+          <para />
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ShouldBeArchived">
