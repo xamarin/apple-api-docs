@@ -219,10 +219,12 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="mode" Type="MonoTouch.Foundation.NSRunLoopMode" />
       </Parameters>
       <Docs>
-        <param name="runloop">To be added.</param>
-        <param name="mode">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="runloop">The runloop on which to run.</param>
+        <param name="mode">Modes in which the timer will be invoked.</param>
+        <summary>Trigger timer events on the specified runloop for the specified modes.</summary>
+        <remarks>
+          <para>The mode parameter will determine when the event is sent. The NSRunLoop.NSDefaultRunLoopMode is not delivered during UI tracking events (like scrolling in a UIScrollbar). For getting those kinds of events use NSRunLoop.UITrackingRunLoopMode. Or use NSRunLoop.NSRunLoopCommonModes which covers both cases.  	  </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AddToRunLoop">
@@ -249,9 +251,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="runloop">The runloop on which to run.</param>
-        <param name="mode">Modes in which the timer will be invoked.</param>
-        <summary>Trigger timer events on the specified runloop for the specified modes.</summary>
+        <param name="mode">Modes in which the timer will be invoked, one of the various NSString constants in <see cref="T:MonoTouch.Foundation.NSRunLoop" />.</param>
+        <summary>Trigger timer events on the specified runloop for the specified modes (weakly typed parameters).</summary>
         <remarks>
+          <para>You should use the strongly typed version if possible, as it prevents common errors.</para>
           <para>
 
 	    The mode parameter will determine when the event is sent.
@@ -322,10 +325,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="action" Type="System.Action" />
       </Parameters>
       <Docs>
-        <param name="action">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="action">Method to invoke on each screen refresh.</param>
+        <summary>Registers the delegate to be invoked every time the display is about to be updated.</summary>
+        <returns>The DisplayLink object that will invoke the specified method on each screen update.</returns>
+        <remarks>Once you create the display link, you must add the handler to the runloop.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Create">

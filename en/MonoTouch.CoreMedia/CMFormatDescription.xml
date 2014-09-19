@@ -201,10 +201,10 @@
         <Parameter Name="handle" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <param name="handle">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="handle">The native handle to a CMFormatDescription or a subclass of it.</param>
+        <summary>Creates a CMFormatDescription (or a subclass of it) based on a native handle.</summary>
+        <returns>The return can be either a CMFormatDescription a <see cref="T:MonoTouch.CoreMedia.CMAudioFormatDescription" /> or a <see cref="T:MonoTouch.CoreMedia.CMVideoFormatDescription" />, you can use the C# <see langword="is" /> expression to find out which subclass to cast the result to if you need access to the audio or video specific elements.</returns>
+        <remarks>This is the recommended way of surfacing an unmanaged format description, as this will create the proper wrapper with a strong type for the audio or video versions of it.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Create">
@@ -225,11 +225,14 @@
         <Parameter Name="owns" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="handle">To be added.</param>
-        <param name="owns">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="handle">The native handle to a CMFormatDescription or a subclass of it.</param>
+        <param name="owns">True if the handle is already owned by maanged code, false otherwise (and in this case, the code will manually call retain on the object).</param>
+        <summary>Creates a CMFormatDescription (or a subclass of it) based on a native handle.</summary>
+        <returns>
+          <para>The return can be either a CMFormatDescription a <see cref="T:MonoTouch.CoreMedia.CMAudioFormatDescription" /> or a <see cref="T:MonoTouch.CoreMedia.CMVideoFormatDescription" />, you can use the C# <see langword="is" /> expression to find out which subclass to cast the result to if you need access to the audio or video specific elements.</para>
+          <para></para>
+        </returns>
+        <remarks>This is mostly used to support the binding infrastructure.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Create">
@@ -251,12 +254,19 @@
         <Parameter Name="error" Type="MonoTouch.CoreMedia.CMFormatDescriptionError&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="mediaType">To be added.</param>
-        <param name="mediaSubtype">To be added.</param>
-        <param name="error">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="mediaType">media type that we want to create a wrapper for</param>
+        <param name="mediaSubtype">The media subtype</param>
+        <param name="error">Errors, if any, are returned here.</param>
+        <summary>Creates a CMFormatDescription (or a subclass of it) based on a native handle and to have it wrapped in a specific type.</summary>
+        <returns>
+          <para>The return can be either a CMFormatDescription a <see cref="T:MonoTouch.CoreMedia.CMAudioFormatDescription" /> or a <see cref="T:MonoTouch.CoreMedia.CMVideoFormatDescription" /> depending on the mediaType parameter that you passed.</para>
+          <para></para>
+          <para />
+        </returns>
+        <remarks>
+          <para>In general, the <see cref="M:MonoTouch.CoreMedia.CMFormatDescription.Create(System.IntPtr)" /> is a better option as it probes for the underlying type and creates the correct subclass of <see cref="T:MonoTouch.CoreMedia.CMFormatDescription" /></para>
+          <para></para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Dispose">
