@@ -1653,11 +1653,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="error" Type="MonoTouch.Foundation.NSError&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="directory">To be added.</param>
-        <param name="domain">To be added.</param>
+        <param name="directory">The type of directory that you are looking for (for example desktop directory, documents directory, trash directory and so on).</param>
+        <param name="domain">The domain is used to specify the base location (for example relative to the user home, a system directory, or a network directory).</param>
         <param name="url">
-          <para>
-          </para>
+          <para></para>
           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
         </param>
         <param name="shouldCreate">To be added.</param>
@@ -1762,11 +1761,49 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="domains" Type="MonoTouch.Foundation.NSSearchPathDomain" />
       </Parameters>
       <Docs>
-        <param name="directory">To be added.</param>
-        <param name="domains">To be added.</param>
-        <summary>An array of NSUrls for the specified common directory in the specified domains.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="directory">The type of directory that you are looking for (for example desktop directory, documents directory, trash directory and so on).</param>
+        <param name="domains">The domain is used to specify a mask for the base location (for example relative to the user home, a system directory, or a network directory).</param>
+        <summary>Returns a list of commonly used directories matching the type of directory and the domain to search for.</summary>
+        <returns>An array of URLs with the locations for the requested location for all the matching domains requested.  Starting with the user domain.</returns>
+        <remarks>
+          <para>This method is used to find the location of various system directories.   The <paramref name="directory" /> parameter specifies the kind of directory that you want to look for and the<paramref name=" domains" /> parameter is a bitmask that describes which matches should be returned (local, system, networked).</para>
+          <para></para>
+          <para>The array returned would contain one or more matches for the specified directory and the domains where it would be located.</para>
+          <para></para>
+          <para>This can be used to get the Documents directory in an iOS application.</para>
+          <para></para>
+          <example>
+            <code lang="c#">var docDir = NSFileManager.DefaultManager.GetUrls (
+     NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomain.User) [0];</code>
+          </example>
+          <para />
+          <para>Some values for <paramref name="directory" /> will return multiple results.   For example the value <see cref="F:MonoTouch.Foundation.NSSearchPathDirectory.AllApplicationsDirectory" /> would return all the valid locations for applications for a specific key.</para>
+          <para />
+          <para>Passing more than one value to <paramref name="domains" /> has a similar effect.</para>
+          <para />
+          <example>
+            <code lang="c#">var mgr = NSFileManager.DefaultManager;
+var urls = mgr.GetUrls (NSSearchPathDirectory.AllApplicationsDirectory, NSSearchPathDomain.System);
+foreach (var url in urls)
+    Console.WriteLine (url);
+
+// Produces:
+// file:///Applications/
+// file:///Applications/Utilities/
+// file:///Developer/Applications/
+// file:///Applications/Demos/
+
+urls = GetUrls (NSSearchPathDirectory.LibraryDirectory, NSSearchPathDomain.System | NSSearchPathDomain.Local))
+foreach (var url in urls)
+    Console.WriteLine (url);
+
+// Produces
+// file:///Library/
+// file:///System/Library/</code>
+          </example>
+          <para></para>
+
+</remarks>
       </Docs>
     </Member>
     <Member MemberName="GroupOwnerAccountID">
