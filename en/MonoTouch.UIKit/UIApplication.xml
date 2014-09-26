@@ -55,7 +55,7 @@
 	Starting with iOS 7, applications can request that they be
 	woken up to download data from the server in the background.
 	When this feature is enabled, the operating system will resume
-	your application or launch your application at some point to
+	the application or launch the application at some point to
 	allow your application to download any new contents it needs
 	from the server.
 
@@ -448,7 +448,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Docs>
         <summary>Whether background processing is allowed, denied, or restricted.</summary>
-        <value>To be added.</value>
+        <value>Returns read-only status that specifies whether the app can be launched into the background to handle background behaviors.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -481,7 +481,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveBackgroundRefreshStatusDidChangeNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">If a subscription to this notification is going to be employed, use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveBackgroundRefreshStatusDidChangeNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="c#">
@@ -570,7 +570,7 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>Represents the value associated with the constant UIBackgroundTaskInvalid</summary>
-        <value>
+        <value>Returns a token that indicates an invalid task request.
         </value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -705,9 +705,9 @@ Task.Factory.StartNew( () => {
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="backgroundTimeExpired">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="backgroundTimeExpired">Action that indicates when background time expires.</param>
+        <summary>Indicates the inception of a new long-running background task.</summary>
+        <returns>An id that, when passed to <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundTask" />, indicates that background processing has ended.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -797,10 +797,10 @@ Task.Factory.StartNew( () => {
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="taskName">To be added.</param>
-        <param name="expirationHandler">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="taskName">A name for the task (useful for debugging).</param>
+        <param name="expirationHandler">Called shortly before the allowed background time for the app expires.</param>
+        <summary>Requests that the app be allowed to process in the background.</summary>
+        <returns>An id that, when passed to <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundTask" />, indicates that background processing has ended.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -920,7 +920,7 @@ Task.Factory.StartNew( () => {
         <Parameter Name="notification" Type="MonoTouch.UIKit.UILocalNotification" />
       </Parameters>
       <Docs>
-        <param name="notification">To be added.</param>
+        <param name="notification">Local notification that is cancelled.</param>
         <summary>Cancels a local notification.</summary>
         <remarks>If the notification is currently displayed, it is removed;   If it is not displayed, the queued notification is dropped.</remarks>
       </Docs>
@@ -1115,7 +1115,7 @@ Task.Factory.StartNew( () => {
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveContentSizeCategoryChangedNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">If a subscription to this notification is going to be employed, use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveContentSizeCategoryChangedNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="c#">
@@ -1204,8 +1204,8 @@ void Setup ()
         <ReturnType>MonoTouch.UIKit.UIUserNotificationSettings</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>Returns current user notification settings for the app.</summary>
+        <value>User notification settings that designate the types of notifications that your app is permitted to use.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -1258,7 +1258,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveDidBecomeActiveNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">If a subscription to this notification is going to be employed, use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveDidBecomeActiveNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="c#">
@@ -1341,7 +1341,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveDidChangeStatusBarFrameNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">If a subscription to this notification is going to be employed, use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveDidChangeStatusBarFrameNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="c#">
@@ -1428,7 +1428,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveDidChangeStatusBarOrientationNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">If a subscription to this notification is going to be employed, use the conveniencee <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveDidChangeStatusBarOrientationNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="c#">
@@ -1521,7 +1521,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveDidEnterBackgroundNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">IIf a subscription to this notification is going to be employed, use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveDidEnterBackgroundNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="c#">
@@ -1604,7 +1604,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveDidFinishLaunchingNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">If a subscription to this notification is going to be employed, use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveDidFinishLaunchingNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="c#">
@@ -1697,7 +1697,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveDidReceiveMemoryWarningNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">If a subscription to this notification is going to be employed, use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveDidReceiveMemoryWarningNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="c#">
@@ -1812,7 +1812,7 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>Returns a bit-masked <see cref="T:MonoTouch.UIKit.UIRemoteNotificationType" /> indicating which types of notifications the app accepts.</summary>
-        <value>To be added.</value>
+        <value>A bit-masked <see cref="T:MonoTouch.UIKit.UIRemoteNotificationType" /> indicating which types of notifications the app accepts.</value>
         <remarks>To be added.</remarks>
         <altmember cref="M:MonoTouch.UIKit.UIApplication.RegisterForRemoteNotificationTypes" />
       </Docs>
@@ -2045,7 +2045,7 @@ void Setup ()
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Initializes the runtime.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -2102,8 +2102,8 @@ void Setup ()
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>Indicates whether app is registered for remote notifications.</summary>
+        <value>A Boolean that indicates whether the app is currently registered for remote notifications.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -2651,7 +2651,7 @@ public class MyAppDelegate : UIApplicationDelegate
       </ReturnValue>
       <Docs>
         <summary>Controls the status of the network activity indicator on the device.</summary>
-        <value>To be added.</value>
+        <value>A Boolean that switches the indicator of network activity on or off.</value>
         <remarks>
           <para tool="threads">This can be used from a background thread.</para>
         </remarks>
@@ -2710,7 +2710,7 @@ public class MyAppDelegate : UIApplicationDelegate
         <Parameter Name="url" Type="MonoTouch.Foundation.NSUrl" />
       </Parameters>
       <Docs>
-        <param name="url">To be added.</param>
+        <param name="url">Represents a URL.</param>
         <summary>Opens the specified URL, launching the app that's registered to handle the scheme.</summary>
         <returns>
           <see langword="true" /> if the URL was successfully opened.</returns>
@@ -2774,8 +2774,8 @@ public class MyAppDelegate : UIApplicationDelegate
         <Parameter Name="notification" Type="MonoTouch.UIKit.UILocalNotification" />
       </Parameters>
       <Docs>
-        <param name="notification">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="notification">Local notification that the operating system presents immediately for the app.</param>
+        <summary>Immediately presents a local notification.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -2801,7 +2801,7 @@ public class MyAppDelegate : UIApplicationDelegate
         <Parameter Name="notification" Type="MonoTouch.UIKit.UILocalNotification" />
       </Parameters>
       <Docs>
-        <param name="notification">To be added.</param>
+        <param name="notification">Local notification that the operating system presents immediately for the app.</param>
         <summary>Immediately presents a local notification.</summary>
         <remarks>
           <para>The notification is presented immediately, ignoring the <see cref="P:MonoTouch.UIKit.UILocalNotification.FireDate" /> property of the <paramref name="notification" />.</para>
@@ -2871,7 +2871,7 @@ public class MyAppDelegate : UIApplicationDelegate
         <value>To be added.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveProtectedDataDidBecomeAvailable" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">If a subscription to this notification is going to be employed, use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveProtectedDataDidBecomeAvailable" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="c#">
@@ -2961,7 +2961,7 @@ void Setup ()
         <value>To be added.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveProtectedDataWillBecomeUnavailable" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">If a subscription to this notification is going to be employed, use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveProtectedDataWillBecomeUnavailable" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="c#">
@@ -3045,7 +3045,7 @@ void Setup ()
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Registers for receipt of push notifications using the Apple Push Service.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -3074,7 +3074,7 @@ void Setup ()
         <Parameter Name="types" Type="MonoTouch.UIKit.UIRemoteNotificationType" />
       </Parameters>
       <Docs>
-        <param name="types">To be added.</param>
+        <param name="types">Types of notifications that the app wants to employ.</param>
         <summary>Begins the registration of the application to receive the specified types of notification from Apple Push Service.</summary>
         <remarks>
           <para>Only notifications of the types registered by this method will display, even if different types (e.g., an alert) is specified in the notification's payload.</para>
@@ -3110,8 +3110,8 @@ void Setup ()
         <Parameter Name="restorationIdentifier" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="uistateRestoringObject">To be added.</param>
-        <param name="restorationIdentifier">To be added.</param>
+        <param name="uistateRestoringObject">Object that is registered with the restoration archive.</param>
+        <param name="restorationIdentifier">Restoration identifier used for the object.</param>
         <summary>Registers the <paramref name="uistateRestoringObject" /> as eligible for state restoration.</summary>
         <remarks>
           <para>Calling this method allows the object to be saved and restored but does not automatically trigger preservation/restoration. Application developers must write the object at the appropriate time, for instance <see cref="M:MonoTouch.UIKit.UIViewController.EncodeRestorableState" />. </para>
@@ -3143,8 +3143,8 @@ void Setup ()
         <Parameter Name="notificationSettings" Type="MonoTouch.UIKit.UIUserNotificationSettings" />
       </Parameters>
       <Docs>
-        <param name="notificationSettings">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="notificationSettings">Notification types that the app wants to use.</param>
+        <summary>Registers the preferred options for user notification.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -3180,7 +3180,7 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>An array of <see cref="T:MonoTouch.UIKit.UILocalNotification" />s that are currently scheduled.</summary>
-        <value>To be added.</value>
+        <value>An array of <see cref="T:MonoTouch.UIKit.UILocalNotification" /> objects.</value>
         <remarks>
           <para>If application developers set this property, the local notifications are replaced via a series of calls to <see cref="M:MonoTouch.UIKit.UIApplication.CancelLocalNotification" /> and <see cref="M:MonoTouch.UIKit.UIApplication.ScheduleLocalNotification" />.</para>
         </remarks>
@@ -3211,7 +3211,7 @@ void Setup ()
         <Parameter Name="notification" Type="MonoTouch.UIKit.UILocalNotification" />
       </Parameters>
       <Docs>
-        <param name="notification">To be added.</param>
+        <param name="notification">The local notification that is going to be scheduled.</param>
         <summary>Schedules the <paramref name="notification" /> for delivery.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -3241,9 +3241,9 @@ void Setup ()
         <Parameter Name="forEvent" Type="MonoTouch.UIKit.UIEvent" />
       </Parameters>
       <Docs>
-        <param name="action">To be added.</param>
+        <param name="action">Selector that identifies an action method.</param>
         <param name="target">
-          <para>To be added.</para>
+          <para>The object receiving the action message.</para>
           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
         </param>
         <param name="sender">
@@ -3285,7 +3285,7 @@ void Setup ()
         <Parameter Name="uievent" Type="MonoTouch.UIKit.UIEvent" />
       </Parameters>
       <Docs>
-        <param name="uievent">To be added.</param>
+        <param name="uievent">Object that encapsulates the event information.</param>
         <summary>Sends an event to the application.</summary>
         <remarks>
           <para>This method allows application developers to create native <see cref="T:MonoTouch.UIKit.UIEvent" />s that are then handled normally.</para>
@@ -3324,7 +3324,7 @@ void Setup ()
       <Docs>
         <param name="timeout">Time at which the application should be woken up to keep the VoIP connection going, must be at least 600 seconds.</param>
         <param name="handler">
-          <para>The method that is invoked to keep your network connection open, the method has 10 seconds to run.   Use null to cancel the keep alive timeout. </para>
+          <para>The method that is invoked to keep the network connection open, the method has 10 seconds to run.   Use null to cancel the keep alive timeout. </para>
           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
         </param>
         <summary>Sets the specified handler as the VoIP keep alive method.</summary>
@@ -3342,7 +3342,7 @@ void Setup ()
             When the keep alive handler is called, the handler has 10
             seconds of foreground execution time, in which remaining
             background time is infinite (as returned by <see cref="P:MonoTouch.UIKit.UIApplication.BackgroundTimeRemaining" />).
-            If you initiate a background task with <see cref="M:MonoTouch.UIKit.UIApplication.BeginBackgroundTask" />
+            If a background task is initiated with <see cref="M:MonoTouch.UIKit.UIApplication.BeginBackgroundTask" />
             the task will get about 60 seconds to run.   
             
           </para>
@@ -3388,10 +3388,10 @@ void Setup ()
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="timeout">To be added.</param>
-        <param name="handler">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="timeout">Maximum interval (in seconds) at which the app should be awakened to check its VoIP connection.</param>
+        <param name="handler">Action that performs all tasks needed to maintain your VoIP network connection</param>
+        <summary>In older iOS versions, this configures a periodic handler for VoIP apps.</summary>
+        <returns>YES if installed, NO if not.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -3420,20 +3420,20 @@ void Setup ()
         <Parameter Name="minimumBackgroundFetchInterval" Type="System.Double" />
       </Parameters>
       <Docs>
-        <param name="minimumBackgroundFetchInterval">The desired minimum background fetch interval.  You can use the constant <see cref="P:MonoTouch.UIKit.UIApplication.BackgroundFetchIntervalMinimum" /> to set the minimum update interval or <see cref="P:MonoTouch.UIKit.UIApplication.BackgroundFetchIntervalNever" />) to disable background fetching.</param>
+        <param name="minimumBackgroundFetchInterval">The desired minimum background fetch interval.  This constant <see cref="P:MonoTouch.UIKit.UIApplication.BackgroundFetchIntervalMinimum" /> cane be used to set the minimum update interval or <see cref="P:MonoTouch.UIKit.UIApplication.BackgroundFetchIntervalNever" />) to disable background fetching.</param>
         <summary>Activates backgound fetching.</summary>
         <remarks>
           <para>
 
 	    This method can be used to enable or disable background
-	    fetching.  When you enable this, the operating system will
-	    call your application's delegate <see cref="M:MonoTouch.UIKit.UIApplicationDelegate.PerformFetch" />
+	    fetching.  When this is enabled, the operating system will
+	    call the application's delegate <see cref="M:MonoTouch.UIKit.UIApplicationDelegate.PerformFetch" />
 	    method at the discretion of the operating system to allow
-	    your application to download and request data from a
+	    the application to download and request data from a
 	    server.
 	  </para>
           <para>
-	    This requires that your application has the background fetch entitlement activated.   
+	    This requires that the application has the background fetch entitlement activated.   
 	  </para>
         </remarks>
       </Docs>
@@ -3526,7 +3526,7 @@ void Setup ()
       <Docs>
         <param name="hidden">
           <see langword="true" /> to hide the status bar, <see langword="false" /> to reveal it.</param>
-        <param name="animated">To be added.</param>
+        <param name="animated">Constant that indicates whether there should be animation, and, if animation is requested, whether it should fade the status bar in or out or slide the status bar in or out.</param>
         <summary>Hides or shows the animation bar, and whether it should be animated.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -3554,8 +3554,8 @@ void Setup ()
         <Parameter Name="animated" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="orientation">To be added.</param>
-        <param name="animated">To be added.</param>
+        <param name="orientation">The specific orientation for the status bar.</param>
+        <param name="animated">YES if transition to the new orientation should be animated; NO if transition should be immediate, without any animation.</param>
         <summary>Sets the status bar to <paramref name="orientation" />.</summary>
         <remarks>
           <para>This method should not be used if the application is expected to handle rotation automatically. Once this method is called, the status bar will not change automatically in response to rotation.</para>
@@ -3585,8 +3585,8 @@ void Setup ()
         <Parameter Name="animated" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="statusBarStyle">To be added.</param>
-        <param name="animated">To be added.</param>
+        <param name="statusBarStyle">A constant that specifies the style for the status bar.</param>
+        <param name="animated">YES if transition to the new orientation should be animated; otherwise NO.</param>
         <summary>Sets the style of the status bar, optionally animating the change.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -3644,7 +3644,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveSignificantTimeChangeNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">If a subscription to this notification is going to be employed, use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveSignificantTimeChangeNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="c#">
@@ -3903,7 +3903,7 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>Whether the status bar is visible.</summary>
-        <value>To be added.</value>
+        <value>Boolean that determines whether the status bar is hidden</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -3930,7 +3930,7 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>The orientation of the status bar.</summary>
-        <value>To be added.</value>
+        <value>Current orientation of the status bar.</value>
         <remarks>To be added.</remarks>
         <altmember cref="M:MonoTouch.UIKit.UIApplication.SetStatusBarOrientation" />
       </Docs>
@@ -3955,7 +3955,7 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>The length of the animation used when the status bar rotates.</summary>
-        <value>To be added.</value>
+        <value>Returns the animation duration in seconds for the status bar during a 90 degree change in orientation.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -4007,7 +4007,7 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>The current <see cref="T:MonoTouch.UIKit.UIStatusBarStyle" />.</summary>
-        <value>To be added.</value>
+        <value>A constant that indicates the style of status.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -4042,9 +4042,9 @@ void Setup ()
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="window">To be added.</param>
-        <summary>A bitmask indicating which orientations are supported.</summary>
-        <returns>To be added.</returns>
+        <param name="window">Window from which the default interface orientations are going to be retrieved.</param>
+        <summary>The set of interface orientations that are used for the view controllers in the specified window.</summary>
+        <returns>A bitmask indicating which orientations are supported.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -4126,7 +4126,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveUserDidTakeScreenshotNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">If a subscription to this notification is going to be employed, use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveUserDidTakeScreenshotNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="c#">
@@ -4212,7 +4212,7 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>The layout direction (right-to-left or left-to-right) of the UI.</summary>
-        <value>To be added.</value>
+        <value>Returns the read-only layout direction of the user interface.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -4277,7 +4277,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveWillChangeStatusBarFrameNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">If a subscription to this notification is going to be employed, use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveWillChangeStatusBarFrameNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="c#">
@@ -4364,7 +4364,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveWillChangeStatusBarOrientationNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">If a subscription to this notification is going to be employed, use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveWillChangeStatusBarOrientationNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="c#">
@@ -4457,7 +4457,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveWillEnterForegroundNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">If a subscription to this notification is going to be employed, use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveWillEnterForegroundNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="c#">
@@ -4540,7 +4540,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveWillResignActiveNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">IIf a subscription to this notification is going to be employed, use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveWillResignActiveNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="c#">
@@ -4623,7 +4623,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveWillTerminateNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">If a subscription to this notification is going to be employed, use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveWillTerminateNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="c#">
