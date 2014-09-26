@@ -25,7 +25,9 @@
     <summary>Displays an alert message to the user</summary>
     <remarks>
       <para>Starting with iOS 8, this class replaces <see cref="T:MonoTouch.UIKit.UIActionSheet" /> and <see cref="T:MonoTouch.UIKit.UIAlertView" />.</para>
-      <para>The UIAlertController is a <see cref="T:MonoTouch.UIKit.UIViewController" /> that is intended to be used for presenting alerts to the user.   Once you create your alert controller, you add actions using the <see cref="M:MonoTouch.UIKit.UIAlertController.AddAction" /> method and then you present it like you would any other view controller.   The following example shows how to configure a simple alarm.   </para>
+      <para>The UIAlertController is a <see cref="T:MonoTouch.UIKit.UIViewController" /> that is intended to be used for presenting alerts to the user.   Once you create your alert controller, you add actions using the <see cref="M:MonoTouch.UIKit.UIAlertController.AddAction" /> method or add input fields text using the <see cref="M:MonoTouch.UIKit.UIAlertController.AddTextField" /> method and then you present it like you would any other view controller.    </para>
+      <para>Text fields are only supported with the Alert style.</para>
+      <para>The following example shows how to configure a simple alarm.   </para>
       <example>
         <code lang="c#">var alert = UIAlertController.Create ("Alarm", "Wake up sleeping giant!", UIAlertControllerStyle.Alert);
 
@@ -76,13 +78,32 @@ PresentViewController (alert, animated: true, completionHandler: null);
     if (alert.PopoverPresentationController != null)
         alert.PopoverPresentationController.BarButtonItem = sender as UIBarButtonItem;	
 
-    alert.AddAction (UIAlertAction.Create ("Ok", UIAlertActionStyle.Cancel, null));
+    alert.AddAction (UIAlertAction.Create ("Ok", UIAlertActionStyle.Cancel, action =&gt; Ok ()));
     alert.AddAction (UIAlertAction.Create ("Snooze", UIAlertActionStyle.Default, action =&gt; Snooze ()));
     PresentViewController (alert, animated: true, completionHandler: null);
 }</code>
       </example>
       <para></para>
       <para>Other common idioms include using the sender as <see cref="T:MonoTouch.UIKit.UIView" /> and setting the <see cref="P:MonoTouch.UIKit.UIPopoverPresentationController.SourceView" /> to it, and the <see cref="P:MonoTouch.UIKit.UIPopoverPresentationController.SourceRect" /> to the boundaries of that view for example.</para>
+      <para>When adding text fields, you use the parameter to configure the text field (colors, default text, placeholder text, secure text entry and so on).  </para>
+      <para></para>
+      <example>
+        <code lang="c#">UIAlertController alert = UIAlertController.Create ("Login", "Enter your credentials", UIAlertControllerStyle.Alert);
+
+alert.AddAction (UIAlertAction.Create ("Login", UIAlertActionStyle.Default, action =&gt; {
+    // This code is invoked when the user taps on login, and this shows how to access the field values
+    Console.WriteLine ("User: {0}/Password: {1}", alert.TextFields[0].Text, alert.TextFields [1].Text);
+}));
+
+alert.AddAction (UIAlertAction.Create ("Cancel", UIAlertActionStyle.Cancel, myCancel));
+alert.AddTextField ((field) =&gt; {
+	field.Placeholder = "email address";
+});
+alert.AddTextField ((field) =&gt; {
+	field.SecureTextEntry = true;
+});
+PresentViewController (alert, animated: true, completionHandler: null);</code>
+      </example>
     </remarks>
   </Docs>
   <Members>
