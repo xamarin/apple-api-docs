@@ -31,13 +31,58 @@
 
 alert.AddAction (UIAlertAction.Create ("Ok", UIAlertActionStyle.Cancel, null));
 alert.AddAction (UIAlertAction.Create ("Snooze", UIAlertActionStyle.Default, action =&gt; Snooze ()));
-PresentViewController (alertController, animated: true, completionHandler: null);
+if (alert.PopoverPresentationController != null)
+    alert.PopoverPresentationController.BarButtonItem = myItem;
+PresentViewController (alert, animated: true, completionHandler: null);
 </code>
       </example>
-      <para>This is what it would look like:</para>
+      <para>When using the <see cref="F:MonoTouch.UIKit.UIAlertControllerStyle.Alert" /> style, the message would be centered in the screen and look like this:</para>
       <para>
-        <img href="UIAlertController.png" />
+        <img href="Screen Shot 2014-09-25 at 10.30.01 PM.png" />
       </para>
+      <para>When using the <see cref="F:MonoTouch.UIKit.UIAlertControllerStyle.ActionSheet" /> style, the message would show at the bottom of the screen, and look like this:</para>
+      <para>
+        <img href="action-controller-asheet.png" />
+      </para>
+      <para>When the <see cref="P:MonoTouch.UIKit.UIViewController.PopoverPresentationController" /> is not <see langword="null" />, this means that the action sheet is being presented in a way that will require you to specify an anchor point, to produce something like this:</para>
+      <para>
+        <img href="action-ipad.png" />
+      </para>
+      <para>To achieve this, you must set one of the following properties to a value:</para>
+      <list type="bullet">
+        <item>
+          <term>
+            <see cref="P:MonoTouch.UIKit.UIPopoverPresentationController.BarButtonItem" />
+          </term>
+        </item>
+        <item>
+          <term>
+            <see cref="P:MonoTouch.UIKit.UIPopoverPresentationController.SourceRect" />
+          </term>
+        </item>
+        <item>
+          <term>
+            <see cref="P:MonoTouch.UIKit.UIPopoverPresentationController.SourceView" />
+          </term>
+        </item>
+      </list>
+      <para></para>
+      <para>Those properties will allow the <see cref="M:MonoTouch.UIKit.UIViewController.PreserntViewController" /> determine where to display your action sheet.   If you are responding to a tap from a bar button item (like the screenshot above), you can just cast the sender parameter to a UIBarButtonItem, for example:</para>
+      <para></para>
+      <example>
+        <code lang="c#">void HandleAddButtonItem(NSObject sender)
+{
+    var alert = UIAlertController.Create ("Alarm", "Wake up sleeping giant!", UIAlertControllerStyle.Alert);
+    if (alert.PopoverPresentationController != null)
+        alert.PopoverPresentationController.BarButtonItem = sender as UIBarButtonItem;	
+
+    alert.AddAction (UIAlertAction.Create ("Ok", UIAlertActionStyle.Cancel, null));
+    alert.AddAction (UIAlertAction.Create ("Snooze", UIAlertActionStyle.Default, action =&gt; Snooze ()));
+    PresentViewController (alert, animated: true, completionHandler: null);
+}</code>
+      </example>
+      <para></para>
+      <para>Other common idioms include using the sender as <see cref="T:MonoTouch.UIKit.UIView" /> and setting the <see cref="P:MonoTouch.UIKit.UIPopoverPresentationController.SourceView" /> to it, and the <see cref="P:MonoTouch.UIKit.UIPopoverPresentationController.SourceRect" /> to the boundaries of that view for example.</para>
     </remarks>
   </Docs>
   <Members>
@@ -220,7 +265,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="action" Type="MonoTouch.UIKit.UIAlertAction" />
       </Parameters>
       <Docs>
-        <param name="action">To be added.</param>
+        <param name="action">The action to add, this is created by calling <see cref="M:MonoTouch.UIKit.UIAlertAction.Create" />.</param>
         <summary>Adds a <see cref="T:MonoTouch.UIKit.UIAlertAction" /> action that <c>this</c> <see cref="T:MonoTouch.UIKit.UIAlertController" /> displays as a button for the user.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -253,9 +298,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="configurationHandler">To be added.</param>
+        <param name="configurationHandler">Method that will be invoked with a <see cref="T:MonoTouch.UIKit.UITextField" /> to be configured.   The method should configure the UITextField appropriately.</param>
         <summary>Adds a <see cref="T:MonoTouch.UIKit.UITextField" /> object to <c>this</c> <see cref="T:MonoTouch.UIKit.UIAlertController" /> to display to the user, and also includes a <paramref name="configurationHandler" /> that the app developer can use to change the text field properties.</summary>
-        <remarks>To be added.</remarks>
+        <remarks>This method can be called multiple times to add mulitple text fields into the alert controller.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ClassHandle">
@@ -302,17 +347,16 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="title">
-          <para>To be added.</para>
-          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+          <para>Title for the alert</para>
         </param>
         <param name="message">
-          <para>To be added.</para>
+          <para>Message to display for the alert, this is optional.</para>
           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
         </param>
-        <param name="preferredStyle">To be added.</param>
+        <param name="preferredStyle">The desired style for the alert.</param>
         <summary>Creates a <see cref="T:MonoTouch.UIKit.UIAlertController" /> object to display an alert to the user that includes a <paramref name="title" />, a <paramref name="message" />, and <see cref="T:MonoTouch.UIKit.UIAlertControllerStyle" /> preferred style, and then returns that <see cref="T:MonoTouch.UIKit.UIAlertController" /> object.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <returns>The new instance of the UIAlertController that you can customize.   </returns>
+        <remarks>See the <see cref="T:MonoTouch.UIKit.UIAlertController" /> documentation for an example on how to use it.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Dispose">
@@ -367,8 +411,14 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Docs>
         <summary>Gets or sets a description of the reason for the alert that is associated with <c>this</c> <see cref="T:MonoTouch.UIKit.UIAlertController" /> object.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <value>
+          <para></para>
+          <para></para>
+        </value>
+        <remarks>
+          <para></para>
+          <para></para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="PreferredStyle">
