@@ -21,7 +21,7 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>A BSD socket communications channel.</summary>
+    <summary>A BSD socket communications channel integrated with the application runloop.</summary>
     <remarks>To be added.</remarks>
   </Docs>
   <Members>
@@ -37,8 +37,11 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Creates a socket for the address family family INET, socket type STREAM, and protocol TCP.</summary>
+        <remarks>
+          <para>This constructor throws a <see cref="T:MonoTouch.CoreFoundation.CFSocketException" /> if there is an error trying to create the socket.</para>
+          <para></para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -57,11 +60,11 @@
         <Parameter Name="proto" Type="System.Net.Sockets.ProtocolType" />
       </Parameters>
       <Docs>
-        <param name="family">To be added.</param>
-        <param name="type">To be added.</param>
-        <param name="proto">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="family">Family type for the socket.</param>
+        <param name="type">Socket type to create.</param>
+        <param name="proto">Protocol type for the socket.</param>
+        <summary>Creates a socket by specifying an address family, scoket type and protocol type dispatched on the <see cref="P:MonoTouch.CoreFoundation.CFRunLoop.Current" />.</summary>
+        <remarks>This constructor throws a <see cref="T:MonoTouch.CoreFoundation.CFSocketException" /> if there is an error trying to create the socket.</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -81,12 +84,12 @@
         <Parameter Name="loop" Type="MonoTouch.CoreFoundation.CFRunLoop" />
       </Parameters>
       <Docs>
-        <param name="family">To be added.</param>
-        <param name="type">To be added.</param>
-        <param name="proto">To be added.</param>
-        <param name="loop">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="family">Family type for the socket.</param>
+        <param name="type">Socket type to create.</param>
+        <param name="proto">Protocol type for the socket.</param>
+        <param name="loop">The run loop to which this CFSocket will be added as a source.</param>
+        <summary>Creates a socket by specifying an address family, socket type and protocol type with a specified run loop to dispatch on.</summary>
+        <remarks>This constructor throws a <see cref="T:MonoTouch.CoreFoundation.CFSocketException" /> if there is an error trying to create the socket.</remarks>
       </Docs>
     </Member>
     <Member MemberName="AcceptEvent">
@@ -103,7 +106,7 @@
         <ReturnType>System.EventHandler&lt;MonoTouch.CoreFoundation.CFSocket+CFSocketAcceptEventArgs&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Event raised when the socket has accepted a connection (listening sockets).</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -126,9 +129,9 @@
       </Parameters>
       <Docs>
         <param name="endpoint">To be added.</param>
-        <param name="timeout">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="timeout">Time to wait for the operation to complete.   If the value is negative, no wait takes place, and instead the operation takes place in the background.</param>
+        <summary>Connects the socket to the specified endpoint.</summary>
+        <remarks>This method throws a <see cref="T:MonoTouch.CoreFoundation.CFSocketException" /> if the timeout expires before being able to complete the operation.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Connect">
@@ -152,9 +155,9 @@
       <Docs>
         <param name="address">To be added.</param>
         <param name="port">To be added.</param>
-        <param name="timeout">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="timeout">Time to wait for the operation to complete.   If the value is negative, no wait takes place, and instead the operation takes place in the background.</param>
+        <summary>Connects the socket to the specified IP address and port.</summary>
+        <remarks>This method throws a <see cref="T:MonoTouch.CoreFoundation.CFSocketException" /> if the timeout expires before being able to complete the operation.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ConnectEvent">
@@ -171,7 +174,7 @@
         <ReturnType>System.EventHandler&lt;MonoTouch.CoreFoundation.CFSocket+CFSocketConnectEventArgs&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Event raised when the socket connect operation has completed.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -200,8 +203,8 @@
         <param name="type">To be added.</param>
         <param name="proto">To be added.</param>
         <param name="endpoint">To be added.</param>
-        <param name="timeout">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="timeout">Time to wait for the operation to complete.   If the value is negative, no wait takes place, and instead the operation takes place in the background.</param>
+        <summary>Creates a connected socket by specifying an address family, socket type, protocol type as well as the endpoint to connect to.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -220,7 +223,7 @@
         <ReturnType>System.EventHandler&lt;MonoTouch.CoreFoundation.CFSocket+CFSocketDataEventArgs&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Event raised when data has been received on the socket.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -242,7 +245,7 @@
       </Parameters>
       <Docs>
         <param name="types">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Disables a set of events from being raised.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -315,7 +318,7 @@
       </Parameters>
       <Docs>
         <param name="types">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Enables a set of events to be raised.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -354,7 +357,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Returns the set of CFSocket-specific flags.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -392,7 +395,7 @@
         <ReturnType>System.EventHandler&lt;MonoTouch.CoreFoundation.CFSocket+CFSocketReadEventArgs&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Event raised when data is available to be read (the event handler must read the data itself).</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -415,9 +418,9 @@
       </Parameters>
       <Docs>
         <param name="data">To be added.</param>
-        <param name="timeout">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="timeout">Time to wait for the operation to complete.  </param>
+        <summary>Sends data over the socket.</summary>
+        <remarks>This method raises an exception <see cref="T:MonoTouch.CoreFoundation.CFSocketException" /> if the sending buffer is full, or the timeout expires before the data is sent.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetAddress">
@@ -438,7 +441,7 @@
       </Parameters>
       <Docs>
         <param name="endpoint">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Sets the listening address for this socket (equivalent to the BSD bind call).</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -462,7 +465,7 @@
       <Docs>
         <param name="address">To be added.</param>
         <param name="port">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Sets the listening address for this socket (equivalent to the BSD bind call).</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -484,7 +487,7 @@
       </Parameters>
       <Docs>
         <param name="flags">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Sets the CFSocket-specific flags.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -502,7 +505,7 @@
         <ReturnType>System.EventHandler&lt;MonoTouch.CoreFoundation.CFSocket+CFSocketWriteEventArgs&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Event raised when data can be written to the sockets without blocking.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
