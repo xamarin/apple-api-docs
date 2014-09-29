@@ -796,7 +796,17 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <summary>The current exposure mode of the <see cref="T:MonoTouch.AVFoundation.AVCaptureDevice" />.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <para>Setting this property has the following effects:</para>
+          <list type="bullet">
+            <item>
+              <term>If set to AutoExpose or AutoExposeLocked: <see cref="T:MonoTouch.AVFoundation.AVCaptureDevice.ExposureTargetBias" /> affects both the <see cref="T:MonoTouch.AVFoundation.AVCaptureDevice.ExposureTargetOffset" />, <see cref="T:MonoTouch.AVFoundation.AVCaptureDevice.ExposureDuration" /> and <see cref="T:MonoTouch.AVFoundation.AVCaptureDevice.ISO." /></term>
+            </item>
+            <item>
+              <term>If set to Custom: <see cref="T:MonoTouch.AVFoundation.AVCaptureDevice.ExposureTargetBias" /> it only affects <see cref="T:MonoTouch.AVFoundation.AVCaptureDevice.ExposureTargetOffset" />.</term>
+            </item>
+          </list>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ExposurePointOfInterest">
@@ -879,9 +889,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Single</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Indicates the current Exposure Target Bias (measured in <see cref="Exposure Value" /> units).</summary>
+        <value>The current exposure target bias.</value>
+        <remarks>To set this, call the <see cref="M:MonoTouch.AVFoundation.AVCaptureDevice.SetExposureTargetBias" /> or <see cref="M:MonoTouch.AVFoundation.AVCaptureDevice.SetExposureTargetBiasAsync" /> methods.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ExposureTargetBiasCurrent">
@@ -2267,11 +2277,13 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="bias">Bias to apply to the exposure target.  You can pass <see cref="P:MonoTouch.AVFoundation.AVCaptureDevice.ExposureTargetBiasCurrent" /> if you do not want to specify a value, and instead want to use the current value.</param>
         <param name="completionHandler">
-          <para>To be added.</para>
+          <para>This method is invoked when the bias has been set.   </para>
+          <para>The method receives a <see cref="T:MonoTouch.CoreMedia.CMTime" /> parameter with the device clock timestamp of the first sample buffer that received the new bias setting.  </para>
+          <para>If you must compare the time stamp with the buffers delivered by <see cref="T:MonoTouch.AVFoundation.AVCaptureVideoDataOutput" /> you must convert the time to the master clock.</para>
           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
         </param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Sets the exposure target bias (measured in <see cref="Exposure Value" /> units).</summary>
+        <remarks>You must invoke the <see cref="M:MonoTouch.AVFoundation.AVCaptureDevice.LockForConfiguration" /> method before invoking this method.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetExposureTargetBiasAsync">
@@ -2294,7 +2306,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="bias">Bias to apply to the exposure target.  You can pass  if you do not want to specify a value, and instead want to use the current value.</param>
         <summary>To be added.</summary>
         <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous SetExposureTargetBias operation.  The value of the TResult parameter is of type MonoTouch.CoreMedia.CMTime.</para>
+          <para>A task that represents the asynchronous SetExposureTargetBias operation.  The value of the TResult parameter is of type MonoTouch.CoreMedia.CMTime.</para>
         </returns>
         <remarks>
         </remarks>
@@ -2346,8 +2358,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
         </param>
         <summary>Locks the lens position at the specified position.</summary>
-        <remarks>
-        </remarks>
+        <remarks>You must invoke the <see cref="M:MonoTouch.AVFoundation.AVCaptureDevice.LockForConfiguration" /> method before invoking this method.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetFocusModeLockedAsync">
@@ -2416,6 +2427,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <para>
  	    Torch mode is a mode in which the flash light can be used continuously in low-intensity mode (typically to illuminate videos).
  	  </para>
+          <para>You must invoke the <see cref="M:MonoTouch.AVFoundation.AVCaptureDevice.LockForConfiguration" /> method before invoking this method.</para>
         </remarks>
       </Docs>
     </Member>
@@ -2457,7 +2469,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
         </param>
         <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <remarks>You must invoke the <see cref="M:MonoTouch.AVFoundation.AVCaptureDevice.LockForConfiguration" /> method before invoking this method.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SetWhiteBalanceModeLockedWithDeviceWhiteBalanceGainsAsync">
