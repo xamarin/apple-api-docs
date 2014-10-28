@@ -22,6 +22,34 @@
     <summary>Manages the delivery of location, region, and heading events to your application.</summary>
     <remarks>
       <format type="text/html">
+        <h2>Requesting Authorization</h2>
+      </format>
+      <para> Starting with iOS 8, developers that want to request
+	access to the location information must request permission
+	from the user to do so before they can receive events. This is
+	done by calling either the <see cref="M:MonoTouch.CoreLocation.CLLocationManager.RequestWhenInUseAuthorization" />
+	or the <see cref="M:MonoTouch.CoreLocation.CLLocationManager.RequestAlwaysAuthorization" />
+	methods. When these methods are invoked, the system will
+	prompt the user for authorization, and if he grants it, the <see cref="M:MonoTouch.CoreLocation.CLLocationManager.AuthorizationChanged" /> event
+	will be raised if set (or if you are using the Delegate idiom,
+	the <see cref="M:MonoTouch.CoreLocation.CLLocationManagerDelegate.AuthorizationChanged" /> method
+	will be invoked.
+      </para>
+      <para>
+	You should use
+	an idiom like this:
+      </para>
+      <example>
+        <code lang="c#"><![CDATA[
+var manager = new CLLocationManager();
+manager.AuthorizationChanged += (sender, args) => {
+	Console.WriteLine ("Authorization changed to: {0}", args.Status);
+};
+if (UIDevice.CurrentDevice.CheckSystemVersion(8,0))
+    manager.RequestWhenInUseAuthorization();
+]]></code>
+      </example>
+      <format type="text/html">
         <h2>Tracking the device's location</h2>
       </format>
       <para>The most common use-case for the <see cref="T:MonoTouch.CoreLocation.CLLocationManager" /> is tracking the device while the application is in the foreground. (See also "Background Updating and Deferred Mode" below.)</para>
@@ -139,26 +167,16 @@ type MyLocationDelegate () = inherit CLLocationManagerDelegate()
       <example>
         <code lang="C#"><![CDATA[
 locationManager.DidRangeBeacons += (lm, rangeEvents) => {
-				switch(rangeEvents.Beacons[0].Proximity)
-				{
-				case CLProximity.Far : 
-					Console.WriteLine("You're getting colder!");
-					break;
-				case CLProximity.Near :
-					Console.WriteLine("You're getting warmer!");
-					break;
-				case CLProximity.Immediate :
-					Console.WriteLine("You're red hot!");
-					break;
-				case CLProximity.Unknown : 
-					Console.WriteLine("I can't tell");
-					break;
-				default:
-					throw new ArgumentOutOfRangeException();
-				}
-			};
-locationManager.StartRangingBeacons(beaconRegion);
-            ]]></code>
+    switch(rangeEvents.Beacons[0].Proximity){
+    case CLProximity.Far : 
+        Console.WriteLine("You're getting colder!");
+        break;
+    case CLProximity.Near :
+        Console.WriteLine("You're getting warmer!");
+        break;
+    case CLProximity.Immediate :
+        Console.WriteLine("You're red hot!");
+        break;]]></code>
         <code lang="F#"><![CDATA[
 locationManager.DidRangeBeacons.Add(fun rangeEvents ->
     let s = match rangeEvents.Beacons.[0].Proximity with
