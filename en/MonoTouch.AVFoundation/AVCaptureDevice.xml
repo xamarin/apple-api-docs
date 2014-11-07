@@ -2211,8 +2211,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="avMediaTypeToken">To be added.</param>
-        <param name="completion">To be added.</param>
+        <param name="avMediaTypeToken">The type of media for which access is being requested. Should be a value defined in <see cref="T:MonoTouch.AVFoundation.AVMediaType"/>.</param>
+        <param name="completion">Completion handler called after the user interacts with the permissions dialog.</param>
         <summary>Requests the application user's permission, if necessary, to capture the <paramref name="avMediaTypeToken" />.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -2234,10 +2234,23 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="avMediaTypeToken" Type="MonoTouch.Foundation.NSString" />
       </Parameters>
       <Docs>
-        <param name="avMediaTypeToken">To be added.</param>
+        <param name="avMediaTypeToken">The type of media for which access is being requested. Should be a value defined in <see cref="T:MonoTouch.AVFoundation.AVMediaType"/>.</param>
         <summary>Requests the application user's permission, if necessary, to capture the .</summary>
         <returns>
           <para>A task that represents the asynchronous RequestAccessForMediaType operation.   The value of the TResult parameter is a MonoTouch.AVFoundation.AVRequestAccessStatus.</para>
+          <example><code lang="C#"><![CDATA[
+ //This method is synchronous...
+protected void RequestCameraAccess()
+{
+	//But inside, use an async lambda to request permission...
+	Task.Run( async () => 
+		{
+			var success = await AVCaptureDevice.RequestAccessForMediaTypeAsync (AVMediaType.Video);
+			//...But the continuation is on a background thread, so use InvokeOnMainThread to update the UI
+			InvokeOnMainThread( () => UpdateStatus("Access is " success ? "granted" : "denied"));
+		});
+}
+]]></code></example>
         </returns>
         <remarks>
         </remarks>

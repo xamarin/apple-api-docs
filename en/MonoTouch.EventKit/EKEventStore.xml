@@ -756,10 +756,12 @@ MyStore.EnumerateEvents (predicate, (EKEvent theEvent, ref bool stop) =&gt; {
         <Parameter Name="entityType" Type="MonoTouch.EventKit.EKEntityType" />
       </Parameters>
       <Docs>
-        <param name="entityType">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="entityType">The <see cref="T:MonoTouch.EventKit.EKEntityType"/> for which the authorization status is being queried.</param>
+        <summary>The current access the application has for the specified <paramref name="entityType"/>.</summary>
+        <returns>The current access the application has for the specified <paramref name="entityType"/>.</returns>
+        <remarks>
+          <para>Access to the underlying Event Kit data is under user control. Applications must request access via <see cref="M:MonoTouch.EventKit.EKEventStore.RequestAccess"/>.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetCalendar">
@@ -1309,11 +1311,25 @@ MyStore.EnumerateEvents (predicate, (EKEvent theEvent, ref bool stop) =&gt; {
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="entityType">To be added.</param>
-        <param name="completionHandler">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="entityType">The <see cref="T:MonoTouch.EventKit.EKEntityType"/> for which access is being requested.</param>
+        <param name="completionHandler">Callback executed after the user has interacted with the permissions dialog.</param>
+        <summary>Shows, if necessary, the standard permissions dialog for the specified <paramref name="entityType"/>.</summary>
+        <remarks>
+          <para>The user must explicitly allow access to the specified <paramref name="entityType"/>. This method asynchronously shows, if necessary, a standard permissions dialog. The <see cref="T:System.Boolean"/> argument to the <paramref name="completionHandler"/> will be <see langword="true"/> if the user granted permission.</para>
+                <example>
+            <code lang="C#"><![CDATA[
+EKEventStore eventStore = new EKEventStore();
+var type = EKEntityType.Reminder;
+
+eventStore.RequestAccess (type, delegate (bool granted, NSError error) {
+	InvokeOnMainThread(() => accessStatus.Text = "Access " + (granted ? "allowed" : "denied"));
+});
+
+          ]]></code>
+        </example>
+        </remarks>
       </Docs>
+      <altmember cref="M:MonoTough.EventKit.EKEventStore.GetAuthorizationStatus"/>
     </Member>
     <Member MemberName="RequestAccessAsync">
       <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;bool&gt; RequestAccessAsync (MonoTouch.EventKit.EKEntityType entityType);" />

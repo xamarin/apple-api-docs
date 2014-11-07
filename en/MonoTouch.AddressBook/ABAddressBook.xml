@@ -45,6 +45,13 @@
         </item>
         <item>
           <term>
+            Accessing an address book:
+            <see cref="M:MonoTouch.AddressBook.ABAddressBook.RequestAccess" />.
+          </term>
+        </item>
+        
+        <item>
+          <term>
             Managing address books records:
             <see cref="M:MonoTouch.AddressBook.ABAddressBook.Add(MonoTouch.AddressBook.ABRecord)" />,
             <see cref="M:MonoTouch.AddressBook.ABAddressBook.Remove(MonoTouch.AddressBook.ABRecord)" />,
@@ -323,10 +330,14 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>What permissions the user has allowed the app.</summary>
+        <returns>The current authorization status of the app.</returns>
+        <remarks>
+          <para>This method checks the application's current authorization status, which can change due to the user interacting with the permissions dialog (see <see cref="M:MonoTouch.AddressBook.ABAddressBook"/>) or the system's Privacy settings.</para>
+             </remarks>
       </Docs>
+      <altmember cref="M:MonoTouch.AddressBook.ABAddressBok.RequestAccess"/>
+
     </Member>
     <Member MemberName="GetDefaultSource">
       <MemberSignature Language="C#" Value="public MonoTouch.AddressBook.ABSource GetDefaultSource ();" />
@@ -875,10 +886,25 @@
         <Parameter Name="onCompleted" Type="System.Action&lt;System.Boolean,MonoTouch.Foundation.NSError&gt;" />
       </Parameters>
       <Docs>
-        <param name="onCompleted">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="onCompleted">Action called after the user has interacte with the permissions dialog.</param>
+        <summary>Presents the user with a standard permissions dialog, requesting access to the address book.</summary>
+        <remarks>
+          <para>User's must give applications permission to access the <see cref="T:MonoTouch.AddressBook.ABAddressBook"/>. This is done with a standard permissions dialog that is shown asynchronously (if necessary) by calling this asynchronous. The <paramref name="onCompleted"/> Action is called after the user has interacted with the dialog.</para>
+                <example>
+        <code lang="C#"><![CDATA[
+NSError error;
+addressBook = ABAddressBook.Create (out error);
+
+if (addressBook != null) {
+	addressBook.RequestAccess (delegate (bool granted, NSError accessError) {
+		InvokeOnMainThread(() => accessStatus.Text = "Access " + (granted ? "allowed" : "denied"));
+	});
+}
+          ]]></code>
+        </example>
+        </remarks>
       </Docs>
+      <altmember cref="M:MonoTouch.AddressBook.ABAddressBok.GetAuthorizationStatus"/>
     </Member>
     <Member MemberName="Revert">
       <MemberSignature Language="C#" Value="public void Revert ();" />
