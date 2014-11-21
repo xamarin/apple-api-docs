@@ -568,8 +568,7 @@ An IDisposable object.  Invoke the Dispose method on this object to remove the 
         <remarks>
           <para>When the object is registered for observation, changes to the object specified in the keyPath that match the flags requested in options will be sent to the specied method (a lambda or method that matches the signature).</para>
           <para>This version provides the convenience of exposing the changes as part of the strongly typed <see cref="T:MonoTouch.Foundation.NSObservedChanged" /> object that is received by the target.</para>
-          <para>
-          </para>
+          <para></para>
           <example>
             <code lang="c#">void Setup ()
 {
@@ -634,8 +633,7 @@ An IDisposable object.  Invoke the Dispose method on this object to remove the 
         <remarks>
           <para>When the object is registered for observation, changes to the object specified in the keyPath that match the flags requested in options will be sent to the specied method (a lambda or method that matches the signature).</para>
           <para>This version provides the convenience of exposing the changes as part of the strongly typed <see cref="T:MonoTouch.Foundation.NSObservedChanged" /> object that is received by the target.</para>
-          <para>
-          </para>
+          <para></para>
           <example>
             <code lang="c#">void Setup ()
 {
@@ -648,8 +646,7 @@ An IDisposable object.  Invoke the Dispose method on this object to remove the 
     });
 }</code>
           </example>
-          <para>
-          </para>
+          <para></para>
         </remarks>
       </Docs>
     </Member>
@@ -693,24 +690,40 @@ Key-path to use to perform the value lookup.   The keypath consists of a series 
 Flags indicating which notifications you are interested in receiving (New, Old, Initial, Prior).Context data passed to the <see cref="T:MonoTouch.Foundation.NSObjectObserveValue" /> method when one of the properties change.
   	   
   	   </param>
-        <param name="context">To be added.</param>
-        <summary>Registers an object for being observed externally (using NSString keyPath).</summary>
+        <param name="context">Opaque constant that will be passed to the <see cref="M:MonoTouch.Foundation.NSObject.ObserveValue" /> method</param>
+        <summary>Registers an object for being observed externally (using NSString keyPath).   Observed changes are dispatched to the observer’s object <see cref="M:MonoTouch.Foundation.NSObject.ObserveValue" /> method.</summary>
         <remarks>
           <para>When the object is registered for observation, changes to the object specified in the keyPath that match the flags requested in options will be sent to the <see cref="T:MonoTouch.Foundation.NSObjectObserveValue" /> method in the observer object.   </para>
           <para>To stop receiving notifications, call the <see cref="M:MonoTouch.Foundation.NSObject.RemoveObserver" /> method.</para>
-          <para>
-          </para>
+          <para></para>
           <example>
             <code lang="c#">class MySampleViewController : UIViewController {
+    // A token to tell different observed properties appart.
+    const IntPtr tokenObserveRate = (IntPtr) 1;
+    const IntPtr tokenObserveVolume = (IntPtr) 2;
+
     void Setup ()
     {
+
         Player.AddObserver (this, (NSString)"rate",
             NSKeyValueObservingOptions.Old | NSKeyValueObservingOptions.New,
-            IntPtr.Zero);
+            tokenObserveRate);
+        Player.AddObserver (this, (NSString)”volume",
+            NSKeyValueObservingOptions.Old | NSKeyValueObservingOptions.New,
+            tokenObserveVolume);
+
     }
     public override void ObserveValue (NSString keyPath, NSObject ofObject, NSDictionary change, IntPtr ctx)
     {
         // Handle change.
+        if (ctx == tokenObserveRate) {
+            // the rate changed
+        } else if (ctx == tokenObserveVolume){
+            // the volume changed
+        } else {
+            // invoke the base implementation for unhandled events
+            base.ObserveValue (keyPath, ofObject, change, ctx);
+        }
     }
 }</code>
           </example>
@@ -738,8 +751,7 @@ Flags indicating which notifications you are interested in receiving (New, Old, 
       </Parameters>
       <Docs>
         <param name="observer">
-The object that will receive the notifications
-  	   </param>
+The object that will receive the notifications.   The object will receive notifications on its <see cref="M:MonoTouch.Foundation.NSObject.ObserveValue" /> method.</param>
         <param name="keyPath">
 Key-path to use to perform the value lookup. The keypath consists of a series of lowercase ASCII-strings with no spaces in them separated by dot characters.
   	   </param>
@@ -748,18 +760,17 @@ Flags indicating which notifications you are interested in receiving (New, Old, 
   	   </param>
         <param name="context">
 Context data passed to
-        the <see cref="T:MonoTouch.Foundation.NSObjectObserveValue" />
+        the <see cref="M:MonoTouch.Foundation.NSObject.ObserveValue" />
         method when one of the properties change.
   	   </param>
-        <summary>Registers an object for being observed externally (using string keyPath).</summary>
+        <summary>Registers an object for being observed externally (using string keyPath).   Observed changes are dispatched to the observer’s object <see cref="M:MonoTouch.Foundation.NSObject.ObserveValue" /> method.</summary>
         <remarks>
           <para>When the object is registered for observation, changes
           to the object specified in the keyPath that match the flags
           requested in options will be sent to the
-          <see cref="T:MonoTouch.Foundation.NSObjectObserveValue" /> method in the observer object.</para>
+<see cref="M:MonoTouch.Foundation.NSObject.ObserveValue" /> method in the observer object.</para>
           <para>To stop receiving notifications, call the <see cref="M:MonoTouch.Foundation.NSObject.RemoveObserver" /> method.</para>
-          <para>
-          </para>
+          <para></para>
           <example>
             <code lang="c#">class MySampleViewController : UIViewController {
     void Setup ()
@@ -2294,7 +2305,7 @@ public class EditableCoreTextView : UIView {
         <param name="change">To be added.</param>
         <param name="context">To be added.</param>
         <summary>Indicates that the value at the specified keyPath relative to this object has changed.</summary>
-        <remarks>To be added.</remarks>
+        <remarks>This method is invoked if you have registered an observer using the <see cref="M:MonoTouch.Foundation.NSObject.AddObserver" /> method</remarks>
       </Docs>
     </Member>
     <Member MemberName="PerformSelector">

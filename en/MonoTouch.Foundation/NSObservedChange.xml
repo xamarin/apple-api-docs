@@ -18,6 +18,25 @@
     <remarks>
       <para>This class exposes the various components that were changes in a Key-Value-Observed property.</para>
       <para>These are merely accessors to the underlying NSDictionary that is provided to the <see cref="M:MonoTouch.Foundation.NSObject.ObserveValue" /> method.</para>
+      <para>Instances of this class are provided to your callback methods that you provide to <see cref="M:MonoTouch.Foundation.NSObject.AddObserver" />.</para>
+      <para>You can also create these objects if you have a dictionary that contains the keys from a key-value-observing change.   For example if you override the <see cref="T:MonoTouch.Foundation.NSObject.ObserveValue" /> method.</para>
+      <para />
+      <example>
+        <code lang="C#"><![CDATA[class MyObserved : NSObject {
+    public override ObserveValue (NSString keyPath, NSObject ofObject, NSDictionary change, IntPtr context)
+    {
+        var change = new NSObservedChange (change);
+        // Now you can access the details about the change with the
+        // properties in the `change’ variable.
+
+        if (context == MyObservedContext){
+            //...
+        }
+        base.ObserveValue (keyPath, ofObject, change, context);
+    }
+}]]></code>
+      </example>
+      <para />
     </remarks>
   </Docs>
   <Members>
