@@ -1,6 +1,6 @@
 <Type Name="SCNView" FullName="MonoTouch.SceneKit.SCNView">
-  <TypeSignature Language="C#" Value="public class SCNView : MonoTouch.UIKit.UIView, IDisposable, MonoTouch.SceneKit.ISCNSceneRenderer" />
-  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit SCNView extends MonoTouch.UIKit.UIView implements class MonoTouch.ObjCRuntime.INativeObject, class MonoTouch.SceneKit.ISCNSceneRenderer, class System.IDisposable" />
+  <TypeSignature Language="C#" Value="public class SCNView : MonoTouch.UIKit.UIView, IDisposable, MonoTouch.SceneKit.ISCNSceneRenderer, MonoTouch.SceneKit.ISCNTechniqueSupport" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit SCNView extends MonoTouch.UIKit.UIView implements class MonoTouch.ObjCRuntime.INativeObject, class MonoTouch.SceneKit.ISCNSceneRenderer, class MonoTouch.SceneKit.ISCNTechniqueSupport, class System.IDisposable" />
   <AssemblyInfo apistyle="classic">
     <AssemblyName>monotouch</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -15,6 +15,9 @@
   <Interfaces>
     <Interface>
       <InterfaceName>MonoTouch.SceneKit.ISCNSceneRenderer</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>MonoTouch.SceneKit.ISCNTechniqueSupport</InterfaceName>
     </Interface>
     <Interface>
       <InterfaceName>System.IDisposable</InterfaceName>
@@ -68,8 +71,10 @@
       </Docs>
     </Member>
     <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public SCNView (MonoTouch.Foundation.NSObjectFlag t);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class MonoTouch.Foundation.NSObjectFlag t) cil managed" />
+      <MemberSignature Language="C#" Value="public SCNView (MonoTouch.Foundation.NSObjectFlag t);" apistyle="classic" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class MonoTouch.Foundation.NSObjectFlag t) cil managed" apistyle="classic" />
+      <MemberSignature Language="C#" Value="protected SCNView (MonoTouch.Foundation.NSObjectFlag t);" apistyle="unified" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor(class MonoTouch.Foundation.NSObjectFlag t) cil managed" apistyle="unified" />
       <MemberType>Constructor</MemberType>
       <AssemblyInfo apistyle="classic">
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -119,8 +124,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Docs>
     </Member>
     <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public SCNView (IntPtr handle);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int handle) cil managed" />
+      <MemberSignature Language="C#" Value="public SCNView (IntPtr handle);" apistyle="classic" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int handle) cil managed" apistyle="classic" />
+      <MemberSignature Language="C#" Value="protected SCNView (IntPtr handle);" apistyle="unified" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig specialname rtspecialname instance void .ctor(native int handle) cil managed" apistyle="unified" />
       <MemberType>Constructor</MemberType>
       <AssemblyInfo apistyle="classic">
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -384,8 +391,10 @@ mySliders.TintColor = UIColor.Red;
       </Docs>
     </Member>
     <Member MemberName="Context">
-      <MemberSignature Language="C#" Value="public virtual MonoTouch.OpenGLES.EAGLContext Context { get; set; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class MonoTouch.OpenGLES.EAGLContext Context" />
+      <MemberSignature Language="C#" Value="public virtual MonoTouch.OpenGLES.EAGLContext Context { get; set; }" apistyle="classic" />
+      <MemberSignature Language="ILAsm" Value=".property instance class MonoTouch.OpenGLES.EAGLContext Context" apistyle="classic" />
+      <MemberSignature Language="C#" Value="public virtual IntPtr Context { get; }" apistyle="unified" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int Context" apistyle="unified" />
       <MemberType>Property</MemberType>
       <AssemblyInfo apistyle="classic">
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -395,14 +404,12 @@ mySliders.TintColor = UIColor.Red;
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: MonoTouch.Foundation.Export("eaglContext")</AttributeName>
-        </Attribute>
-        <Attribute>
-          <AttributeName>set: MonoTouch.Foundation.Export("setEaglContext:")</AttributeName>
+          <AttributeName>get: MonoTouch.Foundation.Export("context")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
-        <ReturnType>MonoTouch.OpenGLES.EAGLContext</ReturnType>
+        <ReturnType apistyle="classic">MonoTouch.OpenGLES.EAGLContext</ReturnType>
+        <ReturnType apistyle="unified">System.IntPtr</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>To be added.</summary>
@@ -437,6 +444,30 @@ mySliders.TintColor = UIColor.Red;
           <para>Calling the Dispose method when you are finished using the SCNView ensures that all external resources used by this managed object are released as soon as possible.  Once you have invoked the Dispose method, the object is no longer useful and you should no longer make any calls to it.</para>
           <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at http://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
         </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EAGLContext" apistyle="unified">
+      <MemberSignature Language="C#" Value="public virtual MonoTouch.OpenGLES.EAGLContext EAGLContext { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class MonoTouch.OpenGLES.EAGLContext EAGLContext" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo apistyle="unified">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: MonoTouch.Foundation.Export("eaglContext")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: MonoTouch.Foundation.Export("setEaglContext:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>MonoTouch.OpenGLES.EAGLContext</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetAppearance&lt;T&gt;">
@@ -1008,10 +1039,19 @@ mySliders.TintColor = UIColor.Red;
       </AssemblyInfo>
       <Attributes>
         <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.Mac_10_10)</AttributeName>
+        </Attribute>
+        <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("scene")</AttributeName>
         </Attribute>
         <Attribute>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.Mac_10_10)</AttributeName>
+        </Attribute>
+        <Attribute>
           <AttributeName>set: MonoTouch.Foundation.Export("setScene:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.Mac_10_10)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1024,8 +1064,10 @@ mySliders.TintColor = UIColor.Red;
       </Docs>
     </Member>
     <Member MemberName="SceneRendererDelegate">
-      <MemberSignature Language="C#" Value="public MonoTouch.SceneKit.SCNSceneRendererDelegate SceneRendererDelegate { get; set; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class MonoTouch.SceneKit.SCNSceneRendererDelegate SceneRendererDelegate" />
+      <MemberSignature Language="C#" Value="public MonoTouch.SceneKit.SCNSceneRendererDelegate SceneRendererDelegate { get; set; }" apistyle="classic" />
+      <MemberSignature Language="ILAsm" Value=".property instance class MonoTouch.SceneKit.SCNSceneRendererDelegate SceneRendererDelegate" apistyle="classic" />
+      <MemberSignature Language="C#" Value="public MonoTouch.SceneKit.ISCNSceneRendererDelegate SceneRendererDelegate { get; set; }" apistyle="unified" />
+      <MemberSignature Language="ILAsm" Value=".property instance class MonoTouch.SceneKit.ISCNSceneRendererDelegate SceneRendererDelegate" apistyle="unified" />
       <MemberType>Property</MemberType>
       <AssemblyInfo apistyle="classic">
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -1034,7 +1076,8 @@ mySliders.TintColor = UIColor.Red;
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
-        <ReturnType>MonoTouch.SceneKit.SCNSceneRendererDelegate</ReturnType>
+        <ReturnType apistyle="classic">MonoTouch.SceneKit.SCNSceneRendererDelegate</ReturnType>
+        <ReturnType apistyle="unified">MonoTouch.SceneKit.ISCNSceneRendererDelegate</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>To be added.</summary>
@@ -1169,6 +1212,51 @@ mySliders.TintColor = UIColor.Red;
       <Docs>
         <param name="sender">To be added.</param>
         <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Technique">
+      <MemberSignature Language="C#" Value="public virtual MonoTouch.SceneKit.SCNTechnique Technique { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class MonoTouch.SceneKit.SCNTechnique Technique" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo apistyle="classic">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo apistyle="unified">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_8_0)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.Mac_10_10)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: MonoTouch.Foundation.Export("technique")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_8_0)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.Mac_10_10)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: MonoTouch.Foundation.Export("setTechnique:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_8_0)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.Mac_10_10)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>MonoTouch.SceneKit.SCNTechnique</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
