@@ -123,10 +123,10 @@
         <Parameter Name="action" Type="ObjCRuntime.Selector" />
       </Parameters>
       <Docs>
-        <param name="imageName">To be added.</param>
-        <param name="title">To be added.</param>
-        <param name="action">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="imageName">Name of the image resource in the Watch App bundle.</param>
+        <param name="title">Displayed under the image.</param>
+        <param name="action">Name of <c>ActionAttribute</c>-tagged method called on selection.</param>
+        <summary>Adds a menu item with a predefined image to the context menu.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -151,10 +151,10 @@
         <Parameter Name="action" Type="ObjCRuntime.Selector" />
       </Parameters>
       <Docs>
-        <param name="image">To be added.</param>
-        <param name="title">To be added.</param>
-        <param name="action">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="image">The image to be used.</param>
+        <param name="title">Displayed under the image.</param>
+        <param name="action">>Name of <c>ActionAttribute</c>-tagged method called on selection.</param>
+        <summary>Adds a menu item with a specified <see cref="T:MonoTouch.UIKit.UIImage"/> to the context menu.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -179,10 +179,10 @@
         <Parameter Name="action" Type="ObjCRuntime.Selector" />
       </Parameters>
       <Docs>
-        <param name="itemIcon">To be added.</param>
-        <param name="title">To be added.</param>
-        <param name="action">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="itemIcon">Predefined icon.</param>
+        <param name="title">Displayed under the icon.</param>
+        <param name="action">>Name of <c>ActionAttribute</c>-tagged method called on selection.</param>
+        <summary>Adds a menu item with a predefined icon to the context menu.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -205,9 +205,13 @@
         <Parameter Name="context" Type="Foundation.NSObject" />
       </Parameters>
       <Docs>
-        <param name="context">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="context">Arbitrary data (set by presenting <see cref="T:WatchKit.WKInterfaceController"/>). May be <see langword="null"/>.</param>
+        <summary>Main initialization method.</summary>
+        <remarks>
+          <para>The <paramref name="context"/> may contain data from a 
+            previous <see cref="T:WatchKit.WKInterfaceController"/>, and is passed by the <see cref="M:WatchKit.WKInterfaceController.PresentController"/> method.</para>
+          <para>Most initialization should be done in this method rather than <see cref="M:WKInterfaceController.WillActivate"/>.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="BecomeCurrentPage">
@@ -227,8 +231,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>In a page-based UI, makes <c>this</c> the active controller.</summary>
+        <remarks>
+          <para>
+            This method must be called from the Watch Kit Extension's main thread. (See <see cref="M:MonoTouch.Foundation.NSObject.InvokeOnMainThread"/> and <see cref="M:MonoTouch.Foundation.NSObject.BeginInvokeOnMainThread"/>)
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ClassHandle">
@@ -264,8 +272,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Removes programmatically-added items from the context menu.</summary>
+        <remarks>
+          <para>This method does not remove menu items specified in the Watch App's storyboard. It only removes items added with <see cref="M:WatchKit.WKInterfaceController.AddMenuItem"/> method calls.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ContentFrame">
@@ -284,8 +294,8 @@
         <ReturnType>CoreGraphics.CGRect</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>The rectangle in which content is displayed. Measured in points.</summary>
+        <value> Measured in points.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -306,8 +316,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Called after the Watch App has been dismissed by the user.</summary>
+        <remarks>
+          <para>After this method has completed, the Watch Extension will be deactivated and potentially terminated. No pending asynchronous functions will execute.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="DidSelectRow">
@@ -330,9 +342,9 @@
         <Parameter Name="rowIndex" Type="System.nint" />
       </Parameters>
       <Docs>
-        <param name="table">To be added.</param>
-        <param name="rowIndex">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="table">The table in which the selection occurred.</param>
+        <param name="rowIndex">The index of the selected row.</param>
+        <summary>Called when the user has selected a row in the <paramref name="table"/>.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -353,8 +365,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Dismisses a modally-presented <see cref="T:WatchKit.WKInterfaceController"/>.</summary>
+        <remarks>
+          <para>
+            This method must be called from the Watch Kit Extension's main thread. (See <see cref="M:MonoTouch.Foundation.NSObject.InvokeOnMainThread"/> and <see cref="M:MonoTouch.Foundation.NSObject.BeginInvokeOnMainThread"/>)
+          </para>
+
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="DismissTextInputController">
@@ -374,8 +391,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Cancels text input and dismisses the text input controller.</summary>
+        <remarks>
+          <para>Calling this method cancels text input and prevents the completion handler specified in <see cref="M:WatchKit.WKInterfaceController.PresentTextInputController"/> from running.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ErrorDomain">
@@ -394,9 +413,11 @@
         <ReturnType>Foundation.NSString</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Defines the Watch Kit error domain.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <para>See <see cref="P:MonoTouch.Foundation.NSErrorException.Domain"/>.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetContextForSegue">
@@ -418,10 +439,12 @@
         <Parameter Name="segueIdentifier" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="segueIdentifier">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="segueIdentifier">The segue that is about to occur.</param>
+        <summary>In response to a button tap, returns the context to be passed to the next <see cref="T:WatchKit.WKInterfaceController"/> object's <see cref="M:WatchKit.WKInterfaceController.Awake"/> method.</summary>
+        <returns>Context for the upcoming <see cref="T:WatchKit.WKInterfaceController"/> object's <see cref="M:WatchKit.WKInterfaceController.Awake"/> method.</returns>
+        <remarks>
+          <para>This method is called on the Watch Extension's main thread.</para>
+          </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetContextForSegue">
@@ -445,12 +468,14 @@
         <Parameter Name="rowIndex" Type="System.nint" />
       </Parameters>
       <Docs>
-        <param name="segueIdentifier">To be added.</param>
-        <param name="table">To be added.</param>
-        <param name="rowIndex">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="segueIdentifier">The segue that is about to occur.</param>
+        <param name="table">The table in which the selection occurred.</param>
+        <param name="rowIndex">The row tapped.</param>
+        <summary>In response to a row selection, returns the context to be passed to the next <see cref="T:WatchKit.WKInterfaceController"/> object's <see cref="M:WatchKit.WKInterfaceController.Awake"/> method.</summary>
+        <returns>Context for the upcoming <see cref="T:WatchKit.WKInterfaceController"/> object's <see cref="M:WatchKit.WKInterfaceController.Awake"/> method.</returns>
+        <remarks>
+          <para>This method is called on the Watch Extension's main thread.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetContextsForSegue">
@@ -472,10 +497,12 @@
         <Parameter Name="segueIdentifier" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="segueIdentifier">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="segueIdentifier">The segue that is about to occur.</param>
+        <summary>In response to a button tap leading to a page-based UI, returns the context objects to be passed to the <see cref="T:WatchKit.WKInterfaceController"/> objects' <see cref="M:WatchKit.WKInterfaceController.Awake"/> methods.</summary>
+        <returns>Contexts for the <see cref="M:WatchKit.WKInterfaceController.Awake"/> methods of the upcoming page-based UI.</returns>
+        <remarks>
+          <para>The size of the returned array must equal the number of pages in the target page-based UI.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetContextsForSegue">
@@ -499,12 +526,14 @@
         <Parameter Name="rowIndex" Type="System.nint" />
       </Parameters>
       <Docs>
-        <param name="segueIdentifier">To be added.</param>
-        <param name="table">To be added.</param>
-        <param name="rowIndex">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="segueIdentifier">The segue that is about to occur.</param>
+        <param name="table">The table in which the selection occurred.</param>
+        <param name="rowIndex">The row tapped.</param>
+        <summary>In response to a table-row tap leading to a page-based UI, returns the context objects to be passed to the <see cref="T:WatchKit.WKInterfaceController"/> objects' <see cref="M:WatchKit.WKInterfaceController.Awake"/> methods.</summary>
+        <returns>Contexts for the <see cref="M:WatchKit.WKInterfaceController.Awake"/> methods of the upcoming page-based UI.</returns>
+        <remarks>
+                 <para>The size of the returned array must equal the number of pages in the target page-based UI.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="HandleLocalNotificationAction">
@@ -527,10 +556,13 @@
         <Parameter Name="localNotification" Type="UIKit.UILocalNotification" />
       </Parameters>
       <Docs>
-        <param name="identifier">To be added.</param>
-        <param name="localNotification">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="identifier">The action chosen by the user, or an empty string if the user launched the app without using an action button.</param>
+        <param name="localNotification">The notification.</param>
+        <summary>Called on the Watch App's initial <see cref="T:WatchKit.WKInterfaceController"/> when the user reacts to a local notification.</summary>
+        <remarks>
+          <para>This method is called on the <see cref="T:WatchKit.WKInterfaceController"/> that is the initial one in the Watch App storyboard, not the <see cref="T:WatchKit.WKInterfaceController"/> that displays notifications.</para>
+          <para>This method is called on the Watch Extension's main thread.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="HandleRemoteNotificationAction">
@@ -553,10 +585,14 @@
         <Parameter Name="remoteNotification" Type="Foundation.NSDictionary" />
       </Parameters>
       <Docs>
-        <param name="identifier">To be added.</param>
-        <param name="remoteNotification">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="identifier">The action chosen by the user, or an empty string if the user launched the app without using an action button.</param>
+        <param name="remoteNotification">The notification.</param>
+        <summary>Called on the Watch App's initial <see cref="T:WatchKit.WKInterfaceController"/> when the user reacts to a remote notification.</summary>
+        <remarks>
+          <para>This method is called on the <see cref="T:WatchKit.WKInterfaceController"/> that is the initial one in the Watch App storyboard, not the <see cref="T:WatchKit.WKInterfaceController"/> that displays notifications.</para>
+          <para>This method is called on the Watch Extension's main thread.</para>
+
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="HandleUserActivity">
@@ -578,9 +614,12 @@
         <Parameter Name="userActivity" Type="Foundation.NSDictionary" />
       </Parameters>
       <Docs>
-        <param name="userActivity">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="userActivity">A dictionary containing information about the user activity. Set by a Glance controller calling <see cref="M:WatchKit.WKInterfaceController.UpdateUserActivity"/>.</param>
+        <summary>Indicates that the Watch App was launched as a result of a Handoff action.</summary>
+        <remarks>
+          <para>If needed, this method should be overridden in the Watch App's initial <see cref="T:WatchKit.WKInterfaceController"/>. If the Watch App uses a page-based interface, this method will be called on each <see cref="T:WatchKit.WKInterfaceController"/> in the initial interface.</para>
+          <para>Application developers who override this method should not call the base implementation.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="OpenParentApplication">
@@ -609,10 +648,10 @@
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="userInfo">To be added.</param>
-        <param name="reply">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="userInfo">Data passed up to the parent app.</param>
+        <param name="reply">Callback passed data from the parent app.</param>
+        <summary>Opens the Watch Extension's Parent app, passing <paramref name="userInfo"/> and receiving data back in the <paramref name="reply"/> callback.</summary>
+        <returns><see langword="true"/> if the Parent app was opened successfully.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -633,8 +672,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>In a navigation interface, pops the current <see cref="T:WatchKit.WKInterfaceController"/>.</summary>
+        <remarks>
+          <para>
+            This method must be called from the Watch Kit Extension's main thread. (See <see cref="M:MonoTouch.Foundation.NSObject.InvokeOnMainThread"/> and <see cref="M:MonoTouch.Foundation.NSObject.BeginInvokeOnMainThread"/>)
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="PopToRootController">
@@ -654,8 +697,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>In a navigation interface, pops all <see cref="T:WatchKit.WKInterfaceController"/> except the root.</summary>
+        <remarks>
+          <para>
+            This method must be called from the Watch Kit Extension's main thread. (See <see cref="M:MonoTouch.Foundation.NSObject.InvokeOnMainThread"/> and <see cref="M:MonoTouch.Foundation.NSObject.BeginInvokeOnMainThread"/>)
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="PresentController">
@@ -678,10 +725,14 @@
         <Parameter Name="context" Type="Foundation.NSObject" />
       </Parameters>
       <Docs>
-        <param name="name">To be added.</param>
-        <param name="context">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="name">In the Storyboard, the value of the Identifier for the <see cref="T:WatchKit.WKInterfaceController"/> to be presented.</param>
+        <param name="context">Information for the <see cref="T:WatchKit.WKInterfaceController"/> to be presented. May be <see langword="null"/>.</param>
+        <summary>Modally presents a <see cref="T:WatchKit.WKInterfaceController"/>.</summary>
+        <remarks>
+          <para>
+            This method must be called from the Watch Kit Extension's main thread. (See <see cref="M:MonoTouch.Foundation.NSObject.InvokeOnMainThread"/> and <see cref="M:MonoTouch.Foundation.NSObject.BeginInvokeOnMainThread"/>)
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="PresentController">
@@ -699,10 +750,14 @@
         <Parameter Name="context" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="name">To be added.</param>
-        <param name="context">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="name">In the Storyboard, the value of the Identifier for the <see cref="T:WatchKit.WKInterfaceController"/> to be presented.</param>
+        <param name="context">Information for the <see cref="T:WatchKit.WKInterfaceController"/> to be presented. May be <see langword="null"/>.</param>
+        <summary>Modally presents a <see cref="T:WatchKit.WKInterfaceController"/>.</summary>
+        <remarks>
+          <para>
+            This method must be called from the Watch Kit Extension's main thread. (See <see cref="M:MonoTouch.Foundation.NSObject.InvokeOnMainThread"/> and <see cref="M:MonoTouch.Foundation.NSObject.BeginInvokeOnMainThread"/>)
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="PresentController">
@@ -725,10 +780,15 @@
         <Parameter Name="contexts" Type="Foundation.NSObject[]" />
       </Parameters>
       <Docs>
-        <param name="names">To be added.</param>
-        <param name="contexts">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="names">In the Storyboard, the values of the Identifier for the <see cref="T:WatchKit.WKInterfaceController"/> objects to be presented.</param>
+        <param name="contexts">Information for the <see cref="T:WatchKit.WKInterfaceController"/>s to be presented. May be <see langword="null"/>.</param>
+        <summary>Modally presents a page-based UI with the specified <see cref="T:WatchKit.WKInterfaceController"/>s.</summary>
+        <remarks>
+          <para>The Title of the presented page-based UI will be "Cancel" unless the app dev changes it with <see cref="M:WatchKit.WKInterfaceController.SetTitle"/>.</para>
+          <para>
+            This method must be called from the Watch Kit Extension's main thread. (See <see cref="M:MonoTouch.Foundation.NSObject.InvokeOnMainThread"/> and <see cref="M:MonoTouch.Foundation.NSObject.BeginInvokeOnMainThread"/>)
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="PresentController">
@@ -746,10 +806,16 @@
         <Parameter Name="contexts" Type="System.String[]" />
       </Parameters>
       <Docs>
-        <param name="names">To be added.</param>
-        <param name="contexts">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="names">In the Storyboard, the values of the Identifier for the <see cref="T:WatchKit.WKInterfaceController"/> objects to be presented.</param>
+        <param name="contexts">Information for the <see cref="T:WatchKit.WKInterfaceController"/>s to be presented. May be <see langword="null"/>.</param>
+        <summary>Modally presents a page-based UI with the specified <see cref="T:WatchKit.WKInterfaceController"/>s.</summary>
+        <remarks>
+          <para>The Title of the presented page-based UI will be "Cancel" unless the app dev changes it with <see cref="M:WatchKit.WKInterfaceController.SetTitle"/>.</para>
+          <para>
+            This method must be called from the Watch Kit Extension's main thread. (See <see cref="M:MonoTouch.Foundation.NSObject.InvokeOnMainThread"/> and <see cref="M:MonoTouch.Foundation.NSObject.BeginInvokeOnMainThread"/>)
+          </para>
+        </remarks>
+
       </Docs>
     </Member>
     <Member MemberName="PresentTextInputController">
@@ -779,11 +845,15 @@
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="suggestions">To be added.</param>
-        <param name="inputMode">To be added.</param>
-        <param name="completion">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="suggestions">Suggested phrases for input.</param>
+        <param name="inputMode">Value from <see cref="T:WatchKit.WKTextInputMode"/>.</param>
+        <param name="completion">Executed after text input completes.</param>
+        <summary>Asynchronously presents the watch's text input controller.</summary>
+        <remarks>
+          <para>
+            This method must be called from the Watch Kit Extension's main thread. (See <see cref="M:MonoTouch.Foundation.NSObject.InvokeOnMainThread"/> and <see cref="M:MonoTouch.Foundation.NSObject.BeginInvokeOnMainThread"/>)
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="PushController">
@@ -806,10 +876,14 @@
         <Parameter Name="context" Type="Foundation.NSObject" />
       </Parameters>
       <Docs>
-        <param name="name">To be added.</param>
-        <param name="context">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="name">In the Storyboard, the value of the Identifier for the <see cref="T:WatchKit.WKInterfaceController"/> to be displayed.</param>
+        <param name="context">Information for the <see cref="T:WatchKit.WKInterfaceController"/> being displayed. May be <see langword="null"/>.</param>
+        <summary>In a navigation interface, initializes and displays a new <see cref="T:WatchKit.WKInterfaceController"/>.</summary>
+        <remarks>
+          <para>
+            This method must be called from the Watch Kit Extension's main thread. (See <see cref="M:MonoTouch.Foundation.NSObject.InvokeOnMainThread"/> and <see cref="M:MonoTouch.Foundation.NSObject.BeginInvokeOnMainThread"/>)
+          </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ReloadRootControllers">
@@ -832,9 +906,9 @@
         <Parameter Name="contexts" Type="Foundation.NSObject[]" />
       </Parameters>
       <Docs>
-        <param name="names">To be added.</param>
-        <param name="contexts">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="names">In the Storyboard, the Identifiers of the <see cref="T:WatchKit.WKInterfaceController"/>s.</param>
+        <param name="contexts">Information for the <see cref="T:WatchKit.WKInterfaceController"/>s being loaded. May be <see langword="null"/>.</param>
+        <summary>In a page-based UI, reloads the set of <see cref="T:WatchKit.WKInterfaceController"/>s displayed.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -857,9 +931,11 @@
         <Parameter Name="title" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="title">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="title">The new title.</param>
+        <summary>Sets the title for the interface.</summary>
+        <remarks>
+          <para>If the Extension contains a <c>Localizable.string</c> file, the <paramref name="title"/> parameter will be used as the key to lookup the value displayed.</para>  
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="UpdateUserActivity">
@@ -905,8 +981,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Called shortly before the <see cref="T:WatchKit.WKInterfaceController"/> appears to the user.</summary>
+        <remarks>
+          <para>This method is called shortly before the <see cref="T:WatchKit.WKInterfaceController"/> appears and when the <see cref="T:WatchKit.WKInterfaceController"/> is re-activated without having been terminated.</para>
+        </remarks>
       </Docs>
     </Member>
   </Members>
