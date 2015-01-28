@@ -19,7 +19,9 @@
   </Attributes>
   <Docs>
     <summary>Represents the watch. Use the singleton object <see cref="P:WatchKit.WKInterfaceDevice.CurrentDevice" />.</summary>
-    <remarks>To be added.</remarks>
+    <remarks>
+      <para>Apple Watches can cache up to ~20MB of images. If this is not large enough, managing the cache with <see cref="M:WatchKit.WKInterfaceDevice.RemoveCachedImage"/> and <see cref="M:WatchKit.WKInterfaceDevice.RemoveAllCachedImages"/> is the responsibility of the application developer.</para>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -105,11 +107,13 @@
         <Parameter Name="name" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="imageData">To be added.</param>
-        <param name="name">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="imageData">The image data, either in native format or a serialized <see cref="T:MonoTouch.UIKit.UIImage"/>.</param>
+        <param name="name">An identifier. If the value is already in the image cache, the existing image will be replaced.</param>
+        <summary>Adds an image defined in the <paramref name="imageData"/> to the device's image cache.</summary>
+        <returns><see langword="true"/> if the image was successfully added to the image cache.</returns>
+        <remarks>
+          <para>Developers that wish to store animations should create the entire animation in a single <see cref="T:MonoTouch.UIKit.UIImage"/> (see <see cref="M:MonoTouch.UIKit.UIImage.CreateAnimatedImage"/> overloads) and then serialize the resulting <see cref="T:MonoTouch.UIKit.UIImage"/> to <see cref="T:Foundation.NSData"/> for the <paramref name="imageData"/> argument.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AddCachedImage">
@@ -132,10 +136,10 @@
         <Parameter Name="name" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="image">To be added.</param>
-        <param name="name">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="image">The image to be added.</param>
+        <param name="name">An identifier. If the value is already in the image cache, the existing image will be replaced.</param>
+        <summary>Adds the <paramref name="image"/> to the device's image cache.</summary>
+        <returns><see langword="true"/> if the image was successfully added to the image cache.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -211,9 +215,11 @@
         <ReturnType>Foundation.NSString</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Returns the content size category for fonts, as requested by the user.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <para>Application developers instantiating font objects in code should use this property to determine the appropriate size to retrieve. Font objects specified in the Watch App storyboard will be appropriately scaled by the system.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="RemoveAllCachedImages">
@@ -233,7 +239,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Clears the device's image cache.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -256,9 +262,11 @@
         <Parameter Name="name" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="name">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="name">The identifier of the image.</param>
+        <summary>Remove the image with the specified <paramref name="name"/> from the device's image cache.</summary>
+        <remarks>
+          <para>The <paramref name="name"/> should correspond with the <c>name</c> used in calls to <see cref="M:WatchKit.WKInterfaceDevice.AddCachedImage"/>.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ScreenBounds">
@@ -277,9 +285,11 @@
         <ReturnType>CoreGraphics.CGRect</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The dimensions of the device's screen.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <para>The <see cref="T:CoreGraphics.CGRect"/> returned by this method may be different than that used to display the app's content.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ScreenScale">
@@ -298,8 +308,8 @@
         <ReturnType>System.nfloat</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>The number of physical pixels per logical point on the current screen.</summary>
+        <value>On an Apple Watch, this value is 2.0.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -319,7 +329,7 @@
         <ReturnType>Foundation.NSDictionary</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The image cache.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
