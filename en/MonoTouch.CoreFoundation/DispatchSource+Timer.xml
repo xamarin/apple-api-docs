@@ -14,8 +14,18 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>To be added.</summary>
-    <remarks>To be added.</remarks>
+    <summary>Sources of this type periodically invoke the event handler on the target queue. </summary>
+    <remarks>
+      <para>The timer parameters are configured with the dispatch_source_set_timer() function. Once this function returns, any pending source data accumulated for the previous timer parameters has been cleared; the next fire of the timer will occur at start, and every interval nanoseconds thereafter until the timer source is canceled.</para>
+      <para />
+      <para>Any fire of the timer may be delayed by the system in order to improve power consumption and system performance. The upper limit to the allowable delay may be configured with the leeway argument, the lower limit is under the control of the system.</para>
+      <para />
+      <para>For the initial timer fire at start, the upper limit to the allowable delay is set to leeway nanoseconds. For the subsequent timer fires at start + N * interval, the upper limit is MIN(leeway, interval / 2 ).</para>
+      <para />
+      <para>The lower limit to the allowable delay may vary with process state such as visibility of application UI. If the specified timer source was created with a mask of DISPATCH_TIMER_STRICT, the system will make a best effort to strictly observe the provided leeway value even if it is smaller than the current lower limit. Note that a minimal amount of delay is to be expected even if this flag is specified.</para>
+      <para />
+      <para />
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -32,8 +42,8 @@
         <Parameter Name="queue" Type="MonoTouch.CoreFoundation.DispatchQueue" />
       </Parameters>
       <Docs>
-        <param name="queue">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="queue">The target queue for this dispatch source object.   Pass null to use the default target queue (the default priority global concurrent queue).</param>
+        <summary>Creates a timer dispatch source that will be invoked at periodic intervals.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -96,11 +106,16 @@
         <Parameter Name="nanosecondLeeway" Type="System.Int64" />
       </Parameters>
       <Docs>
-        <param name="time">To be added.</param>
-        <param name="nanosecondInterval">To be added.</param>
-        <param name="nanosecondLeeway">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="time">Initial time for the timer to be fired.   If the value is zero, then the timer is based on mach_absolute_time.</param>
+        <param name="nanosecondInterval">Interval in nanosecond at which the timer will be fired after the initial time.</param>
+        <param name="nanosecondLeeway">Upper limit of the allowed delay (as the system might put the system to sleep).</param>
+        <summary>Configures the paramters to the timer.</summary>
+        <remarks>
+          <para>Once this method returns, any pending source data accumulated for the previous timer parameters has been cleared; the next fire of the timer will occur at <paramref name="time" />, and every interval <paramref name="nanosecondInterval" /> thereafter until the timer source is canceled.</para>
+          <para />
+          <para />
+          <para />
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="TimerFiredCount">
@@ -117,9 +132,13 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>
+          <para>Number of times the timer has fired since the last invocation of the event handler</para>
+        </summary>
+        <value>Number of times the timer has fired since the last invocation of the event handler</value>
+        <remarks>
+          <para />
+        </remarks>
       </Docs>
     </Member>
   </Members>
