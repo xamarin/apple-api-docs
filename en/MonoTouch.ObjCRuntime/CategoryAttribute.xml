@@ -19,8 +19,68 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>To be added.</summary>
-    <remarks>To be added.</remarks>
+    <summary>Attribute used to flag a class as a category that extends the API of another type.</summary>
+    <remarks>
+      <para>
+	This attribute is applied to static user code classes and will
+	surface all of the exported methods and properties (those that
+	have the <see cref="T:MonoTouch.Foundation.ExportAttribute"/>)
+	to the provided system type.
+      </para>
+      <para>
+	
+      </para>
+      <para>
+	This allows new methods to be introduced or implemented for
+	all types in the class.  For example, this can be used to
+	provide a global implementation of some method across all of
+	your types surfaced to Objective-C.
+      </para>
+
+      <para>
+	All managed extension methods must be static, but it's
+	possible to create Objective-C instance methods using the
+	standard syntax for extension methods in C#:
+      </para>
+
+      <example>
+	<code lang="c#">
+// Make "shouldAutoRotate" return true for all UIViewControllers in the application
+
+[Category (typeof (UIViewController))]
+static class MyViewControllerMethods {
+    [Export ("shouldAutorotate")]
+    static bool ShouldAutoRotate (this UIViewController self)
+    { 
+        return true; 
+    }
+
+    [Export ("supportedInterfaceOrientations")]
+    static UIInterfaceOrientationMask SupportedRotations (this UIViewController self) 
+    {
+        return UIInterfaceOrientationMask.All;
+    }
+}
+	</code>
+      </example>
+
+      <example>
+	<code lang="c#">
+// This example will add a native toUpper instance method to the NSString class, 
+// which can be invoked from Objective-C.
+
+[Category (typeof (NSString))]
+public static class MyStringCategory  
+{
+    [Export ("toUpper")]
+    static string ToUpper (this NSString self)
+    {
+        return self.ToString ().ToUpper ();
+    }
+}
+	</code>
+      </example>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -37,9 +97,9 @@
         <Parameter Name="type" Type="System.Type" />
       </Parameters>
       <Docs>
-        <param name="type">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="type">The Objective-C type to extend.   This must be a subclass of NSObject.</param>
+        <summary>The type that this category extends.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Name">
@@ -75,9 +135,9 @@
         <ReturnType>System.Type</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>The type that this category extends.</summary>
+        <value></value>
+        <remarks></remarks>
       </Docs>
     </Member>
   </Members>
