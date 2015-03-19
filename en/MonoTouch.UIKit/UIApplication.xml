@@ -666,11 +666,15 @@ void Setup ()
           <para>This method does not cause the app to enter a background state or launch asynchronous code, despite its name. Rather, it requests that the system make background processing available.</para>
           <para>This method may be called multiple times and may be called from background threads. Background processing will continue either until the allowed background time (generally 3 or 10 minutes total) expires or until <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundtask" /> has been called for all started tasks.</para>
           <para>The <paramref name="expirationHandler" /> is only called if allowed background time is close to expiring (3-4 seconds).</para>
+          <para><see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundTask" /> must be called within the expiration handler, as well as in the normal course of execution.</para>
           <example>
             <code lang="C#"><![CDATA[
 Task.Factory.StartNew( () => {
     //expirationHandler only called if background time allowed exceeded
-    var taskId = UIApplication.SharedApplication.BeginBackgroundTask(() => Console.WriteLine("Exhausted time"));
+    var taskId = UIApplication.SharedApplication.BeginBackgroundTask(() => {
+        Console.WriteLine("Exhausted time");
+        UIApplication.SharedApplication.EndBackgroundTask(taskId); 
+    });
     while(myFlag == true)
     {
         Console.WriteLine(UIApplication.SharedApplication.TimeRemaining);
@@ -719,7 +723,32 @@ Task.Factory.StartNew( () => {
         <param name="backgroundTimeExpired">Action that runs when background time expires.</param>
         <summary>Indicates the inception of a new long-running background task.</summary>
         <returns>An id that, when passed to <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundTask" />, indicates that background processing has ended.</returns>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <para>This method, with <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundTask" />, bookends code that should be allowed to continue running in the background when another app is in the foreground. The returned <see langword="int" /> should be passed to <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundTask" /> at the appropriate time. </para>
+          <para>This method does not cause the app to enter a background state or launch asynchronous code, despite its name. Rather, it requests that the system make background processing available.</para>
+          <para>This method may be called multiple times and may be called from background threads. Background processing will continue either until the allowed background time (generally 3 or 10 minutes total) expires or until <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundtask" /> has been called for all started tasks.</para>
+          <para>The <paramref name="expirationHandler" /> is only called if allowed background time is close to expiring (3-4 seconds).</para>
+          <para><see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundTask" /> must be called within the expiration handler, as well as in the normal course of execution.</para>
+          <example>
+            <code lang="C#"><![CDATA[
+Task.Factory.StartNew( () => {
+    //expirationHandler only called if background time allowed exceeded
+    var taskId = UIApplication.SharedApplication.BeginBackgroundTask(() => {
+        Console.WriteLine("Exhausted time");
+        UIApplication.SharedApplication.EndBackgroundTask(taskId); 
+    });
+    while(myFlag == true)
+    {
+        Console.WriteLine(UIApplication.SharedApplication.TimeRemaining);
+        myFlag = SomeCalculationNeedsMoreTime();
+    }
+    //Only called if loop terminated due to myFlag and not expiration of time
+    UIApplication.SharedApplication.EndBackgroundTask(taskId);
+});              
+              ]]></code>
+          </example>
+          <para tool="threads">This can be used from a background thread.</para>  
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="BeginBackgroundTask" apistyle="classic">
@@ -763,11 +792,16 @@ Task.Factory.StartNew( () => {
           <para>This method does not cause the app to enter a background state or launch asynchronous code, despite its name. Rather, it requests that the system make background processing available.</para>
           <para>This method may be called multiple times and may be called from background threads. Background processing will continue either until the allowed background time (generally 3 or 10 minutes total) expires or until <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundtask" /> has been called for all started tasks.</para>
           <para>The <paramref name="expirationHandler" /> is only called if allowed background time is close to expiring (3-4 seconds).</para>
+          <para><see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundTask" /> must be called within the expiration handler, as well as in the normal course of execution.</para>
+
           <example>
             <code lang="C#"><![CDATA[
 Task.Factory.StartNew( () => {
     //expirationHandler only called if background time allowed exceeded
-    var taskId = UIApplication.SharedApplication.BeginBackgroundTask("bgTask", () => Console.WriteLine("Exhausted time"));
+    var taskId = UIApplication.SharedApplication.BeginBackgroundTask("bgTask", () => {
+        Console.WriteLine("Exhausted time");
+        UIApplication.SharedApplication.EndBackgroundTask(taskId);        
+    });
     while(myFlag == true)
     {
         Console.WriteLine(UIApplication.SharedApplication.TimeRemaining);
@@ -818,7 +852,33 @@ Task.Factory.StartNew( () => {
         <param name="expirationHandler">Called shortly before the allowed background time for the app expires.</param>
         <summary>Requests that the app be allowed to process in the background.</summary>
         <returns>An id that, when passed to <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundTask" />, indicates that background processing has ended.</returns>
-        <remarks>To be added.</remarks>
+        <remarks>
+                   <para>This method, with <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundTask" />, bookends code that should be allowed to continue running in the background when another app is in the foreground. The returned <see langword="int" /> should be passed to <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundTask" /> at the appropriate time. </para>
+          <para>This method does not cause the app to enter a background state or launch asynchronous code, despite its name. Rather, it requests that the system make background processing available.</para>
+          <para>This method may be called multiple times and may be called from background threads. Background processing will continue either until the allowed background time (generally 3 or 10 minutes total) expires or until <see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundtask" /> has been called for all started tasks.</para>
+          <para>The <paramref name="expirationHandler" /> is only called if allowed background time is close to expiring (3-4 seconds).</para>
+          <para><see cref="M:MonoTouch.UIKit.UIApplication.EndBackgroundTask" /> must be called within the expiration handler, as well as in the normal course of execution.</para>
+
+          <example>
+            <code lang="C#"><![CDATA[
+Task.Factory.StartNew( () => {
+    //expirationHandler only called if background time allowed exceeded
+    var taskId = UIApplication.SharedApplication.BeginBackgroundTask("bgTask", () => {
+        Console.WriteLine("Exhausted time");
+        UIApplication.SharedApplication.EndBackgroundTask(taskId);        
+    });
+    while(myFlag == true)
+    {
+        Console.WriteLine(UIApplication.SharedApplication.TimeRemaining);
+        myFlag = SomeCalculationNeedsMoreTime();
+    }
+    //Only called if loop terminated due to myFlag and not expiration of time
+    UIApplication.SharedApplication.EndBackgroundTask(taskId);
+});              
+              ]]></code>
+          </example>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="BeginIgnoringInteractionEvents">
