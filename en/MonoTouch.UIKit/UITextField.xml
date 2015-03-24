@@ -290,7 +290,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <summary>Strongly-typed property that returns the UIAppearance class for this class.</summary>
         <value>
         </value>
-        <remarks>Setting any appearance properties on this instance will affect the appearance of all instances of UITextField.</remarks>
+        <remarks>
+          <para>Setting any appearance properties on this instance will affect the appearance of all instances of UITextField.</para>
+          <para>If you want to control the appearance of subclasses of UITextField, use the <see cref="M:MonoTouch.UIKit.UITextField.GetAppearance" /> method.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AppearanceWhenContainedIn">
@@ -321,6 +324,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <returns>The appearance proxy object that you can use to set properties when the given container hierarchy is active</returns>
         <remarks>
           <para>The returned object represents the UIAppearance proxy where you can set appearance properties for instances of UITextField when those instances are contained in the hierarchy specified by the <paramref name="containers" /> parameter.</para>
+          <para>If you want to control the appearance of subclasses of UITextField, use the <see cref="M:MonoTouch.UIKit.UITextField.GetAppearance" /> method.</para>
           <para>The following example shows how the AppearanceWhenContainedIn method works</para>
           <example>
             <code lang="C#">
@@ -416,6 +420,9 @@ myLogin.AttributedPlaceholder = new NSAttributedString (
       <Docs>
         <summary>Sets the contents of the text field using an attributed string.</summary>
         <value>
+          <para>
+          </para>
+          <para tool="nullallowed">This value can be <see langword="null" />.</para>
         </value>
         <remarks>
           <example>
@@ -1176,9 +1183,63 @@ void Setup ()
         <remarks>The same font is used for the both the text and the placeholder text. The default is 12 point Helvetica plain.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="GetAppearance">
+      <MemberSignature Language="C#" Value="public static MonoTouch.UIKit.UITextField.UITextFieldAppearance GetAppearance (MonoTouch.UIKit.UITraitCollection traits);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.UIKit.UITextField/UITextFieldAppearance GetAppearance(class MonoTouch.UIKit.UITraitCollection traits) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo apistyle="classic">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo apistyle="unified">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MonoTouch.UIKit.UITextField+UITextFieldAppearance</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="traits" Type="MonoTouch.UIKit.UITraitCollection" />
+      </Parameters>
+      <Docs>
+        <param name="traits">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetAppearance">
+      <MemberSignature Language="C#" Value="public static MonoTouch.UIKit.UITextField.UITextFieldAppearance GetAppearance (MonoTouch.UIKit.UITraitCollection traits, Type[] containers);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.UIKit.UITextField/UITextFieldAppearance GetAppearance(class MonoTouch.UIKit.UITraitCollection traits, class System.Type[] containers) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo apistyle="classic">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo apistyle="unified">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MonoTouch.UIKit.UITextField+UITextFieldAppearance</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="traits" Type="MonoTouch.UIKit.UITraitCollection" />
+        <Parameter Name="containers" Type="System.Type[]">
+          <Attributes>
+            <Attribute>
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="traits">To be added.</param>
+        <param name="containers">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="GetAppearance&lt;T&gt;">
-      <MemberSignature Language="C#" Value="public static MonoTouch.UIKit.UITextField.UITextFieldAppearance GetAppearance&lt;T&gt; ();" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.UIKit.UITextField/UITextFieldAppearance GetAppearance&lt;T&gt;() cil managed" />
+      <MemberSignature Language="C#" Value="public static MonoTouch.UIKit.UITextField.UITextFieldAppearance GetAppearance&lt;T&gt; () where T : MonoTouch.UIKit.UITextField;" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.UIKit.UITextField/UITextFieldAppearance GetAppearance&lt;(class MonoTouch.UIKit.UITextField) T&gt;() cil managed" />
       <MemberType>Method</MemberType>
       <AssemblyInfo apistyle="classic">
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -1194,15 +1255,30 @@ void Setup ()
       </TypeParameters>
       <Parameters />
       <Docs>
-        <typeparam name="T">Should be <c>UITextField</c> to retrieve <see cref="T:MonoTouch.UIKit.UITextField+UITextFieldAppearance" />.</typeparam>
-        <summary>The strongly-typed IUIAppearance for this object.</summary>
-        <returns>The <see cref="T:MonoTouch.UIKit.UITextField+UITextFieldAppearance" /> for <c>this</c>.</returns>
-        <remarks>To be added.</remarks>
+        <typeparam name="T">The type for which the UIAppearance proxy must be returned.  This is a subclass of UITextField.</typeparam>
+        <summary>
+          <para>Obtains the appearance proxy <see cref="T:MonoTouch.UIKit.UITextField.UITextFieldAppearance" /> for the subclass of UITextField.</para>
+        </summary>
+        <returns>
+          <para>appearance proxy object for the specified type.</para>
+        </returns>
+        <remarks>
+          <para>Setting any appearance properties on the returned object will affect the appearance of all classes and subclasses of the type parameter.</para>
+          <para>Unlike the <see cref="P:MonoTouch.UIKit.UITextField.Appearance" /> property, or the <see cref="M:MonoTouch.UIKit.UITextFieldAppearanceWhenContainedIn" /> method which only work on instances of this particular class, the proxies returned by GetAppearance can be used to change the style of subclasses.</para>
+          <para>The following example shows how the GetAppearance method works</para>
+          <example>
+            <code lang="C#">
+var myTheme = UITextField.GetAppearance&lt;MyUITextFieldSubclass&gt; ();
+myTheme.TintColor = UIColor.Red;
+</code>
+          </example>
+          <para>For more information, see the documentation for the <see cref="T:MonoTouch.UIKit.UIAppearance" /> class.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetAppearance&lt;T&gt;">
-      <MemberSignature Language="C#" Value="public static MonoTouch.UIKit.UITextField.UITextFieldAppearance GetAppearance&lt;T&gt; (MonoTouch.UIKit.UITraitCollection traits);" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.UIKit.UITextField/UITextFieldAppearance GetAppearance&lt;T&gt;(class MonoTouch.UIKit.UITraitCollection traits) cil managed" />
+      <MemberSignature Language="C#" Value="public static MonoTouch.UIKit.UITextField.UITextFieldAppearance GetAppearance&lt;T&gt; (MonoTouch.UIKit.UITraitCollection traits) where T : MonoTouch.UIKit.UITextField;" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.UIKit.UITextField/UITextFieldAppearance GetAppearance&lt;(class MonoTouch.UIKit.UITextField) T&gt;(class MonoTouch.UIKit.UITraitCollection traits) cil managed" />
       <MemberType>Method</MemberType>
       <AssemblyInfo apistyle="classic">
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -1220,16 +1296,31 @@ void Setup ()
         <Parameter Name="traits" Type="MonoTouch.UIKit.UITraitCollection" />
       </Parameters>
       <Docs>
-        <typeparam name="T">Should be <c>UITextField</c> to retrieve <see cref="T:MonoTouch.UIKit.UITextField+UITextFieldAppearance" />.</typeparam>
-        <param name="traits">Traits for the defined collection.</param>
-        <summary>The strongly-typed IUIAppearance for this object with traits.</summary>
-        <returns>The <see cref="T:MonoTouch.UIKit.UITextField+UITextFieldAppearance" /> for <c>this</c> with traits.</returns>
-        <remarks>To be added.</remarks>
+        <typeparam name="T">The type for which the UIAppearance proxy must be returned.  This is a subclass of UITextField.</typeparam>
+        <param name="traits">Trait collection to match.</param>
+        <summary>
+          <para>Obtains the appearance proxy <see cref="T:MonoTouch.UIKit.UITextField.UITextFieldAppearance" /> for the subclass of UITextField.</para>
+        </summary>
+        <returns>
+          <para>appearance proxy object for the specified type.</para>
+        </returns>
+        <remarks>
+          <para>The returned object represents the UIAppearance proxy where you can set appearance properties for instances of UITextField.</para>
+          <para>Unlike the <see cref="P:MonoTouch.UIKit.UITextField.Appearance" /> property, or the <see cref="M:MonoTouch.UIKit.UITextFieldAppearanceWhenContainedIn" /> method which only work on instances of this particular class, the proxies returned by GetAppearance can be used to change the style of subclasses.</para>
+          <para>The following example shows how the GetAppearance method works</para>
+          <example>
+            <code lang="C#">
+var myTheme = UITextField.GetAppearance&lt;MyUITextFieldSubclass&gt; (myTraits, );
+myTheme.TintColor = UIColor.Red;
+</code>
+          </example>
+          <para>For more information, see the documentation for the <see cref="T:MonoTouch.UIKit.UIAppearance" /> class.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetAppearance&lt;T&gt;">
-      <MemberSignature Language="C#" Value="public static MonoTouch.UIKit.UITextField.UITextFieldAppearance GetAppearance&lt;T&gt; (MonoTouch.UIKit.UITraitCollection traits, Type[] containers);" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.UIKit.UITextField/UITextFieldAppearance GetAppearance&lt;T&gt;(class MonoTouch.UIKit.UITraitCollection traits, class System.Type[] containers) cil managed" />
+      <MemberSignature Language="C#" Value="public static MonoTouch.UIKit.UITextField.UITextFieldAppearance GetAppearance&lt;T&gt; (MonoTouch.UIKit.UITraitCollection traits, Type[] containers) where T : MonoTouch.UIKit.UITextField;" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.UIKit.UITextField/UITextFieldAppearance GetAppearance&lt;(class MonoTouch.UIKit.UITextField) T&gt;(class MonoTouch.UIKit.UITraitCollection traits, class System.Type[] containers) cil managed" />
       <MemberType>Method</MemberType>
       <AssemblyInfo apistyle="classic">
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -1254,12 +1345,27 @@ void Setup ()
         </Parameter>
       </Parameters>
       <Docs>
-        <typeparam name="T">Should be <c>UITextField</c> to retrieve <see cref="T:MonoTouch.UIKit.UITextField+UITextFieldAppearance" />.</typeparam>
-        <param name="traits">Traits for the defined collection.</param>
-        <param name="containers">Customized container view.</param>
-        <summary>IUIAppearance for this object with specified traits and customized container.</summary>
-        <returns>The <see cref="T:MonoTouch.UIKit.UITextField+UITextFieldAppearance" /> for <c>this</c> with traits and container.</returns>
-        <remarks>To be added.</remarks>
+        <typeparam name="T">The type for which the UIAppearance proxy must be returned.  This is a subclass of UITextField.</typeparam>
+        <param name="traits">Trait collection to match.</param>
+        <param name="containers">List of types that you want to have as the containers to apply this particular appearance.</param>
+        <summary>
+          <para>Obtains the appearance proxy <see cref="T:MonoTouch.UIKit.UITextField.UITextFieldAppearance" /> for the subclass of UITextField that has the specified trait collection when the view is hosted in the specified hierarchy.</para>
+        </summary>
+        <returns>
+          <para>appearance proxy object for the specified type.</para>
+        </returns>
+        <remarks>
+          <para>The returned object represents the UIAppearance proxy where you can set appearance properties for instances of UITextField that has the specified trait collection when the view is hosted in the specified hierarchy when those instances are contained in the hierarchy specified by the <paramref name="containers" /> parameter.</para>
+          <para>Unlike the <see cref="P:MonoTouch.UIKit.UITextField.Appearance" /> property, or the <see cref="M:MonoTouch.UIKit.UITextFieldAppearanceWhenContainedIn" /> method which only work on instances of this particular class, the proxies returned by GetAppearance can be used to change the style of subclasses.</para>
+          <para>The following example shows how the GetAppearance method works</para>
+          <example>
+            <code lang="C#">
+var myTheme = UITextField.GetAppearance&lt;MyUITextFieldSubclass&gt; (myTraits, typeof (UINavigationBar), typeof (UIPopoverController));
+myTheme.TintColor = UIColor.Red;
+</code>
+          </example>
+          <para>For more information, see the documentation for the <see cref="T:MonoTouch.UIKit.UIAppearance" /> class.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetBaseWritingDirection">
