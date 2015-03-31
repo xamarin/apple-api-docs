@@ -23,14 +23,39 @@
     <summary>HTTP Cookie</summary>
     <remarks>
       <para>
+	For uses that only require a name and a value, with optional
+	paths and domains, you can use one of the NSHTTPCookie
+	constructors.   
+      </para>
 
-	To instantiate instances of NSHTTPCookie you need to pass an
+      <para>
+	For more complex scenarios that also require one or more of
+	comments, expiration, a port, a secure setting and a version,
+	you can either use the constructor that takes an
+	<see cref="T:System.Net.Cookie"/>.
+      </para>
+
+      <para>
+	Alternatively, you can create it by passing an
 	NSDictionary to either the NSHttpCookie constructor or the
 	<see cref="M:MonoTouch.Foundation.NSHttpCookie.CookieFromProperties" />
 	method.
       </para>
-      <para>
+      <example>
+        <code lang="c#">
+var firstCookie = new NSHttpCookie ("visited", "yes");
 
+// More advanced, initialize from a .NET cookie and 
+// make it expire in 10 hours
+var secondCookie = new NSHttpCookie (new Cookie () {
+	Name = "visited",
+	Value = "yes",
+	Expires = DateTime.UtcNow + TimeSpan.FromHours (10);
+});
+	</code>
+      </example>
+
+      <para>
 	The actual keys have to be one the public Key static fields
 	from this class (<see cref="F:MonoTouch.Foundation.NSHttpCookie.KeyName" />, <see cref="F:MonoTouch.Foundation.NSHttpCookie.KeyValue" />, <see cref="F:MonoTouch.Foundation.NSHttpCookie.KeyOriginURL" />,
 	<see cref="F:MonoTouch.Foundation.NSHttpCookie.KeyVersion" />,
@@ -47,9 +72,13 @@
       <example>
         <code lang="c#">
 
-	  var properties = NSDictionary.FromObjectsAndKeys (new object [] { "MyCookieValue" }, new object [] { NSHttpCookie.KeyValue });
-	  var cookie = new NSHttpCookie (properties);
+// Long winded example using NSDictionary.
 
+var properties = new NSDictionary (
+    NSHttpCookie.KeyName, "visited-site", 
+    NSHttpCookie.KeyValue, "yes", 
+    NSHttpCookie.Comment,  "my-comment" );
+var cookie = new NSHttpCookie (properties);
 	</code>
       </example>
     </remarks>
