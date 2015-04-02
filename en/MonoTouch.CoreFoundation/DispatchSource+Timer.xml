@@ -28,8 +28,29 @@
       <para>The lower limit to the allowable delay may vary with process state such as visibility of application UI. If the specified timer source was created with a mask of DISPATCH_TIMER_STRICT, the system will make a best effort to strictly observe the provided leeway value even if it is smaller than the current lower limit. Note that a minimal amount of delay is to be expected even if this flag is specified.</para>
       <para>
       </para>
-      <para>
-      </para>
+      <example>
+<code lang="c#"><![CDATA[
+var dispatchSource = new DispatchSource.Timer (DispatchQueue.MainQueue);
+
+long delay = 2000000000;
+long leeway = 5000000000;
+dispatchSource.SetTimer (DispatchTime.Now, delay, leeway);
+
+dispatchSource.SetRegistrationHandler (() => {
+    Console.WriteLine ("Timer registered");
+});
+
+dispatchSource.SetEventHandler (() => {
+Console.WriteLine ("Timer tick");
+});
+
+dispatchSource.SetCancelHandler (() => {
+Console.WriteLine ("Timer stopped");
+});
+
+dispatchSource.Resume ();
+]]></code>
+      </example>
     </remarks>
   </Docs>
   <Members>
