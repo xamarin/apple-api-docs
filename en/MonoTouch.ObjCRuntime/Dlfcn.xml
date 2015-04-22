@@ -29,9 +29,26 @@
 	dlclose to close the library and dlerror to diagnose problems
 	with calls to dlopen.
       </para>
+
       <para>
-	There are various methods exposed to look up constants from libraries (GetDouble, GetFloat, GetIndirect, GetInt32, GetIntPtr, GetNSNumber, GetStringConstant).
+
+	There are various methods exposed to read and write the values
+	of symbols exposed by the dynamic linker.   Typically these
+	are used to access global variables from a library.
       </para>
+
+      <para>
+	The GetCGSize, GetDouble, GetFloat, GetIndirect, GetInt32,
+	GetInt64, GetIntPtr, GetNSNumber, GetStringConstant methods can
+	be used to retrieve the value of a global symbol.
+      </para>
+
+      <para>
+	The SetArray, SetCGSize, SetDouble, SetFloat, SetInt32,
+	SetInt64, SetIntPtr, SetString can be used to set global
+	symbols to a specified value.
+      </para>
+
     </remarks>
   </Docs>
   <Members>
@@ -124,11 +141,22 @@
         <Parameter Name="symbol" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="lookupType">To be added.</param>
-        <param name="symbol">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="lookupType">Determines how the symbol is looked up</param>
+        <param name="symbol">Name of the public symbol in the dynamic library to look up.</param>
+        <summary>Returns the address of the specified symbol in the
+	current process.</summary>
+        <returns>
+	  Returns <see langword="null" /> if the symbol was not found.   The error condition can be probed using the <see cref="M:MonoTouch.ObjCRuntime.Dlfcn.dlerror" />.
+        </returns>
+        <remarks>
+          <para>
+	    Returns the address of the specified symbol in the dynamic library.
+	  </para>
+	  <para>
+	    The <paramref name="lookupType"/> controls which libraries
+	    the dynamic linker will search.   
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="dlsym">
@@ -194,11 +222,11 @@
         <Parameter Name="symbol" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="handle">To be added.</param>
-        <param name="symbol">To be added.</param>
-        <summary>Gets the <see cref="T:CoreGraphics.CGSize" /> value exposed with the given symbol from the dynamic library.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="handle">Handle to the dynamic library previously opened with dlopen.</param>
+        <param name="symbol">Name of the public symbol in the dynamic library to look up.</param>
+        <summary>Gets the <see cref="T:CoreGraphics.CGSize" /> value exposed with the given symbol from the dynamic library.</summary>
+        <returns>The value from the library.</returns>
+        <remarks>If this routine fails to find the symbol, this will return the empty size.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetDouble">
@@ -366,11 +394,11 @@
         <Parameter Name="symbol" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="handle">To be added.</param>
-        <param name="symbol">To be added.</param>
+        <param name="handle">Handle to the dynamic library previously opened with dlopen.</param>
+        <param name="symbol">Name of the public symbol in the dynamic library to look up.</param>
         <summary>Gets the System.nfloat value exposed with the given symbol from the dynamic library.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <returns>The native float value that the symbol references.</returns>
+        <remarks>If this routine fails to find the symbol, this will return zero.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetNInt" apistyle="unified">
@@ -388,11 +416,11 @@
         <Parameter Name="symbol" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="handle">To be added.</param>
-        <param name="symbol">To be added.</param>
+        <param name="handle">Handle to the dynamic library previously opened with dlopen.</param>
+        <param name="symbol">Name of the public symbol in the dynamic library to look up.</param>
         <summary>Gets the System.nint value exposed with the given symbol from the dynamic library.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <returns>The native integer value that the symbol references.</returns>
+        <remarks>If this routine fails to find the symbol, this will return zero.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetNSNumber">
@@ -436,8 +464,8 @@
         <Parameter Name="symbol" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="handle">To be added.</param>
-        <param name="symbol">To be added.</param>
+        <param name="handle">Handle to the dynamic library previously opened with dlopen.</param>
+        <param name="symbol">Name of the public symbol in the dynamic library to look up.</param>
         <summary>Gets the System.nuint value exposed with the given symbol from the dynamic library.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
@@ -540,11 +568,11 @@
         <Parameter Name="value" Type="MonoTouch.CoreGraphics.CGSize" apistyle="unified" />
       </Parameters>
       <Docs>
-        <param name="handle">To be added.</param>
-        <param name="symbol">To be added.</param>
-        <param name="value">To be added.</param>
+        <param name="handle">Handle to the dynamic library previously opened with dlopen.</param>
+        <param name="symbol">Name of the public symbol in the dynamic library to look up.</param>
+        <param name="value">The value to set.</param>
         <summary>Gets the <see cref="T:CoreGraphics.CGSize" /> value exposed with the given symbol from the dynamic library.</summary>
-        <remarks>To be added.</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="SetDouble">
