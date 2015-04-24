@@ -17,9 +17,10 @@
     <summary>Provides a task queue that can perform tasks either synchronously or asynchronously.</summary>
     <remarks>
       <para>
-	
-	Queues are the fundamental mechanism for scheduling blocks for execution within the Apple Grand Central Dispatch framework.
+	Queues are the fundamental mechanism for scheduling blocks for
+	execution within the Apple Grand Central Dispatch framework.
       </para>
+
       <para> All blocks submitted to dispatch queues are dequeued in
 	FIFO order.  By default, queues created with the default
 	constructor wait for the previously dequeued block to complete
@@ -30,11 +31,28 @@
 	Queues, like all dispatch objects, are reference counted and
 	newly created queues have a reference count of one.
       </para>
+
       <para>
-	The optional label argument is used to describe the purpose of the queue and is useful during debugging
-	and performance analysis. By convention, clients should pass a reverse DNS style label.  If a label is
-	provided, it is copied. If a label is not provided, then Label property returns an empty C
+
+	Concurrent dispatch queues are created by passing <see
+	langword="true"/> as the value for the concurrent parameter on
+	the constructor.  Concurrent queues may invoke blocks
+	concurrently (similarly to the global concurrent queues, but
+	potentially with more overhead), and support barrier blocks
+	submitted with the dispatch barrier API, which e.g. enables
+	the implementation of efficient reader-writer schemes.
+
+      </para>
+
+      <para>
+
+	The optional label argument is used to describe the purpose of
+	the queue and is useful during debugging and performance
+	analysis. By convention, clients should pass a reverse DNS
+	style label.  If a label is provided, it is copied. If a label
+	is not provided, then Label property returns an empty C
 	string.  For example:
+
       </para>
       <example>
         <code lang="C#">
@@ -51,9 +69,31 @@
 
       </para>
       <para>
-  Dispatch queue is <see cref="T:System.Threading.SynchronizationContext" /> aware and unless there is
-  custom synchronization context set for the thread it will install its own synchronization context to
-  ensure any context dispatch ends up on same dispatch queue.
+	Dispatch queue is <see cref="T:System.Threading.SynchronizationContext" /> aware and unless there is
+	custom synchronization context set for the thread it will install its own synchronization context to
+	ensure any context dispatch ends up on same dispatch queue.
+      </para>
+
+      <format type="text/html">
+	<h2>Dispatch Barrier API</h2>
+      </format>
+
+      <para>
+	The dispatch barrier API is a mechanism for submitting barrier blocks to a
+	dispatch queue, analogous to the <see
+	cref="M:MonoTouch.CoreFoundation.DispatchQueue.DispatchAsync"/>/<see
+	cref="M:MonoTouch.CoreFoundation.DispatchQueue.DispatchSync"/>
+	methods.
+	It enables the implementation of efficient reader/writer schemes.
+	Barrier blocks only behave specially when submitted to
+	concurrent queues ; on such a queue, a barrier block
+	will not run until all blocks submitted to the queue earlier have completed,
+	and any blocks submitted to the queue after a barrier block will not run
+	until the barrier block has completed.
+	When submitted to a a global queue or to a non-concurrent queue, barrier blocks behave identically to
+	blocks submitted with the <see
+	cref="M:MonoTouch.CoreFoundation.DispatchQueue.DispatchAsync"/>/<see
+	cref="M:MonoTouch.CoreFoundation.DispatchQueue.DispatchSync"/> methods.
       </para>
     </remarks>
     <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=9fa28988-64fe-4365-b2b7-95542daf4f9b">avcaptureframes</related>
@@ -95,8 +135,18 @@
       </Parameters>
       <Docs>
         <param name="label">Name for the dispatch queue, as a convention, use reverse-style DNS names for your queue name.</param>
-        <summary>Creates a named dispatch queue.</summary>
+        <summary>Creates a named dispatch queue that serializes all
+	submitted blocks.</summary>
         <remarks>
+	  <para>
+	    Creates a dispatching queue that executes code blocks
+	    serially.   
+	  </para>
+	  <para>
+	    If you want to create a dispatch queue that can execute
+	    the submitted code concurrently, use the constructor that
+	    takes a boolean "concurrent" argument. 
+	  </para>
         </remarks>
       </Docs>
     </Member>
@@ -115,10 +165,31 @@
         <Parameter Name="concurrent" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="label">To be added.</param>
-        <param name="concurrent">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="label">Name for the dispatch queue, as a convention, use reverse-style DNS names for your queue name.</param>
+        <param name="concurrent">If set, the dispatch queue can invoke the submitted blocks concurrently.</param>
+        <summary>Creates a named dispatch queue that can optionally
+	execute any submitted code concurrently.</summary>
+        <remarks>
+	  <para>
+	    If the <paramref name="concurrent"/> is set to <see
+	    langword="false"/> this is equivalent to calling the
+	    constructor tht takes a single string argument.   That is,
+	    it will execute all submitted code blocks serially, one
+	    after another.
+	  </para>
+	  <para>
+	    If the value is <see langword="true"/> then the queue can
+	    execute the code blocks concurrently.   In this mode, you
+	    can use the <see
+	    cref="M:MonoTouch.CoreFoundation.DispatchBarrierAsync"/>
+	    method to submit a code block that will wait for all
+	    pending concurrent blocks to complete execution, then it
+	    will execute the code block to completion.   During the
+	    time that the barrier executes, any other code blocks
+	    submitted are queued, and will be scheduled to run
+	    (possibly concurrently) after the barrier method completes.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="ConcurrentQueue" apistyle="classic">
@@ -129,9 +200,9 @@
         <ReturnType>System.IntPtr</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Low-level: handle to the dispatch queue attributes for concurrent queues.</summary>
+        <value></value>
+        <remarks>Native handle for the concurrent handle attributes.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Context">
@@ -199,9 +270,9 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Label for the current queue.</summary>
+        <value></value>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="DefaultGlobalQueue">
@@ -262,9 +333,10 @@
         <Parameter Name="action" Type="System.Action" />
       </Parameters>
       <Docs>
-        <param name="when">To be added.</param>
-        <param name="action">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="when">Time at which the code block will be executed.</param>
+        <param name="action">Code block to execute at some time in the
+	future.</param>
+        <summary>Executes this time on or after the specified time.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -326,9 +398,26 @@
         <Parameter Name="action" Type="MonoTouch.Foundation.NSAction" />
       </Parameters>
       <Docs>
-        <param name="action">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="action">Code block to submit as a barrier.</param>
+        <summary>Submits a barrier block for asynchronous execution on a dispatch queue</summary>
+        <remarks>
+	  <para>
+	    Submits a block to a dispatch queue like <see
+	    cref="M:MonoTouch.CoreFoundation.DispatchQueue.DispatchAsync"/>
+	    does and marks that block as a barrier.  
+	  </para>
+	  <para>
+	    This is only relevant for concurrent queues.
+	  </para>
+	  <para>
+	    The  submitted code block will wait for all
+	    pending concurrent blocks to complete execution, then it
+	    will execute the code block to completion.   During the
+	    time that the barrier executes, any other code blocks
+	    submitted are queued, and will be scheduled to run
+	    (possibly concurrently) after the barrier method completes.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="DispatchBarrierAsync" apistyle="unified">
@@ -345,9 +434,26 @@
         <Parameter Name="action" Type="System.Action" />
       </Parameters>
       <Docs>
-        <param name="action">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="action">Code block to submit as a barrier.</param>
+        <summary>Submits a barrier block for asynchronous execution on a dispatch queue</summary>
+        <remarks>
+	  <para>
+	    Submits a block to a dispatch queue like <see
+	    cref="M:MonoTouch.CoreFoundation.DispatchQueue.DispatchAsync"/>
+	    does and marks that block as a barrier.  
+	  </para>
+	  <para>
+	    This is only relevant for concurrent queues.
+	  </para>
+	  <para>
+	    The  submitted code block will wait for all
+	    pending concurrent blocks to complete execution, then it
+	    will execute the code block to completion.   During the
+	    time that the barrier executes, any other code blocks
+	    submitted are queued, and will be scheduled to run
+	    (possibly concurrently) after the barrier method completes.
+	  </para>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="DispatchSync" apistyle="classic">
