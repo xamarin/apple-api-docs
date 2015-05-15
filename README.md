@@ -40,3 +40,6 @@ Run macdoc by passing the absolute path to the en/ directory
 You need a recent macdoc. You can compile it yourself by cloning
 https://github.com/mono/monomac and running the build process
 there. Macdoc is under the samples directory.
+
+
+This repository is also submoduled by XamarinVS to fetch the baseline docs from where MSXML docs are generated and later merged with iOS docs on the user's machine.
