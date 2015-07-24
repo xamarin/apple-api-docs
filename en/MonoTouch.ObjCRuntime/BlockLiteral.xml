@@ -30,9 +30,8 @@
 	handler and will invoke your managed code.
 
       </para>
-
       <example>
-<code lang="c#">
+        <code lang="c#">
 // Imagine that you want to invoke the following method:
 // void SetupHandler (void (^block)(double offset, int count));
 
@@ -48,7 +47,7 @@ private static readonly SetupHandlerCallback static_handler = TrampolineHandler;
 [MonoPInvokeCallback (typeof (SetupHandlerCallbackProxy))]
 static void TrampolineHandler (BlockLiteral *block, double offset, int count)
 {
-    var callback = (SetupHandlerCallback) (block->Target);
+    var callback = (SetupHandlerCallback) (block-&gt;Target);
     if (callback != null)
         callback (offset, count);
 }
@@ -68,7 +67,7 @@ public void SetupHandler (SetupHandlerCallback callback)
         block_handler.SetupBlock (static_handler, callback);
         
         SetupHandler (handle, block_ptr_handler);
-        block_ptr_handler->CleanupBlock ();
+        block_ptr_handler-&gt;CleanupBlock ();
     }
 }
 </code>
