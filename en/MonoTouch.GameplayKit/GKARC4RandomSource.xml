@@ -25,8 +25,11 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>To be added.</summary>
-    <remarks>To be added.</remarks>
+    <summary>Random generator based on the ARC4 algorithm. Often a good choice.</summary>
+    <remarks>
+      <para>Unlike the <see cref="P:Monotouch.GameplayKit.GKRandomSource.SharedRandom"/> object, <see cref="T:Monotouch.GameplayKit.GKARC4RandomSource"/> objects do not share state with system-wide <c>arc4random</c> C functions. <see cref="T:Monotouch.GameplayKit.GKARC4RandomSource"/> objects are both deterministic and independent.</para>
+      <para><see cref="T:Monotouch.GameplayKit.GKARC4RandomSource"/> objects are generally good random sources, but may be predicted by analyzing the first 768 values generated. To avoid such possibilities, call <see cref="M:Monotouch.GameplayKit.GKARC4RandomSource.Drop"/> with a value of 768 or greater.</para>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -104,7 +107,7 @@
       </Parameters>
       <Docs>
         <param name="seed">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Default constructor, initializes a new instance of this class.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -262,9 +265,12 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="count" Type="System.nuint" apistyle="unified" />
       </Parameters>
       <Docs>
-        <param name="count">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="count">The number of values to discard.</param>
+        <summary>Discards <paramref name="count"/> values. (See remarks).</summary>
+        <remarks>
+           <para><see cref="T:Monotouch.GameplayKit.GKARC4RandomSource"/> objects are generally good random sources, but may be predicted by analyzing the first 768 values generated. To avoid such possibilities, call <see cref="M:Monotouch.GameplayKit.GKARC4RandomSource.Drop"/> with a value of 768 or greater.</para>
+
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Seed">
@@ -289,9 +295,13 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.Foundation.NSData</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Deterministically seeds the pseudo-random number generator.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <para>
+            <see cref="T:Monotouch.GameplayKit.GKARC4RandomSource"/> objects with the same <see cref="P:Monotouch.GameplayKit.GKARC4RandomSource.Seed"/> will produce identical sequences.
+            </para>
+        </remarks>
       </Docs>
     </Member>
   </Members>
