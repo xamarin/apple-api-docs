@@ -26,7 +26,50 @@
   </Attributes>
   <Docs>
     <summary>Maintains a collection of <see cref="T:MonoTouch.GameplayKit.GKRule" /> objects, activating them as appropriate.</summary>
-    <remarks>To be added.</remarks>
+    <remarks>
+      <para>The <see cref="T:Monotouch.GameplayKit.GKRuleSystem"/> class allows developers to build expert systems. Both classical and fuzzy-logic systems are supported.</para>
+      <para>At any time, a <see cref="T:Monotouch.GameplayKit.GKRule"/> is either in the <see cref="P:Monotouch.GameplayKit.GKRuleSystem.Agenda"/> collection of rules to be evaluated or the <see cref="P:Monotouch.GameplayKit.GKRuleSystem.Executed"/> collection. The <see cref="M:Monotouch.GameplayKit.GKRuleSystem.Reset"/> method moves all rules back to the <see cref="P:Monotouch.GameplayKit.GKRuleSystem.Agenda"/> collection. </para>
+      <para>The method <see cref="M:Monotouch.GameplayKit.GKRuleSystem.Evaluate"/> evaluates the predicates of every rule in the <see cref="P:Monotouch.GameplayKit.GKRuleSystem.Agenda"/>, according to their <see cref="P:Monotouch.GameplayKit.GKRule.Salience"/> and, secondarily, the order in which they were added to the <see cref="T:Monotouch.GameplayKit.GKRuleSystem"/>. Rules whose predicate evaluates to <see langword="true"/> have their action function executed and are placed in the <see cref="P:Monotouch.GameplayKit.GKRuleSystem.Executed"/> collection.</para>
+      <para>The following demonstrates the "FizzBuzz" challenge: If a number is evenly divisible by 3, output "fizz". If evenly divisible by 5, output "buzz". Otherwise, output the number itself. Note that this code properly sets the <c>output</c> to "buzzfizz" on an input of 15, since both the <c>fizzRule</c> and <c>buzzRule</c> evaluate to <see langword="true"/>.</para>
+      <example>
+        <code lang="C#"><![CDATA[
+var clearRule = GKRule.FromPredicate ((rules) => reset, rules => {
+	output = "";
+	reset = false;
+});
+clearRule.Salience = 1;
+
+var fizzRule = GKRule.FromPredicate (mod (3), rules => {
+	output += "fizz";
+});
+fizzRule.Salience = 2;
+var buzzRule = GKRule.FromPredicate (mod (5), rules => { 
+	output += "buzz";
+});
+buzzRule.Salience = 2;
+
+var outputRule = GKRule.FromPredicate (rules => true, rules => {
+	System.Console.WriteLine (output == "" ? input.ToString () : output);
+	reset = true;
+});
+outputRule.Salience = 3;
+
+var rs = new GKRuleSystem ();
+rs.AddRules (new [] {
+	clearRule,
+	fizzRule,
+	buzzRule,
+	outputRule
+});
+
+for (input = 1; input < 16; input++) {
+	rs.Evaluate ();
+	rs.Reset ();
+}
+          
+          ]]></code>
+        </example>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -185,7 +228,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="rule">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Adds <paramref name="rule"/> to the system, placing it in the <see cref="P:Monotouch.GameplayKit.GKRuleSystem.Agenda"/>.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -212,7 +255,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="rules">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Adds <paramref name="rules"/> to the system, placing them in the <see cref="P:Monotouch.GameplayKit.GKRuleSystem.Agenda"/>.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -235,7 +278,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.GameplayKit.GKRule[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The collection of <see cref="T:Monotouch.GameplayKit.GKRule"/> objects whose predicates have not yet evaluated to <see langword="true"/>.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -263,7 +306,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="fact">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Adds the <paramref name="fact"/> to the system's knowledge-base, with a grade of 1.0.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -291,9 +334,12 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="fact">To be added.</param>
-        <param name="grade">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="grade">The amount by which to change the truth grade of the <paramref name="fact"/>.</param>
+        <summary>Adds the <paramref name="fact"/> to the system's knowledge-base, increasing it's truth-value by <paramref name="grade"/>.</summary>
+        <remarks>
+          <para>If the truth grade of a fact goes to 0.0 or below, it is removed from the <see cref="P:Monotouch.GameplayKit.GKRuleSystem.Facts"/> collection.</para>
+          <para>Note that this process adds <paramref name="grade"/> to the internally-stored grade of the <paramref name="fact"/>. To set an absolute value, developers must first call <see cref="M:Monotouch.GameplayKit.GKRuleSystem.RetractFact(NSObject)"/> to erase the current internal belief in the fact.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ClassHandle">
@@ -364,7 +410,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Evaluates the predicates in the <see cref="P:Monotouch.GameplayKit.GKRuleSystem.Agenda"/> and executes actions of those evaluating to <see langword="true"/>.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -387,7 +433,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.GameplayKit.GKRule[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Rules in the system that have been evaluated as <see langword="true"/> and had their actions executed.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -411,7 +457,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.Foundation.NSObject[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>An arbitrary set of objects about which the <see cref="T:Monotouch.GameplayKit.GKRuleSystem"/> maintains a truth grade in the range [0,1].</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -439,8 +485,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="fact">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <summary>Retrieves the truth grade for the <paramref name="fact"/>.</summary>
+        <returns>A value in the range [0,1], in which 0 represents certainty that the fact is false and 1.0 represents certainty that it is true.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -467,9 +513,12 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="facts">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Retrieves the maximum truth grade among the <paramref name="facts"/>. (Fuzzy OR)</summary>
         <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <para>In fuzzy logic, the confidence in a conclusion is equal to the confidence in one of the precedent facts. In a fuzzy OR, the confidence in the conclusion is the maximum value of its precedent facts. In a fuzzy AND, the confidence is the minimum:</para>
+          <para><img href="GKRuleSystemFuzzyOperators.png"/></para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetMinimumGrade">
@@ -495,9 +544,12 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="facts">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Retrieves the minimum truth grade among the <paramref name="facts"/>. (Fuzzy AND)</summary>
         <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <para>In fuzzy logic, the confidence in a conclusion is equal to the confidence in one of the precedent facts. In a fuzzy OR, the confidence in the conclusion is the maximum value of its precedent facts. In a fuzzy AND, the confidence is the minimum:</para>
+          <para><img href="GKRuleSystemFuzzyOperators.png"/></para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="RemoveAllRules">
@@ -520,7 +572,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Removes all the <see cref="T:Monotouch.GameplayKit.GKRule"/> objects in the <see cref="T:Monotouch.GameplayKit.GKRuleSystem"/>.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -544,7 +596,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Moves all <see cref="T:Monotouch.GameplayKit.GKRule"/> objects from the <see cref="P:Monotouch.GameplayKit.GKRuleSystem.Executed"/> collection to the <see cref="P:Monotouch.GameplayKit.GKRuleSystem.Agenda"/>.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -571,7 +623,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="fact">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Removes the <paramref name="fact"/> from the <see cref="P:Monotouch.GameplayKit.GKRuleSystem.Facts"/> collection.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -600,7 +652,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="fact">To be added.</param>
         <param name="grade">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Subtracts <paramref name="grade"/> from the internal confidence in <paramref name="fact"/>. If the internal confidence drops to 0.0, the <paramref name="fact"/> is removed.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -623,7 +675,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.GameplayKit.GKRule[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>All of the rules in the system, whether in <see cref="P:Monotouch.GameplayKit.GKRuleSystem.Agenda"/> or <see cref="P:Monotouch.GameplayKit.GKRuleSystem.Executed"/>.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -647,9 +699,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.Foundation.NSMutableDictionary</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>A mutable dictionary intended to hold the state information upon which the <see cref="P:Monotouch.GameplayKit.GKRuleSystem.Rules"/> operate.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <para>If the underlying <see cref="T:Monotouch.Foundation.NSMutableDictionary"/> is manipulated outside of the action of a constituent <see cref="T:Monotouch.GameplayKit.GKRule"/>, deveopers must call <see cref="M:Monotouch.GameplayKit.GKRuleSystem.Reset"/> and <see cref="M:Monotouch.GameplayKit.GKRuleSystem.Evaluate"/> for the modified data to be acted upon.</para>
+        </remarks>
       </Docs>
     </Member>
   </Members>
