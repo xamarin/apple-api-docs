@@ -187,7 +187,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="nodes">To be added.</param>
         <param name="bidirectional">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Connects this <see cref="T:Monotouch.GameplayKit.GKGraphNode"/> to each <see cref="T:Monotouch.GameplayKit.GKGraphNode"/> in <paramref name="nodes"/>. If <paramref name="bidirectional"/> is <see alangword="true"/>, the connection is non-directed.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -229,7 +229,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.GameplayKit.GKGraphNode[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The array of <see cref="T:Monotouch.GameplayKit.GKGraphNode"/> objects to which this <see cref="T:Monotouch.GameplayKit.GKGraphNode"/> is connected.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -286,8 +286,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="startNode">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <summary>Returns the shortest path from <paramref name="startNode"/> to this <see cref="T:Monotouch.GameplayKit.GKGraphNode"/>.</summary>
+        <returns>The shortest path, in-order, from <paramref name="startNode"/> to <c>this</c>. If no path exists, returns an empty array.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -314,8 +314,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="goalNode">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <summary>Finds the shortest path from this <see cref="T:Monotouch.GameplayKit.GKGraphNode"/> to <param name="goalNode"/>.</summary>
+        <returns>The shortest path, in-order, from <c>this</c> to <paramref name="startNode"/>. If no path exists, returns an empty array.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -341,8 +341,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="node" Type="MonoTouch.GameplayKit.GKGraphNode" />
       </Parameters>
       <Docs>
-        <param name="node">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="node">A directly-connected <see cref="T:Monotouch.GameplayKit.GKGraphNode"/>.</param>
+        <summary>The real cost to traverse from this <see cref="T:Monotouch.GameplayKit.GKGraphNode"/> to the directly-connected node <param name="node"/>.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -370,9 +370,12 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="node">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>The estimated cost to traverse from this <see cref="T:Monotouch.GameplayKit.GKGraphNode"/> to <paramref name="node"/>.</summary>
+        <returns>A value that must not exceed the true cost (see <see cref="M:Monotouch.GameplayKit.GKGraphNode.GetCost"/>) of travel.</returns>
+        <remarks>
+          <para>This value is used in successive approximations of the true lowest-cost path. If overridden, this method must provide an admissible heuristic: the value returned must not exceed the true cost. (For instance, if there are no terrain effects or other complications, the straight line distance between node locations is admissible, since any real path will be at least that large.)</para>
+          <para><see cref="M:Monotouch.GameplayKit.GKGraphNode.GetCost"/> returns the true cost of traversing from a node to its connected neighbor. This method, if overloaded, must provide estimates for all nodes, whether they are connected or not.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="RemoveConnections">
@@ -400,7 +403,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="nodes">To be added.</param>
         <param name="bidirectional">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Removes connections from this <see cref="T:Monotouch.GameplayKit.GKGraphNode"/> to <paramref name="nodes"/>. If <param name="bidirectional"/> is <see langword="false"/>, only the outward connections from <c>this</c> are removed.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
