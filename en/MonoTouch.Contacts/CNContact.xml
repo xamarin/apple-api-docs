@@ -126,24 +126,24 @@
           <para>The argument value is ignored and merely ensures that the only code that is executed is the construction phase is the basic NSObject allocation and runtime type registration.  Typically the chaining would look like this:</para>
           <example>
             <code lang="C#">
-              //
-              // The NSObjectFlag merely allocates the object and registers the
-              // C# class with the Objective-C runtime if necessary, but no actual
-              // initXxx method is invoked, that is done later in the constructor
-              //
-              // This is taken from MonoTouch's source code:
-              //
-              [Export ("initWithFrame:")]
-              public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
-              {
-              // Invoke the init method now.
-              var initWithFrame = new Selector ("initWithFrame:").Handle;
-              if (IsDirectBinding)
-              Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
-              else
-              Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
-              }
-            </code>
+//
+// The NSObjectFlag merely allocates the object and registers the
+// C# class with the Objective-C runtime if necessary, but no actual
+// initXxx method is invoked, that is done later in the constructor
+//
+// This is taken from MonoTouch's source code:
+//
+[Export ("initWithFrame:")]
+public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
+{
+// Invoke the init method now.
+	var initWithFrame = new Selector ("initWithFrame:").Handle;
+	if (IsDirectBinding)
+		Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+	else
+		Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+}
+</code>
           </example>
         </remarks>
       </Docs>
@@ -177,8 +177,53 @@
       </Docs>
     </Member>
     <Member MemberName="AreKeysAvailable">
+      <MemberSignature Language="C#" Value="public bool AreKeysAvailable (MonoTouch.Contacts.CNContactOptions options);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool AreKeysAvailable(valuetype MonoTouch.Contacts.CNContactOptions options) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo apistyle="classic">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo apistyle="unified">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="options" Type="MonoTouch.Contacts.CNContactOptions" />
+      </Parameters>
+      <Docs>
+        <param name="options">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AreKeysAvailable" apistyle="classic">
       <MemberSignature Language="C#" Value="public virtual bool AreKeysAvailable (MonoTouch.Contacts.ICNKeyDescriptor[] keyDescriptors);" />
       <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool AreKeysAvailable(class MonoTouch.Contacts.ICNKeyDescriptor[] keyDescriptors) cil managed" />
+      <MemberType>Method</MemberType>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("areKeysAvailable:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="keyDescriptors" Type="MonoTouch.Contacts.ICNKeyDescriptor[]" />
+      </Parameters>
+      <Docs>
+        <param name="keyDescriptors">The keys whose availabilitity is being questioned.</param>
+        <summary>Whether the values for all of the <paramref name="keyDescriptors" /> have been retrieved.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AreKeysAvailable">
+      <MemberSignature Language="C#" Value="protected virtual bool AreKeysAvailable (MonoTouch.Foundation.NSArray keyDescriptors);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance bool AreKeysAvailable(class MonoTouch.Foundation.NSArray keyDescriptors) cil managed" />
       <MemberType>Method</MemberType>
       <AssemblyInfo apistyle="classic">
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -195,11 +240,44 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="keyDescriptors" Type="MonoTouch.Contacts.ICNKeyDescriptor[]" />
+        <Parameter Name="keyDescriptors" Type="MonoTouch.Foundation.NSArray" />
       </Parameters>
       <Docs>
-        <param name="keyDescriptors">The keys whose availabilitity is being questioned.</param>
-        <summary>Whether the values for all of the <paramref name="keyDescriptors" /> have been retrieved.</summary>
+        <param name="keyDescriptors">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AreKeysAvailable&lt;T&gt;">
+      <MemberSignature Language="C#" Value="public bool AreKeysAvailable&lt;T&gt; (T[] keyDescriptors) where T : MonoTouch.Foundation.INSObjectProtocol, MonoTouch.Foundation.INSSecureCoding, MonoTouch.Foundation.INSCopying;" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool AreKeysAvailable&lt;(class MonoTouch.Foundation.INSObjectProtocol, class MonoTouch.Foundation.INSSecureCoding, class MonoTouch.Foundation.INSCopying) T&gt;(!!T[] keyDescriptors) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo apistyle="classic">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo apistyle="unified">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <TypeParameters>
+        <TypeParameter Name="T">
+          <Constraints>
+            <InterfaceName>MonoTouch.Foundation.INSObjectProtocol</InterfaceName>
+            <InterfaceName>MonoTouch.Foundation.INSSecureCoding</InterfaceName>
+            <InterfaceName>MonoTouch.Foundation.INSCopying</InterfaceName>
+          </Constraints>
+        </TypeParameter>
+      </TypeParameters>
+      <Parameters>
+        <Parameter Name="keyDescriptors" Type="T[]" />
+      </Parameters>
+      <Docs>
+        <typeparam name="T">To be added.</typeparam>
+        <param name="keyDescriptors">To be added.</param>
+        <summary>To be added.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -402,16 +480,10 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="DescriptorForAllComparatorKeys">
+    <Member MemberName="DescriptorForAllComparatorKeys" apistyle="classic">
       <MemberSignature Language="C#" Value="public static MonoTouch.Contacts.ICNKeyDescriptor DescriptorForAllComparatorKeys ();" />
       <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.Contacts.ICNKeyDescriptor DescriptorForAllComparatorKeys() cil managed" />
       <MemberType>Method</MemberType>
-      <AssemblyInfo apistyle="classic">
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo apistyle="unified">
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
       <Attributes>
         <Attribute>
           <AttributeName>MonoTouch.Foundation.Export("descriptorForAllComparatorKeys")</AttributeName>
@@ -507,9 +579,9 @@
           <para>If you want to allow your object to be archived, you should override this method and store your state in using the provided <paramref name="encoder" /> parameter.   In addition, you should also implement a constructor that takes an NSCoder argument and is exported with [Export ("initWithCoder:")]</para>
           <example>
             <code lang="c#">public void override EncodeTo (NSCoder coder){
-              c.Encode (1, key: "version");
-              c.Encode (userName, key: "userName");
-              c.Encode (hostName, key: "hostName");</code>
+    c.Encode (1, key: "version");
+    c.Encode (userName, key: "userName");
+    c.Encode (hostName, key: "hostName");</code>
           </example>
         </remarks>
       </Docs>
@@ -559,6 +631,143 @@
       <Docs>
         <summary>Returns the contact's family name.</summary>
         <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetDescriptorForAllComparatorKeys">
+      <MemberSignature Language="C#" Value="public static MonoTouch.Contacts.ICNKeyDescriptor GetDescriptorForAllComparatorKeys ();" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.Contacts.ICNKeyDescriptor GetDescriptorForAllComparatorKeys() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo apistyle="classic">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo apistyle="unified">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("descriptorForAllComparatorKeys")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>MonoTouch.Contacts.ICNKeyDescriptor</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetPredicateForContacts">
+      <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSPredicate GetPredicateForContacts (string matchingName);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.Foundation.NSPredicate GetPredicateForContacts(string matchingName) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo apistyle="classic">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo apistyle="unified">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("predicateForContactsMatchingName:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>MonoTouch.Foundation.NSPredicate</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="matchingName" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="matchingName">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetPredicateForContacts">
+      <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSPredicate GetPredicateForContacts (string[] identifiers);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.Foundation.NSPredicate GetPredicateForContacts(string[] identifiers) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo apistyle="classic">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo apistyle="unified">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("predicateForContactsWithIdentifiers:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>MonoTouch.Foundation.NSPredicate</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="identifiers" Type="System.String[]" />
+      </Parameters>
+      <Docs>
+        <param name="identifiers">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetPredicateForContactsInContainer">
+      <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSPredicate GetPredicateForContactsInContainer (string containerIdentifier);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.Foundation.NSPredicate GetPredicateForContactsInContainer(string containerIdentifier) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo apistyle="classic">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo apistyle="unified">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("predicateForContactsInContainerWithIdentifier:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>MonoTouch.Foundation.NSPredicate</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="containerIdentifier" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="containerIdentifier">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetPredicateForContactsInGroup">
+      <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSPredicate GetPredicateForContactsInGroup (string groupIdentifier);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.Foundation.NSPredicate GetPredicateForContactsInGroup(string groupIdentifier) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo apistyle="classic">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo apistyle="unified">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("predicateForContactsInGroupWithIdentifier:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>MonoTouch.Foundation.NSPredicate</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="groupIdentifier" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="groupIdentifier">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -687,9 +896,26 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="IsKeyAvailable">
+    <Member MemberName="IsKeyAvailable" apistyle="classic">
       <MemberSignature Language="C#" Value="public virtual bool IsKeyAvailable (MonoTouch.Contacts.CNContactOption contactOption);" />
       <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool IsKeyAvailable(valuetype MonoTouch.Contacts.CNContactOption contactOption) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="contactOption" Type="MonoTouch.Contacts.CNContactOption" />
+      </Parameters>
+      <Docs>
+        <param name="contactOption">To be added.</param>
+        <summary>Whether the key <param name="contactOption" /> is available for this <see cref="T:Monotouch.Contacts.CNContact" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsKeyAvailable">
+      <MemberSignature Language="C#" Value="public virtual bool IsKeyAvailable (MonoTouch.Contacts.CNContactOptions options);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool IsKeyAvailable(valuetype MonoTouch.Contacts.CNContactOptions options) cil managed" />
       <MemberType>Method</MemberType>
       <AssemblyInfo apistyle="classic">
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -701,11 +927,11 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="contactOption" Type="MonoTouch.Contacts.CNContactOption" />
+        <Parameter Name="options" Type="MonoTouch.Contacts.CNContactOptions" />
       </Parameters>
       <Docs>
-        <param name="contactOption">To be added.</param>
-        <summary>Whether the key <param name="contactOption"/> is available for this <see cref="T:Monotouch.Contacts.CNContact"/>.</summary>
+        <param name="options">To be added.</param>
+        <summary>To be added.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -733,7 +959,7 @@
       </Parameters>
       <Docs>
         <param name="contactKey">To be added.</param>
-        <summary>Whether the key <param name="contactKey"/> is available for this <see cref="T:Monotouch.Contacts.CNContact"/>..</summary>
+        <summary>Whether the key <param name="contactKey" /> is available for this <see cref="T:Monotouch.Contacts.CNContact" />..</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -790,9 +1016,26 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="LocalizeProperty">
+    <Member MemberName="LocalizeProperty" apistyle="classic">
       <MemberSignature Language="C#" Value="public static string LocalizeProperty (MonoTouch.Contacts.CNContactOption contactOption);" />
       <MemberSignature Language="ILAsm" Value=".method public static hidebysig string LocalizeProperty(valuetype MonoTouch.Contacts.CNContactOption contactOption) cil managed" />
+      <MemberType>Method</MemberType>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="contactOption" Type="MonoTouch.Contacts.CNContactOption" />
+      </Parameters>
+      <Docs>
+        <param name="contactOption">To be added.</param>
+        <summary>Gets the localized version of the property for <param name="contactOption" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LocalizeProperty">
+      <MemberSignature Language="C#" Value="public static string LocalizeProperty (MonoTouch.Contacts.CNContactOptions options);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig string LocalizeProperty(valuetype MonoTouch.Contacts.CNContactOptions options) cil managed" />
       <MemberType>Method</MemberType>
       <AssemblyInfo apistyle="classic">
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -804,11 +1047,11 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="contactOption" Type="MonoTouch.Contacts.CNContactOption" />
+        <Parameter Name="options" Type="MonoTouch.Contacts.CNContactOptions" />
       </Parameters>
       <Docs>
-        <param name="contactOption">To be added.</param>
-        <summary>Gets the localized version of the property for <param name="contactOption"/>.</summary>
+        <param name="options">To be added.</param>
+        <summary>To be added.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -836,7 +1079,7 @@
       </Parameters>
       <Docs>
         <param name="contactKey">To be added.</param>
-        <summary>Gets the localized value of <param name="contactKey"/>.</summary>
+        <summary>Gets the localized value of <param name="contactKey" />.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -1184,7 +1427,7 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The previous family name of the <see cref="T:Monotouch.Contacts.CNContact"/> (for instance, the maiden name).</summary>
+        <summary>The previous family name of the <see cref="T:Monotouch.Contacts.CNContact" /> (for instance, the maiden name).</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
