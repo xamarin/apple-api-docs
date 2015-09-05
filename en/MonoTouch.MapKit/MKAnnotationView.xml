@@ -18,7 +18,7 @@
       <AttributeName>MonoTouch.Foundation.Register("MKAnnotationView", true)</AttributeName>
     </Attribute>
     <Attribute>
-      <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.Mac_10_0 | MonoTouch.ObjCRuntime.Platform.Mac_10_1 | MonoTouch.ObjCRuntime.Platform.Mac_10_2 | MonoTouch.ObjCRuntime.Platform.Mac_10_3 | MonoTouch.ObjCRuntime.Platform.Mac_10_4 | MonoTouch.ObjCRuntime.Platform.Mac_10_5 | MonoTouch.ObjCRuntime.Platform.Mac_10_6 | MonoTouch.ObjCRuntime.Platform.Mac_10_7 | MonoTouch.ObjCRuntime.Platform.Mac_10_8 | MonoTouch.ObjCRuntime.Platform.Mac_10_9 | MonoTouch.ObjCRuntime.Platform.Mac_10_10 | MonoTouch.ObjCRuntime.Platform.Mac_10_10_3 | MonoTouch.ObjCRuntime.Platform.Mac_10_11 | MonoTouch.ObjCRuntime.Platform.Mac_Version | MonoTouch.ObjCRuntime.Platform.Mac_Arch64 | MonoTouch.ObjCRuntime.Platform.Mac_Arch)</AttributeName>
+      <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=Platform.Mac_10_9 | Platform.Mac_Arch64)</AttributeName>
     </Attribute>
   </Attributes>
   <Docs>
@@ -65,6 +65,9 @@
       <Attributes>
         <Attribute>
           <AttributeName>MonoTouch.Foundation.Export("initWithCoder:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.DesignatedInitializer</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
@@ -260,10 +263,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>MonoTouch.ObjCRuntime.ThreadSafe</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.Foundation.Export("annotation")</AttributeName>
+          <AttributeName>get: MonoTouch.Foundation.Export("annotation", MonoTouch.ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: MonoTouch.Foundation.Export("setAnnotation:")</AttributeName>
+          <AttributeName>set: MonoTouch.Foundation.Export("setAnnotation:", MonoTouch.ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -717,6 +720,49 @@ myTheme.TintColor = UIColor.Red;
         </remarks>
       </Docs>
     </Member>
+    <Member MemberName="GetAppearance&lt;T&gt;">
+      <MemberSignature Language="C#" Value="public static MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance GetAppearance&lt;T&gt; (MonoTouch.UIKit.UITraitCollection traits) where T : MonoTouch.MapKit.MKAnnotationView;" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.MapKit.MKAnnotationView/MKAnnotationViewAppearance GetAppearance&lt;(class MonoTouch.MapKit.MKAnnotationView) T&gt;(class MonoTouch.UIKit.UITraitCollection traits) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo apistyle="unified">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MonoTouch.MapKit.MKAnnotationView+MKAnnotationViewAppearance</ReturnType>
+      </ReturnValue>
+      <TypeParameters>
+        <TypeParameter Name="T">
+          <Constraints>
+            <BaseTypeName>MonoTouch.MapKit.MKAnnotationView</BaseTypeName>
+          </Constraints>
+        </TypeParameter>
+      </TypeParameters>
+      <Parameters>
+        <Parameter Name="traits" Type="MonoTouch.UIKit.UITraitCollection" />
+      </Parameters>
+      <Docs>
+        <typeparam name="T">The type for which the UIAppearance proxy must be returned.  This is a subclass of MKAnnotationView.</typeparam>
+        <param name="traits">Trait collection to match.</param>
+        <summary>
+          <para>Obtains the appearance proxy <see cref="T:MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance" /> for the subclass of MKAnnotationView.</para>
+        </summary>
+        <returns>
+          <para>appearance proxy object for the specified type.</para>
+        </returns>
+        <remarks>
+          <para>The returned object represents the UIAppearance proxy where you can set appearance properties for instances of MKAnnotationView.</para>
+          <para>Unlike the <see cref="P:MonoTouch.MapKit.MKAnnotationView.Appearance" /> property, or the <see cref="M:MonoTouch.MapKit.MKAnnotationViewAppearanceWhenContainedIn" /> method which only work on instances of this particular class, the proxies returned by GetAppearance can be used to change the style of subclasses.</para>
+          <para>The following example shows how the GetAppearance method works</para>
+          <example>
+            <code lang="C#">
+var myTheme = MKAnnotationView.GetAppearance&lt;MyMKAnnotationViewSubclass&gt; (myTraits, );
+myTheme.TintColor = UIColor.Red;
+</code>
+          </example>
+          <para>For more information, see the documentation for the <see cref="T:MonoTouch.UIKit.UIAppearance" /> class.</para>
+        </remarks>
+      </Docs>
+    </Member>
     <Member MemberName="GetAppearance&lt;T&gt;" apistyle="classic">
       <MemberSignature Language="C#" Value="public static MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance GetAppearance&lt;T&gt; (MonoTouch.UIKit.UITraitCollection traits) where T : MonoTouch.MapKit.MKAnnotationView;" />
       <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.MapKit.MKAnnotationView/MKAnnotationViewAppearance GetAppearance&lt;(class MonoTouch.MapKit.MKAnnotationView) T&gt;(class MonoTouch.UIKit.UITraitCollection traits) cil managed" />
@@ -760,600 +806,12 @@ myTheme.TintColor = UIColor.Red;
       </Docs>
     </Member>
     <Member MemberName="GetAppearance&lt;T&gt;" apistyle="classic">
-      <MemberSignature Language="C#" Value="public static MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance GetAppearance&lt;T&gt; (MonoTouch.UIKit.UITraitCollection traits) where T : MonoTouch.MapKit.MKAnnotationView;" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.MapKit.MKAnnotationView/MKAnnotationViewAppearance GetAppearance&lt;(class MonoTouch.MapKit.MKAnnotationView) T&gt;(class MonoTouch.UIKit.UITraitCollection traits) cil managed" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo apistyle="unified">
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>MonoTouch.MapKit.MKAnnotationView+MKAnnotationViewAppearance</ReturnType>
-      </ReturnValue>
-      <TypeParameters>
-        <TypeParameter Name="T">
-          <Constraints>
-            <BaseTypeName>MonoTouch.MapKit.MKAnnotationView</BaseTypeName>
-          </Constraints>
-        </TypeParameter>
-      </TypeParameters>
-      <Parameters>
-        <Parameter Name="traits" Type="MonoTouch.UIKit.UITraitCollection" />
-      </Parameters>
-      <Docs>
-        <typeparam name="T">The type for which the UIAppearance proxy must be returned.  This is a subclass of MKAnnotationView.</typeparam>
-        <param name="traits">Trait collection to match.</param>
-        <summary>
-          <para>Obtains the appearance proxy <see cref="T:MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance" /> for the subclass of MKAnnotationView.</para>
-        </summary>
-        <returns>
-          <para>appearance proxy object for the specified type.</para>
-        </returns>
-        <remarks>
-          <para>The returned object represents the UIAppearance proxy where you can set appearance properties for instances of MKAnnotationView.</para>
-          <para>Unlike the <see cref="P:MonoTouch.MapKit.MKAnnotationView.Appearance" /> property, or the <see cref="M:MonoTouch.MapKit.MKAnnotationViewAppearanceWhenContainedIn" /> method which only work on instances of this particular class, the proxies returned by GetAppearance can be used to change the style of subclasses.</para>
-          <para>The following example shows how the GetAppearance method works</para>
-          <example>
-            <code lang="C#">
-var myTheme = MKAnnotationView.GetAppearance&lt;MyMKAnnotationViewSubclass&gt; (myTraits, );
-myTheme.TintColor = UIColor.Red;
-</code>
-          </example>
-          <para>For more information, see the documentation for the <see cref="T:MonoTouch.UIKit.UIAppearance" /> class.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetAppearance&lt;T&gt;" apistyle="classic">
-      <MemberSignature Language="C#" Value="public static MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance GetAppearance&lt;T&gt; (MonoTouch.UIKit.UITraitCollection traits) where T : MonoTouch.MapKit.MKAnnotationView;" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.MapKit.MKAnnotationView/MKAnnotationViewAppearance GetAppearance&lt;(class MonoTouch.MapKit.MKAnnotationView) T&gt;(class MonoTouch.UIKit.UITraitCollection traits) cil managed" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo apistyle="unified">
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>MonoTouch.MapKit.MKAnnotationView+MKAnnotationViewAppearance</ReturnType>
-      </ReturnValue>
-      <TypeParameters>
-        <TypeParameter Name="T">
-          <Constraints>
-            <BaseTypeName>MonoTouch.MapKit.MKAnnotationView</BaseTypeName>
-          </Constraints>
-        </TypeParameter>
-      </TypeParameters>
-      <Parameters>
-        <Parameter Name="traits" Type="MonoTouch.UIKit.UITraitCollection" />
-      </Parameters>
-      <Docs>
-        <typeparam name="T">The type for which the UIAppearance proxy must be returned.  This is a subclass of MKAnnotationView.</typeparam>
-        <param name="traits">Trait collection to match.</param>
-        <summary>
-          <para>Obtains the appearance proxy <see cref="T:MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance" /> for the subclass of MKAnnotationView.</para>
-        </summary>
-        <returns>
-          <para>appearance proxy object for the specified type.</para>
-        </returns>
-        <remarks>
-          <para>The returned object represents the UIAppearance proxy where you can set appearance properties for instances of MKAnnotationView.</para>
-          <para>Unlike the <see cref="P:MonoTouch.MapKit.MKAnnotationView.Appearance" /> property, or the <see cref="M:MonoTouch.MapKit.MKAnnotationViewAppearanceWhenContainedIn" /> method which only work on instances of this particular class, the proxies returned by GetAppearance can be used to change the style of subclasses.</para>
-          <para>The following example shows how the GetAppearance method works</para>
-          <example>
-            <code lang="C#">
-var myTheme = MKAnnotationView.GetAppearance&lt;MyMKAnnotationViewSubclass&gt; (myTraits, );
-myTheme.TintColor = UIColor.Red;
-</code>
-          </example>
-          <para>For more information, see the documentation for the <see cref="T:MonoTouch.UIKit.UIAppearance" /> class.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetAppearance&lt;T&gt;" apistyle="unified">
-      <MemberSignature Language="C#" Value="public static MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance GetAppearance&lt;T&gt; (MonoTouch.UIKit.UITraitCollection traits) where T : MonoTouch.MapKit.MKAnnotationView;" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.MapKit.MKAnnotationView/MKAnnotationViewAppearance GetAppearance&lt;(class MonoTouch.MapKit.MKAnnotationView) T&gt;(class MonoTouch.UIKit.UITraitCollection traits) cil managed" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo apistyle="unified">
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>MonoTouch.MapKit.MKAnnotationView+MKAnnotationViewAppearance</ReturnType>
-      </ReturnValue>
-      <TypeParameters>
-        <TypeParameter Name="T">
-          <Constraints>
-            <BaseTypeName>MonoTouch.MapKit.MKAnnotationView</BaseTypeName>
-          </Constraints>
-        </TypeParameter>
-      </TypeParameters>
-      <Parameters>
-        <Parameter Name="traits" Type="MonoTouch.UIKit.UITraitCollection" />
-      </Parameters>
-      <Docs>
-        <typeparam name="T">The type for which the UIAppearance proxy must be returned.  This is a subclass of MKAnnotationView.</typeparam>
-        <param name="traits">Trait collection to match.</param>
-        <summary>
-          <para>Obtains the appearance proxy <see cref="T:MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance" /> for the subclass of MKAnnotationView.</para>
-        </summary>
-        <returns>
-          <para>appearance proxy object for the specified type.</para>
-        </returns>
-        <remarks>
-          <para>The returned object represents the UIAppearance proxy where you can set appearance properties for instances of MKAnnotationView.</para>
-          <para>Unlike the <see cref="P:MonoTouch.MapKit.MKAnnotationView.Appearance" /> property, or the <see cref="M:MonoTouch.MapKit.MKAnnotationViewAppearanceWhenContainedIn" /> method which only work on instances of this particular class, the proxies returned by GetAppearance can be used to change the style of subclasses.</para>
-          <para>The following example shows how the GetAppearance method works</para>
-          <example>
-            <code lang="C#">
-var myTheme = MKAnnotationView.GetAppearance&lt;MyMKAnnotationViewSubclass&gt; (myTraits, );
-myTheme.TintColor = UIColor.Red;
-</code>
-          </example>
-          <para>For more information, see the documentation for the <see cref="T:MonoTouch.UIKit.UIAppearance" /> class.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetAppearance&lt;T&gt;" apistyle="classic">
-      <MemberSignature Language="C#" Value="public static MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance GetAppearance&lt;T&gt; (MonoTouch.UIKit.UITraitCollection traits) where T : MonoTouch.MapKit.MKAnnotationView;" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.MapKit.MKAnnotationView/MKAnnotationViewAppearance GetAppearance&lt;(class MonoTouch.MapKit.MKAnnotationView) T&gt;(class MonoTouch.UIKit.UITraitCollection traits) cil managed" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>MonoTouch.MapKit.MKAnnotationView+MKAnnotationViewAppearance</ReturnType>
-      </ReturnValue>
-      <TypeParameters>
-        <TypeParameter Name="T">
-          <Constraints>
-            <BaseTypeName>MonoTouch.MapKit.MKAnnotationView</BaseTypeName>
-          </Constraints>
-        </TypeParameter>
-      </TypeParameters>
-      <Parameters>
-        <Parameter Name="traits" Type="MonoTouch.UIKit.UITraitCollection" />
-      </Parameters>
-      <Docs>
-        <typeparam name="T">The type for which the UIAppearance proxy must be returned.  This is a subclass of MKAnnotationView.</typeparam>
-        <param name="traits">Trait collection to match.</param>
-        <summary>
-          <para>Obtains the appearance proxy <see cref="T:MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance" /> for the subclass of MKAnnotationView.</para>
-        </summary>
-        <returns>
-          <para>appearance proxy object for the specified type.</para>
-        </returns>
-        <remarks>
-          <para>The returned object represents the UIAppearance proxy where you can set appearance properties for instances of MKAnnotationView.</para>
-          <para>Unlike the <see cref="P:MonoTouch.MapKit.MKAnnotationView.Appearance" /> property, or the <see cref="M:MonoTouch.MapKit.MKAnnotationViewAppearanceWhenContainedIn" /> method which only work on instances of this particular class, the proxies returned by GetAppearance can be used to change the style of subclasses.</para>
-          <para>The following example shows how the GetAppearance method works</para>
-          <example>
-            <code lang="C#">
-var myTheme = MKAnnotationView.GetAppearance&lt;MyMKAnnotationViewSubclass&gt; (myTraits, );
-myTheme.TintColor = UIColor.Red;
-</code>
-          </example>
-          <para>For more information, see the documentation for the <see cref="T:MonoTouch.UIKit.UIAppearance" /> class.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetAppearance&lt;T&gt;" apistyle="unified">
-      <MemberSignature Language="C#" Value="public static MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance GetAppearance&lt;T&gt; (MonoTouch.UIKit.UITraitCollection traits) where T : MonoTouch.MapKit.MKAnnotationView;" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.MapKit.MKAnnotationView/MKAnnotationViewAppearance GetAppearance&lt;(class MonoTouch.MapKit.MKAnnotationView) T&gt;(class MonoTouch.UIKit.UITraitCollection traits) cil managed" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo apistyle="unified">
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>MonoTouch.MapKit.MKAnnotationView+MKAnnotationViewAppearance</ReturnType>
-      </ReturnValue>
-      <TypeParameters>
-        <TypeParameter Name="T">
-          <Constraints>
-            <BaseTypeName>MonoTouch.MapKit.MKAnnotationView</BaseTypeName>
-          </Constraints>
-        </TypeParameter>
-      </TypeParameters>
-      <Parameters>
-        <Parameter Name="traits" Type="MonoTouch.UIKit.UITraitCollection" />
-      </Parameters>
-      <Docs>
-        <typeparam name="T">To be added.</typeparam>
-        <param name="traits">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetAppearance&lt;T&gt;" apistyle="classic">
-      <MemberSignature Language="C#" Value="public static MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance GetAppearance&lt;T&gt; (MonoTouch.UIKit.UITraitCollection traits) where T : MonoTouch.MapKit.MKAnnotationView;" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.MapKit.MKAnnotationView/MKAnnotationViewAppearance GetAppearance&lt;(class MonoTouch.MapKit.MKAnnotationView) T&gt;(class MonoTouch.UIKit.UITraitCollection traits) cil managed" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo apistyle="unified">
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>MonoTouch.MapKit.MKAnnotationView+MKAnnotationViewAppearance</ReturnType>
-      </ReturnValue>
-      <TypeParameters>
-        <TypeParameter Name="T">
-          <Constraints>
-            <BaseTypeName>MonoTouch.MapKit.MKAnnotationView</BaseTypeName>
-          </Constraints>
-        </TypeParameter>
-      </TypeParameters>
-      <Parameters>
-        <Parameter Name="traits" Type="MonoTouch.UIKit.UITraitCollection" />
-      </Parameters>
-      <Docs>
-        <typeparam name="T">The type for which the UIAppearance proxy must be returned.  This is a subclass of MKAnnotationView.</typeparam>
-        <param name="traits">Trait collection to match.</param>
-        <summary>
-          <para>Obtains the appearance proxy <see cref="T:MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance" /> for the subclass of MKAnnotationView.</para>
-        </summary>
-        <returns>
-          <para>appearance proxy object for the specified type.</para>
-        </returns>
-        <remarks>
-          <para>The returned object represents the UIAppearance proxy where you can set appearance properties for instances of MKAnnotationView.</para>
-          <para>Unlike the <see cref="P:MonoTouch.MapKit.MKAnnotationView.Appearance" /> property, or the <see cref="M:MonoTouch.MapKit.MKAnnotationViewAppearanceWhenContainedIn" /> method which only work on instances of this particular class, the proxies returned by GetAppearance can be used to change the style of subclasses.</para>
-          <para>The following example shows how the GetAppearance method works</para>
-          <example>
-            <code lang="C#">
-var myTheme = MKAnnotationView.GetAppearance&lt;MyMKAnnotationViewSubclass&gt; (myTraits, );
-myTheme.TintColor = UIColor.Red;
-</code>
-          </example>
-          <para>For more information, see the documentation for the <see cref="T:MonoTouch.UIKit.UIAppearance" /> class.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetAppearance&lt;T&gt;" apistyle="classic">
-      <MemberSignature Language="C#" Value="public static MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance GetAppearance&lt;T&gt; (MonoTouch.UIKit.UITraitCollection traits) where T : MonoTouch.MapKit.MKAnnotationView;" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.MapKit.MKAnnotationView/MKAnnotationViewAppearance GetAppearance&lt;(class MonoTouch.MapKit.MKAnnotationView) T&gt;(class MonoTouch.UIKit.UITraitCollection traits) cil managed" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo apistyle="unified">
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>MonoTouch.MapKit.MKAnnotationView+MKAnnotationViewAppearance</ReturnType>
-      </ReturnValue>
-      <TypeParameters>
-        <TypeParameter Name="T">
-          <Constraints>
-            <BaseTypeName>MonoTouch.MapKit.MKAnnotationView</BaseTypeName>
-          </Constraints>
-        </TypeParameter>
-      </TypeParameters>
-      <Parameters>
-        <Parameter Name="traits" Type="MonoTouch.UIKit.UITraitCollection" />
-      </Parameters>
-      <Docs>
-        <typeparam name="T">The type for which the UIAppearance proxy must be returned.  This is a subclass of MKAnnotationView.</typeparam>
-        <param name="traits">Trait collection to match.</param>
-        <summary>
-          <para>Obtains the appearance proxy <see cref="T:MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance" /> for the subclass of MKAnnotationView.</para>
-        </summary>
-        <returns>
-          <para>appearance proxy object for the specified type.</para>
-        </returns>
-        <remarks>
-          <para>The returned object represents the UIAppearance proxy where you can set appearance properties for instances of MKAnnotationView.</para>
-          <para>Unlike the <see cref="P:MonoTouch.MapKit.MKAnnotationView.Appearance" /> property, or the <see cref="M:MonoTouch.MapKit.MKAnnotationViewAppearanceWhenContainedIn" /> method which only work on instances of this particular class, the proxies returned by GetAppearance can be used to change the style of subclasses.</para>
-          <para>The following example shows how the GetAppearance method works</para>
-          <example>
-            <code lang="C#">
-var myTheme = MKAnnotationView.GetAppearance&lt;MyMKAnnotationViewSubclass&gt; (myTraits, );
-myTheme.TintColor = UIColor.Red;
-</code>
-          </example>
-          <para>For more information, see the documentation for the <see cref="T:MonoTouch.UIKit.UIAppearance" /> class.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetAppearance&lt;T&gt;" apistyle="classic">
-      <MemberSignature Language="C#" Value="public static MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance GetAppearance&lt;T&gt; (MonoTouch.UIKit.UITraitCollection traits) where T : MonoTouch.MapKit.MKAnnotationView;" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.MapKit.MKAnnotationView/MKAnnotationViewAppearance GetAppearance&lt;(class MonoTouch.MapKit.MKAnnotationView) T&gt;(class MonoTouch.UIKit.UITraitCollection traits) cil managed" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>MonoTouch.MapKit.MKAnnotationView+MKAnnotationViewAppearance</ReturnType>
-      </ReturnValue>
-      <TypeParameters>
-        <TypeParameter Name="T">
-          <Constraints>
-            <BaseTypeName>MonoTouch.MapKit.MKAnnotationView</BaseTypeName>
-          </Constraints>
-        </TypeParameter>
-      </TypeParameters>
-      <Parameters>
-        <Parameter Name="traits" Type="MonoTouch.UIKit.UITraitCollection" />
-      </Parameters>
-      <Docs>
-        <typeparam name="T">The type for which the UIAppearance proxy must be returned.  This is a subclass of MKAnnotationView.</typeparam>
-        <param name="traits">Trait collection to match.</param>
-        <summary>
-          <para>Obtains the appearance proxy <see cref="T:MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance" /> for the subclass of MKAnnotationView.</para>
-        </summary>
-        <returns>
-          <para>appearance proxy object for the specified type.</para>
-        </returns>
-        <remarks>
-          <para>The returned object represents the UIAppearance proxy where you can set appearance properties for instances of MKAnnotationView.</para>
-          <para>Unlike the <see cref="P:MonoTouch.MapKit.MKAnnotationView.Appearance" /> property, or the <see cref="M:MonoTouch.MapKit.MKAnnotationViewAppearanceWhenContainedIn" /> method which only work on instances of this particular class, the proxies returned by GetAppearance can be used to change the style of subclasses.</para>
-          <para>The following example shows how the GetAppearance method works</para>
-          <example>
-            <code lang="C#">
-var myTheme = MKAnnotationView.GetAppearance&lt;MyMKAnnotationViewSubclass&gt; (myTraits, );
-myTheme.TintColor = UIColor.Red;
-</code>
-          </example>
-          <para>For more information, see the documentation for the <see cref="T:MonoTouch.UIKit.UIAppearance" /> class.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetAppearance&lt;T&gt;">
-      <MemberSignature Language="C#" Value="public static MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance GetAppearance&lt;T&gt; (MonoTouch.UIKit.UITraitCollection traits) where T : MonoTouch.MapKit.MKAnnotationView;" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.MapKit.MKAnnotationView/MKAnnotationViewAppearance GetAppearance&lt;(class MonoTouch.MapKit.MKAnnotationView) T&gt;(class MonoTouch.UIKit.UITraitCollection traits) cil managed" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>MonoTouch.MapKit.MKAnnotationView+MKAnnotationViewAppearance</ReturnType>
-      </ReturnValue>
-      <TypeParameters>
-        <TypeParameter Name="T">
-          <Constraints>
-            <BaseTypeName>MonoTouch.MapKit.MKAnnotationView</BaseTypeName>
-          </Constraints>
-        </TypeParameter>
-      </TypeParameters>
-      <Parameters>
-        <Parameter Name="traits" Type="MonoTouch.UIKit.UITraitCollection" />
-      </Parameters>
-      <Docs>
-        <typeparam name="T">The type for which the UIAppearance proxy must be returned.  This is a subclass of MKAnnotationView.</typeparam>
-        <param name="traits">Trait collection to match.</param>
-        <summary>
-          <para>Obtains the appearance proxy <see cref="T:MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance" /> for the subclass of MKAnnotationView.</para>
-        </summary>
-        <returns>
-          <para>appearance proxy object for the specified type.</para>
-        </returns>
-        <remarks>
-          <para>The returned object represents the UIAppearance proxy where you can set appearance properties for instances of MKAnnotationView.</para>
-          <para>Unlike the <see cref="P:MonoTouch.MapKit.MKAnnotationView.Appearance" /> property, or the <see cref="M:MonoTouch.MapKit.MKAnnotationViewAppearanceWhenContainedIn" /> method which only work on instances of this particular class, the proxies returned by GetAppearance can be used to change the style of subclasses.</para>
-          <para>The following example shows how the GetAppearance method works</para>
-          <example>
-            <code lang="C#">
-var myTheme = MKAnnotationView.GetAppearance&lt;MyMKAnnotationViewSubclass&gt; (myTraits, );
-myTheme.TintColor = UIColor.Red;
-</code>
-          </example>
-          <para>For more information, see the documentation for the <see cref="T:MonoTouch.UIKit.UIAppearance" /> class.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetAppearance&lt;T&gt;">
-      <MemberSignature Language="C#" Value="public static MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance GetAppearance&lt;T&gt; (MonoTouch.UIKit.UITraitCollection traits) where T : MonoTouch.MapKit.MKAnnotationView;" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.MapKit.MKAnnotationView/MKAnnotationViewAppearance GetAppearance&lt;(class MonoTouch.MapKit.MKAnnotationView) T&gt;(class MonoTouch.UIKit.UITraitCollection traits) cil managed" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo apistyle="classic">
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo apistyle="unified">
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>MonoTouch.MapKit.MKAnnotationView+MKAnnotationViewAppearance</ReturnType>
-      </ReturnValue>
-      <TypeParameters>
-        <TypeParameter Name="T">
-          <Constraints>
-            <BaseTypeName>MonoTouch.MapKit.MKAnnotationView</BaseTypeName>
-          </Constraints>
-        </TypeParameter>
-      </TypeParameters>
-      <Parameters>
-        <Parameter Name="traits" Type="MonoTouch.UIKit.UITraitCollection" />
-      </Parameters>
-      <Docs>
-        <typeparam name="T">The type for which the UIAppearance proxy must be returned.  This is a subclass of MKAnnotationView.</typeparam>
-        <param name="traits">Trait collection to match.</param>
-        <summary>
-          <para>Obtains the appearance proxy <see cref="T:MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance" /> for the subclass of MKAnnotationView.</para>
-        </summary>
-        <returns>
-          <para>appearance proxy object for the specified type.</para>
-        </returns>
-        <remarks>
-          <para>The returned object represents the UIAppearance proxy where you can set appearance properties for instances of MKAnnotationView.</para>
-          <para>Unlike the <see cref="P:MonoTouch.MapKit.MKAnnotationView.Appearance" /> property, or the <see cref="M:MonoTouch.MapKit.MKAnnotationViewAppearanceWhenContainedIn" /> method which only work on instances of this particular class, the proxies returned by GetAppearance can be used to change the style of subclasses.</para>
-          <para>The following example shows how the GetAppearance method works</para>
-          <example>
-            <code lang="C#">
-var myTheme = MKAnnotationView.GetAppearance&lt;MyMKAnnotationViewSubclass&gt; (myTraits, );
-myTheme.TintColor = UIColor.Red;
-</code>
-          </example>
-          <para>For more information, see the documentation for the <see cref="T:MonoTouch.UIKit.UIAppearance" /> class.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetAppearance&lt;T&gt;">
-      <MemberSignature Language="C#" Value="public static MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance GetAppearance&lt;T&gt; (MonoTouch.UIKit.UITraitCollection traits) where T : MonoTouch.MapKit.MKAnnotationView;" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.MapKit.MKAnnotationView/MKAnnotationViewAppearance GetAppearance&lt;(class MonoTouch.MapKit.MKAnnotationView) T&gt;(class MonoTouch.UIKit.UITraitCollection traits) cil managed" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>MonoTouch.MapKit.MKAnnotationView+MKAnnotationViewAppearance</ReturnType>
-      </ReturnValue>
-      <TypeParameters>
-        <TypeParameter Name="T">
-          <Constraints>
-            <BaseTypeName>MonoTouch.MapKit.MKAnnotationView</BaseTypeName>
-          </Constraints>
-        </TypeParameter>
-      </TypeParameters>
-      <Parameters>
-        <Parameter Name="traits" Type="MonoTouch.UIKit.UITraitCollection" />
-      </Parameters>
-      <Docs>
-        <typeparam name="T">To be added.</typeparam>
-        <param name="traits">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetAppearance&lt;T&gt;" apistyle="classic">
-      <MemberSignature Language="C#" Value="public static MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance GetAppearance&lt;T&gt; (MonoTouch.UIKit.UITraitCollection traits) where T : MonoTouch.MapKit.MKAnnotationView;" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.MapKit.MKAnnotationView/MKAnnotationViewAppearance GetAppearance&lt;(class MonoTouch.MapKit.MKAnnotationView) T&gt;(class MonoTouch.UIKit.UITraitCollection traits) cil managed" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>MonoTouch.MapKit.MKAnnotationView+MKAnnotationViewAppearance</ReturnType>
-      </ReturnValue>
-      <TypeParameters>
-        <TypeParameter Name="T">
-          <Constraints>
-            <BaseTypeName>MonoTouch.MapKit.MKAnnotationView</BaseTypeName>
-          </Constraints>
-        </TypeParameter>
-      </TypeParameters>
-      <Parameters>
-        <Parameter Name="traits" Type="MonoTouch.UIKit.UITraitCollection" />
-      </Parameters>
-      <Docs>
-        <typeparam name="T">The type for which the UIAppearance proxy must be returned.  This is a subclass of MKAnnotationView.</typeparam>
-        <param name="traits">Trait collection to match.</param>
-        <summary>
-          <para>Obtains the appearance proxy <see cref="T:MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance" /> for the subclass of MKAnnotationView.</para>
-        </summary>
-        <returns>
-          <para>appearance proxy object for the specified type.</para>
-        </returns>
-        <remarks>
-          <para>The returned object represents the UIAppearance proxy where you can set appearance properties for instances of MKAnnotationView.</para>
-          <para>Unlike the <see cref="P:MonoTouch.MapKit.MKAnnotationView.Appearance" /> property, or the <see cref="M:MonoTouch.MapKit.MKAnnotationViewAppearanceWhenContainedIn" /> method which only work on instances of this particular class, the proxies returned by GetAppearance can be used to change the style of subclasses.</para>
-          <para>The following example shows how the GetAppearance method works</para>
-          <example>
-            <code lang="C#">
-var myTheme = MKAnnotationView.GetAppearance&lt;MyMKAnnotationViewSubclass&gt; (myTraits, );
-myTheme.TintColor = UIColor.Red;
-</code>
-          </example>
-          <para>For more information, see the documentation for the <see cref="T:MonoTouch.UIKit.UIAppearance" /> class.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetAppearance&lt;T&gt;" apistyle="classic">
       <MemberSignature Language="C#" Value="public static MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance GetAppearance&lt;T&gt; (MonoTouch.UIKit.UITraitCollection traits, Type[] containers) where T : MonoTouch.MapKit.MKAnnotationView;" />
       <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.MapKit.MKAnnotationView/MKAnnotationViewAppearance GetAppearance&lt;(class MonoTouch.MapKit.MKAnnotationView) T&gt;(class MonoTouch.UIKit.UITraitCollection traits, class System.Type[] containers) cil managed" />
       <MemberType>Method</MemberType>
       <AssemblyInfo apistyle="unified">
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
       </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>MonoTouch.MapKit.MKAnnotationView+MKAnnotationViewAppearance</ReturnType>
-      </ReturnValue>
-      <TypeParameters>
-        <TypeParameter Name="T">
-          <Constraints>
-            <BaseTypeName>MonoTouch.MapKit.MKAnnotationView</BaseTypeName>
-          </Constraints>
-        </TypeParameter>
-      </TypeParameters>
-      <Parameters>
-        <Parameter Name="traits" Type="MonoTouch.UIKit.UITraitCollection" />
-        <Parameter Name="containers" Type="System.Type[]">
-          <Attributes>
-            <Attribute>
-              <AttributeName>System.ParamArray</AttributeName>
-            </Attribute>
-          </Attributes>
-        </Parameter>
-      </Parameters>
-      <Docs>
-        <typeparam name="T">The type for which the UIAppearance proxy must be returned.  This is a subclass of MKAnnotationView.</typeparam>
-        <param name="traits">Trait collection to match.</param>
-        <param name="containers">List of types that you want to have as the containers to apply this particular appearance.</param>
-        <summary>
-          <para>Obtains the appearance proxy <see cref="T:MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance" /> for the subclass of MKAnnotationView that has the specified trait collection when the view is hosted in the specified hierarchy.</para>
-        </summary>
-        <returns>
-          <para>appearance proxy object for the specified type.</para>
-        </returns>
-        <remarks>
-          <para>The returned object represents the UIAppearance proxy where you can set appearance properties for instances of MKAnnotationView that has the specified trait collection when the view is hosted in the specified hierarchy when those instances are contained in the hierarchy specified by the <paramref name="containers" /> parameter.</para>
-          <para>Unlike the <see cref="P:MonoTouch.MapKit.MKAnnotationView.Appearance" /> property, or the <see cref="M:MonoTouch.MapKit.MKAnnotationViewAppearanceWhenContainedIn" /> method which only work on instances of this particular class, the proxies returned by GetAppearance can be used to change the style of subclasses.</para>
-          <para>The following example shows how the GetAppearance method works</para>
-          <example>
-            <code lang="C#">
-var myTheme = MKAnnotationView.GetAppearance&lt;MyMKAnnotationViewSubclass&gt; (myTraits, typeof (UINavigationBar), typeof (UIPopoverController));
-myTheme.TintColor = UIColor.Red;
-</code>
-          </example>
-          <para>For more information, see the documentation for the <see cref="T:MonoTouch.UIKit.UIAppearance" /> class.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetAppearance&lt;T&gt;" apistyle="classic">
-      <MemberSignature Language="C#" Value="public static MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance GetAppearance&lt;T&gt; (MonoTouch.UIKit.UITraitCollection traits, Type[] containers) where T : MonoTouch.MapKit.MKAnnotationView;" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.MapKit.MKAnnotationView/MKAnnotationViewAppearance GetAppearance&lt;(class MonoTouch.MapKit.MKAnnotationView) T&gt;(class MonoTouch.UIKit.UITraitCollection traits, class System.Type[] containers) cil managed" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>MonoTouch.MapKit.MKAnnotationView+MKAnnotationViewAppearance</ReturnType>
-      </ReturnValue>
-      <TypeParameters>
-        <TypeParameter Name="T">
-          <Constraints>
-            <BaseTypeName>MonoTouch.MapKit.MKAnnotationView</BaseTypeName>
-          </Constraints>
-        </TypeParameter>
-      </TypeParameters>
-      <Parameters>
-        <Parameter Name="traits" Type="MonoTouch.UIKit.UITraitCollection" />
-        <Parameter Name="containers" Type="System.Type[]">
-          <Attributes>
-            <Attribute>
-              <AttributeName>System.ParamArray</AttributeName>
-            </Attribute>
-          </Attributes>
-        </Parameter>
-      </Parameters>
-      <Docs>
-        <typeparam name="T">The type for which the UIAppearance proxy must be returned.  This is a subclass of MKAnnotationView.</typeparam>
-        <param name="traits">Trait collection to match.</param>
-        <param name="containers">List of types that you want to have as the containers to apply this particular appearance.</param>
-        <summary>
-          <para>Obtains the appearance proxy <see cref="T:MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance" /> for the subclass of MKAnnotationView that has the specified trait collection when the view is hosted in the specified hierarchy.</para>
-        </summary>
-        <returns>
-          <para>appearance proxy object for the specified type.</para>
-        </returns>
-        <remarks>
-          <para>The returned object represents the UIAppearance proxy where you can set appearance properties for instances of MKAnnotationView that has the specified trait collection when the view is hosted in the specified hierarchy when those instances are contained in the hierarchy specified by the <paramref name="containers" /> parameter.</para>
-          <para>Unlike the <see cref="P:MonoTouch.MapKit.MKAnnotationView.Appearance" /> property, or the <see cref="M:MonoTouch.MapKit.MKAnnotationViewAppearanceWhenContainedIn" /> method which only work on instances of this particular class, the proxies returned by GetAppearance can be used to change the style of subclasses.</para>
-          <para>The following example shows how the GetAppearance method works</para>
-          <example>
-            <code lang="C#">
-var myTheme = MKAnnotationView.GetAppearance&lt;MyMKAnnotationViewSubclass&gt; (myTraits, typeof (UINavigationBar), typeof (UIPopoverController));
-myTheme.TintColor = UIColor.Red;
-</code>
-          </example>
-          <para>For more information, see the documentation for the <see cref="T:MonoTouch.UIKit.UIAppearance" /> class.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetAppearance&lt;T&gt;" apistyle="classic">
-      <MemberSignature Language="C#" Value="public static MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance GetAppearance&lt;T&gt; (MonoTouch.UIKit.UITraitCollection traits, Type[] containers) where T : MonoTouch.MapKit.MKAnnotationView;" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.MapKit.MKAnnotationView/MKAnnotationViewAppearance GetAppearance&lt;(class MonoTouch.MapKit.MKAnnotationView) T&gt;(class MonoTouch.UIKit.UITraitCollection traits, class System.Type[] containers) cil managed" />
-      <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -1405,234 +863,6 @@ myTheme.TintColor = UIColor.Red;
       <MemberSignature Language="C#" Value="public static MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance GetAppearance&lt;T&gt; (MonoTouch.UIKit.UITraitCollection traits, Type[] containers) where T : MonoTouch.MapKit.MKAnnotationView;" />
       <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.MapKit.MKAnnotationView/MKAnnotationViewAppearance GetAppearance&lt;(class MonoTouch.MapKit.MKAnnotationView) T&gt;(class MonoTouch.UIKit.UITraitCollection traits, class System.Type[] containers) cil managed" />
       <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>MonoTouch.MapKit.MKAnnotationView+MKAnnotationViewAppearance</ReturnType>
-      </ReturnValue>
-      <TypeParameters>
-        <TypeParameter Name="T">
-          <Constraints>
-            <BaseTypeName>MonoTouch.MapKit.MKAnnotationView</BaseTypeName>
-          </Constraints>
-        </TypeParameter>
-      </TypeParameters>
-      <Parameters>
-        <Parameter Name="traits" Type="MonoTouch.UIKit.UITraitCollection" />
-        <Parameter Name="containers" Type="System.Type[]">
-          <Attributes>
-            <Attribute>
-              <AttributeName>System.ParamArray</AttributeName>
-            </Attribute>
-          </Attributes>
-        </Parameter>
-      </Parameters>
-      <Docs>
-        <typeparam name="T">The type for which the UIAppearance proxy must be returned.  This is a subclass of MKAnnotationView.</typeparam>
-        <param name="traits">Trait collection to match.</param>
-        <param name="containers">List of types that you want to have as the containers to apply this particular appearance.</param>
-        <summary>
-          <para>Obtains the appearance proxy <see cref="T:MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance" /> for the subclass of MKAnnotationView that has the specified trait collection when the view is hosted in the specified hierarchy.</para>
-        </summary>
-        <returns>
-          <para>appearance proxy object for the specified type.</para>
-        </returns>
-        <remarks>
-          <para>The returned object represents the UIAppearance proxy where you can set appearance properties for instances of MKAnnotationView that has the specified trait collection when the view is hosted in the specified hierarchy when those instances are contained in the hierarchy specified by the <paramref name="containers" /> parameter.</para>
-          <para>Unlike the <see cref="P:MonoTouch.MapKit.MKAnnotationView.Appearance" /> property, or the <see cref="M:MonoTouch.MapKit.MKAnnotationViewAppearanceWhenContainedIn" /> method which only work on instances of this particular class, the proxies returned by GetAppearance can be used to change the style of subclasses.</para>
-          <para>The following example shows how the GetAppearance method works</para>
-          <example>
-            <code lang="C#">
-var myTheme = MKAnnotationView.GetAppearance&lt;MyMKAnnotationViewSubclass&gt; (myTraits, typeof (UINavigationBar), typeof (UIPopoverController));
-myTheme.TintColor = UIColor.Red;
-</code>
-          </example>
-          <para>For more information, see the documentation for the <see cref="T:MonoTouch.UIKit.UIAppearance" /> class.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetAppearance&lt;T&gt;" apistyle="classic">
-      <MemberSignature Language="C#" Value="public static MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance GetAppearance&lt;T&gt; (MonoTouch.UIKit.UITraitCollection traits, Type[] containers) where T : MonoTouch.MapKit.MKAnnotationView;" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.MapKit.MKAnnotationView/MKAnnotationViewAppearance GetAppearance&lt;(class MonoTouch.MapKit.MKAnnotationView) T&gt;(class MonoTouch.UIKit.UITraitCollection traits, class System.Type[] containers) cil managed" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo apistyle="unified">
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>MonoTouch.MapKit.MKAnnotationView+MKAnnotationViewAppearance</ReturnType>
-      </ReturnValue>
-      <TypeParameters>
-        <TypeParameter Name="T">
-          <Constraints>
-            <BaseTypeName>MonoTouch.MapKit.MKAnnotationView</BaseTypeName>
-          </Constraints>
-        </TypeParameter>
-      </TypeParameters>
-      <Parameters>
-        <Parameter Name="traits" Type="MonoTouch.UIKit.UITraitCollection" />
-        <Parameter Name="containers" Type="System.Type[]">
-          <Attributes>
-            <Attribute>
-              <AttributeName>System.ParamArray</AttributeName>
-            </Attribute>
-          </Attributes>
-        </Parameter>
-      </Parameters>
-      <Docs>
-        <typeparam name="T">The type for which the UIAppearance proxy must be returned.  This is a subclass of MKAnnotationView.</typeparam>
-        <param name="traits">Trait collection to match.</param>
-        <param name="containers">List of types that you want to have as the containers to apply this particular appearance.</param>
-        <summary>
-          <para>Obtains the appearance proxy <see cref="T:MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance" /> for the subclass of MKAnnotationView that has the specified trait collection when the view is hosted in the specified hierarchy.</para>
-        </summary>
-        <returns>
-          <para>appearance proxy object for the specified type.</para>
-        </returns>
-        <remarks>
-          <para>The returned object represents the UIAppearance proxy where you can set appearance properties for instances of MKAnnotationView that has the specified trait collection when the view is hosted in the specified hierarchy when those instances are contained in the hierarchy specified by the <paramref name="containers" /> parameter.</para>
-          <para>Unlike the <see cref="P:MonoTouch.MapKit.MKAnnotationView.Appearance" /> property, or the <see cref="M:MonoTouch.MapKit.MKAnnotationViewAppearanceWhenContainedIn" /> method which only work on instances of this particular class, the proxies returned by GetAppearance can be used to change the style of subclasses.</para>
-          <para>The following example shows how the GetAppearance method works</para>
-          <example>
-            <code lang="C#">
-var myTheme = MKAnnotationView.GetAppearance&lt;MyMKAnnotationViewSubclass&gt; (myTraits, typeof (UINavigationBar), typeof (UIPopoverController));
-myTheme.TintColor = UIColor.Red;
-</code>
-          </example>
-          <para>For more information, see the documentation for the <see cref="T:MonoTouch.UIKit.UIAppearance" /> class.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetAppearance&lt;T&gt;">
-      <MemberSignature Language="C#" Value="public static MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance GetAppearance&lt;T&gt; (MonoTouch.UIKit.UITraitCollection traits, Type[] containers) where T : MonoTouch.MapKit.MKAnnotationView;" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.MapKit.MKAnnotationView/MKAnnotationViewAppearance GetAppearance&lt;(class MonoTouch.MapKit.MKAnnotationView) T&gt;(class MonoTouch.UIKit.UITraitCollection traits, class System.Type[] containers) cil managed" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>MonoTouch.MapKit.MKAnnotationView+MKAnnotationViewAppearance</ReturnType>
-      </ReturnValue>
-      <TypeParameters>
-        <TypeParameter Name="T">
-          <Constraints>
-            <BaseTypeName>MonoTouch.MapKit.MKAnnotationView</BaseTypeName>
-          </Constraints>
-        </TypeParameter>
-      </TypeParameters>
-      <Parameters>
-        <Parameter Name="traits" Type="MonoTouch.UIKit.UITraitCollection" />
-        <Parameter Name="containers" Type="System.Type[]">
-          <Attributes>
-            <Attribute>
-              <AttributeName>System.ParamArray</AttributeName>
-            </Attribute>
-          </Attributes>
-        </Parameter>
-      </Parameters>
-      <Docs>
-        <typeparam name="T">To be added.</typeparam>
-        <param name="traits">To be added.</param>
-        <param name="containers">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetAppearance&lt;T&gt;" apistyle="classic">
-      <MemberSignature Language="C#" Value="public static MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance GetAppearance&lt;T&gt; (MonoTouch.UIKit.UITraitCollection traits, Type[] containers) where T : MonoTouch.MapKit.MKAnnotationView;" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.MapKit.MKAnnotationView/MKAnnotationViewAppearance GetAppearance&lt;(class MonoTouch.MapKit.MKAnnotationView) T&gt;(class MonoTouch.UIKit.UITraitCollection traits, class System.Type[] containers) cil managed" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>MonoTouch.MapKit.MKAnnotationView+MKAnnotationViewAppearance</ReturnType>
-      </ReturnValue>
-      <TypeParameters>
-        <TypeParameter Name="T">
-          <Constraints>
-            <BaseTypeName>MonoTouch.MapKit.MKAnnotationView</BaseTypeName>
-          </Constraints>
-        </TypeParameter>
-      </TypeParameters>
-      <Parameters>
-        <Parameter Name="traits" Type="MonoTouch.UIKit.UITraitCollection" />
-        <Parameter Name="containers" Type="System.Type[]">
-          <Attributes>
-            <Attribute>
-              <AttributeName>System.ParamArray</AttributeName>
-            </Attribute>
-          </Attributes>
-        </Parameter>
-      </Parameters>
-      <Docs>
-        <typeparam name="T">The type for which the UIAppearance proxy must be returned.  This is a subclass of MKAnnotationView.</typeparam>
-        <param name="traits">Trait collection to match.</param>
-        <param name="containers">List of types that you want to have as the containers to apply this particular appearance.</param>
-        <summary>
-          <para>Obtains the appearance proxy <see cref="T:MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance" /> for the subclass of MKAnnotationView that has the specified trait collection when the view is hosted in the specified hierarchy.</para>
-        </summary>
-        <returns>
-          <para>appearance proxy object for the specified type.</para>
-        </returns>
-        <remarks>
-          <para>The returned object represents the UIAppearance proxy where you can set appearance properties for instances of MKAnnotationView that has the specified trait collection when the view is hosted in the specified hierarchy when those instances are contained in the hierarchy specified by the <paramref name="containers" /> parameter.</para>
-          <para>Unlike the <see cref="P:MonoTouch.MapKit.MKAnnotationView.Appearance" /> property, or the <see cref="M:MonoTouch.MapKit.MKAnnotationViewAppearanceWhenContainedIn" /> method which only work on instances of this particular class, the proxies returned by GetAppearance can be used to change the style of subclasses.</para>
-          <para>The following example shows how the GetAppearance method works</para>
-          <example>
-            <code lang="C#">
-var myTheme = MKAnnotationView.GetAppearance&lt;MyMKAnnotationViewSubclass&gt; (myTraits, typeof (UINavigationBar), typeof (UIPopoverController));
-myTheme.TintColor = UIColor.Red;
-</code>
-          </example>
-          <para>For more information, see the documentation for the <see cref="T:MonoTouch.UIKit.UIAppearance" /> class.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetAppearance&lt;T&gt;" apistyle="unified">
-      <MemberSignature Language="C#" Value="public static MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance GetAppearance&lt;T&gt; (MonoTouch.UIKit.UITraitCollection traits, Type[] containers) where T : MonoTouch.MapKit.MKAnnotationView;" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.MapKit.MKAnnotationView/MKAnnotationViewAppearance GetAppearance&lt;(class MonoTouch.MapKit.MKAnnotationView) T&gt;(class MonoTouch.UIKit.UITraitCollection traits, class System.Type[] containers) cil managed" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo apistyle="unified">
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>MonoTouch.MapKit.MKAnnotationView+MKAnnotationViewAppearance</ReturnType>
-      </ReturnValue>
-      <TypeParameters>
-        <TypeParameter Name="T">
-          <Constraints>
-            <BaseTypeName>MonoTouch.MapKit.MKAnnotationView</BaseTypeName>
-          </Constraints>
-        </TypeParameter>
-      </TypeParameters>
-      <Parameters>
-        <Parameter Name="traits" Type="MonoTouch.UIKit.UITraitCollection" />
-        <Parameter Name="containers" Type="System.Type[]">
-          <Attributes>
-            <Attribute>
-              <AttributeName>System.ParamArray</AttributeName>
-            </Attribute>
-          </Attributes>
-        </Parameter>
-      </Parameters>
-      <Docs>
-        <typeparam name="T">To be added.</typeparam>
-        <param name="traits">To be added.</param>
-        <param name="containers">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetAppearance&lt;T&gt;" apistyle="classic">
-      <MemberSignature Language="C#" Value="public static MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance GetAppearance&lt;T&gt; (MonoTouch.UIKit.UITraitCollection traits, Type[] containers) where T : MonoTouch.MapKit.MKAnnotationView;" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.MapKit.MKAnnotationView/MKAnnotationViewAppearance GetAppearance&lt;(class MonoTouch.MapKit.MKAnnotationView) T&gt;(class MonoTouch.UIKit.UITraitCollection traits, class System.Type[] containers) cil managed" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo apistyle="classic">
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
       <AssemblyInfo apistyle="unified">
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -1641,210 +871,6 @@ myTheme.TintColor = UIColor.Red;
       </ReturnValue>
       <TypeParameters>
         <TypeParameter Name="T" />
-      </TypeParameters>
-      <Parameters>
-        <Parameter Name="traits" Type="MonoTouch.UIKit.UITraitCollection" />
-        <Parameter Name="containers" Type="System.Type[]">
-          <Attributes>
-            <Attribute>
-              <AttributeName>System.ParamArray</AttributeName>
-            </Attribute>
-          </Attributes>
-        </Parameter>
-      </Parameters>
-      <Docs>
-        <typeparam name="T">The type for which the UIAppearance proxy must be returned.  This is a subclass of MKAnnotationView.</typeparam>
-        <param name="traits">Trait collection to match.</param>
-        <param name="containers">List of types that you want to have as the containers to apply this particular appearance.</param>
-        <summary>
-          <para>Obtains the appearance proxy <see cref="T:MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance" /> for the subclass of MKAnnotationView that has the specified trait collection when the view is hosted in the specified hierarchy.</para>
-        </summary>
-        <returns>
-          <para>appearance proxy object for the specified type.</para>
-        </returns>
-        <remarks>
-          <para>The returned object represents the UIAppearance proxy where you can set appearance properties for instances of MKAnnotationView that has the specified trait collection when the view is hosted in the specified hierarchy when those instances are contained in the hierarchy specified by the <paramref name="containers" /> parameter.</para>
-          <para>Unlike the <see cref="P:MonoTouch.MapKit.MKAnnotationView.Appearance" /> property, or the <see cref="M:MonoTouch.MapKit.MKAnnotationViewAppearanceWhenContainedIn" /> method which only work on instances of this particular class, the proxies returned by GetAppearance can be used to change the style of subclasses.</para>
-          <para>The following example shows how the GetAppearance method works</para>
-          <example>
-            <code lang="C#">
-var myTheme = MKAnnotationView.GetAppearance&lt;MyMKAnnotationViewSubclass&gt; (myTraits, typeof (UINavigationBar), typeof (UIPopoverController));
-myTheme.TintColor = UIColor.Red;
-</code>
-          </example>
-          <para>For more information, see the documentation for the <see cref="T:MonoTouch.UIKit.UIAppearance" /> class.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetAppearance&lt;T&gt;" apistyle="classic">
-      <MemberSignature Language="C#" Value="public static MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance GetAppearance&lt;T&gt; (MonoTouch.UIKit.UITraitCollection traits, Type[] containers) where T : MonoTouch.MapKit.MKAnnotationView;" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.MapKit.MKAnnotationView/MKAnnotationViewAppearance GetAppearance&lt;(class MonoTouch.MapKit.MKAnnotationView) T&gt;(class MonoTouch.UIKit.UITraitCollection traits, class System.Type[] containers) cil managed" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo apistyle="unified">
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>MonoTouch.MapKit.MKAnnotationView+MKAnnotationViewAppearance</ReturnType>
-      </ReturnValue>
-      <TypeParameters>
-        <TypeParameter Name="T">
-          <Constraints>
-            <BaseTypeName>MonoTouch.MapKit.MKAnnotationView</BaseTypeName>
-          </Constraints>
-        </TypeParameter>
-      </TypeParameters>
-      <Parameters>
-        <Parameter Name="traits" Type="MonoTouch.UIKit.UITraitCollection" />
-        <Parameter Name="containers" Type="System.Type[]">
-          <Attributes>
-            <Attribute>
-              <AttributeName>System.ParamArray</AttributeName>
-            </Attribute>
-          </Attributes>
-        </Parameter>
-      </Parameters>
-      <Docs>
-        <typeparam name="T">The type for which the UIAppearance proxy must be returned.  This is a subclass of MKAnnotationView.</typeparam>
-        <param name="traits">Trait collection to match.</param>
-        <param name="containers">List of types that you want to have as the containers to apply this particular appearance.</param>
-        <summary>
-          <para>Obtains the appearance proxy <see cref="T:MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance" /> for the subclass of MKAnnotationView that has the specified trait collection when the view is hosted in the specified hierarchy.</para>
-        </summary>
-        <returns>
-          <para>appearance proxy object for the specified type.</para>
-        </returns>
-        <remarks>
-          <para>The returned object represents the UIAppearance proxy where you can set appearance properties for instances of MKAnnotationView that has the specified trait collection when the view is hosted in the specified hierarchy when those instances are contained in the hierarchy specified by the <paramref name="containers" /> parameter.</para>
-          <para>Unlike the <see cref="P:MonoTouch.MapKit.MKAnnotationView.Appearance" /> property, or the <see cref="M:MonoTouch.MapKit.MKAnnotationViewAppearanceWhenContainedIn" /> method which only work on instances of this particular class, the proxies returned by GetAppearance can be used to change the style of subclasses.</para>
-          <para>The following example shows how the GetAppearance method works</para>
-          <example>
-            <code lang="C#">
-var myTheme = MKAnnotationView.GetAppearance&lt;MyMKAnnotationViewSubclass&gt; (myTraits, typeof (UINavigationBar), typeof (UIPopoverController));
-myTheme.TintColor = UIColor.Red;
-</code>
-          </example>
-          <para>For more information, see the documentation for the <see cref="T:MonoTouch.UIKit.UIAppearance" /> class.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetAppearance&lt;T&gt;" apistyle="classic">
-      <MemberSignature Language="C#" Value="public static MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance GetAppearance&lt;T&gt; (MonoTouch.UIKit.UITraitCollection traits, Type[] containers) where T : MonoTouch.MapKit.MKAnnotationView;" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.MapKit.MKAnnotationView/MKAnnotationViewAppearance GetAppearance&lt;(class MonoTouch.MapKit.MKAnnotationView) T&gt;(class MonoTouch.UIKit.UITraitCollection traits, class System.Type[] containers) cil managed" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>MonoTouch.MapKit.MKAnnotationView+MKAnnotationViewAppearance</ReturnType>
-      </ReturnValue>
-      <TypeParameters>
-        <TypeParameter Name="T">
-          <Constraints>
-            <BaseTypeName>MonoTouch.MapKit.MKAnnotationView</BaseTypeName>
-          </Constraints>
-        </TypeParameter>
-      </TypeParameters>
-      <Parameters>
-        <Parameter Name="traits" Type="MonoTouch.UIKit.UITraitCollection" />
-        <Parameter Name="containers" Type="System.Type[]">
-          <Attributes>
-            <Attribute>
-              <AttributeName>System.ParamArray</AttributeName>
-            </Attribute>
-          </Attributes>
-        </Parameter>
-      </Parameters>
-      <Docs>
-        <typeparam name="T">The type for which the UIAppearance proxy must be returned.  This is a subclass of MKAnnotationView.</typeparam>
-        <param name="traits">Trait collection to match.</param>
-        <param name="containers">List of types that you want to have as the containers to apply this particular appearance.</param>
-        <summary>
-          <para>Obtains the appearance proxy <see cref="T:MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance" /> for the subclass of MKAnnotationView that has the specified trait collection when the view is hosted in the specified hierarchy.</para>
-        </summary>
-        <returns>
-          <para>appearance proxy object for the specified type.</para>
-        </returns>
-        <remarks>
-          <para>The returned object represents the UIAppearance proxy where you can set appearance properties for instances of MKAnnotationView that has the specified trait collection when the view is hosted in the specified hierarchy when those instances are contained in the hierarchy specified by the <paramref name="containers" /> parameter.</para>
-          <para>Unlike the <see cref="P:MonoTouch.MapKit.MKAnnotationView.Appearance" /> property, or the <see cref="M:MonoTouch.MapKit.MKAnnotationViewAppearanceWhenContainedIn" /> method which only work on instances of this particular class, the proxies returned by GetAppearance can be used to change the style of subclasses.</para>
-          <para>The following example shows how the GetAppearance method works</para>
-          <example>
-            <code lang="C#">
-var myTheme = MKAnnotationView.GetAppearance&lt;MyMKAnnotationViewSubclass&gt; (myTraits, typeof (UINavigationBar), typeof (UIPopoverController));
-myTheme.TintColor = UIColor.Red;
-</code>
-          </example>
-          <para>For more information, see the documentation for the <see cref="T:MonoTouch.UIKit.UIAppearance" /> class.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetAppearance&lt;T&gt;" apistyle="unified">
-      <MemberSignature Language="C#" Value="public static MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance GetAppearance&lt;T&gt; (MonoTouch.UIKit.UITraitCollection traits, Type[] containers) where T : MonoTouch.MapKit.MKAnnotationView;" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.MapKit.MKAnnotationView/MKAnnotationViewAppearance GetAppearance&lt;(class MonoTouch.MapKit.MKAnnotationView) T&gt;(class MonoTouch.UIKit.UITraitCollection traits, class System.Type[] containers) cil managed" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo apistyle="unified">
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>MonoTouch.MapKit.MKAnnotationView+MKAnnotationViewAppearance</ReturnType>
-      </ReturnValue>
-      <TypeParameters>
-        <TypeParameter Name="T">
-          <Constraints>
-            <BaseTypeName>MonoTouch.MapKit.MKAnnotationView</BaseTypeName>
-          </Constraints>
-        </TypeParameter>
-      </TypeParameters>
-      <Parameters>
-        <Parameter Name="traits" Type="MonoTouch.UIKit.UITraitCollection" />
-        <Parameter Name="containers" Type="System.Type[]">
-          <Attributes>
-            <Attribute>
-              <AttributeName>System.ParamArray</AttributeName>
-            </Attribute>
-          </Attributes>
-        </Parameter>
-      </Parameters>
-      <Docs>
-        <typeparam name="T">The type for which the UIAppearance proxy must be returned.  This is a subclass of MKAnnotationView.</typeparam>
-        <param name="traits">Trait collection to match.</param>
-        <param name="containers">List of types that you want to have as the containers to apply this particular appearance.</param>
-        <summary>
-          <para>Obtains the appearance proxy <see cref="T:MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance" /> for the subclass of MKAnnotationView that has the specified trait collection when the view is hosted in the specified hierarchy.</para>
-        </summary>
-        <returns>
-          <para>appearance proxy object for the specified type.</para>
-        </returns>
-        <remarks>
-          <para>The returned object represents the UIAppearance proxy where you can set appearance properties for instances of MKAnnotationView that has the specified trait collection when the view is hosted in the specified hierarchy when those instances are contained in the hierarchy specified by the <paramref name="containers" /> parameter.</para>
-          <para>Unlike the <see cref="P:MonoTouch.MapKit.MKAnnotationView.Appearance" /> property, or the <see cref="M:MonoTouch.MapKit.MKAnnotationViewAppearanceWhenContainedIn" /> method which only work on instances of this particular class, the proxies returned by GetAppearance can be used to change the style of subclasses.</para>
-          <para>The following example shows how the GetAppearance method works</para>
-          <example>
-            <code lang="C#">
-var myTheme = MKAnnotationView.GetAppearance&lt;MyMKAnnotationViewSubclass&gt; (myTraits, typeof (UINavigationBar), typeof (UIPopoverController));
-myTheme.TintColor = UIColor.Red;
-</code>
-          </example>
-          <para>For more information, see the documentation for the <see cref="T:MonoTouch.UIKit.UIAppearance" /> class.</para>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetAppearance&lt;T&gt;" apistyle="classic">
-      <MemberSignature Language="C#" Value="public static MonoTouch.MapKit.MKAnnotationView.MKAnnotationViewAppearance GetAppearance&lt;T&gt; (MonoTouch.UIKit.UITraitCollection traits, Type[] containers) where T : MonoTouch.MapKit.MKAnnotationView;" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.MapKit.MKAnnotationView/MKAnnotationViewAppearance GetAppearance&lt;(class MonoTouch.MapKit.MKAnnotationView) T&gt;(class MonoTouch.UIKit.UITraitCollection traits, class System.Type[] containers) cil managed" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo apistyle="unified">
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>MonoTouch.MapKit.MKAnnotationView+MKAnnotationViewAppearance</ReturnType>
-      </ReturnValue>
-      <TypeParameters>
-        <TypeParameter Name="T">
-          <Constraints>
-            <BaseTypeName>MonoTouch.MapKit.MKAnnotationView</BaseTypeName>
-          </Constraints>
-        </TypeParameter>
       </TypeParameters>
       <Parameters>
         <Parameter Name="traits" Type="MonoTouch.UIKit.UITraitCollection" />
@@ -1919,10 +945,10 @@ myTheme.TintColor = UIColor.Red;
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: MonoTouch.Foundation.Export("image")</AttributeName>
+          <AttributeName>get: MonoTouch.Foundation.Export("image", MonoTouch.ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: MonoTouch.Foundation.Export("setImage:")</AttributeName>
+          <AttributeName>set: MonoTouch.Foundation.Export("setImage:", MonoTouch.ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1949,10 +975,10 @@ myTheme.TintColor = UIColor.Red;
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: MonoTouch.Foundation.Export("leftCalloutAccessoryView")</AttributeName>
+          <AttributeName>get: MonoTouch.Foundation.Export("leftCalloutAccessoryView", MonoTouch.ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: MonoTouch.Foundation.Export("setLeftCalloutAccessoryView:")</AttributeName>
+          <AttributeName>set: MonoTouch.Foundation.Export("setLeftCalloutAccessoryView:", MonoTouch.ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -2027,10 +1053,10 @@ myTheme.TintColor = UIColor.Red;
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: MonoTouch.Foundation.Export("rightCalloutAccessoryView")</AttributeName>
+          <AttributeName>get: MonoTouch.Foundation.Export("rightCalloutAccessoryView", MonoTouch.ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: MonoTouch.Foundation.Export("setRightCalloutAccessoryView:")</AttributeName>
+          <AttributeName>set: MonoTouch.Foundation.Export("setRightCalloutAccessoryView:", MonoTouch.ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
