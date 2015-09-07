@@ -25,12 +25,12 @@
       <para>For the initial timer fire at start, the upper limit to the allowable delay is set to leeway nanoseconds. For the subsequent timer fires at start + N * interval, the upper limit is MIN(leeway, interval / 2 ).</para>
       <para>
       </para>
-      <para>The lower limit to the allowable delay may vary with process state such as visibility of application UI. If the specified timer source was created with a mask of DISPATCH_TIMER_STRICT, the system will make a best effort to strictly observe the provided leeway value even if it is smaller than the current lower limit. Note that a minimal amount of delay is to be expected even if this flag is specified.</para>
+      <para>The lower limit to the allowable delay may vary with process state such as visibility of application UI. If the specified timer source was created with a the constructor that sets "strict" to true, the system will make a best effort to strictly observe the provided leeway value even if it is smaller than the current lower limit. Note that a minimal amount of delay is to be expected even if this flag is specified.</para>
       <para>
       </para>
       <example>
         <code lang="c#"><![CDATA[
-var dispatchSource = new DispatchSource.Timer (DispatchQueue.MainQueue);
+var dispatchSource = new DispatchSource.Timer (strict: true, queue: DispatchQueue.MainQueue);
 
 long delay = 2000000000;
 long leeway = 5000000000;
