@@ -3112,6 +3112,7 @@
       <Type Name="MTLLanguageVersion" Kind="Enumeration" />
       <Type Name="MTLLibraryError" Kind="Enumeration" />
       <Type Name="MTLLoadAction" Kind="Enumeration" />
+      <Type Name="MTLMultisampleDepthResolveFilter" Kind="Enumeration" />
       <Type Name="MTLNewComputePipelineStateWithReflectionCompletionHandler" Kind="Delegate" />
       <Type Name="MTLOrigin" Kind="Structure" />
       <Type Name="MTLPipelineOption" Kind="Enumeration" />
@@ -4014,6 +4015,7 @@
       <Type Name="IUIPopoverBackgroundViewMethods" Kind="Interface" />
       <Type Name="IUIPopoverControllerDelegate" Kind="Interface" />
       <Type Name="IUIPopoverPresentationControllerDelegate" Kind="Interface" />
+      <Type Name="IUIPreviewActionItem" Kind="Interface" />
       <Type Name="IUIPrinterPickerControllerDelegate" Kind="Interface" />
       <Type Name="IUIPrintInteractionControllerDelegate" Kind="Interface" />
       <Type Name="IUIScrollViewAccessibilityDelegate" Kind="Interface" />
@@ -4041,6 +4043,8 @@
       <Type Name="IUIViewControllerAnimatedTransitioning" Kind="Interface" />
       <Type Name="IUIViewControllerContextTransitioning" Kind="Interface" />
       <Type Name="IUIViewControllerInteractiveTransitioning" Kind="Interface" />
+      <Type Name="IUIViewControllerPreviewing" Kind="Interface" />
+      <Type Name="IUIViewControllerPreviewingDelegate" Kind="Interface" />
       <Type Name="IUIViewControllerRestoration" Kind="Interface" />
       <Type Name="IUIViewControllerTransitionCoordinator" Kind="Interface" />
       <Type Name="IUIViewControllerTransitionCoordinatorContext" Kind="Interface" />
@@ -4139,6 +4143,9 @@
       <Type Name="UIApplicationLaunchEventArgs" Kind="Class" />
       <Type Name="UIApplicationOpenUrlOptions" Kind="Class" />
       <Type Name="UIApplicationRestorationHandler" Kind="Delegate" />
+      <Type Name="UIApplicationShortcutIcon" Kind="Class" />
+      <Type Name="UIApplicationShortcutIconType" Kind="Enumeration" />
+      <Type Name="UIApplicationShortcutItem" Kind="Class" />
       <Type Name="UIApplicationState" Kind="Enumeration" />
       <Type Name="UIAttachmentBehavior" Kind="Class" />
       <Type Name="UIAttachmentBehaviorType" Kind="Enumeration" />
@@ -4272,6 +4279,7 @@
       <Type Name="UIFontFeature" Kind="Class" />
       <Type Name="UIFontTraits" Kind="Class" />
       <Type Name="UIFontWeight" Kind="Enumeration" />
+      <Type Name="UIForceTouchCapability" Kind="Enumeration" />
       <Type Name="UIGestureProbe" Kind="Delegate" />
       <Type Name="UIGestureRecognizer" Kind="Class" />
       <Type Name="UIGestureRecognizer+ParameterlessDispatch" Kind="Class" />
@@ -4403,6 +4411,12 @@
       <Type Name="UIPopoverPresentationControllerDelegate" Kind="Class" />
       <Type Name="UIPopoverPresentationControllerDelegate_Extensions" Kind="Class" />
       <Type Name="UIPresentationController" Kind="Class" />
+      <Type Name="UIPreviewAction" Kind="Class" />
+      <Type Name="UIPreviewActionGroup" Kind="Class" />
+      <Type Name="UIPreviewActionItem" Kind="Class" />
+      <Type Name="UIPreviewActionItem_Extensions" Kind="Class" />
+      <Type Name="UIPreviewActionStyle" Kind="Enumeration" />
+      <Type Name="UIPreviewHandler" Kind="Delegate" />
       <Type Name="UIPrint" Kind="Class" />
       <Type Name="UIPrinter" Kind="Class" />
       <Type Name="UIPrinterContactPrinterHandler" Kind="Delegate" />
@@ -4649,6 +4663,10 @@
       <Type Name="UIViewControllerContextTransitioning" Kind="Class" />
       <Type Name="UIViewControllerInteractiveTransitioning" Kind="Class" />
       <Type Name="UIViewControllerInteractiveTransitioning_Extensions" Kind="Class" />
+      <Type Name="UIViewControllerPreviewing" Kind="Class" />
+      <Type Name="UIViewControllerPreviewing_Extensions" Kind="Class" />
+      <Type Name="UIViewControllerPreviewingDelegate" Kind="Class" />
+      <Type Name="UIViewControllerPreviewingDelegate_Extensions" Kind="Class" />
       <Type Name="UIViewControllerTransitionCoordinatorContext_Extensions" Kind="Class" />
       <Type Name="UIViewControllerTransitioningDelegate" Kind="Class" />
       <Type Name="UIViewControllerTransitioningDelegate_Extensions" Kind="Class" />
@@ -18665,7 +18683,7 @@
           <param name="This">The instance on which this extension method operates on.</param>
           <param name="controller">To be added.</param>
           <param name="url">To be added.</param>
-          <param name="title">To be added.</param>
+          <param name="title">To be added.This parameter can be .</param>
           <summary>To be added.</summary>
         </Docs>
         <Link Type="MonoTouch.SafariServices.SFSafariViewControllerDelegate_Extensions" Member="M:MonoTouch.SafariServices.SFSafariViewControllerDelegate_Extensions.GetActivityItems(MonoTouch.SafariServices.ISFSafariViewControllerDelegate,MonoTouch.SafariServices.SFSafariViewController,MonoTouch.Foundation.NSUrl,System.String)" />
@@ -22483,6 +22501,39 @@
       <Targets>
         <Target Type="T:MonoTouch.UIKit.IUIApplicationDelegate" />
       </Targets>
+      <Member MemberName="PerformActionForShorcutItem">
+        <MemberSignature Language="C#" Value="public static void PerformActionForShorcutItem (this MonoTouch.UIKit.IUIApplicationDelegate This, MonoTouch.UIKit.UIApplication application, MonoTouch.UIKit.UIApplicationShortcutItem shortcutItem, MonoTouch.UIKit.UIOperationHandler completionHandler);" />
+        <MemberSignature Language="ILAsm" Value=".method public static hidebysig void PerformActionForShorcutItem(class MonoTouch.UIKit.IUIApplicationDelegate This, class MonoTouch.UIKit.UIApplication application, class MonoTouch.UIKit.UIApplicationShortcutItem shortcutItem, class MonoTouch.UIKit.UIOperationHandler completionHandler) cil managed" />
+        <MemberType>ExtensionMethod</MemberType>
+        <ReturnValue>
+          <ReturnType>System.Void</ReturnType>
+        </ReturnValue>
+        <Parameters>
+          <Parameter Name="This" Type="MonoTouch.UIKit.IUIApplicationDelegate" RefType="this" />
+          <Parameter Name="application" Type="MonoTouch.UIKit.UIApplication" />
+          <Parameter Name="shortcutItem" Type="MonoTouch.UIKit.UIApplicationShortcutItem" />
+          <Parameter Name="completionHandler" Type="MonoTouch.UIKit.UIOperationHandler">
+            <Attributes>
+              <Attribute>
+                <AttributeName>MonoTouch.ObjCRuntime.BlockProxy(typeof(MonoTouch.ObjCRuntime.Trampolines/NIDUIOperationHandler))</AttributeName>
+              </Attribute>
+            </Attributes>
+          </Parameter>
+        </Parameters>
+        <Docs>
+          <param name="This">The instance on which this extension method operates on.</param>
+          <param name="application">To be added.</param>
+          <param name="shortcutItem">To be added.</param>
+          <param name="completionHandler">To be added.</param>
+          <summary>To be added.</summary>
+        </Docs>
+        <Link Type="MonoTouch.UIKit.UIApplicationDelegate_Extensions" Member="M:MonoTouch.UIKit.UIApplicationDelegate_Extensions.PerformActionForShorcutItem(MonoTouch.UIKit.IUIApplicationDelegate,MonoTouch.UIKit.UIApplication,MonoTouch.UIKit.UIApplicationShortcutItem,MonoTouch.UIKit.UIOperationHandler)" />
+      </Member>
+    </ExtensionMethod>
+    <ExtensionMethod>
+      <Targets>
+        <Target Type="T:MonoTouch.UIKit.IUIApplicationDelegate" />
+      </Targets>
       <Member MemberName="PerformFetch">
         <MemberSignature Language="C#" Value="public static void PerformFetch (this MonoTouch.UIKit.IUIApplicationDelegate This, MonoTouch.UIKit.UIApplication application, Action&lt;MonoTouch.UIKit.UIBackgroundFetchResult&gt; completionHandler);" />
         <MemberSignature Language="ILAsm" Value=".method public static hidebysig void PerformFetch(class MonoTouch.UIKit.IUIApplicationDelegate This, class MonoTouch.UIKit.UIApplication application, class System.Action`1&lt;valuetype MonoTouch.UIKit.UIBackgroundFetchResult&gt; completionHandler) cil managed" />
@@ -25468,6 +25519,27 @@
           <summary>The UI is about to change and the popover will be moved and/or resized.</summary>
         </Docs>
         <Link Type="MonoTouch.UIKit.UIPopoverPresentationControllerDelegate_Extensions" Member="M:MonoTouch.UIKit.UIPopoverPresentationControllerDelegate_Extensions.WillRepositionPopover(MonoTouch.UIKit.IUIPopoverPresentationControllerDelegate,MonoTouch.UIKit.UIPopoverPresentationController,MonoTouch.CoreGraphics.CGRect,MonoTouch.UIKit.UIView)" />
+      </Member>
+    </ExtensionMethod>
+    <ExtensionMethod>
+      <Targets>
+        <Target Type="T:MonoTouch.UIKit.IUIPreviewActionItem" />
+      </Targets>
+      <Member MemberName="GetTitle">
+        <MemberSignature Language="C#" Value="public static string GetTitle (this MonoTouch.UIKit.IUIPreviewActionItem This);" />
+        <MemberSignature Language="ILAsm" Value=".method public static hidebysig string GetTitle(class MonoTouch.UIKit.IUIPreviewActionItem This) cil managed" />
+        <MemberType>ExtensionMethod</MemberType>
+        <ReturnValue>
+          <ReturnType>System.String</ReturnType>
+        </ReturnValue>
+        <Parameters>
+          <Parameter Name="This" Type="MonoTouch.UIKit.IUIPreviewActionItem" RefType="this" />
+        </Parameters>
+        <Docs>
+          <param name="This">To be added.</param>
+          <summary>To be added.</summary>
+        </Docs>
+        <Link Type="MonoTouch.UIKit.UIPreviewActionItem_Extensions" Member="M:MonoTouch.UIKit.UIPreviewActionItem_Extensions.GetTitle(MonoTouch.UIKit.IUIPreviewActionItem)" />
       </Member>
     </ExtensionMethod>
     <ExtensionMethod>
@@ -30624,6 +30696,195 @@
           <summary>Returns the overall relative speed of an animation. The default value is 1.0.</summary>
         </Docs>
         <Link Type="MonoTouch.UIKit.UIViewControllerInteractiveTransitioning_Extensions" Member="M:MonoTouch.UIKit.UIViewControllerInteractiveTransitioning_Extensions.GetCompletionSpeed(MonoTouch.UIKit.IUIViewControllerInteractiveTransitioning)" />
+      </Member>
+    </ExtensionMethod>
+    <ExtensionMethod>
+      <Targets>
+        <Target Type="T:MonoTouch.UIKit.IUIViewControllerPreviewing" />
+      </Targets>
+      <Member MemberName="GetPreviewingGestureRecognizerForFailureRelationship">
+        <MemberSignature Language="C#" Value="public static MonoTouch.UIKit.UIGestureRecognizer GetPreviewingGestureRecognizerForFailureRelationship (this MonoTouch.UIKit.IUIViewControllerPreviewing This);" />
+        <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.UIKit.UIGestureRecognizer GetPreviewingGestureRecognizerForFailureRelationship(class MonoTouch.UIKit.IUIViewControllerPreviewing This) cil managed" />
+        <MemberType>ExtensionMethod</MemberType>
+        <ReturnValue>
+          <ReturnType>MonoTouch.UIKit.UIGestureRecognizer</ReturnType>
+        </ReturnValue>
+        <Parameters>
+          <Parameter Name="This" Type="MonoTouch.UIKit.IUIViewControllerPreviewing" RefType="this" />
+        </Parameters>
+        <Docs>
+          <param name="This">To be added.</param>
+          <summary>To be added.</summary>
+        </Docs>
+        <Link Type="MonoTouch.UIKit.UIViewControllerPreviewing_Extensions" Member="M:MonoTouch.UIKit.UIViewControllerPreviewing_Extensions.GetPreviewingGestureRecognizerForFailureRelationship(MonoTouch.UIKit.IUIViewControllerPreviewing)" />
+      </Member>
+    </ExtensionMethod>
+    <ExtensionMethod>
+      <Targets>
+        <Target Type="T:MonoTouch.UIKit.IUIViewControllerPreviewing" />
+      </Targets>
+      <Member MemberName="GetSourceRect">
+        <MemberSignature Language="C#" Value="public static System.Drawing.RectangleF GetSourceRect (this MonoTouch.UIKit.IUIViewControllerPreviewing This);" apistyle="classic" />
+        <MemberSignature Language="ILAsm" Value=".method public static hidebysig valuetype System.Drawing.RectangleF GetSourceRect(class MonoTouch.UIKit.IUIViewControllerPreviewing This) cil managed" apistyle="classic" />
+        <MemberSignature Language="C#" Value="public static MonoTouch.CoreGraphics.CGRect GetSourceRect (this MonoTouch.UIKit.IUIViewControllerPreviewing This);" apistyle="unified" />
+        <MemberSignature Language="ILAsm" Value=".method public static hidebysig valuetype MonoTouch.CoreGraphics.CGRect GetSourceRect(class MonoTouch.UIKit.IUIViewControllerPreviewing This) cil managed" apistyle="unified" />
+        <MemberType>ExtensionMethod</MemberType>
+        <ReturnValue>
+          <ReturnType apistyle="classic">System.Drawing.RectangleF</ReturnType>
+          <ReturnType apistyle="unified">MonoTouch.CoreGraphics.CGRect</ReturnType>
+        </ReturnValue>
+        <Parameters>
+          <Parameter Name="This" Type="MonoTouch.UIKit.IUIViewControllerPreviewing" RefType="this" />
+        </Parameters>
+        <Docs>
+          <param name="This">To be added.</param>
+          <summary>To be added.</summary>
+        </Docs>
+        <Link Type="MonoTouch.UIKit.UIViewControllerPreviewing_Extensions" Member="M:MonoTouch.UIKit.UIViewControllerPreviewing_Extensions.GetSourceRect(MonoTouch.UIKit.IUIViewControllerPreviewing)" />
+      </Member>
+    </ExtensionMethod>
+    <ExtensionMethod>
+      <Targets>
+        <Target Type="T:MonoTouch.UIKit.IUIViewControllerPreviewing" />
+      </Targets>
+      <Member MemberName="GetSourceView">
+        <MemberSignature Language="C#" Value="public static MonoTouch.UIKit.UIView GetSourceView (this MonoTouch.UIKit.IUIViewControllerPreviewing This);" />
+        <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.UIKit.UIView GetSourceView(class MonoTouch.UIKit.IUIViewControllerPreviewing This) cil managed" />
+        <MemberType>ExtensionMethod</MemberType>
+        <ReturnValue>
+          <ReturnType>MonoTouch.UIKit.UIView</ReturnType>
+        </ReturnValue>
+        <Parameters>
+          <Parameter Name="This" Type="MonoTouch.UIKit.IUIViewControllerPreviewing" RefType="this" />
+        </Parameters>
+        <Docs>
+          <param name="This">To be added.</param>
+          <summary>To be added.</summary>
+        </Docs>
+        <Link Type="MonoTouch.UIKit.UIViewControllerPreviewing_Extensions" Member="M:MonoTouch.UIKit.UIViewControllerPreviewing_Extensions.GetSourceView(MonoTouch.UIKit.IUIViewControllerPreviewing)" />
+      </Member>
+    </ExtensionMethod>
+    <ExtensionMethod>
+      <Targets>
+        <Target Type="T:MonoTouch.UIKit.IUIViewControllerPreviewing" />
+      </Targets>
+      <Member MemberName="GetWeakDelegate">
+        <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSObject GetWeakDelegate (this MonoTouch.UIKit.IUIViewControllerPreviewing This);" />
+        <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.Foundation.NSObject GetWeakDelegate(class MonoTouch.UIKit.IUIViewControllerPreviewing This) cil managed" />
+        <MemberType>ExtensionMethod</MemberType>
+        <ReturnValue>
+          <ReturnType>MonoTouch.Foundation.NSObject</ReturnType>
+        </ReturnValue>
+        <Parameters>
+          <Parameter Name="This" Type="MonoTouch.UIKit.IUIViewControllerPreviewing" RefType="this" />
+        </Parameters>
+        <Docs>
+          <param name="This">To be added.</param>
+          <summary>To be added.</summary>
+        </Docs>
+        <Link Type="MonoTouch.UIKit.UIViewControllerPreviewing_Extensions" Member="M:MonoTouch.UIKit.UIViewControllerPreviewing_Extensions.GetWeakDelegate(MonoTouch.UIKit.IUIViewControllerPreviewing)" />
+      </Member>
+    </ExtensionMethod>
+    <ExtensionMethod>
+      <Targets>
+        <Target Type="T:MonoTouch.UIKit.IUIViewControllerPreviewing" />
+      </Targets>
+      <Member MemberName="SetSourceRect">
+        <MemberSignature Language="C#" Value="public static void SetSourceRect (this MonoTouch.UIKit.IUIViewControllerPreviewing This, System.Drawing.RectangleF value);" apistyle="classic" />
+        <MemberSignature Language="ILAsm" Value=".method public static hidebysig void SetSourceRect(class MonoTouch.UIKit.IUIViewControllerPreviewing This, valuetype System.Drawing.RectangleF value) cil managed" apistyle="classic" />
+        <MemberSignature Language="C#" Value="public static void SetSourceRect (this MonoTouch.UIKit.IUIViewControllerPreviewing This, MonoTouch.CoreGraphics.CGRect value);" apistyle="unified" />
+        <MemberSignature Language="ILAsm" Value=".method public static hidebysig void SetSourceRect(class MonoTouch.UIKit.IUIViewControllerPreviewing This, valuetype MonoTouch.CoreGraphics.CGRect value) cil managed" apistyle="unified" />
+        <MemberType>ExtensionMethod</MemberType>
+        <ReturnValue>
+          <ReturnType>System.Void</ReturnType>
+        </ReturnValue>
+        <Parameters>
+          <Parameter Name="This" Type="MonoTouch.UIKit.IUIViewControllerPreviewing" RefType="this" />
+          <Parameter Name="value" Type="System.Drawing.RectangleF" apistyle="classic" />
+          <Parameter Name="value" Type="MonoTouch.CoreGraphics.CGRect" apistyle="unified" />
+        </Parameters>
+        <Docs>
+          <param name="This">To be added.</param>
+          <param name="value">To be added.</param>
+          <summary>To be added.</summary>
+        </Docs>
+        <Link Type="MonoTouch.UIKit.UIViewControllerPreviewing_Extensions" Member="M:MonoTouch.UIKit.UIViewControllerPreviewing_Extensions.SetSourceRect(MonoTouch.UIKit.IUIViewControllerPreviewing,MonoTouch.CoreGraphics.CGRect)" />
+      </Member>
+    </ExtensionMethod>
+    <ExtensionMethod>
+      <Targets>
+        <Target Type="T:MonoTouch.UIKit.IUIViewControllerPreviewing" />
+      </Targets>
+      <Member MemberName="SetWeakDelegate">
+        <MemberSignature Language="C#" Value="public static void SetWeakDelegate (this MonoTouch.UIKit.IUIViewControllerPreviewing This, MonoTouch.Foundation.NSObject value);" />
+        <MemberSignature Language="ILAsm" Value=".method public static hidebysig void SetWeakDelegate(class MonoTouch.UIKit.IUIViewControllerPreviewing This, class MonoTouch.Foundation.NSObject value) cil managed" />
+        <MemberType>ExtensionMethod</MemberType>
+        <ReturnValue>
+          <ReturnType>System.Void</ReturnType>
+        </ReturnValue>
+        <Parameters>
+          <Parameter Name="This" Type="MonoTouch.UIKit.IUIViewControllerPreviewing" RefType="this" />
+          <Parameter Name="value" Type="MonoTouch.Foundation.NSObject" />
+        </Parameters>
+        <Docs>
+          <param name="This">To be added.</param>
+          <param name="value">To be added.</param>
+          <summary>To be added.</summary>
+        </Docs>
+        <Link Type="MonoTouch.UIKit.UIViewControllerPreviewing_Extensions" Member="M:MonoTouch.UIKit.UIViewControllerPreviewing_Extensions.SetWeakDelegate(MonoTouch.UIKit.IUIViewControllerPreviewing,MonoTouch.Foundation.NSObject)" />
+      </Member>
+    </ExtensionMethod>
+    <ExtensionMethod>
+      <Targets>
+        <Target Type="T:MonoTouch.UIKit.IUIViewControllerPreviewingDelegate" />
+      </Targets>
+      <Member MemberName="CommitViewController">
+        <MemberSignature Language="C#" Value="public static void CommitViewController (this MonoTouch.UIKit.IUIViewControllerPreviewingDelegate This, MonoTouch.UIKit.IUIViewControllerPreviewing previewingContext, MonoTouch.UIKit.UIViewController viewControllerToCommit);" />
+        <MemberSignature Language="ILAsm" Value=".method public static hidebysig void CommitViewController(class MonoTouch.UIKit.IUIViewControllerPreviewingDelegate This, class MonoTouch.UIKit.IUIViewControllerPreviewing previewingContext, class MonoTouch.UIKit.UIViewController viewControllerToCommit) cil managed" />
+        <MemberType>ExtensionMethod</MemberType>
+        <ReturnValue>
+          <ReturnType>System.Void</ReturnType>
+        </ReturnValue>
+        <Parameters>
+          <Parameter Name="This" Type="MonoTouch.UIKit.IUIViewControllerPreviewingDelegate" RefType="this" />
+          <Parameter Name="previewingContext" Type="MonoTouch.UIKit.IUIViewControllerPreviewing" />
+          <Parameter Name="viewControllerToCommit" Type="MonoTouch.UIKit.UIViewController" />
+        </Parameters>
+        <Docs>
+          <param name="This">The instance on which this extension method operates on.</param>
+          <param name="previewingContext">To be added.</param>
+          <param name="viewControllerToCommit">To be added.</param>
+          <summary>To be added.</summary>
+        </Docs>
+        <Link Type="MonoTouch.UIKit.UIViewControllerPreviewingDelegate_Extensions" Member="M:MonoTouch.UIKit.UIViewControllerPreviewingDelegate_Extensions.CommitViewController(MonoTouch.UIKit.IUIViewControllerPreviewingDelegate,MonoTouch.UIKit.IUIViewControllerPreviewing,MonoTouch.UIKit.UIViewController)" />
+      </Member>
+    </ExtensionMethod>
+    <ExtensionMethod>
+      <Targets>
+        <Target Type="T:MonoTouch.UIKit.IUIViewControllerPreviewingDelegate" />
+      </Targets>
+      <Member MemberName="GetViewControllerForPreview">
+        <MemberSignature Language="C#" Value="public static MonoTouch.UIKit.UIViewController GetViewControllerForPreview (this MonoTouch.UIKit.IUIViewControllerPreviewingDelegate This, MonoTouch.UIKit.IUIViewControllerPreviewing previewingContext, System.Drawing.PointF location);" apistyle="classic" />
+        <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.UIKit.UIViewController GetViewControllerForPreview(class MonoTouch.UIKit.IUIViewControllerPreviewingDelegate This, class MonoTouch.UIKit.IUIViewControllerPreviewing previewingContext, valuetype System.Drawing.PointF location) cil managed" apistyle="classic" />
+        <MemberSignature Language="C#" Value="public static MonoTouch.UIKit.UIViewController GetViewControllerForPreview (this MonoTouch.UIKit.IUIViewControllerPreviewingDelegate This, MonoTouch.UIKit.IUIViewControllerPreviewing previewingContext, MonoTouch.CoreGraphics.CGPoint location);" apistyle="unified" />
+        <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.UIKit.UIViewController GetViewControllerForPreview(class MonoTouch.UIKit.IUIViewControllerPreviewingDelegate This, class MonoTouch.UIKit.IUIViewControllerPreviewing previewingContext, valuetype MonoTouch.CoreGraphics.CGPoint location) cil managed" apistyle="unified" />
+        <MemberType>ExtensionMethod</MemberType>
+        <ReturnValue>
+          <ReturnType>MonoTouch.UIKit.UIViewController</ReturnType>
+        </ReturnValue>
+        <Parameters>
+          <Parameter Name="This" Type="MonoTouch.UIKit.IUIViewControllerPreviewingDelegate" RefType="this" />
+          <Parameter Name="previewingContext" Type="MonoTouch.UIKit.IUIViewControllerPreviewing" />
+          <Parameter Name="location" Type="System.Drawing.PointF" apistyle="classic" />
+          <Parameter Name="location" Type="MonoTouch.CoreGraphics.CGPoint" apistyle="unified" />
+        </Parameters>
+        <Docs>
+          <param name="This">The instance on which this extension method operates on.</param>
+          <param name="previewingContext">To be added.</param>
+          <param name="location">To be added.</param>
+          <summary>To be added.</summary>
+        </Docs>
+        <Link Type="MonoTouch.UIKit.UIViewControllerPreviewingDelegate_Extensions" Member="M:MonoTouch.UIKit.UIViewControllerPreviewingDelegate_Extensions.GetViewControllerForPreview(MonoTouch.UIKit.IUIViewControllerPreviewingDelegate,MonoTouch.UIKit.IUIViewControllerPreviewing,MonoTouch.CoreGraphics.CGPoint)" />
       </Member>
     </ExtensionMethod>
     <ExtensionMethod>
