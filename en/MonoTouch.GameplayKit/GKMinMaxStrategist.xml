@@ -1,4 +1,4 @@
-﻿<Type Name="GKMinMaxStrategist" FullName="MonoTouch.GameplayKit.GKMinMaxStrategist">
+<Type Name="GKMinMaxStrategist" FullName="MonoTouch.GameplayKit.GKMinMaxStrategist">
   <TypeSignature Language="C#" Value="public class GKMinMaxStrategist : MonoTouch.Foundation.NSObject" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit GKMinMaxStrategist extends MonoTouch.Foundation.NSObject" />
   <AssemblyInfo apistyle="classic">
@@ -26,7 +26,12 @@
   </Attributes>
   <Docs>
     <summary>Game AI that evaluates potential game states, scores them, and attempts to maximize it's own score while minimizing it's opponents.</summary>
-    <remarks>To be added.</remarks>
+    <remarks>
+      <para>The <see cref="T:Monotouch.GameplayKit.GKMinMaxStrategist"/> class is an implementation of the minimax algorithm, optimized for space efficiency. Developers do not subclass <see cref="T:Monotouch.GameplayKit.GKMinMaxStrategist"/>, but instead create game-specific implementations of <see cref="T:Monotouch.GameplayKit.IGKGameModelPlayer"/>, <see cref="T:Monotouch.GameplayKit.IGKGameModel"/>, and <see cref="T:Monotouch.GameplayKit.IGKGameModelUpdate"/>. This is discussed in detail in the "AI Opponent" section of the remarks section of the <see cref="N:Monotouch.GameplayKit"/> namespace documentation.</para>
+      <para>Perhaps because <see cref="T:Monotouch.GameplayKit.GKMinMaxStrategist"/> is a highly-optimized implementation, it's failure modes are difficult to debug. Typically, a mistake in the configuration of <see cref="T:Monotouch.GameplayKit.GKMinMaxStrategist"/> or in the implementation of the related game classes results in an <see langword="null"/> returned by <see cref="M:Monotouch.GameplayKit.GKMinMaxStrategist.GetBestMove"/> with no error message in the console or system log. The following sequence diagram may be of some help in placing breakpoints:</para>
+      <para><img src="GKMinMaxStrategist.GetBestMoveMove_Sequence.png"/></para>
+      <para>Because <see cref="M:Monotouch.GameplayKit.GKMinMaxStrategist.GetBestMove"/> is very expensive, developers should typically call it from a background <see cref="T:System.Threading.Tasks.Task"/>.</para>
+    </remarks>
     <related type="PlatformDocAPI" href="https://developer.apple.com/library/ios/documentation/GameplayKit/Reference/GKMinmaxStrategist_Class/index.html">Apple documentation for <c>GKMinmaxStrategist</c></related>
   </Docs>
   <Members>
@@ -237,11 +242,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Docs>
         <summary>The <see cref="T:Monotouch.GameplayKit.IGKGameModel" /> representing the current state of the game.</summary>
-        <value>
-          <para>(More documentation for this node is coming)</para>
-          <para tool="nullallowed">This value can be <see langword="null" />.</para>
-        </value>
-        <remarks>To be added.</remarks>
+        <value></value>
+        <remarks>
+          <para>Developers must set this value for <see cref="M:Monotouch.GameplayKit.GKMinMaxStrategist.GetBestMove"/> to return something other than <see langword="null"/>.</para>
+          <para>Developers must not rely on this property as the only reference to their <see cref="T:Monotouch.GameplayKit.IGKGameModel"/>. Developers must hold their own reference to the <see cref="T:Monotouch.GameplayKit.IGKGameModel"/> or it may be garbage collected. </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetBestMove">
@@ -268,8 +273,33 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="player">To be added.</param>
         <summary>Calculates the <see cref="T:Monotouch.GameplayKit.IGKGameModelUpdate" /> that provides the greatest advantage to <param name="player" />, constrained by <see cref="P:Monotouch.GameplayKit.GKMinMaxStrategist.MaxLookAheadDepth" />.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <returns>Configuration  or implementation defects may result in this method returning <see langword="null"/>.</returns>
+        <remarks>
+          <para>This method returns, within the constraints of <see cref="P:Monotouch.GameplayKit.GKMinMaxStrategist.MaxLookAheadDepth"/>, the <see cref="T:Monotouch.GameplayKit.IGKGameModelUpdate"/> that maximizes the expected value for <paramref name="player"/> even in the face of optimal play by the opponent.</para>
+          <para>This is done via a tree-search of possible game states, modeled by <see cref="T:Monotouch.GameplayKit.IGKGameModel"/> objects. These states are either game-ending (if either <see cref="M:MonoTouch.GameplayKit.GKGameModel_Extensions.IsWin"/> or <see cref="M:MonoTouch.GameplayKit.GKGameModel_Extensions.IsLoss"/> return <see langword="true"/>) or can generate subsequent moves (see <see cref="M:Monotouch.GameplayKit.IGKGameModel.GetGameModelUpdate"/>). The <see cref="P:Monotouch.GameplayKit.GKMinMaxStrategist.MaxLookAheadDepth"/> determines the number of possible moves ahead (plies) in the tree are searched.</para>
+          <para>The underlying algorithm's time efficiency is <c>O(b^m)</c> where <c>b</c> is the number of states in a single look-ahead "ply" and <c>m</c> is the number of plies searched (see <see cref="P:MonoTouch>GameplayKit.GKMinMaxStrategist.MaxLookAheadDepth"/>). The algorithm's space efficiency is <c>O(m)</c>.</para>
+          <para>If multiple <see cref="T:Monotouch.GameplayKit.IGKGameModelUpdate"/> objects have identical <see cref="P:Monotouch.GameplayKit.IGKGameModelUpdate.Value"/> values and <see cref="P:Monotouch.GameplayKit.GKMinMaxStrategist.RandomSource"/> is not <see langword="null"/>, the <see cref="T:Monotouch.GameplayKit.IGKGameModelUpdate"/> returned is chosen randomly from those with maximum values. If <see cref="P:Monotouch.GameplayKit.GKMinMaxStrategist.RandomSource"/>, this method is deterministic and returns the first move calculated with that value. (The order in which moves from a given state are calculated is the same order as that of the moves returned by <see cref="M:Monotouch.GameplayKit.IGKGameModel.GetGameModelUpdate"/>.)</para>
+          <para>Before this call returns, the internal state of the <see cref="P:Monotouch.GameplayKit.GKMinMaxStrategist.GameModel"/> may be changed transiently, but before this method returns, the state will be returned to it's state prior to the call. To actually apply the best move to the game, developers should call <see cref="M:Monotouch.GameplayKit.IGKGameModel.ApplyGameModelUpdate"/>, as shown in the following:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+game = new TicTacToe ();
+
+var strategist = new GKMinMaxStrategist {
+	GameModel = game,
+	MaxLookAheadDepth = 9,
+	RandomSource = new GKARC4RandomSource ()
+};
+
+while (game.IsActive ()) {
+	var bestMove = strategist.GetBestMove (game.GetActivePlayer()) as TicTacToeMove;
+	game.ApplyGameModelUpdate (bestMove);
+	UpdateDisplay (ticTacToe, bestMove);
+	Thread.Sleep (200);
+}
+  ]]></code>
+          </example>
+          <para>In the previous example, the <c>game</c> variable refers to a subtype of <see cref="T:Monotouch.GameplayKit.IGKGameModel"/>. Note that in this case, the <see cref="T:Monotouch.GameplayKit.GKMinMaxStrategist"/> is playing both sides. Not shown is that this code is being run in a background <see cref="T:System.Threading.Tasks.Task"/> and that application code is holding on a reference to the <c>game</c> object so that it is not garbage-collected.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetRandomMove">
@@ -332,9 +362,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType apistyle="unified">System.nint</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The number of complete turns to evaluate. Exponentially expensive.</summary>
+        <summary>The number of player turns to evaluate. Exponentially expensive.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <para>This value determines the number of layers of plays to evaluate. A round of plays (one by each player) would be considered 2 levels: one for each player's set of possible plays.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="RandomSource">

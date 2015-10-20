@@ -53,13 +53,9 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>
-      <para>Interface representing the required methods (if any) of the protocol <see cref="T:MonoTouch.GameplayKit.GKGameModel" />.</para>
-    </summary>
+    <summary>The current game state. Particularly useful in conjunction with <see cref="T:Monotouch.GameplayKit.GKMinMaxStrategist"/>.</summary>
     <remarks>
-      <para>This interface contains the required methods (if any) from the protocol defined by <see cref="T:MonoTouch.GameplayKit.GKGameModel" />.</para>
-      <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="T:MonoTouch.GameplayKit.GKGameModel" /> protocol.</para>
-      <para>Optional methods (if any) are provided by the <see cref="T:MonoTouch.GameplayKit.GKGameModel_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
+      <para>When <see cref="T:Monotouch.GameplayKit.GKMinMaxStrategist"/> is used as an AI opponent, it uses <see cref="T:Monotouch.Gameplay.IGKGameModel"/> objects to describe the game's state and <see cref="T:Monotouch.GameplayKit.IGKGameModelUpdate"/> objects to describe potential moves. (See the "AI Opponent" section in the remarks at <see cref="N:Monotouch.GameplayKit"/>)</para>
     </remarks>
   </Docs>
   <Members>
@@ -88,7 +84,7 @@
         <Parameter Name="gameModelUpdate" Type="MonoTouch.GameplayKit.IGKGameModelUpdate" />
       </Parameters>
       <Docs>
-        <param name="gameModelUpdate">To be added.</param>
+        <param name="gameModelUpdate">An object that describes a valid move from the current state of <c>this</c>.</param>
         <summary>Modifies the internal state of this <see cref="T:Monotouch.GameplayKit.IGKGameModel" /> according to the move described in <param name="gameModelUpdate" />.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -147,9 +143,11 @@
       </Parameters>
       <Docs>
         <param name="player">To be added.</param>
-        <summary>The set of legal moves available to <param name="player" />.</summary>
+        <summary>The set of legal moves available to the player who's <see cref="M:Monotouch.GameplayKit.IGKGameModelPlayer.GetPlayerID()"/> value is the same as that of <param name="player" />.</summary>
         <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <para>The <see cref="T:Monotouch.GameplayKit.GKMinMaxStrategist"/> may allocate many <see cref="T:Monotouch.GameplayKit.IGKGameModelPlayer"/> objects with identical <see cref="M:Monotouch.GameplayKit.IGKGameModelPlayer.GetPlayerID()"/> values. When comparing <see cref="T:Monotouch.GameplayKit.IGKGameModelPlayer"/> instances, developers should rely on <see cref="M:Monotouch.GameplayKit.GKGameModelPlayer_Extensions.GetPlayerId"/> values, not reference equality.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetPlayers">
@@ -203,9 +201,12 @@
       </Parameters>
       <Docs>
         <param name="player">To be added.</param>
-        <summary>The current score of the game for <param name="player" />. Higher values are more desireable.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>The current score of the game for <param name="player" />. Higher values are more desirable.</summary>
+        <returns>A value between <see cref="P:Monotouch.GameplayKit.GKGameModel.MinScore"/> and <see cref="P:Monotouch.GameplayKit.GKGameModel.MaxScore"/>.</returns>
+        <remarks>
+          <para>This method is called by <see cref="M:Monotouch.GameplayKit.GKMinMaxStrategist.GetBestMove"/> for every <see cref="T:Monotouch.GameplayKit.IGKGameModel"/> in the search tree for which neither <see cref="M:Monotouch.GameplayKit.GKGameModel_Extensions.IsWin"/> nor <see cref="M:Monotouch.GameplayKit.GKGameModel_Extensions.IsLoss"/> returned <see langword="true"/>. It represents a non-terminal state in the game.</para>
+          <para>For very simple games, in which developers can be certain that the <see cref="T:Monotouch.GameplayKit.GKMinMaxStrategist"/> has a sufficient <see cref="P:Monotouch.GameplayKit.GKMinMaxStrategist.MaxLookAheadDepth"/> to finish the game, developers may simply return 0 from this method. For more complex games, implementing this method is a challenge. The method is called for each non-terminal state that arises from calling <see cref="M:Monotouch.GameplayKit.IGKGameModel.GetGameModelUpdate"/> recursively (conceptually -- the actual implementation in <see cref="T:Monotouch.GameplayKit.GKMinMaxStrategist"/> is iterative and reuses <see cref="T:Monotouch.GameplayKit.IGKGameModel"/> instances). The time efficiency of <see cref="T:Monotouch.GameplayKit.GKMinMaxStrategist.GetBestMove"/> is <c>O(b^m)</c> where <c>b</c> is the number of states returned by <see cref="M:Monotouch.GameplayKit.IGKGameModel.GetGameModelUpdate"/> and <c>m</c> is the number of plies searched (<see cref="P:MonoTouch>GameplayKit.GKMinMaxOpponent.MaxLookAheadDepth"/>).</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SetGameModel">
@@ -235,7 +236,9 @@
       <Docs>
         <param name="gameModel">To be added.</param>
         <summary>Sets the internal state of the game to <param name="gameModel" />.</summary>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <para>This method is called many times during the evaluation of <see cref="M:Monotouch.GameplayKit.GKMinMaxStrategist.GetBestMove"/>, as that method attempts to minimize the number of <see cref="T:Monotouch.GameplayKit.IGKGameModel"/> objects allocated and instead uses this method to "reuse" previously-allocated memory.</para>
+        </remarks>
       </Docs>
     </Member>
   </Members>
