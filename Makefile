@@ -1,3 +1,6 @@
+
+MDOC=/Library/Frameworks/Mono.framework/Commands/mdoc
+
 all:
 	@echo validating...
 	@mdoc assemble -o MonoTouch-lib en
@@ -16,7 +19,7 @@ TOP := $(shell pwd)
 #	cd external/monomac/samples/macdoc/bin/Debug && ./macdoc.app/Contents/MacOS/macdoc @"$(TOP)/en"
 
 install:
-	mdoc assemble -o MonoTouch-lib en
+	$(MDOC) assemble -o MonoTouch-lib en
 	cp MonoTouch-lib.{tree,zip} /Library/Frameworks/Mono.framework/External/monodoc/
 
 fixdos:
