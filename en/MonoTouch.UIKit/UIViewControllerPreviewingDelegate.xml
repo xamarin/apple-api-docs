@@ -1,4 +1,4 @@
-﻿<Type Name="UIViewControllerPreviewingDelegate" FullName="MonoTouch.UIKit.UIViewControllerPreviewingDelegate">
+<Type Name="UIViewControllerPreviewingDelegate" FullName="MonoTouch.UIKit.UIViewControllerPreviewingDelegate">
   <TypeSignature Language="C#" Value="public class UIViewControllerPreviewingDelegate : MonoTouch.Foundation.NSObject, IDisposable, MonoTouch.UIKit.IUIViewControllerPreviewingDelegate" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit UIViewControllerPreviewingDelegate extends MonoTouch.Foundation.NSObject implements class MonoTouch.ObjCRuntime.INativeObject, class MonoTouch.UIKit.IUIViewControllerPreviewingDelegate, class System.IDisposable" />
   <AssemblyInfo apistyle="classic">
@@ -35,7 +35,7 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>To be added.</summary>
+    <summary>Delegate object whose methods are called in reaction to "3D Touch" on supported hardware</summary>
     <remarks>To be added.</remarks>
     <related type="PlatformDocAPI" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIViewControllerPreviewingDelegate_Protocol/index.html">Apple documentation for <c>UIViewControllerPreviewingDelegate</c></related>
   </Docs>
@@ -199,10 +199,20 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="viewControllerToCommit" Type="MonoTouch.UIKit.UIViewController" />
       </Parameters>
       <Docs>
-        <param name="previewingContext">To be added.</param>
-        <param name="viewControllerToCommit">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="previewingContext">The context in which the 3D Touch is occurring.</param>
+        <param name="viewControllerToCommit">The <see cref="T:Monotouch.UIKit.UIViewController"/> to which the app should transfer control.</param>
+        <summary>Called when the 3D Touch "Pop" occurs and the UX transfers to the <paramref name="viewControllerToCommit"/>.</summary>
+        <remarks>
+          <para>On hardware that supports 3D Touch (see <see cref="P:Monotouch.UIKit.TraitCollection.ForceTouchCapability"/>), a strong push should activate the <paramref name="viewControllerToCommit"/>. This method should provide that activation.</para>
+          <example>
+    <code lang="C#"><![CDATA[
+public void CommitViewController (IUIViewControllerPreviewing previewingContext, UIViewController viewControllerToCommit)
+{
+			ShowViewController (viewControllerToCommit, this);
+}
+    ]]></code>
+</example>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetViewControllerForPreview">
@@ -231,11 +241,22 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="location" Type="MonoTouch.CoreGraphics.CGPoint" apistyle="unified" />
       </Parameters>
       <Docs>
-        <param name="previewingContext">To be added.</param>
-        <param name="location">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="previewingContext">The context in which the 3D Touch is occurring..</param>
+        <param name="location">The location where the 3D touch is occurring.</param>
+        <summary>Called to activate the 3D Touch "Peek" functionality.</summary>
+        <returns>The <see cref="T:Monotouch.UIKit.UIViewController"/> that provides the 3D Touch "Peek" UX.</returns>
+        <remarks>
+          <para>On hardware that supports 3D Touch (see <see cref="P:Monotouch.UIKit.TraitCollection.ForceTouchCapability"/>), this method is called when the 3D Touch triggers the "Peek" action. </para>
+          <para>One feature of 3D Touch is the ability to blur the background except for the element that is the subject of the touch. It is up to the developer to set the <see cref="P:Monotouch.UIKit.IUIViewControllingPreviewing.SourceRect"/> to the appropriate that should not be blurred. For instance, in a table, one can prevent the selected cell from blurring by retrieving the cell at the <paramref name="location"/> at which the 3D Touch is occurring:</para>
+          <example>
+    <code lang="C#"><![CDATA[
+// Obtain the index path and the cell that was pressed. (Checks for null not shown.)
+var indexPath = TableView.IndexPathForRowAtPoint (location);
+var cell = TableView.CellAt (indexPath);
+previewingContext.SourceRect = cell.Frame;
+    ]]></code>
+</example>
+        </remarks>
       </Docs>
     </Member>
   </Members>
