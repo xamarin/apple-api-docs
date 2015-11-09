@@ -3544,7 +3544,25 @@ UIView.Animate (0.5f, () => {
         <param name="sourceView">The view, in the receiver's view hierarchy, that supplies the peek, or preview, view.</param>
         <summary>Registers this view controller for 3D Touch peek and pop operations.</summary>
         <returns>The context for the preview.</returns>
-        <remarks>App developers call this method to register this view controller as the one that displays preview and commit force gestures, specify the source view that will remain visually focused prior to peeking, and specify the delegate that responds to forceful touch from the user. App developers can rely on automatic life cycle management for the context that is returned, or manually release it by calling the <see cref="M:MonoTouch.UIKit.UIViewController.UnregisterForPreviewingWithContext" /> method.</remarks>
+        <remarks>
+          <para>
+          App developers call this method to register this view controller as the one that displays preview and commit force gestures, specify the source view that will remain visually focused prior to peeking, and specify the delegate that responds to forceful touch from the user. App developers can rely on automatic life cycle management for the context that is returned, or manually release it by calling the <see cref="M:MonoTouch.UIKit.UIViewController.UnregisterForPreviewingWithContext" /> method.
+        </para>
+          <para>This method should typically be called in an override of <see cref="M:Monotouch.UIKit.IUITraitEnvironment.TraitCollectionDidChange"/> in the initial <see cref="T:Monotouch.UIKit.UIViewController"/> of the app.</para>
+          <example>
+    <code lang="C#"><![CDATA[
+public override void TraitCollectionDidChange(UITraitCollection previousTraitCollection)
+{
+    base.TraitCollectionDidChange(previousTraitCollection);
+
+    if (TraitCollection.ForceTouchCapability == UIForceTouchCapability.Available) {
+        // Register for 3D Touch Peek and Pop
+        RegisterForPreviewingWithDelegate(new PreviewingDelegate(), View);
+    }
+}
+    ]]></code>
+</example>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="RemoveFromParentViewController">
@@ -4600,7 +4618,22 @@ void Setup ()
 	    to react to changes to the user interface traits, such as
 	    the horizontal and vertical size classes for the
 	    application.
-	  </para>
+          </para>
+          <para>Application developers must call the base implementation at the beginning of their override.</para>
+          <para>This method is the appropriate place to register for 3D Touch with <see cref="M:Monotouch.UIKit.UIViewController.RegisterForPreviewingWithDelegate"/>:</para>
+          <example>
+    <code lang="C#"><![CDATA[
+public override void TraitCollectionDidChange(UITraitCollection previousTraitCollection)
+{
+    base.TraitCollectionDidChange(previousTraitCollection);
+
+    if (TraitCollection.ForceTouchCapability == UIForceTouchCapability.Available) {
+        // Regiser for Peek and Pop
+        RegisterForPreviewingWithDelegate(new PreviewingDelegate(), View);
+    }
+}
+    ]]></code>
+</example>
         </remarks>
       </Docs>
     </Member>
