@@ -789,19 +789,28 @@ class MyView : UIView {
         <h3>Event Handling</h3>
       </format>
       <para>
-        If you are using gesture recognizers, you can add those directly to
-        your constructor at initialization time.
+        When using gesture recognizers, developers can add those directly to
+        the constructor at initialization time.
       </para>
       <para>
         For the low-level touch event handling, you should override the <see cref="M:MonoTouch.UIKit.UIResponder.TouchesBegan(MonoTouch.Foundation.NSSet,MonoTouch.UIKit.UIEvent)" />, <see cref="M:MonoTouch.UIKit.UIResponder.TouchesMoved(MonoTouch.Foundation.NSSet,MonoTouch.UIKit.UIEvent)" />, <see cref="M:MonoTouch.UIKit.UIResponder.TouchesEnded(MonoTouch.Foundation.NSSet,MonoTouch.UIKit.UIEvent)" /> and <see cref="M:MonoTouch.UIKit.UIResponder.TouchesCancelled(MonoTouch.Foundation.NSSet,MonoTouch.UIKit.UIEvent)" /> methods.
       </para>
-      <para>
-        You do not need to call the base methods for any of the above
-        methods if you are overriding UIView directly.  But you might want
-        to call base if you are deriving from another UIView subclass.
+      <para>Since iOS 9.0, <see cref="M:MonoTouch.UIKit.UIResponder.TouchesMoved(MonoTouch.Foundation.NSSet,MonoTouch.UIKit.UIEvent)" /> events are raised on supported hardware and configurations for changes in user-applied pressure. The <see cref="P:MonoTouch.UIKit.UITouch.Force" /> property of the <see cref="T:MonoTouch.UIKit.UITouch" /> object in the <paramref name="touches" /> set argument contains the magnitude of the touch that raised the event. The following example shows a basic use:</para>
+      <para><code lang="c#"><![CDATA[
+if (TraitCollection.ForceTouchCapability == UIForceTouchCapability.Available) {
+    UITouch t = touches.AnyObject as UITouch;
+    ForceLabel.Text = "Force: " + t.Force.ToString ();
+}
+else {
+    ForceLabel.Text = "Force Not Active";
+}]]></code>
       </para>
       <para>
-        You can control whether a gesture recognizer is activated by
+        Application developers do not need to call the base methods for any of the above
+        methods if they are overriding UIView directly.  But they should call base when deriving from another UIView subclass.
+      </para>
+      <para>
+        Application developers can control whether a gesture recognizer is activated by
         overriding the <see cref="M:MonoTouch.UIKit.UIView.GestureRecognizerShouldBegin(MonoTouch.UIKit.UIGestureRecognizer)" />
         method.
       </para>
@@ -810,9 +819,9 @@ class MyView : UIView {
       </format>
       <para>
         Each UIView is backed by a <see cref="N:MonoTouch.CoreAnimation" /> Layer (<see cref="T:MonoTouch.CoreAnimation.CALayer" />).  A CALayer
-        represents the GPU-backed bitmap that is used to render your view
-        into the screen.  When you paint into a UIView, you are actually
-        painting into the CALayer.
+        represents the GPU-backed bitmap that is used to render the view
+        into the screen.  Painting into a UIView  actually
+        paints into the CALayer.
       </para>
       <para>
         While the appearance of a UIView can be controlled by setting its
@@ -855,7 +864,7 @@ view.Layer.Transform = CATransform3D.MakeRotation ((float)(Math.PI / 2), 1, 1, 1
       <para>
         Note that this transformation is a full 3D transform, with a
         perspective element, that is more versatile than UIView's 2D
-        Transform property.   If you apply 3D transforms, you should no longer use the Frame property
+        Transform property. If you apply 3D transforms, you should no longer use the Frame property
       </para>
       <format type="text/html">
         <h3>Changing the CALayer</h3>
