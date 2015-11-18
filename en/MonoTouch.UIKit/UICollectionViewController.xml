@@ -1033,11 +1033,24 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="destinationIndexPath" Type="MonoTouch.Foundation.NSIndexPath" />
       </Parameters>
       <Docs>
-        <param name="collectionView">To be added.</param>
-        <param name="sourceIndexPath">To be added.</param>
-        <param name="destinationIndexPath">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="collectionView">The <see cref="T:MonoTouch.UKit.UICollectionView"/> in which the move is being attempted.</param>
+        <param name="sourceIndexPath">The <see cref="T:MonoTouch.Foundation.NSIndexPath"/> at which the cell began the move.</param>
+        <param name="destinationIndexPath">The <see cref="T:MonoTouch.Foundation.NSIndexPath"/> at which the cell has been moved.</param>
+        <summary>Moves the cell at <paramref name="sourceIndexPath"/> to <paramref name="destinationIndexPath"/>.</summary>
+        <remarks>
+          <para>Developers should override this method if they wish the <see cref="T:MonoTouch.UIKit.UICollectionView"/> to support reordering its cells. This method should adjust the <see cref="T:MonoTouch.UIKit.UIViewControllerDataSource"/> to reflect the new ordering. For instance, if the data were stored in a simple array, developers can simply swap the values from the source and destination cells:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+public override void MoveItem (UICollectionView collectionView, NSIndexPath sourceIndexPath, NSIndexPath destinationIndexPath)
+{
+  //numbers is an array data structure for the UICollectionViewData
+	var tmp = numbers [(int)sourceIndexPath.Item];
+	numbers [(int)sourceIndexPath.Item] = numbers [(int)destinationIndexPath.Item];
+	numbers [(int)destinationIndexPath.Item] = tmp;
+}           
+              ]]></code>
+          </example>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="NumberOfSections">
