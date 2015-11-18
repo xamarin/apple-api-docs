@@ -679,9 +679,32 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="command" Type="MonoTouch.UIKit.UIKeyCommand" />
       </Parameters>
       <Docs>
-        <param name="command">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="command">Definition of the new keyboard action.</param>
+        <summary>Adds <paramref name="command"/> as a shortcut available to attached hardware keyboards.</summary>
+        <remarks>
+              <para><see cref="T:MonoTouch.UIKit.UIKeyCommand" /> objects are only generated with an attached hardware keyboard.</para>
+              <para>To create keyboard accelerators, developers must create a <see cref="T:Monotouch.ObjCRuntime.Selector"/> that is associated with 
+        a method of type <c><![CDATA[Action<UIKeyCommand>]]></c> with an appropriate <see cref="T:Monotouch.Foundation.ExportAttribute"/>:</para>
+      <example>
+    <code lang="C#"><![CDATA[
+[Export("NewFileAccelerator:")]
+void NewFileAccelerator(UIKeyCommand cmd)
+{
+   //etc...
+}
+
+public override void ViewDidLoad ()
+{
+    base.ViewDidLoad ();
+
+    var actionSelector = new Selector("NewFileAccelerator:");
+    accelerator = UIKeyCommand.Create((NSString) "N", UIKeyModifierFlags.Command, actionSelector);
+
+    AddKeyCommand(accelerator);
+}
+    ]]></code>
+</example> 
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AllowedChildViewControllersForUnwinding" apistyle="classic">
@@ -703,10 +726,13 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="segueSource" Type="MonoTouch.UIKit.UIStoryboardUnwindSegueSource" />
       </Parameters>
       <Docs>
-        <param name="segueSource">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="segueSource">The <see cref="T:Monotouch.UIKit.UIStoryboardUnwindSequenceSource"/> of the unwind segue.</param>
+        <summary>The array of child <see cref="T:Monotouch.UIKit.UIViewController"/> objects that should be searched to determine if they are the unwind segue destination.</summary>
+        <returns>A subset of <see cref="P:Monotouch.UIKit.UIViewController.ChildViewControllers"/>, ordered by desired search order, and without the controller returned by <see cref="M:Monotouch.UIKit.UIViewController.ChildViewControllerContainingSegueSource"/>.</returns>
+        <remarks>
+          <para>When searching for the destination <see cref="T:Monotouch.UIKit.UIViewController"/> of an unwind segue, the operating system climbs up the <see cref="T:Monotouch.UIKit.UIViewController"/> hierarchy using <see cref="P:Monotouch.UIKit.UIViewController.ParentViewController"/> and <see cref="P:Monotouch.UIKit.UIViewController.PresentingViewController"/>, and then searches down the tree using <see cref="M:Monotouch.UIKit.UIViewController.AllowedChildViewControllersForUnwinding"/>, and <see cref="M:Monotouch.UIKit.UIViewController.CanPerformUnwind"/> to determine the destination of the unwind segue.</para>  
+          <para>Developers can override this method to filter or change the order of the <see cref="P:Monotouch.UIKit.UIViewController.ChildViewControllers"/>. View controllers are searched in the order of the returned array. The returned array should not contain the <see cref="T:Monotouch.UIKit.UIViewController"/> returned by <see cref="M:Monotouch.UIKit.UIViewController.ChildViewControllerContainingSegueSource"/>.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ApplicationFinishedRestoringState">
@@ -995,9 +1021,9 @@ UIView.Animate (0.5f, () => {
       </Parameters>
       <Docs>
         <param name="segueSource">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>The child <see cref="T:Monotouch.UIKit.UIViewController"/> that is the source of the unwind segue.</summary>
         <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <remarks>This method is typically called by <see cref="M:Monotouch.UIKit.UIViewController.AllowedChildViewControllersForUnwinding"/> to determine which of the <see cref="P:Monotouch.UIKit.UIViewController.ChildViewControllers"/> should be filtered out of the array returned by that method.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ChildViewControllerForStatusBarHidden">
@@ -1961,10 +1987,14 @@ UIView.Animate (0.5f, () => {
         <Parameter Name="segueSource" Type="MonoTouch.UIKit.UIStoryboardUnwindSegueSource" />
       </Parameters>
       <Docs>
-        <param name="segueSource">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="segueSource">The <see cref="T:Monotouch.UIKit.UIStoryboardUnwindSequenceSource"/> of the unwind segue.</param>
+        <summary>The array of child <see cref="T:Monotouch.UIKit.UIViewController"/> objects that should be searched to determine if they are the unwind segue destination.</summary>
+        <returns>A subset of <see cref="P:Monotouch.UIKit.UIViewController.ChildViewControllers"/>, ordered by desired search order, and without the controller returned by <see cref="M:Monotouch.UIKit.UIViewController.ChildViewControllerContainingSegueSource"/>.</returns>
+        <remarks>
+          <para>When searching for the destination <see cref="T:Monotouch.UIKit.UIViewController"/> of an unwind segue, the operating system climbs up the <see cref="T:Monotouch.UIKit.UIViewController"/> hierarchy using <see cref="P:Monotouch.UIKit.UIViewController.ParentViewController"/> and <see cref="P:Monotouch.UIKit.UIViewController.PresentingViewController"/>, and then searches down the tree using <see cref="M:Monotouch.UIKit.UIViewController.AllowedChildViewControllersForUnwinding"/>, and <see cref="M:Monotouch.UIKit.UIViewController.CanPerformUnwind"/> to determine the destination of the unwind segue.</para>  
+          <para>Developers can override this method to filter or change the order of the <see cref="P:Monotouch.UIKit.UIViewController.ChildViewControllers"/>. View controllers are searched in the order of the returned array. The returned array should not contain the <see cref="T:Monotouch.UIKit.UIViewController"/> returned by <see cref="M:Monotouch.UIKit.UIViewController.ChildViewControllerContainingSegueSource"/>.</para>
+        </remarks>
+
       </Docs>
     </Member>
     <Member MemberName="GetChildViewControllerContainingSegueSource">
@@ -1993,9 +2023,9 @@ UIView.Animate (0.5f, () => {
       </Parameters>
       <Docs>
         <param name="segueSource">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>The child <see cref="T:Monotouch.UIKit.UIViewController"/> that is the source of the unwind segue.</summary>
         <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <remarks>This method is typically called by <see cref="M:Monotouch.UIKit.UIViewController.AllowedChildViewControllersForUnwinding"/> to determine which of the <see cref="P:Monotouch.UIKit.UIViewController.ChildViewControllers"/> should be filtered out of the array returned by that method.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetEnumerator">
@@ -2536,6 +2566,7 @@ UIView.Animate (0.5f, () => {
         <altmember cref="P:MonoTouch.UIKit.UIViewController.IsViewLoaded" />
         <altmember cref="M:MonoTouch.UIKit.UIViewController.ViewDidLoad" />
         <altmember cref="P:MonoTouch.UIKit.UIViewController.View" />
+        <altmember cref="M:MonoTouch.UIKit.UIViewController.LoadViewIfNeeded"/>
       </Docs>
     </Member>
     <Member MemberName="LoadViewIfNeeded">
@@ -2561,8 +2592,24 @@ UIView.Animate (0.5f, () => {
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>If necessary, synchronously loads the <see cref="P:Monotouch.UIKit.UIViewController.View"/> from a Storyboard or NIB.</summary>
+        <remarks>
+          <para>This method can be used to ensure that the <see cref="P:Monotouch.UIKit.UIViewController.View"/> object has been instantiated, if the <see cref="T:Monotouch.UIKit.UIViewController"/> has an associated Storyboard or NIB. (See also <see cref="P:Monotouch.UIKit.UIViewController.ViewIfLoaded"/>.)</para>
+          <example>
+    <code lang="C#"><![CDATA[
+var newVC = UIStoryboard.FromName("Main", NSBundle.MainBundle).InstantiateInitialViewController();
+if (newVC.ViewIfLoaded == null)
+{
+    //This call blocks until the View is instantiated
+    newVC.LoadViewIfNeeded();
+}
+    ]]></code>
+</example>
+        </remarks>
+        <altmember cref="P:MonoTouch.UIKit.UIViewController.IsViewLoaded" />
+        <altmember cref="M:MonoTouch.UIKit.UIViewController.ViewDidLoad" />
+        <altmember cref="P:MonoTouch.UIKit.UIViewController.View" />
+       
       </Docs>
     </Member>
     <Member MemberName="ModalInPopover">
@@ -3625,9 +3672,10 @@ public override void TraitCollectionDidChange(UITraitCollection previousTraitCol
         <Parameter Name="command" Type="MonoTouch.UIKit.UIKeyCommand" />
       </Parameters>
       <Docs>
-        <param name="command">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="command">The <see cref="T:Monotouch.UIKit.UIKeyCommand"/> to be removed.</param>
+        <summary>Removes a previously-added hardware-keyboard accelerator.</summary>
         <remarks>To be added.</remarks>
+        <altmember cref="M:MonoTouch.UIKit.UIViewController.AddKeyCommand"/>
       </Docs>
     </Member>
     <Member MemberName="RestorationClass">
@@ -4911,10 +4959,14 @@ public override void TraitCollectionDidChange(UITraitCollection previousTraitCol
         <Parameter Name="subsequentVC" Type="MonoTouch.UIKit.UIViewController" />
       </Parameters>
       <Docs>
-        <param name="unwindSegue">To be added.</param>
-        <param name="subsequentVC">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="unwindSegue">Holds the in-process unwind <see cref="T:Monotouch.UIKit.UIStoryboardSegue"/>.</param>
+        <param name="subsequentVC">The next <see cref="T:Monotouch.UIKit.UIViewController"/> in the direction of the unwind.</param>
+        <summary>Called during an unwind segue on any <see cref="T:Monotouch.UIKit.UIViewController"/> objects in the unwind path.</summary>
+        <remarks>
+          <para>This method is called on each <see cref="T:Monotouch.UIKit.UIViewController"/> in the unwind <see cref="T:Monotouch.UIKit.UIStoryboardSegue"/> path.</para>
+          <para>When overridden in container <see cref="T:Monotouch.UIKit.UIViewController"/> classes, this method is responsible for configuring the container to properly display the <paramref name="subsequentVC"/>. In a container <see cref="T:Monotouch.UIKit.UIViewController"/> that displayed a tab bar, for instance, this method would be used to set the tab item to match the <paramref name="subsequentVC"/>.</para>
+    <para><see cref="T:Monotouch.UIKit.UIViewController"/> classes that are not containers should not override this method.</para>      
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="UnwindForSegue" apistyle="classic">
@@ -4937,11 +4989,14 @@ public override void TraitCollectionDidChange(UITraitCollection previousTraitCol
         <Parameter Name="subsequentVC" Type="MonoTouch.UIKit.UIViewController" />
       </Parameters>
       <Docs>
-        <param name="unwindSegue">To be added.</param>
-        <param name="subsequentVC">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
-      </Docs>
+        <param name="unwindSegue">Holds the in-process unwind <see cref="T:Monotouch.UIKit.UIStoryboardSegue"/>.</param>
+        <param name="subsequentVC">The next <see cref="T:Monotouch.UIKit.UIViewController"/> in the direction of the unwind.</param>
+        <summary>Called during an unwind segue on any <see cref="T:Monotouch.UIKit.UIViewController"/> objects in the unwind path.</summary>
+        <remarks>
+          <para>This method is called on each <see cref="T:Monotouch.UIKit.UIViewController"/> in the unwind <see cref="T:Monotouch.UIKit.UIStoryboardSegue"/> path.</para>
+          <para>When overridden in container <see cref="T:Monotouch.UIKit.UIViewController"/> classes, this method is responsible for configuring the container to properly display the <paramref name="subsequentVC"/>. In a container <see cref="T:Monotouch.UIKit.UIViewController"/> that displayed a tab bar, for instance, this method would be used to set the tab item to match the <paramref name="subsequentVC"/>.</para>
+    <para><see cref="T:Monotouch.UIKit.UIViewController"/> classes that are not containers should not override this method.</para>      
+        </remarks>      </Docs>
     </Member>
     <Member MemberName="UpdateViewConstraints">
       <MemberSignature Language="C#" Value="public virtual void UpdateViewConstraints ();" />
@@ -5185,12 +5240,25 @@ public override void TraitCollectionDidChange(UITraitCollection previousTraitCol
         <ReturnType>MonoTouch.UIKit.UIView</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Returns the <see cref="P:Monotouch.UIKit.UIViewController.View"/> if it has been instantiated; otherwise, returns <see langword="null"/>.</summary>
         <value>
-          <para>(More documentation for this node is coming)</para>
+          <para>A <see langword="null"/> return indicates that the <see cref="P:Monotouch.UIKit.UIViewController.View"/> has not yet been loaded.</para>
           <para tool="nullallowed">This value can be <see langword="null" />.</para>
         </value>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <para>Because <see cref="T:Monotouch.UIKit.UIView"/> are relatively heavyweight compared to T<see cref="T:Monotouch.UIKit.UIViewController"/> objects, the <see cref="P:Monotouch.UIKit.UIViewController.View"/> object is lazily initialized. Developers can test if the <see cref="P:Monotouch.UIKit.UIViewController.View"/> has been initialized by calling this method, which returns <see langword="null"/> if the <see cref="P:Monotouch.UIKit.UIViewController.View"/> had not yet been loaded. Developers can call <see cref="M:Monotouch.UIKit.UIViewController.LoadViewIfNeeded"/> to force the loading of the <see cref="P:Monotouch.UIKit.UIViewController.View"/>.</para>  
+                   <example>
+    <code lang="C#"><![CDATA[
+var newVC = UIStoryboard.FromName("Main", NSBundle.MainBundle).InstantiateInitialViewController();
+if (newVC.ViewIfLoaded == null)
+{
+    //This call blocks until the View is instantiated
+    newVC.LoadViewIfNeeded();
+}
+    ]]></code>
+</example>
+
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ViewWillAppear">

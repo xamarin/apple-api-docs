@@ -3795,12 +3795,46 @@ void Setup ()
         <ReturnType>MonoTouch.UIKit.UIApplicationShortcutItem[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Gets or sets the list of Quick Action shortcuts that the developer defined in code, as distinct from those defined in the <c>Info.plist</c> file.</summary>
         <value>
-          <para>(More documentation for this node is coming)</para>
+          <para>The list of force touch Quick Action shortcuts that the developer has defined in code, as distinct from those that are defined in the <c>Info.plist</c> file.</para>
           <para tool="nullallowed">This value can be <see langword="null" />.</para>
         </value>
-        <remarks>To be added.</remarks>
+        <remarks><para>Application developers can define Quick Action shortcuts either in their application code (dynamically) or in the <c>Info.plist</c> file in the application bundle (statically). Statically defined Quick Action shortcut items are only available as an argument to the HandleShortcutItem method when the shortcut is selected by the user; they are not available in the <see cref="P:MonoTouch.UIApplication.ShortcutItems" /> property. Only dynamically created shortcut items appear in <see cref="P:MonoTouch.UIApplication.ShortcutItems" />.</para>
+          <para>Statically defined shortcut items are preferentially displayed by iOS 9. That is, iOS displays as many statically defined shortcut as are allowed by the system first, and only then displays dynamically created quick action shortcuts up to the remainder of the system limit. The list of dynamically created shortcut items is displayed above the statically defined items, starting from the 0th position in <see cref="P:MonoTouch.UIApplication.ShortcutItems" />, and stacking successive entries above previous ones.</para>
+      <para>This list persists across application invocations.</para>
+  <para>The following example, when added to the <c>Info.plist</c> file, statically creates a force touch Quick Action shortcut:</para>
+<code><![CDATA[
+<key>XSAppIconAssets</key>
+<string>Resources/Images.xcassets/AppIcons.appiconset</string>
+<key>UIApplicationShortcutItems</key>
+<array>
+    <dict>
+        <key>UIApplicationShortcutItemIconType</key>
+        <string>UIApplicationShortcutIconTypeSearch</string>
+        <key>UIApplicationShortcutItemSubtitle</key>
+        <string>Find something</string>
+        <key>UIApplicationShortcutItemTitle</key>
+        <string>Search</string>
+        <key>UIApplicationShortcutItemType</key>
+        <string>PlistShortcut</string>
+    </dict>
+</array>
+]]>
+</code>
+    <para>The Quick Action shortcut defined above will not be available in <see cref="P:MonoTouch.UIApplication.ShortcutItems" />. If the developer places the code below into their <see cref="M:MonoTouch.UIKit.UIApplicationDelegate.FinishedLaunching" /> method, then the dynamically defined shortcut item will be available after the first time the application is launched:</para>
+<code><![CDATA[
+application.ShortcutItems = new UIMutableApplicationShortcutItem[] {
+    new UIMutableApplicationShortcutItem ("DynamicItem", "Send") {
+        LocalizedTitle = "Dynamic Item",
+        LocalizedSubtitle = "Send Message",
+        Icon = UIApplicationShortcutIcon.FromType
+                    (UIApplicationShortcutIconType.Mail)
+    }
+};
+]]>
+</code>
+</remarks>
       </Docs>
     </Member>
     <Member MemberName="SignificantTimeChangeNotification">

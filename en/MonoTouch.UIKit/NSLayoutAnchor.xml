@@ -1,4 +1,4 @@
-﻿<Type Name="NSLayoutAnchor" FullName="MonoTouch.UIKit.NSLayoutAnchor">
+<Type Name="NSLayoutAnchor" FullName="MonoTouch.UIKit.NSLayoutAnchor">
   <TypeSignature Language="C#" Value="public class NSLayoutAnchor : MonoTouch.Foundation.NSObject" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit NSLayoutAnchor extends MonoTouch.Foundation.NSObject" />
   <AssemblyInfo apistyle="classic">
@@ -22,8 +22,63 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>An abstract class for defining <see cref="T:MonoTouch.UIKit.NSLayoutConstraint" /> objects.</summary>
-    <remarks>To be added.</remarks>
+    <summary>An abstract class that can be used to generate <see cref="T:MonoTouch.UIKit.NSLayoutConstraint" /> objects.</summary>
+    <remarks>
+      <para><see cref="T:Monotouch.UIKit.NSLayoutAnchor"/> objects, introduced in iOS 9, allow the developer to generate <see cref="T:Monotouch.UIKit.NSLayoutConstraint"/> objects in code. <see cref="T:Monotouch.UIKit.UIView"/> objects have a set of <see cref="T:Monotouch.UIKit.NSLayoutAnchor"/> properties:</para>
+      <list type="bullet">
+        <item>
+          <term><see cref="P:Monotouch.UIKit.UIView.TopAnchor"/></term>
+        </item>
+        <item>
+          <term><see cref="P:Monotouch.UIKit.UIView.BottomAnchor"/></term>
+        </item>
+       <item>
+          <term><see cref="P:Monotouch.UIKit.UIView.LeftAnchor"/></term>
+        </item>
+       <item>
+          <term><see cref="P:Monotouch.UIKit.UIView.RightAnchor"/></term>
+        </item>
+       <item>
+          <term><see cref="P:Monotouch.UIKit.UIView.LeadingAnchor"/></term>
+        </item>
+       <item>
+          <term><see cref="P:Monotouch.UIKit.UIView.TrailingAnchor"/></term>
+        </item>
+       <item>
+          <term><see cref="P:Monotouch.UIKit.UIView.CenterXAnchor"/></term>
+        </item>
+       <item>
+          <term><see cref="P:Monotouch.UIKit.UIView.CenterYAnchor"/></term>
+        </item>
+       <item>
+          <term><see cref="P:Monotouch.UIKit.UIView.TopAnchor"/></term>
+        </item>
+       <item>
+          <term><see cref="P:Monotouch.UIKit.UIView.FirstBaselineAnchor"/></term>
+        </item>
+       <item>
+          <term><see cref="P:Monotouch.UIKit.UIView.LastBaselineAnchor"/></term>
+        </item>
+      </list>
+      <para>These <see cref="T:Monotouch.UIKit.NSLayoutAnchor"/> objects can be used as source for <see cref="T:Monotouch.UIKit.NSLayoutConstraint"/> objects. For instance, </para>
+      <example>
+    <code lang="C#"><![CDATA[
+blueView.TranslatesAutoresizingMaskIntoConstraints = false;
+var blueConstraints = new []
+{ 
+    blueView.LeadingAnchor.ConstraintEqualTo(greenView.LeadingAnchor),
+    blueView.TrailingAnchor.ConstraintEqualTo(greenView.TrailingAnchor),
+    blueView.TopAnchor.ConstraintEqualTo(greenView.BottomAnchor, 10.0f),
+    blueView.HeightAnchor.ConstraintEqualTo(greenView.HeightAnchor),
+    blueView.WidthAnchor.ConstraintEqualTo(greenView.WidthAnchor)
+};
+
+NSLayoutConstraint.ActivateConstraints(blueConstraints);
+   ]]></code>
+      </example>
+      <para>creates the constraints necessary to make <c>blueView</c> appear as shown below: </para>
+      <para><img href="UIKit.NSLayoutAnchor.png"/></para>
+    </remarks>
     <related type="PlatformDocAPI" href="https://developer.apple.com/library/ios/documentation/AppKit/Reference/NSLayoutAnchor_ClassReference/index.html">Apple documentation for <c>NSLayoutAnchor</c></related>
   </Docs>
   <Members>
@@ -180,7 +235,13 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="anchor">The <see cref="T:MonoTouch.UIKit.NSLayoutAnchor" /> whose value should be used.</param>
         <summary>Creates a constraint whose value is equal to that of the <paramref name="anchor" />.</summary>
         <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <example>
+    <code lang="C#"><![CDATA[
+blueView.HeightAnchor.ConstraintEqualTo(greenView.HeightAnchor);
+    ]]></code>
+</example>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ConstraintEqualToAnchor">
@@ -213,7 +274,14 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="constant">The value to add.</param>
         <summary>Creates a constraint whose value is equal to that of the <paramref name="anchor" /> plus <paramref name="constant" />.</summary>
         <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <remarks>
+       <example>
+    <code lang="C#"><![CDATA[
+blueView.TopAnchor.ConstraintEqualTo(greenView.BottomAnchor, 10.0f);
+    ]]></code>
+</example>   
+          
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ConstraintGreaterThanOrEqualToAnchor">
