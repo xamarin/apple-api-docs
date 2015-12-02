@@ -29,8 +29,9 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>To be added.</summary>
-    <remarks>To be added.</remarks>
+    <summary>Base class that represents the kernel of a shader.</summary>
+    <remarks><para>Application developers should not create instances of this class directly. Instead, developers should use any fo the numerous shaders that derive from this class that Metal Performance Shaders provides.</para>
+    <para>To use a shader, application developers: first instantiate one (For example, <see cref="T:MonoTouch.MetalPerformanceShaders.MPSImageGaussianBlur" />); set properties on the shader and encode it to a <see cref="T:MonoTouch.MetalPerformanceShaders.MPSCommandBuffer" />, optionally encoding other operations on it; and, finally, commit the command buffer to be run.</para></remarks>
     <related type="PlatformDocAPI" href="https://developer.apple.com/library/ios/documentation/MetalPerformanceShaders/Reference/MPSKernel_ClassReference/index.html">Apple documentation for <c>MPSKernel</c></related>
   </Docs>
   <Members>
@@ -140,9 +141,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="device" Type="MonoTouch.Metal.IMTLDevice" />
       </Parameters>
       <Docs>
-        <param name="device">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="device">The device for which to create a new kernel.</param>
+        <summary>Creates a new kernel that can run on the specified device, if supported.</summary>
+        <remarks><para>Application developers should call the <see cref="M:MonoTouch.MetalPerformanceShaders.MPSKernel.Supports" /> method to determine if the <paramref name="device" /> is supported.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -244,16 +245,17 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="zone">
-          <para>To be added.</para>
+          <param name="zone">Zone to use to allocate this object, or null to use the default zone.</param>
           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
         </param>
         <param name="device">
-          <para>To be added.</para>
+          <para>The device for which to make a copy.</para>
           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
         </param>
-        <summary>To be added.</summary>
+        <summary>Copies a shader for the specified device and zone.</summary>
         <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <remarks><para>App developers can call this method to create copies of shaders for use on multiple threads.</para>
+        <para>Application developers should call the <see cref="M:MonoTouch.MetalPerformanceShaders.MPSKernel.Supports" /> method to determine if the<paramref name="device" /> is supported.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="Device">
@@ -275,8 +277,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.Metal.IMTLDevice</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>Gets the device for which the kernel will be encoded.</summary>
+        <value>The device for which the kernel will be encoded.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -331,7 +333,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Gets or sets a programmer-friendly name for the shader</summary>
         <value>
           <para>(More documentation for this node is coming)</para>
           <para tool="nullallowed">This value can be <see langword="null" />.</para>
@@ -361,9 +363,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.MetalPerformanceShaders.MPSKernelOptions</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Gets or sets the list of kernel options for running the shader.</summary>
+        <value>The list of kernel options for running the shader.</value>
+        <remarks><para>Application developers can use this field to allow reduced-precision types in calculations, skip validation, both, or neither.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="Supports">
@@ -384,9 +386,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="device">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>Determines if the device is supported.</summary>
+        <returns><see langword="true" /> if <paramref name="device" /> is supported. Oterwise, returns <see langword="false" /></returns>
+        <remarks><para>Before copying shaders to a new device, application developers should call the <see cref="M:MonoTouch.MetalPerformanceShaders.MPSKernel.Supports" /> method to determine if the <paramref name="device" /> is supported.</para></remarks>
       </Docs>
     </Member>
   </Members>
