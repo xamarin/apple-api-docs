@@ -1,6 +1,6 @@
-﻿<Type Name="UIApplicationShortcutItem" FullName="MonoTouch.UIKit.UIApplicationShortcutItem">
-  <TypeSignature Language="C#" Value="public class UIApplicationShortcutItem : MonoTouch.Foundation.NSObject" />
-  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit UIApplicationShortcutItem extends MonoTouch.Foundation.NSObject" />
+<Type Name="UIApplicationShortcutItem" FullName="MonoTouch.UIKit.UIApplicationShortcutItem">
+  <TypeSignature Language="C#" Value="public class UIApplicationShortcutItem : MonoTouch.Foundation.NSObject, IDisposable, MonoTouch.Foundation.INSMutableCopying" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit UIApplicationShortcutItem extends MonoTouch.Foundation.NSObject implements class MonoTouch.Foundation.INSCopying, class MonoTouch.Foundation.INSMutableCopying, class MonoTouch.ObjCRuntime.INativeObject, class System.IDisposable" />
   <AssemblyInfo apistyle="classic">
     <AssemblyName>monotouch</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -12,13 +12,23 @@
   <Base>
     <BaseTypeName>MonoTouch.Foundation.NSObject</BaseTypeName>
   </Base>
-  <Interfaces />
+  <Interfaces>
+    <Interface>
+      <InterfaceName>MonoTouch.Foundation.INSMutableCopying</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>System.IDisposable</InterfaceName>
+    </Interface>
+  </Interfaces>
   <Attributes>
     <Attribute>
       <AttributeName>MonoTouch.Foundation.Register("UIApplicationShortcutItem", true)</AttributeName>
     </Attribute>
     <Attribute>
-      <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_9_0)</AttributeName>
+      <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 9, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
     </Attribute>
   </Attributes>
   <Docs>
@@ -257,9 +267,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <remarks>Each MonoTouch class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="Dispose">
-      <MemberSignature Language="C#" Value="protected override void Dispose (bool disposing);" />
-      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Dispose(bool disposing) cil managed" />
+    <Member MemberName="Copy">
+      <MemberSignature Language="C#" Value="public virtual MonoTouch.Foundation.NSObject Copy (MonoTouch.Foundation.NSZone zone);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class MonoTouch.Foundation.NSObject Copy(class MonoTouch.Foundation.NSZone zone) cil managed" />
       <MemberType>Method</MemberType>
       <AssemblyInfo apistyle="classic">
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -267,27 +277,26 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <AssemblyInfo apistyle="unified">
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("copyWithZone:")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
+        <ReturnType>MonoTouch.Foundation.NSObject</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="disposing" Type="System.Boolean" />
+        <Parameter Name="zone" Type="MonoTouch.Foundation.NSZone" />
       </Parameters>
       <Docs>
-        <param name="disposing">
-          <para>If set to <see langword="true" />, the method is invoked directly and will dispose manage and unmanaged resources;   If set to <see langword="false" /> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</para>
-        </param>
-        <summary>Releases the resources used by the UIApplicationShortcutItem object.</summary>
-        <remarks>
-          <para>This Dispose method releases the resources used by the UIApplicationShortcutItem class.</para>
-          <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposing <paramref name="disposing" /> is set to <see langword="true" /> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false" />. </para>
-          <para>Calling the Dispose method when you are finished using the UIApplicationShortcutItem ensures that all external resources used by this managed object are released as soon as possible.  Once you have invoked the Dispose method, the object is no longer useful and you should no longer make any calls to it.</para>
-          <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at http://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
-        </remarks>
+        <param name="zone">Zone to use to allocate this object, or null to use the default zone.</param>
+        <summary>Performs a copy of the underlying Objective-C object.</summary>
+        <returns>This method performs a copy of the underlying Objective-C object state and returns a new instance of it.  It does not actually try to replicate any managed state.</returns>
+        <remarks>Implementation of the INSCopyable interface.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Icon">
-      <MemberSignature Language="C#" Value="public virtual MonoTouch.UIKit.UIApplicationShortcutIcon Icon { get; }" />
+      <MemberSignature Language="C#" Value="public virtual MonoTouch.UIKit.UIApplicationShortcutIcon Icon { get; set; }" />
       <MemberSignature Language="ILAsm" Value=".property instance class MonoTouch.UIKit.UIApplicationShortcutIcon Icon" />
       <MemberType>Property</MemberType>
       <AssemblyInfo apistyle="classic">
@@ -314,7 +323,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Docs>
     </Member>
     <Member MemberName="LocalizedSubtitle">
-      <MemberSignature Language="C#" Value="public virtual string LocalizedSubtitle { get; }" />
+      <MemberSignature Language="C#" Value="public virtual string LocalizedSubtitle { get; set; }" />
       <MemberSignature Language="ILAsm" Value=".property instance string LocalizedSubtitle" />
       <MemberType>Property</MemberType>
       <AssemblyInfo apistyle="classic">
@@ -341,7 +350,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Docs>
     </Member>
     <Member MemberName="LocalizedTitle">
-      <MemberSignature Language="C#" Value="public virtual string LocalizedTitle { get; }" />
+      <MemberSignature Language="C#" Value="public virtual string LocalizedTitle { get; set; }" />
       <MemberSignature Language="ILAsm" Value=".property instance string LocalizedTitle" />
       <MemberType>Property</MemberType>
       <AssemblyInfo apistyle="classic">
@@ -364,8 +373,41 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="MutableCopy">
+      <MemberSignature Language="C#" Value="public virtual MonoTouch.Foundation.NSObject MutableCopy (MonoTouch.Foundation.NSZone zone);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class MonoTouch.Foundation.NSObject MutableCopy(class MonoTouch.Foundation.NSZone zone) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo apistyle="classic">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo apistyle="unified">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("mutableCopyWithZone:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>MonoTouch.Foundation.NSObject</ReturnType>
+        <Attributes>
+          <Attribute>
+            <AttributeName>MonoTouch.ObjCRuntime.Release</AttributeName>
+          </Attribute>
+        </Attributes>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="zone" Type="MonoTouch.Foundation.NSZone" />
+      </Parameters>
+      <Docs>
+        <param name="zone">Zone to use to allocate this object, or null to use the default zone.</param>
+        <summary>Performs a copy of the underlying Objective-C object.</summary>
+        <returns>This method performs a copy of the underlying Objective-C object state and returns a new instance of it.  It does not actually try to replicate any managed state.</returns>
+        <remarks>Implementation of the INSCopyable interface.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="Type">
-      <MemberSignature Language="C#" Value="public virtual string Type { get; }" />
+      <MemberSignature Language="C#" Value="public virtual string Type { get; set; }" />
       <MemberSignature Language="ILAsm" Value=".property instance string Type" />
       <MemberType>Property</MemberType>
       <AssemblyInfo apistyle="classic">
@@ -389,9 +431,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Docs>
     </Member>
     <Member MemberName="UserInfo">
-      <MemberSignature Language="C#" Value="public virtual MonoTouch.Foundation.NSDictionary UserInfo { get; }" apistyle="classic" />
+      <MemberSignature Language="C#" Value="public virtual MonoTouch.Foundation.NSDictionary UserInfo { get; set; }" apistyle="classic" />
       <MemberSignature Language="ILAsm" Value=".property instance class MonoTouch.Foundation.NSDictionary UserInfo" apistyle="classic" />
-      <MemberSignature Language="C#" Value="public virtual MonoTouch.Foundation.NSDictionary&lt;MonoTouch.Foundation.NSString,MonoTouch.Foundation.NSObject&gt; UserInfo { get; }" apistyle="unified" />
+      <MemberSignature Language="C#" Value="public virtual MonoTouch.Foundation.NSDictionary&lt;MonoTouch.Foundation.NSString,MonoTouch.Foundation.NSObject&gt; UserInfo { get; set; }" apistyle="unified" />
       <MemberSignature Language="ILAsm" Value=".property instance class MonoTouch.Foundation.NSDictionary`2&lt;class MonoTouch.Foundation.NSString, class MonoTouch.Foundation.NSObject&gt; UserInfo" apistyle="unified" />
       <MemberType>Property</MemberType>
       <AssemblyInfo apistyle="classic">

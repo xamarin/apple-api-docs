@@ -17,6 +17,9 @@
     <Attribute>
       <AttributeName>MonoTouch.Foundation.Register("UIPasteboard", true)</AttributeName>
     </Attribute>
+    <Attribute>
+      <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+    </Attribute>
   </Attributes>
   <Docs>
     <summary>Support for the system pasteboard  for cut, copy and paste.</summary>
@@ -293,16 +296,16 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIPasteboard+Notifications" />.<see cref="M:UIPasteboard+Notifications.ObserveChangedNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIPasteboard+Notifications" />.<see cref="M:UIPasteboard+Notifications.ObserveChangedNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 //
 // Lambda style
 //
 
 // listening
-notification = UIPasteboard.Notifications.ObserveChanged ((sender, args) =&gt; {
+notification = UIPasteboard.Notifications.ObserveChanged ((sender, args) => {
     /* Access strongly typed args */
     Console.WriteLine ("Notification: {0}", args.Notification);
 
@@ -334,14 +337,14 @@ void Setup ()
 void Teardown ()
 {
     notification.Dispose ();
-}</code>
+}]]></code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
-        UIPasteboard.ChangedNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIPasteboard", notification); }
+        UIPasteboard.ChangedNotification, (notification) => {Console.WriteLine ("Received the notification UIPasteboard", notification); }
 
 
 // Method style
@@ -354,7 +357,7 @@ void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (UIPasteboard.ChangedNotification, Callback);
 }
-</code>
+]]></code>
           </example>
         </remarks>
       </Docs>
@@ -451,7 +454,10 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>The color of the first pasteboard item.</summary>
-        <value>The first value when fetching, or sets all the values when setting to the single specified value.</value>
+        <value>
+          <para>The first value when fetching, or sets all the values when setting to the single specified value.</para>
+          <para tool="nullallowed">This value can be <see langword="null" />.</para>
+        </value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -478,7 +484,10 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>The colors used by all pasteboard items.</summary>
-        <value>The first value when fetching, or sets all the values when setting to the single specified value.</value>
+        <value>
+          <para>The first value when fetching, or sets all the values when setting to the single specified value.</para>
+          <para tool="nullallowed">This value can be <see langword="null" />.</para>
+        </value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -597,35 +606,6 @@ void Setup ()
         <summary>The data on this UIPasteBoard for the specified representation type.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Dispose">
-      <MemberSignature Language="C#" Value="protected override void Dispose (bool disposing);" />
-      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Dispose(bool disposing) cil managed" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo apistyle="classic">
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo apistyle="unified">
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="disposing" Type="System.Boolean" />
-      </Parameters>
-      <Docs>
-        <param name="disposing">
-          <para>If set to <see langword="true" />, the method is invoked directly and will dispose manage and unmanaged resources;   If set to <see langword="false" /> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</para>
-        </param>
-        <summary>Releases the resources used by the UIPasteboard object.</summary>
-        <remarks>
-          <para>This Dispose method releases the resources used by the UIPasteboard class.</para>
-          <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposing <paramref name="disposing" /> is set to <see langword="true" /> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false" />. </para>
-          <para>Calling the Dispose method when you are finished using the UIPasteboard ensures that all external resources used by this managed object are released as soon as possible.  Once you have invoked the Dispose method, the object is no longer useful and you should no longer make any calls to it.</para>
-          <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at http://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
-        </remarks>
       </Docs>
     </Member>
     <Member MemberName="FromName">
@@ -830,7 +810,10 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>Retrieves or sets the image of the first pasteboard item.</summary>
-        <value>Image on the pasteboard.</value>
+        <value>
+          <para>Image on the pasteboard.</para>
+          <para tool="nullallowed">This value can be <see langword="null" />.</para>
+        </value>
         <remarks>
           <para>
 	  Use this to set the pasteboard content to be an UIImage.
@@ -1062,16 +1045,16 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIPasteboard+Notifications" />.<see cref="M:UIPasteboard+Notifications.ObserveRemovedNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIPasteboard+Notifications" />.<see cref="M:UIPasteboard+Notifications.ObserveRemovedNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 //
 // Lambda style
 //
 
 // listening
-notification = UIPasteboard.Notifications.ObserveRemoved ((sender, args) =&gt; {
+notification = UIPasteboard.Notifications.ObserveRemoved ((sender, args) => {
     /* Access strongly typed args */
     Console.WriteLine ("Notification: {0}", args.Notification);
 
@@ -1103,14 +1086,14 @@ void Setup ()
 void Teardown ()
 {
     notification.Dispose ();
-}</code>
+}]]></code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
-        UIPasteboard.RemovedNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIPasteboard", notification); }
+        UIPasteboard.RemovedNotification, (notification) => {Console.WriteLine ("Received the notification UIPasteboard", notification); }
 
 
 // Method style
@@ -1123,7 +1106,7 @@ void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (UIPasteboard.RemovedNotification, Callback);
 }
-</code>
+]]></code>
           </example>
         </remarks>
       </Docs>
@@ -1220,7 +1203,10 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>The string value of the first pasteboard item.</summary>
-        <value>The first value when fetching, or sets all the values when setting to the single specified value.</value>
+        <value>
+          <para>The first value when fetching, or sets all the values when setting to the single specified value.</para>
+          <para tool="nullallowed">This value can be <see langword="null" />.</para>
+        </value>
         <remarks>
         </remarks>
       </Docs>
@@ -1248,7 +1234,10 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>The string values of all the pasteboard items.</summary>
-        <value>The first value when fetching, or sets all the values when setting to the single specified value.</value>
+        <value>
+          <para>The first value when fetching, or sets all the values when setting to the single specified value.</para>
+          <para tool="nullallowed">This value can be <see langword="null" />.</para>
+        </value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -1399,7 +1388,10 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>The URL of the first pasteboard item.</summary>
-        <value>To be added.</value>
+        <value>
+          <para>(More documentation for this node is coming)</para>
+          <para tool="nullallowed">This value can be <see langword="null" />.</para>
+        </value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -1426,7 +1418,10 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>The URLs of all the pasteboard items.</summary>
-        <value>To be added.</value>
+        <value>
+          <para>(More documentation for this node is coming)</para>
+          <para tool="nullallowed">This value can be <see langword="null" />.</para>
+        </value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>

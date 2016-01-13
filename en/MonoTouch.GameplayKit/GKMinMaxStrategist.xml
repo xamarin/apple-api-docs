@@ -1,6 +1,6 @@
 <Type Name="GKMinMaxStrategist" FullName="MonoTouch.GameplayKit.GKMinMaxStrategist">
-  <TypeSignature Language="C#" Value="public class GKMinMaxStrategist : MonoTouch.Foundation.NSObject" />
-  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit GKMinMaxStrategist extends MonoTouch.Foundation.NSObject" />
+  <TypeSignature Language="C#" Value="public class GKMinMaxStrategist : MonoTouch.Foundation.NSObject, IDisposable, MonoTouch.GameplayKit.IGKStrategist" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit GKMinMaxStrategist extends MonoTouch.Foundation.NSObject implements class MonoTouch.GameplayKit.IGKStrategist, class MonoTouch.ObjCRuntime.INativeObject, class System.IDisposable" />
   <AssemblyInfo apistyle="classic">
     <AssemblyName>monotouch</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -12,25 +12,34 @@
   <Base>
     <BaseTypeName>MonoTouch.Foundation.NSObject</BaseTypeName>
   </Base>
-  <Interfaces />
+  <Interfaces>
+    <Interface>
+      <InterfaceName>MonoTouch.GameplayKit.IGKStrategist</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>System.IDisposable</InterfaceName>
+    </Interface>
+  </Interfaces>
   <Attributes>
     <Attribute>
       <AttributeName>MonoTouch.Foundation.Register("GKMinmaxStrategist", true)</AttributeName>
     </Attribute>
     <Attribute>
-      <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_9_0)</AttributeName>
+      <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 9, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
     </Attribute>
     <Attribute>
-      <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.Mac_10_0 | MonoTouch.ObjCRuntime.Platform.Mac_10_1 | MonoTouch.ObjCRuntime.Platform.Mac_10_2 | MonoTouch.ObjCRuntime.Platform.Mac_10_3 | MonoTouch.ObjCRuntime.Platform.Mac_10_4 | MonoTouch.ObjCRuntime.Platform.Mac_10_5 | MonoTouch.ObjCRuntime.Platform.Mac_10_6 | MonoTouch.ObjCRuntime.Platform.Mac_10_7 | MonoTouch.ObjCRuntime.Platform.Mac_10_8 | MonoTouch.ObjCRuntime.Platform.Mac_10_9 | MonoTouch.ObjCRuntime.Platform.Mac_10_10 | MonoTouch.ObjCRuntime.Platform.Mac_10_10_3 | MonoTouch.ObjCRuntime.Platform.Mac_10_11 | MonoTouch.ObjCRuntime.Platform.Mac_Version | MonoTouch.ObjCRuntime.Platform.Mac_Arch64 | MonoTouch.ObjCRuntime.Platform.Mac_Arch)</AttributeName>
+      <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.MacOSX, 10, 11, MonoTouch.ObjCRuntime.PlatformArchitecture.Arch64, null)</AttributeName>
     </Attribute>
   </Attributes>
   <Docs>
     <summary>Game AI that evaluates potential game states, scores them, and attempts to maximize it's own score while minimizing it's opponents.</summary>
     <remarks>
-      <para>The <see cref="T:Monotouch.GameplayKit.GKMinMaxStrategist"/> class is an implementation of the minimax algorithm, optimized for space efficiency. Developers do not subclass <see cref="T:Monotouch.GameplayKit.GKMinMaxStrategist"/>, but instead create game-specific implementations of <see cref="T:Monotouch.GameplayKit.IGKGameModelPlayer"/>, <see cref="T:Monotouch.GameplayKit.IGKGameModel"/>, and <see cref="T:Monotouch.GameplayKit.IGKGameModelUpdate"/>. This is discussed in detail in the "AI Opponent" section of the remarks section of the <see cref="N:Monotouch.GameplayKit"/> namespace documentation.</para>
-      <para>Perhaps because <see cref="T:Monotouch.GameplayKit.GKMinMaxStrategist"/> is a highly-optimized implementation, it's failure modes are difficult to debug. Typically, a mistake in the configuration of <see cref="T:Monotouch.GameplayKit.GKMinMaxStrategist"/> or in the implementation of the related game classes results in an <see langword="null"/> returned by <see cref="M:Monotouch.GameplayKit.GKMinMaxStrategist.GetBestMove"/> with no error message in the console or system log. The following sequence diagram may be of some help in placing breakpoints:</para>
-      <para><img src="GKMinMaxStrategist.GetBestMoveMove_Sequence.png"/></para>
-      <para>Because <see cref="M:Monotouch.GameplayKit.GKMinMaxStrategist.GetBestMove"/> is very expensive, developers should typically call it from a background <see cref="T:System.Threading.Tasks.Task"/>.</para>
+      <para>The <see cref="T:Monotouch.GameplayKit.GKMinMaxStrategist" /> class is an implementation of the minimax algorithm, optimized for space efficiency. Developers do not subclass <see cref="T:Monotouch.GameplayKit.GKMinMaxStrategist" />, but instead create game-specific implementations of <see cref="T:Monotouch.GameplayKit.IGKGameModelPlayer" />, <see cref="T:Monotouch.GameplayKit.IGKGameModel" />, and <see cref="T:Monotouch.GameplayKit.IGKGameModelUpdate" />. This is discussed in detail in the "AI Opponent" section of the remarks section of the <see cref="N:Monotouch.GameplayKit" /> namespace documentation.</para>
+      <para>Perhaps because <see cref="T:Monotouch.GameplayKit.GKMinMaxStrategist" /> is a highly-optimized implementation, it's failure modes are difficult to debug. Typically, a mistake in the configuration of <see cref="T:Monotouch.GameplayKit.GKMinMaxStrategist" /> or in the implementation of the related game classes results in an <see langword="null" /> returned by <see cref="M:Monotouch.GameplayKit.GKMinMaxStrategist.GetBestMove" /> with no error message in the console or system log. The following sequence diagram may be of some help in placing breakpoints:</para>
+      <para>
+        <img src="GKMinMaxStrategist.GetBestMoveMove_Sequence.png" />
+      </para>
+      <para>Because <see cref="M:Monotouch.GameplayKit.GKMinMaxStrategist.GetBestMove" /> is very expensive, developers should typically call it from a background <see cref="T:System.Threading.Tasks.Task" />.</para>
     </remarks>
     <related type="PlatformDocAPI" href="https://developer.apple.com/library/ios/documentation/GameplayKit/Reference/GKMinmaxStrategist_Class/index.html">Apple documentation for <c>GKMinmaxStrategist</c></related>
   </Docs>
@@ -190,35 +199,6 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <remarks>Each MonoTouch class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="Dispose">
-      <MemberSignature Language="C#" Value="protected override void Dispose (bool disposing);" />
-      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Dispose(bool disposing) cil managed" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo apistyle="classic">
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo apistyle="unified">
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="disposing" Type="System.Boolean" />
-      </Parameters>
-      <Docs>
-        <param name="disposing">
-          <para>If set to <see langword="true" />, the method is invoked directly and will dispose manage and unmanaged resources;   If set to <see langword="false" /> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</para>
-        </param>
-        <summary>Releases the resources used by the GKMinMaxStrategist object.</summary>
-        <remarks>
-          <para>This Dispose method releases the resources used by the GKMinMaxStrategist class.</para>
-          <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposing <paramref name="disposing" /> is set to <see langword="true" /> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false" />. </para>
-          <para>Calling the Dispose method when you are finished using the GKMinMaxStrategist ensures that all external resources used by this managed object are released as soon as possible.  Once you have invoked the Dispose method, the object is no longer useful and you should no longer make any calls to it.</para>
-          <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at http://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
-        </remarks>
-      </Docs>
-    </Member>
     <Member MemberName="GameModel">
       <MemberSignature Language="C#" Value="public virtual MonoTouch.GameplayKit.IGKGameModel GameModel { get; set; }" />
       <MemberSignature Language="ILAsm" Value=".property instance class MonoTouch.GameplayKit.IGKGameModel GameModel" />
@@ -242,10 +222,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Docs>
         <summary>The <see cref="T:Monotouch.GameplayKit.IGKGameModel" /> representing the current state of the game.</summary>
-        <value></value>
+        <value>
+        </value>
         <remarks>
-          <para>Developers must set this value for <see cref="M:Monotouch.GameplayKit.GKMinMaxStrategist.GetBestMove"/> to return something other than <see langword="null"/>.</para>
-          <para>Developers must not rely on this property as the only reference to their <see cref="T:Monotouch.GameplayKit.IGKGameModel"/>. Developers must hold their own reference to the <see cref="T:Monotouch.GameplayKit.IGKGameModel"/> or it may be garbage collected. </para>
+          <para>Developers must set this value for <see cref="M:Monotouch.GameplayKit.GKMinMaxStrategist.GetBestMove" /> to return something other than <see langword="null" />.</para>
+          <para>Developers must not rely on this property as the only reference to their <see cref="T:Monotouch.GameplayKit.IGKGameModel" />. Developers must hold their own reference to the <see cref="T:Monotouch.GameplayKit.IGKGameModel" /> or it may be garbage collected. </para>
         </remarks>
       </Docs>
     </Member>
@@ -273,14 +254,14 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="player">To be added.</param>
         <summary>Calculates the <see cref="T:Monotouch.GameplayKit.IGKGameModelUpdate" /> that provides the greatest advantage to <param name="player" />, constrained by <see cref="P:Monotouch.GameplayKit.GKMinMaxStrategist.MaxLookAheadDepth" />.</summary>
-        <returns>Configuration  or implementation defects may result in this method returning <see langword="null"/>.</returns>
+        <returns>Configuration  or implementation defects may result in this method returning <see langword="null" />.</returns>
         <remarks>
-          <para>This method returns, within the constraints of <see cref="P:Monotouch.GameplayKit.GKMinMaxStrategist.MaxLookAheadDepth"/>, the <see cref="T:Monotouch.GameplayKit.IGKGameModelUpdate"/> that maximizes the expected value for <paramref name="player"/> even in the face of optimal play by the opponent.</para>
-          <para>This is done via a tree-search of possible game states, modeled by <see cref="T:Monotouch.GameplayKit.IGKGameModel"/> objects. These states are either game-ending (if either <see cref="M:MonoTouch.GameplayKit.GKGameModel_Extensions.IsWin"/> or <see cref="M:MonoTouch.GameplayKit.GKGameModel_Extensions.IsLoss"/> return <see langword="true"/>) or can generate subsequent moves (see <see cref="M:Monotouch.GameplayKit.IGKGameModel.GetGameModelUpdate"/>). The <see cref="P:Monotouch.GameplayKit.GKMinMaxStrategist.MaxLookAheadDepth"/> determines the number of possible moves ahead (plies) in the tree are searched.</para>
-          <para>The underlying algorithm's time efficiency is <c>O(b^m)</c> where <c>b</c> is the number of states in a single look-ahead "ply" and <c>m</c> is the number of plies searched (see <see cref="P:MonoTouch>GameplayKit.GKMinMaxStrategist.MaxLookAheadDepth"/>). The algorithm's space efficiency is <c>O(m)</c>.</para>
-          <para>If multiple <see cref="T:Monotouch.GameplayKit.IGKGameModelUpdate"/> objects have identical <see cref="P:Monotouch.GameplayKit.IGKGameModelUpdate.Value"/> values and <see cref="P:Monotouch.GameplayKit.GKMinMaxStrategist.RandomSource"/> is not <see langword="null"/>, the <see cref="T:Monotouch.GameplayKit.IGKGameModelUpdate"/> returned is chosen randomly from those with maximum values. If <see cref="P:Monotouch.GameplayKit.GKMinMaxStrategist.RandomSource"/>, this method is deterministic and returns the first move calculated with that value. (The order in which moves from a given state are calculated is the same order as that of the moves returned by <see cref="M:Monotouch.GameplayKit.IGKGameModel.GetGameModelUpdate"/>.)</para>
-          <para>This method does not favor shorter outcomes to longer outcomes. For instance, if two moves both produce guaranteed wins, but one requires five rounds to guarantee the win and the other requires just one more round to win, both moves are equally valued and equally likely to be returned by <see cref="M:Monotouch.GameplayKit.GKMinMaxStrategist.GetBestMove"/> with a non-<see langword="null"/> <see cref="P:Monotouch.GameplayKit.GKMinMaxStrategist.RandomSource"/>.</para>
-          <para>Before this call returns, the internal state of the <see cref="P:Monotouch.GameplayKit.GKMinMaxStrategist.GameModel"/> may be changed transiently, but before this method returns, the state will be returned to it's state prior to the call. To actually apply the best move to the game, developers should call <see cref="M:Monotouch.GameplayKit.IGKGameModel.ApplyGameModelUpdate"/>, as shown in the following:</para>
+          <para>This method returns, within the constraints of <see cref="P:Monotouch.GameplayKit.GKMinMaxStrategist.MaxLookAheadDepth" />, the <see cref="T:Monotouch.GameplayKit.IGKGameModelUpdate" /> that maximizes the expected value for <paramref name="player" /> even in the face of optimal play by the opponent.</para>
+          <para>This is done via a tree-search of possible game states, modeled by <see cref="T:Monotouch.GameplayKit.IGKGameModel" /> objects. These states are either game-ending (if either <see cref="M:MonoTouch.GameplayKit.GKGameModel_Extensions.IsWin" /> or <see cref="M:MonoTouch.GameplayKit.GKGameModel_Extensions.IsLoss" /> return <see langword="true" />) or can generate subsequent moves (see <see cref="M:Monotouch.GameplayKit.IGKGameModel.GetGameModelUpdate" />). The <see cref="P:Monotouch.GameplayKit.GKMinMaxStrategist.MaxLookAheadDepth" /> determines the number of possible moves ahead (plies) in the tree are searched.</para>
+          <para>The underlying algorithm's time efficiency is <c>O(b^m)</c> where <c>b</c> is the number of states in a single look-ahead "ply" and <c>m</c> is the number of plies searched (see <see cref="P:MonoTouch&gt;GameplayKit.GKMinMaxStrategist.MaxLookAheadDepth" />). The algorithm's space efficiency is <c>O(m)</c>.</para>
+          <para>If multiple <see cref="T:Monotouch.GameplayKit.IGKGameModelUpdate" /> objects have identical <see cref="P:Monotouch.GameplayKit.IGKGameModelUpdate.Value" /> values and <see cref="P:Monotouch.GameplayKit.GKMinMaxStrategist.RandomSource" /> is not <see langword="null" />, the <see cref="T:Monotouch.GameplayKit.IGKGameModelUpdate" /> returned is chosen randomly from those with maximum values. If <see cref="P:Monotouch.GameplayKit.GKMinMaxStrategist.RandomSource" />, this method is deterministic and returns the first move calculated with that value. (The order in which moves from a given state are calculated is the same order as that of the moves returned by <see cref="M:Monotouch.GameplayKit.IGKGameModel.GetGameModelUpdate" />.)</para>
+          <para>This method does not favor shorter outcomes to longer outcomes. For instance, if two moves both produce guaranteed wins, but one requires five rounds to guarantee the win and the other requires just one more round to win, both moves are equally valued and equally likely to be returned by <see cref="M:Monotouch.GameplayKit.GKMinMaxStrategist.GetBestMove" /> with a non-<see langword="null" /><see cref="P:Monotouch.GameplayKit.GKMinMaxStrategist.RandomSource" />.</para>
+          <para>Before this call returns, the internal state of the <see cref="P:Monotouch.GameplayKit.GKMinMaxStrategist.GameModel" /> may be changed transiently, but before this method returns, the state will be returned to it's state prior to the call. To actually apply the best move to the game, developers should call <see cref="M:Monotouch.GameplayKit.IGKGameModel.ApplyGameModelUpdate" />, as shown in the following:</para>
           <example>
             <code lang="C#"><![CDATA[
 game = new TicTacToe ();
@@ -299,8 +280,39 @@ while (game.IsActive ()) {
 }
   ]]></code>
           </example>
-          <para>In the previous example, the <c>game</c> variable refers to a subtype of <see cref="T:Monotouch.GameplayKit.IGKGameModel"/>. Note that in this case, the <see cref="T:Monotouch.GameplayKit.GKMinMaxStrategist"/> is playing both sides. Not shown is that this code is being run in a background <see cref="T:System.Threading.Tasks.Task"/> and that application code is holding on a reference to the <c>game</c> object so that it is not garbage-collected.</para>
+          <para>In the previous example, the <c>game</c> variable refers to a subtype of <see cref="T:Monotouch.GameplayKit.IGKGameModel" />. Note that in this case, the <see cref="T:Monotouch.GameplayKit.GKMinMaxStrategist" /> is playing both sides. Not shown is that this code is being run in a background <see cref="T:System.Threading.Tasks.Task" /> and that application code is holding on a reference to the <c>game</c> object so that it is not garbage-collected.</para>
         </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetBestMoveForActivePlayer">
+      <MemberSignature Language="C#" Value="public virtual MonoTouch.GameplayKit.IGKGameModelUpdate GetBestMoveForActivePlayer ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class MonoTouch.GameplayKit.IGKGameModelUpdate GetBestMoveForActivePlayer() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo apistyle="classic">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo apistyle="unified">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("bestMoveForActivePlayer")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 9, 1, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.TvOS, 9, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>MonoTouch.GameplayKit.IGKGameModelUpdate</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetRandomMove">

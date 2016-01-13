@@ -74,10 +74,10 @@
           <AttributeName>MonoTouch.Foundation.Export("initWithConcurrencyType:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.DesignatedInitializer</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.DesignatedInitializer</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <Parameters>
@@ -264,13 +264,13 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("concurrencyType")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -416,16 +416,16 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:NSManagedObjectContext+Notifications" />.<see cref="M:NSManagedObjectContext+Notifications.ObserveDidSaveNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:NSManagedObjectContext+Notifications" />.<see cref="M:NSManagedObjectContext+Notifications.ObserveDidSaveNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 //
 // Lambda style
 //
 
 // listening
-notification = NSManagedObjectContext.Notifications.ObserveDidSave ((sender, args) =&gt; {
+notification = NSManagedObjectContext.Notifications.ObserveDidSave ((sender, args) => {
     /* Access strongly typed args */
     Console.WriteLine ("Notification: {0}", args.Notification);
 
@@ -465,14 +465,14 @@ void Setup ()
 void Teardown ()
 {
     notification.Dispose ();
-}</code>
+}]]></code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
-        NSManagedObjectContext.DidSaveNotification, (notification) =&gt; {Console.WriteLine ("Received the notification NSManagedObjectContext", notification); }
+        NSManagedObjectContext.DidSaveNotification, (notification) => {Console.WriteLine ("Received the notification NSManagedObjectContext", notification); }
 
 
 // Method style
@@ -485,37 +485,8 @@ void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (NSManagedObjectContext.DidSaveNotification, Callback);
 }
-</code>
+]]></code>
           </example>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Dispose">
-      <MemberSignature Language="C#" Value="protected override void Dispose (bool disposing);" />
-      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Dispose(bool disposing) cil managed" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo apistyle="classic">
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo apistyle="unified">
-        <AssemblyVersion>0.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="disposing" Type="System.Boolean" />
-      </Parameters>
-      <Docs>
-        <param name="disposing">
-          <para>If set to <see langword="true" />, the method is invoked directly and will dispose manage and unmanaged resources;   If set to <see langword="false" /> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</para>
-        </param>
-        <summary>Releases the resources used by the NSManagedObjectContext object.</summary>
-        <remarks>
-          <para>This Dispose method releases the resources used by the NSManagedObjectContext class.</para>
-          <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposing <paramref name="disposing" /> is set to <see langword="true" /> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false" />. </para>
-          <para>Calling the Dispose method when you are finished using the NSManagedObjectContext ensures that all external resources used by this managed object are released as soon as possible.  Once you have invoked the Dispose method, the object is no longer useful and you should no longer make any calls to it.</para>
-          <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at http://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
         </remarks>
       </Docs>
     </Member>
@@ -598,10 +569,10 @@ void Setup ()
           <AttributeName>MonoTouch.Foundation.Export("executeRequest:error:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_8_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.Mac_10_10)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.MacOSX, 10, 10, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -740,7 +711,16 @@ void Setup ()
           <AttributeName>MonoTouch.Foundation.Export("lock")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Deprecated=MonoTouch.ObjCRuntime.Platform.iOS_8_0 | MonoTouch.ObjCRuntime.Platform.iOS_8_1 | MonoTouch.ObjCRuntime.Platform.iOS_8_2 | MonoTouch.ObjCRuntime.Platform.iOS_8_3 | MonoTouch.ObjCRuntime.Platform.iOS_8_4 | MonoTouch.ObjCRuntime.Platform.iOS_9_0 | MonoTouch.ObjCRuntime.Platform.Mac_10_0 | MonoTouch.ObjCRuntime.Platform.Mac_10_1 | MonoTouch.ObjCRuntime.Platform.Mac_10_2 | MonoTouch.ObjCRuntime.Platform.Mac_10_3 | MonoTouch.ObjCRuntime.Platform.Mac_10_4 | MonoTouch.ObjCRuntime.Platform.Mac_10_5 | MonoTouch.ObjCRuntime.Platform.Mac_10_6 | MonoTouch.ObjCRuntime.Platform.Mac_10_7 | MonoTouch.ObjCRuntime.Platform.Mac_10_8 | MonoTouch.ObjCRuntime.Platform.Mac_10_9 | MonoTouch.ObjCRuntime.Platform.Mac_10_10 | MonoTouch.ObjCRuntime.Platform.Mac_10_10_3 | MonoTouch.ObjCRuntime.Platform.Mac_10_11 | MonoTouch.ObjCRuntime.Platform.iOS_Version | MonoTouch.ObjCRuntime.Platform.Mac_Version, Introduced=MonoTouch.ObjCRuntime.Platform.iOS_2_0 | MonoTouch.ObjCRuntime.Platform.iOS_2_2 | MonoTouch.ObjCRuntime.Platform.iOS_3_0 | MonoTouch.ObjCRuntime.Platform.iOS_3_1 | MonoTouch.ObjCRuntime.Platform.iOS_3_2 | MonoTouch.ObjCRuntime.Platform.iOS_5_0 | MonoTouch.ObjCRuntime.Platform.iOS_5_1 | MonoTouch.ObjCRuntime.Platform.iOS_6_0 | MonoTouch.ObjCRuntime.Platform.iOS_6_1 | MonoTouch.ObjCRuntime.Platform.iOS_7_0 | MonoTouch.ObjCRuntime.Platform.iOS_7_1 | MonoTouch.ObjCRuntime.Platform.iOS_9_0 | MonoTouch.ObjCRuntime.Platform.Mac_10_0 | MonoTouch.ObjCRuntime.Platform.Mac_10_1 | MonoTouch.ObjCRuntime.Platform.Mac_10_2 | MonoTouch.ObjCRuntime.Platform.Mac_10_3 | MonoTouch.ObjCRuntime.Platform.Mac_10_4 | MonoTouch.ObjCRuntime.Platform.Mac_10_5 | MonoTouch.ObjCRuntime.Platform.Mac_10_6 | MonoTouch.ObjCRuntime.Platform.Mac_10_7 | MonoTouch.ObjCRuntime.Platform.Mac_10_8 | MonoTouch.ObjCRuntime.Platform.Mac_10_9 | MonoTouch.ObjCRuntime.Platform.Mac_10_10 | MonoTouch.ObjCRuntime.Platform.Mac_10_10_3 | MonoTouch.ObjCRuntime.Platform.Mac_10_11 | MonoTouch.ObjCRuntime.Platform.iOS_Version | MonoTouch.ObjCRuntime.Platform.Mac_Version, Message="Use a queue style context and PerformAndWait instead")</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Use a queue style context and PerformAndWait instead")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.MacOSX, 10, 10, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Use a queue style context and PerformAndWait instead")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 3, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Use a queue style context and PerformAndWait instead")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.MacOSX, 10, 4, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Use a queue style context and PerformAndWait instead")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -794,10 +774,10 @@ void Setup ()
           <AttributeName>MonoTouch.Foundation.Export("mergeChangesFromRemoteContextSave:intoContexts:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_9_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 9, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.Mac_10_11)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.MacOSX, 10, 11, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -853,28 +833,28 @@ void Setup ()
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_8_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.Mac_10_10)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.MacOSX, 10, 10, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("name")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_8_0)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.Mac_10_10)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.MacOSX, 10, 10, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: MonoTouch.Foundation.Export("setName:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_8_0)</AttributeName>
+          <AttributeName>set: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.Mac_10_10)</AttributeName>
+          <AttributeName>set: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.MacOSX, 10, 10, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -940,16 +920,16 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:NSManagedObjectContext+Notifications" />.<see cref="M:NSManagedObjectContext+Notifications.ObserveObjectsDidChangeNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:NSManagedObjectContext+Notifications" />.<see cref="M:NSManagedObjectContext+Notifications.ObserveObjectsDidChangeNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 //
 // Lambda style
 //
 
 // listening
-notification = NSManagedObjectContext.Notifications.ObserveObjectsDidChange ((sender, args) =&gt; {
+notification = NSManagedObjectContext.Notifications.ObserveObjectsDidChange ((sender, args) => {
     /* Access strongly typed args */
     Console.WriteLine ("Notification: {0}", args.Notification);
 
@@ -989,14 +969,14 @@ void Setup ()
 void Teardown ()
 {
     notification.Dispose ();
-}</code>
+}]]></code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
-        NSManagedObjectContext.ObjectsDidChangeNotification, (notification) =&gt; {Console.WriteLine ("Received the notification NSManagedObjectContext", notification); }
+        NSManagedObjectContext.ObjectsDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification NSManagedObjectContext", notification); }
 
 
 // Method style
@@ -1009,7 +989,7 @@ void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (NSManagedObjectContext.ObjectsDidChangeNotification, Callback);
 }
-</code>
+]]></code>
           </example>
         </remarks>
       </Docs>
@@ -1117,19 +1097,19 @@ void Setup ()
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("parentContext")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: MonoTouch.Foundation.Export("setParentContext:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>set: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1153,7 +1133,7 @@ void Setup ()
           <AttributeName>MonoTouch.Foundation.Export("performBlock:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Since(5, 0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1186,7 +1166,7 @@ void Setup ()
           <AttributeName>MonoTouch.Foundation.Export("performBlock:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1219,7 +1199,7 @@ void Setup ()
           <AttributeName>MonoTouch.Foundation.Export("performBlockAndWait:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Since(5, 0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1252,7 +1232,7 @@ void Setup ()
           <AttributeName>MonoTouch.Foundation.Export("performBlockAndWait:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1393,10 +1373,10 @@ void Setup ()
           <AttributeName>MonoTouch.Foundation.Export("refreshAllObjects")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_8_3)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 3, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.Mac_10_11)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.MacOSX, 10, 11, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1576,28 +1556,28 @@ void Setup ()
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_9_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 9, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.Mac_10_11)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.MacOSX, 10, 11, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("shouldDeleteInaccessibleFaults")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_9_0)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 9, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.Mac_10_11)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.MacOSX, 10, 11, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: MonoTouch.Foundation.Export("setShouldDeleteInaccessibleFaults:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_9_0)</AttributeName>
+          <AttributeName>set: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 9, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.Mac_10_11)</AttributeName>
+          <AttributeName>set: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.MacOSX, 10, 11, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1624,10 +1604,10 @@ void Setup ()
           <AttributeName>MonoTouch.Foundation.Export("shouldHandleInaccessibleFault:forObjectID:triggeredByProperty:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_9_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 9, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.Mac_10_11)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.MacOSX, 10, 11, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1689,13 +1669,37 @@ void Setup ()
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Deprecated=MonoTouch.ObjCRuntime.Platform.iOS_8_0 | MonoTouch.ObjCRuntime.Platform.iOS_8_1 | MonoTouch.ObjCRuntime.Platform.iOS_8_2 | MonoTouch.ObjCRuntime.Platform.iOS_8_3 | MonoTouch.ObjCRuntime.Platform.iOS_8_4 | MonoTouch.ObjCRuntime.Platform.iOS_9_0 | MonoTouch.ObjCRuntime.Platform.Mac_10_0 | MonoTouch.ObjCRuntime.Platform.Mac_10_1 | MonoTouch.ObjCRuntime.Platform.Mac_10_2 | MonoTouch.ObjCRuntime.Platform.Mac_10_3 | MonoTouch.ObjCRuntime.Platform.Mac_10_4 | MonoTouch.ObjCRuntime.Platform.Mac_10_5 | MonoTouch.ObjCRuntime.Platform.Mac_10_6 | MonoTouch.ObjCRuntime.Platform.Mac_10_7 | MonoTouch.ObjCRuntime.Platform.Mac_10_8 | MonoTouch.ObjCRuntime.Platform.Mac_10_9 | MonoTouch.ObjCRuntime.Platform.Mac_10_10 | MonoTouch.ObjCRuntime.Platform.Mac_10_10_3 | MonoTouch.ObjCRuntime.Platform.Mac_10_11 | MonoTouch.ObjCRuntime.Platform.iOS_Version | MonoTouch.ObjCRuntime.Platform.Mac_Version, Introduced=MonoTouch.ObjCRuntime.Platform.iOS_2_0 | MonoTouch.ObjCRuntime.Platform.iOS_2_2 | MonoTouch.ObjCRuntime.Platform.iOS_3_0 | MonoTouch.ObjCRuntime.Platform.iOS_3_1 | MonoTouch.ObjCRuntime.Platform.iOS_3_2 | MonoTouch.ObjCRuntime.Platform.iOS_5_0 | MonoTouch.ObjCRuntime.Platform.iOS_5_1 | MonoTouch.ObjCRuntime.Platform.iOS_6_0 | MonoTouch.ObjCRuntime.Platform.iOS_6_1 | MonoTouch.ObjCRuntime.Platform.iOS_7_0 | MonoTouch.ObjCRuntime.Platform.iOS_7_1 | MonoTouch.ObjCRuntime.Platform.iOS_9_0 | MonoTouch.ObjCRuntime.Platform.Mac_10_0 | MonoTouch.ObjCRuntime.Platform.Mac_10_1 | MonoTouch.ObjCRuntime.Platform.Mac_10_2 | MonoTouch.ObjCRuntime.Platform.Mac_10_3 | MonoTouch.ObjCRuntime.Platform.Mac_10_4 | MonoTouch.ObjCRuntime.Platform.Mac_10_5 | MonoTouch.ObjCRuntime.Platform.Mac_10_6 | MonoTouch.ObjCRuntime.Platform.Mac_10_7 | MonoTouch.ObjCRuntime.Platform.Mac_10_8 | MonoTouch.ObjCRuntime.Platform.Mac_10_9 | MonoTouch.ObjCRuntime.Platform.Mac_10_10 | MonoTouch.ObjCRuntime.Platform.Mac_10_10_3 | MonoTouch.ObjCRuntime.Platform.Mac_10_11 | MonoTouch.ObjCRuntime.Platform.iOS_Version | MonoTouch.ObjCRuntime.Platform.Mac_Version, Message="Use a queue style context and Perform instead")</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Use a queue style context and Perform instead")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.MacOSX, 10, 10, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Use a queue style context and Perform instead")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 3, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Use a queue style context and Perform instead")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.MacOSX, 10, 4, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Use a queue style context and Perform instead")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("tryLock")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Deprecated=MonoTouch.ObjCRuntime.Platform.iOS_8_0 | MonoTouch.ObjCRuntime.Platform.iOS_8_1 | MonoTouch.ObjCRuntime.Platform.iOS_8_2 | MonoTouch.ObjCRuntime.Platform.iOS_8_3 | MonoTouch.ObjCRuntime.Platform.iOS_8_4 | MonoTouch.ObjCRuntime.Platform.iOS_9_0 | MonoTouch.ObjCRuntime.Platform.Mac_10_0 | MonoTouch.ObjCRuntime.Platform.Mac_10_1 | MonoTouch.ObjCRuntime.Platform.Mac_10_2 | MonoTouch.ObjCRuntime.Platform.Mac_10_3 | MonoTouch.ObjCRuntime.Platform.Mac_10_4 | MonoTouch.ObjCRuntime.Platform.Mac_10_5 | MonoTouch.ObjCRuntime.Platform.Mac_10_6 | MonoTouch.ObjCRuntime.Platform.Mac_10_7 | MonoTouch.ObjCRuntime.Platform.Mac_10_8 | MonoTouch.ObjCRuntime.Platform.Mac_10_9 | MonoTouch.ObjCRuntime.Platform.Mac_10_10 | MonoTouch.ObjCRuntime.Platform.Mac_10_10_3 | MonoTouch.ObjCRuntime.Platform.Mac_10_11 | MonoTouch.ObjCRuntime.Platform.iOS_Version | MonoTouch.ObjCRuntime.Platform.Mac_Version, Introduced=MonoTouch.ObjCRuntime.Platform.iOS_2_0 | MonoTouch.ObjCRuntime.Platform.iOS_2_2 | MonoTouch.ObjCRuntime.Platform.iOS_3_0 | MonoTouch.ObjCRuntime.Platform.iOS_3_1 | MonoTouch.ObjCRuntime.Platform.iOS_3_2 | MonoTouch.ObjCRuntime.Platform.iOS_5_0 | MonoTouch.ObjCRuntime.Platform.iOS_5_1 | MonoTouch.ObjCRuntime.Platform.iOS_6_0 | MonoTouch.ObjCRuntime.Platform.iOS_6_1 | MonoTouch.ObjCRuntime.Platform.iOS_7_0 | MonoTouch.ObjCRuntime.Platform.iOS_7_1 | MonoTouch.ObjCRuntime.Platform.iOS_9_0 | MonoTouch.ObjCRuntime.Platform.Mac_10_0 | MonoTouch.ObjCRuntime.Platform.Mac_10_1 | MonoTouch.ObjCRuntime.Platform.Mac_10_2 | MonoTouch.ObjCRuntime.Platform.Mac_10_3 | MonoTouch.ObjCRuntime.Platform.Mac_10_4 | MonoTouch.ObjCRuntime.Platform.Mac_10_5 | MonoTouch.ObjCRuntime.Platform.Mac_10_6 | MonoTouch.ObjCRuntime.Platform.Mac_10_7 | MonoTouch.ObjCRuntime.Platform.Mac_10_8 | MonoTouch.ObjCRuntime.Platform.Mac_10_9 | MonoTouch.ObjCRuntime.Platform.Mac_10_10 | MonoTouch.ObjCRuntime.Platform.Mac_10_10_3 | MonoTouch.ObjCRuntime.Platform.Mac_10_11 | MonoTouch.ObjCRuntime.Platform.iOS_Version | MonoTouch.ObjCRuntime.Platform.Mac_Version, Message="Use a queue style context and Perform instead")</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Use a queue style context and Perform instead")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.MacOSX, 10, 10, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Use a queue style context and Perform instead")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 3, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Use a queue style context and Perform instead")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.MacOSX, 10, 4, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Use a queue style context and Perform instead")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1776,7 +1780,16 @@ void Setup ()
           <AttributeName>MonoTouch.Foundation.Export("unlock")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Deprecated=MonoTouch.ObjCRuntime.Platform.iOS_8_0 | MonoTouch.ObjCRuntime.Platform.iOS_8_1 | MonoTouch.ObjCRuntime.Platform.iOS_8_2 | MonoTouch.ObjCRuntime.Platform.iOS_8_3 | MonoTouch.ObjCRuntime.Platform.iOS_8_4 | MonoTouch.ObjCRuntime.Platform.iOS_9_0 | MonoTouch.ObjCRuntime.Platform.Mac_10_0 | MonoTouch.ObjCRuntime.Platform.Mac_10_1 | MonoTouch.ObjCRuntime.Platform.Mac_10_2 | MonoTouch.ObjCRuntime.Platform.Mac_10_3 | MonoTouch.ObjCRuntime.Platform.Mac_10_4 | MonoTouch.ObjCRuntime.Platform.Mac_10_5 | MonoTouch.ObjCRuntime.Platform.Mac_10_6 | MonoTouch.ObjCRuntime.Platform.Mac_10_7 | MonoTouch.ObjCRuntime.Platform.Mac_10_8 | MonoTouch.ObjCRuntime.Platform.Mac_10_9 | MonoTouch.ObjCRuntime.Platform.Mac_10_10 | MonoTouch.ObjCRuntime.Platform.Mac_10_10_3 | MonoTouch.ObjCRuntime.Platform.Mac_10_11 | MonoTouch.ObjCRuntime.Platform.iOS_Version | MonoTouch.ObjCRuntime.Platform.Mac_Version, Introduced=MonoTouch.ObjCRuntime.Platform.iOS_2_0 | MonoTouch.ObjCRuntime.Platform.iOS_2_2 | MonoTouch.ObjCRuntime.Platform.iOS_3_0 | MonoTouch.ObjCRuntime.Platform.iOS_3_1 | MonoTouch.ObjCRuntime.Platform.iOS_3_2 | MonoTouch.ObjCRuntime.Platform.iOS_5_0 | MonoTouch.ObjCRuntime.Platform.iOS_5_1 | MonoTouch.ObjCRuntime.Platform.iOS_6_0 | MonoTouch.ObjCRuntime.Platform.iOS_6_1 | MonoTouch.ObjCRuntime.Platform.iOS_7_0 | MonoTouch.ObjCRuntime.Platform.iOS_7_1 | MonoTouch.ObjCRuntime.Platform.iOS_9_0 | MonoTouch.ObjCRuntime.Platform.Mac_10_0 | MonoTouch.ObjCRuntime.Platform.Mac_10_1 | MonoTouch.ObjCRuntime.Platform.Mac_10_2 | MonoTouch.ObjCRuntime.Platform.Mac_10_3 | MonoTouch.ObjCRuntime.Platform.Mac_10_4 | MonoTouch.ObjCRuntime.Platform.Mac_10_5 | MonoTouch.ObjCRuntime.Platform.Mac_10_6 | MonoTouch.ObjCRuntime.Platform.Mac_10_7 | MonoTouch.ObjCRuntime.Platform.Mac_10_8 | MonoTouch.ObjCRuntime.Platform.Mac_10_9 | MonoTouch.ObjCRuntime.Platform.Mac_10_10 | MonoTouch.ObjCRuntime.Platform.Mac_10_10_3 | MonoTouch.ObjCRuntime.Platform.Mac_10_11 | MonoTouch.ObjCRuntime.Platform.iOS_Version | MonoTouch.ObjCRuntime.Platform.Mac_Version, Message="Use a queue style context and PerformAndWait instead")</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Use a queue style context and PerformAndWait instead")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.MacOSX, 10, 10, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Use a queue style context and PerformAndWait instead")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 3, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Use a queue style context and PerformAndWait instead")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.MacOSX, 10, 4, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Use a queue style context and PerformAndWait instead")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1824,13 +1837,13 @@ void Setup ()
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("userInfo")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>

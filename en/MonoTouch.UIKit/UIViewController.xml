@@ -1,6 +1,6 @@
 <Type Name="UIViewController" FullName="MonoTouch.UIKit.UIViewController">
-  <TypeSignature Language="C#" Value="public class UIViewController : MonoTouch.UIKit.UIResponder, IDisposable, MonoTouch.Foundation.INSCoding, MonoTouch.UIKit.IUIAppearanceContainer, MonoTouch.UIKit.IUIContentContainer, MonoTouch.UIKit.IUITraitEnvironment, System.Collections.IEnumerable" />
-  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit UIViewController extends MonoTouch.UIKit.UIResponder implements class MonoTouch.Foundation.INSCoding, class MonoTouch.ObjCRuntime.INativeObject, class MonoTouch.UIKit.IUIAppearanceContainer, class MonoTouch.UIKit.IUIContentContainer, class MonoTouch.UIKit.IUITraitEnvironment, class System.Collections.IEnumerable, class System.IDisposable" />
+  <TypeSignature Language="C#" Value="public class UIViewController : MonoTouch.UIKit.UIResponder, IDisposable, MonoTouch.Foundation.INSCoding, MonoTouch.UIKit.IUIAppearanceContainer, MonoTouch.UIKit.IUIContentContainer, MonoTouch.UIKit.IUIFocusEnvironment, MonoTouch.UIKit.IUITraitEnvironment, System.Collections.IEnumerable" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit UIViewController extends MonoTouch.UIKit.UIResponder implements class MonoTouch.Foundation.INSCoding, class MonoTouch.ObjCRuntime.INativeObject, class MonoTouch.UIKit.IUIAppearanceContainer, class MonoTouch.UIKit.IUIContentContainer, class MonoTouch.UIKit.IUIFocusEnvironment, class MonoTouch.UIKit.IUITraitEnvironment, class System.Collections.IEnumerable, class System.IDisposable" />
   <AssemblyInfo apistyle="classic">
     <AssemblyName>monotouch</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -21,6 +21,9 @@
     </Interface>
     <Interface>
       <InterfaceName>MonoTouch.UIKit.IUIContentContainer</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>MonoTouch.UIKit.IUIFocusEnvironment</InterfaceName>
     </Interface>
     <Interface>
       <InterfaceName>MonoTouch.UIKit.IUITraitEnvironment</InterfaceName>
@@ -629,7 +632,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>MonoTouch.Foundation.Export("addChildViewController:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -669,7 +672,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>MonoTouch.Foundation.Export("addKeyCommand:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_9_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 9, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -680,13 +683,14 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="command">Definition of the new keyboard action.</param>
-        <summary>Adds <paramref name="command"/> as a shortcut available to attached hardware keyboards.</summary>
+        <summary>Adds <paramref name="command" /> as a shortcut available to attached hardware keyboards.</summary>
         <remarks>
-              <para><see cref="T:MonoTouch.UIKit.UIKeyCommand" /> objects are only generated with an attached hardware keyboard.</para>
-              <para>To create keyboard accelerators, developers must create a <see cref="T:Monotouch.ObjCRuntime.Selector"/> that is associated with 
-        a method of type <c><![CDATA[Action<UIKeyCommand>]]></c> with an appropriate <see cref="T:Monotouch.Foundation.ExportAttribute"/>:</para>
-      <example>
-    <code lang="C#"><![CDATA[
+          <para>
+            <see cref="T:MonoTouch.UIKit.UIKeyCommand" /> objects are only generated with an attached hardware keyboard.</para>
+          <para>To create keyboard accelerators, developers must create a <see cref="T:Monotouch.ObjCRuntime.Selector" /> that is associated with 
+        a method of type <c><![CDATA[Action<UIKeyCommand>]]></c> with an appropriate <see cref="T:Monotouch.Foundation.ExportAttribute" />:</para>
+          <example>
+            <code lang="C#"><![CDATA[
 [Export("NewFileAccelerator:")]
 void NewFileAccelerator(UIKeyCommand cmd)
 {
@@ -703,35 +707,7 @@ public override void ViewDidLoad ()
     AddKeyCommand(accelerator);
 }
     ]]></code>
-</example> 
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="AllowedChildViewControllersForUnwinding" apistyle="classic">
-      <MemberSignature Language="C#" Value="public virtual MonoTouch.UIKit.UIViewController[] AllowedChildViewControllersForUnwinding (MonoTouch.UIKit.UIStoryboardUnwindSegueSource segueSource);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class MonoTouch.UIKit.UIViewController[] AllowedChildViewControllersForUnwinding(class MonoTouch.UIKit.UIStoryboardUnwindSegueSource segueSource) cil managed" />
-      <MemberType>Method</MemberType>
-      <Attributes>
-        <Attribute>
-          <AttributeName>MonoTouch.Foundation.Export("allowedChildViewControllersForUnwindingFromSource:")</AttributeName>
-        </Attribute>
-        <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_9_0)</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>MonoTouch.UIKit.UIViewController[]</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="segueSource" Type="MonoTouch.UIKit.UIStoryboardUnwindSegueSource" />
-      </Parameters>
-      <Docs>
-        <param name="segueSource">The <see cref="T:Monotouch.UIKit.UIStoryboardUnwindSequenceSource"/> of the unwind segue.</param>
-        <summary>The array of child <see cref="T:Monotouch.UIKit.UIViewController"/> objects that should be searched to determine if they are the unwind segue destination.</summary>
-        <returns>A subset of <see cref="P:Monotouch.UIKit.UIViewController.ChildViewControllers"/>, ordered by desired search order, and without the controller returned by <see cref="M:Monotouch.UIKit.UIViewController.ChildViewControllerContainingSegueSource"/>.</returns>
-        <remarks>
-          <para>When searching for the destination <see cref="T:Monotouch.UIKit.UIViewController"/> of an unwind segue, the operating system climbs up the <see cref="T:Monotouch.UIKit.UIViewController"/> hierarchy using <see cref="P:Monotouch.UIKit.UIViewController.ParentViewController"/> and <see cref="P:Monotouch.UIKit.UIViewController.PresentingViewController"/>, and then searches down the tree using <see cref="M:Monotouch.UIKit.UIViewController.AllowedChildViewControllersForUnwinding"/>, and <see cref="M:Monotouch.UIKit.UIViewController.CanPerformUnwind"/> to determine the destination of the unwind segue.</para>  
-          <para>Developers can override this method to filter or change the order of the <see cref="P:Monotouch.UIKit.UIViewController.ChildViewControllers"/>. View controllers are searched in the order of the returned array. The returned array should not contain the <see cref="T:Monotouch.UIKit.UIViewController"/> returned by <see cref="M:Monotouch.UIKit.UIViewController.ChildViewControllerContainingSegueSource"/>.</para>
+          </example>
         </remarks>
       </Docs>
     </Member>
@@ -750,7 +726,7 @@ public override void ViewDidLoad ()
           <AttributeName>MonoTouch.Foundation.Export("applicationFinishedRestoringState")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_7_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 7, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -777,7 +753,10 @@ public override void ViewDidLoad ()
           <AttributeName>MonoTouch.Foundation.Export("attemptRotationToDeviceOrientation")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -803,19 +782,19 @@ public override void ViewDidLoad ()
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_7_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 7, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("automaticallyAdjustsScrollViewInsets")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_7_0)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 7, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: MonoTouch.Foundation.Export("setAutomaticallyAdjustsScrollViewInsets:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_7_0)</AttributeName>
+          <AttributeName>set: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 7, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -839,13 +818,25 @@ public override void ViewDidLoad ()
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Deprecated=MonoTouch.ObjCRuntime.Platform.iOS_6_0, Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.iOS, 6, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("automaticallyForwardAppearanceAndRotationMethodsToChildViewControllers")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Deprecated=MonoTouch.ObjCRuntime.Platform.iOS_6_0, Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.iOS, 6, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -889,7 +880,7 @@ public override void ViewDidLoad ()
           <AttributeName>MonoTouch.Foundation.Export("beginAppearanceTransition:animated:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -943,13 +934,13 @@ UIView.Animate (0.5f, () => {
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_7_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 7, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("bottomLayoutGuide")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_7_0)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 7, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -976,7 +967,7 @@ UIView.Animate (0.5f, () => {
           <AttributeName>MonoTouch.Foundation.Export("canPerformUnwindSegueAction:fromViewController:withSender:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_6_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 6, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1001,31 +992,6 @@ UIView.Animate (0.5f, () => {
         <altmember cref="M:MonoTouch.UIKit.UIViewController.GetSegueForUnwinding" />
       </Docs>
     </Member>
-    <Member MemberName="ChildViewControllerContainingSegueSource" apistyle="classic">
-      <MemberSignature Language="C#" Value="public virtual MonoTouch.UIKit.UIViewController ChildViewControllerContainingSegueSource (MonoTouch.UIKit.UIStoryboardUnwindSegueSource segueSource);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class MonoTouch.UIKit.UIViewController ChildViewControllerContainingSegueSource(class MonoTouch.UIKit.UIStoryboardUnwindSegueSource segueSource) cil managed" />
-      <MemberType>Method</MemberType>
-      <Attributes>
-        <Attribute>
-          <AttributeName>MonoTouch.Foundation.Export("childViewControllerContainingSegueSource:")</AttributeName>
-        </Attribute>
-        <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_9_0)</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>MonoTouch.UIKit.UIViewController</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="segueSource" Type="MonoTouch.UIKit.UIStoryboardUnwindSegueSource" />
-      </Parameters>
-      <Docs>
-        <param name="segueSource">To be added.</param>
-        <summary>The child <see cref="T:Monotouch.UIKit.UIViewController"/> that is the source of the unwind segue.</summary>
-        <returns>To be added.</returns>
-        <remarks>This method is typically called by <see cref="M:Monotouch.UIKit.UIViewController.AllowedChildViewControllersForUnwinding"/> to determine which of the <see cref="P:Monotouch.UIKit.UIViewController.ChildViewControllers"/> should be filtered out of the array returned by that method.</remarks>
-      </Docs>
-    </Member>
     <Member MemberName="ChildViewControllerForStatusBarHidden">
       <MemberSignature Language="C#" Value="public virtual MonoTouch.UIKit.UIViewController ChildViewControllerForStatusBarHidden ();" />
       <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class MonoTouch.UIKit.UIViewController ChildViewControllerForStatusBarHidden() cil managed" />
@@ -1041,7 +1007,10 @@ UIView.Animate (0.5f, () => {
           <AttributeName>MonoTouch.Foundation.Export("childViewControllerForStatusBarHidden")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_7_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 7, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1069,7 +1038,10 @@ UIView.Animate (0.5f, () => {
           <AttributeName>MonoTouch.Foundation.Export("childViewControllerForStatusBarStyle")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_7_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 7, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1094,13 +1066,13 @@ UIView.Animate (0.5f, () => {
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("childViewControllers")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1148,19 +1120,37 @@ UIView.Animate (0.5f, () => {
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Deprecated=MonoTouch.ObjCRuntime.Platform.iOS_7_0, Introduced=MonoTouch.ObjCRuntime.Platform.iOS_3_2, Message="Use PreferredContentSize instead.")</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.iOS, 7, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Use PreferredContentSize instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 3, 2, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Use PreferredContentSize instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("contentSizeForViewInPopover")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Deprecated=MonoTouch.ObjCRuntime.Platform.iOS_7_0, Introduced=MonoTouch.ObjCRuntime.Platform.iOS_3_2, Message="Use PreferredContentSize instead.")</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.iOS, 7, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Use PreferredContentSize instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 3, 2, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Use PreferredContentSize instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: MonoTouch.Foundation.Export("setContentSizeForViewInPopover:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: MonoTouch.ObjCRuntime.Availability(Deprecated=MonoTouch.ObjCRuntime.Platform.iOS_7_0, Introduced=MonoTouch.ObjCRuntime.Platform.iOS_3_2, Message="Use PreferredContentSize instead.")</AttributeName>
+          <AttributeName>set: MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.iOS, 7, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Use PreferredContentSize instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 3, 2, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Use PreferredContentSize instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1193,7 +1183,7 @@ UIView.Animate (0.5f, () => {
           <AttributeName>MonoTouch.Foundation.Export("decodeRestorableStateWithCoder:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_6_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 6, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1225,19 +1215,19 @@ UIView.Animate (0.5f, () => {
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("definesPresentationContext")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: MonoTouch.Foundation.Export("setDefinesPresentationContext:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>set: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1268,7 +1258,10 @@ UIView.Animate (0.5f, () => {
           <AttributeName>MonoTouch.Foundation.Export("didAnimateFirstHalfOfRotationToInterfaceOrientation:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Deprecated=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1311,7 +1304,7 @@ UIView.Animate (0.5f, () => {
           <AttributeName>MonoTouch.Foundation.Export("didMoveToParentViewController:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1389,7 +1382,10 @@ public override void DidReceiveMemoryWarning ()
           <AttributeName>MonoTouch.Foundation.Export("didRotateFromInterfaceOrientation:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Deprecated=MonoTouch.ObjCRuntime.Platform.iOS_8_0, Message="Starting with iOS 8, you should use Adaptive View Controllers instead")</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Starting with iOS 8, you should use Adaptive View Controllers instead")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1412,6 +1408,41 @@ public override void DidReceiveMemoryWarning ()
         </remarks>
       </Docs>
     </Member>
+    <Member MemberName="DidUpdateFocus">
+      <MemberSignature Language="C#" Value="public virtual void DidUpdateFocus (MonoTouch.UIKit.UIFocusUpdateContext context, MonoTouch.UIKit.UIFocusAnimationCoordinator coordinator);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void DidUpdateFocus(class MonoTouch.UIKit.UIFocusUpdateContext context, class MonoTouch.UIKit.UIFocusAnimationCoordinator coordinator) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo apistyle="classic">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo apistyle="unified">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("didUpdateFocusInContext:withAnimationCoordinator:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 9, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.WatchOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="context" Type="MonoTouch.UIKit.UIFocusUpdateContext" />
+        <Parameter Name="coordinator" Type="MonoTouch.UIKit.UIFocusAnimationCoordinator" />
+      </Parameters>
+      <Docs>
+        <param name="context">To be added.</param>
+        <param name="coordinator">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="DisablesAutomaticKeyboardDismissal">
       <MemberSignature Language="C#" Value="public virtual bool DisablesAutomaticKeyboardDismissal { get; }" />
       <MemberSignature Language="ILAsm" Value=".property instance bool DisablesAutomaticKeyboardDismissal" />
@@ -1424,13 +1455,13 @@ public override void DidReceiveMemoryWarning ()
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_4_3)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 4, 3, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("disablesAutomaticKeyboardDismissal")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_4_3)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 4, 3, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1460,7 +1491,13 @@ public override void DidReceiveMemoryWarning ()
           <AttributeName>MonoTouch.Foundation.Export("dismissModalViewControllerAnimated:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Deprecated=MonoTouch.ObjCRuntime.Platform.iOS_6_0, Introduced=MonoTouch.ObjCRuntime.Platform.iOS_2_0, Message="Deprecated in iOS 6.0, use DismissViewController (bool, NSAction) instead.")</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.iOS, 6, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Deprecated in iOS 6.0, use DismissViewController (bool, NSAction) instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 2, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Deprecated in iOS 6.0, use DismissViewController (bool, NSAction) instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1487,7 +1524,13 @@ public override void DidReceiveMemoryWarning ()
           <AttributeName>MonoTouch.Foundation.Export("dismissModalViewControllerAnimated:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Deprecated=MonoTouch.ObjCRuntime.Platform.iOS_6_0, Introduced=MonoTouch.ObjCRuntime.Platform.iOS_2_0, Message="Deprecated in iOS 6.0, use DismissViewController (bool, NSAction) instead.")</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.iOS, 6, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Deprecated in iOS 6.0, use DismissViewController (bool, NSAction) instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 2, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Deprecated in iOS 6.0, use DismissViewController (bool, NSAction) instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1524,7 +1567,13 @@ public override void DidReceiveMemoryWarning ()
           <AttributeName>MonoTouch.Foundation.Export("dismissMoviePlayerViewControllerAnimated")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Deprecated=MonoTouch.ObjCRuntime.Platform.iOS_9_0, Introduced=MonoTouch.ObjCRuntime.Platform.iOS_3_2)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.iOS, 9, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 3, 2, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1551,7 +1600,7 @@ public override void DidReceiveMemoryWarning ()
           <AttributeName>MonoTouch.Foundation.Export("dismissViewControllerAnimated:completion:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Since(5, 0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1591,7 +1640,7 @@ public override void DidReceiveMemoryWarning ()
           <AttributeName>MonoTouch.Foundation.Export("dismissViewControllerAnimated:completion:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1626,7 +1675,7 @@ public override void DidReceiveMemoryWarning ()
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1683,19 +1732,19 @@ public override void DidReceiveMemoryWarning ()
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_7_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 7, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("edgesForExtendedLayout")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_7_0)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 7, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: MonoTouch.Foundation.Export("setEdgesForExtendedLayout:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_7_0)</AttributeName>
+          <AttributeName>set: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 7, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1792,7 +1841,7 @@ public override void DidReceiveMemoryWarning ()
           <AttributeName>MonoTouch.Foundation.Export("encodeRestorableStateWithCoder:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_6_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 6, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1861,7 +1910,7 @@ public override void DidReceiveMemoryWarning ()
           <AttributeName>MonoTouch.Foundation.Export("endAppearanceTransition")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1908,19 +1957,19 @@ UIView.Animate (0.5f, () => {
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_7_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 7, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("extendedLayoutIncludesOpaqueBars")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_7_0)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 7, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: MonoTouch.Foundation.Export("setExtendedLayoutIncludesOpaqueBars:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_7_0)</AttributeName>
+          <AttributeName>set: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 7, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1944,13 +1993,13 @@ UIView.Animate (0.5f, () => {
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_8_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("extensionContext")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_8_0)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1977,7 +2026,7 @@ UIView.Animate (0.5f, () => {
           <AttributeName>MonoTouch.Foundation.Export("allowedChildViewControllersForUnwindingFromSource:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_9_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 9, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1987,14 +2036,13 @@ UIView.Animate (0.5f, () => {
         <Parameter Name="segueSource" Type="MonoTouch.UIKit.UIStoryboardUnwindSegueSource" />
       </Parameters>
       <Docs>
-        <param name="segueSource">The <see cref="T:Monotouch.UIKit.UIStoryboardUnwindSequenceSource"/> of the unwind segue.</param>
-        <summary>The array of child <see cref="T:Monotouch.UIKit.UIViewController"/> objects that should be searched to determine if they are the unwind segue destination.</summary>
-        <returns>A subset of <see cref="P:Monotouch.UIKit.UIViewController.ChildViewControllers"/>, ordered by desired search order, and without the controller returned by <see cref="M:Monotouch.UIKit.UIViewController.ChildViewControllerContainingSegueSource"/>.</returns>
+        <param name="segueSource">The <see cref="T:Monotouch.UIKit.UIStoryboardUnwindSequenceSource" /> of the unwind segue.</param>
+        <summary>The array of child <see cref="T:Monotouch.UIKit.UIViewController" /> objects that should be searched to determine if they are the unwind segue destination.</summary>
+        <returns>A subset of <see cref="P:Monotouch.UIKit.UIViewController.ChildViewControllers" />, ordered by desired search order, and without the controller returned by <see cref="M:Monotouch.UIKit.UIViewController.ChildViewControllerContainingSegueSource" />.</returns>
         <remarks>
-          <para>When searching for the destination <see cref="T:Monotouch.UIKit.UIViewController"/> of an unwind segue, the operating system climbs up the <see cref="T:Monotouch.UIKit.UIViewController"/> hierarchy using <see cref="P:Monotouch.UIKit.UIViewController.ParentViewController"/> and <see cref="P:Monotouch.UIKit.UIViewController.PresentingViewController"/>, and then searches down the tree using <see cref="M:Monotouch.UIKit.UIViewController.AllowedChildViewControllersForUnwinding"/>, and <see cref="M:Monotouch.UIKit.UIViewController.CanPerformUnwind"/> to determine the destination of the unwind segue.</para>  
-          <para>Developers can override this method to filter or change the order of the <see cref="P:Monotouch.UIKit.UIViewController.ChildViewControllers"/>. View controllers are searched in the order of the returned array. The returned array should not contain the <see cref="T:Monotouch.UIKit.UIViewController"/> returned by <see cref="M:Monotouch.UIKit.UIViewController.ChildViewControllerContainingSegueSource"/>.</para>
+          <para>When searching for the destination <see cref="T:Monotouch.UIKit.UIViewController" /> of an unwind segue, the operating system climbs up the <see cref="T:Monotouch.UIKit.UIViewController" /> hierarchy using <see cref="P:Monotouch.UIKit.UIViewController.ParentViewController" /> and <see cref="P:Monotouch.UIKit.UIViewController.PresentingViewController" />, and then searches down the tree using <see cref="M:Monotouch.UIKit.UIViewController.AllowedChildViewControllersForUnwinding" />, and <see cref="M:Monotouch.UIKit.UIViewController.CanPerformUnwind" /> to determine the destination of the unwind segue.</para>
+          <para>Developers can override this method to filter or change the order of the <see cref="P:Monotouch.UIKit.UIViewController.ChildViewControllers" />. View controllers are searched in the order of the returned array. The returned array should not contain the <see cref="T:Monotouch.UIKit.UIViewController" /> returned by <see cref="M:Monotouch.UIKit.UIViewController.ChildViewControllerContainingSegueSource" />.</para>
         </remarks>
-
       </Docs>
     </Member>
     <Member MemberName="GetChildViewControllerContainingSegueSource">
@@ -2012,7 +2060,7 @@ UIView.Animate (0.5f, () => {
           <AttributeName>MonoTouch.Foundation.Export("childViewControllerContainingSegueSource:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_9_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 9, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -2023,9 +2071,9 @@ UIView.Animate (0.5f, () => {
       </Parameters>
       <Docs>
         <param name="segueSource">To be added.</param>
-        <summary>The child <see cref="T:Monotouch.UIKit.UIViewController"/> that is the source of the unwind segue.</summary>
+        <summary>The child <see cref="T:Monotouch.UIKit.UIViewController" /> that is the source of the unwind segue.</summary>
         <returns>To be added.</returns>
-        <remarks>This method is typically called by <see cref="M:Monotouch.UIKit.UIViewController.AllowedChildViewControllersForUnwinding"/> to determine which of the <see cref="P:Monotouch.UIKit.UIViewController.ChildViewControllers"/> should be filtered out of the array returned by that method.</remarks>
+        <remarks>This method is typically called by <see cref="M:Monotouch.UIKit.UIViewController.AllowedChildViewControllersForUnwinding" /> to determine which of the <see cref="P:Monotouch.UIKit.UIViewController.ChildViewControllers" /> should be filtered out of the array returned by that method.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetEnumerator">
@@ -2064,7 +2112,7 @@ UIView.Animate (0.5f, () => {
           <AttributeName>MonoTouch.Foundation.Export("overrideTraitCollectionForChildViewController:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_8_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -2095,7 +2143,7 @@ UIView.Animate (0.5f, () => {
           <AttributeName>MonoTouch.Foundation.Export("segueForUnwindingToViewController:fromViewController:identifier:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_6_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 6, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -2135,7 +2183,7 @@ UIView.Animate (0.5f, () => {
           <AttributeName>MonoTouch.Foundation.Export("sizeForChildContentContainer:withParentContainerSize:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_8_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -2170,7 +2218,10 @@ UIView.Animate (0.5f, () => {
           <AttributeName>MonoTouch.Foundation.Export("supportedInterfaceOrientations")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_6_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 6, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -2199,7 +2250,7 @@ UIView.Animate (0.5f, () => {
           <AttributeName>MonoTouch.Foundation.Export("targetViewControllerForAction:sender:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_8_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -2235,7 +2286,7 @@ UIView.Animate (0.5f, () => {
           <AttributeName>MonoTouch.Foundation.Export("viewControllerForUnwindSegueAction:fromViewController:withSender:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_6_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 6, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -2269,10 +2320,19 @@ UIView.Animate (0.5f, () => {
       </AssemblyInfo>
       <Attributes>
         <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("hidesBottomBarWhenPushed")</AttributeName>
         </Attribute>
         <Attribute>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
           <AttributeName>set: MonoTouch.Foundation.Export("setHidesBottomBarWhenPushed:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -2301,13 +2361,19 @@ UIView.Animate (0.5f, () => {
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Deprecated=MonoTouch.ObjCRuntime.Platform.iOS_8_0, Message="Starting with iOS 8, you should use Adaptive View Controllers instead")</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Starting with iOS 8, you should use Adaptive View Controllers instead")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("interfaceOrientation")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Deprecated=MonoTouch.ObjCRuntime.Platform.iOS_8_0, Message="Starting with iOS 8, you should use Adaptive View Controllers instead")</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Starting with iOS 8, you should use Adaptive View Controllers instead")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -2335,13 +2401,13 @@ UIView.Animate (0.5f, () => {
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("isBeingDismissed")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -2371,13 +2437,13 @@ UIView.Animate (0.5f, () => {
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("isBeingPresented")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -2408,13 +2474,13 @@ UIView.Animate (0.5f, () => {
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("isMovingFromParentViewController")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -2445,13 +2511,13 @@ UIView.Animate (0.5f, () => {
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("isMovingToParentViewController")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -2501,30 +2567,6 @@ UIView.Animate (0.5f, () => {
         <altmember cref="M:MonoTouch.UIKit.UIViewController.LoadView" />
       </Docs>
     </Member>
-    <Member MemberName="LeftLayoutGuide" apistyle="classic">
-      <MemberSignature Language="C#" Value="public virtual MonoTouch.UIKit.UILayoutSupport LeftLayoutGuide { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class MonoTouch.UIKit.UILayoutSupport LeftLayoutGuide" />
-      <MemberType>Property</MemberType>
-      <Attributes>
-        <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_8_0)</AttributeName>
-        </Attribute>
-        <Attribute>
-          <AttributeName>get: MonoTouch.Foundation.Export("leftLayoutGuide")</AttributeName>
-        </Attribute>
-        <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_8_0)</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>MonoTouch.UIKit.UILayoutSupport</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Indicates left-most extent for the specified onscreen content, with regard to your Auto Layout constraints.</summary>
-        <value>The left-most extent of the specified onscreen content (read-only).</value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
     <Member MemberName="LoadView">
       <MemberSignature Language="C#" Value="public virtual void LoadView ();" />
       <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void LoadView() cil managed" />
@@ -2566,7 +2608,7 @@ UIView.Animate (0.5f, () => {
         <altmember cref="P:MonoTouch.UIKit.UIViewController.IsViewLoaded" />
         <altmember cref="M:MonoTouch.UIKit.UIViewController.ViewDidLoad" />
         <altmember cref="P:MonoTouch.UIKit.UIViewController.View" />
-        <altmember cref="M:MonoTouch.UIKit.UIViewController.LoadViewIfNeeded"/>
+        <altmember cref="M:MonoTouch.UIKit.UIViewController.LoadViewIfNeeded" />
       </Docs>
     </Member>
     <Member MemberName="LoadViewIfNeeded">
@@ -2584,7 +2626,7 @@ UIView.Animate (0.5f, () => {
           <AttributeName>MonoTouch.Foundation.Export("loadViewIfNeeded")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_9_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 9, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -2592,11 +2634,11 @@ UIView.Animate (0.5f, () => {
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>If necessary, synchronously loads the <see cref="P:Monotouch.UIKit.UIViewController.View"/> from a Storyboard or NIB.</summary>
+        <summary>If necessary, synchronously loads the <see cref="P:Monotouch.UIKit.UIViewController.View" /> from a Storyboard or NIB.</summary>
         <remarks>
-          <para>This method can be used to ensure that the <see cref="P:Monotouch.UIKit.UIViewController.View"/> object has been instantiated, if the <see cref="T:Monotouch.UIKit.UIViewController"/> has an associated Storyboard or NIB. (See also <see cref="P:Monotouch.UIKit.UIViewController.ViewIfLoaded"/>.)</para>
+          <para>This method can be used to ensure that the <see cref="P:Monotouch.UIKit.UIViewController.View" /> object has been instantiated, if the <see cref="T:Monotouch.UIKit.UIViewController" /> has an associated Storyboard or NIB. (See also <see cref="P:Monotouch.UIKit.UIViewController.ViewIfLoaded" />.)</para>
           <example>
-    <code lang="C#"><![CDATA[
+            <code lang="C#"><![CDATA[
 var newVC = UIStoryboard.FromName("Main", NSBundle.MainBundle).InstantiateInitialViewController();
 if (newVC.ViewIfLoaded == null)
 {
@@ -2604,12 +2646,11 @@ if (newVC.ViewIfLoaded == null)
     newVC.LoadViewIfNeeded();
 }
     ]]></code>
-</example>
+          </example>
         </remarks>
         <altmember cref="P:MonoTouch.UIKit.UIViewController.IsViewLoaded" />
         <altmember cref="M:MonoTouch.UIKit.UIViewController.ViewDidLoad" />
         <altmember cref="P:MonoTouch.UIKit.UIViewController.View" />
-       
       </Docs>
     </Member>
     <Member MemberName="ModalInPopover">
@@ -2624,19 +2665,19 @@ if (newVC.ViewIfLoaded == null)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_3_2)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 3, 2, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("isModalInPopover")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_3_2)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 3, 2, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: MonoTouch.Foundation.Export("setModalInPopover:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_3_2)</AttributeName>
+          <AttributeName>set: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 3, 2, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -2661,19 +2702,28 @@ if (newVC.ViewIfLoaded == null)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_7_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 7, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("modalPresentationCapturesStatusBarAppearance")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_7_0)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 7, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: MonoTouch.Foundation.Export("setModalPresentationCapturesStatusBarAppearance:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_7_0)</AttributeName>
+          <AttributeName>set: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 7, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -2697,19 +2747,19 @@ if (newVC.ViewIfLoaded == null)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_3_2)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 3, 2, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("modalPresentationStyle")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_3_2)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 3, 2, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: MonoTouch.Foundation.Export("setModalPresentationStyle:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_3_2)</AttributeName>
+          <AttributeName>set: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 3, 2, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -2767,13 +2817,25 @@ if (newVC.ViewIfLoaded == null)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Deprecated=MonoTouch.ObjCRuntime.Platform.iOS_6_0, Introduced=MonoTouch.ObjCRuntime.Platform.iOS_2_0, Message="Use PresentedViewController instead.")</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.iOS, 6, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Use PresentedViewController instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 2, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Use PresentedViewController instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("modalViewController")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Deprecated=MonoTouch.ObjCRuntime.Platform.iOS_6_0, Introduced=MonoTouch.ObjCRuntime.Platform.iOS_2_0, Message="Use PresentedViewController instead.")</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.iOS, 6, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Use PresentedViewController instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 2, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Use PresentedViewController instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -2941,7 +3003,7 @@ if (newVC.ViewIfLoaded == null)
           <AttributeName>MonoTouch.Foundation.Export("performSegueWithIdentifier:sender:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -2981,13 +3043,19 @@ if (newVC.ViewIfLoaded == null)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_8_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("popoverPresentationController")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_8_0)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -3013,19 +3081,19 @@ if (newVC.ViewIfLoaded == null)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_7_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 7, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("preferredContentSize")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_7_0)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 7, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: MonoTouch.Foundation.Export("setPreferredContentSize:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_7_0)</AttributeName>
+          <AttributeName>set: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 7, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -3053,7 +3121,7 @@ if (newVC.ViewIfLoaded == null)
           <AttributeName>MonoTouch.Foundation.Export("preferredContentSizeDidChangeForChildContentContainer:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_8_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -3065,6 +3133,36 @@ if (newVC.ViewIfLoaded == null)
       <Docs>
         <param name="container">The child <see cref="T:MonoTouch.UIKit.IUIContentContainer" />.</param>
         <summary>Notifies this controller that the preferred size for content for a specified child container has changed.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PreferredFocusedView">
+      <MemberSignature Language="C#" Value="public virtual MonoTouch.UIKit.UIView PreferredFocusedView { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class MonoTouch.UIKit.UIView PreferredFocusedView" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo apistyle="classic">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo apistyle="unified">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 9, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: MonoTouch.Foundation.Export("preferredFocusedView")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 9, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>MonoTouch.UIKit.UIView</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -3083,7 +3181,10 @@ if (newVC.ViewIfLoaded == null)
           <AttributeName>MonoTouch.Foundation.Export("preferredInterfaceOrientationForPresentation")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_6_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 6, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -3115,7 +3216,13 @@ if (newVC.ViewIfLoaded == null)
           <AttributeName>MonoTouch.Foundation.Export("preferredStatusBarStyle")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_7_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 7, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.WatchOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -3140,13 +3247,25 @@ if (newVC.ViewIfLoaded == null)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_7_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 7, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.WatchOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("preferredStatusBarUpdateAnimation")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_7_0)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 7, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.WatchOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -3173,7 +3292,10 @@ if (newVC.ViewIfLoaded == null)
           <AttributeName>MonoTouch.Foundation.Export("prefersStatusBarHidden")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_7_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 7, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -3220,7 +3342,7 @@ if (newVC.ViewIfLoaded == null)
           <AttributeName>MonoTouch.Foundation.Export("prepareForSegue:sender:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -3253,13 +3375,13 @@ if (newVC.ViewIfLoaded == null)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_8_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("presentationController")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_8_0)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -3283,13 +3405,13 @@ if (newVC.ViewIfLoaded == null)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("presentedViewController")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -3322,13 +3444,13 @@ if (newVC.ViewIfLoaded == null)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("presentingViewController")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -3359,7 +3481,13 @@ if (newVC.ViewIfLoaded == null)
           <AttributeName>MonoTouch.Foundation.Export("presentModalViewController:animated:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Deprecated=MonoTouch.ObjCRuntime.Platform.iOS_6_0, Introduced=MonoTouch.ObjCRuntime.Platform.iOS_2_0, Message="Deprecated in iOS 6.0, use PresentViewController (UIViewController, bool, NSAction) instead and set the ModalViewController property to true.")</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.iOS, 6, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Deprecated in iOS 6.0, use PresentViewController (UIViewController, bool, NSAction) instead and set the ModalViewController property to true.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 2, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Deprecated in iOS 6.0, use PresentViewController (UIViewController, bool, NSAction) instead and set the ModalViewController property to true.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -3398,7 +3526,13 @@ if (newVC.ViewIfLoaded == null)
           <AttributeName>MonoTouch.Foundation.Export("presentMoviePlayerViewControllerAnimated:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Deprecated=MonoTouch.ObjCRuntime.Platform.iOS_9_0, Introduced=MonoTouch.ObjCRuntime.Platform.iOS_3_2)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.iOS, 9, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 3, 2, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -3425,7 +3559,7 @@ if (newVC.ViewIfLoaded == null)
           <AttributeName>MonoTouch.Foundation.Export("presentViewController:animated:completion:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Since(5, 0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -3467,7 +3601,7 @@ if (newVC.ViewIfLoaded == null)
           <AttributeName>MonoTouch.Foundation.Export("presentViewController:animated:completion:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -3504,7 +3638,7 @@ if (newVC.ViewIfLoaded == null)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -3522,6 +3656,36 @@ if (newVC.ViewIfLoaded == null)
         <remarks />
       </Docs>
     </Member>
+    <Member MemberName="PreviewActionItems">
+      <MemberSignature Language="C#" Value="public virtual MonoTouch.UIKit.IUIPreviewActionItem[] PreviewActionItems { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class MonoTouch.UIKit.IUIPreviewActionItem[] PreviewActionItems" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo apistyle="classic">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo apistyle="unified">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 9, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: MonoTouch.Foundation.Export("previewActionItems")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 9, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>MonoTouch.UIKit.IUIPreviewActionItem[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="ProvidesPresentationContextTransitionStyle">
       <MemberSignature Language="C#" Value="public virtual bool ProvidesPresentationContextTransitionStyle { get; set; }" />
       <MemberSignature Language="ILAsm" Value=".property instance bool ProvidesPresentationContextTransitionStyle" />
@@ -3534,19 +3698,19 @@ if (newVC.ViewIfLoaded == null)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("providesPresentationContextTransitionStyle")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: MonoTouch.Foundation.Export("setProvidesPresentationContextTransitionStyle:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>set: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -3576,7 +3740,7 @@ if (newVC.ViewIfLoaded == null)
           <AttributeName>MonoTouch.Foundation.Export("registerForPreviewingWithDelegate:sourceView:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_9_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 9, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -3595,10 +3759,10 @@ if (newVC.ViewIfLoaded == null)
           <para>
           App developers call this method to register this view controller as the one that displays preview and commit force gestures, specify the source view that will remain visually focused prior to peeking, and specify the delegate that responds to forceful touch from the user. App developers can rely on automatic life cycle management for the context that is returned, or manually release it by calling the <see cref="M:MonoTouch.UIKit.UIViewController.UnregisterForPreviewingWithContext" /> method.
         </para>
-        <para>Application developers who want to preserve the option to unregister for 3D Touch peek and pop must store a reference to the <see cref="T:MonoTouch.UIKit.UIViewControllerPreviewing" /> instance that is returned by <see cref="M:MonoTouch.UIKit.UIViewController.RegisterForPreviewingWithDelegate" />, so that they can later pass it to the <see cref="M:MonoTouch.UIKit.UIViewController.UnregisterForPreviewingWithContext" /> method.</para>
-          <para>This method should typically be called in an override of <see cref="M:Monotouch.UIKit.IUITraitEnvironment.TraitCollectionDidChange"/> in the initial <see cref="T:Monotouch.UIKit.UIViewController"/> of the app.</para>
+          <para>Application developers who want to preserve the option to unregister for 3D Touch peek and pop must store a reference to the <see cref="T:MonoTouch.UIKit.UIViewControllerPreviewing" /> instance that is returned by <see cref="M:MonoTouch.UIKit.UIViewController.RegisterForPreviewingWithDelegate" />, so that they can later pass it to the <see cref="M:MonoTouch.UIKit.UIViewController.UnregisterForPreviewingWithContext" /> method.</para>
+          <para>This method should typically be called in an override of <see cref="M:Monotouch.UIKit.IUITraitEnvironment.TraitCollectionDidChange" /> in the initial <see cref="T:Monotouch.UIKit.UIViewController" /> of the app.</para>
           <example>
-    <code lang="C#"><![CDATA[
+            <code lang="C#"><![CDATA[
 public override void TraitCollectionDidChange(UITraitCollection previousTraitCollection)
 {
     base.TraitCollectionDidChange(previousTraitCollection);
@@ -3609,7 +3773,7 @@ public override void TraitCollectionDidChange(UITraitCollection previousTraitCol
     }
 }
     ]]></code>
-</example>
+          </example>
         </remarks>
       </Docs>
     </Member>
@@ -3628,7 +3792,7 @@ public override void TraitCollectionDidChange(UITraitCollection previousTraitCol
           <AttributeName>MonoTouch.Foundation.Export("removeFromParentViewController")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -3662,7 +3826,7 @@ public override void TraitCollectionDidChange(UITraitCollection previousTraitCol
           <AttributeName>MonoTouch.Foundation.Export("removeKeyCommand:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_9_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 9, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -3672,10 +3836,10 @@ public override void TraitCollectionDidChange(UITraitCollection previousTraitCol
         <Parameter Name="command" Type="MonoTouch.UIKit.UIKeyCommand" />
       </Parameters>
       <Docs>
-        <param name="command">The <see cref="T:Monotouch.UIKit.UIKeyCommand"/> to be removed.</param>
+        <param name="command">The <see cref="T:Monotouch.UIKit.UIKeyCommand" /> to be removed.</param>
         <summary>Removes a previously-added hardware-keyboard accelerator.</summary>
         <remarks>To be added.</remarks>
-        <altmember cref="M:MonoTouch.UIKit.UIViewController.AddKeyCommand"/>
+        <altmember cref="M:MonoTouch.UIKit.UIViewController.AddKeyCommand" />
       </Docs>
     </Member>
     <Member MemberName="RestorationClass">
@@ -3690,19 +3854,19 @@ public override void TraitCollectionDidChange(UITraitCollection previousTraitCol
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_6_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 6, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("restorationClass")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_6_0)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 6, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: MonoTouch.Foundation.Export("setRestorationClass:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_6_0)</AttributeName>
+          <AttributeName>set: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 6, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -3727,19 +3891,19 @@ public override void TraitCollectionDidChange(UITraitCollection previousTraitCol
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_6_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 6, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("restorationIdentifier")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_6_0)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 6, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: MonoTouch.Foundation.Export("setRestorationIdentifier:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_6_0)</AttributeName>
+          <AttributeName>set: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 6, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -3758,30 +3922,6 @@ public override void TraitCollectionDidChange(UITraitCollection previousTraitCol
         <altmember cref="P:MonoTouch.UIKit.UIViewController.RestorationClass" />
       </Docs>
     </Member>
-    <Member MemberName="RightLayoutGuide" apistyle="classic">
-      <MemberSignature Language="C#" Value="public virtual MonoTouch.UIKit.UILayoutSupport RightLayoutGuide { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class MonoTouch.UIKit.UILayoutSupport RightLayoutGuide" />
-      <MemberType>Property</MemberType>
-      <Attributes>
-        <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_8_0)</AttributeName>
-        </Attribute>
-        <Attribute>
-          <AttributeName>get: MonoTouch.Foundation.Export("rightLayoutGuide")</AttributeName>
-        </Attribute>
-        <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_8_0)</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>MonoTouch.UIKit.UILayoutSupport</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Indicates right-most extent for the specified onscreen content, with regard to your Auto Layout constraints.</summary>
-        <value>The right-most extent for the specified onscreen content (read-only).</value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
     <Member MemberName="RotatingFooterView">
       <MemberSignature Language="C#" Value="public virtual MonoTouch.UIKit.UIView RotatingFooterView { get; }" />
       <MemberSignature Language="ILAsm" Value=".property instance class MonoTouch.UIKit.UIView RotatingFooterView" />
@@ -3794,13 +3934,19 @@ public override void TraitCollectionDidChange(UITraitCollection previousTraitCol
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Deprecated=MonoTouch.ObjCRuntime.Platform.iOS_8_0, Message="Starting with iOS 8, you should use Adaptive View Controllers instead")</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Starting with iOS 8, you should use Adaptive View Controllers instead")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("rotatingFooterView")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Deprecated=MonoTouch.ObjCRuntime.Platform.iOS_8_0, Message="Starting with iOS 8, you should use Adaptive View Controllers instead")</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Starting with iOS 8, you should use Adaptive View Controllers instead")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -3830,13 +3976,19 @@ public override void TraitCollectionDidChange(UITraitCollection previousTraitCol
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Deprecated=MonoTouch.ObjCRuntime.Platform.iOS_8_0, Message="Starting with iOS 8, you should use Adaptive View Controllers instead")</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Starting with iOS 8, you should use Adaptive View Controllers instead")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("rotatingHeaderView")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Deprecated=MonoTouch.ObjCRuntime.Platform.iOS_8_0, Message="Starting with iOS 8, you should use Adaptive View Controllers instead")</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Starting with iOS 8, you should use Adaptive View Controllers instead")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -3866,13 +4018,19 @@ public override void TraitCollectionDidChange(UITraitCollection previousTraitCol
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Deprecated=MonoTouch.ObjCRuntime.Platform.iOS_8_0, Message="With iOS 8, instead of using UISearchDisplayController, you are encouraged to create a UISearchController instead.")</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "With iOS 8, instead of using UISearchDisplayController, you are encouraged to create a UISearchController instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("searchDisplayController")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Deprecated=MonoTouch.ObjCRuntime.Platform.iOS_8_0, Message="With iOS 8, instead of using UISearchDisplayController, you are encouraged to create a UISearchController instead.")</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "With iOS 8, instead of using UISearchDisplayController, you are encouraged to create a UISearchController instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -3935,6 +4093,36 @@ public override void ViewDidLoad ()
         <remarks />
       </Docs>
     </Member>
+    <Member MemberName="SetNeedsFocusUpdate">
+      <MemberSignature Language="C#" Value="public virtual void SetNeedsFocusUpdate ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SetNeedsFocusUpdate() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo apistyle="classic">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo apistyle="unified">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("setNeedsFocusUpdate")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 9, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.WatchOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="SetNeedsStatusBarAppearanceUpdate">
       <MemberSignature Language="C#" Value="public virtual void SetNeedsStatusBarAppearanceUpdate ();" />
       <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SetNeedsStatusBarAppearanceUpdate() cil managed" />
@@ -3950,7 +4138,10 @@ public override void ViewDidLoad ()
           <AttributeName>MonoTouch.Foundation.Export("setNeedsStatusBarAppearanceUpdate")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_7_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 7, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -3977,7 +4168,7 @@ public override void ViewDidLoad ()
           <AttributeName>MonoTouch.Foundation.Export("setOverrideTraitCollection:forChildViewController:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_8_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -4007,6 +4198,9 @@ public override void ViewDidLoad ()
       <Attributes>
         <Attribute>
           <AttributeName>MonoTouch.Foundation.Export("setToolbarItems:animated:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -4044,13 +4238,13 @@ public override void ViewDidLoad ()
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_6_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 6, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("shouldAutomaticallyForwardAppearanceMethods")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_6_0)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 6, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -4077,19 +4271,25 @@ public override void ViewDidLoad ()
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_6_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Starting with iOS 8, you should use Adaptive View Controllers instead")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Deprecated=MonoTouch.ObjCRuntime.Platform.iOS_8_0, Message="Starting with iOS 8, you should use Adaptive View Controllers instead")</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 6, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("shouldAutomaticallyForwardRotationMethods")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_6_0)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Starting with iOS 8, you should use Adaptive View Controllers instead")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Deprecated=MonoTouch.ObjCRuntime.Platform.iOS_8_0, Message="Starting with iOS 8, you should use Adaptive View Controllers instead")</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 6, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -4118,7 +4318,10 @@ public override void ViewDidLoad ()
           <AttributeName>MonoTouch.Foundation.Export("shouldAutorotate")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_6_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 6, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -4147,7 +4350,13 @@ public override void ViewDidLoad ()
           <AttributeName>MonoTouch.Foundation.Export("shouldAutorotateToInterfaceOrientation:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Deprecated=MonoTouch.ObjCRuntime.Platform.iOS_6_0, Introduced=MonoTouch.ObjCRuntime.Platform.iOS_2_0, Message="Use both GetSupportedInterfaceOrientations and PreferredInterfaceOrientationForPresentation instead.")</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.iOS, 6, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Use both GetSupportedInterfaceOrientations and PreferredInterfaceOrientationForPresentation instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 2, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Use both GetSupportedInterfaceOrientations and PreferredInterfaceOrientationForPresentation instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -4186,7 +4395,7 @@ public override void ViewDidLoad ()
           <AttributeName>MonoTouch.Foundation.Export("shouldPerformSegueWithIdentifier:sender:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_6_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 6, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -4205,6 +4414,40 @@ public override void ViewDidLoad ()
         <remarks>Application developers may override this function so that it returns <see langword="false" /> in order to disable certain segues from executing.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="ShouldUpdateFocus">
+      <MemberSignature Language="C#" Value="public virtual bool ShouldUpdateFocus (MonoTouch.UIKit.UIFocusUpdateContext context);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool ShouldUpdateFocus(class MonoTouch.UIKit.UIFocusUpdateContext context) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo apistyle="classic">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo apistyle="unified">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("shouldUpdateFocusInContext:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 9, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.WatchOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="context" Type="MonoTouch.UIKit.UIFocusUpdateContext" />
+      </Parameters>
+      <Docs>
+        <param name="context">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="ShowDetailTargetDidChangeNotification">
       <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSString ShowDetailTargetDidChangeNotification { get; }" />
       <MemberSignature Language="ILAsm" Value=".property class MonoTouch.Foundation.NSString ShowDetailTargetDidChangeNotification" />
@@ -4220,10 +4463,10 @@ public override void ViewDidLoad ()
           <AttributeName>MonoTouch.Foundation.Field("UIViewControllerShowDetailTargetDidChangeNotification", "UIKit")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_8_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_8_0)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -4309,7 +4552,7 @@ void Setup ()
           <AttributeName>MonoTouch.Foundation.Export("showDetailViewController:sender:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_8_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -4344,7 +4587,7 @@ void Setup ()
           <AttributeName>MonoTouch.Foundation.Export("showViewController:sender:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_8_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -4376,13 +4619,13 @@ void Setup ()
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_3_2)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 3, 2, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("splitViewController")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_3_2)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 3, 2, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -4408,13 +4651,13 @@ void Setup ()
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("storyboard")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -4443,7 +4686,7 @@ void Setup ()
           <AttributeName>MonoTouch.Foundation.Export("systemLayoutFittingSizeDidChangeForChildContentContainer:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_8_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -4583,13 +4826,13 @@ void Setup ()
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_7_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 7, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("topLayoutGuide")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_7_0)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 7, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -4613,13 +4856,13 @@ void Setup ()
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_8_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("traitCollection")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_8_0)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -4646,10 +4889,10 @@ void Setup ()
           <AttributeName>MonoTouch.Foundation.Export("traitCollectionDidChange:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_8_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_8_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -4669,9 +4912,9 @@ void Setup ()
 	    application.
           </para>
           <para>Application developers must call the base implementation at the beginning of their override.</para>
-          <para>This method is the appropriate place to register for 3D Touch with <see cref="M:Monotouch.UIKit.UIViewController.RegisterForPreviewingWithDelegate"/>:</para>
+          <para>This method is the appropriate place to register for 3D Touch with <see cref="M:Monotouch.UIKit.UIViewController.RegisterForPreviewingWithDelegate" />:</para>
           <example>
-    <code lang="C#"><![CDATA[
+            <code lang="C#"><![CDATA[
 public override void TraitCollectionDidChange(UITraitCollection previousTraitCollection)
 {
     base.TraitCollectionDidChange(previousTraitCollection);
@@ -4682,7 +4925,7 @@ public override void TraitCollectionDidChange(UITraitCollection previousTraitCol
     }
 }
     ]]></code>
-</example>
+          </example>
         </remarks>
       </Docs>
     </Member>
@@ -4698,7 +4941,7 @@ public override void TraitCollectionDidChange(UITraitCollection previousTraitCol
           <AttributeName>MonoTouch.Foundation.Export("transitionFromViewController:toViewController:duration:options:animations:completion:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Since(5, 0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -4748,7 +4991,7 @@ public override void TraitCollectionDidChange(UITraitCollection previousTraitCol
           <AttributeName>MonoTouch.Foundation.Export("transitionFromViewController:toViewController:duration:options:animations:completion:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -4794,7 +5037,7 @@ public override void TraitCollectionDidChange(UITraitCollection previousTraitCol
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Since(5, 0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -4837,7 +5080,7 @@ public override void TraitCollectionDidChange(UITraitCollection previousTraitCol
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -4881,13 +5124,13 @@ public override void TraitCollectionDidChange(UITraitCollection previousTraitCol
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_7_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 7, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_7_0)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 7, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_7_0)</AttributeName>
+          <AttributeName>set: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 7, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -4918,7 +5161,7 @@ public override void TraitCollectionDidChange(UITraitCollection previousTraitCol
           <AttributeName>MonoTouch.Foundation.Export("unregisterForPreviewingWithContext:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_9_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 9, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -4930,7 +5173,9 @@ public override void TraitCollectionDidChange(UITraitCollection previousTraitCol
       <Docs>
         <param name="previewing">To be added.</param>
         <summary>Stops <paramref name="previewing" /> from handling 3D Touch peek and pop input.</summary>
-        <remarks><para>Application developers who want to preserve the option to unregister for 3D Touch peek and pop must store a reference to the <see cref="T:MonoTouch.UIKit.UIViewControllerPreviewing" /> instance that is returned by <see cref="M:MonoTouch.UIKit.UIViewController.RegisterForPreviewingWithDelegate" />, so that they can later pass it to the <see cref="M:MonoTouch.UIKit.UIViewController.UnregisterForPreviewingWithContext" /> method.</para></remarks>
+        <remarks>
+          <para>Application developers who want to preserve the option to unregister for 3D Touch peek and pop must store a reference to the <see cref="T:MonoTouch.UIKit.UIViewControllerPreviewing" /> instance that is returned by <see cref="M:MonoTouch.UIKit.UIViewController.RegisterForPreviewingWithDelegate" />, so that they can later pass it to the <see cref="M:MonoTouch.UIKit.UIViewController.UnregisterForPreviewingWithContext" /> method.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Unwind">
@@ -4948,7 +5193,7 @@ public override void TraitCollectionDidChange(UITraitCollection previousTraitCol
           <AttributeName>MonoTouch.Foundation.Export("unwindForSegue:towardsViewController:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_9_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 9, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -4959,44 +5204,46 @@ public override void TraitCollectionDidChange(UITraitCollection previousTraitCol
         <Parameter Name="subsequentVC" Type="MonoTouch.UIKit.UIViewController" />
       </Parameters>
       <Docs>
-        <param name="unwindSegue">Holds the in-process unwind <see cref="T:Monotouch.UIKit.UIStoryboardSegue"/>.</param>
-        <param name="subsequentVC">The next <see cref="T:Monotouch.UIKit.UIViewController"/> in the direction of the unwind.</param>
-        <summary>Called during an unwind segue on any <see cref="T:Monotouch.UIKit.UIViewController"/> objects in the unwind path.</summary>
+        <param name="unwindSegue">Holds the in-process unwind <see cref="T:Monotouch.UIKit.UIStoryboardSegue" />.</param>
+        <param name="subsequentVC">The next <see cref="T:Monotouch.UIKit.UIViewController" /> in the direction of the unwind.</param>
+        <summary>Called during an unwind segue on any <see cref="T:Monotouch.UIKit.UIViewController" /> objects in the unwind path.</summary>
         <remarks>
-          <para>This method is called on each <see cref="T:Monotouch.UIKit.UIViewController"/> in the unwind <see cref="T:Monotouch.UIKit.UIStoryboardSegue"/> path.</para>
-          <para>When overridden in container <see cref="T:Monotouch.UIKit.UIViewController"/> classes, this method is responsible for configuring the container to properly display the <paramref name="subsequentVC"/>. In a container <see cref="T:Monotouch.UIKit.UIViewController"/> that displayed a tab bar, for instance, this method would be used to set the tab item to match the <paramref name="subsequentVC"/>.</para>
-    <para><see cref="T:Monotouch.UIKit.UIViewController"/> classes that are not containers should not override this method.</para>      
+          <para>This method is called on each <see cref="T:Monotouch.UIKit.UIViewController" /> in the unwind <see cref="T:Monotouch.UIKit.UIStoryboardSegue" /> path.</para>
+          <para>When overridden in container <see cref="T:Monotouch.UIKit.UIViewController" /> classes, this method is responsible for configuring the container to properly display the <paramref name="subsequentVC" />. In a container <see cref="T:Monotouch.UIKit.UIViewController" /> that displayed a tab bar, for instance, this method would be used to set the tab item to match the <paramref name="subsequentVC" />.</para>
+          <para>
+            <see cref="T:Monotouch.UIKit.UIViewController" /> classes that are not containers should not override this method.</para>
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="UnwindForSegue" apistyle="classic">
-      <MemberSignature Language="C#" Value="public virtual void UnwindForSegue (MonoTouch.UIKit.UIStoryboardSegue unwindSegue, MonoTouch.UIKit.UIViewController subsequentVC);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void UnwindForSegue(class MonoTouch.UIKit.UIStoryboardSegue unwindSegue, class MonoTouch.UIKit.UIViewController subsequentVC) cil managed" />
+    <Member MemberName="UpdateFocusIfNeeded">
+      <MemberSignature Language="C#" Value="public virtual void UpdateFocusIfNeeded ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void UpdateFocusIfNeeded() cil managed" />
       <MemberType>Method</MemberType>
+      <AssemblyInfo apistyle="classic">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo apistyle="unified">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.Foundation.Export("unwindForSegue:towardsViewController:")</AttributeName>
+          <AttributeName>MonoTouch.Foundation.Export("updateFocusIfNeeded")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_9_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 9, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.WatchOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
-      <Parameters>
-        <Parameter Name="unwindSegue" Type="MonoTouch.UIKit.UIStoryboardSegue" />
-        <Parameter Name="subsequentVC" Type="MonoTouch.UIKit.UIViewController" />
-      </Parameters>
+      <Parameters />
       <Docs>
-        <param name="unwindSegue">Holds the in-process unwind <see cref="T:Monotouch.UIKit.UIStoryboardSegue"/>.</param>
-        <param name="subsequentVC">The next <see cref="T:Monotouch.UIKit.UIViewController"/> in the direction of the unwind.</param>
-        <summary>Called during an unwind segue on any <see cref="T:Monotouch.UIKit.UIViewController"/> objects in the unwind path.</summary>
-        <remarks>
-          <para>This method is called on each <see cref="T:Monotouch.UIKit.UIViewController"/> in the unwind <see cref="T:Monotouch.UIKit.UIStoryboardSegue"/> path.</para>
-          <para>When overridden in container <see cref="T:Monotouch.UIKit.UIViewController"/> classes, this method is responsible for configuring the container to properly display the <paramref name="subsequentVC"/>. In a container <see cref="T:Monotouch.UIKit.UIViewController"/> that displayed a tab bar, for instance, this method would be used to set the tab item to match the <paramref name="subsequentVC"/>.</para>
-    <para><see cref="T:Monotouch.UIKit.UIViewController"/> classes that are not containers should not override this method.</para>      
-        </remarks>      </Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
     </Member>
     <Member MemberName="UpdateViewConstraints">
       <MemberSignature Language="C#" Value="public virtual void UpdateViewConstraints ();" />
@@ -5013,7 +5260,7 @@ public override void TraitCollectionDidChange(UITraitCollection previousTraitCol
           <AttributeName>MonoTouch.Foundation.Export("updateViewConstraints")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_6_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 6, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -5144,7 +5391,7 @@ public override void TraitCollectionDidChange(UITraitCollection previousTraitCol
           <AttributeName>MonoTouch.Foundation.Export("viewDidLayoutSubviews")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -5200,7 +5447,13 @@ public override void TraitCollectionDidChange(UITraitCollection previousTraitCol
           <AttributeName>MonoTouch.Foundation.Export("viewDidUnload")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Deprecated=MonoTouch.ObjCRuntime.Platform.iOS_6_0, Introduced=MonoTouch.ObjCRuntime.Platform.iOS_3_0, Message="Deprecated in iOS 6.0")</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.iOS, 6, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Deprecated in iOS 6.0")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 3, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Deprecated in iOS 6.0")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -5227,28 +5480,28 @@ public override void TraitCollectionDidChange(UITraitCollection previousTraitCol
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_9_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 9, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("viewIfLoaded")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_9_0)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 9, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
         <ReturnType>MonoTouch.UIKit.UIView</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Returns the <see cref="P:Monotouch.UIKit.UIViewController.View"/> if it has been instantiated; otherwise, returns <see langword="null"/>.</summary>
+        <summary>Returns the <see cref="P:Monotouch.UIKit.UIViewController.View" /> if it has been instantiated; otherwise, returns <see langword="null" />.</summary>
         <value>
-          <para>A <see langword="null"/> return indicates that the <see cref="P:Monotouch.UIKit.UIViewController.View"/> has not yet been loaded.</para>
+          <para>A <see langword="null" /> return indicates that the <see cref="P:Monotouch.UIKit.UIViewController.View" /> has not yet been loaded.</para>
           <para tool="nullallowed">This value can be <see langword="null" />.</para>
         </value>
         <remarks>
-          <para>Because <see cref="T:Monotouch.UIKit.UIView"/> are relatively heavyweight compared to T<see cref="T:Monotouch.UIKit.UIViewController"/> objects, the <see cref="P:Monotouch.UIKit.UIViewController.View"/> object is lazily initialized. Developers can test if the <see cref="P:Monotouch.UIKit.UIViewController.View"/> has been initialized by calling this method, which returns <see langword="null"/> if the <see cref="P:Monotouch.UIKit.UIViewController.View"/> had not yet been loaded. Developers can call <see cref="M:Monotouch.UIKit.UIViewController.LoadViewIfNeeded"/> to force the loading of the <see cref="P:Monotouch.UIKit.UIViewController.View"/>.</para>  
-                   <example>
-    <code lang="C#"><![CDATA[
+          <para>Because <see cref="T:Monotouch.UIKit.UIView" /> are relatively heavyweight compared to T<see cref="T:Monotouch.UIKit.UIViewController" /> objects, the <see cref="P:Monotouch.UIKit.UIViewController.View" /> object is lazily initialized. Developers can test if the <see cref="P:Monotouch.UIKit.UIViewController.View" /> has been initialized by calling this method, which returns <see langword="null" /> if the <see cref="P:Monotouch.UIKit.UIViewController.View" /> had not yet been loaded. Developers can call <see cref="M:Monotouch.UIKit.UIViewController.LoadViewIfNeeded" /> to force the loading of the <see cref="P:Monotouch.UIKit.UIViewController.View" />.</para>
+          <example>
+            <code lang="C#"><![CDATA[
 var newVC = UIStoryboard.FromName("Main", NSBundle.MainBundle).InstantiateInitialViewController();
 if (newVC.ViewIfLoaded == null)
 {
@@ -5256,8 +5509,7 @@ if (newVC.ViewIfLoaded == null)
     newVC.LoadViewIfNeeded();
 }
     ]]></code>
-</example>
-
+          </example>
         </remarks>
       </Docs>
     </Member>
@@ -5343,7 +5595,7 @@ if (newVC.ViewIfLoaded == null)
           <AttributeName>MonoTouch.Foundation.Export("viewWillLayoutSubviews")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -5376,7 +5628,7 @@ if (newVC.ViewIfLoaded == null)
           <AttributeName>MonoTouch.Foundation.Export("viewWillTransitionToSize:withTransitionCoordinator:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_8_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -5409,10 +5661,16 @@ if (newVC.ViewIfLoaded == null)
           <AttributeName>MonoTouch.Foundation.Export("viewWillUnload")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.iOS, 6, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Deprecated=MonoTouch.ObjCRuntime.Platform.iOS_6_0, Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -5439,19 +5697,37 @@ if (newVC.ViewIfLoaded == null)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Deprecated=MonoTouch.ObjCRuntime.Platform.iOS_7_0, Introduced=MonoTouch.ObjCRuntime.Platform.iOS_3_0, Message="Use EdgesForExtendedLayout, ExtendedLayoutIncludesOpaqueBars and AutomaticallyAdjustsScrollViewInsets instead.")</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.iOS, 7, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Use EdgesForExtendedLayout, ExtendedLayoutIncludesOpaqueBars and AutomaticallyAdjustsScrollViewInsets instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 3, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Use EdgesForExtendedLayout, ExtendedLayoutIncludesOpaqueBars and AutomaticallyAdjustsScrollViewInsets instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("wantsFullScreenLayout")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Deprecated=MonoTouch.ObjCRuntime.Platform.iOS_7_0, Introduced=MonoTouch.ObjCRuntime.Platform.iOS_3_0, Message="Use EdgesForExtendedLayout, ExtendedLayoutIncludesOpaqueBars and AutomaticallyAdjustsScrollViewInsets instead.")</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.iOS, 7, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Use EdgesForExtendedLayout, ExtendedLayoutIncludesOpaqueBars and AutomaticallyAdjustsScrollViewInsets instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 3, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Use EdgesForExtendedLayout, ExtendedLayoutIncludesOpaqueBars and AutomaticallyAdjustsScrollViewInsets instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: MonoTouch.Foundation.Export("setWantsFullScreenLayout:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: MonoTouch.ObjCRuntime.Availability(Deprecated=MonoTouch.ObjCRuntime.Platform.iOS_7_0, Introduced=MonoTouch.ObjCRuntime.Platform.iOS_3_0, Message="Use EdgesForExtendedLayout, ExtendedLayoutIncludesOpaqueBars and AutomaticallyAdjustsScrollViewInsets instead.")</AttributeName>
+          <AttributeName>set: MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.iOS, 7, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Use EdgesForExtendedLayout, ExtendedLayoutIncludesOpaqueBars and AutomaticallyAdjustsScrollViewInsets instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 3, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Use EdgesForExtendedLayout, ExtendedLayoutIncludesOpaqueBars and AutomaticallyAdjustsScrollViewInsets instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -5489,19 +5765,19 @@ public override void ViewDidLoad ()
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_7_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 7, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: MonoTouch.Foundation.Export("transitioningDelegate")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_7_0)</AttributeName>
+          <AttributeName>get: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 7, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: MonoTouch.Foundation.Export("setTransitioningDelegate:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_7_0)</AttributeName>
+          <AttributeName>set: MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 7, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -5531,7 +5807,10 @@ public override void ViewDidLoad ()
           <AttributeName>MonoTouch.Foundation.Export("willAnimateFirstHalfOfRotationToInterfaceOrientation:duration:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Deprecated=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -5570,7 +5849,10 @@ public override void ViewDidLoad ()
           <AttributeName>MonoTouch.Foundation.Export("willAnimateRotationToInterfaceOrientation:duration:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Deprecated=MonoTouch.ObjCRuntime.Platform.iOS_8_0, Message="Starting with iOS 8, you should use Adaptive View Controllers instead")</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Starting with iOS 8, you should use Adaptive View Controllers instead")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -5610,7 +5892,10 @@ public override void ViewDidLoad ()
           <AttributeName>MonoTouch.Foundation.Export("willAnimateSecondHalfOfRotationFromInterfaceOrientation:duration:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Deprecated=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -5649,7 +5934,7 @@ public override void ViewDidLoad ()
           <AttributeName>MonoTouch.Foundation.Export("willMoveToParentViewController:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_5_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 5, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -5685,7 +5970,10 @@ public override void ViewDidLoad ()
           <AttributeName>MonoTouch.Foundation.Export("willRotateToInterfaceOrientation:duration:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Deprecated=MonoTouch.ObjCRuntime.Platform.iOS_8_0, Message="Starting with iOS 8, you should use Adaptive View Controllers instead")</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Deprecated(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, "Starting with iOS 8, you should use Adaptive View Controllers instead")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Unavailable(MonoTouch.ObjCRuntime.PlatformName.TvOS, MonoTouch.ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -5724,7 +6012,7 @@ public override void ViewDidLoad ()
           <AttributeName>MonoTouch.Foundation.Export("willTransitionToTraitCollection:withTransitionCoordinator:")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>MonoTouch.ObjCRuntime.Availability(Introduced=MonoTouch.ObjCRuntime.Platform.iOS_8_0)</AttributeName>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 8, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
