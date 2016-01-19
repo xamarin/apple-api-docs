@@ -28,9 +28,31 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <typeparam name="AnchorType">To be added.</typeparam>
-    <summary>Factory class that creates layout constraint objects for the available types of anchors.</summary>
-    <remarks>To be added.</remarks>
+    <typeparam name="AnchorType">Whether the generating anchor is an <see cref="T:Monotouch.UIKit.NSLayoutAnchorXAxisAnchor"/>, an <see cref="T:Monotouch.UIKit.NSLayoutAnchorYAxisAnchor"/>, or an <see cref="T:Monotouch.UIKit.NSLayoutDimension"/>.</typeparam>
+    <summary>Generates <see cref="T:Monotouch.UIKit.NSLayoutConstraint"/> objects based on the value of the <see cref="T:Monotouch.UIKit.NSLayoutConstraint"/> associated with <c>this</c>.</summary>
+    <remarks>
+      <para>The <see cref="T:Monotouch.UIKit.NSLayoutAnchor{T}"/> class, introduced in iOS 9, allows layout constraints to be specified in code, in a fluent manner. For example:</para>
+      <example>
+    <code lang="C#"><![CDATA[
+blueView = new ContentView(UIColor.Blue);
+view.AddSubview(blueView);
+
+blueView.TranslatesAutoresizingMaskIntoConstraints = false;
+var blueConstraints = new []
+{ 
+    blueView.LeadingAnchor.ConstraintEqualTo(greenView.LeadingAnchor),
+    blueView.TrailingAnchor.ConstraintEqualTo(greenView.TrailingAnchor),
+    blueView.TopAnchor.ConstraintEqualTo(greenView.BottomAnchor, 10.0f),
+    blueView.HeightAnchor.ConstraintEqualTo(greenView.HeightAnchor),
+    blueView.WidthAnchor.ConstraintEqualTo(greenView.WidthAnchor)
+};
+
+NSLayoutConstraint.ActivateConstraints(blueConstraints);
+
+    ]]></code>
+</example>
+      <para>In this example, the newly-created <c>blueView</c> <see cref="T:Monotouch.UIKit.UIView"/> has its height, width, leading, and trailing anchors defined as equal to that of a previously-defined <c>greenView</c> while its <see cref="P:Monotouch.UIKit.UIView.TopAnchor"/> is set to be 10 logical pixels below the <c>greenView</c>'s <see cref="P:Monotouch.UIKit.UIView.BottomAnchor"/>.</para>
+    </remarks>
     <related type="PlatformDocAPI" href="https://developer.apple.com/library/ios/documentation/AppKit/Reference/NSLayoutAnchor_ClassReference/index.html">Apple documentation for <c>NSLayoutAnchor</c></related>
   </Docs>
   <Members>
@@ -111,10 +133,12 @@
         <Parameter Name="anchor" Type="MonoTouch.UIKit.NSLayoutAnchor&lt;AnchorType&gt;" />
       </Parameters>
       <Docs>
-        <param name="anchor">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="anchor">The <see cref="T:Monotouch.UIKit.NSLayoutAnchor{T}"/> whose constraint value should be copied.</param>
+        <summary>Creates a <see cref="T:Monotouch.UIKit.NSLayoutConstraint"/> whose value is equal to that of the constraint of the <paramref name="anchor"/>.</summary>
+        <returns>A new <see cref="T:Monotouch.UIKit.NSLayoutConstraint"/>.</returns>
+        <remarks>
+          <para>As with other methods of this class, this method returns a new <see cref="T:Monotouch.UIKit.NSLayoutConstraint"/> but does not add and activate it to the current <see cref="T:Monotouch.UIKit.UIView"/>.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ConstraintEqualTo" apistyle="unified">
@@ -137,11 +161,15 @@
         <Parameter Name="constant" Type="System.nfloat" />
       </Parameters>
       <Docs>
-        <param name="anchor">To be added.</param>
-        <param name="constant">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="anchor">The <see cref="T:Monotouch.UIKit.NSLayoutAnchor{T}"/> whose constraint value should be used.</param>
+        <param name="constant">The number of logical pixels to add to the value of <paramref name="anchor"/>.</param>
+        <summary>Creates a <see cref="T:Monotouch.UIKit.NSLayoutConstraint"/> whose value is equal to that of the constraint of the <paramref name="anchor"/> plus <paramref name="constant"/> pixels.</summary>
+        <returns>
+        </returns>
+        <remarks>
+                  <para>As with other methods of this class, this method returns a new <see cref="T:Monotouch.UIKit.NSLayoutConstraint"/> but does not add and activate it to the current <see cref="T:Monotouch.UIKit.UIView"/>.</para>
+     
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ConstraintGreaterThanOrEqualTo" apistyle="unified">
@@ -163,10 +191,13 @@
         <Parameter Name="anchor" Type="MonoTouch.UIKit.NSLayoutAnchor&lt;AnchorType&gt;" />
       </Parameters>
       <Docs>
-        <param name="anchor">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="anchor">The <see cref="T:Monotouch.UIKit.NSLayoutAnchor{T}"/> whose constraint value should be used.</param>
+        <summary>Creates a <see cref="T:Monotouch.UIKit.NSLayoutConstraint"/> whose value is at least equal to that of the constraint of the <paramref name="anchor"/>.</summary>
+        <returns>A new <see cref="T:Monotouch.UIKit.NSLayoutConstraint"/>.</returns>
+        <remarks>
+             <para>As with other methods of this class, this method returns a new <see cref="T:Monotouch.UIKit.NSLayoutConstraint"/> but does not add and activate it to the current <see cref="T:Monotouch.UIKit.UIView"/>.</para>
+      
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ConstraintGreaterThanOrEqualTo" apistyle="unified">
@@ -189,11 +220,13 @@
         <Parameter Name="constant" Type="System.nfloat" />
       </Parameters>
       <Docs>
-        <param name="anchor">To be added.</param>
-        <param name="constant">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="anchor">The <see cref="T:Monotouch.UIKit.NSLayoutAnchor{T}"/> whose constraint value should be used.</param>
+        <param name="constant">The number of logical pixels to add to the value of <paramref name="anchor"/>.</param>
+        <summary>Creates a <see cref="T:Monotouch.UIKit.NSLayoutConstraint"/> whose value is at least equal to that of the constraint of the <paramref name="anchor"/> plus <paramref name="constant"/> pixels.</summary>
+        <returns>A new <see cref="T:Monotouch.UIKit.NSLayoutConstraint"/>.</returns>
+        <remarks>
+           <para>As with other methods of this class, this method returns a new <see cref="T:Monotouch.UIKit.NSLayoutConstraint"/> but does not add and activate it to the current <see cref="T:Monotouch.UIKit.UIView"/>.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ConstraintLessThanOrEqualTo" apistyle="unified">
@@ -215,10 +248,12 @@
         <Parameter Name="anchor" Type="MonoTouch.UIKit.NSLayoutAnchor&lt;AnchorType&gt;" />
       </Parameters>
       <Docs>
-        <param name="anchor">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="anchor">The <see cref="T:Monotouch.UIKit.NSLayoutAnchor{T}"/> whose constraint value should be used.</param>
+        <summary>Creates a <see cref="T:Monotouch.UIKit.NSLayoutConstraint"/> whose value is at most equal to that of the constraint of the <paramref name="anchor"/>.</summary>
+        <returns>A new <see cref="T:Monotouch.UIKit.NSLayoutConstraint"/>.</returns>
+        <remarks>
+   <para>As with other methods of this class, this method returns a new <see cref="T:Monotouch.UIKit.NSLayoutConstraint"/> but does not add and activate it to the current <see cref="T:Monotouch.UIKit.UIView"/>.</para>
+         </remarks>
       </Docs>
     </Member>
     <Member MemberName="ConstraintLessThanOrEqualTo" apistyle="unified">
@@ -241,11 +276,14 @@
         <Parameter Name="constant" Type="System.nfloat" />
       </Parameters>
       <Docs>
-        <param name="anchor">To be added.</param>
-        <param name="constant">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="anchor">The <see cref="T:Monotouch.UIKit.NSLayoutAnchor{T}"/> whose constraint value should be used.</param>
+        <param name="constant">The number of logical pixels to add to the value of <paramref name="anchor"/>.</param>
+        <summary>Creates a <see cref="T:Monotouch.UIKit.NSLayoutConstraint"/> whose value is at most equal to that of the constraint of the <paramref name="anchor"/> plus <paramref name="constant"/> pixels.</summary>
+        <returns>A new <see cref="T:Monotouch.UIKit.NSLayoutConstraint"/>.</returns>
+        <remarks>
+             <para>As with other methods of this class, this method returns a new <see cref="T:Monotouch.UIKit.NSLayoutConstraint"/> but does not add and activate it to the current <see cref="T:Monotouch.UIKit.UIView"/>.</para>
+      
+        </remarks>
       </Docs>
     </Member>
   </Members>
