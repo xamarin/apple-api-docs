@@ -17,7 +17,41 @@
   <Interfaces />
   <Docs>
     <summary>Identifiers for a <see cref="T:MonoTouch.AudioUnit.AudioComponent" />.</summary>
-    <remarks>To be added.</remarks>
+    <remarks>
+      <para>You can either create <see cref="T:MonoTouch.AudioUnit.AudioComponentDescription" /> using the empty constructor and setting all of the fields for the audio component, or you can use one of the convenience factory method that provide strongly typed ways of instantiating the structure.</para>
+      <para></para>
+      <para>The following example shows how to use the various Create methods:</para>
+      <para></para>
+      <para></para>
+      <example>
+        <code lang="C#"><![CDATA[auGraph = new AUGraph ();
+auGraph.Open ();
+int effectNode = auGraph.AddNode (AudioComponentDescription.CreateConverter (AudioTypeConverter.NewTimePitch));
+effectUnit = auGraph.GetNodeInfo (effectNode);
+
+int convertToEffectNode = auGraph.AddNode (AudioComponentDescription.CreateConverter (AudioTypeConverter.AU));
+convertToEffectUnit = auGraph.GetNodeInfo (convertToEffectNode);
+
+int convertFromEffectNode = auGraph.AddNode (AudioComponentDescription.CreateConverter (AudioTypeConverter.AU));
+convertFromEffectUnit = auGraph.GetNodeInfo (convertFromEffectNode);
+
+int genericOutputNode = auGraph.AddNode (AudioComponentDescription.CreateOutput (AudioTypeOutput.Generic));
+genericOutputUnit = auGraph.GetNodeInfo (genericOutputNode);
+
+// set the format conversions throughout the graph
+AudioStreamBasicDescription effectFormat = effectUnit.GetAudioFormat (AudioUnitScopeType.Output);
+var tapFormat = aqTap.ProcessingFormat;
+
+convertToEffectUnit.SetAudioFormat (tapFormat, AudioUnitScopeType.Input);
+convertToEffectUnit.SetAudioFormat (effectFormat, AudioUnitScopeType.Output);
+
+convertFromEffectUnit.SetAudioFormat (effectFormat, AudioUnitScopeType.Input);
+convertFromEffectUnit.SetAudioFormat (tapFormat, AudioUnitScopeType.Output);
+
+genericOutputUnit.SetAudioFormat (tapFormat, AudioUnitScopeType.Input);
+genericOutputUnit.SetAudioFormat (tapFormat, AudioUnitScopeType.Output);]]></code>
+      </example>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName=".ctor" apistyle="classic">
@@ -29,8 +63,33 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Creates an empty AudioComponentDescription.</summary>
+        <remarks>
+          <para>You would use this constructor to initialize your AudioComponentDescription one by one:</para>
+          <para></para>
+          <para></para>
+          <example>
+            <code lang="C#"><![CDATA[var processingGraph = new AUGraph ();
+
+int samplerNode, ioNode;
+
+var musicSampler = new AudioComponentDescription () {
+        ComponentManufacturer = AudioComponentManufacturerType.Apple,
+        ComponentType = AudioComponentType.MusicDevice,
+        ComponentSubType = (int)AudioTypeMusicDevice.Sampler
+};
+samplerNode = processingGraph.AddNode (musicSampler);
+
+var remoteOutput = new AudioComponentDescription () {
+        ComponentManufacturer = AudioComponentManufacturerType.Apple,
+        ComponentType = AudioComponentType.Output,
+        ComponentSubType = (int)AudioTypeOutput.Remote
+};
+ioNode = processingGraph.AddNode (remoteOutput);
+
+processingGraph.Open ();]]></code>
+          </example>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ComponentFlags">
@@ -102,7 +161,33 @@
       </ReturnValue>
       <Docs>
         <summary>Audio Unit component subtype, depending on the <see cref="P:MonoTouch.AudioUnit.AudioComponentDescription.ComponentSubType" /> value you should use one of the values from <see cref="T:MonoTouch.AudioUnit.AudioTypeOutput" />, <see cref="T:MonoTouch.AudioUnit.AudioTypeMusicDevice" />, <see cref="T:MonoTouch.AudioUnit.AudioTypeConverter" />, <see cref="T:MonoTouch.AudioUnit.AudioTypeEffect" />, <see cref="T:MonoTouch.AudioUnit.AudioTypeMixer" />, <see cref="T:MonoTouch.AudioUnit.AudioTypePanner," /> <see cref="T:MonoTouch.AudioUnit.AudioTypeGenerator" /></summary>
-        <remarks>Audio Unit component subtype, depending on the <see cref="T:MonoTouch.AudioUnit.AudioComponentDescription.ComponentType" /> you should use one of the values from <see cref="T:MonoTouch.AudioUnit.AudioTypeOutput" />, <see cref="T:MonoTouch.AudioUnit.AudioTypeMusicDevice" />, <see cref="T:MonoTouch.AudioUnit.AudioTypeConverter" />, <see cref="T:MonoTouch.AudioUnit.AudioTypeEffect" />, <see cref="T:MonoTouch.AudioUnit.AudioTypeMixer" />, <see cref="T:MonoTouch.AudioUnit.AudioTypePanner," /> <see cref="T:MonoTouch.AudioUnit.AudioTypeGenerator" />.</remarks>
+        <remarks>
+          <para>Audio Unit component subtype, depending on the <see cref="T:MonoTouch.AudioUnit.AudioComponentDescription.ComponentType" /> you should use one of the values from <see cref="T:MonoTouch.AudioUnit.AudioTypeOutput" />, <see cref="T:MonoTouch.AudioUnit.AudioTypeMusicDevice" />, <see cref="T:MonoTouch.AudioUnit.AudioTypeConverter" />, <see cref="T:MonoTouch.AudioUnit.AudioTypeEffect" />, <see cref="T:MonoTouch.AudioUnit.AudioTypeMixer" />, <see cref="T:MonoTouch.AudioUnit.AudioTypePanner," /> <see cref="T:MonoTouch.AudioUnit.AudioTypeGenerator" />.</para>
+          <para />
+          <para>Since this is an integer, and the values on those enumerations are strongly typed, you typically need to cast.   The following example shows this:</para>
+          <para />
+          <para />
+          <example>
+            <code lang="C#"><![CDATA[var processingGraph = new AUGraph ();
+
+int samplerNode, ioNode;
+
+var musicSampler = new AudioComponentDescription () {
+        ComponentManufacturer = AudioComponentManufacturerType.Apple,
+        ComponentType = AudioComponentType.MusicDevice,
+        ComponentSubType = (int)AudioTypeMusicDevice.Sampler
+};
+samplerNode = processingGraph.AddNode (musicSampler);
+
+var remoteOutput = new AudioComponentDescription () {
+        ComponentManufacturer = AudioComponentManufacturerType.Apple,
+        ComponentType = AudioComponentType.Output,
+        ComponentSubType = (int)AudioTypeOutput.Remote
+};
+ioNode = processingGraph.AddNode (remoteOutput);
+
+processingGraph.Open ();]]></code>
+          </example>.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ComponentType">
@@ -144,7 +229,7 @@
       </Parameters>
       <Docs>
         <param name="converter">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Creates an audio converter component description.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -168,8 +253,8 @@
       </Parameters>
       <Docs>
         <param name="effect">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <summary>Creates an audio effect component description.</summary>
+        <returns>An initialized AudioComponentDescription with the <see cref="P:MonoTouch.AudioUnit.AudioComponentDescription.ComponentType" /> set to <see cref="E:MonoTouch.AudioUnit.AudioComponentType.Effect" /> and the specified effect.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -192,8 +277,8 @@
       </Parameters>
       <Docs>
         <param name="generator">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <summary>Creates an audio generator component description.</summary>
+        <returns>An initialized AudioComponentDescription with the <see cref="P:MonoTouch.AudioUnit.AudioComponentDescription.ComponentType" /> set to <see cref="E:MonoTouch.AudioUnit.AudioComponentType.Generator" /> and the specified generator.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -218,7 +303,7 @@
       <Docs>
         <param name="type">To be added.</param>
         <param name="subType">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Initializes an <see cref="T:MonoTouch.AudioUnit.AudioComponentDescription" /> with the given type and given subtype.   This method is here for cases where you might want to create a component description that is not covered by the built-in enumerations for component subtypes.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -242,8 +327,8 @@
       </Parameters>
       <Docs>
         <param name="mixer">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <summary>Creates an audio mixer component description.</summary>
+        <returns>An initialized AudioComponentDescription with the <see cref="P:MonoTouch.AudioUnit.AudioComponentDescription.ComponentType" /> set to <see cref="E:MonoTouch.AudioUnit.AudioComponentType.Mixer" /> and the specified mixer.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -266,8 +351,8 @@
       </Parameters>
       <Docs>
         <param name="musicDevice">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <summary>Creates a music effect component description.</summary>
+        <returns>An initialized AudioComponentDescription with the <see cref="P:MonoTouch.AudioUnit.AudioComponentDescription.ComponentType" /> set to <see cref="E:MonoTouch.AudioUnit.AudioComponentType.MusicDevice" /> and the specified device.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -290,8 +375,8 @@
       </Parameters>
       <Docs>
         <param name="outputType">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <summary>Creates an output component description.</summary>
+        <returns>An initialized AudioComponentDescription with the <see cref="P:MonoTouch.AudioUnit.AudioComponentDescription.ComponentType" /> set to <see cref="E:MonoTouch.AudioUnit.AudioComponentType.Output" /> and the specified output type.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -314,8 +399,8 @@
       </Parameters>
       <Docs>
         <param name="panner">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <summary>Creates a panner component description.</summary>
+        <returns>An initialized AudioComponentDescription with the <see cref="P:MonoTouch.AudioUnit.AudioComponentDescription.ComponentType" /> set to <see cref="E:MonoTouch.AudioUnit.AudioComponentType.Panner" /> and the specified panner.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -334,7 +419,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Returns a debugging message showing the component type and subtype for this description.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
