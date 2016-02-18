@@ -63,6 +63,9 @@ var four = jsContext[(NSString)"sum"].ToInt32();
 interface IMyJSVisibleProtocol : IJSExport {
     [Export ("myFunc")]
     int MyFunc ();
+
+    [Export ("Arity2:With:")]
+    NSObject Arity2With(NSObject arg1, NSObject arg2);
 }
 
 class MyJSExporter : NSObject, IMyJSVisibleProtocol
@@ -71,6 +74,12 @@ class MyJSExporter : NSObject, IMyJSVisibleProtocol
     {
         Console.WriteLine ("Called!");
         return 42;
+    }
+
+    public NSObject Arity2With(NSObject arg1, NSObject arg2)
+    {
+        Console.WriteLine ("Arity 2 function called with " + arg1 + " " + arg2);
+        return (NSNumber) 42;
     }
 }
     ]]></code>
@@ -117,6 +126,11 @@ webView.LoadRequest(NSUrlRequest.FromUrl(new NSUrl("MyHtmlFile.html", false)));
                 // `myCSharpObject` injected into JS context by C# code `context [(NSString) "myCSharpObject"] = JSValue.From (...etc...`
                 var resultCalculatedInCSharp = myCSharpObject.myFunc();
                 document.getElementById("Output").innerHTML = resultCalculatedInCSharp;
+            }
+
+            function callArity2Method() {
+                //Note how this is mapped by [Export ("Arity2:With:")]
+                var result = myCSharpObject.Arity2With("foo", "bar");
             }
         </script>
     </head>
