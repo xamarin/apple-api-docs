@@ -144,14 +144,11 @@
         <Parameter Name="block" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <param name="method">
-        </param>
-        <param name="block">
-        </param>
+        <param name="method" />
+        <param name="block" />
         <summary>This method supports the Xamarin.iOS runtime and is not intended for use by application developers.</summary>
         <returns>Delegate</returns>
-        <remarks>
-        </remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GetBlockWrapperCreator" apistyle="classic">
@@ -174,15 +171,11 @@
         <Parameter Name="parameter" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="method">
-        </param>
-        <param name="parameter">
-        </param>
+        <param name="method" />
+        <param name="parameter" />
         <summary>This method supports the Xamarin.iOS runtime and is not intended for use by application developers.</summary>
-        <returns>
-        </returns>
-        <remarks>
-        </remarks>
+        <returns />
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GetDelegateForBlock" apistyle="classic">
@@ -204,8 +197,7 @@
         <param name="type">Type of a delegate matching the signature for the specified Objective-C block.</param>
         <summary>This method supports the Xamarin.iOS runtime and is not intended for use by application developers.</summary>
         <returns>Returns a delegate of the given type that can be used to invoke the Objective-C block in the provided handle.</returns>
-        <remarks>
-        </remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="GetINativeObject&lt;T&gt;">
@@ -235,12 +227,14 @@
       </Parameters>
       <Docs>
         <typeparam name="T">INativeObject type that will wrap the specified native object.</typeparam>
-        <param name="ptr">A pointer to an unmanaged object or any class that derives from the Objective-C NSObject class.</param>
-        <param name="owns">
-        </param>
+        <param name="ptr">A pointer to an unmanaged object.</param>
+        <param name="owns">Pass true if the caller has a reference to the native object, and wants to give it to the managed wrapper instance. Otherwise pass false (and the native object will be retained).</param>
         <summary>Wraps an unmanaged IntPtr into a wrapped INativeObject.</summary>
-        <returns>An instance of a class that derives from MonoTouch.Foundation.NSObject.</returns>
-        <remarks>The runtime create an instance of the most derived class.</remarks>
+        <returns>An instance of a class implementing the T interface.</returns>
+        <remarks>
+          <para>Returns an instance of the T interface even if the native object is not in the class hierarchy of T (no type checks).</para>
+          <para></para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetNSObject">
@@ -261,7 +255,7 @@
       </Parameters>
       <Docs>
         <param name="ptr">A pointer to an unmanaged NSObject or any class that derives from the Objective-C NSObject class.</param>
-        <summary>Wraps an unmanaged IntPtr into a fully typed NSObject.</summary>
+        <summary>Wraps an unmanaged IntPtr into a fully typed NSObject, or returns an existing wrapper object if one already exists.</summary>
         <returns>An instance of a class that derives from MonoTouch.Foundation.NSObject.</returns>
         <remarks>The runtime create an instance of the most derived class.</remarks>
       </Docs>
@@ -292,9 +286,13 @@
       <Docs>
         <typeparam name="T">Type to wrap the native object as.</typeparam>
         <param name="ptr">A pointer to an unmanaged NSObject or any class that derives from the Objective-C NSObject class.</param>
-        <summary>Wraps an unmanaged IntPtr into a fully typed NSObject.</summary>
+        <summary>Wraps an unmanaged IntPtr into a fully typed NSObject, or returns an existing wrapper object if one already exists.</summary>
         <returns>An instance of the T class.</returns>
-        <remarks>The runtime create an instance of the most derived class.</remarks>
+        <remarks>
+          <para>Returns an instance of the T class even if the native object is not in the class hierarchy of T (no type checks).</para>
+          <para></para>
+          <para>This method will fail if there already is a managed wrapper of a different (and incompatible) type for the native object.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetNSObject&lt;T&gt;">
@@ -323,11 +321,15 @@
       </Parameters>
       <Docs>
         <typeparam name="T">To be added.</typeparam>
-        <param name="ptr">To be added.</param>
-        <param name="owns">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="ptr">A pointer to an unmanaged NSObject or any class that derives from the Objective-C NSObject class.</param>
+        <param name="owns">Pass true if the caller has a reference to the native object, and wants to give it to the managed wrapper instance. Otherwise pass false (and the native object will be retained).</param>
+        <summary>Wraps an unmanaged IntPtr into a fully typed NSObject, or returns an existing wrapper object if one already exists.</summary>
+        <returns>An instance of the T class.</returns>
+        <remarks>
+          <para>Returns an instance of the T class even if the native object is not in the class hierarchy of T (no type checks).</para>
+          <para></para>
+          <para>This method will fail if there already is a managed wrapper of a different (and incompatible) type for the native object.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetProtocol">
@@ -349,8 +351,7 @@
       <Docs>
         <param name="protocol">Name of the Objective-C protocol.</param>
         <summary>Returns the handle of the Objective-C protocol descriptor for the given protocol name.</summary>
-        <returns>
-        </returns>
+        <returns>The protocol handle for the given protocol name.</returns>
         <remarks>This is the equivalent of the objc_getProtocol function call.</remarks>
       </Docs>
     </Member>
@@ -375,8 +376,7 @@
       <Parameters />
       <Docs>
         <summary>Retrieves a list of all the Objective-C objects that have been surfaced to the managed world.</summary>
-        <returns>
-        </returns>
+        <returns />
         <remarks>
           <para>The list contains weak references, to allow GC to take place.</para>
           <para>This method is only for diagnostic purposes, and should not be relied upon.</para>
@@ -468,10 +468,12 @@
         <Parameter Name="ptr" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <param name="ptr">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="ptr">A pointer to an unmanaged NSObject or any class that derives from the Objective-C NSObject class.</param>
+        <summary>Looks up an existing wrapper object for an unmanaged IntPtr.</summary>
+        <returns>If a managed wrapper exists for the specified IntPtr, that wrapper is returned, otherwise null.</returns>
+        <remarks>
+          <para></para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="UseAutoreleasePoolInThreadPool">
@@ -488,9 +490,11 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>A value that specifies whether the Mono runtime should automatically create an NSAutoreleasePool for every work items on the threadpool.</summary>
+        <value>
+          <para></para>
+        </value>
+        <remarks>This is enabled by default, but since creating an NSAutoreleasePool adds overhead for every work item, it's possible to disable it for apps that find this overhead unacceptable.</remarks>
       </Docs>
     </Member>
   </Members>
