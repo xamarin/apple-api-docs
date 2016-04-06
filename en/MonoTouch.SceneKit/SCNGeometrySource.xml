@@ -33,7 +33,78 @@
   </Attributes>
   <Docs>
     <summary>Provides vertex data that, in conjunction with SCNGeometryElements, define a 3D object.</summary>
-    <remarks>To be added.</remarks>
+    <remarks>
+      <para>Developers who wish to programmatically generate custom <see cref="T:Monotouch.SceneKit.SCNGeometry"/> objects use the <see cref="M:Monotouch.SceneKit.SCNGeometry.Create(MonoTouch.SceneKit.SCNGeometrySource[], MonoTouch.SceneKit.SCNGeometryElement[]"/> method. The form and number of the <see cref="T:Monotouch.SceneKit.SCNGeometrySource"/> objects varies based on the manner in which the developer is describing the geometry (for instance, whether vertex data comes as a series of triplets describing triangles or a moving series that describes a triangle strip) and whether the geometry will simply be colored or have a texture map.</para>
+      <para>The following code demonstrates the custom code to create a custom four-sided pyramid. This example shows the use of vertices, defining triangles, on which a single texture is mapped. Note how specific index values within <c>locs</c> are used to define <c>indices</c> and how the ordering within <c>locs</c> affects <c>normals</c> and <c>txCoords</c>. Also, notice how the triplets in <c>indices</c> are linked to <c>SCNGeometryPrimitiveType.Triangles</c>.</para>
+            <example>
+        <code lang="C#"><![CDATA[
+//Lower-left
+var a = new SCNVector3(-1, -1, 0);
+//Upper-right
+var b = new SCNVector3(1, 1, 0);
+
+var halfX = (c.X + a.X) / 2;
+var halfY = (c.Y + a.Y) / 2;
+var halfZ = (c.Z + a.Z) / 2;
+
+var b = new SCNVector3(a.X, c.Y, halfZ);
+var d = new SCNVector3(c.X, a.Y, halfZ);
+//Elevate the midpoint so that it's clearly a pyramid
+var midPoint = new SCNVector3(halfX, halfY, halfZ + 1.0);
+
+//The vertices of the geometry
+var locs = new [] {
+	a, b, c, d, midPoint
+};
+var locSource = SCNGeometrySource.FromVertices(locs);
+
+//Note that this relies on the ordering of locs above
+//and it defines triangles (could be triangle strips, etc.)
+var indices = new [] {
+	//Triangles are defined counter-clockwise!
+	4, 1, 0,
+	1, 4, 2,
+	2, 4, 3,
+	3, 4, 0
+};
+
+
+var idxArray = new byte[indices.Length][];
+for(int i = 0; i < idxArray.Length; i++)
+{
+	idxArray[i] = BitConverter.GetBytes(indices[i]);
+}
+var idxData = NSData.FromArray(idxArray.SelectMany(id => id).ToArray());
+
+//Note that this relies on indices defining triangles
+var element = SCNGeometryElement.FromData(idxData, SCNGeometryPrimitiveType.Triangles, indices.Length / 3, sizeof(int));
+
+//Normals are relative to geometry
+var normals = new [] {
+	new SCNVector3(0, 0, 1),
+	new SCNVector3(0, 0, 1),
+	new SCNVector3(0, 0, 1),
+	new SCNVector3(0, 0, 1),
+	new SCNVector3(0, 0, 1),
+};;
+var normSource = SCNGeometrySource.FromNormals(normals);
+
+//These texture coords will cause the texture to wrap 
+var txCoords = new [] {
+	new CGPoint(0, 0),
+	new CGPoint(0, 1),
+	new CGPoint(1, 1),
+	new CGPoint(1, 0),
+  new CGPoint(0.5, 0.5)
+};
+
+var txCoordsSource = SCNGeometrySource.FromTextureCoordinates(txCoords);
+
+var geometry = SCNGeometry.Create(new [] { locSource, normSource, txCoordsSource }, new [] { element });
+    ]]></code>
+      </example>
+    </remarks>
+    
     <related type="PlatformDocAPI" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNGeometrySource_Class/index.html">Apple documentation for <c>SCNGeometrySource</c></related>
   </Docs>
   <Members>
@@ -199,9 +270,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType apistyle="unified">System.nint</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The size, in bytes, of the underlying vector data.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>
+         </remarks>
       </Docs>
     </Member>
     <Member MemberName="ClassHandle">
@@ -245,7 +317,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType apistyle="unified">System.nint</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The number of components per vector element in this source.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -269,7 +341,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.Foundation.NSData</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The underlying data buffer.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -296,7 +368,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType apistyle="unified">System.nint</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The distance, in bytes, from the beginning of <see cref="P:Monotouch.SceneKit.SCNGeometrySource.Data"/> to the first vertex element.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -323,7 +395,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType apistyle="unified">System.nint</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The number of bytes between vertex elements in <see cref="P:Monotouch.SceneKit.SCNGeometrySource.Data"/>.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -354,10 +426,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <para>Users will typically create a <see cref="T:MonoTouch.Foundation.NSKeyedArchived" /> and then invoke the <see cref="M:MonoTouch.Foundation.NSKeyedArchived.ArchiveRootObjectToFile" /> which will call into this method</para>
           <para>If you want to allow your object to be archived, you should override this method and store your state in using the provided <paramref name="encoder" /> parameter.   In addition, you should also implement a constructor that takes an NSCoder argument and is exported with [Export ("initWithCoder:")]</para>
           <example>
-            <code lang="c#">public void override EncodeTo (NSCoder coder){
+            <code lang="C#"><![CDATA[public void override EncodeTo (NSCoder coder){
     c.Encode (1, key: "version");
     c.Encode (userName, key: "userName");
-    c.Encode (hostName, key: "hostName");</code>
+    c.Encode (hostName, key: "hostName");]]></code>
           </example>
         </remarks>
       </Docs>
@@ -381,8 +453,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>Whether the vertex component data is made of <see langword="nfloat"/> values.</summary>
+        <value>If <see langword="false"/>, the vertex component data is made of <see langword="nint"/> values.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -430,7 +502,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="bytesPerComponent">To be added.</param>
         <param name="offset">To be added.</param>
         <param name="stride">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Factory method to create a new <see cref="T:Monotouch.SceneKit.SCNGeometrySource"/> from a data buffer.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -474,7 +546,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="bytesPerComponent">To be added.</param>
         <param name="offset">To be added.</param>
         <param name="stride">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Factory method to create a new <see cref="T:Monotouch.SceneKit.SCNGeometrySource"/> from a data buffer.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -523,7 +595,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="vertexCount">To be added.</param>
         <param name="offset">To be added.</param>
         <param name="stride">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Factory method to create a new <see cref="T:Monotouch.SceneKit.SCNGeometrySource"/> from a data buffer.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -561,7 +633,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="vertexCount">To be added.</param>
         <param name="offset">To be added.</param>
         <param name="stride">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Factory method to create a new <see cref="T:Monotouch.SceneKit.SCNGeometrySource"/> from a data buffer.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -584,9 +656,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="normals">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Factory method that creates a source for vertex normals.</summary>
         <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <para>The <paramref name="normals"/> must correspond directly to their associated vertices (in another <see cref="T:Monotouch.SceneKit.SCNGeometrySource"/>).</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="FromTextureCoordinates">
@@ -610,9 +684,12 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="texcoords">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Factory method that creates a source for texture coordinates.</summary>
         <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <para>The <paramref name="texcoords"/> must correspond directly to their associated vertices (in another <see cref="T:Monotouch.SceneKit.SCNGeometrySource"/>).</para>
+          <para>For non-tiling textures, texture coordinates are values between 0 and 1 that describe the mapping between a texture location and a geometry location. A value of [0,0] represents the origin of the texture while [1,1] represents the point at its furthest extent.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="FromVertices">
@@ -633,7 +710,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="vertices">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Factory method to create a source for vertex data.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -657,7 +734,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Corresponds to the <see cref="T:Monotouch.SceneKit.SCNGeometrySourceSemantic"/> value for this source.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -684,7 +761,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType apistyle="unified">System.nint</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The total number of vectors in the underlying <see cref="P:Monotouch.SceneKit.SCNGeometrySource.Data"/>.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>

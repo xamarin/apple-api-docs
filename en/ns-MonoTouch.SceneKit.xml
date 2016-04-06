@@ -45,6 +45,93 @@ public MySceneView (RectangleF frame) : base(frame)
       <para>
         <img src="SceneKit.Namespace.Image1.png" />
       </para>
+      <format type="text/html">
+        <h3>Geometry</h3>
+      </format>
+      <para>All geometry in SceneKit is described by subclasses of <see cref="T:Monotouch.SceneKit.SCNGeometry"/>:</para>
+      <list type="table"> 
+        <item><term><see cref="T:Monotouch.SceneKit.SCNCapsule"/></term><description>A pill-shaped capsule with adjustable end caps</description><description><img href="SceneKit.SCNCapsule.png"/></description></item>
+        <item><term><see cref="T:Monotouch.SceneKit.SCNCone"/></term><description>A cone whose top can be truncated</description><description><img href="SceneKit.SCNCone.png"/></description></item>
+        <item><term><see cref="T:Monotouch.SceneKit.SCNCube"/></term><description>A rectangular box.</description><description><img href="SceneKit.SCNCube.png"/></description></item>
+        <item><term><see cref="T:Monotouch.SceneKit.SCNCylinder"/></term><description>A cylinder.</description><description><img href="SceneKit.SCNCylinder.png"/></description></item>
+        <item><term><see cref="T:Monotouch.SceneKit.SCNFloor"/></term><description>An infinite plane with the ability to reflect the geometry above it.</description><description><img href="SceneKit.SCNFloor.png"/></description></item>
+        <item><term><see cref="T:Monotouch.SceneKit.SCNPlane"/></term><description>A one-sided rectangle.</description><description><img href="SceneKit.SCNPlane.png"/></description></item>
+        <item><term><see cref="T:Monotouch.SceneKit.SCNPyramid"/></term><description>A tetrahedron.</description><description><img href="SceneKit.SCNPyramid.png"/></description></item>
+        <item><term><see cref="T:Monotouch.SceneKit.SCNShape"/></term><description>A 2D shape that has been extruded into the 3rd dimension.</description><description><img href="SceneKit.SCNShape.png"/></description></item>
+        <item><term><see cref="T:Monotouch.SceneKit.SCNSphere"/></term><description>A ball.</description><description><img href="SceneKit.SCNSphere.png"/></description></item>
+        <item><term><see cref="T:Monotouch.SceneKit.SCNText"/></term><description>Extruded text.</description><description><img href="SceneKit.SCNText.png"/></description></item>
+        <item><term><see cref="T:Monotouch.SceneKit.SCNTorus"/></term><description>A donut shape.</description><description><img href="SceneKit.SCNTorus.png"/></description></item>
+        <item><term><see cref="T:Monotouch.SceneKit.SCNTube"/></term><description>An uncapped cylinder.</description><description><img href="SceneKit.SCNCylinder.png"/></description></item>
+      </list>
+      <para>In addition, SceneKit can load entire scenes from .DAE files with the <see cref="T:Monotouch.SceneKit.SCNScene.FromFile"/> method.</para>
+      <para>Finally, developers can create custom geometry using the <see cref="M:Monotouch.SceneKit.SCNGeometry.Create(MonoTouch.SceneKit.SCNGeometrySource[], MonoTouch.SceneKit.SCNGeometryElement[]"/> method with arrays of appropriate <see cref="T:Monotouch.SceneKit.SCNGeometrySource"/> and <see cref="T:Monotouch.SceneKit.SCNGeometryElement"/> objects. The following shows the creation of a custom pyramid:</para>
+      <example>
+        <code lang="C#"><![CDATA[
+//Lower-left
+var a = new SCNVector3(-1, -1, 0);
+//Upper-right
+var b = new SCNVector3(1, 1, 0);
+
+var halfX = (c.X + a.X) / 2;
+var halfY = (c.Y + a.Y) / 2;
+var halfZ = (c.Z + a.Z) / 2;
+
+var b = new SCNVector3(a.X, c.Y, halfZ);
+var d = new SCNVector3(c.X, a.Y, halfZ);
+//Elevate the midpoint so that it's clearly a pyramid
+var midPoint = new SCNVector3(halfX, halfY, halfZ + 1.0);
+
+//The vertices of the geometry
+var locs = new [] {
+	a, b, c, d, midPoint
+};
+var locSource = SCNGeometrySource.FromVertices(locs);
+
+//Note that this relies on the ordering of locs above
+//and it defines triangles (could be triangle strips, etc.)
+var indices = new [] {
+	//Triangles are defined counter-clockwise!
+	4, 1, 0,
+	1, 4, 2,
+	2, 4, 3,
+	3, 4, 0
+};
+
+
+var idxArray = new byte[indices.Length][];
+for(int i = 0; i < idxArray.Length; i++)
+{
+	idxArray[i] = BitConverter.GetBytes(indices[i]);
+}
+var idxData = NSData.FromArray(idxArray.SelectMany(id => id).ToArray());
+
+//Note that this relies on indices defining triangles
+var element = SCNGeometryElement.FromData(idxData, SCNGeometryPrimitiveType.Triangles, indices.Length / 3, sizeof(int));
+
+//Normals are relative to geometry
+var normals = new [] {
+	new SCNVector3(0, 0, 1),
+	new SCNVector3(0, 0, 1),
+	new SCNVector3(0, 0, 1),
+	new SCNVector3(0, 0, 1),
+	new SCNVector3(0, 0, 1),
+};;
+var normSource = SCNGeometrySource.FromNormals(normals);
+
+//These texture coords will cause the texture to wrap 
+var txCoords = new [] {
+	new CGPoint(-1, -1),
+	new CGPoint(-1, 1),
+	new CGPoint(1, 1),
+	new CGPoint(1, -1)
+};
+
+var txCoordsSource = SCNGeometrySource.FromTextureCoordinates(txCoords);
+
+var geometry = SCNGeometry.Create(new [] { locSource, normSource, txCoordsSource }, new [] { element });
+    ]]></code>
+      </example>
+      <para><img href="SceneKit.CustomGeometry.png"/></para>
     </remarks>
   </Docs>
 </Namespace>
