@@ -630,7 +630,27 @@ mySliders.TintColor = UIColor.Red;
           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
         </param>
         <summary>Evaluates the given JavaScript string.</summary>
-        <remarks>The completionHandler is passed the result of the script evaluation or an error.</remarks>
+        <remarks>
+          <para>The system calls <paramref name="completionHandler"/> after evaluation. The arguments to the handler are an <see cref="T:Monotouch.Foundation.NSObject"/> containing the results of the evaluation and an <see cref="T:Monotouch.Foundation.NSError"/> if an error. If an error occurred, the <c>result</c> argument will be <see langword="null"/>. If no error occurred, the <c>error</c> argument will be <see langword="null"/>.</para>
+          <example>
+            <code lang="C#"><![CDATA[
+var config = new WKWebViewConfiguration();
+var wk = new WKWebView(UIScreen.MainScreen.Bounds, config);
+var js = (NSString) "document.getElementById('foo').innerHTML = 'bar'";
+WKJavascriptEvaluationResult handler = (NSObject result, NSError err) => { 
+  if(err != null)
+  {
+    System.Console.WriteLine(err);
+  }
+  if(result != null)
+  {
+     System.Console.WriteLine(result);
+  }
+};
+wk.EvaluateJavaScript(js, handler);
+    ]]></code>
+</example>
+          </remarks>
       </Docs>
     </Member>
     <Member MemberName="EvaluateJavaScript">
@@ -659,8 +679,29 @@ mySliders.TintColor = UIColor.Red;
       <Docs>
         <param name="javascript">To be added.</param>
         <param name="completionHandler">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Evaluates JavaScript and calls back into C# with the results.</summary>
+        <remarks>
+                   <para>The system calls <paramref name="completionHandler"/> after evaluation. The arguments to the handler are an <see cref="T:Monotouch.Foundation.NSObject"/> containing the results of the evaluation and an <see cref="T:Monotouch.Foundation.NSError"/> if an error. If an error occurred, the <c>result</c> argument will be <see langword="null"/>. If no error occurred, the <c>error</c> argument will be <see langword="null"/>.</para>
+          <example>
+            <code lang="C#"><![CDATA[
+var config = new WKWebViewConfiguration();
+var wk = new WKWebView(UIScreen.MainScreen.Bounds, config);
+var js = (NSString) "document.getElementById('foo').innerHTML = 'bar'";
+WKJavascriptEvaluationResult handler = (NSObject result, NSError err) => { 
+  if(err != null)
+  {
+    System.Console.WriteLine(err);
+  }
+  if(result != null)
+  {
+     System.Console.WriteLine(result);
+  }
+};
+wk.EvaluateJavaScript(js, handler);
+    ]]></code>
+</example>
+
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="EvaluateJavaScriptAsync">
@@ -682,12 +723,19 @@ mySliders.TintColor = UIColor.Red;
       <Docs>
         <param name="javascript">The JavaScript string to evaluate</param>
         <summary>Evaluates the given JavaScript string.</summary>
-        <returns>
-          <para>A task that represents the asynchronous EvaluateJavaScript operation.   The value of the TResult parameter is a MonoTouch.WebKit.WKJavascriptEvaluationResult.</para>
+        <returns>A task that represents the asynchronous EvaluateJavaScript operation.   The value of the TResult parameter is a MonoTouch.WebKit.WKJavascriptEvaluationResult.
         </returns>
         <remarks>
           <para copied="true">The EvaluateJavaScriptAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
-          <para copied="true">The completionHandler is passed the result of the script evaluation or an error.</para>
+          <para>This method will throw a <see cref="T:Monotouch.Foundation.NSErrorException"/> if the JavaScript is not evaluated successfully.</para>
+          <example>
+    <code lang="C#"><![CDATA[
+var config = new WKWebViewConfiguration();
+var wk = new WKWebView(UIScreen.MainScreen.Bounds, config);
+var js = (NSString) "document.getElementById('foo').innerHTML = 'bar'";
+var result = await wk.EvaluateJavaScriptAsync(js); //== "bar"
+    ]]></code>
+</example>
         </remarks>
       </Docs>
     </Member>
@@ -708,10 +756,21 @@ mySliders.TintColor = UIColor.Red;
         <Parameter Name="javascript" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="javascript">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="javascript">A well-formed JavaScript expression.</param>
+        <summary>Evaluates the given JavaScript string.</summary>
+        <returns>A task that represents the asynchronous EvaluateJavaScript operation. The TResult holds the results of the evaluation.</returns>
+        <remarks>
+        <para copied="true">The EvaluateJavaScriptAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+          <para>This method will throw a <see cref="T:Monotouch.Foundation.NSErrorException"/> if the JavaScript is not evaluated successfully.</para>
+          <example>
+    <code lang="C#"><![CDATA[
+var config = new WKWebViewConfiguration();
+var wk = new WKWebView(UIScreen.MainScreen.Bounds, config);
+var js = (NSString) "document.getElementById('foo').innerHTML = 'bar'";
+var result = await wk.EvaluateJavaScriptAsync(js); //== "bar"
+    ]]></code>
+</example>
+</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetAppearance">
