@@ -23,7 +23,25 @@
   </Attributes>
   <Docs>
     <summary>A type of <see cref="T:MonoTouch.CoreAnimation.CALayer" /> on which a <see cref="T:MonoTouch.AVFoundation.AVPlayer" /> renders its output.</summary>
-    <remarks>To be added.</remarks>
+    <remarks>
+      <para><see cref="T:Monotouch.AVFoundation.AVPlayerLayer"/> objects may be used for AV playback in a variety of situations where a heavier-weight component such as <see cref="T:Monotouch.UIKit.UIWebView"/> would be unnecessary or unavailable (such as on tvOS).</para>
+      <para>The following example shows how a <see cref="T:Monotouch.AVFoundation.AVPlayerLayer"/> can be used to stream a Web video:</para>
+      <example>
+    <code lang="C#"><![CDATA[
+var src = NSUrl.FromString("https://somevideo");
+var asset = AVAsset.FromUrl (src);
+var playerItem = new AVPlayerItem (asset);
+var player = new AVPlayer (playerItem);
+var playerLayer = AVPlayerLayer.FromPlayer (player);
+var frame = new CGRect (0, 0, this.View.Frame.Width, this.View.Frame.Height);
+playerLayer.Frame = frame;
+this.View.Layer.AddSublayer (playerLayer);
+player.Play ();
+    ]]></code>
+</example>
+      
+      
+    </remarks>
     <related type="PlatformDocAPI" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVPlayerLayer_Class/index.html">Apple documentation for <c>AVPlayerLayer</c></related>
   </Docs>
   <Members>
@@ -212,7 +230,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <para>To be added.</para>
           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
         </param>
-        <summary>To be added.</summary>
+        <summary>Static factory method to create a <see cref="T:Monotouch.AVFoundation.AVPlayerLayer"/> for the specified <paramref name="player"/>.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -362,7 +380,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <para>(More documentation for this node is coming)</para>
           <para tool="nullallowed">This value can be <see langword="null" />.</para>
         </value>
-        <remarks>To be added.</remarks>
+        <remarks>The <see cref="T:Monotouch.AVFoundation.AVPlayer"/> whose content this layer displays.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ReadyForDisplay">
