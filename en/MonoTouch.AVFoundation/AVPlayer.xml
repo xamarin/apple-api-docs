@@ -322,12 +322,15 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="times">To be added.</param>
+        <param name="times"><see cref="T:Monotouch.Foundation.NSValue"/> objects that must be created from <see cref="T:Monotouch.CoreMotion.CMTime"/> objects.</param>
         <param name="queue">To be added.</param>
-        <param name="handler">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="handler">The <see cref="T:System.Action"/> the system calls when playback reaches the specified times.</param>
+        <summary>The system calls the <paramref name="handler"/> when playback reaches the <see cref="T:Monotouch.CoreMedia.CMTime"/> objects in <paramref name="times"/>.</summary>
+        <returns>An opague <see cref="T:Monotouch.Foundation.NSObject"/> that must be passed to <see cref="M:Monotouch.AVFoundation.AVPlayer.RemoveTimeObserver"/>.</returns>
+        <remarks>
+          <para>Calls to <paramref name="handler"/> are not guaranteed if the <see cref="T:Monotouch.CoreMotion.CMTime"/> values in <paramref name="times"/> are close. Therefore, developers should ensure that their <see cref="T:System.Action"/> handles all logical behavior required near <see cref="P:Monotouch.AVFoundation.AVPlayer.CurrentTime"/>.</para>
+          
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AddPeriodicTimeObserver" apistyle="classic">
@@ -404,9 +407,16 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="interval">To be added.</param>
         <param name="queue">To be added.</param>
         <param name="handler">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>Invokes <paramref name="handler" /> every <paramref name="interval" /> seconds, as well as on playback start, stop, and jump.</summary>
+        <returns>An opaque object that must be passed as the <c>observer</c> argument to <see cref="M:MonoTouch.AVFoundation.AVPlayer.RemoveTimeObserver" /> .</returns>
+        <remarks>
+          <para>The <paramref name="handler" /> may be invoked on a background thread. It is the application developer's responsibility to ensure that any UI manipulation performed by the <paramref name="handler" /> is done on the main thread (see <see cref="M:MonoTouch.Foundation.NSObject.InvokeOnMainThread" />).</para>
+          <para>
+            <paramref name="handler" /> is additionally invoked whenever time jumps during playback and when playback starts or stops.</para>
+        </remarks>
+        <altmember cref="M:MonoTouch.AVFoundation.AVPlayer.RemoveTimeObserver" />
+        <altmember cref="M:MonoTouch.AVFoundation.AVPlayer.AddBoundaryTimeObserver" />
+
       </Docs>
     </Member>
     <Member MemberName="AirPlayVideoActive">
@@ -1253,7 +1263,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="date">Target data to seek to.</param>
-        <summary>Seeks to a specific location in the playback stream</summary>
+        <summary>Seeks to a specific location in the playback stream.</summary>
         <remarks>
         </remarks>
       </Docs>
@@ -1292,7 +1302,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="time">Specific time to seek to.</param>
         <param name="completion">Method to invoke when the seek operation completes.</param>
-        <summary>To be added.</summary>
+        <summary>Seeks to a specific time in the playback stream and invokes the <paramref name="completion"/> handler.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -1318,7 +1328,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="time">Seek time target.</param>
         <param name="completion">Method to invoke when the seek operation completes.</param>
-        <summary>To be added.</summary>
+        <summary>Seeks to a specific time in the playback stream and invokes the <paramref name="completion"/> handler.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -1356,7 +1366,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="date">Target data to seek to</param>
         <param name="onComplete">Method to invoke when the seek operation completes.</param>
-        <summary>Seeks to a specific location in the playback stream</summary>
+        <summary>Seeks to a specific time in the playback stream and invokes the <paramref name="onComplete"/> handler.</summary>
         <remarks>
         </remarks>
       </Docs>
@@ -1388,7 +1398,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="toTime">To be added.</param>
         <param name="toleranceBefore">Time tolerance allowed before the time.</param>
         <param name="toleranceAfter">Time tolerance allowed after the time.</param>
-        <summary>Blocking: Seeks to a specific location in the playback stream</summary>
+        <summary>Blocking: Seeks to a specific location in the playback stream.</summary>
         <remarks>
           <para>If the tolerance is zero, then the player might need to perform more work before completing.</para>
           <para>Use the Async versions of this API to avoid blocking.</para>
@@ -1433,7 +1443,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="toleranceBefore">Time tolerance allowed before the time.</param>
         <param name="toleranceAfter">Time tolerance allowed after the time.</param>
         <param name="completion">Method to invoke when the seek operation completes.</param>
-        <summary>Seeks to a specific location in the playback stream</summary>
+        <summary>Seeks to a specific location in the playback stream.</summary>
         <remarks>If the tolerance is zero, then the player might need to perform more work before completing.</remarks>
       </Docs>
     </Member>
@@ -1463,7 +1473,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="toleranceBefore">Time tolerance allowed before the time.</param>
         <param name="toleranceAfter">Time tolerance allowed after the time.</param>
         <param name="completion">Method to invoke when the seek operation completes.</param>
-        <summary>Seeks to a specific location in the playback stream</summary>
+        <summary>Seeks to a specific location in the playback stream.</summary>
         <remarks>If the tolerance is zero, then the player might need to perform more work before completing.</remarks>
       </Docs>
     </Member>
@@ -1490,7 +1500,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="time">Seek time target.</param>
-        <summary>Seeks to a specific location in the playback stream</summary>
+        <summary>Seeks to a specific location in the playback stream.</summary>
         <returns>
           <para>A task that represents the asynchronous Seek operation.   The value of the TResult parameter is a MonoTouch.AVFoundation.AVCompletion.</para>
         </returns>
@@ -1520,7 +1530,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="date">Target data to seek to</param>
-        <summary>Seeks to a specific location in the playback stream</summary>
+        <summary>Seeks to a specific location in the playback stream.</summary>
         <returns>
           <para>A task that represents the asynchronous Seek operation.   The value of the TResult parameter is a MonoTouch.AVFoundation.AVCompletion.</para>
         </returns>
