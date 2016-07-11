@@ -31,7 +31,7 @@
     <related type="PlatformDocAPI" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSPersistentStoreCoordinator_Class/index.html">Apple documentation for <c>NSPersistentStoreCoordinator</c></related>
   </Docs>
   <Members>
-    <Member MemberName=".ctor" apistyle="classic">
+    <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public NSPersistentStoreCoordinator ();" />
       <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
       <MemberType>Constructor</MemberType>
@@ -77,7 +77,7 @@
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
-    <Member MemberName=".ctor" apistyle="classic">
+    <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public NSPersistentStoreCoordinator (MonoTouch.Foundation.NSCoder coder);" />
       <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class MonoTouch.Foundation.NSCoder coder) cil managed" />
       <MemberType>Constructor</MemberType>
@@ -1889,16 +1889,16 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:NSPersistentStoreCoordinator+Notifications" />.<see cref="M:NSPersistentStoreCoordinator+Notifications.ObserveStoresWillChangeNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:NSPersistentStoreCoordinator+Notifications" />.<see cref="M:NSPersistentStoreCoordinator+Notifications.ObserveStoresWillChangeNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="C#"><![CDATA[
+            <code lang="c#">
 //
 // Lambda style
 //
 
 // listening
-notification = NSPersistentStoreCoordinator.Notifications.ObserveStoresWillChange ((sender, args) => {
+notification = NSPersistentStoreCoordinator.Notifications.ObserveStoresWillChange ((sender, args) =&gt; {
     /* Access strongly typed args */
     Console.WriteLine ("Notification: {0}", args.Notification);
 
@@ -1928,14 +1928,14 @@ void Setup ()
 void Teardown ()
 {
     notification.Dispose ();
-}]]></code>
+}</code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="C#"><![CDATA[
+            <code lang="c#">
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
-        NSPersistentStoreCoordinator.StoresWillChangeNotification, (notification) => {Console.WriteLine ("Received the notification NSPersistentStoreCoordinator", notification); }
+        NSPersistentStoreCoordinator.StoresWillChangeNotification, (notification) =&gt; {Console.WriteLine ("Received the notification NSPersistentStoreCoordinator", notification); }
 
 
 // Method style
@@ -1948,7 +1948,7 @@ void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (NSPersistentStoreCoordinator.StoresWillChangeNotification, Callback);
 }
-]]></code>
+</code>
           </example>
         </remarks>
       </Docs>

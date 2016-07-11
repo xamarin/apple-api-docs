@@ -141,7 +141,7 @@
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName=".ctor" apistyle="classic">
+    <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public UIApplication (MonoTouch.Foundation.NSCoder coder);" />
       <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class MonoTouch.Foundation.NSCoder coder) cil managed" />
       <MemberType>Constructor</MemberType>
@@ -672,7 +672,7 @@ void Setup ()
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="BeginBackgroundTask" apistyle="classic">
+    <Member MemberName="BeginBackgroundTask">
       <MemberSignature Language="C#" Value="public virtual int BeginBackgroundTask (MonoTouch.Foundation.NSAction backgroundTimeExpired);" />
       <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance int32 BeginBackgroundTask(class MonoTouch.Foundation.NSAction backgroundTimeExpired) cil managed" />
       <MemberType>Method</MemberType>
@@ -801,7 +801,7 @@ Task.Factory.StartNew( () => {
         </remarks>
       </Docs>
     </Member>
-    <Member MemberName="BeginBackgroundTask" apistyle="classic">
+    <Member MemberName="BeginBackgroundTask">
       <MemberSignature Language="C#" Value="public virtual int BeginBackgroundTask (string taskName, MonoTouch.Foundation.NSAction expirationHandler);" />
       <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance int32 BeginBackgroundTask(string taskName, class MonoTouch.Foundation.NSAction expirationHandler) cil managed" />
       <MemberType>Method</MemberType>
@@ -1269,16 +1269,16 @@ Task.Factory.StartNew( () => {
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveContentSizeCategoryChangedNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveContentSizeCategoryChangedNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="C#"><![CDATA[
+            <code lang="c#">
 //
 // Lambda style
 //
 
 // listening
-notification = UIApplication.Notifications.ObserveContentSizeCategoryChanged ((sender, args) => {
+notification = UIApplication.Notifications.ObserveContentSizeCategoryChanged ((sender, args) =&gt; {
     /* Access strongly typed args */
     Console.WriteLine ("Notification: {0}", args.Notification);
 
@@ -1308,14 +1308,14 @@ void Setup ()
 void Teardown ()
 {
     notification.Dispose ();
-}]]></code>
+}</code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="C#"><![CDATA[
+            <code lang="c#">
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
-        UIApplication.ContentSizeCategoryChangedNotification, (notification) => {Console.WriteLine ("Received the notification UIApplication", notification); }
+        UIApplication.ContentSizeCategoryChangedNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIApplication", notification); }
 
 
 // Method style
@@ -1328,7 +1328,7 @@ void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.ContentSizeCategoryChangedNotification, Callback);
 }
-]]></code>
+</code>
           </example>
         </remarks>
       </Docs>
@@ -1510,16 +1510,16 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveDidChangeStatusBarFrameNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveDidChangeStatusBarFrameNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="C#"><![CDATA[
+            <code lang="c#">
 //
 // Lambda style
 //
 
 // listening
-notification = UIApplication.Notifications.ObserveDidChangeStatusBarFrame ((sender, args) => {
+notification = UIApplication.Notifications.ObserveDidChangeStatusBarFrame ((sender, args) =&gt; {
     /* Access strongly typed args */
     Console.WriteLine ("Notification: {0}", args.Notification);
 
@@ -1549,14 +1549,14 @@ void Setup ()
 void Teardown ()
 {
     notification.Dispose ();
-}]]></code>
+}</code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="C#"><![CDATA[
+            <code lang="c#">
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
-        UIApplication.DidChangeStatusBarFrameNotification, (notification) => {Console.WriteLine ("Received the notification UIApplication", notification); }
+        UIApplication.DidChangeStatusBarFrameNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIApplication", notification); }
 
 
 // Method style
@@ -1569,7 +1569,7 @@ void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.DidChangeStatusBarFrameNotification, Callback);
 }
-]]></code>
+</code>
           </example>
         </remarks>
       </Docs>
@@ -1603,16 +1603,16 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveDidChangeStatusBarOrientationNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveDidChangeStatusBarOrientationNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="C#"><![CDATA[
+            <code lang="c#">
 //
 // Lambda style
 //
 
 // listening
-notification = UIApplication.Notifications.ObserveDidChangeStatusBarOrientation ((sender, args) => {
+notification = UIApplication.Notifications.ObserveDidChangeStatusBarOrientation ((sender, args) =&gt; {
     /* Access strongly typed args */
     Console.WriteLine ("Notification: {0}", args.Notification);
 
@@ -1642,14 +1642,14 @@ void Setup ()
 void Teardown ()
 {
     notification.Dispose ();
-}]]></code>
+}</code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="C#"><![CDATA[
+            <code lang="c#">
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
-        UIApplication.DidChangeStatusBarOrientationNotification, (notification) => {Console.WriteLine ("Received the notification UIApplication", notification); }
+        UIApplication.DidChangeStatusBarOrientationNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIApplication", notification); }
 
 
 // Method style
@@ -1662,7 +1662,7 @@ void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.DidChangeStatusBarOrientationNotification, Callback);
 }
-]]></code>
+</code>
           </example>
         </remarks>
       </Docs>
@@ -1779,16 +1779,16 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveDidFinishLaunchingNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveDidFinishLaunchingNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="C#"><![CDATA[
+            <code lang="c#">
 //
 // Lambda style
 //
 
 // listening
-notification = UIApplication.Notifications.ObserveDidFinishLaunching ((sender, args) => {
+notification = UIApplication.Notifications.ObserveDidFinishLaunching ((sender, args) =&gt; {
     /* Access strongly typed args */
     Console.WriteLine ("Notification: {0}", args.Notification);
 
@@ -1824,14 +1824,14 @@ void Setup ()
 void Teardown ()
 {
     notification.Dispose ();
-}]]></code>
+}</code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="C#"><![CDATA[
+            <code lang="c#">
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
-        UIApplication.DidFinishLaunchingNotification, (notification) => {Console.WriteLine ("Received the notification UIApplication", notification); }
+        UIApplication.DidFinishLaunchingNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIApplication", notification); }
 
 
 // Method style
@@ -1844,7 +1844,7 @@ void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.DidFinishLaunchingNotification, Callback);
 }
-]]></code>
+</code>
           </example>
         </remarks>
       </Docs>
@@ -2953,6 +2953,80 @@ public class MyAppDelegate : UIApplicationDelegate
         <altmember cref="M:MonoTouch.UIKit.UIApplicationDelegate.HandleOpenUrl" />
       </Docs>
     </Member>
+    <Member MemberName="OpenUrl">
+      <MemberSignature Language="C#" Value="public virtual void OpenUrl (MonoTouch.Foundation.NSUrl url, MonoTouch.Foundation.NSDictionary options, Action&lt;bool&gt; completion);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void OpenUrl(class MonoTouch.Foundation.NSUrl url, class MonoTouch.Foundation.NSDictionary options, class System.Action`1&lt;bool&gt; completion) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo apistyle="classic">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("openURL:options:completionHandler:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 10, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="url" Type="MonoTouch.Foundation.NSUrl" />
+        <Parameter Name="options" Type="MonoTouch.Foundation.NSDictionary" />
+        <Parameter Name="completion" Type="System.Action&lt;System.Boolean&gt;">
+          <Attributes>
+            <Attribute>
+              <AttributeName>MonoTouch.ObjCRuntime.BlockProxy(typeof(MonoTouch.ObjCRuntime.Trampolines/NIDActionArity1V2))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="url">To be added.</param>
+        <param name="options">To be added.</param>
+        <param name="completion">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OpenUrl" apistyle="unified">
+      <MemberSignature Language="C#" Value="public virtual void OpenUrl (MonoTouch.Foundation.NSUrl url, MonoTouch.Foundation.NSDictionary&lt;MonoTouch.Foundation.NSString,MonoTouch.Foundation.NSObject&gt; options, Action&lt;bool&gt; completion);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void OpenUrl(class MonoTouch.Foundation.NSUrl url, class MonoTouch.Foundation.NSDictionary`2&lt;class MonoTouch.Foundation.NSString, class MonoTouch.Foundation.NSObject&gt; options, class System.Action`1&lt;bool&gt; completion) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo apistyle="unified">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("openURL:options:completionHandler:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 10, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="url" Type="MonoTouch.Foundation.NSUrl" />
+        <Parameter Name="options" Type="MonoTouch.Foundation.NSDictionary&lt;MonoTouch.Foundation.NSString,MonoTouch.Foundation.NSObject&gt;" />
+        <Parameter Name="completion" Type="System.Action&lt;System.Boolean&gt;">
+          <Attributes>
+            <Attribute>
+              <AttributeName>MonoTouch.ObjCRuntime.BlockProxy(typeof(MonoTouch.ObjCRuntime.Trampolines/NIDActionArity1V2))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="url">To be added.</param>
+        <param name="options">To be added.</param>
+        <param name="completion">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="PreferredContentSizeCategory">
       <MemberSignature Language="C#" Value="public virtual MonoTouch.Foundation.NSString PreferredContentSizeCategory { get; }" />
       <MemberSignature Language="ILAsm" Value=".property instance class MonoTouch.Foundation.NSString PreferredContentSizeCategory" />
@@ -3013,7 +3087,7 @@ public class MyAppDelegate : UIApplicationDelegate
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
-    <Member MemberName="PresentLocationNotificationNow" apistyle="classic">
+    <Member MemberName="PresentLocationNotificationNow">
       <MemberSignature Language="C#" Value="public virtual void PresentLocationNotificationNow (MonoTouch.UIKit.UILocalNotification notification);" />
       <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void PresentLocationNotificationNow(class MonoTouch.UIKit.UILocalNotification notification) cil managed" />
       <MemberType>Method</MemberType>
@@ -3552,7 +3626,7 @@ void Setup ()
         <altmember cref="M:MonoTouch.UIKit.UIApplication.SendAction" />
       </Docs>
     </Member>
-    <Member MemberName="SetKeepAliveTimeout" apistyle="classic">
+    <Member MemberName="SetKeepAliveTimeout">
       <MemberSignature Language="C#" Value="public virtual bool SetKeepAliveTimeout (double timeout, MonoTouch.Foundation.NSAction handler);" />
       <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool SetKeepAliveTimeout(float64 timeout, class MonoTouch.Foundation.NSAction handler) cil managed" />
       <MemberType>Method</MemberType>
@@ -4716,16 +4790,16 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveWillChangeStatusBarFrameNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveWillChangeStatusBarFrameNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="C#"><![CDATA[
+            <code lang="c#">
 //
 // Lambda style
 //
 
 // listening
-notification = UIApplication.Notifications.ObserveWillChangeStatusBarFrame ((sender, args) => {
+notification = UIApplication.Notifications.ObserveWillChangeStatusBarFrame ((sender, args) =&gt; {
     /* Access strongly typed args */
     Console.WriteLine ("Notification: {0}", args.Notification);
 
@@ -4755,14 +4829,14 @@ void Setup ()
 void Teardown ()
 {
     notification.Dispose ();
-}]]></code>
+}</code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="C#"><![CDATA[
+            <code lang="c#">
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
-        UIApplication.WillChangeStatusBarFrameNotification, (notification) => {Console.WriteLine ("Received the notification UIApplication", notification); }
+        UIApplication.WillChangeStatusBarFrameNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIApplication", notification); }
 
 
 // Method style
@@ -4775,7 +4849,7 @@ void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.WillChangeStatusBarFrameNotification, Callback);
 }
-]]></code>
+</code>
           </example>
         </remarks>
       </Docs>
@@ -4809,16 +4883,16 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:MonoTouch.Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveWillChangeStatusBarOrientationNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIApplication+Notifications" />.<see cref="M:UIApplication+Notifications.ObserveWillChangeStatusBarOrientationNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="C#"><![CDATA[
+            <code lang="c#">
 //
 // Lambda style
 //
 
 // listening
-notification = UIApplication.Notifications.ObserveWillChangeStatusBarOrientation ((sender, args) => {
+notification = UIApplication.Notifications.ObserveWillChangeStatusBarOrientation ((sender, args) =&gt; {
     /* Access strongly typed args */
     Console.WriteLine ("Notification: {0}", args.Notification);
 
@@ -4848,14 +4922,14 @@ void Setup ()
 void Teardown ()
 {
     notification.Dispose ();
-}]]></code>
+}</code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="C#"><![CDATA[
+            <code lang="c#">
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
-        UIApplication.WillChangeStatusBarOrientationNotification, (notification) => {Console.WriteLine ("Received the notification UIApplication", notification); }
+        UIApplication.WillChangeStatusBarOrientationNotification, (notification) =&gt; {Console.WriteLine ("Received the notification UIApplication", notification); }
 
 
 // Method style
@@ -4868,7 +4942,7 @@ void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.WillChangeStatusBarOrientationNotification, Callback);
 }
-]]></code>
+</code>
           </example>
         </remarks>
       </Docs>
