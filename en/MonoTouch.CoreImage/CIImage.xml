@@ -231,8 +231,8 @@ void PrepareFixes (CIImage img)
         <Parameter Name="buffer" Type="MonoTouch.CoreVideo.CVPixelBuffer" />
       </Parameters>
       <Docs>
-        <param name="buffer">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="buffer">The pixel buffer that supplies the data for the image.</param>
+        <summary>Constructs a <see cref="T:MonoTouch.CoreImage.CIImage" /> with the supplied <paramref name="buffer"/> data.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -609,9 +609,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="dict" Type="MonoTouch.Foundation.NSDictionary&lt;MonoTouch.Foundation.NSString,MonoTouch.Foundation.NSObject&gt;" />
       </Parameters>
       <Docs>
-        <param name="imageBuffer">To be added.</param>
-        <param name="dict">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="imageBuffer">Holds the data that is the basis of the image.</param>
+        <param name="dict">Dictionary of strings to objects, holding the options to be applied during construction. (See <see cref="T:MonoTouch.CoreImage.CIImageInitializationOptions" />)</param>
+        <summary>Constructs a <see cref="T:MonoTouch.CoreImage.CIImage" /> using the options in <paramref name="dict"/>.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -630,9 +630,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="options" Type="MonoTouch.CoreImage.CIImageInitializationOptions" />
       </Parameters>
       <Docs>
-        <param name="buffer">To be added.</param>
-        <param name="options">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="buffer">Holds the data that is the basis of the image.</param>
+        <param name="options">The options to be applied during initialization.</param>
+        <summary>Constructs a <see cref="T:MonoTouch.CoreImage.CIImage" /> using <paramref name="options"/>.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -656,12 +656,12 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="dict" Type="MonoTouch.Foundation.NSDictionary" />
       </Parameters>
       <Docs>
-        <param name="buffer">To be added.</param>
+        <param name="buffer">The data that forms the basis of the image.</param>
         <param name="dict">
-          <para>To be added.</para>
+          <para>A dictionary of strings to objects defining the options to be applied during construction. (See <see cref="T:MonoTouch.CoreImage.CIImageInitializationOptions" />).</para>
           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
         </param>
-        <summary>To be added.</summary>
+        <summary>Constructs a <see cref="T:MonoTouch.CoreImage.CIImage" /> from the data in <paramref name="buffer"/>, applying the options specified in <paramref name="dict"/>.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -795,12 +795,12 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="options" Type="MonoTouch.Foundation.NSDictionary" />
       </Parameters>
       <Docs>
-        <param name="texture">To be added.</param>
+        <param name="texture">The <see cref="T:MonoTouch.Metal.IMTLTexture" /> that is the basis for the <see cref="T:MonoTouch.CoreImage.CIImage" />.</param>
         <param name="options">
-          <para>To be added.</para>
+          <para>A dictionary of strings to objects that hold the configuration options.</para>
           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
         </param>
-        <summary>To be added.</summary>
+        <summary>Constructs a <see cref="T:MonoTouch.CoreImage.CIImage" /> using the <paramref name="options"/>.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -967,13 +967,13 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="height" Type="System.nuint" apistyle="unified" />
       </Parameters>
       <Docs>
-        <param name="provider">To be added.</param>
-        <param name="width">To be added.</param>
-        <param name="height">To be added.</param>
-        <param name="pixelFormat">To be added.</param>
-        <param name="colorSpace">To be added.</param>
-        <param name="options">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="provider">Provides the data for the image.</param>
+        <param name="width">Width in pixels of the image.</param>
+        <param name="height">Height in pixels of the image.</param>
+        <param name="pixelFormat">The type of pixels in the mage.</param>
+        <param name="colorSpace">The colorspace of the image.</param>
+        <param name="options">The options to be applied during construction.</param>
+        <summary>Constructs a <see cref="T:MonoTouch.CoreImage.CIImage" />.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -1008,7 +1008,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.CoreGraphics.CGImage</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Copies the <see cref="T:MonoTouch.CoreImage.CIImage" /> into a new <see cref="T:MonoTouch.CoreGraphics.CGImage" />.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -1088,10 +1088,15 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="sigma" Type="System.Double" />
       </Parameters>
       <Docs>
-        <param name="sigma">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="sigma">The standard deviation defining the 2D Gaussian.</param>
+        <summary>Creates a new <see cref="T:MonoTouch.CoreImage.CIImage" /> by applying a Gaussian blur with the provided <paramref name="sigma"/>.</summary>
         <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <para>The 2D Gaussian is defined as:</para>
+          <para><img href="CoreImage.GaussianEq.png"/></para>
+          <para>Where zeta (<c>z</c>) is a vector holding the pixel coordinates and mu (μ) is a vector holding the mean of the Gaussian in either direction.</para>
+          <para>The <paramref name="sigma"/> defines the rate of falloff of the Gaussian. Smaller <paramref name="sigma"/> values blur over fewer pixels.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CreateByClamping">
@@ -1125,9 +1130,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="rect" Type="MonoTouch.CoreGraphics.CGRect" apistyle="unified" />
       </Parameters>
       <Docs>
-        <param name="rect">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="rect">The clipping rectangle.</param>
+        <summary>Creates a new <see cref="T:MonoTouch.CoreImage.CIImage" /> of infinite extent by cropping this <see cref="T:MonoTouch.CoreImage.CIImage" /> to the <paramref name="rect"/> and then extending the pixels at the edges to infinity.</summary>
+        <returns>A <see cref="T:MonoTouch.CoreImage.CIImage" /> of infinite extent.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -1190,8 +1195,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="colorSpace" Type="MonoTouch.CoreGraphics.CGColorSpace" />
       </Parameters>
       <Docs>
-        <param name="colorSpace">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="colorSpace">The <see cref="T:MonoTouch.CoreGraphics.CGColorSpace" /> to be matched from.</param>
+        <summary>Creates a new <see cref="T:MonoTouch.CoreImage.CGImage" /> by matching colors from <paramref name="colorSpace"/> into the working color space.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -1224,8 +1229,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="colorSpace" Type="MonoTouch.CoreGraphics.CGColorSpace" />
       </Parameters>
       <Docs>
-        <param name="colorSpace">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="colorSpace">The <see cref="T:MonoTouch.CoreGraphics.CGColorSpace" /> to be matched.</param>
+        <summary>Creates a new <see cref="T:MonoTouch.CoreImage.CGImage" /> by matching colors from the working space into colors in the specified <paramref name="colorSpace"/>.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -1326,7 +1331,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Creates a new image whose RGB values are created by multiplying this image's RGB values by this image's alpha value.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -1362,8 +1367,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="extent" Type="MonoTouch.CoreGraphics.CGRect" apistyle="unified" />
       </Parameters>
       <Docs>
-        <param name="extent">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="extent">The area within the image to have alpha 1.0.</param>
+        <summary>Creates a new image by copying <c>this</c>, setting the alpha of pixels within <paramref name="extent"/> to 1.0 and setting those outside to 0.0.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -1397,7 +1402,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="properties">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Creates a new <see cref="T:MonoTouch.CoreImage.CIImage" /> by copying <c>this</c>, and applying the <paramref name="properties"/>.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -1428,7 +1433,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Creates a new image whose RGB values are created by dividing this image's RGB values by this image's alpha value.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -2404,12 +2409,12 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="size" Type="MonoTouch.CoreGraphics.CGSize" apistyle="unified" />
       </Parameters>
       <Docs>
-        <param name="bitmapData">To be added.</param>
-        <param name="bytesPerRow">To be added.</param>
-        <param name="size">To be added.</param>
-        <param name="pixelFormat">To be added.</param>
-        <param name="colorSpace">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="bitmapData">The source data of the bitmap.</param>
+        <param name="bytesPerRow">The number of bytes in <paramref name="bitmapData"/> used in a single row of the bitmap.</param>
+        <param name="size">The size of the bitmap.</param>
+        <param name="pixelFormat">The structure of the pixels.</param>
+        <param name="colorSpace">The color space of the data.</param>
+        <summary>Creates a new <see cref="T:MonoTouch.CoreImage.CGImage" /> with the specified <paramref name="bitmapData"/> and properties.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -2489,8 +2494,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="imageBuffer" Type="MonoTouch.CoreVideo.CVImageBuffer" />
       </Parameters>
       <Docs>
-        <param name="imageBuffer">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="imageBuffer">The source of the image.</param>
+        <summary>Creates a new <see cref="T:MonoTouch.CoreImage.CIImage" /> based on the data in the <paramref name="imageBuffer"/>.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -2548,7 +2553,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="imageBuffer">To be added.</param>
         <param name="options">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Creates a new <see cref="T:MonoTouch.CoreImage.CIImage" /> based on the data in the <paramref name="imageBuffer"/> and with the specified <paramref name="options"/>.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -2576,12 +2581,12 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="dict" Type="MonoTouch.Foundation.NSDictionary" />
       </Parameters>
       <Docs>
-        <param name="imageBuffer">To be added.</param>
+        <param name="imageBuffer">The source of the data.</param>
         <param name="dict">
-          <para>To be added.</para>
+          <para>A dictionary of strings to objects, describing hte options to be used during creation.</para>
           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
         </param>
-        <summary>To be added.</summary>
+        <summary>Creates a new <see cref="T:MonoTouch.CoreImage.CIImage" /> based on the data in the <paramref name="imageBuffer"/> and applying the options in <paramref name="dict"/>.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -2609,9 +2614,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="dict" Type="MonoTouch.Foundation.NSDictionary&lt;MonoTouch.Foundation.NSString,MonoTouch.Foundation.NSObject&gt;" />
       </Parameters>
       <Docs>
-        <param name="imageBuffer">To be added.</param>
-        <param name="dict">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="imageBuffer">Source of the data for the image.</param>
+        <param name="dict">A dictionary of strings to objects, holding the options for image creation.</param>
+        <summary>Creates a new <see cref="T:MonoTouch.CoreImage.CIImage" /> based on the data in <paramref name="imageBuffer"/> and applying the options in <paramref name="dict"/>.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -2700,12 +2705,12 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="options" Type="MonoTouch.Foundation.NSDictionary" />
       </Parameters>
       <Docs>
-        <param name="texture">To be added.</param>
+        <param name="texture">The texture providing the basis of hte <see cref="T:MonoTouch.CoreImage.CIImage" />.</param>
         <param name="options">
-          <para>To be added.</para>
+          <para>A dictionary of strings to objects, holding the creation options.</para>
           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
         </param>
-        <summary>To be added.</summary>
+        <summary>Creates a new <see cref="T:MonoTouch.CoreImage.CIImage" /> from <paramref name="texture"/>, applying the creation options specified in <paramref name="options"/>.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -2736,10 +2741,13 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="options" Type="MonoTouch.Foundation.NSDictionary&lt;MonoTouch.Foundation.NSString,MonoTouch.Foundation.NSObject&gt;" />
       </Parameters>
       <Docs>
-        <param name="texture">To be added.</param>
-        <param name="options">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+       <param name="texture">The texture providing the basis of hte <see cref="T:MonoTouch.CoreImage.CIImage" />.</param>
+        <param name="options">
+          <para>A dictionary of strings to objects, holding the creation options.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>Creates a new <see cref="T:MonoTouch.CoreImage.CIImage" /> from <paramref name="texture"/>, applying the creation options specified in <paramref name="options"/>.</summary>
+       <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -2769,13 +2777,13 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="height" Type="System.nuint" apistyle="unified" />
       </Parameters>
       <Docs>
-        <param name="provider">To be added.</param>
-        <param name="width">To be added.</param>
-        <param name="height">To be added.</param>
-        <param name="pixelFormat">To be added.</param>
-        <param name="colorSpace">To be added.</param>
-        <param name="options">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="provider">The source of the image data.</param>
+        <param name="width">The width of the CIImage.</param>
+        <param name="height">The height of the CIImage.</param>
+        <param name="pixelFormat">The structure of the pixels in the image.</param>
+        <param name="colorSpace">The colorspace of the image.</param>
+        <param name="options">The options to be applied during creation.</param>
+        <summary>Creates a new <see cref="T:MonoTouch.CoreImage.CIImage" /> based on the data in <paramref name="provider"/> and with the specified properties and options.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -3213,7 +3221,7 @@ void PrepareFixes (CIImage img)
         <ReturnType>MonoTouch.CoreVideo.CVPixelBuffer</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The image data, as a <see cref="T:MonoTouch.CoreImage.CVPixelBuffer" />.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -3270,7 +3278,7 @@ void PrepareFixes (CIImage img)
         <ReturnType>MonoTouch.Foundation.NSUrl</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>If not <see langword="null"/>, the URL from which the image was loaded.</summary>
         <value>
           <para>(More documentation for this node is coming)</para>
           <para tool="nullallowed">This value can be <see langword="null" />.</para>
