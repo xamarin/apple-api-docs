@@ -21,8 +21,41 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>To be added.</summary>
-    <remarks>To be added.</remarks>
+    <summary>Enumeration of the permission status of speech recognition.</summary>
+    <remarks>
+      <para>Applications that use speech recognition must have an entry in their <c>info.plist</c> file with a key of <c>NSSpeechRecognitionUsageDescription</c> and a string value. The string value will be displayed in a standard system dialog after the developer calls <see cref="T:MonoTouch.Speech.SFSpeechRecognizer.RequestAuthorization" />.</para>
+      <example>
+        <code lang="XML"><![CDATA[
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Your microphone will be used to record your speech when you press the "Start Recording" button.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Speech recognition will be used to determine which words you speak into this device's microphone.</string>          
+          ]]>
+        </code>
+      </example>
+      <para>For instance:</para>
+      <example>
+        <code lang="C#"><![CDATA[
+if (SFSpeechRecognizer.AuthorizationStatus != SFSpeechRecognizerAuthorizationStatus.Authorized)
+{
+	SFSpeechRecognizer.RequestAuthorization((status) =>
+	{
+		switch (status)
+		{
+			case SFSpeechRecognizerAuthorizationStatus.Authorized:
+				InvokeOnMainThread(() => prepareButton.Enabled = true);
+				break;
+			case SFSpeechRecognizerAuthorizationStatus.Restricted:
+			case SFSpeechRecognizerAuthorizationStatus.NotDetermined:
+			case SFSpeechRecognizerAuthorizationStatus.Denied:
+				prepareButton.Enabled = false;
+				break;
+		}
+	});
+}          
+          ]]></code>
+      </example>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName="Authorized">
@@ -40,7 +73,7 @@
         <ReturnType>MonoTouch.Speech.SFSpeechRecognizerAuthorizationStatus</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The user has allowed speech recognition.</summary>
       </Docs>
     </Member>
     <Member MemberName="Denied">
@@ -58,7 +91,7 @@
         <ReturnType>MonoTouch.Speech.SFSpeechRecognizerAuthorizationStatus</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The user has denied permission for speech recognition.</summary>
       </Docs>
     </Member>
     <Member MemberName="NotDetermined">
@@ -76,7 +109,7 @@
         <ReturnType>MonoTouch.Speech.SFSpeechRecognizerAuthorizationStatus</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Permission has not been presented.</summary>
       </Docs>
     </Member>
     <Member MemberName="Restricted">
