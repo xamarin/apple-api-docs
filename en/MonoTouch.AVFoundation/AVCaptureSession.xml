@@ -36,69 +36,75 @@
         Configuring capture consists of setting the <see cref="P:MonoTouch.AVFoundation.AVCaptureSession.Inputs" /> and <see cref="P:MonoTouch.AVFoundation.AVCaptureSession.Outputs" /> properties of the <see cref="T:MonoTouch.AVFoundation.AVCaptureSession" />. Notice that multiple <see cref="T:MonoTouch.AVFoundation.AVCaptureInput" />s and <see cref="T:MonoTouch.AVFoundation.AVCaptureOutput" />s are possible. For instance, to capture both audio and video, one would use two capture inputs:</para>
       <example>
         <code lang="C#"><![CDATA[
- var session = new AVCaptureSession();
+var session = new AVCaptureSession();
 
 var camera = AVCaptureDevice.DefaultDeviceWithMediaType(AVMediaType.Video);
-var  mic = AVCaptureDevice.DefaultDeviceWithMediaType(AVMediaType.Audio);
+var mic = AVCaptureDevice.DefaultDeviceWithMediaType(AVMediaType.Audio);
 if(camera == null || mic == null){
     throw new Exception("Can't find devices");
 }
 
-if(session.CanAddInput(camera)){
-    session.AddInput(camera);
+var cameraInput = AVCaptureDeviceInput.FromDevice (camera);
+//info.plist _must_ contain NSMicrophoneUsageDescription key
+var micInput = AVCaptureDeviceInput.FromDevice (mic);
+
+if(session.CanAddInput(cameraInput)){
+    session.AddInput(cameraInput);
 }
-if(session.CanAddInput(mic)){
-   session.AddInput(mic);
+if(session.CanAddInput(micInput)){
+   session.AddInput(micInput);
 }
           ]]></code>
       </example>
+      <para>Note that permission to access the microphone (and in some regions, the camera) must be given by the user, requiring the developer to add the <c>NSMicrophoneUsageDescription</c> to the application's info.plist file.</para>
       <para>Video can be captured directly to file with <see cref="T:MonoTouch.AVFoundation.AVCaptureMovieFileOutput" />. However, this class has no display-able data and cannot be used simultaneously with <see cref="T:MonoTouch.AVFoundation.AVCaptureVideoDataOutput" />. Instead, application developers can use it in combination with a <see cref="T:MonoTouch.AVFoundation.AVCaptureVideoPreviewLayer" />, as shown in the following example:</para>
       <example>
         <code lang="C#"><![CDATA[
-var layer = new AVCaptureVideoPreviewLayer(session);
-layer.LayerVideoGravity = AVLayerVideoGravity.ResizeAspectFill;
-layer.VideoGravity = AVCaptureVideoPreviewLayer.GravityResizeAspectFill;
+var layer = new AVCaptureVideoPreviewLayer (session);
+layer.VideoGravity = AVLayerVideoGravity.ResizeAspectFill;
 
-var cameraView = new UIView();
-cameraView.Layer.AddSublayer(layer);
+var cameraView = new UIView ();
+cameraView.Layer.AddSublayer (layer);
 
-var filePath = System.IO.Path.Combine( Path.GetTempPath(), "temporary.mov");
-var fileUrl = NSUrl.FromFilename( filePath );
+var filePath = Path.Combine (Path.GetTempPath (), "temporary.mov");
+var fileUrl = NSUrl.FromFilename (filePath);
 
-var movieFileOutput = new AVCaptureMovieFileOutput();
-var recordingDelegate = new MyRecordingDelegate();
-session.AddOutput(movieFileOutput);
+var movieFileOutput = new AVCaptureMovieFileOutput ();
+var recordingDelegate = new MyRecordingDelegate ();
+session.AddOutput (movieFileOutput);
 
-movieFileOutput.StartRecordingToOutputFile( fileUrl, recordingDelegate);
+movieFileOutput.StartRecordingToOutputFile (fileUrl, recordingDelegate);
           ]]></code>
       </example>
       <para>Application developers should note that the function <see cref="M:MonoTouch.AVFoundation.AVCaptureMovieFileOutput.StopRecording" /> is asynchronous; developers should wait until the <see cref="M:MonoTouch.AVFoundation.AVCaptureFileOutputRecordingDelegate.FinishedRecording" /> delegate method before manipulating the file (for instance, before saving it to the Photos album with <see cref="M:MonoTouch.UIKit.UIVideo.SaveToPhotosAlbum" /> or <see cref="M:MonoTouch.AssetsLibrary.ALAssetsLibrary.WriteVideoToSavedPhotosAlbumAsync" />).</para>
       <example>
         <code lang="C#"><![CDATA[
-public class MyRecordingDelegate : AVCaptureFileOutputRecordingDelegate {
-public override void FinishedRecording(AVCaptureFileOutput captureOutput, NSUrl outputFileUrl, NSObject[] connections, NSError error)
+public class MyRecordingDelegate : AVCaptureFileOutputRecordingDelegate
 {
-	if(UIVideo.IsCompatibleWithSavedPhotosAlbum(outputFileUrl.Path))
-	{
-		var library = new ALAssetsLibrary();
-		library.WriteVideoToSavedPhotosAlbum(outputFileUrl, (path, e2) => {
-			if(e2 != null)
-			{
-				new UIAlertView("Error", e2.ToString(), null, "OK", null).Show();
-			}
-			else
-			{
-				new UIAlertView("Saved", "Saved to Photos", null, "OK", null).Show();
-				File.Delete(outputFileUrl.Path);
-			}
-		});
-	}
-	else
-	{
-		new UIAlertView("Incompatible", "Incompatible", null, "OK", null).Show();
-	}
+    public override void FinishedRecording (AVCaptureFileOutput captureOutput, NSUrl outputFileUrl, NSObject [] connections, NSError error)
+    {
+        if (UIVideo.IsCompatibleWithSavedPhotosAlbum (outputFileUrl.Path))
+        {
+            var library = new ALAssetsLibrary ();
+            library.WriteVideoToSavedPhotosAlbum (outputFileUrl, (path, e2) =>
+            {
+                if (e2 != null)
+                {
+                    new UIAlertView ("Error", e2.ToString (), null, "OK", null).Show ();
+                }
+                else
+                {
+                    new UIAlertView ("Saved", "Saved to Photos", null, "OK", null).Show ();
+                    File.Delete (outputFileUrl.Path);
+                }
+            });
+        }
+        else
+        {
+            new UIAlertView ("Incompatible", "Incompatible", null, "OK", null).Show ();
+        }
 
-}
+    }
 }          ]]></code>
       </example>
       <para>
