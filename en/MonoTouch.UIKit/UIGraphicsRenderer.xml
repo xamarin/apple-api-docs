@@ -1,6 +1,6 @@
-﻿<Type Name="UIGraphicsRenderer" FullName="MonoTouch.UIKit.UIGraphicsRenderer">
-  <TypeSignature Language="C#" Value="public class UIGraphicsRenderer : MonoTouch.Foundation.NSObject" />
-  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit UIGraphicsRenderer extends MonoTouch.Foundation.NSObject" />
+<Type Name="UIGraphicsRenderer" FullName="MonoTouch.UIKit.UIGraphicsRenderer">
+  <TypeSignature Language="C#" Value="public abstract class UIGraphicsRenderer : MonoTouch.Foundation.NSObject" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit UIGraphicsRenderer extends MonoTouch.Foundation.NSObject" />
   <AssemblyInfo apistyle="classic">
     <AssemblyName>monotouch</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -20,6 +20,9 @@
     <Attribute>
       <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.iOS, 10, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
     </Attribute>
+    <Attribute>
+      <AttributeName>MonoTouch.ObjCRuntime.Introduced(MonoTouch.ObjCRuntime.PlatformName.TvOS, 10, 0, MonoTouch.ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+    </Attribute>
   </Attributes>
   <Docs>
     <summary>A color-managed rendering context.</summary>
@@ -27,8 +30,10 @@
   </Docs>
   <Members>
     <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public UIGraphicsRenderer ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="C#" Value="public UIGraphicsRenderer ();" apistyle="classic" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" apistyle="classic" />
+      <MemberSignature Language="C#" Value="protected UIGraphicsRenderer ();" apistyle="unified" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor() cil managed" apistyle="unified" />
       <MemberType>Constructor</MemberType>
       <AssemblyInfo apistyle="classic">
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -47,7 +52,7 @@
       <Parameters />
       <Docs>
         <summary>Default constructor.</summary>
-        <remarks>To be added.</remarks>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName=".ctor" apistyle="classic">
@@ -72,9 +77,13 @@
         <Parameter Name="coder" Type="MonoTouch.Foundation.NSCoder" />
       </Parameters>
       <Docs>
-        <param name="coder">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="coder">The unarchiver object.</param>
+        <summary>A constructor that initializes the object from the data stored in the unarchiver object.</summary>
+        <remarks>
+          <para>This constructor is provided to allow the class to be initialized from an unarchiver (for example, during NIB deserialization).   This is part of the <see cref="T:MonoTouch.Foundation.NSCoding" />  protocol.</para>
+          <para>If you want to create a subclass of this object and continue to support deserialization from an archive, you should implement a constructor with an identical signature: taking a single parameter of type <see cref="T:MonoTouch.Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
+          <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -98,9 +107,36 @@
         <Parameter Name="t" Type="MonoTouch.Foundation.NSObjectFlag" />
       </Parameters>
       <Docs>
-        <param name="t">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="t">Unused sentinel value, pass NSObjectFlag.Empty.</param>
+        <summary>Constructor to call on derived classes to skip initialization and merely allocate the object.</summary>
+        <remarks>
+          <para>This constructor should be called by derived classes when they completely construct the object in managed code and merely want the runtime to allocate and initialize the NSObject.   This is required to implement the two-step initialization process that Objective-C uses, the first step is to perform the object allocation, the second step is to initialize the object.   When you invoke the constructor that takes the NSObjectFlag.Empty you taking advantage of a direct path that goes all the way up to NSObject to merely allocate the object's memory and bind the Objective-C and C# objects together.    The actual initialization of the object is up to you.</para>
+          <para>This constructor is typically used by the binding generator to allocate the object, but prevent the actual initialization to take place.   Once the allocation has taken place, the constructor has to initialize the object.   With constructors generated by the binding generator this means that it manually invokes one of the "init" methods to initialize the object.</para>
+          <para>It is your responsibility to completely initialize the object if you chain up using the NSObjectFlag.Empty path.</para>
+          <para>In general, if your constructors invokes the NSObjectFlag.Empty base implementation, then it should be calling an Objective-C init method.   If this is not the case, you should instead chain to the proper constructor in your class. </para>
+          <para>The argument value is ignored and merely ensures that the only code that is executed is the construction phase is the basic NSObject allocation and runtime type registration.  Typically the chaining would look like this:</para>
+          <example>
+            <code lang="C#">
+//
+// The NSObjectFlag merely allocates the object and registers the
+// C# class with the Objective-C runtime if necessary, but no actual
+// initXxx method is invoked, that is done later in the constructor
+//
+// This is taken from MonoTouch's source code:
+//
+[Export ("initWithFrame:")]
+public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
+{
+// Invoke the init method now.
+	var initWithFrame = new Selector ("initWithFrame:").Handle;
+	if (IsDirectBinding)
+		Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+	else
+		Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+}
+</code>
+          </example>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -124,9 +160,11 @@
         <Parameter Name="handle" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <param name="handle">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="handle">Pointer (handle) to the unmanaged object.</param>
+        <summary>A constructor used when creating managed representations of unmanaged objects;  Called by the runtime.</summary>
+        <remarks>
+          <para>This constructor is invoked by the runtime infrastructure (<see cref="M:MonoTouch.ObjCRuntime.GetNSObject (System.IntPtr)" />) to create a new managed representation for a pointer to an unmanaged Objective-C object.    You should not invoke this method directly, instead you should call the GetNSObject method as it will prevent two instances of a managed object to point to the same native object.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -227,8 +265,8 @@
       </ReturnValue>
       <Docs>
         <summary>The handle for this class.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <value>The pointer to the Objective-C class.</value>
+        <remarks>Each MonoTouch class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Format">
@@ -252,6 +290,137 @@
       <Docs>
         <summary>To be added.</summary>
         <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetContext">
+      <MemberSignature Language="C#" Value="public static MonoTouch.CoreGraphics.CGContext GetContext (MonoTouch.UIKit.UIGraphicsRendererFormat format);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.CoreGraphics.CGContext GetContext(class MonoTouch.UIKit.UIGraphicsRendererFormat format) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo apistyle="classic">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo apistyle="unified">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("contextWithFormat:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>MonoTouch.CoreGraphics.CGContext</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="format" Type="MonoTouch.UIKit.UIGraphicsRendererFormat" />
+      </Parameters>
+      <Docs>
+        <param name="format">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PrepareContext">
+      <MemberSignature Language="C#" Value="public static void PrepareContext (MonoTouch.CoreGraphics.CGContext context, MonoTouch.UIKit.UIGraphicsRendererContext rendererContext);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void PrepareContext(class MonoTouch.CoreGraphics.CGContext context, class MonoTouch.UIKit.UIGraphicsRendererContext rendererContext) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo apistyle="classic">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo apistyle="unified">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("prepareCGContext:withRendererContext:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="context" Type="MonoTouch.CoreGraphics.CGContext" />
+        <Parameter Name="rendererContext" Type="MonoTouch.UIKit.UIGraphicsRendererContext" />
+      </Parameters>
+      <Docs>
+        <param name="context">To be added.</param>
+        <param name="rendererContext">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RendererContextClass">
+      <MemberSignature Language="C#" Value="public static MonoTouch.ObjCRuntime.Class RendererContextClass { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class MonoTouch.ObjCRuntime.Class RendererContextClass" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo apistyle="classic">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo apistyle="unified">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: MonoTouch.Foundation.Export("rendererContextClass")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>MonoTouch.ObjCRuntime.Class</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Run">
+      <MemberSignature Language="C#" Value="public virtual bool Run (Action&lt;MonoTouch.UIKit.UIGraphicsRendererContext&gt; drawingActions, Action&lt;MonoTouch.UIKit.UIGraphicsRendererContext&gt; completionActions, out MonoTouch.Foundation.NSError error);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool Run(class System.Action`1&lt;class MonoTouch.UIKit.UIGraphicsRendererContext&gt; drawingActions, class System.Action`1&lt;class MonoTouch.UIKit.UIGraphicsRendererContext&gt; completionActions, class MonoTouch.Foundation.NSError error) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo apistyle="classic">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo apistyle="unified">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("runDrawingActions:completionActions:error:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="drawingActions" Type="System.Action&lt;MonoTouch.UIKit.UIGraphicsRendererContext&gt;">
+          <Attributes>
+            <Attribute>
+              <AttributeName>MonoTouch.ObjCRuntime.BlockProxy(typeof(MonoTouch.ObjCRuntime.Trampolines/NIDActionArity1V58))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+        <Parameter Name="completionActions" Type="System.Action&lt;MonoTouch.UIKit.UIGraphicsRendererContext&gt;">
+          <Attributes>
+            <Attribute>
+              <AttributeName>MonoTouch.ObjCRuntime.BlockProxy(typeof(MonoTouch.ObjCRuntime.Trampolines/NIDActionArity1V58))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+        <Parameter Name="error" Type="MonoTouch.Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="drawingActions">To be added.</param>
+        <param name="completionActions">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="error">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
