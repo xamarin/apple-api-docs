@@ -28,7 +28,7 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>To be added.</summary>
+    <summary>Base class for Intent extensions.</summary>
     <remarks>To be added.</remarks>
   </Docs>
   <Members>
@@ -136,10 +136,39 @@
         <Parameter Name="intent" Type="MonoTouch.Intents.INIntent" />
       </Parameters>
       <Docs>
-        <param name="intent">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="intent">The <see cref="T:Monotouch.Intents.INIntent"/> received by the system.</param>
+        <summary>Developers override this method to return the handler object if <param name="intent" /> is one their extension can respond to.</summary>
+        <returns>The developer's handler object or <see langword="null"/> if <param name="intent"/> is not handled by the extension.</returns>
+        <remarks>
+          <para>The developer's handler object must implement the <c>IIN{Intent}Handling</c> interface appropriate to the type(s) of <see cref="T:Monotouch.Intents.INIntent"/> for which this method returns the handler. For instance: </para>
+          <example>
+    <code lang="C#"><![CDATA[
+class MyExtension : INExtension
+{
+    override public NSObject GetHandler (INIntent intent)
+    {
+        if (intent is INSendMessageIntent)
+        {
+            return new MySendMessageHandler ();
+        }
+        return null;
+    }
+}
+
+class MySendMessageHandler : NSObject, IINSendMessageIntentHandling
+{
+    public void HandleSendMessage (INSendMessageIntent intent, Action<INSendMessageIntentResponse> completion)
+    {
+        // ... Send a message here ...
+
+        var activity = new NSUserActivity (nameof (INSendMessageIntent));
+        var response = new INSendMessageIntentResponse (INSendMessageIntentResponseCode.Success, activity);
+        completion (response);
+    }
+}
+    ]]></code>
+</example>
+        </remarks>
       </Docs>
     </Member>
   </Members>
