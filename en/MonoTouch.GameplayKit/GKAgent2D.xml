@@ -1,6 +1,6 @@
 <Type Name="GKAgent2D" FullName="MonoTouch.GameplayKit.GKAgent2D">
-  <TypeSignature Language="C#" Value="public class GKAgent2D : MonoTouch.GameplayKit.GKAgent" />
-  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit GKAgent2D extends MonoTouch.GameplayKit.GKAgent" />
+  <TypeSignature Language="C#" Value="public class GKAgent2D : MonoTouch.GameplayKit.GKAgent, IDisposable" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit GKAgent2D extends MonoTouch.GameplayKit.GKAgent implements class MonoTouch.Foundation.INSCoding, class MonoTouch.ObjCRuntime.INativeObject, class System.IDisposable" />
   <AssemblyInfo apistyle="classic">
     <AssemblyName>monotouch</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -12,7 +12,11 @@
   <Base>
     <BaseTypeName>MonoTouch.GameplayKit.GKAgent</BaseTypeName>
   </Base>
-  <Interfaces />
+  <Interfaces>
+    <Interface>
+      <InterfaceName>System.IDisposable</InterfaceName>
+    </Interface>
+  </Interfaces>
   <Attributes>
     <Attribute>
       <AttributeName>MonoTouch.Foundation.Register("GKAgent2D", true)</AttributeName>
@@ -188,6 +192,40 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <remarks>Each MonoTouch class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
+    <Member MemberName="EncodeTo" apistyle="unified">
+      <MemberSignature Language="C#" Value="public virtual void EncodeTo (MonoTouch.Foundation.NSCoder encoder);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void EncodeTo(class MonoTouch.Foundation.NSCoder encoder) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo apistyle="unified">
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>MonoTouch.Foundation.Export("encodeWithCoder:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="encoder" Type="MonoTouch.Foundation.NSCoder" />
+      </Parameters>
+      <Docs>
+        <param name="encoder">The encoder object where the state of the object will be stored</param>
+        <summary>Encodes the state of the object on the provided encoder</summary>
+        <remarks>
+          <para>This method is part of the <see cref="T:MonoTouch.Foundation.NSCoding" /> protocol and is used by applications to preserve the state of the object into an archive.</para>
+          <para>Users will typically create a <see cref="T:MonoTouch.Foundation.NSKeyedArchived" /> and then invoke the <see cref="M:MonoTouch.Foundation.NSKeyedArchived.ArchiveRootObjectToFile" /> which will call into this method</para>
+          <para>If you want to allow your object to be archived, you should override this method and store your state in using the provided <paramref name="encoder" /> parameter.   In addition, you should also implement a constructor that takes an NSCoder argument and is exported with [Export ("initWithCoder:")]</para>
+          <example>
+            <code lang="c#">public void override EncodeTo (NSCoder coder){
+    c.Encode (1, key: "version");
+    c.Encode (userName, key: "userName");
+    c.Encode (hostName, key: "hostName");</code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
     <Member MemberName="Position">
       <MemberSignature Language="C#" Value="public virtual OpenTK.Vector2 Position { get; set; }" apistyle="classic" />
       <MemberSignature Language="ILAsm" Value=".property instance valuetype OpenTK.Vector2 Position" apistyle="classic" />
@@ -246,8 +284,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Docs>
     </Member>
     <Member MemberName="Update">
-      <MemberSignature Language="C#" Value="public virtual void Update (double seconds);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Update(float64 seconds) cil managed" />
+      <MemberSignature Language="C#" Value="public virtual void Update (double deltaTimeInSeconds);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Update(float64 deltaTimeInSeconds) cil managed" />
       <MemberType>Method</MemberType>
       <AssemblyInfo apistyle="classic">
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -267,7 +305,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="seconds" Type="System.Double" />
       </Parameters>
       <Docs>
-        <param name="seconds">The number of seconds that have passed since the last time this method was called.</param>
+        <param name="deltaTimeInSeconds">The number of seconds that have passed since the last time this method was called.</param>
         <summary>Called periodically to allow the <see cref="T:Monotouch.GameplayKit.GKAgent2D" /> to update its <see cref="P:Monotouch.GameplayKit.GKAgent2D.Position" />, <see cref="P:Monotouch.GameplayKit.GKAgent2D.Rotation" />, and <see cref="P:Monotouch.GameplayKit.GKAgent2D.Velocity" />.</summary>
         <remarks>To be added.</remarks>
       </Docs>
