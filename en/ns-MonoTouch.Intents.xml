@@ -64,7 +64,52 @@ public void HandleSendMessage (INSendMessageIntent intent, Action<INSendMessageI
 	<true/>]]></c>)</term></item>
       <item><term>A string entry in Info.plist for "Privacy - Siri Usage Description" (XML: <c><![CDATA[<key>NSSiriUsageDescription</key>
 	<string>Justification for Siri</string>]]></c>)</term></item>
-    </list>
+      </list>
+      <para>Additionally, within the extension project's info.plist, the developer must add a <c>dict</c> called <c>NSExtension</c> that contains:</para>
+      <list type="table">
+        <listheader> 
+        <term>Key</term>
+        <description>Value</description>
+        </listheader>
+        <item><term>NSExtensionPointIdentifier</term><description><c>com.apple.intents-service</c></description></item>
+        <item><term>NSExtensionPrincipalClass</term><description>The value of the <see cref="T:Monotouch.Foundation.RegisterAttribute"/> of the extension's <see cref="T:Monotouch.Intents.INExtension"/>.</description></item>
+        <item><term>NSExtensionAttributes</term><description>A <c>dict</c> that contains the key <c>IntentsSupported</c> that contains an array of strings whose values contain the names of the Intents it may handle.</description></item>
+      </list>
+      <para>For instance, an extension that works with messages, whose main class is defined as:</para>
+      <example>
+    <code lang="C#"><![CDATA[
+[Register ("MyIntentHandler")]
+public class MyIntentHandler : INExtension, IINSendMessageIntentHandling, IINSearchForMessagesIntentHandling, IINSetMessageAttributeIntentHandling
+{ 
+//...etc... 
+}
+    ]]></code>
+      </example>
+      <para>Might have the following in its Info.plist</para>
+      <example>
+    <code lang="XML"><![CDATA[
+	<key>NSExtension</key>
+	<dict>
+		<key>NSExtensionAttributes</key>
+		<dict>
+			<key>IntentsRestrictedWhileLocked</key>
+			<array/>
+			<key>IntentsSupported</key>
+			<array>
+				<string>INSendMessageIntent</string>
+				<string>INSearchForMessagesIntent</string>
+				<string>INSetMessageAttributeIntent</string>
+			</array>
+		</dict>
+		<key>NSExtensionPointIdentifier</key>
+		<string>com.apple.intents-service</string>
+		<key>NSExtensionPrincipalClass</key>
+		<string>MyIntentHandler</string>
+	</dict>
+
+    ]]></code>
+      </example>
+      
     </remarks>
   </Docs>
 </Namespace>
