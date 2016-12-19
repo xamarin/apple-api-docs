@@ -1,9 +1,94 @@
+<?xml version="1.0"?>
 <Namespace Name="MonoTouch.CloudKit">
   <Docs>
     <summary>The CloudKit namespace provides access to iCloud.</summary>
     <remarks>
-      <para>The CloudKit namespace allows application developers to control the flow of data between their applications and iCloud. App devs can use CloudKit to control the timing and specifics of the data transfer.</para>
-      <para>In addition to user-specific repositories, CloudKit can be used to transfer data to and from a single repository shared by all users of the application. This public repository is associated with the application and does not require that application users have a registered iCloud account. </para>
+      <para>The CloudKit namespace allows application developers to control the flow of data between their applications and iCloud. iCloud provides server-side data storage, both "public" that is shared between all instances of an application or specific applications and "private" that is unique to a single user. iCloud storage and transport is encrypted and synchronized between Apple devices. CloudKit does not provide client-side persistence or data caching -- CloudKit functionality is only available while the user has an active Internet connection.</para>
+      <para>The highest-level class in the CloudKit is <see cref="T:Monotouch.CloudKit.CKContainer"/>. A CloudKit Container (sometimes referred to in Apple documentation as a "Ubiquity container") is an information store identified with a particular name. Apple advises using a name of the form "iCloud.{reverse DNS}.{appName}", for instance, "iCloud.com.mycompany.MyApp". Developers must create and configure their containers using the iCloud Dashboard, available by way of the Apple developer portal.</para>
+      <para>A single <see cref="T:Monotouch.CloudKit.CKContainer"/> may contain both public data, which is shared between all instances of the app (see <see cref="P:Monotouch.CloudKit.CKContainer.PublicCloudDatabase"/>), and private data, which contains user-specific data (see <see cref="P:Monotouch.CloudKit.CKContainer.PrivateCloudDatabase"/>). Within iCloud, public data is stored in the app's iCloud storage while private data is stored in the user's private iCloud storage. The public <see cref="T:Monotouch.CloudKit.CKDatabase"/> is available to all connected users of the app, whether or not they are logged in to iCloud. The private <see cref="T:Monotouch.CloudKit.CKDatabase"/> is only if the user is logged in to iCloud. Developers must write their code such that it reacts gracefully to changes in the user's login or connection status.</para>
+      <para>These public and private <see cref="T:Monotouch.CloudKit.CKDatabase"/> objects store structured records. These are represented by <see cref="T:Monotouch.CloudKit.CKRecord"/> objects. In addition to field-like key-value data, these records may hold <see cref="T:Monotouch.CloudKit.CKAsset"/> large objects either directly (retrieved with the containing <see cref="T:Monotouch.CloudKit.CKRecord"/>) or as references (allowing lazy retrieval of the large data).</para>
+      <para>All <see cref="T:Monotouch.CloudKit.CKRecord"/> instances are stored within a <see cref="T:Monotouch.CloudKit.CKZone"/>. A <see cref="T:Monotouch.CloudKit.CKZone"/> is something like a traditional database instance: it can contain multiple <see cref="T:Monotouch.CloudKit.CKRecord"/> stores that may refer to each other but not to stores in other <see cref="T:Monotouch.CloudKit.CKZone"/> instances and <see cref="T:Monotouch.CloudKit.CKZone"/> objects can be used to coordinate atomic operations across multiple <see cref="T:Monotouch.CloudKit.CKRecord"/> stores. The similarity to a database instance is not universal; for instance, a developer may use <see cref="M:Monotouch.CKDatabase.FetchRecordAsync(CKRecordID)"/> to retrieve a <see cref="T:Monotouch.CloudKit.CKRecord"/> directly from the <see cref="T:Monotouch.CloudKit.CKDatabase"/> without referring to the zone. The default <see cref="T:Monotouch.CloudKit.CKZone"/> is available via <see cref="P:Monotouch.CloudKit.CKRecordZone.DefaultRecordZone()"/>. Developers may create additional zones using the CloudKit dashboard and use them to partition their data logically.</para>
+      <para>CloudKit apps require a provisioning profile with the <c>com.apple.developer.icloud-services</c> entitlement and an app-specific Bundle Identifier (e.g., "com.mycompany.CloudKitApp"). Developers must create and configure such an provisioning profile.</para>
+      <para>The following demonstrates some typical uses of CloudKit that work on single records:</para>
+      <example>
+    <code lang="C#"><![CDATA[
+//Create 
+private async Task<CKRecord> StoreInCloudKit (string name, CLLocation loc, int stationId)
+{
+    string containerName = "iCloud.com.xamarin.CKWork";
+    var container = CKContainer.FromIdentifier (containerName);
+    CKDatabase publicDatabase = container.PublicCloudDatabase;
+    var zoneId = CKRecordZone.DefaultRecordZone ().ZoneId;
+    var recordType = "StationReferences";
+
+    var record = new CKRecord (recordType);
+    record ["Name"] = new NSString (name);
+    record ["Position"] = loc;
+    record ["StationID"] = new NSNumber (stationId);
+
+    var storedRecord = await publicDatabase.SaveRecordAsync (record);
+    return storedRecord;
+}
+
+//Retrieve (via ID)
+private async Task<CKRecord> AccessCloudKit ()
+{
+    string containerName = "iCloud.com.xamarin.CKWork";
+    var container = CKContainer.FromIdentifier (containerName);
+    CKDatabase publicDatabase = container.PublicCloudDatabase;
+
+    var recordNameIHappenToKnow = "7eaf0432-2fa4-475f-851a-c6a19b3f8587";
+    var recordId = new CKRecordID (recordNameIHappenToKnow);
+    var record = await publicDatabase.FetchRecordAsync (recordId);
+
+    return record;
+}
+
+//Retrieve (query)
+private async Task<CKRecord []> QueryCloudKit ()
+{
+    string containerName = "iCloud.com.xamarin.CKWork";
+    var container = CKContainer.FromIdentifier (containerName);
+    CKDatabase publicDatabase = container.PublicCloudDatabase;
+   
+    var zoneId = CKRecordZone.DefaultRecordZone ().ZoneId;
+    Console.WriteLine ($"Default zone name = '{zoneId.ZoneName}' owner = '{zoneId.OwnerName}'");
+    /*
+    var zoneName = "_defaultZone";
+    var ownerName = "__defaultOwner__";
+    var zoneId0 = new CKRecordZoneID (zoneName, ownerName);
+
+    Console.WriteLine ($"Assert { zoneId0 == zoneId }");
+    */
+
+    var recordType = "StationReferences";
+
+    var location = new CLLocation (19.7303, -155.056);
+    var predicate = NSPredicate.FromFormat ("distanceToLocation:fromLocation:(Position, %@) < 100", location);
+
+    var query = new CKQuery (recordType, predicate);
+
+    var result = await publicDatabase.PerformQueryAsync (query, zoneId);
+    return result;
+}
+
+//Update
+private async Task<CKRecord> UpdateInCloudKit (CKDatabase database, CKRecord record, NSString key, NSObject newValue)
+{
+    record [key] = newValue;
+    var modifiedRecord = await database.SaveRecordAsync (record);
+    return modifiedRecord;
+}
+
+//Delete 
+private async Task<CKRecordID> DeleteRecord (CKDatabase database, CKRecord record)
+{
+    var id = record.Id;
+    var deletedId = await database.DeleteRecordAsync (id);
+    return deletedId;
+}
+    ]]></code>
+      </example>
     </remarks>
   </Docs>
 </Namespace>
