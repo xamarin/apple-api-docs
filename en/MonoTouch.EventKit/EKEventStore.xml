@@ -1,4 +1,4 @@
-<Type Name="EKEventStore" FullName="MonoTouch.EventKit.EKEventStore">
+﻿<Type Name="EKEventStore" FullName="MonoTouch.EventKit.EKEventStore">
   <TypeSignature Language="C#" Value="public class EKEventStore : MonoTouch.Foundation.NSObject" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit EKEventStore extends MonoTouch.Foundation.NSObject" />
   <AssemblyInfo apistyle="classic">
@@ -45,7 +45,7 @@
 			and make it available statically from within an application:
 		</para>
       <example>
-        <code lang="c#">
+        <code lang="C#"><![CDATA[
 public class App
 {
 	public static App Current {
@@ -67,7 +67,7 @@ public class App
 		eventStore = new EKEventStore ( );
 	}
 }			
-			</code>
+			]]></code>
       </example>
       <para>
 			The code above uses the Singleton pattern to instantiate an instance of the EventStore when the application 
@@ -85,9 +85,9 @@ public class App
 			show an alert view if the request was not granted:
 		</para>
       <example>
-        <code lang="c#">
+        <code lang="C#"><![CDATA[
 App.Current.EventStore.RequestAccess (EKEntityType.Event, 
-	(bool granted, NSError e) =&gt; {
+	(bool granted, NSError e) => {
 		if (granted)
 			//do something here
 		else
@@ -95,7 +95,7 @@ App.Current.EventStore.RequestAccess (EKEntityType.Event,
 "User Denied Access to Calendar Data", null,
 "ok", null).Show ();
 		} );
-			</code>
+			]]></code>
       </example>
       <para>
 			Once the request has been granted, it will be remembered as long as the application is installed on the 
@@ -136,8 +136,7 @@ App.Current.EventStore.RequestAccess (EKEntityType.Event,
       <Parameters />
       <Docs>
         <summary>Default constructor that initializes a new instance of this class with no parameters.</summary>
-        <remarks>
-        </remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor" apistyle="classic">
@@ -201,7 +200,7 @@ App.Current.EventStore.RequestAccess (EKEntityType.Event,
           <para>In general, if your constructors invokes the NSObjectFlag.Empty base implementation, then it should be calling an Objective-C init method.   If this is not the case, you should instead chain to the proper constructor in your class. </para>
           <para>The argument value is ignored and merely ensures that the only code that is executed is the construction phase is the basic NSObject allocation and runtime type registration.  Typically the chaining would look like this:</para>
           <example>
-            <code lang="C#">
+            <code lang="C#"><![CDATA[
 //
 // The NSObjectFlag merely allocates the object and registers the
 // C# class with the Objective-C runtime if necessary, but no actual
@@ -219,7 +218,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 	else
 		Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
 }
-</code>
+]]></code>
           </example>
         </remarks>
       </Docs>
@@ -344,13 +343,13 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:EKEventStore+Notifications" />.<see cref="M:EKEventStore+Notifications.ObserveChangedNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 //
 // Lambda style
 //
 
 // listening
-notification = EKEventStore.Notifications.ObserveChanged ((sender, args) =&gt; {
+notification = EKEventStore.Notifications.ObserveChanged ((sender, args) => {
     /* Access strongly typed args */
     Console.WriteLine ("Notification: {0}", args.Notification);
 });
@@ -376,14 +375,14 @@ void Setup ()
 void Teardown ()
 {
     notification.Dispose ();
-}</code>
+}]]></code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
-        EKEventStore.ChangedNotification, (notification) =&gt; {Console.WriteLine ("Received the notification EKEventStore", notification); }
+        EKEventStore.ChangedNotification, (notification) => {Console.WriteLine ("Received the notification EKEventStore", notification); }
 
 
 // Method style
@@ -396,7 +395,7 @@ void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (EKEventStore.ChangedNotification, Callback);
 }
-</code>
+]]></code>
           </example>
         </remarks>
       </Docs>
@@ -542,17 +541,17 @@ void Setup ()
         <summary>Enumerates all of the events that match the specified predicate.</summary>
         <remarks>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 var yesterday = DateTime.Now - TimeSpan.FromDays (1);
 var twoMonthsInFuture = DateTime.Now + TimeSpan.FromDays (60);
 
 var predicate = myStore.PredicateForEvents (yesterday, twoMonthsInFuture, null);
 var MyStore = new EKEventStore ();
 
-MyStore.EnumerateEvents (predicate, (EKEvent theEvent, ref bool stop) =&gt; {
+MyStore.EnumerateEvents (predicate, (EKEvent theEvent, ref bool stop) => {
 	Console.WriteLine ("Got the event: {0}", theEvent);
 });
-</code>
+]]></code>
           </example>
         </remarks>
       </Docs>
@@ -673,8 +672,7 @@ MyStore.EnumerateEvents (predicate, (EKEvent theEvent, ref bool stop) =&gt; {
         <param name="completion">Method invoked with the reminders that match the predicate.</param>
         <summary>Fetches the reminders that match the specified predicate.</summary>
         <returns>Token that represents the fetch operation.   Pass this to <see cref="M:MonoTouch.EventKit.EKEventStore.CancelFetchRequest" /> to cancel the operation.</returns>
-        <remarks>
-        </remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="FetchRemindersAsync">
@@ -968,10 +966,8 @@ MyStore.EnumerateEvents (predicate, (EKEvent theEvent, ref bool stop) =&gt; {
           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
         </param>
         <summary>Returns a predicate that represents the completed reminders in a time period from the calendar.</summary>
-        <returns>
-        </returns>
-        <remarks>
-        </remarks>
+        <returns></returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="PredicateForEvents">
@@ -1341,8 +1337,7 @@ MyStore.EnumerateEvents (predicate, (EKEvent theEvent, ref bool stop) =&gt; {
         <param name="entityType">The <see cref="T:MonoTouch.EventKit.EKEntityType" /> for which access is being requested.</param>
         <param name="completionHandler">Callback executed after the user has interacted with the permissions dialog.</param>
         <summary>Shows, if necessary, the standard permissions dialog for the specified <paramref name="entityType" />.</summary>
-        <remarks>
-        </remarks>
+        <remarks></remarks>
       </Docs>
       <altmember cref="M:MonoTough.EventKit.EKEventStore.GetAuthorizationStatus" />
     </Member>

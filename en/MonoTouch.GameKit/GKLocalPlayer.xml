@@ -1,4 +1,4 @@
-<Type Name="GKLocalPlayer" FullName="MonoTouch.GameKit.GKLocalPlayer">
+﻿<Type Name="GKLocalPlayer" FullName="MonoTouch.GameKit.GKLocalPlayer">
   <TypeSignature Language="C#" Value="public class GKLocalPlayer : MonoTouch.GameKit.GKPlayer" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit GKLocalPlayer extends MonoTouch.GameKit.GKPlayer" />
   <AssemblyInfo apistyle="classic">
@@ -56,7 +56,7 @@
 
       </para>
       <example>
-        <code lang="c#">
+        <code lang="C#"><![CDATA[
 //
 // This shows how to authenticate on both iOS 6.0 and older versions
 //
@@ -64,7 +64,7 @@ if (UIDevice.CurrentDevice.CheckSystemVersion (6, 0)) {
     //
     // iOS 6.0 and newer
     //
-    GKLocalPlayer.LocalPlayer.AuthenticateHandler = (ui, error) =&gt; {
+    GKLocalPlayer.LocalPlayer.AuthenticateHandler = (ui, error) => {
 
         // If ui is null, that means the user is already authenticated,
 	// for example, if the user used Game Center directly to log in
@@ -79,11 +79,11 @@ if (UIDevice.CurrentDevice.CheckSystemVersion (6, 0)) {
     };
 } else {
     // Versions prior to iOS 6.0
-    GKLocalPlayer.LocalPlayer.Authenticate ((err) =&gt; {
+    GKLocalPlayer.LocalPlayer.Authenticate ((err) => {
         Console.WriteLine ("Authentication result: {0}",err);
     });
 };
-</code>
+]]></code>
       </example>
     </remarks>
     <related type="PlatformDocAPI" href="https://developer.apple.com/library/ios/documentation/GameKit/Reference/GKLocalPlayer_Ref/index.html">Apple documentation for <c>GKLocalPlayer</c></related>
@@ -110,8 +110,7 @@ if (UIDevice.CurrentDevice.CheckSystemVersion (6, 0)) {
       <Parameters />
       <Docs>
         <summary>Default constructor that initializes a new instance of this class with no parameters.</summary>
-        <remarks>
-        </remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -178,7 +177,7 @@ if (UIDevice.CurrentDevice.CheckSystemVersion (6, 0)) {
           <para>In general, if your constructors invokes the NSObjectFlag.Empty base implementation, then it should be calling an Objective-C init method.   If this is not the case, you should instead chain to the proper constructor in your class. </para>
           <para>The argument value is ignored and merely ensures that the only code that is executed is the construction phase is the basic NSObject allocation and runtime type registration.  Typically the chaining would look like this:</para>
           <example>
-            <code lang="C#">
+            <code lang="C#"><![CDATA[
 //
 // The NSObjectFlag merely allocates the object and registers the
 // C# class with the Objective-C runtime if necessary, but no actual
@@ -196,7 +195,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 	else
 		Handle = MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
 }
-</code>
+]]></code>
           </example>
         </remarks>
       </Docs>
@@ -414,8 +413,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <summary>Handler used to authenticate the user, triggers authentication when set.</summary>
         <value>
-          <para>
-          </para>
+          <para></para>
           <para tool="nullallowed">This value can be <see langword="null" />.</para>
         </value>
         <remarks>
@@ -465,13 +463,13 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:GKLocalPlayer+Notifications" />.<see cref="M:GKLocalPlayer+Notifications.ObserveAuthenticationDidChangeNotificationName" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 //
 // Lambda style
 //
 
 // listening
-notification = GKLocalPlayer.Notifications.ObserveAuthenticationDidChangeNotificationName ((sender, args) =&gt; {
+notification = GKLocalPlayer.Notifications.ObserveAuthenticationDidChangeNotificationName ((sender, args) => {
     /* Access strongly typed args */
     Console.WriteLine ("Notification: {0}", args.Notification);
 });
@@ -497,14 +495,14 @@ void Setup ()
 void Teardown ()
 {
     notification.Dispose ();
-}</code>
+}]]></code>
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="c#">
+            <code lang="C#"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
-        GKLocalPlayer.AuthenticationDidChangeNotificationName, (notification) =&gt; {Console.WriteLine ("Received the notification GKLocalPlayer", notification); }
+        GKLocalPlayer.AuthenticationDidChangeNotificationName, (notification) => {Console.WriteLine ("Received the notification GKLocalPlayer", notification); }
 
 
 // Method style
@@ -517,7 +515,7 @@ void Setup ()
 {
     NSNotificationCenter.DefaultCenter.AddObserver (GKLocalPlayer.AuthenticationDidChangeNotificationName, Callback);
 }
-</code>
+]]></code>
           </example>
         </remarks>
       </Docs>
