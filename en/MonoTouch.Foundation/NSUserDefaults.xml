@@ -19,8 +19,26 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary></summary>
-    <remarks></remarks>
+    <summary>Provides access to the user defaults.</summary>
+    <remarks>
+      <para>
+	There are two kinds of user defaults, persistent and volatile.
+	Persistent user defaults are stored after you make changes to
+	them, while volatile settings are transient, they might be
+	created on demand, and will cease existence when the application terminates or the object is disposes.
+      </para>
+      <para>
+
+	In the case of <see
+	cref="P:MonoTouch.Foundation.NSUserDefaults.StandardUserDefaults"/>
+	it is created at startup based on the environment settings.
+	These defaults contain settings that are the concatenation of
+	parsing the command line arguments.
+
+      </para>
+      <para>
+      </para>
+    </remarks>
     <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=67b46eb2-81d9-477f-a448-18e68db1227b">AppPrefs</related>
     <related type="PlatformDocAPI" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/Classes/NSUserDefaults_Class/index.html">Apple documentation for <c>NSUserDefaults</c></related>
   </Docs>
@@ -266,9 +284,32 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Represents the value associated with the constant NSArgumentDomain</summary>
+        <summary>This is they key used to retrieve the domain associated with the command line arguments passed at startup.</summary>
         <value></value>
-        <remarks>To be added.</remarks>
+        <remarks>
+
+	  <para>
+
+	    This domain contains the command line arguments that were
+	    parsed at application startup.
+
+	  </para>
+
+	  <para>
+
+	    For each command line argument of the form -NAME VALUE
+	    that is passed at startup to your application, the "NAME"
+	    is used as the key, with the value set to VALUE.  
+
+	  </para>
+	  <example>
+	    <code lang="c#">
+// Retrieve the gloabl NSButtonDelay setting on MacOS:
+var global = new NSUserDefaults (NSUserDefaults.GlobalDomain);
+Console.WriteLine ("Delay: " + j.FloatForKey ("NSButtonDelay"));
+	    </code>
+	  </example>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="ArrayForKey">
@@ -715,9 +756,20 @@ void Setup ()
         <ReturnType>MonoTouch.Foundation.NSString</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Represents the value associated with the constant NSGlobalDomain</summary>
+        <summary>This is the key used to retrieve the global user defaults domain.</summary>
         <value></value>
-        <remarks>To be added.</remarks>
+        <remarks>
+	  <para>
+	    This key is used to retrieve the global user defaults.
+	  </para>
+	  <example>
+	    <code lang="c#">
+// Retrieve the gloabl NSButtonDelay setting on MacOS:
+var global = new NSUserDefaults (NSUserDefaults.GlobalDomain);
+Console.WriteLine ("Delay: " + j.FloatForKey ("NSButtonDelay"));
+	    </code>
+	  </example>
+	</remarks>
       </Docs>
     </Member>
     <Member MemberName="IntForKey">
@@ -1493,10 +1545,35 @@ void Setup ()
         <ReturnType>MonoTouch.Foundation.NSUserDefaults</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Static reference to the singleton NSUserDefaults shared object.</summary>
+        <summary>Contains the standard user defaults.</summary>
         <value>The singleton object that represents the user’s standard defaults.</value>
         <remarks>
-          <para />
+          <para>
+	    This NSUserDefaults instance contains all the loaded
+	    values from the various user settings and they are
+	    searched in order of precedence.  In order of highest
+	    precedence to lower precedence, the contents of the
+	    NSUserDefaults are: the command line argument domain
+	    (NSArgumentDomain), the application specific domain, the
+	    global domain (NSGlobalDomain), the languages domain
+	    (based on the location settings), the general purpose
+	    fallback NSRegistrationDomain.
+	  </para>
+
+	  <para>
+
+	    For each command line argument of the form -NAME VALUE
+	    that is passed at startup to your application, the "NAME"
+	    is used as the key, with the value set to VALUE.  These
+	    are part of the NSArgumentDomain options.
+
+	  </para>
+	  <example>
+	    <code lang="c#">
+// Retrieve the value for the command line argument -foo bar
+var value = NSUserDefaults.StandardUserDefaults.StringForKey ("foo");
+	    </code>
+	  </example>
         </remarks>
       </Docs>
     </Member>
