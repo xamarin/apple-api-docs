@@ -1,4 +1,4 @@
-﻿<Type Name="AVAudioSession+Notifications" FullName="MonoTouch.AVFoundation.AVAudioSession+Notifications">
+<Type Name="AVAudioSession+Notifications" FullName="MonoTouch.AVFoundation.AVAudioSession+Notifications">
   <TypeSignature Language="C#" Value="public static class AVAudioSession.Notifications" />
   <TypeSignature Language="ILAsm" Value=".class nested public auto ansi abstract sealed beforefieldinit AVAudioSession/Notifications extends System.Object" />
   <AssemblyInfo apistyle="classic">
@@ -32,6 +32,7 @@
       </AssemblyInfo>
       <AssemblyInfo apistyle="unified">
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>MonoTouch.Foundation.NSObject</ReturnType>
@@ -41,8 +42,10 @@
       </Parameters>
       <Docs>
         <param name="handler">Method to invoke when the notification is posted.</param>
-        <summary>Strongly typed notification for the <see cref="P:MonoTouch.AVFoundation.AVAudioSession.InterruptionNotification" /> constant.</summary>
-        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="M:MonoTouch.Foundation.NSNotificationCenter.RemoveObserver" /></returns>
+        <summary>Registers a method to be notified when the AVAudioSessionInterruptionNotification notification is posted.</summary>
+        <returns>
+          <para>The returned NSObject represents the registered notification.   Either call Dispose on the object to stop receiving notifications, or pass it to <see cref="M:MonoTouch.Foundation.NSNotificationCenter.RemoveObserver" /></para>
+        </returns>
         <remarks>
           <para>The following example shows how developers can use this method in their code:</para>
           <example>
@@ -58,6 +61,7 @@ notification = AVAudioSession.Notifications.ObserveInterruption ((sender, args) 
 
     Console.WriteLine ("InterruptionType", args.InterruptionType);
     Console.WriteLine ("Option", args.Option);
+    Console.WriteLine ("WasSuspended", args.WasSuspended);
 });
 
 // To stop listening:
@@ -74,6 +78,7 @@ void Callback (object sender, MonoTouch.AVFoundation.AVAudioSessionInterruptionE
 
     Console.WriteLine ("InterruptionType", args.InterruptionType);
     Console.WriteLine ("Option", args.Option);
+    Console.WriteLine ("WasSuspended", args.WasSuspended);
 }
 
 void Setup ()
@@ -89,6 +94,47 @@ void Teardown ()
         </remarks>
       </Docs>
     </Member>
+    <Member MemberName="ObserveInterruption" apistyle="unified">
+      <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSObject ObserveInterruption (MonoTouch.Foundation.NSObject objectToObserve, EventHandler&lt;MonoTouch.AVFoundation.AVAudioSessionInterruptionEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.Foundation.NSObject ObserveInterruption(class MonoTouch.Foundation.NSObject objectToObserve, class System.EventHandler`1&lt;class MonoTouch.AVFoundation.AVAudioSessionInterruptionEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo apistyle="unified">
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MonoTouch.Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="objectToObserve" Type="MonoTouch.Foundation.NSObject" />
+        <Parameter Name="handler" Type="System.EventHandler&lt;MonoTouch.AVFoundation.AVAudioSessionInterruptionEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="objectToObserve">To be added.</param>
+        <param name="handler">To be added.</param>
+        <summary>Strongly typed notification for the <see cref="P:MonoTouch.AVFoundation.AVAudioSession.InterruptionNotification" /> constant.</summary>
+        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="M:MonoTouch.Foundation.NSNotificationCenter.RemoveObserver" /></returns>
+        <remarks>
+          <para id="tool-remark">This method can be used to subscribe for <see cref="P:MonoTouch.AVFoundation.AVAudioSession.InterruptionNotification" /> notifications.</para>
+          <example>
+            <code lang="C#"><![CDATA[
+// Listen to all notifications posted for any object
+var token = AVAudioSession.Notifications.ObserveInterruption ((notification) => {
+	Console.WriteLine ("Observed InterruptionNotification!");
+};
+
+// Listen to all notifications posted for a single object
+var token = AVAudioSession.Notifications.ObserveInterruption (objectToObserve, (notification) => {
+	Console.WriteLine ($"Observed InterruptionNotification for {nameof (objectToObserve)}!");
+};
+
+// Stop listening for notifications
+token.Dispose ();
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
     <Member MemberName="ObserveMediaServicesWereLost">
       <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSObject ObserveMediaServicesWereLost (EventHandler&lt;MonoTouch.Foundation.NSNotificationEventArgs&gt; handler);" />
       <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.Foundation.NSObject ObserveMediaServicesWereLost(class System.EventHandler`1&lt;class MonoTouch.Foundation.NSNotificationEventArgs&gt; handler) cil managed" />
@@ -98,6 +144,7 @@ void Teardown ()
       </AssemblyInfo>
       <AssemblyInfo apistyle="unified">
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>MonoTouch.Foundation.NSObject</ReturnType>
@@ -149,6 +196,47 @@ void Teardown ()
         </remarks>
       </Docs>
     </Member>
+    <Member MemberName="ObserveMediaServicesWereLost" apistyle="unified">
+      <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSObject ObserveMediaServicesWereLost (MonoTouch.Foundation.NSObject objectToObserve, EventHandler&lt;MonoTouch.Foundation.NSNotificationEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.Foundation.NSObject ObserveMediaServicesWereLost(class MonoTouch.Foundation.NSObject objectToObserve, class System.EventHandler`1&lt;class MonoTouch.Foundation.NSNotificationEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo apistyle="unified">
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MonoTouch.Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="objectToObserve" Type="MonoTouch.Foundation.NSObject" />
+        <Parameter Name="handler" Type="System.EventHandler&lt;MonoTouch.Foundation.NSNotificationEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="objectToObserve">To be added.</param>
+        <param name="handler">To be added.</param>
+        <summary>Strongly typed notification for the <see cref="P:MonoTouch.AVFoundation.AVAudioSession.MediaServicesWereLostNotification" /> constant.</summary>
+        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="M:MonoTouch.Foundation.NSNotificationCenter.RemoveObserver" /></returns>
+        <remarks>
+          <para id="tool-remark">This method can be used to subscribe for <see cref="P:MonoTouch.AVFoundation.AVAudioSession.MediaServicesWereLostNotification" /> notifications.</para>
+          <example>
+            <code lang="C#"><![CDATA[
+// Listen to all notifications posted for any object
+var token = AVAudioSession.Notifications.ObserveMediaServicesWereLost ((notification) => {
+	Console.WriteLine ("Observed MediaServicesWereLostNotification!");
+};
+
+// Listen to all notifications posted for a single object
+var token = AVAudioSession.Notifications.ObserveMediaServicesWereLost (objectToObserve, (notification) => {
+	Console.WriteLine ($"Observed MediaServicesWereLostNotification for {nameof (objectToObserve)}!");
+};
+
+// Stop listening for notifications
+token.Dispose ();
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
     <Member MemberName="ObserveMediaServicesWereReset">
       <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSObject ObserveMediaServicesWereReset (EventHandler&lt;MonoTouch.Foundation.NSNotificationEventArgs&gt; handler);" />
       <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.Foundation.NSObject ObserveMediaServicesWereReset(class System.EventHandler`1&lt;class MonoTouch.Foundation.NSNotificationEventArgs&gt; handler) cil managed" />
@@ -158,6 +246,7 @@ void Teardown ()
       </AssemblyInfo>
       <AssemblyInfo apistyle="unified">
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>MonoTouch.Foundation.NSObject</ReturnType>
@@ -209,6 +298,47 @@ void Teardown ()
         </remarks>
       </Docs>
     </Member>
+    <Member MemberName="ObserveMediaServicesWereReset" apistyle="unified">
+      <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSObject ObserveMediaServicesWereReset (MonoTouch.Foundation.NSObject objectToObserve, EventHandler&lt;MonoTouch.Foundation.NSNotificationEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.Foundation.NSObject ObserveMediaServicesWereReset(class MonoTouch.Foundation.NSObject objectToObserve, class System.EventHandler`1&lt;class MonoTouch.Foundation.NSNotificationEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo apistyle="unified">
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MonoTouch.Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="objectToObserve" Type="MonoTouch.Foundation.NSObject" />
+        <Parameter Name="handler" Type="System.EventHandler&lt;MonoTouch.Foundation.NSNotificationEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="objectToObserve">To be added.</param>
+        <param name="handler">To be added.</param>
+        <summary>Strongly typed notification for the <see cref="P:MonoTouch.AVFoundation.AVAudioSession.MediaServicesWereResetNotification" /> constant.</summary>
+        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="M:MonoTouch.Foundation.NSNotificationCenter.RemoveObserver" /></returns>
+        <remarks>
+          <para id="tool-remark">This method can be used to subscribe for <see cref="P:MonoTouch.AVFoundation.AVAudioSession.MediaServicesWereResetNotification" /> notifications.</para>
+          <example>
+            <code lang="C#"><![CDATA[
+// Listen to all notifications posted for any object
+var token = AVAudioSession.Notifications.ObserveMediaServicesWereReset ((notification) => {
+	Console.WriteLine ("Observed MediaServicesWereResetNotification!");
+};
+
+// Listen to all notifications posted for a single object
+var token = AVAudioSession.Notifications.ObserveMediaServicesWereReset (objectToObserve, (notification) => {
+	Console.WriteLine ($"Observed MediaServicesWereResetNotification for {nameof (objectToObserve)}!");
+};
+
+// Stop listening for notifications
+token.Dispose ();
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
     <Member MemberName="ObserveRouteChange">
       <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSObject ObserveRouteChange (EventHandler&lt;MonoTouch.AVFoundation.AVAudioSessionRouteChangeEventArgs&gt; handler);" />
       <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.Foundation.NSObject ObserveRouteChange(class System.EventHandler`1&lt;class MonoTouch.AVFoundation.AVAudioSessionRouteChangeEventArgs&gt; handler) cil managed" />
@@ -218,6 +348,7 @@ void Teardown ()
       </AssemblyInfo>
       <AssemblyInfo apistyle="unified">
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>MonoTouch.Foundation.NSObject</ReturnType>
@@ -227,8 +358,10 @@ void Teardown ()
       </Parameters>
       <Docs>
         <param name="handler">Method to invoke when the notification is posted.</param>
-        <summary>Strongly typed notification for the <see cref="P:MonoTouch.AVFoundation.AVAudioSession.RouteChangeNotification" /> constant.</summary>
-        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="M:MonoTouch.Foundation.NSNotificationCenter.RemoveObserver" /></returns>
+        <summary>Registers a method to be notified when the AVAudioSessionRouteChangeNotification notification is posted.</summary>
+        <returns>
+          <para>The returned NSObject represents the registered notification.   Either call Dispose on the object to stop receiving notifications, or pass it to <see cref="M:MonoTouch.Foundation.NSNotificationCenter.RemoveObserver" /></para>
+        </returns>
         <remarks>
           <para>The following example shows how developers can use this method in their code:</para>
           <example>
@@ -275,6 +408,47 @@ void Teardown ()
         </remarks>
       </Docs>
     </Member>
+    <Member MemberName="ObserveRouteChange" apistyle="unified">
+      <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSObject ObserveRouteChange (MonoTouch.Foundation.NSObject objectToObserve, EventHandler&lt;MonoTouch.AVFoundation.AVAudioSessionRouteChangeEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.Foundation.NSObject ObserveRouteChange(class MonoTouch.Foundation.NSObject objectToObserve, class System.EventHandler`1&lt;class MonoTouch.AVFoundation.AVAudioSessionRouteChangeEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo apistyle="unified">
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MonoTouch.Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="objectToObserve" Type="MonoTouch.Foundation.NSObject" />
+        <Parameter Name="handler" Type="System.EventHandler&lt;MonoTouch.AVFoundation.AVAudioSessionRouteChangeEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="objectToObserve">To be added.</param>
+        <param name="handler">To be added.</param>
+        <summary>Strongly typed notification for the <see cref="P:MonoTouch.AVFoundation.AVAudioSession.RouteChangeNotification" /> constant.</summary>
+        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="M:MonoTouch.Foundation.NSNotificationCenter.RemoveObserver" /></returns>
+        <remarks>
+          <para id="tool-remark">This method can be used to subscribe for <see cref="P:MonoTouch.AVFoundation.AVAudioSession.RouteChangeNotification" /> notifications.</para>
+          <example>
+            <code lang="C#"><![CDATA[
+// Listen to all notifications posted for any object
+var token = AVAudioSession.Notifications.ObserveRouteChange ((notification) => {
+	Console.WriteLine ("Observed RouteChangeNotification!");
+};
+
+// Listen to all notifications posted for a single object
+var token = AVAudioSession.Notifications.ObserveRouteChange (objectToObserve, (notification) => {
+	Console.WriteLine ($"Observed RouteChangeNotification for {nameof (objectToObserve)}!");
+};
+
+// Stop listening for notifications
+token.Dispose ();
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
     <Member MemberName="ObserveSilenceSecondaryAudioHint">
       <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSObject ObserveSilenceSecondaryAudioHint (EventHandler&lt;MonoTouch.AVFoundation.AVAudioSessionSecondaryAudioHintEventArgs&gt; handler);" />
       <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.Foundation.NSObject ObserveSilenceSecondaryAudioHint(class System.EventHandler`1&lt;class MonoTouch.AVFoundation.AVAudioSessionSecondaryAudioHintEventArgs&gt; handler) cil managed" />
@@ -284,6 +458,7 @@ void Teardown ()
       </AssemblyInfo>
       <AssemblyInfo apistyle="unified">
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>MonoTouch.Foundation.NSObject</ReturnType>
@@ -293,8 +468,10 @@ void Teardown ()
       </Parameters>
       <Docs>
         <param name="handler">Method to invoke when the notification is posted.</param>
-        <summary>Strongly typed notification for the <see cref="P:MonoTouch.AVFoundation.AVAudioSession.SilenceSecondaryAudioHintNotification" /> constant.</summary>
-        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="M:MonoTouch.Foundation.NSNotificationCenter.RemoveObserver" /></returns>
+        <summary>Registers a method to be notified when the AVAudioSessionSilenceSecondaryAudioHintNotification notification is posted.</summary>
+        <returns>
+          <para>The returned NSObject represents the registered notification.   Either call Dispose on the object to stop receiving notifications, or pass it to <see cref="M:MonoTouch.Foundation.NSNotificationCenter.RemoveObserver" /></para>
+        </returns>
         <remarks>
           <para>The following example shows how developers can use this method in their code:</para>
           <example>
@@ -337,6 +514,47 @@ void Teardown ()
 {
     notification.Dispose ();
 }]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ObserveSilenceSecondaryAudioHint" apistyle="unified">
+      <MemberSignature Language="C#" Value="public static MonoTouch.Foundation.NSObject ObserveSilenceSecondaryAudioHint (MonoTouch.Foundation.NSObject objectToObserve, EventHandler&lt;MonoTouch.AVFoundation.AVAudioSessionSecondaryAudioHintEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MonoTouch.Foundation.NSObject ObserveSilenceSecondaryAudioHint(class MonoTouch.Foundation.NSObject objectToObserve, class System.EventHandler`1&lt;class MonoTouch.AVFoundation.AVAudioSessionSecondaryAudioHintEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo apistyle="unified">
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MonoTouch.Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="objectToObserve" Type="MonoTouch.Foundation.NSObject" />
+        <Parameter Name="handler" Type="System.EventHandler&lt;MonoTouch.AVFoundation.AVAudioSessionSecondaryAudioHintEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="objectToObserve">To be added.</param>
+        <param name="handler">To be added.</param>
+        <summary>Strongly typed notification for the <see cref="P:MonoTouch.AVFoundation.AVAudioSession.SilenceSecondaryAudioHintNotification" /> constant.</summary>
+        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="M:MonoTouch.Foundation.NSNotificationCenter.RemoveObserver" /></returns>
+        <remarks>
+          <para id="tool-remark">This method can be used to subscribe for <see cref="P:MonoTouch.AVFoundation.AVAudioSession.SilenceSecondaryAudioHintNotification" /> notifications.</para>
+          <example>
+            <code lang="C#"><![CDATA[
+// Listen to all notifications posted for any object
+var token = AVAudioSession.Notifications.ObserveSilenceSecondaryAudioHint ((notification) => {
+	Console.WriteLine ("Observed SilenceSecondaryAudioHintNotification!");
+};
+
+// Listen to all notifications posted for a single object
+var token = AVAudioSession.Notifications.ObserveSilenceSecondaryAudioHint (objectToObserve, (notification) => {
+	Console.WriteLine ($"Observed SilenceSecondaryAudioHintNotification for {nameof (objectToObserve)}!");
+};
+
+// Stop listening for notifications
+token.Dispose ();
+]]></code>
           </example>
         </remarks>
       </Docs>
