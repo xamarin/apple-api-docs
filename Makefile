@@ -8,7 +8,7 @@ all:
 
 validate:
 	@echo Validating....
-	find . -name '*.xml' -print0 | xargs -0 xmllint --noout --schema monodoc-ecma.xsd 2>&1 | grep -v validates
+	xmllint --noout --schema monodoc-ecma.xsd en/*/*.xml 2>&1 | grep -v validates
 	@echo success
 
 TOP := $(shell pwd)
