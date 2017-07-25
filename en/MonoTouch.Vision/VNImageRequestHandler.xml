@@ -25,7 +25,25 @@
   </Attributes>
   <Docs>
     <summary>To be added.</summary>
-    <remarks>To be added.</remarks>
+    <remarks>
+      <para>The <see cref="T:Monotouch.Vision.VNImageRequestHandler"/> is the top-level object for single-image vision processing ( see <see cref="T:Monotouch.Vision.VNSequenceRequestHandler"/> for video or image sequences). Developers instantiate a <see cref="T:Monotouch.Vision.VNImageRequestHandler"/> object with an image and image-processing options. Developers call <see cref="M:Monotouch.Vision.VNImageRequestHandler.Perform"/> with an array containing one or more <see cref="T:Monotouch.Vision.VNImageBasedRequest"/> objects (for instance, a <see cref="T:Monotouch.Vision.VNDetectFaceRectanglesRequestt"/>). The <see cref="T:Monotouch.Vision.VNRequestCompletionHandler"/> of the <see cref="T:Monotouch.Vision.VNImageBasedRequest"/> is called once for each detected object. For example:</para>
+      <example>
+    <code lang="C#"><![CDATA[
+System.Threading.Tasks.Task.Run(() =>
+{
+	using (var requestHandler = new VNImageRequestHandler(img, new NSDictionary()))
+	{
+		var findFacesRequest = new VNDetectFaceRectanglesRequest(faceDetectionHandler);
+		requestHandler.Perform(new[] { findFacesRequest }, out var error);
+		if (error != null)
+		{
+			HandleError(error);
+		}
+	}
+});
+    ]]></code>
+</example>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName=".ctor" apistyle="unified">
@@ -560,11 +578,29 @@
         <Parameter Name="error" Type="MonoTouch.Foundation.NSError&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="requests">To be added.</param>
+        <param name="requests">The array of <see cref="T:Monotouch.Vision.VNRequest"/> objects to look for.</param>
         <param name="error">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Asynchronously executes vision recognition for the specified <param name="requests"/>.</summary>
         <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <para>Image processing can take several seconds and developers should use a background thread to call this method.</para>
+            <example>
+    <code lang="C#"><![CDATA[
+System.Threading.Tasks.Task.Run(() =>
+{
+	using (var requestHandler = new VNImageRequestHandler(img, new NSDictionary()))
+	{
+		var findFacesRequest = new VNDetectFaceRectanglesRequest(faceDetectionHandler);
+		requestHandler.Perform(new[] { findFacesRequest }, out var error);
+		if (error != null)
+		{
+			HandleError(error);
+		}
+	}
+});
+    ]]></code>
+</example>
+        </remarks>
       </Docs>
     </Member>
   </Members>

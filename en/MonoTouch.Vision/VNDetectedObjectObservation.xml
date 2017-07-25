@@ -1,4 +1,4 @@
-<Type Name="VNDetectedObjectObservation" FullName="MonoTouch.Vision.VNDetectedObjectObservation">
+﻿<Type Name="VNDetectedObjectObservation" FullName="MonoTouch.Vision.VNDetectedObjectObservation">
   <TypeSignature Language="C#" Value="public class VNDetectedObjectObservation : MonoTouch.Vision.VNObservation" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit VNDetectedObjectObservation extends MonoTouch.Vision.VNObservation" />
   <AssemblyInfo apistyle="unified">
@@ -117,9 +117,37 @@
         <ReturnType>MonoTouch.CoreGraphics.CGRect</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>The bounding box of the detected feature, in normalized coordinates.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <para>As with other rectangles in the Vision namespace, the <see cref="T:Monotouch.CoreGraphics.CGRect" /> uses normalized coordinates in the range 0..1.</para>
+          <para>The following example shows how bounding boxes might be drawn over an existing <see cref="T:Monotouch.UIKit.UIImageView" />. Note that the Y values are adjusted relative to the normalized coordinates origin in the lower-left, not the upper-left:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+var frs = request as VNDetectFaceRectanglesRequest;
+// Assert frs == findFacesRequest ? 
+var rs = frs.GetResults<VNFaceObservation>();
+foreach (var fo in rs)
+{
+   var aFaceRectangle = fo.BoundingBox;
+   InvokeOnMainThread(() =>
+  {
+	  var x = aFaceRectangle.Left * faceContainingImage.Frame.Width;
+	  var y = faceContainingImage.Frame.Height - aFaceRectangle.Top * faceContainingImage.Frame.Height;
+	  var w = aFaceRectangle.Width * faceContainingImage.Frame.Width;
+	  var h = -aFaceRectangle.Height * faceContainingImage.Frame.Height;
+
+	  var scaledRect = new CGRect(x, y, w, h);
+	  var rectView = new UIView(scaledRect);
+	  rectView.Layer.BorderColor = UIColor.Green.CGColor;
+	  rectView.Layer.BorderWidth = 2;
+	  rectView.Layer.Opacity = 1;
+	  faceContainingImage.AddSubview(rectView);
+  });
+}
+    ]]></code>
+          </example>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ClassHandle" apistyle="unified">
@@ -160,7 +188,7 @@
       </Parameters>
       <Docs>
         <param name="boundingBox">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Static factory method that creates a <see cref="T:Monotouch.Foundation.Vision.VNDetectedObjectObservation" /> with the specified bounding box.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
