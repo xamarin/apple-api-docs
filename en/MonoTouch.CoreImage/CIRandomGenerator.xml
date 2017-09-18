@@ -21,8 +21,21 @@
   <Docs>
     <summary>A <see cref="T:MonoTouch.CoreImage.CIFilter" /> whose pixels are randomly colored.</summary>
     <remarks>
-      <para>Each of the color components is independently uniformly distributed</para>
-      <para>The following example shows this filter in use</para>
+      <para>The <see cref="T:Monotouch.CoreImage.CIRandomGenerator" /> is idempotent: it always returns the same data. To retrieve a different random pattern, developers
+        must retrieve the data from a random offset. For instance:</para>
+      <example>
+    <code lang="C#"><![CDATA[
+GKRandomSource src = MyRandomSource; // Initialized previously
+
+var locX = (int)(src.GetNextUniform() * extent - size.Width);
+var locY = (int)(src.GetNextUniform() * extent - size.Height);
+CIImage img = randomGenerator.OutputImage.ImageByCroppingToRect(new CGRect(locX, locY, size.Width, size.Height));
+var xlat = CGAffineTransform.MakeTranslation(-locX, -locY);
+CIImage finalImg = img.ImageByApplyingTransform(xlat);
+    ]]></code>
+</example>
+      <para>Each of the color components is independently uniformly distributed.</para>
+      <para>The following example shows this filter in use:</para>
       <example>
         <code lang="C#"><![CDATA[
 // Create a CIRandomGenerator filter with the input image
