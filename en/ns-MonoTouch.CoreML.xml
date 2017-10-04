@@ -1,6 +1,124 @@
+<?xml version="1.0"?>
 <Namespace Name="MonoTouch.CoreML">
   <Docs>
     <summary>The CoreML namespace provides relatively high-level access to machine learning model runtimes.</summary>
-    <remarks>To be added.</remarks>
+    <remarks>
+      <para>The CoreML namespace, introduced in iOS 11, allows runtime querying of a broad variety of machine-learning models produced by
+        frameworks such as scipy-learn, TensorFlow, and Azure Custom Vision cognitive services. CoreML does not support on-device modification
+        of models or weights, however it does support loading a model from a URL, so developers could use that to download updated models.</para>
+      <para>
+        CoreML relies on a "model" that is distributed as a single .mlmodel file. This model is compiled into a usable form by either using integrated 
+        tools in Xcode, Xamarin Studio, or at the command-line. At the command line, an .mlmodel file can be compiled with <c>xcrun coremlcompiler compile model.mlmodel outputfolder</c>.
+        A compiled model takes the form of a directory called <c>modelname.mlmodelc</c>. The model is then loaded at runtime with code similar to:</para>
+      <example>
+        <code lang="C#"><![CDATA[
+var bundle = NSBundle.MainBundle;
+var assetPath = bundle.GetUrlForResource("MarsHabitatPricer", "mlmodelc");
+NSError mlErr;
+model = MLModel.Create(assetPath, out mlErr);
+    ]]></code>
+      </example>
+      <para>Models in CoreML are fairly "black box" and do not have an extensive API. Rather, the iOS developer must know the input and output names and types the model expects. 
+        For instance, an image-recognition model might expect a <see cref="T:Monotouch.CoreVideo.CVPixelBuffer"/> of size 227x227 identified as "image" and might have two outputs: 
+        a string identified as "classLabel" and a <see cref="T:Monotouch.Foundation.NSDictionary"/> with <see cref="T:Monotouch.Foundation.NSString"/> keys and <see langword="double"/> 
+        values in the range [0,1] representing the confidence of the prediction.
+      </para>
+      <para>Developers must convert their native representations into CoreML-compatible instances of <see cref="T:Monotouch.CoreML.IMLFeatureProvider"/>. The easiest way to do this is 
+        with a <see cref="T:Monotouch.CoreML.MLDictionaryFeatureProvider"/>:</para>
+      <example>
+        <code lang="C#"><![CDATA[
+CVPixelBuffer pixelBuffer = // from image or video stream
+var imageValue = MLFeatureValue.Create(pixelBuffer);
+
+var inputs = new NSDictionary<NSString, NSObject>(new NSString("image"), imageValue);
+
+NSError error, error2;
+var inputFp = new MLDictionaryFeatureProvider(inputs, out error);
+if(error != null)
+{
+	ErrorOccurred(this, new EventArgsT<string>(error.ToString()));
+	return;
+}
+var outFeatures = model.GetPrediction(inputFp, out error2);
+if(error2 != null)
+{
+	ErrorOccurred(this, new EventArgsT<string>(error2.ToString()));
+	return;
+}
+
+var predictionsDictionary = outFeatures.GetFeatureValue("classLabelProbs").DictionaryValue;
+    ]]></code>
+      </example>
+      <para>A more complex, but more flexible, way is to implement <see cref="T:Monotouch.CoreML.IMLFeatureProvider"/>:</para>
+      <example>
+        <code lang="C#"><![CDATA[
+public class MarsHabitatPricerInput : NSObject, IMLFeatureProvider
+{
+	public double SolarPanels { get; set; }
+	public double Greenhouses { get; set; }
+	public double Size { get; set; }
+
+	public NSSet<NSString> FeatureNames => new NSSet<NSString>(new NSString("solarPanels"), new NSString("greenhouses"), new NSString("size"));
+
+	public MLFeatureValue GetFeatureValue(string featureName)
+	{
+		switch (featureName)
+		{
+			case "solarPanels":
+				return MLFeatureValue.Create(SolarPanels);
+			case "greenhouses":
+				return MLFeatureValue.Create(Greenhouses);
+			case "size":
+				return MLFeatureValue.Create(Size);
+			default:
+				return MLFeatureValue.Create(0);
+		}
+	}
+}
+    ]]></code>
+      </example>
+      <para>Getting a prediction occurs synchronously, with a call to <see cref="M:Monotouch.CoreML.MLModel.GetPrediction"/>:</para>
+      <example>
+        <code lang="C#"><![CDATA[
+NSError prErr;
+IMLFeatureProvider outFeatures = model.GetPrediction(pricerInput, out prErr);
+double result = outFeatures.GetFeatureValue("price").DoubleValue;
+    ]]></code>
+      </example>
+      <para>CoreML currently supports:</para>
+      <list type="table">
+        <listheader>
+          <term>Type</term>
+          <description>Variants</description>
+          <description>Produced by:</description>
+        </listheader>
+        <item>
+          <term>Neural networks</term>
+          <description>Convolutional, feed-forward, recurrent</description>
+          <description> Caffe, Keras, Azure Custom Vision</description>
+        </item>
+        <item>
+          <term>Tree ensembles</term>
+          <description>Random forests, boosted trees, decision trees</description>
+          <description> scikit-learn, XGBoost</description>
+        </item>
+        <item>
+          <term>SVMs</term>
+          <description>Scalar and multiclass</description>
+          <description> scikit-learn, LIBSVM</description>
+        </item>
+        <item>
+          <term>Generalized linear models</term>
+          <description>Linear and logistic regression</description>
+          <description>scikit-learn</description>
+        </item>
+        <item>
+          <term>Pipeline models</term>
+          <description>Sequentially chained models</description>
+          <description> scikit-learn</description>
+        </item>
+      </list>
+      <para>Apple has open-sourced (3-clause BSD License) python tools to create CoreML models: https://pypi.python.org/pypi/coremltools</para>
+    </remarks>
   </Docs>
 </Namespace>
