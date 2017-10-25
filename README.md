@@ -7,8 +7,6 @@ to be edited.
 Scripts included in the repository
 ----------
 
-  - **missing**: a C# script (execute directly or run with `csharp`)
-
   - **make all**: run xmllint with the bundled monodoc-ecma.xsl to
       verify the syntax of the documentation in the repository
 
