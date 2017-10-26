@@ -58,9 +58,9 @@
       <para>
         The UIView class is a rectangular area on the screen that is
         responsible for displaying content and handling user interactions
-        with that content. It can also contain other views, allowing you to
+        with that content. It can also contain other views, allowing the developer to
         create complex interactive controls.  UIView can thus be used as
-        either a standalone control, or a full screen of content built from
+        either a standalone control, or as a full screen of content built from
         many other independent UIViews. 
       </para>
       <para>Views have three major responsibilities:</para>
@@ -102,20 +102,19 @@
         <h2>Event Handling</h2>
       </format>
       <para>
-        UIViews can handle touch events in two ways.  You can use the
-        high-level gesture recognizer API to detect and handle gestures, or
-        you can roll your own event handling by using the low-level
+        UIViews can handle touch events in two ways.  Developers use the
+        high-level gesture recognizer API to detect and handle gestures, or roll their own event handling by using the low-level
         interface that provides detailed touch events as they happen: every
         time a finger touches the screen or is lifted as well as motion of
         those fingers.  Both are covered below
       </para>
       <para>
-        When your UIView wants to respond to user input by updating its
-        display, it should call the
+        To cause the UIView to respond to user input by updating its
+        display, developers should call the
         <see cref="M:MonoTouch.UIKit.UIView.SetNeedsDisplay" /> or
-        <see cref="M:MonoTouch.UIKit.UIView.SetNeedsDisplayInRect(System.Drawing.RectangleF)" /> which will queue a call to your
+        <see cref="M:MonoTouch.UIKit.UIView.SetNeedsDisplayInRect(System.Drawing.RectangleF)" /> which will queue a call to the developer's
         <see cref="M:MonoTouch.UIKit.UIView.Draw(System.Drawing.RectangleF)" /> method
-        where you would re-render your control with the new state.
+        where the developer has implemented logic to re-render the control with the new state.
       </para>
       <para>
         Event delivery can be turned off either by setting the
@@ -126,10 +125,10 @@
         delivered to the views.
       </para>
       <para>
-        Events are disabled while animation are playing back.  You can
+        Events are disabled while animation are playing back.  Devs can
         change this behavior when using explicit animations by using the
         <see cref="T:MonoTouch.UIKit.UIViewAnimationOptions" />'s AllowUserInteraction
-        flag in your animation.
+        flag in the animation.
       </para>
       <format type="text/html">
         <h3>Event Handling with Gesture Recognizers</h3>
@@ -176,18 +175,18 @@
         </item>
       </list>
       <para>
-        In addition, you can create your own custom gesture recognizer by
+        In addition, developers can create their own custom gesture recognizer by
         subclassing <see cref="T:MonoTouch.UIKit.UIGestureRecognizer" />.
       </para>
       <para>
-        To use the recognizer, you need to create an instance of the
-        specific kind of recognizer that you need, optionally set some
-        parameters and then you add it to the view by calling
+        Developers use the recognizer by creating an instance of the
+        specific kind of recognizer that is needed, optionally setting some
+        parameters, and adding it to the view by calling
         AddGestureRecognizer.  It is possible to attach multiple gesture
         recognizers to a single view.
       </para>
       <para>
-        For example, the following code create a gesture recognizer that
+        For example, the following code creates a gesture recognizer that
         detects a panning gesture and assigns it to myView:
         
       </para>
@@ -202,10 +201,10 @@ myView.AddGestureRecognizer (recognizer);
         ]]></code>
       </example>
       <para>
-        The parameter passed to your lambda (in this case the "g" parameter)
+        The parameter passed to the lambda (the "g" parameter in the above code)
         is an instance of the gesture recognizer that detected the gesture.
-        You can query the parameters of the recognized query by looking at
-        the properties in the recognizer, the
+        The developr can query the parameters of the recognized query by looking at
+        the properties in the recognizer; the
         <see cref="P:MonoTouch.UIKit.UIGestureRecognizer.State" /> property contains the
         recognizer state.
         
@@ -254,7 +253,7 @@ myView.AddGestureRecognizer (recognizer);
       </para>
       <para>
         
-        iOS creates a T:MonoTouch.UIKit.UIEvent object any time a finger
+        iOS creates a <see cref="T:MonoTouch.UIKit.UIEvent" /> object any time a finger
         touches the screen, moves or is removed from the screen.  The <see cref="T:MonoTouch.UIKit.UIEvent" /> encapsulates all of the touches
         that are taking place on the screen at this point, even those that
         do not belong to this view.  In addition to the <see cref="T:MonoTouch.UIKit.UIEvent" />, there is an <see cref="T:MonoTouch.Foundation.NSSet" /> containing <see cref="T:MonoTouch.UIKit.UITouch" /> objects that represent the state
@@ -262,7 +261,7 @@ myView.AddGestureRecognizer (recognizer);
       </para>
       <para>
         
-        If your application handles touches directly, you might want to
+        If the application handles touches directly, developers can
         override the <see cref="M:MonoTouch.UIKit.UIView.GestureRecognizerShouldBegin(MonoTouch.UIKit.UIGestureRecognizer)" />
         method to control whether an associated
         <see cref="T:MonoTouch.UIKit.UIGestureRecognizer" /> should execute or not.
@@ -283,24 +282,23 @@ var myView = new UIView (new RectangleF (0, 0, 100, 100));
       </example>
       <para>
         Most subclasses of UIView will provide a constructor that takes the
-        initial frame, just like UIView.  For more information on how to do
-        this for your own subclasses, see the section below on subclassing
-        UIView.
+        initial frame, just like UIView.  The section below on subclassing
+        UIView has more information on how to do
+        this.
       </para>
       <para>
-        You will want to configure your view at this point.  One of the most
-        important properties to configure is the
-        <see cref="P:MonoTouch.UIKit.UIView.AutoresizingMask" /> which determines how the
-        view will be resized if you invoke
-        <see cref="M:MonoTouch.UIKit.UIView.SetNeedsLayout()" /> or if the geometry of the
+         The developer should configure the
+        <see cref="P:MonoTouch.UIKit.UIView.AutoresizingMask" /> property, which determines how the
+        view will be resized when
+        <see cref="M:MonoTouch.UIKit.UIView.SetNeedsLayout()" /> is invoked or when the geometry of the
         view container changes (for example, in response to a device
         rotation).
       </para>
       <para>
-        Once you have created a view, you will add it to a container view.
-        For your main screen this could be a UIWindow or it could be the
-        <see cref="P:MonoTouch.UIKit.UIViewController.View" /> property of your current
-        <see cref="T:MonoTouch.UIKit.UIViewController" />, this is done using one of the
+        After creating a view, the developer adds it to a containing view.
+        On the main screen, this could be a UIWindow or it could be the
+        <see cref="P:MonoTouch.UIKit.UIViewController.View" /> property of the current
+        <see cref="T:MonoTouch.UIKit.UIViewController" />. This is done using one of the
         following methods:
       </para>
       <list type="bullet">
@@ -326,10 +324,9 @@ var myView = new UIView (new RectangleF (0, 0, 100, 100));
         </item>
       </list>
       <para>
-        Although you can use the above APIs to add subviews to any
-        UIView, Apple advises developers against extending
-        existing high-level views by adding subviews to them behind their
-        back.  Instead developers should use the public API those high-level
+        Although developers can use the above APIs to add subviews to any
+        UIView, Apple advises against extending
+        existing high-level views by adding subviews to them.  Instead developers should use the public API those high-level
         views expose.
       </para>
       <format type="text/html">
@@ -355,10 +352,9 @@ var myView = new UIView (new RectangleF (0, 0, 100, 100));
       </para>
       <para>
         
-        When you update the <see cref="P:MonoTouch.UIKit.UIView.Bounds" />
+        When the developer updates the <see cref="P:MonoTouch.UIKit.UIView.Bounds" />
         property, it will modify the <see cref="P:MonoTouch.UIKit.UIView.Frame" /> based on the value of the
-        <see cref="P:MonoTouch.UIKit.UIView.Center" />.  You can also change
-        the position of your view by updating the <see cref="P:MonoTouch.UIKit.UIView.Center" /> property.
+        <see cref="P:MonoTouch.UIKit.UIView.Center" />.  Developers can also change the position of a view by updating the <see cref="P:MonoTouch.UIKit.UIView.Center" /> property.
         
       </para>
       <para>
@@ -368,35 +364,17 @@ var myView = new UIView (new RectangleF (0, 0, 100, 100));
       <format type="text/html">
         <h2>Animation</h2>
       </format>
+      <para>Apple recommends that app developers use the <see cref="T:MonoTouch.UIKit.UIViewPropwertyAnimator" /> class to implement animations on their <see cref="T:MonoTouch.UIKit.UIView" /> objects. Apple also discourages, but has not deprecated, any other animation APIs on the <see cref="T:MonoTouch.UIKit.UIView" /> class.</para>
+      <para>Developers can animate changes in the geometry or appearance of a UIView by creating a new <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" />, configuring it, and calling its <see cref="M:MonoTouch.UIKit.UIViewPropertyAnimator.StartAnimation" /> method. Developers can update the animations (for example, to cancel it) by calling the <see cref="M:MonoTouch.UIKit.UIViewPropertyAnimator.AddAnimations" /> method while the animation is in progress. The <format type="text/html"><a href="https://developer.xamarin.com/recipes/ios/animation/coreanimation/animate_a_uiview_using_uikit/">Animate a UIView using UIKit</a></format> recipe shows how to create an cancel an animation by using the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class.</para>
       <para>
-        There are two styles of animations supported by UIViews, implicit
-        animations and explicit animations.
-      </para>
-      <para>
-        Implicit animations happen automatically when you modify the <see cref="P:MonoTouch.UIKit.UIView.Frame" />, <see cref="P:MonoTouch.UIKit.UIView.Bounds" />, <see cref="P:MonoTouch.UIKit.UIView.Center" />, <see cref="P:MonoTouch.UIKit.UIView.Transform" />, <see cref="P:MonoTouch.UIKit.UIView.Alpha" />, <see cref="P:MonoTouch.UIKit.UIView.BackgroundColor" /> or <see cref="P:MonoTouch.UIKit.UIView.ContentStretch" /> properties in a
-        view.  The system will automatically animate the change using the
-        system defaults.  When you modify any of these animatable properties
-        in the view, iOS automatically creates an animation transaction
-        which starts as soon as control returns to the main loop.
-      </para>
-      <para>
-        For example, the following code will animate a view's <see cref="P:MonoTouch.UIKit.UIView.Bounds" /> and
-        <see cref="P:MonoTouch.UIKit.UIView.Center" /></para>
-      <example>
-        <code lang="C#"><![CDATA[
-view.Bounds = new RectangleF (0, 0, 100, 100);
-view.Center = new PointF (200, 200);
-]]></code>
-      </example>
-      <para>
-        Alternatively, you can create animations explicitly by calling the
+        Alternatively, developers can create animations by calling the
         <see cref="M:MonoTouch.UIKit.UIView.BeginAnimations(string)" /> method, configuring the animation, making the
         changes to the animatable properties and then completing the
         transaction by calling <see cref="M:MonoTouch.UIKit.UIView.CommitAnimations()" />.
       </para>
       <para>
-        Once you call <see cref="M:MonoTouch.UIKit.UIView.BeginAnimations(string)" />, you can
-        call these methods to configure the animation:
+        After the developer calls <see cref="M:MonoTouch.UIKit.UIView.BeginAnimations(string)" />, they can
+        call the following methods to configure the animation:
       </para>
       <list type="bullet">
         <item>
@@ -450,11 +428,9 @@ UIView.CommitAnimations ();
 ]]></code>
       </example>
       <para>
-        An alternative to create the transactions and set the configuration
-        options is to use the new <see cref="M:MonoTouch.UIKit.UIView.Animate" /> collection of methods that
-        allow you to specify in a single call the delay, the duration, the
-        animation block and an action to be invoked when the animation
-        completes:
+        Alternatively, developers can create transactions and set configuration
+        options in the <see cref="M:MonoTouch.UIKit.UIView.Animate" /> collection of methods. These methods take, in a single call, the delay, the duration, an animation block,  and an action to be invoked when the animation
+        completes. However, Apple also discourages the use of these APIs. Their use is shown below:
       </para>
       <example>
         <code lang="C#"><![CDATA[
@@ -470,16 +446,13 @@ UIView.Animate (duration, delay, UIViewAnimationOption.Autoreverse,
           ]]></code>
       </example>
       <para>
-        The above is the basic set of animations supported by UIViews.  If
-        you want finer control over animations you can resort to animations
-        done directly using <see cref="N:MonoTouch.CoreAnimation" />.  <see cref="N:MonoTouch.CoreAnimation" /> allows you to
-        animate layers and properties of your C# objects.
+        The above is the basic set of animations supported by UIViews. For finer control over animations, developers can use the  <see cref="N:MonoTouch.CoreAnimation" /> API to animate the layers and properties of their UI elements.
       </para>
       <format type="text/html">
         <h2>Threading</h2>
       </format>
       <para>
-        UIView methods are not thread safe, so you should avoid configuring
+        UIView methods are not thread safe. Developers should avoid configuring
         or invoking any of the UIView static methods from any thread that is
         not the main thread.  Newer versions of MonoTouch catch these
         mistakes in Debug builds by throwing an exception.  See the
@@ -487,9 +460,9 @@ UIView.Animate (duration, delay, UIViewAnimationOption.Autoreverse,
         more information.
       </para>
       <para>
-        If you want to perform some work in a background thread that must
-        update any of the UIView properties or you want to invoke any of the
-        UIView static methods, you should use either the
+        To perform some work in a background thread that must
+        update any of the UIView properties, or to invoke any of the
+        UIView static methods, developers should use either the
         <see cref="M:MonoTouch.Foundation.NSObject.BeginInvokeOnMainThread()" /> or
         <see cref="M:MonoTouch.Foundation.NSObject.InvokeOnMainThread()" /> methods.  Both
         methods take a C# delegate or lambda that is invoked on the main
@@ -527,8 +500,7 @@ void DoSomeWork (UIView view)
       </example>
       <para>
         The following example shows a helper method that can be used to run
-        the provided action on the main thread.  It optimizes for the case
-        where you are calling this from the main thread already, and avoids
+        the provided action on the main thread. It is optimized for calling from the main thread already, and avoids
         a trip to the main loop pump:
       </para>
       <example>
@@ -549,7 +521,7 @@ public static void EnsureInvokedOnMainThread (Action action)
       </format>
       <para>
         Developers will often subclass UIView to provide their own custom
-        views to use.  This section discusses the different classes of
+        views to use. This section discusses the different classes of
         members that developers would overwrite to create their custom
         classes.
       </para>
@@ -557,9 +529,8 @@ public static void EnsureInvokedOnMainThread (Action action)
         <h3>Initialization</h3>
       </format>
       <para>
-        Your subclass of UIView should chain into either the UIView
-        constructor that is initialized with an initial frame (<see cref="C:MonoTouch.UIKit.UIView(System.Drawing.RectangleF)" />).  You
-        would typically do this like this:
+        Subclasses of UIView should chain into either the UIView
+        constructor that is initialized with an initial frame (<see cref="C:MonoTouch.UIKit.UIView(System.Drawing.RectangleF)" />). The following code shows one way to do this:
       </para>
       <example>
         <code lang="C#"><![CDATA[
@@ -572,10 +543,10 @@ public class MyView : UIView {
           ]]></code>
       </example>
       <para>
-        If your object will be deserialized from an archive produced by the
-        UI designer, you would need to chain to the <see cref="C:MonoTouch.UIKit.UIView(MonoTouch.Foundation.NSCoder)" />
-        constructor and also flag the constructor as being the one
-        implementing the selector "initWithCoder:", like this:
+        In an object that will be deserialized from an archive produced by the
+        UI designer, the developer must chain to the <see cref="C:MonoTouch.UIKit.UIView(MonoTouch.Foundation.NSCoder)" />
+        constructor and  flag the constructor as being the one
+        implementing the selector "initWithCoder:", as shown in the code below:
       </para>
       <example>
         <code lang="C#"><![CDATA[
@@ -594,14 +565,13 @@ public class MyView : UIView {
         information on how to make this change and a sample.
       </para>
       <para>
-        If your view will contains any other subviews, you should initialize
-        those values in your constructor.
+        The developer should initialize child views in the constructor for the parent view.
       </para>
       <format type="text/html">
         <h3>Custom Drawing</h3>
       </format>
       <para>
-        To implement custom drawing code in a view, you can subclass the
+        To implement custom drawing code in a view, developers can subclass the
         UIView and override the <see cref="M:MonoTouch.UIKit.UIView.Draw(System.Drawing.RectangleF)" />
         method. The drawing code placed in the Draw method can use <see cref="N:MonoTouch.CoreGraphics" /> to draw with. The steps to draw
         with Core Graphics are:
@@ -652,10 +622,9 @@ public override void Draw (RectangleF rect)
           ]]></code>
       </example>
       <para>
-        The <see cref="M:MonoTouch.UIKit.UIView.Draw" /> method should never be called directly. It is called by iOS
-        during run loop processing. The first time through the run loop, it
-        is called. After that, it will be called on demand whenever the view
-        has been marked as needing display by calling <see cref="M:MonoTouch.UIKit.UIView.SetNeedsDisplay" /> or
+        The developer should not call <see cref="M:MonoTouch.UIKit.UIView.Draw" /> directly. iOS calls it
+        during run loop processing. iOS first calls it the first time through the run loop, and then whenever the view
+        has been marked as needing display with a call to <see cref="M:MonoTouch.UIKit.UIView.SetNeedsDisplay" /> or
         <see cref="M:MonoTouch.UIKit.UIView.SetNeedsDisplayInRect(System.Drawing.RectangleF)" />.
       </para>
       <para>
@@ -674,17 +643,17 @@ public override void Draw (RectangleF rect)
         method to be printed.
       </para>
       <para>
-        If you need to provide a different rendering for the view when
-        printed, you should override the <see cref="M:MonoTouch.UIKit.UIView.DrawRect(System.Drawing.RectangleF,MonoTouch.UIKit.UIView.UIViewPrintFormatter)" />
+        Developers can provide a different rendering for the view when
+        printed by overriding the <see cref="M:MonoTouch.UIKit.UIView.DrawRect(System.Drawing.RectangleF,MonoTouch.UIKit.UIView.UIViewPrintFormatter)" />
         method.
       </para>
       <format type="text/html">
         <h3>Constraints</h3>
       </format>
       <para>
-        If you want your view subclass to use the new constraint-based
-        layout system introduced with iOS 6.0, your subclass needs to
-        respond to the requiresConstraintBasedLayout selector, like this:
+        To use the constraint-based
+        layout system i(ntroduced with iOS 6.0) in a subclassed view, the developer must
+        respond to the requiresConstraintBasedLayout selector, as shown in the following example:
       </para>
       <example>
         <code lang="C#"><![CDATA[
@@ -698,16 +667,15 @@ class MyView : UIView {
           ]]></code>
       </example>
       <para>
-        If your view will use constraints among its own subviews to lay them
-        out, you should override the <see cref="M:P:MonoTouch.UIKit.UIView.UpdateConstraints" /> which is
+        To use constraints to layout the subviews of a view own developers override the <see cref="M:P:MonoTouch.UIKit.UIView.UpdateConstraints" />. This method is
         called before the constraints-based layout is performed.
       </para>
       <para>
         
         Constraints-based layout is performed on the alignment rectangle
         instead of the view's <see cref="P:MonoTouch.UIKit.UIView.Frame" />.
-        The alignment rectangle by default is computed as the <see cref="P:MonoTouch.UIKit.UIView.Frame" /> modified by the <see cref="P:MonoTouch.UIKit.UIView.AlignmentRectInsets" />.  You can
-        change that behavior and provide your own alignment rectangle by
+        The alignment rectangle by default is computed as the <see cref="P:MonoTouch.UIKit.UIView.Frame" /> modified by the <see cref="P:MonoTouch.UIKit.UIView.AlignmentRectInsets" />.  Developers can
+        change that behavior and provide a custom alignment rectangle by
         overriding the <see cref="M:MonoTouch.UIKit.UIView.AlignmentRectForFrame(System.Drawing.RectangleF)" />
         and <see cref="M:MonoTouch.UIKit.UIView.FrameForAlignmentRect(System.Drawing.RectangleF)" />
         methods.
@@ -723,23 +691,21 @@ class MyView : UIView {
         the container's boundaries.
       </para>
       <para>
-        You should set the default <see cref="P:MonoTouch.UIKit.UIView.AutoresizingMask" /> property after
+        Developers should set the default <see cref="P:MonoTouch.UIKit.UIView.AutoresizingMask" /> property after
         initialization.
       </para>
       <para>
-        If your view will be a container for other views, you should
+        For views the will be a container for other views, developers should
         configure their <see cref="P:MonoTouch.UIKit.UIView.AutoresizingMask" /> property.  If the
-        layout behavior provided is not sufficient, you should override the
+        layout behavior provided is not sufficient, the developer should override the
         <see cref="M:MonoTouch.UIKit.UIView.LayoutSubviews()" /> method.
         This method is responsible for updating the <see cref="P:MonoTouch.UIKit.UIView.Frame" /> property of each of the
         subviews.
       </para>
       <para>
-        If the state of your view changes in response to some API calls,
-        instead of changing the layout manually in response to the change,
-        you should invoke the <see cref="M:MonoTouch.UIKit.UIView.SetNeedsLayout()" /> method which will
-        flag the view for a layout.  The layout event will then be processed
-        the next time the main loop runs.  By using this approach, you can
+        For views that change their state in response to some API calls,
+        developers should call the <see cref="M:MonoTouch.UIKit.UIView.SetNeedsLayout()" />, instead of laying out the view themselves. The layout event will then be processed
+        the next time the main loop runs.  By using this approach, develoers can
         coalesce multiple changes to the layout in a single pass.
       </para>
       <para>
@@ -748,26 +714,25 @@ class MyView : UIView {
         contents of the view.
       </para>
       <para>
-        You can override the <see cref="M:MonoTouch.UIKit.UIView.SubviewAdded(MonoTouch.UIKit.UIView)" />
+        Developers can override the <see cref="M:MonoTouch.UIKit.UIView.SubviewAdded(MonoTouch.UIKit.UIView)" />
         and the <see cref="M:MonoTouch.UIKit.UIView.WillRemoveSubview(MonoTouch.UIKit.UIView)" />
-        to track when subviews are added or removed to your UIView.
+        to track when subviews are added or removed to a UIView.
       </para>
       <para>
-        You can override the <see cref="M:MonoTouch.UIKit.UIView.WillMoveToWindow(MonoTouch.UIKit.UIWindow)" />
+        Developers can override the <see cref="M:MonoTouch.UIKit.UIView.WillMoveToWindow(MonoTouch.UIKit.UIWindow)" />
         and the <see cref="M:MonoTouch.UIKit.UIView.MovedToWindow()" /> to
-        track when your view is moved from one <see cref="T:MonoTouch.UIKit.UIWindow" /> to another.
+        track when views are moved from one <see cref="T:MonoTouch.UIKit.UIWindow" /> to another.
       </para>
       <para>
-        You can override the <see cref="M:MonoTouch.UIKit.UIView.WillMoveToSuperview(MonoTouch.UIKit.UIView)" />
+        Developers can override the <see cref="M:MonoTouch.UIKit.UIView.WillMoveToSuperview(MonoTouch.UIKit.UIView)" />
         and the <see cref="M:MonoTouch.UIKit.UIView.MovedToSuperview()" /> to
-        track when your view is added or removed from a superview.
+        track when views are added or removed from a superview.
       </para>
       <format type="text/html">
         <h2>Constraints Based Layout</h2>
       </format>
       <para>
-        Starting with iOS 6.0 there is a new layout system available to
-        developers, the constraints-based layout system.  This system
+        A constraints-based layout system was added in iOS 6.0.  This system
         differs from the traditional layout system in that it uses rules
         (constraints) that describe the relationships between subviews that
         should be preserved.  When views change in size (for example a label
@@ -799,7 +764,7 @@ class MyView : UIView {
         the constructor at initialization time.
       </para>
       <para>
-        For the low-level touch event handling, you should override the <see cref="M:MonoTouch.UIKit.UIResponder.TouchesBegan(MonoTouch.Foundation.NSSet,MonoTouch.UIKit.UIEvent)" />, <see cref="M:MonoTouch.UIKit.UIResponder.TouchesMoved(MonoTouch.Foundation.NSSet,MonoTouch.UIKit.UIEvent)" />, <see cref="M:MonoTouch.UIKit.UIResponder.TouchesEnded(MonoTouch.Foundation.NSSet,MonoTouch.UIKit.UIEvent)" /> and <see cref="M:MonoTouch.UIKit.UIResponder.TouchesCancelled(MonoTouch.Foundation.NSSet,MonoTouch.UIKit.UIEvent)" /> methods.
+        To perform low-level touch event handling, developers override the <see cref="M:MonoTouch.UIKit.UIResponder.TouchesBegan(MonoTouch.Foundation.NSSet,MonoTouch.UIKit.UIEvent)" />, <see cref="M:MonoTouch.UIKit.UIResponder.TouchesMoved(MonoTouch.Foundation.NSSet,MonoTouch.UIKit.UIEvent)" />, <see cref="M:MonoTouch.UIKit.UIResponder.TouchesEnded(MonoTouch.Foundation.NSSet,MonoTouch.UIKit.UIEvent)" /> and <see cref="M:MonoTouch.UIKit.UIResponder.TouchesCancelled(MonoTouch.Foundation.NSSet,MonoTouch.UIKit.UIEvent)" /> methods.
       </para>
       <para>Since iOS 9.0, <see cref="M:MonoTouch.UIKit.UIResponder.TouchesMoved(MonoTouch.Foundation.NSSet,MonoTouch.UIKit.UIEvent)" /> events are raised on supported hardware and configurations for changes in user-applied pressure. The <see cref="P:MonoTouch.UIKit.UITouch.Force" /> property of the <see cref="T:MonoTouch.UIKit.UITouch" /> object in the <paramref name="touches" /> set argument contains the magnitude of the touch that raised the event. The following example shows a basic use:</para>
       <example>
@@ -838,12 +803,11 @@ else {
       </para>
       <para>
         The <see cref="P:MonoTouch.UIKit.UIView.Layer" /> property is a reference to the
-        CALayer owned by the view. You can change the appearance of the view
+        CALayer owned by the view. Developers change the appearance of the view
         by modifying the properties of that layer.
       </para>
       <para>
-        For example, you can add rounded corners to the UIView by modifying
-        the <see cref="P:MonoTouch.CoreAnimation.CALayer.CornerRadius" /> of its layer:
+        For example, modifyng the <see cref="P:MonoTouch.CoreAnimation.CALayer.CornerRadius" /> property of a view's layer change the corner radius of the view:
       </para>
       <example>
         <code lang="C#"><![CDATA[
@@ -851,7 +815,7 @@ view.Layer.CornerRadius = 4;
         ]]></code>
       </example>
       <para>
-        You can add drop shadows by modifying a variety of properties:
+        Developers can add drop shadows:
       </para>
       <example>
         <code lang="C#"><![CDATA[
@@ -861,7 +825,7 @@ view.Layer.ShadowOffset = new SizeF (0, 4);
         ]]></code>
       </example>
       <para>
-        You can even apply a 3D transformation to the layer:
+        Developers can also apply a 3D transformation to the layer:
       </para>
       <example>
         <code lang="C#"><![CDATA[
@@ -869,9 +833,9 @@ view.Layer.Transform = CATransform3D.MakeRotation ((float)(Math.PI / 2), 1, 1, 1
         ]]></code>
       </example>
       <para>
-        Note that this transformation is a full 3D transform, with a
-        perspective element, that is more versatile than UIView's 2D
-        Transform property. If you apply 3D transforms, you should no longer use the Frame property
+        This transformation is a full 3D transform, with a
+        perspective element, and is more versatile than UIView's 2D
+        Transform property. The Frame property is no longer useful after a 3D transformation of this kind.
       </para>
       <format type="text/html">
         <h3>Changing the CALayer</h3>
@@ -940,23 +904,23 @@ public class BlueLayer : CALayer
 	  the device tilt.  </para>
       <para>
 
-	  You can tie to motion effects the same properties that are
+	  Developers can tie to motion effects the same properties that are
 	  animatable already.  UIKit ships with <see cref="T:MonoTouch.UIKit.UIInterpolatingMotionEffect" /> which
-	  allows you to controls a single property in response to a device tilt.
+	  allows control over a single property in response to a device tilt.
 
 	</para>
       <para>
 	  
-	  One you create an effect, you can attach it to a view by
+	  After the developer creates an effect, they attach it to a view by
 	  calling the <see cref="M:MonoTouch.UIKit.UIView.AddMotionEffect" /> method and
-	  remove it by calling <see cref="M:MonoTouch.UIKit.UIView.RemoveMotionEffect" /> method.
+	  remove it by calling the <see cref="M:MonoTouch.UIKit.UIView.RemoveMotionEffect" /> method.
 	  The <see cref="P:MonoTouch.UIKit.UIView.MotionEffects" />
 	  property can also be used to query or set a number of motion
 	  effects at once.
 
 	</para>
       <para>
-	  You can also create your own motion effects by subclassing the <see cref="T:MonoTouch.UIKit.UIMotionEffect" />.
+	  The developer can also create custom motion effects by subclassing the <see cref="T:MonoTouch.UIKit.UIMotionEffect" />.
 	</para>
       <format type="text/html">
         <h2>Tint Color</h2>
@@ -964,10 +928,10 @@ public class BlueLayer : CALayer
       <para>
 
 	Starting with iOS 7, the <see cref="P:MonoTouch.UIKit.UIView.TintColor" /> property will now
-	propagate to subviews.  This allows applications to set a
+	propagate to subviews.  This allows the developer to set a
 	global tint color, and the color will be passed down to
 	subviews for views that matter.  Some UIViews will respond
-	specially based on the TintColor.  You should also set the
+	specially based on the TintColor.  Developers should also set the
 	<see cref="P:MonoTouch.UIKit.UIView.TintAdjustmentMode" /> to
 	control the desaturation when some views are no longer active.
 
