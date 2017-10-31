@@ -364,7 +364,7 @@ var myView = new UIView (new RectangleF (0, 0, 100, 100));
       <format type="text/html">
         <h2>Animation</h2>
       </format>
-      <para>Apple recommends that app developers use the <see cref="T:MonoTouch.UIKit.UIViewPropwertyAnimator" /> class to implement animations on their <see cref="T:MonoTouch.UIKit.UIView" /> objects. Apple also discourages, but has not deprecated, any other animation APIs on the <see cref="T:MonoTouch.UIKit.UIView" /> class.</para>
+      <para>Apple recommends that app developers use the <see cref="T:MonoTouch.UIKit.UIViewPropwertyAnimator" /> class to implement animations on their <see cref="T:MonoTouch.UIKit.UIView" /> objects. Apple also discourages, but has not deprecated, any other animation APIs on the <see cref="T:MonoTouch.UIKit.UIView" /> class. Additionally, developers can implement implicit animations for some or all properties by creating a custom views that has a custom <see cref="P:MonoTouch.UIView.Layer" /> property that provides animation actions for animation keys.</para>
       <para>Developers can animate changes in the geometry or appearance of a UIView by creating a new <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" />, configuring it, and calling its <see cref="M:MonoTouch.UIKit.UIViewPropertyAnimator.StartAnimation" /> method. Developers can update the animations (for example, to cancel it) by calling the <see cref="M:MonoTouch.UIKit.UIViewPropertyAnimator.AddAnimations" /> method while the animation is in progress. The <format type="text/html"><a href="https://developer.xamarin.com/recipes/ios/animation/coreanimation/animate_a_uiview_using_uikit/">Animate a UIView using UIKit</a></format> recipe shows how to create an cancel an animation by using the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class.</para>
       <para>
         Alternatively, developers can create animations by calling the
@@ -429,7 +429,7 @@ UIView.CommitAnimations ();
       </example>
       <para>
         Alternatively, developers can create transactions and set configuration
-        options in the <see cref="M:MonoTouch.UIKit.UIView.Animate" /> collection of methods. These methods take, in a single call, the delay, the duration, an animation block,  and an action to be invoked when the animation
+        options in the <see cref="M:MonoTouch.UIKit.UIView.Animate" /> collection of methods. These methods take, in a single call, the delay, the duration, an animation block, and an action to be invoked when the animation
         completes. However, Apple also discourages the use of these APIs. Their use is shown below:
       </para>
       <example>
@@ -446,8 +446,64 @@ UIView.Animate (duration, delay, UIViewAnimationOption.Autoreverse,
           ]]></code>
       </example>
       <para>
-        The above is the basic set of animations supported by UIViews. For finer control over animations, developers can use the  <see cref="N:MonoTouch.CoreAnimation" /> API to animate the layers and properties of their UI elements.
+        The above is the basic set of animations that are directly supported by UIViews. For finer control over animations, developers can use the  <see cref="N:MonoTouch.CoreAnimation" /> API to animate the layers and properties of their UI elements. While implicit animation is disabled for the default layer of a UIView, developers can extend the <see cref="T:MonoTouch.UIKit.UIView" /> class to create a derived UIView that contain a derived <see cref="T:MonoTouch.CoreAnimation.CALayer" /> that handles animation action keys correctly.
       </para>
+      <example>
+          <para>To enable implicit animation, the developer first creates a custom layer that supplies customized animations for the keys or combinations of keys that the layer will handle. The following example animates the position and bounds, which are, for example, both updated when the frame is updated:</para>
+          <code lang="C#"><![CDATA[
+public class CustomLayer : CALayer
+{
+  public CustomLayer(IntPtr ptr) : base(ptr)
+  {
+
+  }
+
+  public override CAAnimation AnimationForKey(string key)
+  {
+      CABasicAnimation animation = CABasicAnimation.FromKeyPath(key);
+      animation.From = this.ValueForKey(new NSString(key));
+      animation.Duration = 1f;
+      return animation;
+  }
+
+  override public NSObject ActionForKey(string key)
+  {
+      // To animate all property changess:
+      // return this.AnimationForKey(key);
+      
+      // To animate position and bounds changes
+      if (key == "position" || key == "bounds")
+      {
+          return this.AnimationForKey(key);
+      }
+      else
+      {
+          return base.ActionForKey(key);
+      }
+  }
+}
+]]></code>
+      <para>Then, the developer extends UIView, exporting the "layerClass" selector to return a class for the custom layer created above:</para>
+      <code lang="C#"><![CDATA[
+public class CustomView : UIView
+{
+  public CustomView(CGRect r) : base(r)
+  {
+  }
+
+  [Export("layerClass")]
+  public static ObjCRuntime.Class GetLayerClass()
+  {
+      return new ObjCRuntime.Class(typeof(CustomLayer));
+  }
+}]]></code>
+      <para>Finally, when the property is set, the changed property is animated with the animation properties that were specified by the custom layer:</para>
+      <code lang="C#"><![CDATA[
+InvokeOnMainThread(() =>
+              {
+                  myCustomView.Frame = new CGRect(240, 30, 300, 100);
+              });]]></code>
+      </example>
       <format type="text/html">
         <h2>Threading</h2>
       </format>
@@ -2496,7 +2552,8 @@ myView.AddSubviews (label, button, entry, image1, image2);
         <param name="animation">Code that contains the changes that you will apply to your view.</param>
         <summary>Animates the property changes that take place in the specified action.</summary>
         <remarks>
-          <para>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+            <para>
             This uses the CurveEaseOut and TransitionNone flags for the animation.
           </para>
           <example>
@@ -2543,6 +2600,7 @@ UIView.Animate (3, () => { label.Alpha = 0; });
         <param name="animation">Code containing the changes that you will apply to your view.</param>
         <summary>Animates the property changes that take place in the specified action.</summary>
         <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
           <para>
             This uses the CurveEaseOut and TransitionNone flags for the animation.
           </para>
@@ -2581,6 +2639,7 @@ UIView.Animate (3, () => { label.Alpha = 0; });
         <param name="completion">Code that is invoked when the animation completes.</param>
         <summary>Animates the property changes that take place in the specified action and invokes a completion callback when the animation completes.</summary>
         <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
           <para>
             This uses The CurveEaseOut and TransitionNone flags for the animation.
           </para>
@@ -2626,6 +2685,7 @@ completion: () => { view.RemoveFromSuperview (); });
         <param name="completion">Code that is invoked when the animation completes.</param>
         <summary>Animates the property changes that take place in the specified action and invokes a completion callback when the animation completes.</summary>
         <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
           <para>
             This uses the CurveEaseOut and TransitionNone flags for the animation.
           </para>
@@ -2668,6 +2728,7 @@ UIView.Animate (3, () => { label.Alpha = 0; });
         <param name="completion">Code that is invoked when the animation completes.</param>
         <summary>Creates an animation action that you can use to set up a keyframe-based animation. This action animates the property changes that take place in the specified action and invokes a completion callback when the animation completes.</summary>
         <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
           <example>
             <code lang="C#"><![CDATA[
 // Animates hiding the label by setting the alpha to zero over three seconds.
@@ -2715,7 +2776,9 @@ UIView.Animate (
         <param name="animation">Code containing the changes that you will apply to your view.</param>
         <param name="completion">Code that is invoked when the animation completes.</param>
         <summary>Invokes animation changes to one or more views by specifying duration, delay, options, and a completion handler.</summary>
-        <remarks>This method initiates a set of animations that areto be performed on this view. The action indicated in the animations parameter contains the code for the animation of the properties of one or more views.</remarks>
+        <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+        <para>This method initiates a set of animations that areto be performed on this view. The action indicated in the animations parameter contains the code for the animation of the properties of one or more views.</para></remarks>
       </Docs>
     </Member>
     <Member MemberName="AnimateAsync" apistyle="classic">
@@ -2738,6 +2801,7 @@ UIView.Animate (
         <summary>Animates the property changes that take place in the specified <paramref name="animation" /> as an asynchronous operation.</summary>
         <returns>A <see cref="T:System.Threading.Task&lt;T&gt;" /> whose <see cref="P:System.Threading.Task.Result" /> indicates whether the animation ran to completion or not.</returns>
         <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
           <example>
             <code lang="C#"><![CDATA[
 async void HideAsync()
@@ -2771,7 +2835,9 @@ async void HideAsync()
         <param name="animation">Code containing the changes that you will apply to your view.</param>
         <summary>Animates the property changes that take place in the specified <paramref name="animation" /> as an asynchronous operation.</summary>
         <returns>Indicates whether the animation ran to completion or not.</returns>
-        <remarks>To be added.</remarks>
+        <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AnimateKeyframes" apistyle="classic">
@@ -2818,7 +2884,9 @@ async void HideAsync()
         <param name="animations">An action object that contains the changes to be committed to the views.</param>
         <param name="completion">An action object that is to be executed when the animation sequence ends.</param>
         <summary>Animates the specified <paramref name="animations" /> action, in which keyframe animations may be used.</summary>
-        <remarks>Creates an animation action that is to be used to set up a keyframe-based animation.
+        <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+        <para>Creates an animation action that is to be used to set up a keyframe-based animation.</para>
         </remarks>
       </Docs>
     </Member>
@@ -2867,7 +2935,10 @@ async void HideAsync()
         <param name="animations">An action object that contains the changes to be committed to the views.</param>
         <param name="completion">An action object that is to be executed when the animation sequence ends.</param>
         <summary>Creates an animation action object that is to be used to set up keyframe-based animations for the current view.</summary>
-        <remarks>Creates an animation action that is to be used to set up a keyframe-based animation.</remarks>
+        <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+        <para>Creates an animation action that is to be used to set up a keyframe-based animation.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AnimateKeyframesAsync" apistyle="classic">
@@ -2907,6 +2978,7 @@ async void HideAsync()
           <para>A task that represents the asynchronous AnimateKeyframes operation.   The value of the TResult parameter is a MonoTouch.UIKit.UICompletionHandler.</para>
         </returns>
         <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
           <para>Keyframe sequences must be added using <see cref="M:MonoTouch.UIKit.UIView.AddKeyframeWithRelativeStartTime" />.</para>
           <para>Note that the start time and duration of the animation components of <paramref name="animations" /> are percentages of the overall animation <paramref name="duration" />. For instance, in the following example, the third keyframe starts at 1.5 seconds and takes 1.5 seconds to complete:</para>
           <example>
@@ -2975,7 +3047,9 @@ async void AnimateAsync()
         <param name="animations">This designates an action object that contains the changes to be committed to the views.</param>
         <summary>Animates the specified action, in which keyframe animations may be used.</summary>
         <returns>Boolean indicating whether animations finished before a completion handler was called.</returns>
-        <remarks>To be added.</remarks>
+        <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AnimateNotify" apistyle="classic">
@@ -3022,6 +3096,7 @@ async void AnimateAsync()
         </param>
         <summary>Animates the property changes that take place in the specified action.</summary>
         <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
         </remarks>
         <related type="recipe" href="http://docs.xamarin.com/ios/recipes/Animation/CoreAnimation/Animate_Using_Blocks" />
         <altmember cref="M:MonoTouch.UIKit.UIView.Animate" />
@@ -3068,7 +3143,9 @@ async void AnimateAsync()
         <param name="animation">Code containing the changes that you will apply to your view.</param>
         <param name="completion">The method to invoke when the animation has completed.</param>
         <summary>Animates the property changes that take place in the specified action.</summary>
-        <remarks>To be added.</remarks>
+        <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AnimateNotify" apistyle="classic">
@@ -3119,6 +3196,7 @@ async void AnimateAsync()
         </param>
         <summary>Animates the property changes that take place in the specified action and invokes a completion callback when the animation completes.</summary>
         <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
         </remarks>
         <related type="recipe" href="http://docs.xamarin.com/ios/recipes/Animation/CoreAnimation/Animate_Using_Blocks" />
         <altmember cref="M:UIKit.UIView.Animate" />
@@ -3169,7 +3247,9 @@ async void AnimateAsync()
         <param name="animation">Code containing the changes that you will apply to your view.</param>
         <param name="completion">The method to invoke when the animation has completed.</param>
         <summary>Animates the property changes that take place in the specified action and invokes a completion callback when the animation completes.</summary>
-        <remarks>To be added.</remarks>
+        <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AnimateNotify" apistyle="unified">
@@ -3224,7 +3304,9 @@ async void AnimateAsync()
           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
         </param>
         <summary>Executes a view animation that uses a timing curve that corresponds to the activity of a physical spring.</summary>
-        <remarks>To be added.</remarks>
+        <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AnimateNotify" apistyle="classic">
@@ -3278,7 +3360,9 @@ async void AnimateAsync()
           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
         </param>
         <summary>Animates the specified property changes with an added spring-like effect.</summary>
-        <remarks>To be added.</remarks>
+        <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AnimateNotifyAsync" apistyle="classic">
@@ -3313,7 +3397,9 @@ async void AnimateAsync()
         <returns>
           <para>A task that represents the asynchronous AnimateNotify operation. The value of the TResult parameter is a MonoTouch.UIKit.UICompletionHandler.</para>
         </returns>
-        <remarks />
+        <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AnimateNotifyAsync" apistyle="unified">
@@ -3347,7 +3433,9 @@ async void AnimateAsync()
         <param name="animation">Delay before the animation begins.</param>
         <summary>Animates the property changes that take place in the specified block and invokes a completion callback when the animation completes.</summary>
         <returns>System.Threading.Tasks.Task&lt;System.Boolean&gt;</returns>
-        <remarks>To be added.</remarks>
+        <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AnimateNotifyAsync" apistyle="classic">
@@ -3384,7 +3472,9 @@ async void AnimateAsync()
         <param name="animation">The changes to be applied to the view.</param>
         <summary>Executes the specified <paramref name="animation" /> as an asynchronous operation.</summary>
         <returns>A <see cref="T:System.Threading.Task`1" /> whose <see cref="P:System.Threading.Result" /> indicates whether the <paramref name="animations" /> completed.</returns>
-        <remarks>To be added.</remarks>
+        <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AnimateNotifyAsync" apistyle="unified">
@@ -3422,7 +3512,9 @@ async void AnimateAsync()
         <param name="animation">The changes to be applied to the view.</param>
         <summary>Executes the specified <paramref name="animation" /> as an asynchronous operation.</summary>
         <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AnimateNotifyAsync" apistyle="unified">
@@ -3467,6 +3559,7 @@ async void AnimateAsync()
           <para>A task that represents the asynchronous AnimateNotify operation.   The value of the TResult parameter is a MonoTouch.UIKit.UICompletionHandler.</para>
         </returns>
         <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
           <para copied="true">The AnimateNotifyAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
           <para copied="true">To be added.</para>
         </remarks>
@@ -3513,6 +3606,7 @@ async void AnimateAsync()
           <para>A task that represents the asynchronous AnimateNotify operation.   The value of the Result parameter is a MonoTouch.UIKit.UICompletionHandler.</para>
         </returns>
         <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
         </remarks>
       </Docs>
     </Member>
@@ -3542,6 +3636,7 @@ async void AnimateAsync()
         <summary>Specifies whether animations are displayed or not.</summary>
         <value>The default value is <see langword="true" />.</value>
         <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
           <para>Whether this is <see langword="true" /> or <see langword="false" />, the code inside animation blocks will execute. A <see langword="false" /> value simply means the animation does not display.</para>
           <para>Setting this value during an existing animation will not modify that animation's display.</para>
         </remarks>
@@ -3568,7 +3663,8 @@ async void AnimateAsync()
       <Docs>
         <summary>This event is raised when the animations will end.</summary>
         <remarks>
-          Notice that these events are only fired as long as the application does not install its own animation delegate by calling <see cref="M:MonoTouch.UIKit.UIView.SetAnimationDelegate(MonoTouch.Foundation.NSObject)" />. 
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+          <para>Notice that these events are only fired as long as the application does not install its own animation delegate by calling <see cref="M:MonoTouch.UIKit.UIView.SetAnimationDelegate(MonoTouch.Foundation.NSObject)" />.</para> 
         </remarks>
       </Docs>
     </Member>
@@ -3592,7 +3688,8 @@ async void AnimateAsync()
       <Docs>
         <summary>This event is raised when the animations will start.</summary>
         <remarks>
-          Notice that these events are only fired as long as the application does not install its own animation delegate by calling <see cref="M:MonoTouch.UIKit.UIView.SetAnimationDelegate(MonoTouch.Foundation.NSObject)" />. 
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+          <para>Notice that these events are only fired as long as the application does not install its own animation delegate by calling <see cref="M:MonoTouch.UIKit.UIView.SetAnimationDelegate(MonoTouch.Foundation.NSObject)" />.</para> 
         </remarks>
       </Docs>
     </Member>
@@ -4050,7 +4147,7 @@ UIView.CommitAnimations ();
         <param name="context">A handle to custom data that provides context for the animation.</param>
         <summary>Indicates the beginning of an animation block</summary>
         <remarks>
-          <para>Application developers should prefer to use the more compact syntax of the <see cref="M:MonoTouch.UIKit.UIView.Animate" /> method.</para>
+          <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
           <para>If no native data is being used for <paramref name="context" />, application developers should specify <paramref name="context" /> as <see cref="F:System.IntPtr.Zero" />.        </para>
         </remarks>
       </Docs>
@@ -4668,7 +4765,7 @@ void Setup ()
       <Docs>
         <summary>Indicates the end of an animation block.</summary>
         <remarks>
-          <para>Application developers should prefer to use the more compact syntax of the <see cref="M:MonoTouch.UIKit.UIView.Animate" /> method.</para>
+          <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
           <para>Older versions of iOS used a matched set of <see cref="M:MonoTouch.UIKit.UIView.BeginAnimations" /> and <see cref="M:MonoTouch.UIKit.UIView.CommitAnimations" /> to specify an animation block. The following code, taken from the "Animate a UIView using UIKit" recipe, shows the technique:</para>
           <example>
             <code lang="C#"><![CDATA[
@@ -7987,6 +8084,7 @@ void Setup ()
         <summary>The Core Animation layer used for rendering.</summary>
         <value>Returns the <see cref="T:MonoTouch.CoreAnimation.CALayer" /> that the <see cref="T:MonoTouch.UIKit.UIView" /> is being rendered on.</value>
         <remarks>
+            <para>The <see cref="T:MonoTouch.CoreAnimation.CALayer" /> object that is returned does not support implicit animations. To support implicit animations, developers must create a type derived from UIView that exports the "layerClass" selector to return the <see cref="T:ObjCRuntime.Class" /> for a custom layer that implements the desired animations. The remarks in <see cref="T:MonoTouch.UIKit.UIView" /> have more information in the Animation section.</para>
           <para>This method will not return <see langword="null" />.</para>
           <para>The <see cref="T:MonoTouch.UIKit.UIView" /> and the <see cref="T:MonoTouch.CoreAnimation.CALayer" /> are tightly coupled and should not be reassigned.</para>
           <para tool="threads">This can be used from a background thread.</para>
@@ -9104,7 +9202,9 @@ void Setup ()
       <Docs>
         <param name="actionsWithoutAnimation">View transition code that is to be performed without animation.</param>
         <summary>Applies a set of changes to a view with a guarantee that animations will not be used.</summary>
-        <remarks>To be added.</remarks>
+        <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="PointInside">
@@ -10084,6 +10184,7 @@ void Setup ()
         <param name="curve">A curve used to animate the property changes.</param>
         <summary>Sets the animation curve for this animation transaction.</summary>
         <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
         </remarks>
       </Docs>
     </Member>
@@ -10113,6 +10214,7 @@ void Setup ()
         <param name="delay">Animation delay in seconds.</param>
         <summary>Sets the animation delay for this animation transaction.</summary>
         <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
         </remarks>
       </Docs>
     </Member>
@@ -10142,7 +10244,7 @@ void Setup ()
         <param name="del">Delegate object used to define the methods registered using the "SetAnimationDidStopSelector".</param>
         <summary>Allows the app developer to create a custom animation delegate.</summary>
         <remarks>
-          <para>This method is discouraged for applications targeting iOS 4+.</para>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
           <para>This method, with <see cref="M:MonoTouch.UIKit.UIView.SetAnimationWillStartSelector" /> and <see cref="M:MonoTouch.UIKit.UIView.SetAnimationDidStopSelector" /> allows the application developer to register a custom delegate object for animations created using the now-discouraged <see cref="M:MonoTouch.UIKit.UIView.BeginAnimations" /> / <see cref="M:MonoTouch.UIKit.UIView.CommitAnimations" /> method, rather than the preferred block-based animations.</para>
         </remarks>
       </Docs>
@@ -10173,7 +10275,7 @@ void Setup ()
         <param name="sel">Delegate object used to define the methods registered using the "SetAnimationDidStopSelector"</param>
         <summary>Specifies the selector to be used by a custom animation delegate when animation ends.</summary>
         <remarks>
-          <para>This method is discouraged for applications targeting iOS 4+.</para>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
           <para>This method, with <see cref="M:MonoTouch.UIKit.UIView.SetAnimationDelegate" /> and <see cref="M:MonoTouch.UIKit.UIView.SetAnimationWillStartSelector" />, can be used to create a custom animation delegate.</para>
         </remarks>
       </Docs>
@@ -10204,6 +10306,7 @@ void Setup ()
         <param name="duration">Duration in seconds.</param>
         <summary>Sets the duration for this animation transaction.</summary>
         <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
         </remarks>
       </Docs>
     </Member>
@@ -10232,7 +10335,9 @@ void Setup ()
       <Docs>
         <param name="repeatAutoreverses">True if this animation should autoreverse when it completes.</param>
         <summary>Sets whether this animation transaction will automatically reverse when it completes.</summary>
-        <remarks>To be added.</remarks>
+        <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SetAnimationRepeatCount">
@@ -10261,6 +10366,7 @@ void Setup ()
         <param name="repeatCount">The repeat count for this transaction.</param>
         <summary>Sets the repeat count for this animation transaction.</summary>
         <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
         </remarks>
       </Docs>
     </Member>
@@ -10289,7 +10395,9 @@ void Setup ()
       <Docs>
         <param name="startDate">Start time defined to begin the animations.</param>
         <summary>Specifies when the animation should begin.</summary>
-        <remarks>To be added.</remarks>
+        <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SetAnimationTransition">
@@ -10321,7 +10429,9 @@ void Setup ()
         <param name="forView">The view to which to apply the transition.</param>
         <param name="cache">Set to YES, if before and after images of the view are to be rendered once and used to create frames in the animation; set to NO, when the view and its contents are to be updated for each frame of the transition animation</param>
         <summary>Sets a transition to be used during an animation block.</summary>
-        <remarks>To be added.</remarks>
+        <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SetAnimationWillStartSelector">
@@ -10350,7 +10460,7 @@ void Setup ()
         <param name="sel">A message that is sent to the animation delegate before the animations commence.</param>
         <summary>Specifies the selector to be used by a custom animation delegate when animation is about to begin.</summary>
         <remarks>
-          <para>This method is discouraged for applications targeting iOS 4+.</para>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
           <para>This method, with <see cref="M:MonoTouch.UIKit.UIView.SetAnimationDelegate" /> and <see cref="M:MonoTouch.UIKit.UIView.SetAnimationDidStopSelector" />, can be used to create a custom animation delegate.</para>
         </remarks>
       </Docs>
@@ -12519,7 +12629,7 @@ yellowView.Transform = CGAffineTransform.MakeRotation((float)(Math.PI / 10));
         <param name="completion">A <see cref="T:MonoTouch.Foundation.NSAction" /> to be executed at the end of the animation. This parameter may be <see langword="null" />.</param>
         <summary>Specifies a transition animation to be used between the specified <see cref="T:MonoTouch.UIKit.UIView" />s.</summary>
         <remarks>
-          <para>Application developers should prefer to use the method <see cref="M:MonoTouch.UIKit.UIView.TransitionNotify" />, whose behavior is identical, but which has a <see cref="T:MonoTouch.UIKit.UICompletionHandler" /> instead of an <see cref="T:MonoTouch.Foundation.NSAction" /> for its completion hander. The <see cref="T:MonoTouch.UIKit.UICompletionHandler" /> receives a parameter indicating whether the animation completed successfully or not.</para>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
           <para>This static method provides an animation that shows the transition from <paramref name="fromView" /> to <paramref name="toView" />.</para>
           <para>If <paramref name="duration" /> is less than or equal to 0, no animation is displayed, but <paramref name="completion" /> is executed.</para>
           <para> If <paramref name="options" /> does not include <see cref="P:MonoTouch.UIKit.UIViewAnimationOptions.ShowHideTransitionViews" />, <paramref name="fromView" /> is removed from it's <see cref="P:MonoTouch.UIKit.UIView.Superview" />'s view hierarchy and <paramref name="toView" /> is inserted into that <see cref="T:MonoTouch.UIKit.UIView" />'s <see cref="P:MonoTouch.UIKit.UIView.Subviews" />. If <paramref name="options" /> includes <see cref="P:MonoTouch.UIKit.UIViewAnimationOptions.ShowHideTransitionViews" />, <paramref name="toView" /> and <paramref name="fromView" /> are not removed and added to the view hierarchy of <paramref name="toView" />'s <see cref="P:MonoTouch.UIKit.UIView.Superview" />, but instead <paramref name="fromView" /> is hidden and <paramref name="toView" /> is shown (both must have the same <see cref="P:MonoTouch.UIKit.UIView.Superview" />.)</para>
@@ -12556,7 +12666,9 @@ yellowView.Transform = CGAffineTransform.MakeRotation((float)(Math.PI / 10));
         <param name="options">A mask of options to be used with the animation.</param>
         <param name="completion">An action to be executed at the end of the animation.</param>
         <summary>Specifies a transition animation on the specified collection view.</summary>
-        <remarks>To be added.</remarks>
+        <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Transition" apistyle="classic">
@@ -12589,7 +12701,7 @@ yellowView.Transform = CGAffineTransform.MakeRotation((float)(Math.PI / 10));
         <param name="completion">An <see cref="T:MonoTouch.Foundation.NSAction" /> to be executed at the end of the animation. This parameter may be <see langword="null" />.</param>
         <summary>Specifies a transition animation on the specified collection view.</summary>
         <remarks>
-          <para>Application developers should prefer to use the method <see cref="M:MonoTouch.UIKit.UIView.TransitionNotify" />, whose behavior is identical, but which has a <see cref="T:MonoTouch.UIKit.UICompletionHandler" /> instead of an <see cref="T:MonoTouch.Foundation.NSAction" /> for its completion hander. The <see cref="T:MonoTouch.UIKit.UICompletionHandler" /> receives a parameter indicating whether the animation completed successfully or not.</para>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
           <para>This static method specifies an animation within the <paramref name="withView" /> container <see cref="T:MonoTouch.UIKit.UIView" />.</para>
           <para>If duration is less than or equal to 0, no animation is displayed, but both <paramref name="animation" /> and <paramref name="completion" /> are executed.</para>
           <para>The <paramref name="animation" /> action may animate addition, removal, showing, or hiding subviews. If other animations are desired, the application developer must include <see cref="P:MonoTouch.UIKit.UIViewAnimationOptions.AllowAnimatedContent" /> in the <paramref name="options" />.</para>
@@ -12627,7 +12739,9 @@ yellowView.Transform = CGAffineTransform.MakeRotation((float)(Math.PI / 10));
         <param name="animation">Action object containing  changes to make to the specified view.</param>
         <param name="completion">Action object for execution when the animation sequence completes.</param>
         <summary>Specifies a transition animation on the specified collection view.</summary>
-        <remarks>To be added.</remarks>
+        <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="TransitionNotify">
@@ -12676,6 +12790,7 @@ yellowView.Transform = CGAffineTransform.MakeRotation((float)(Math.PI / 10));
         </param>
         <summary>Specifies a transition animation to be used between the specified <see cref="T:MonoTouch.UIKit.UIView" />s.</summary>
         <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
         </remarks>
       </Docs>
     </Member>
@@ -12727,6 +12842,7 @@ yellowView.Transform = CGAffineTransform.MakeRotation((float)(Math.PI / 10));
         </param>
         <summary>Specifies a transition animation on the specified collection view.</summary>
         <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
         </remarks>
       </Docs>
     </Member>
@@ -12775,7 +12891,9 @@ yellowView.Transform = CGAffineTransform.MakeRotation((float)(Math.PI / 10));
         <param name="animation">Action containing the animation and state manipulation of the view.</param>
         <param name="completion">The method to invoke when the transition completes.</param>
         <summary>Creates a transition animation action that is used for the current container view.</summary>
-        <remarks>To be added.</remarks>
+        <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="TransitionNotifyAsync">
@@ -12812,7 +12930,9 @@ yellowView.Transform = CGAffineTransform.MakeRotation((float)(Math.PI / 10));
         <returns>
           <para>A task that represents the asynchronous TransitionNotify operation.   The value of the TResult parameter is a MonoTouch.UIKit.UICompletionHandler.</para>
         </returns>
-        <remarks />
+        <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="TransitionNotifyAsync" apistyle="classic">
@@ -12851,7 +12971,9 @@ yellowView.Transform = CGAffineTransform.MakeRotation((float)(Math.PI / 10));
         <returns>
           <para>A task that represents the asynchronous TransitionNotify operation.   The value of the TResult parameter is a MonoTouch.UIKit.UICompletionHandler.</para>
         </returns>
-        <remarks />
+        <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="TransitionNotifyAsync" apistyle="unified">
@@ -12889,7 +13011,9 @@ yellowView.Transform = CGAffineTransform.MakeRotation((float)(Math.PI / 10));
         <param name="animation">An action containing the animation and state manipulation of the view.</param>
         <summary>Specifies a transition animation on the specified collection view.</summary>
         <returns>A task that represents the asynchronous TransitionNotify operation. </returns>
-        <remarks>To be added.</remarks>
+        <remarks>
+            <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:MonoTouch.UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="TranslatesAutoresizingMaskIntoConstraints">
