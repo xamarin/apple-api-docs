@@ -446,10 +446,10 @@ UIView.Animate (duration, delay, UIViewAnimationOption.Autoreverse,
           ]]></code>
       </example>
       <para>
-        The above is the basic set of animations that are directly supported by the UIView class. For finer control over animations, developers can use the  <see cref="N:MonoTouch.CoreAnimation" /> API to animate the layers and properties of their UI elements. While implicit animation is disabled for the default layer of a UIView, developers can extend the <see cref="T:MonoTouch.UIKit.UIView" /> class to create a derived UIView that contain a derived <see cref="T:MonoTouch.CoreAnimation.CALayer" /> that handles animation action keys correctly.
+        The above is the basic set of animations that are directly supported by the UIView class. For finer control over animations, developers can use the  <see cref="N:MonoTouch.CoreAnimation" /> API to animate properties on their UI elements. While implicit animation is disabled for the default layer of a UIView, developers can extend the <see cref="T:MonoTouch.UIKit.UIView" /> class to create a derived UIView that contain a derived <see cref="T:MonoTouch.CoreAnimation.CALayer" /> that handles animation action keys correctly. Developers should note that animated properties that are changed when adding a subview will be animated during the addition if their default value differs from the final value. For example, the "bounds" and "position" keys, if captured and animated, will cause added subviews to animate in from the origin of the screen.
       </para>
       <example>
-          <para>To enable implicit animation, the developer first creates a custom layer that supplies customized animations for the keys or combinations of keys that the layer will handle. The following example animates the position and bounds, which are, for example, both updated when the frame is updated:</para>
+          <para>To enable implicit animation, the developer first creates a custom layer that supplies customized animations for the keys or combinations of keys that the layer will handle. The following custom layer example animates the corner radius and transparency for custom views that use it:</para>
           <code lang="C#"><![CDATA[
 public class CustomLayer : CALayer
 {
@@ -468,11 +468,7 @@ public class CustomLayer : CALayer
 
   override public NSObject ActionForKey(string key)
   {
-      // To animate all property changes:
-      // return this.AnimationForKey(key);
-      
-      // To animate position and bounds changes:
-      if (key == "position" || key == "bounds")
+      if (key == "cornerRadius" || key == "opacity")
       {
           return this.AnimationForKey(key);
       }
@@ -499,10 +495,11 @@ public class CustomView : UIView
 }]]></code>
       <para>Finally, when the property is set, the changed property is animated with the animation properties that were specified by the custom layer:</para>
       <code lang="C#"><![CDATA[
-InvokeOnMainThread(() =>
-              {
-                  myCustomView.Frame = new CGRect(240, 30, 300, 100);
-              });]]></code>
+fadeAndRound = () =>
+          {
+              redView.Layer.CornerRadius = 40;
+              redView.Alpha = 0.5f;
+          };]]></code>
       </example>
       <format type="text/html">
         <h2>Threading</h2>
