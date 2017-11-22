@@ -1,4 +1,4 @@
-<Namespace Name="MonoTouch.HealthKit">
+﻿<Namespace Name="MonoTouch.HealthKit">
   <Docs>
     <summary>The HealthKit namespace provides secure data storage and retrieval of health-related information.</summary>
     <remarks>
@@ -19,7 +19,7 @@ var success = await hks.RequestAuthorizationToShareAsync (new NSSet (new [] { te
         
           ]]></code>
       </example>
-      <para>The result of the <see cref="T:MonoTouch.HealthKit.HKHealthStore.RequestAuthorizationtoShareAsync" /> method indicates only that the user interacted with the permissions dialog, it does not indicate whether the user allowed any data sharing. For that, applications can use the <see cref="M:MonoTouch.HealthKit.HKHealthStore.GetAuthorizationStatus"/> method:</para>
+      <para>The result of the <see cref="T:HealthKit.HKHealthStore.RequestAuthorizationtoShareAsync" /> method indicates only that the user interacted with the permissions dialog, it does not indicate whether the user allowed any data sharing. For that, applications can use the <see cref="M:HealthKit.HKHealthStore.GetAuthorizationStatus" /> method:</para>
       <example>
         <code lang="C#"><![CDATA[
 var access = healthKitStore.GetAuthorizationStatus (HKObjectType.GetQuantityType (HKQuantityTypeIdentifierKey.HeartRate));
@@ -30,12 +30,12 @@ if (access.HasFlag (HKAuthorizationStatus.SharingAuthorized)) {
       <format type="text/html">
         <h2>Creating and storing data</h2>
       </format>
-      <para>Once permissions have been granted, creating and storing data involves creating an <see cref="T:MonoTouch.HealthKit.HKSample" /> of a particular <see cref="T:MonoTouch.HealthKit.HKSampleType"/> and then calling <see cref="M:MonoTouch.HealthKit.HKHealthStore.SaveObject"/> or <see cref="M:MonoTouch.HealthKit.HKHealthStore.SaveObjectAsync"/>. </para>
+      <para>Once permissions have been granted, creating and storing data involves creating an <see cref="T:HealthKit.HKSample" /> of a particular <see cref="T:HealthKit.HKSampleType" /> and then calling <see cref="M:HealthKit.HKHealthStore.SaveObject" /> or <see cref="M:HealthKit.HKHealthStore.SaveObjectAsync" />. </para>
       <format type="text/html">
         <h2>Exception-handling differences between async and non-async methods</h2>
       </format>
-      <para>Apple's philosophy regarding attempts to store or read non-permitted information is that such attempts should not cause runtime exceptions. Rather, methods such as <see cref="M:MonoTouch.HealthKit.HKHealthStore.RequestAuthorizationToShare" /> and <see cref="M:MonoTouch.HealthKit.HKStore.SaveObject"/> are defined with completion callback handlers that are passed a non-null <see cref="T:MonoTouch.Foundation.NSError"/> argument in the case of an error. Application developers using such methods should take special care to check for success, as it is highly likely that users will be cautious about access to their health data.</para>
-      <para>In contrast, Xamarin's asynchronous versions of such methods (such as <see cref="M:MonoTouch.HealthKit.HKHealthStore.RequestAutorizationToShareAsync" /> and <see cref="M:MonoTouch.HealthKit.HKHealthStore.SaveObjectAsync"/>) will throw an <see cref="T:MonoTouch.Foundation.NSErrorException"/> on failure or if the method is not allowed by the end user.</para>
+      <para>Apple's philosophy regarding attempts to store or read non-permitted information is that such attempts should not cause runtime exceptions. Rather, methods such as <see cref="M:HealthKit.HKHealthStore.RequestAuthorizationToShare" /> and <see cref="M:HealthKit.HKStore.SaveObject" /> are defined with completion callback handlers that are passed a non-null <see cref="T:Foundation.NSError" /> argument in the case of an error. Application developers using such methods should take special care to check for success, as it is highly likely that users will be cautious about access to their health data.</para>
+      <para>In contrast, Xamarin's asynchronous versions of such methods (such as <see cref="M:HealthKit.HKHealthStore.RequestAutorizationToShareAsync" /> and <see cref="M:HealthKit.HKHealthStore.SaveObjectAsync" />) will throw an <see cref="T:Foundation.NSErrorException" /> on failure or if the method is not allowed by the end user.</para>
       <example>
         <code lang="C#"><![CDATA[
 //Apple's philosophy: no exception
@@ -64,17 +64,19 @@ protected async void StoreAsync(HKHealthStore store, HKQuantitySample sample)
 }
           ]]></code>
       </example>
-      <para>There are several types of <see cref="T:MonoTouch.HealthKit.HKObjecType" />s:</para>
+      <para>There are several types of <see cref="T:HealthKit.HKObjecType" />s:</para>
       <para>
         <img href="HealthKit.HKObjectType.Hierarchy.png" />
       </para>
-      <para><see cref="T:MonoTouch.HealthKit.HKCharacteristicType" /> objects represent static characterics of the user, such as date of birth or blood type (see <see cref="T:MonoTouch.HealthKit.HKCharacteristicTypeIdentifierKey"/>), while <see cref="T:MonoTouch.HealthKit.HKSampleType"/> objects represent data that are sampled over time. As of iOS 8, there is only one type of <see cref="T:MonoTouch.HealthKit.HKCategorySample"/>, which is <see cref="P:MonoTouch.HealthKit.HKCategoryTypeIdentifierKey.SleepAnalysis"/>. The large majority of Health Kit data types are defined in <see cref="T:MonoTouch.HealthKit.HKQuantityTypeIdentifierKey"/>.</para>
-      <para>Manipulating data samples involves both an <see cref="T:MonoTouch.HealthKit.HKSampleType" /> object and an <see cref="T:MonoTouch.HealthKit.HKSample"/> to carry the data:</para>
+      <para>
+        <see cref="T:HealthKit.HKCharacteristicType" /> objects represent static characterics of the user, such as date of birth or blood type (see <see cref="T:HealthKit.HKCharacteristicTypeIdentifierKey" />), while <see cref="T:HealthKit.HKSampleType" /> objects represent data that are sampled over time. As of iOS 8, there is only one type of <see cref="T:HealthKit.HKCategorySample" />, which is <see cref="P:HealthKit.HKCategoryTypeIdentifierKey.SleepAnalysis" />. The large majority of Health Kit data types are defined in <see cref="T:HealthKit.HKQuantityTypeIdentifierKey" />.</para>
+      <para>Manipulating data samples involves both an <see cref="T:HealthKit.HKSampleType" /> object and an <see cref="T:HealthKit.HKSample" /> to carry the data:</para>
       <para>
         <img href="HealthKit.HKSampleType.Factories.png" />
       </para>
-      <para><see cref="T:MonoTouch.HealthKit.HKQuantitySample" />s may refer to an instantaneous measurement, in which case their <see cref="P:MonoTouch.HealthKit.HKQuantitySample.StartDate"/> and <see cref="P:MonoTouch.HealthKit.HKQuantitySample.EndDate"/> properties should be set to the same value. Other samples, such as step count, are measured over time and the start and end time should be set appropriately.</para>
-      <para>Data may have metadata associated with it. There are a number of predefined metadata keys in <see cref="T:MonoTouch.HealthKit.HKMetadataKey" />, but application developers are encouraged to created their own keys for metadata as well.</para>
+      <para>
+        <see cref="T:HealthKit.HKQuantitySample" />s may refer to an instantaneous measurement, in which case their <see cref="P:HealthKit.HKQuantitySample.StartDate" /> and <see cref="P:HealthKit.HKQuantitySample.EndDate" /> properties should be set to the same value. Other samples, such as step count, are measured over time and the start and end time should be set appropriately.</para>
+      <para>Data may have metadata associated with it. There are a number of predefined metadata keys in <see cref="T:HealthKit.HKMetadataKey" />, but application developers are encouraged to created their own keys for metadata as well.</para>
       <format type="text/html">
         <h2>Units of measurement and conversion</h2>
       </format>

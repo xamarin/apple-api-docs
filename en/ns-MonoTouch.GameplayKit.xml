@@ -1,50 +1,58 @@
-<Namespace Name="MonoTouch.GameplayKit">
+﻿<Namespace Name="MonoTouch.GameplayKit">
   <Docs>
     <summary>The GameplayKit namespace provides classes for high-level game-playing mechanics such as pathfinding, rules engines, and AI opponents.</summary>
     <remarks>
-        <para>Introduced in iOS 9, GameplayKit provides classes for high-level game-playing mechanics such as pathfinding, rules engines (both fuzzy and classical), and a prebuilt AI opponent in the form of <see cref="T:MonoTouch.GameplayKit.GKMinMaxStrategist"/>.</para>
-        <format type="text/html">
-          <h2>AI Opponent</h2>
-        </format>
-        <para>The minimax theorem, first stated by John von Neumann in 1928, holds that in a two-person, zero-sum, game with finite strategies, there exists some optimal play (or plays) that simultaneously maximizes the expected value for the current player and minimizes the expected value for the opposing player. In other words, in such games, there is a "best move" (although, of course, even the best move might lead to a loss or a tie, depending upon the state of the game).</para>
-        <para>GameplayKit implements the minimax algorithm in its <see cref="T:MonoTouch.GameplayKit.GKMinMaxStrategist"/> class and related classes (especially <see cref="T:MonoTouch.GameplayKit.GKGameModel"/>). The <see cref="T:MonoTouch.GameplayKit.GKMinMaxStrategist"/> is an optimized version of the minimax algorithm that uses memory efficiently and pares the search-tree at terminal nodes, but developer's should be aware that the algorithm can be costly: minimax algorithm's time efficiency is <c>O(b^m)</c> where <c>b</c> is the number of states in a single look-ahead "ply" and <c>m</c> is the number of plies searched (see <see cref="P:MonoTouch>GameplayKit.GKMinMaxStrategist.MaxLookAheadDepth"/>). The algorithm's space efficiency is <c>O(m)</c>.</para>
-        <para>The minimax theorem applies to a very large number of games, from trivial ones such as Nim and Tic-Tac-Toe, to complex games such as Chess and Go. However, games such as Chess and Go have so many possible game states and plies that the expense of calculating the optimal move quickly becomes astronomical. Even in such cases, the <see cref="T:MonoTouch.GameplayKit.GKMinMaxStrategist"/> may be used to evaluate several hundred or thousand moves and, if the developer can accurately program an estimate of the strength or weakness of a given game state, produce a strong opponent.</para>
-        <para>The <see cref="T:MonoTouch.GameplayKit.GKMinMaxStrategist"/> does not need to be subclassed by the developer. Rather, the developer implements three interfaces and passes these to the <see cref="T:MonoTouch.GameplayKit.GKMinMaxStrategist"/>:</para>
-        <list type="table">
-          <listheader>
-            <term>Class</term>
-            <description>Purpose</description>
-          </listheader>
-          <item>
-            <term><see cref="T:MonoTouch.GameplayKit.IGKGameModel"/></term>
-            <description>
+      <para>Introduced in iOS 9, GameplayKit provides classes for high-level game-playing mechanics such as pathfinding, rules engines (both fuzzy and classical), and a prebuilt AI opponent in the form of <see cref="T:GameplayKit.GKMinMaxStrategist" />.</para>
+      <format type="text/html">
+        <h2>AI Opponent</h2>
+      </format>
+      <para>The minimax theorem, first stated by John von Neumann in 1928, holds that in a two-person, zero-sum, game with finite strategies, there exists some optimal play (or plays) that simultaneously maximizes the expected value for the current player and minimizes the expected value for the opposing player. In other words, in such games, there is a "best move" (although, of course, even the best move might lead to a loss or a tie, depending upon the state of the game).</para>
+      <para>GameplayKit implements the minimax algorithm in its <see cref="T:GameplayKit.GKMinMaxStrategist" /> class and related classes (especially <see cref="T:GameplayKit.GKGameModel" />). The <see cref="T:GameplayKit.GKMinMaxStrategist" /> is an optimized version of the minimax algorithm that uses memory efficiently and pares the search-tree at terminal nodes, but developer's should be aware that the algorithm can be costly: minimax algorithm's time efficiency is <c>O(b^m)</c> where <c>b</c> is the number of states in a single look-ahead "ply" and <c>m</c> is the number of plies searched (see <see cref="P:MonoTouch&gt;GameplayKit.GKMinMaxStrategist.MaxLookAheadDepth" />). The algorithm's space efficiency is <c>O(m)</c>.</para>
+      <para>The minimax theorem applies to a very large number of games, from trivial ones such as Nim and Tic-Tac-Toe, to complex games such as Chess and Go. However, games such as Chess and Go have so many possible game states and plies that the expense of calculating the optimal move quickly becomes astronomical. Even in such cases, the <see cref="T:GameplayKit.GKMinMaxStrategist" /> may be used to evaluate several hundred or thousand moves and, if the developer can accurately program an estimate of the strength or weakness of a given game state, produce a strong opponent.</para>
+      <para>The <see cref="T:GameplayKit.GKMinMaxStrategist" /> does not need to be subclassed by the developer. Rather, the developer implements three interfaces and passes these to the <see cref="T:GameplayKit.GKMinMaxStrategist" />:</para>
+      <list type="table">
+        <listheader>
+          <term>Class</term>
+          <description>Purpose</description>
+        </listheader>
+        <item>
+          <term>
+            <see cref="T:GameplayKit.IGKGameModel" />
+          </term>
+          <description>
                 Developers implement this interface in order to model the game and it's current state. 
                 In a board game, for instance, this will typically be the board and all pieces and a reference to the active player.
-                In addition, if it is to be used with <see cref="T:MonoTouch.GameplayKit.GKMinMaxStrategist"/>, this class must implement 
-                the functions that describes potential moves (<see cref="M:MonoTouch.GameplayKit.GKGameModule.GetGameModelUpdates"/>) and evaluates
-                them in terms of desirability (<see cref="M:MonoTouch.GameplayKit.GKGameModel_Extensions.IsWin"/>, <see cref="M:MonoTouch.GameplayKit.GKGameModel_Extensions.IsLoss"/>, <see cref="M:MonoTouch.GameplayKit.GKGameModel_Extensions.GetScore"/>).
+                In addition, if it is to be used with <see cref="T:GameplayKit.GKMinMaxStrategist" />, this class must implement 
+                the functions that describes potential moves (<see cref="M:GameplayKit.GKGameModule.GetGameModelUpdates" />) and evaluates
+                them in terms of desirability (<see cref="M:GameplayKit.GKGameModel_Extensions.IsWin" />, <see cref="M:GameplayKit.GKGameModel_Extensions.IsLoss" />, <see cref="M:GameplayKit.GKGameModel_Extensions.GetScore" />).
             </description>
-          </item>
-          <item>
-            <term><see cref="T:MonoTouch.GameplayKit.IGKGameModelUpdate"/></term>
-            <description>
-                This class describes a game "move" and contains enough information to transition the <see cref="T:MonoTouch.GameplayKit.IGKGameModel"/> between it's current state and a valid new one. Many thousand instances of this class may be required by the <see cref="T:MonoTouch.GameplayKit.GKMinMaxStrategist"/>, so the developer should take care to make it lightweight.
+        </item>
+        <item>
+          <term>
+            <see cref="T:GameplayKit.IGKGameModelUpdate" />
+          </term>
+          <description>
+                This class describes a game "move" and contains enough information to transition the <see cref="T:GameplayKit.IGKGameModel" /> between it's current state and a valid new one. Many thousand instances of this class may be required by the <see cref="T:GameplayKit.GKMinMaxStrategist" />, so the developer should take care to make it lightweight.
             </description>
-            </item>
-            <item>
-              <term><see cref="T:MonoTouch.GameplayKit.IGKGameModelPlayer"/></term>
-              <description>
-                  The <see cref="T:MonoTouch.GameplayKit.GKMinMaxStrategist"/> relies on the value of <see cref="M:MonoTouch.GameplayKit.IGKGameModelPlayer.GetPlayerID"/>)
+        </item>
+        <item>
+          <term>
+            <see cref="T:GameplayKit.IGKGameModelPlayer" />
+          </term>
+          <description>
+                  The <see cref="T:GameplayKit.GKMinMaxStrategist" /> relies on the value of <see cref="M:GameplayKit.IGKGameModelPlayer.GetPlayerID" />)
                   to distinguish between players. 
               </description>
-            </item>
-        </list>
-        <para>The key method of the <see cref="T:MonoTouch.GameplayKit.GKMinMaxStrategist"/> is <see cref="M:MonoTouch.GameplayKit.GKMinMaxStrategist.GetBestMove"/>. When this method is called, the following sequence of calls occurs:</para>
-        <para><img href="GKMinMaxStrategist.GetBestMoveMove_Sequence.png"/></para>
-        <para>First, the <see cref="T:MonoTouch.GameplayKit.IGKGameModelPlayer"/> objects are retrieved. Then, starting with the current game state, and while the ply depth is less than <see cref="P:MonoTouch.GameplayKit.GKMinMaxStrategist.MaxLookAheadDepth"/>, the set of legal possible moves from the current state is returned by <see cref="M:MonoTouch.GameplayKit.GKMinMaxStrategist.GetGameModelUpdates"/>. Then, for each of these moves, it may be necessary for the <see cref="T:MonoTouch.GameplayKit.GKMinMaxStrategist"/> to allocate new memory; if so, <see cref="M:MonoTouch.GameplayKit.GKMinMaxStrategist.Copy"/> is called. Then, on one of the many <see cref="T:MonoTouch.GameplayKit.GKGameModel"/> objects being managed by the <see cref="T:MonoTouch.GameplayKit.GKMinMaxStrategist"/>, a potential move is executed with calls to <see cref="M:MonoTouch.GameplayKit.IGKGameModel.SetGameModel"/> and <see cref="M:MonoTouch.GameplayKit.IGKGameModel.ApplyGameState"/>.</para>
-        <para>The <see cref="T:MonoTouch.GameplayKit.GKMinMaxStrategist"/> then evaluates each of the potential moves by calling, first, <see cref="M:MonoTouch.GameplayKit.GKGameModel_Extensions.IsWin"/> and <see cref="M:MonoTouch.GameplayKit.GKGameModel_Extensions.IsLoss"/>. If either of these methods returns <see langword="true"/>, the <see cref="T:MonoTouch.GameplayKit.GKMinMaxStrategist"/> marks that game state as a terminal node and will not attempt to investigate it further in later plies. If neither method returns <see langword="true"/>, though, the method <see cref="M:MonoTouch.GameplayKit.GKGameModel_Extensions.Score"/> is called.</para>
-        <para>The developer should write a <see cref="M:MonoTouch.GameplayKit.GKGameModel_Extensions.Score"/> method to return a value between <see cref="F:MonoTouch.GameplayKit.GKGameModel.MinScore"/> (-16777216) and <see cref="F:MonoTouch.GameplayKit.GKGameModel.MaxScore"/> (+16777216). Higher values represent game states that are better for the <see cref="M:MonoTouch.GameplayKit.IGKGameModel.GetActivePlayer"/>. In simple games where the entire game tree can be searched because <see cref="M:MonoTouch.GameplayKit.GKGameModel_Extensions.IsWin"/> or <see cref="M:MonoTouch.GameplayKit.GKGameModel_Extensions.IsLoss"/> always return <see langword="true"/> within <see cref="P:MonoTouch.GameplayKit.GKMinMaxStrategist.MaxLookAheadDepth"/>, the <see cref="M:MonoTouch.GameplayKit.GKGameModel_Extensions.Score"/> method can simply return 0, because the <see cref="T:MonoTouch.GameplayKit.GKMinMaxStrategist"/> can calculate the best move based on the winning and losing moves. However, this is only likely to be the case in quite-easy games and, in general, crafting a well-performing <see cref="M:MonoTouch.GameplayKit.GKGameModel_Updates.Score"/> function will require both game-playing and programming expertise. In terms of programming, the <see cref="M:MonoTouch.GameplayKit.GKGameModel_Updates.Score"/> method is called many times during the search of the game-tree and needs to be efficient, as well as accurate.</para>
-        <para>Developers should note that the <see cref="T:MonoTouch.GameplayKit.GKMinMaxStrategist"/> may allocate many copies of <see cref="T:MonoTouch.GameplayKit.IGKGameModelPlayer"/> and <see cref="T:MonoTouch.GameplayKit.IGKGameModel"/> as well as many <see cref="T:MonoTouch.GameplayKit.IGKGameModelUpdate"/> objects. Developers should rely on value, not reference, equality, and should exercise care when it comes to these objects manipulating global or static state.</para>
+        </item>
+      </list>
+      <para>The key method of the <see cref="T:GameplayKit.GKMinMaxStrategist" /> is <see cref="M:GameplayKit.GKMinMaxStrategist.GetBestMove" />. When this method is called, the following sequence of calls occurs:</para>
+      <para>
+        <img href="GKMinMaxStrategist.GetBestMoveMove_Sequence.png" />
+      </para>
+      <para>First, the <see cref="T:GameplayKit.IGKGameModelPlayer" /> objects are retrieved. Then, starting with the current game state, and while the ply depth is less than <see cref="P:GameplayKit.GKMinMaxStrategist.MaxLookAheadDepth" />, the set of legal possible moves from the current state is returned by <see cref="M:GameplayKit.GKMinMaxStrategist.GetGameModelUpdates" />. Then, for each of these moves, it may be necessary for the <see cref="T:GameplayKit.GKMinMaxStrategist" /> to allocate new memory; if so, <see cref="M:GameplayKit.GKMinMaxStrategist.Copy" /> is called. Then, on one of the many <see cref="T:GameplayKit.GKGameModel" /> objects being managed by the <see cref="T:GameplayKit.GKMinMaxStrategist" />, a potential move is executed with calls to <see cref="M:GameplayKit.IGKGameModel.SetGameModel" /> and <see cref="M:GameplayKit.IGKGameModel.ApplyGameState" />.</para>
+      <para>The <see cref="T:GameplayKit.GKMinMaxStrategist" /> then evaluates each of the potential moves by calling, first, <see cref="M:GameplayKit.GKGameModel_Extensions.IsWin" /> and <see cref="M:GameplayKit.GKGameModel_Extensions.IsLoss" />. If either of these methods returns <see langword="true" />, the <see cref="T:GameplayKit.GKMinMaxStrategist" /> marks that game state as a terminal node and will not attempt to investigate it further in later plies. If neither method returns <see langword="true" />, though, the method <see cref="M:GameplayKit.GKGameModel_Extensions.Score" /> is called.</para>
+      <para>The developer should write a <see cref="M:GameplayKit.GKGameModel_Extensions.Score" /> method to return a value between <see cref="F:GameplayKit.GKGameModel.MinScore" /> (-16777216) and <see cref="F:GameplayKit.GKGameModel.MaxScore" /> (+16777216). Higher values represent game states that are better for the <see cref="M:GameplayKit.IGKGameModel.GetActivePlayer" />. In simple games where the entire game tree can be searched because <see cref="M:GameplayKit.GKGameModel_Extensions.IsWin" /> or <see cref="M:GameplayKit.GKGameModel_Extensions.IsLoss" /> always return <see langword="true" /> within <see cref="P:GameplayKit.GKMinMaxStrategist.MaxLookAheadDepth" />, the <see cref="M:GameplayKit.GKGameModel_Extensions.Score" /> method can simply return 0, because the <see cref="T:GameplayKit.GKMinMaxStrategist" /> can calculate the best move based on the winning and losing moves. However, this is only likely to be the case in quite-easy games and, in general, crafting a well-performing <see cref="M:GameplayKit.GKGameModel_Updates.Score" /> function will require both game-playing and programming expertise. In terms of programming, the <see cref="M:GameplayKit.GKGameModel_Updates.Score" /> method is called many times during the search of the game-tree and needs to be efficient, as well as accurate.</para>
+      <para>Developers should note that the <see cref="T:GameplayKit.GKMinMaxStrategist" /> may allocate many copies of <see cref="T:GameplayKit.IGKGameModelPlayer" /> and <see cref="T:GameplayKit.IGKGameModel" /> as well as many <see cref="T:GameplayKit.IGKGameModelUpdate" /> objects. Developers should rely on value, not reference, equality, and should exercise care when it comes to these objects manipulating global or static state.</para>
     </remarks>
   </Docs>
 </Namespace>
