@@ -28,7 +28,9 @@
   </Attributes>
   <Docs>
     <summary>Encapsulates a trained machine-learning model.</summary>
-    <remarks>To be added.</remarks>
+    <remarks>
+      <para>The <see cref="T:Monotouch.CoreML.MLModel" /> class encapsulates a machine-learning model that maps a predefined set of input features to a predefined set of output features. Models are generally stored as .mlmodel files but these must be "compiled" into a .mlmodelc directory prior to inferencing. This compilation step generally occurs prior to deploymenty, but may be performed on the device with the time-consuming <see cref="M:Monotouch.CoreML.MLModel.CompileModel" /> method.</para>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName=".ctor" apistyle="unified">
@@ -139,7 +141,70 @@
         <param name="error">On failure, the error that occurred.</param>
         <summary>Compiles the model at <paramref name="modelUrl" />.</summary>
         <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <para>This is an expensive function. Execution time varies depending on the model size, but developers should run this method on a background thread and take steps to avoid the need to run this method repeatedly.</para>
+          <para>The following example shows how a developer can download a model, compile it, and move the compiled model into the app's permanent storage:</para>
+          <example>
+    <code lang="C#"><![CDATA[
+NSUrl CompileModel(string modelName)
+{
+	var downloadedFile = modelName + ".mlmodel";
+	var fileUrl = NSUrl.FromFilename(downloadedFile);
+	NSError err = null;
+	var compiledUrl = MLModel.CompileModel(fileUrl, out err);
+	if (err != null)
+	{
+		throw new Exception(err.ToString());
+	}
+	return compiledUrl;
+}
+
+NSUrl StoreModel(NSUrl sourceUrl)
+{
+	var fileManager = NSFileManager.DefaultManager;
+	NSError err = null;
+	var appSupportDirectory = fileManager.GetUrl(NSSearchPathDirectory.ApplicationSupportDirectory, NSSearchPathDomain.User, sourceUrl, true, out err);
+	if (err != null)
+	{
+		throw new Exception(err.ToString());
+	}
+
+	// Create a permanent URL in appSupportDirectory
+	var destinationUrl = appSupportDirectory.Append(sourceUrl.LastPathComponent, true);
+	NSUrl resultingUrl = null;
+
+	var destPath = destinationUrl.AbsoluteString;
+	// If the compiled model directory exists, replace it
+	if (System.IO.Directory.Exists(destinationUrl.Path))
+	{
+		fileManager.Replace(destinationUrl, sourceUrl, null, NSFileManagerItemReplacementOptions.None, out resultingUrl, out err);
+	}
+	else
+	{
+		fileManager.Copy(sourceUrl, destinationUrl, out err);
+	}
+	if (err != null)
+	{
+		throw new Exception(err.ToString());
+	}
+	return resultingUrl;
+}
+
+private async Task<NSUrl> DownloadAndStoryCoreMLModelAsync()
+{
+  var modelName = "SomeModel";
+	var sourceUrl ="http://Contoso.org/SomeModel.mlmodel";
+	using (var wc = new WebClient())
+	{
+		await wc.DownloadFileTaskAsync(sourceUrl, modelName +".mlmodel");
+		var compiledModelPath = CompileModel(modelName);
+		var finalPath = StoreModel(compiledModelPath);
+    return finalPath;
+	}
+}
+    ]]></code>
+</example>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Create" apistyle="unified">
@@ -191,7 +256,7 @@
         <Parameter Name="error" Type="MonoTouch.Foundation.NSError&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="input">The feature model from which to make a prediction.</param>
+        <param name="input">The feature from which to make a prediction.</param>
         <param name="error">On failure, the error that occurred.</param>
         <summary>Makes a prediction on <paramref name="input" />.</summary>
         <returns>To be added.</returns>
@@ -220,7 +285,7 @@
         <Parameter Name="error" Type="MonoTouch.Foundation.NSError&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="input">The feature model from which to make a prediction.</param>
+        <param name="input">The feature from which to make a prediction.</param>
         <param name="options">Options about resources to use for the prediction.</param>
         <param name="error">On failure, the error that occurred.</param>
         <summary>Makes a prediction on <paramref name="input" />.</summary>
@@ -247,7 +312,7 @@
       <Docs>
         <summary>A developer-meaningful description of this <see cref="T:MonoTouch.CoreML.Model" />.</summary>
         <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <remarks>A properly-specified <see cref="T:Monotouch.CoreML.MLModelDescription" /> contains all the detail necessary for a user of the model to properly create inputs and interpret outputs. For instance, image resolution, column- vs. row-major matrix forms, etc.</remarks>
       </Docs>
     </Member>
   </Members>
