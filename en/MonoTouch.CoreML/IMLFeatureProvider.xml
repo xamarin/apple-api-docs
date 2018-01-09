@@ -37,8 +37,38 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>An interface that defines an input or output feature and its value.</summary>
-    <remarks>To be added.</remarks>
+    <summary>An interface that defines input or output features and allows access to their values.</summary>
+    <remarks>
+      <para>CoreML does not directly read and write system-native data. Rather it uses this class to map strings to values for the inputs and outputs of the <see cref="T:Monotouch.CoreML.MLModel" /> object.</para>
+      <para>The following example shows a <see cref="T:Monotouch.CoreML.IMLFeatureProvider" /> that provides 3 inputs variables, all of type <see langword="double"/>:</para>
+      <example>
+    <code lang="C#"><![CDATA[
+public class MarsHabitatPricerInput : NSObject, IMLFeatureProvider
+{
+	public double SolarPanels { get; set; }
+	public double Greenhouses { get; set; }
+	public double Size { get; set; }
+
+	public NSSet<NSString> FeatureNames => new NSSet<NSString>(new NSString("solarPanels"), new NSString("greenhouses"), new NSString("size"));
+
+	public MLFeatureValue GetFeatureValue(string featureName)
+	{
+		switch (featureName)
+		{
+			case "solarPanels":
+				return MLFeatureValue.Create(SolarPanels);
+			case "greenhouses":
+				return MLFeatureValue.Create(Greenhouses);
+			case "size":
+				return MLFeatureValue.Create(Size);
+			default:
+				return MLFeatureValue.Create(0);
+		}
+	}
+}
+    ]]></code>
+</example>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName="FeatureNames" apistyle="unified">
@@ -61,8 +91,8 @@
         <ReturnType>MonoTouch.Foundation.NSSet&lt;MonoTouch.Foundation.NSString&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>The names of the feature, as defined by the <see cref="T:Monotouch.CoreML.MLModel" />.</summary>
+        <value>The <see cref="T:Monotouch.Foundation.NSSet" /> of feature names.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -89,9 +119,9 @@
         <Parameter Name="featureName" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="featureName">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="featureName">The feature whose value will be returned.</param>
+        <summary>Retrieves the value of the <param name="featureName"/>.</summary>
+        <returns>The value of the <param name="featureName"/>.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
