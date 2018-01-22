@@ -1,5 +1,4 @@
-<?xml version="1.0"?>
-<Namespace Name="MonoTouch.ARKit">
+﻿<Namespace Name="ARKit">
   <Docs>
     <summary>The ARKit namespace provides support for augmented-reality sessions, including both high- and low-level APIs for projecting computer-generated imagery into a video stream.</summary>
     <remarks>
@@ -14,18 +13,18 @@
         </listheader>
         <item>
           <term>
-            <see cref="T:MonoTouch.ARKit.ARSCNView"/>
+            <see cref="T:ARKit.ARSCNView" />
           </term>
           <description>Combine SceneKit 3D geometry with video</description>
         </item>
         <item>
           <term>
-            <see cref="T:MonoTouch.ARKit.ARSCKView"/>
+            <see cref="T:ARKit.ARSCKView" />
           </term>
           <description>Combine SpriteKit 2D imagery with video</description>
         </item>
         <item>
-          <term>Export "renderer:updateAtTime:" from their <see cref="T:MonoTouch.ARKit.IARSCNViewDelegate"/>.</term>
+          <term>Export "renderer:updateAtTime:" from their <see cref="T:ARKit.IARSCNViewDelegate" />.</term>
           <description>Allows complete custom rendering.</description>
         </item>
       </list>
@@ -34,13 +33,13 @@
       </format>
       <para>ARKit uses device motion and "visual odometry" to create a model of the device's camera and real-world "feature points" in relation to a virtual coordinate system. The coordinate
         system uses meters as its units. The virtual
-        coordinate system has an origin calculated to be the camera's location at the time that the <see cref="T:MonoTouch.ARKit.ARSession"/> was started. Location and orientation within
-        ARKit are primarily represented using <see cref="T:MonoTouch.OpenTK.NMatrix4"/> "native matrices". In the case of ARKit, these are column-major transforms:</para>
+        coordinate system has an origin calculated to be the camera's location at the time that the <see cref="T:ARKit.ARSession" /> was started. Location and orientation within
+        ARKit are primarily represented using <see cref="T:OpenTK.NMatrix4" /> "native matrices". In the case of ARKit, these are column-major transforms:</para>
       <para>
-        <img href="OpenTK.NMatrix4.png"/>
+        <img href="OpenTK.NMatrix4.png" />
       </para>
-      <para>Position or translation is in <see cref="P:MonoTouch.OpenTK.Matrix4.M14"/>, <see cref="P:MonoTouch.OpenTK.Matrix4.M24"/>, and <see cref="P:MonoTouch.OpenTK.Matrix4.M34"/>. 
-        The 3x3 matrix defined by <see cref="P:MonoTouch.OpenTK.Matrix4.M11"/> to <see cref="P:MonoTouch.OpenTK.Matrix4.M33"/> is the rotation matrix. </para>
+      <para>Position or translation is in <see cref="P:OpenTK.Matrix4.M14" />, <see cref="P:OpenTK.Matrix4.M24" />, and <see cref="P:OpenTK.Matrix4.M34" />. 
+        The 3x3 matrix defined by <see cref="P:OpenTK.Matrix4.M11" /> to <see cref="P:OpenTK.Matrix4.M33" /> is the rotation matrix. </para>
       <example>
         <code lang="C#"><![CDATA[
 SCNVector3 Position(NMatrix4 m) => new SCNVector3(m.M14, m.M24, m.M34);          
@@ -49,8 +48,8 @@ SCNVector3 Position(NMatrix4 m) => new SCNVector3(m.M14, m.M24, m.M34);
       <format type="text/html">
         <h3>Initialization</h3>
       </format>
-      <para>The <see cref="T:MonoTouch.ARKit.ARSession"/> object manages the overall augmented-reality process. The <see cref="M:MonoTouch.ARKit.ARSession.Run"/> method takes a 
-        <see cref="T:MonoTouch.ARKit.ARConfiguration"/> and an <see cref="T:MonoTouch.ARKit.ARSessionRunOptions"/> object, as shown below:</para>
+      <para>The <see cref="T:ARKit.ARSession" /> object manages the overall augmented-reality process. The <see cref="M:ARKit.ARSession.Run" /> method takes a 
+        <see cref="T:ARKit.ARConfiguration" /> and an <see cref="T:ARKit.ARSessionRunOptions" /> object, as shown below:</para>
       <example>
         <code lang="C#"><![CDATA[
 ARSCNView SceneView = ... // initialized in Storyboard, `ViewDidLoad`, etc.
@@ -65,18 +64,18 @@ var configuration = new ARWorldTrackingConfiguration {
 SceneView.Session.Run(configuration, ARSessionRunOptions.ResetTracking);
     ]]></code>
       </example>
-      <para>Once a <see cref="T:MonoTouch.ARKit.ARSession"/> is running, it's <see cref="P:MonoTouch.ARKit.ARSession.CurrentFrame"/> property holds the active <see cref="T:MonoTouch.ARKit.ARFrame"/>. Because
-        the system attempts to run ARKit at 60 frames per second, developers who reference the <see cref="P:MonoTouch.ARKit.ARSession.CurrentFrame"/> must be sure to <c>Dispose</c> the 
+      <para>Once a <see cref="T:ARKit.ARSession" /> is running, it's <see cref="P:ARKit.ARSession.CurrentFrame" /> property holds the active <see cref="T:ARKit.ARFrame" />. Because
+        the system attempts to run ARKit at 60 frames per second, developers who reference the <see cref="P:ARKit.ARSession.CurrentFrame" /> must be sure to <c>Dispose</c> the 
         frame after they have lost it.</para>
-      <para>The system tracks high-contrast "feature points" in the camera's view. These are available to the developer as a <see cref="T:MonoTouch.ARKit.ARPointCloud"/> object that can be read at
-        <see cref="P:MonoTouch.ARKit.ARFrame.RawFeaturePoints"/>. Generally, however, developers rely on the system to identify higher-level features, such as planes or human faces. When the system 
-        identifies these higher-level features, it adds <see cref="T:MonoTouch.ARKit.ARAnchor"/> objects whose <see cref="P:MonoTouch.ARKit.ARAnchor.Position"/> properties are in the world-coordinate 
-        system. Developers can use the <see cref="M:MonoTouch.ARKit.ARSCNViewDelegate.DidAddNode"/>, <see cref="M:MonoTouch.ARKit.ARSCNViewDelegate.DidUpdateNode"/>, and 
-        <see cref="M:MonoTouch.ARKit.ARSCNViewDelegate.DidRemoveNode"/> methods to react to such events and to attach their custom geometry to real-world features. </para>
+      <para>The system tracks high-contrast "feature points" in the camera's view. These are available to the developer as a <see cref="T:ARKit.ARPointCloud" /> object that can be read at
+        <see cref="P:ARKit.ARFrame.RawFeaturePoints" />. Generally, however, developers rely on the system to identify higher-level features, such as planes or human faces. When the system 
+        identifies these higher-level features, it adds <see cref="T:ARKit.ARAnchor" /> objects whose <see cref="P:ARKit.ARAnchor.Position" /> properties are in the world-coordinate 
+        system. Developers can use the <see cref="M:ARKit.ARSCNViewDelegate.DidAddNode" />, <see cref="M:ARKit.ARSCNViewDelegate.DidUpdateNode" />, and 
+        <see cref="M:ARKit.ARSCNViewDelegate.DidRemoveNode" /> methods to react to such events and to attach their custom geometry to real-world features. </para>
       <para>The augmented-reality coordinates are maintained using visual odometry and the device's motion manager. Experimentally, the tracking seems very solid over distances of at least tens of 
         meters in a continuous session.</para>
     </remarks>
-    <related type="sample" href="https://github.com/xamarin/ios-samples/blob/master/ios11/ARKitPlacingObjects"/>
-    <related type="sample" href="https://github.com/xamarin/ios-samples/blob/master/ios11/ARKitSample"/>
+    <related type="sample" href="https://github.com/xamarin/ios-samples/blob/master/ios11/ARKitPlacingObjects" />
+    <related type="sample" href="https://github.com/xamarin/ios-samples/blob/master/ios11/ARKitSample" />
   </Docs>
 </Namespace>
