@@ -1,0 +1,684 @@
+<Type Name="SCNGeometrySource" FullName="SceneKit.SCNGeometrySource">
+  <TypeSignature Language="C#" Value="public class SCNGeometrySource : Foundation.NSObject, Foundation.INSSecureCoding, IDisposable" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit SCNGeometrySource extends Foundation.NSObject implements class Foundation.INSCoding, class Foundation.INSSecureCoding, class ObjCRuntime.INativeObject, class System.IDisposable" />
+  <AssemblyInfo>
+    <AssemblyName>Xamarin.iOS</AssemblyName>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>Foundation.NSObject</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>Foundation.INSSecureCoding</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>System.IDisposable</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Attributes>
+    <Attribute>
+      <AttributeName>Foundation.Register("SCNGeometrySource", true)</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.WatchOS, 3, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 8, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>Provides vertex data that, in conjunction with SCNGeometryElements, define a 3D object.</summary>
+    <remarks>
+      <para>Developers who wish to programmatically generate custom <see cref="T:SceneKit.SCNGeometry" /> objects use the <see cref="M:SceneKit.SCNGeometry.Create(SceneKit.SCNGeometrySource[], SceneKit.SCNGeometryElement[]" /> method. The form and number of the <see cref="T:SceneKit.SCNGeometrySource" /> objects varies based on the manner in which the developer is describing the geometry (for instance, whether vertex data comes as a series of triplets describing triangles or a moving series that describes a triangle strip) and whether the geometry will simply be colored or have a texture map.</para>
+      <para>The following code demonstrates the custom code to create a custom four-sided pyramid. This example shows the use of vertices, defining triangles, on which a single texture is mapped. Note how specific index values within <c>locs</c> are used to define <c>indices</c> and how the ordering within <c>locs</c> affects <c>normals</c> and <c>txCoords</c>. Also, notice how the triplets in <c>indices</c> are linked to <c>SCNGeometryPrimitiveType.Triangles</c>.</para>
+      <example>
+        <code lang="C#"><![CDATA[
+//Lower-left
+var a = new SCNVector3(-1, -1, 0);
+//Upper-right
+var b = new SCNVector3(1, 1, 0);
+
+var halfX = (c.X + a.X) / 2;
+var halfY = (c.Y + a.Y) / 2;
+var halfZ = (c.Z + a.Z) / 2;
+
+var b = new SCNVector3(a.X, c.Y, halfZ);
+var d = new SCNVector3(c.X, a.Y, halfZ);
+//Elevate the midpoint so that it's clearly a pyramid
+var midPoint = new SCNVector3(halfX, halfY, halfZ + 1.0);
+
+//The vertices of the geometry
+var locs = new [] {
+	a, b, c, d, midPoint
+};
+var locSource = SCNGeometrySource.FromVertices(locs);
+
+//Note that this relies on the ordering of locs above
+//and it defines triangles (could be triangle strips, etc.)
+var indices = new [] {
+	//Triangles are defined counter-clockwise!
+	4, 1, 0,
+	1, 4, 2,
+	2, 4, 3,
+	3, 4, 0
+};
+
+
+var idxArray = new byte[indices.Length][];
+for(int i = 0; i < idxArray.Length; i++)
+{
+	idxArray[i] = BitConverter.GetBytes(indices[i]);
+}
+var idxData = NSData.FromArray(idxArray.SelectMany(id => id).ToArray());
+
+//Note that this relies on indices defining triangles
+var element = SCNGeometryElement.FromData(idxData, SCNGeometryPrimitiveType.Triangles, indices.Length / 3, sizeof(int));
+
+//Normals are relative to geometry
+var normals = new [] {
+	new SCNVector3(0, 0, 1),
+	new SCNVector3(0, 0, 1),
+	new SCNVector3(0, 0, 1),
+	new SCNVector3(0, 0, 1),
+	new SCNVector3(0, 0, 1),
+};;
+var normSource = SCNGeometrySource.FromNormals(normals);
+
+//These texture coords will cause the texture to wrap 
+var txCoords = new [] {
+	new CGPoint(0, 0),
+	new CGPoint(0, 1),
+	new CGPoint(1, 1),
+	new CGPoint(1, 0),
+  new CGPoint(0.5, 0.5)
+};
+
+var txCoordsSource = SCNGeometrySource.FromTextureCoordinates(txCoords);
+
+var geometry = SCNGeometry.Create(new [] { locSource, normSource, txCoordsSource }, new [] { element });
+    ]]></code>
+      </example>
+    </remarks>
+    <related type="PlatformDocAPI" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNGeometrySource_Class/index.html">Apple documentation for <c>SCNGeometrySource</c></related>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public SCNGeometrySource ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("init")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters />
+      <Docs>
+        <summary>Default constructor, initializes a new instance of this class.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public SCNGeometrySource (Foundation.NSCoder coder);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class Foundation.NSCoder coder) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("initWithCoder:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.DesignatedInitializer</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="coder" Type="Foundation.NSCoder" />
+      </Parameters>
+      <Docs>
+        <param name="coder">The unarchiver object.</param>
+        <summary>A constructor that initializes the object from the data stored in the unarchiver object.</summary>
+        <remarks>
+          <para>This constructor is provided to allow the class to be initialized from an unarchiver (for example, during NIB deserialization).   This is part of the <see cref="T:Foundation.NSCoding" />  protocol.</para>
+          <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="T:Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
+          <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected SCNGeometrySource (Foundation.NSObjectFlag t);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor(class Foundation.NSObjectFlag t) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="t" Type="Foundation.NSObjectFlag" />
+      </Parameters>
+      <Docs>
+        <param name="t">Unused sentinel value, pass NSObjectFlag.Empty.</param>
+        <summary>Constructor to call on derived classes to skip initialization and merely allocate the object.</summary>
+        <remarks>
+          <para>This constructor should be called by derived classes when they completely construct the object in managed code and merely want the runtime to allocate and initialize the NSObject.   This is required to implement the two-step initialization process that Objective-C uses, the first step is to perform the object allocation, the second step is to initialize the object.   When developers invoke the constructor that takes the NSObjectFlag.Empty they take advantage of a direct path that goes all the way up to NSObject to merely allocate the object's memory and bind the Objective-C and C# objects together.    The actual initialization of the object is up to the developer.</para>
+          <para>This constructor is typically used by the binding generator to allocate the object, but prevent the actual initialization to take place.   Once the allocation has taken place, the constructor has to initialize the object.   With constructors generated by the binding generator this means that it manually invokes one of the "init" methods to initialize the object.</para>
+          <para>It is the developer's responsibility to completely initialize the object if they chain up using the NSObjectFlag.Empty path.</para>
+          <para>In general, if the developer's constructor invokes the NSObjectFlag.Empty base implementation, then it should be calling an Objective-C init method.   If this is not the case, developers should instead chain to the proper constructor in their class. </para>
+          <para>The argument value is ignored and merely ensures that the only code that is executed is the construction phase is the basic NSObject allocation and runtime type registration.  Typically the chaining would look like this:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// The NSObjectFlag merely allocates the object and registers the
+// C# class with the Objective-C runtime if necessary, but no actual
+// initXxx method is invoked, that is done later in the constructor
+//
+// This is taken from Xamarin's source code:
+//
+[Export ("initWithFrame:")]
+public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
+{
+// Invoke the init method now.
+	var initWithFrame = new Selector ("initWithFrame:").Handle;
+	if (IsDirectBinding)
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+	else
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected SCNGeometrySource (IntPtr handle);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig specialname rtspecialname instance void .ctor(native int handle) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="handle" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="handle">Pointer (handle) to the unmanaged object.</param>
+        <summary>A constructor used when creating managed representations of unmanaged objects;  Called by the runtime.</summary>
+        <remarks>
+          <para>This constructor is invoked by the runtime infrastructure (<see cref="M:ObjCRuntime.Runtime.GetNSObject(System.IntPtr)" />) to create a new managed representation for a pointer to an unmanaged Objective-C object.    Developers should not invoke this method directly, instead they should call the GetNSObject method as it will prevent two instances of a managed object to point to the same native object.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BytesPerComponent">
+      <MemberSignature Language="C#" Value="public virtual nint BytesPerComponent { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.nint BytesPerComponent" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("bytesPerComponent")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.nint</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The size, in bytes, of the underlying vector data.</summary>
+        <value>To be added.</value>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ClassHandle">
+      <MemberSignature Language="C#" Value="public override IntPtr ClassHandle { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int ClassHandle" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The handle for this class.</summary>
+        <value>The pointer to the Objective-C class.</value>
+        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ComponentsPerVector">
+      <MemberSignature Language="C#" Value="public virtual nint ComponentsPerVector { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.nint ComponentsPerVector" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("componentsPerVector")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.nint</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The number of components per vector element in this source.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Data">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSData Data { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Foundation.NSData Data" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("data")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSData</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The underlying data buffer.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DataOffset">
+      <MemberSignature Language="C#" Value="public virtual nint DataOffset { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.nint DataOffset" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("dataOffset")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.nint</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The distance, in bytes, from the beginning of <see cref="P:SceneKit.SCNGeometrySource.Data" /> to the first vertex element.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DataStride">
+      <MemberSignature Language="C#" Value="public virtual nint DataStride { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.nint DataStride" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("dataStride")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.nint</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The number of bytes between vertex elements in <see cref="P:SceneKit.SCNGeometrySource.Data" />.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EncodeTo">
+      <MemberSignature Language="C#" Value="public virtual void EncodeTo (Foundation.NSCoder encoder);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void EncodeTo(class Foundation.NSCoder encoder) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("encodeWithCoder:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="encoder" Type="Foundation.NSCoder" />
+      </Parameters>
+      <Docs>
+        <param name="encoder">The encoder object where the state of the object will be stored</param>
+        <summary>Encodes the state of the object on the provided encoder</summary>
+        <remarks>
+          <para>This method is part of the <see cref="T:Foundation.NSCoding" /> protocol and is used by applications to preserve the state of the object into an archive.</para>
+          <para>Users will typically create a <see cref="T:Foundation.NSKeyedArchiver" /> and then invoke the <see cref="M:Foundation.NSKeyedArchiver.ArchiveRootObjectToFile" /> which will call into this method</para>
+          <para>If developers want to allow their object to be archived, they should override this method and store their state in using the provided <paramref name="encoder" /> parameter.   In addition, developers should also implement a constructor that takes an NSCoder argument and is exported with [Export ("initWithCoder:")]</para>
+          <example>
+            <code lang="C#"><![CDATA[public void override EncodeTo (NSCoder coder){
+    coder.Encode (1, key: "version");
+    coder.Encode (userName, key: "userName");
+    coder.Encode (hostName, key: "hostName");]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FloatComponents">
+      <MemberSignature Language="C#" Value="public virtual bool FloatComponents { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool FloatComponents" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("floatComponents")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Whether the vertex component data is made of <see langword="nfloat" /> values.</summary>
+        <value>If <see langword="false" />, the vertex component data is made of <see langword="nint" /> values.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromData">
+      <MemberSignature Language="C#" Value="public static SceneKit.SCNGeometrySource FromData (Foundation.NSData data, Foundation.NSString geometrySourceSemantic, nint vectorCount, bool floatComponents, nint componentsPerVector, nint bytesPerComponent, nint offset, nint stride);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class SceneKit.SCNGeometrySource FromData(class Foundation.NSData data, class Foundation.NSString geometrySourceSemantic, valuetype System.nint vectorCount, bool floatComponents, valuetype System.nint componentsPerVector, valuetype System.nint bytesPerComponent, valuetype System.nint offset, valuetype System.nint stride) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("geometrySourceWithData:semantic:vectorCount:floatComponents:componentsPerVector:bytesPerComponent:dataOffset:dataStride:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>SceneKit.SCNGeometrySource</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="data" Type="Foundation.NSData" />
+        <Parameter Name="geometrySourceSemantic" Type="Foundation.NSString" />
+        <Parameter Name="vectorCount" Type="System.nint" />
+        <Parameter Name="floatComponents" Type="System.Boolean" />
+        <Parameter Name="componentsPerVector" Type="System.nint" />
+        <Parameter Name="bytesPerComponent" Type="System.nint" />
+        <Parameter Name="offset" Type="System.nint" />
+        <Parameter Name="stride" Type="System.nint" />
+      </Parameters>
+      <Docs>
+        <param name="data">To be added.</param>
+        <param name="geometrySourceSemantic">To be added.</param>
+        <param name="vectorCount">To be added.</param>
+        <param name="floatComponents">To be added.</param>
+        <param name="componentsPerVector">To be added.</param>
+        <param name="bytesPerComponent">To be added.</param>
+        <param name="offset">To be added.</param>
+        <param name="stride">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromData">
+      <MemberSignature Language="C#" Value="public static SceneKit.SCNGeometrySource FromData (Foundation.NSData data, SceneKit.SCNGeometrySourceSemantics semantic, nint vectorCount, bool floatComponents, nint componentsPerVector, nint bytesPerComponent, nint offset, nint stride);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class SceneKit.SCNGeometrySource FromData(class Foundation.NSData data, valuetype SceneKit.SCNGeometrySourceSemantics semantic, valuetype System.nint vectorCount, bool floatComponents, valuetype System.nint componentsPerVector, valuetype System.nint bytesPerComponent, valuetype System.nint offset, valuetype System.nint stride) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>SceneKit.SCNGeometrySource</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="data" Type="Foundation.NSData" />
+        <Parameter Name="semantic" Type="SceneKit.SCNGeometrySourceSemantics" />
+        <Parameter Name="vectorCount" Type="System.nint" />
+        <Parameter Name="floatComponents" Type="System.Boolean" />
+        <Parameter Name="componentsPerVector" Type="System.nint" />
+        <Parameter Name="bytesPerComponent" Type="System.nint" />
+        <Parameter Name="offset" Type="System.nint" />
+        <Parameter Name="stride" Type="System.nint" />
+      </Parameters>
+      <Docs>
+        <param name="data">To be added.</param>
+        <param name="semantic">To be added.</param>
+        <param name="vectorCount">To be added.</param>
+        <param name="floatComponents">To be added.</param>
+        <param name="componentsPerVector">To be added.</param>
+        <param name="bytesPerComponent">To be added.</param>
+        <param name="offset">To be added.</param>
+        <param name="stride">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromMetalBuffer">
+      <MemberSignature Language="C#" Value="public static SceneKit.SCNGeometrySource FromMetalBuffer (Metal.IMTLBuffer mtlBuffer, Metal.MTLVertexFormat vertexFormat, Foundation.NSString geometrySourceSemantic, nint vertexCount, nint offset, nint stride);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class SceneKit.SCNGeometrySource FromMetalBuffer(class Metal.IMTLBuffer mtlBuffer, valuetype Metal.MTLVertexFormat vertexFormat, class Foundation.NSString geometrySourceSemantic, valuetype System.nint vertexCount, valuetype System.nint offset, valuetype System.nint stride) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("geometrySourceWithBuffer:vertexFormat:semantic:vertexCount:dataOffset:dataStride:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>SceneKit.SCNGeometrySource</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="mtlBuffer" Type="Metal.IMTLBuffer" />
+        <Parameter Name="vertexFormat" Type="Metal.MTLVertexFormat" />
+        <Parameter Name="geometrySourceSemantic" Type="Foundation.NSString" />
+        <Parameter Name="vertexCount" Type="System.nint" />
+        <Parameter Name="offset" Type="System.nint" />
+        <Parameter Name="stride" Type="System.nint" />
+      </Parameters>
+      <Docs>
+        <param name="mtlBuffer">To be added.</param>
+        <param name="vertexFormat">To be added.</param>
+        <param name="geometrySourceSemantic">To be added.</param>
+        <param name="vertexCount">To be added.</param>
+        <param name="offset">To be added.</param>
+        <param name="stride">To be added.</param>
+        <summary>Factory method to create a new <see cref="T:SceneKit.SCNGeometrySource" /> from a data buffer.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromMetalBuffer">
+      <MemberSignature Language="C#" Value="public static SceneKit.SCNGeometrySource FromMetalBuffer (Metal.IMTLBuffer mtlBuffer, Metal.MTLVertexFormat vertexFormat, SceneKit.SCNGeometrySourceSemantics semantic, nint vertexCount, nint offset, nint stride);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class SceneKit.SCNGeometrySource FromMetalBuffer(class Metal.IMTLBuffer mtlBuffer, valuetype Metal.MTLVertexFormat vertexFormat, valuetype SceneKit.SCNGeometrySourceSemantics semantic, valuetype System.nint vertexCount, valuetype System.nint offset, valuetype System.nint stride) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>SceneKit.SCNGeometrySource</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="mtlBuffer" Type="Metal.IMTLBuffer" />
+        <Parameter Name="vertexFormat" Type="Metal.MTLVertexFormat" />
+        <Parameter Name="semantic" Type="SceneKit.SCNGeometrySourceSemantics" />
+        <Parameter Name="vertexCount" Type="System.nint" />
+        <Parameter Name="offset" Type="System.nint" />
+        <Parameter Name="stride" Type="System.nint" />
+      </Parameters>
+      <Docs>
+        <param name="mtlBuffer">To be added.</param>
+        <param name="vertexFormat">To be added.</param>
+        <param name="semantic">To be added.</param>
+        <param name="vertexCount">To be added.</param>
+        <param name="offset">To be added.</param>
+        <param name="stride">To be added.</param>
+        <summary>Factory method to create a new <see cref="T:SceneKit.SCNGeometrySource" /> from a data buffer.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromNormals">
+      <MemberSignature Language="C#" Value="public static SceneKit.SCNGeometrySource FromNormals (SceneKit.SCNVector3[] normals);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class SceneKit.SCNGeometrySource FromNormals(valuetype SceneKit.SCNVector3[] normals) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>SceneKit.SCNGeometrySource</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="normals" Type="SceneKit.SCNVector3[]" />
+      </Parameters>
+      <Docs>
+        <param name="normals">To be added.</param>
+        <summary>Factory method that creates a source for vertex normals.</summary>
+        <returns>To be added.</returns>
+        <remarks>
+          <para>The <paramref name="normals" /> must correspond directly to their associated vertices (in another <see cref="T:SceneKit.SCNGeometrySource" />).</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromTextureCoordinates">
+      <MemberSignature Language="C#" Value="public static SceneKit.SCNGeometrySource FromTextureCoordinates (CoreGraphics.CGPoint[] texcoords);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class SceneKit.SCNGeometrySource FromTextureCoordinates(valuetype CoreGraphics.CGPoint[] texcoords) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>SceneKit.SCNGeometrySource</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="texcoords" Type="CoreGraphics.CGPoint[]" />
+      </Parameters>
+      <Docs>
+        <param name="texcoords">To be added.</param>
+        <summary>Factory method that creates a source for texture coordinates.</summary>
+        <returns>To be added.</returns>
+        <remarks>
+          <para>The <paramref name="texcoords" /> must correspond directly to their associated vertices (in another <see cref="T:SceneKit.SCNGeometrySource" />).</para>
+          <para>For non-tiling textures, texture coordinates are values between 0 and 1 that describe the mapping between a texture location and a geometry location. A value of [0,0] represents the origin of the texture while [1,1] represents the point at its furthest extent.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromVertices">
+      <MemberSignature Language="C#" Value="public static SceneKit.SCNGeometrySource FromVertices (SceneKit.SCNVector3[] vertices);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class SceneKit.SCNGeometrySource FromVertices(valuetype SceneKit.SCNVector3[] vertices) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>SceneKit.SCNGeometrySource</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="vertices" Type="SceneKit.SCNVector3[]" />
+      </Parameters>
+      <Docs>
+        <param name="vertices">To be added.</param>
+        <summary>Factory method to create a source for vertex data.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Semantic">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSString Semantic { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Foundation.NSString Semantic" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("semantic")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Corresponds to the <see cref="T:SceneKit.SCNGeometrySourceSemantic" /> value for this source.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="VectorCount">
+      <MemberSignature Language="C#" Value="public virtual nint VectorCount { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.nint VectorCount" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("vectorCount")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.nint</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The total number of vectors in the underlying <see cref="P:SceneKit.SCNGeometrySource.Data" />.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

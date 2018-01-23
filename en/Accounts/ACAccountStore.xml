@@ -1,0 +1,806 @@
+<Type Name="ACAccountStore" FullName="Accounts.ACAccountStore">
+  <TypeSignature Language="C#" Value="public class ACAccountStore : Foundation.NSObject" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit ACAccountStore extends Foundation.NSObject" />
+  <AssemblyInfo>
+    <AssemblyName>Xamarin.iOS</AssemblyName>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>Foundation.NSObject</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Attributes>
+    <Attribute>
+      <AttributeName>Foundation.Register("ACAccountStore", true)</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 5, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 8, ObjCRuntime.PlatformArchitecture.Arch64, null)</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>Encapsulates the Accounts database, providing access to <see cref="T:Accounts.ACAccount" /> objects.</summary>
+    <remarks>
+      <para>The Accounts database on iOS provides account information for social networks. The social networks stored in the database are:</para>
+      <list type="bullet">
+        <item>
+          <term>
+            <see cref="P:Accounts.ACAccountType.Facebook" />
+          </term>
+        </item>
+        <item>
+          <term>
+            <see cref="P:Accounts.ACAccountType.SinaWeibo" />
+          </term>
+        </item>
+        <item>
+          <term>
+            <see cref="P:Accounts.ACAccountType.Twitter" />
+          </term>
+        </item>
+      </list>
+      <para>
+        The following example shows the basic structure of code accessing the <see cref="T:Accounts.ACAccountStore" /> object, requesting access to a specific account, and retrieving credentials: 
+      </para>
+      <example>
+        <code lang="C#"><![CDATA[
+          var store = new ACAccountStore();
+          var type = store.FindAccountType(ACAccountType.Twitter);
+          
+          store.RequestAccess(type, null, (granted, error) => {
+          if(granted){
+        ]]></code>
+      </example>
+    </remarks>
+    <altmember cref="T:Accounts.ACAccount" />
+    <related type="PlatformDocAPI" href="https://developer.apple.com/library/ios/documentation/Accounts/Reference/ACAccountStoreClassRef/index.html">Apple documentation for <c>ACAccountStore</c></related>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public ACAccountStore ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("init")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters />
+      <Docs>
+        <summary>Default constructor that initializes a new instance of this class with no parameters.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected ACAccountStore (Foundation.NSObjectFlag t);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor(class Foundation.NSObjectFlag t) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="t" Type="Foundation.NSObjectFlag" />
+      </Parameters>
+      <Docs>
+        <param name="t">Unused sentinel value, pass NSObjectFlag.Empty.</param>
+        <summary>Constructor to call on derived classes to skip initialization and merely allocate the object.</summary>
+        <remarks>
+          <para>This constructor should be called by derived classes when they completely construct the object in managed code and merely want the runtime to allocate and initialize the NSObject.   This is required to implement the two-step initialization process that Objective-C uses, the first step is to perform the object allocation, the second step is to initialize the object.   When developers invoke the constructor that takes the NSObjectFlag.Empty they take advantage of a direct path that goes all the way up to NSObject to merely allocate the object's memory and bind the Objective-C and C# objects together.    The actual initialization of the object is up to the developer.</para>
+          <para>This constructor is typically used by the binding generator to allocate the object, but prevent the actual initialization to take place.   Once the allocation has taken place, the constructor has to initialize the object.   With constructors generated by the binding generator this means that it manually invokes one of the "init" methods to initialize the object.</para>
+          <para>It is the developer's responsibility to completely initialize the object if they chain up using the NSObjectFlag.Empty path.</para>
+          <para>In general, if the developer's constructor invokes the NSObjectFlag.Empty base implementation, then it should be calling an Objective-C init method.   If this is not the case, developers should instead chain to the proper constructor in their class. </para>
+          <para>The argument value is ignored and merely ensures that the only code that is executed is the construction phase is the basic NSObject allocation and runtime type registration.  Typically the chaining would look like this:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// The NSObjectFlag merely allocates the object and registers the
+// C# class with the Objective-C runtime if necessary, but no actual
+// initXxx method is invoked, that is done later in the constructor
+//
+// This is taken from Xamarin's source code:
+//
+[Export ("initWithFrame:")]
+public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
+{
+// Invoke the init method now.
+	var initWithFrame = new Selector ("initWithFrame:").Handle;
+	if (IsDirectBinding)
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+	else
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected ACAccountStore (IntPtr handle);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig specialname rtspecialname instance void .ctor(native int handle) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="handle" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="handle">Pointer (handle) to the unmanaged object.</param>
+        <summary>A constructor used when creating managed representations of unmanaged objects;  Called by the runtime.</summary>
+        <remarks>
+          <para>This constructor is invoked by the runtime infrastructure (<see cref="M:ObjCRuntime.Runtime.GetNSObject(System.IntPtr)" />) to create a new managed representation for a pointer to an unmanaged Objective-C object.    Developers should not invoke this method directly, instead they should call the GetNSObject method as it will prevent two instances of a managed object to point to the same native object.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Accounts">
+      <MemberSignature Language="C#" Value="public virtual Accounts.ACAccount[] Accounts { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Accounts.ACAccount[] Accounts" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("accounts", ObjCRuntime.ArgumentSemantic.Weak)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Accounts.ACAccount[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The <see cref="T:Accounts.ACAccount" />s stored on the device.</summary>
+        <value>A (potentially empty) array of <see cref="T:Accounts.ACAccount" />s.</value>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="ChangeNotification">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString ChangeNotification { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString ChangeNotification" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Advice("Use ACAccountStore.Notifications.ObserveChange helper method instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>Foundation.Field("ACAccountStoreDidChangeNotification", "Accounts")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Notification constant for Change</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:ACAccountStore+Notifications" />.<see cref="M:ACAccountStore+Notifications.ObserveChangeNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = ACAccountStore.Notifications.ObserveChange ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = ACAccountStore.Notifications.ObserveChange (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+          <para>The following example shows how to use the notification with the DefaultCenter API:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        ACAccountStore.ChangeNotification, (notification) => {Console.WriteLine ("Received the notification ACAccountStore", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification ACAccountStore", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (ACAccountStore.ChangeNotification, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ClassHandle">
+      <MemberSignature Language="C#" Value="public override IntPtr ClassHandle { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int ClassHandle" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The handle for this class.</summary>
+        <value>The pointer to the Objective-C class.</value>
+        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Dispose">
+      <MemberSignature Language="C#" Value="protected override void Dispose (bool disposing);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Dispose(bool disposing) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="disposing" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="disposing">
+          <para>If set to <see langword="true" />, the method is invoked directly and will dispose manage and unmanaged resources;   If set to <see langword="false" /> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</para>
+        </param>
+        <summary>Releases the resources used by the ACAccountStore object.</summary>
+        <remarks>
+          <para>This Dispose method releases the resources used by the ACAccountStore class.</para>
+          <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposing <paramref name="disposing" /> is set to <see langword="true" /> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false" />. </para>
+          <para>Calling the Dispose method when the application is finished using the ACAccountStore ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.</para>
+          <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at http://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FindAccount">
+      <MemberSignature Language="C#" Value="public virtual Accounts.ACAccount FindAccount (string identifier);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Accounts.ACAccount FindAccount(string identifier) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("accountWithIdentifier:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Accounts.ACAccount</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="identifier" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="identifier">A GUID associated with the account.</param>
+        <summary>Retrieves the <see cref="T:Accounts.ACAccount" /> whose <see cref="P:Accounts.ACAccount.Identifier" /> is equal to <paramref name="identifer" /> parameter.</summary>
+        <returns>An <see cref="T:Accounts.ACAccount" /> or <see langword="null" /> if the <paramref name="identifier" /> is invalid.</returns>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FindAccounts">
+      <MemberSignature Language="C#" Value="public virtual Accounts.ACAccount[] FindAccounts (Accounts.ACAccountType accountType);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Accounts.ACAccount[] FindAccounts(class Accounts.ACAccountType accountType) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("accountsWithAccountType:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Accounts.ACAccount[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="accountType" Type="Accounts.ACAccountType" />
+      </Parameters>
+      <Docs>
+        <param name="accountType">The desired <see cref="T:Accounts.ACAccountType" />.</param>
+        <summary>Retrieves an array of <see cref="T:Accounts.ACAccount" />s of the type specified by the <paramref name="accountType" /> parameter.</summary>
+        <returns>A (potentially empty) array of <see cref="T:Accounts.ACAccount" />s.</returns>
+        <remarks>
+          <para>
+            This function is typically called with the following idiom: <c>store.FindAccounts(store.FindAccountType(ACAccountType.Twitter));</c>.
+          </para>
+        </remarks>
+        <altmember cref="T:Accounts.ACAccountType" />
+        <altmember cref="M:Accounts.ACAccountStore.FindAccountType" />
+      </Docs>
+    </Member>
+    <Member MemberName="FindAccountType">
+      <MemberSignature Language="C#" Value="public virtual Accounts.ACAccountType FindAccountType (string typeIdentifier);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Accounts.ACAccountType FindAccountType(string typeIdentifier) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("accountTypeWithAccountTypeIdentifier:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Accounts.ACAccountType</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="typeIdentifier" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="typeIdentifier">Account-type name. Use static properties of <see cref="T:Accounts.ACAccountType" />.</param>
+        <summary>Returns the <see cref="T:Account.ACAccountType" /> identified by the <paramref name="typeIdentifier" />.</summary>
+        <returns>The requested <see cref="T:Account.ACAccountType" /> or <see langword="null" /> if the <paramref name="typeIdentifier" /> is invalid.</returns>
+        <remarks>
+          <para>The <paramref name="typeIdentifier" /> should be one of the static properties of <see cref="T:Accounts.ACAccountType" />:</para>
+          <list type="bullet">
+            <item>
+              <term>
+                <see cref="P:Accounts.ACAccountType.Facebook" />
+              </term>
+            </item>
+            <item>
+              <term>
+                <see cref="P:Accounts.ACAccountType.SinaWeibo" />
+              </term>
+            </item>
+            <item>
+              <term>
+                <see cref="P:Accounts.ACAccountType.Twitter" />
+              </term>
+            </item>
+          </list>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RemoveAccount">
+      <MemberSignature Language="C#" Value="public virtual void RemoveAccount (Accounts.ACAccount account, Accounts.ACAccountStoreRemoveCompletionHandler completionHandler);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void RemoveAccount(class Accounts.ACAccount account, class Accounts.ACAccountStoreRemoveCompletionHandler completionHandler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("removeAccount:withCompletionHandler:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="account" Type="Accounts.ACAccount" />
+        <Parameter Name="completionHandler" Type="Accounts.ACAccountStoreRemoveCompletionHandler">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDACAccountStoreRemoveCompletionHandler))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="account">The account to remove.</param>
+        <param name="completionHandler">The handler to run after the account has been removed.</param>
+        <summary>Removes the specified <paramref name="account" /> from the account store, and runs a completion handler after the operation is complete.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RemoveAccountAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;Tuple&lt;bool,Foundation.NSError&gt;&gt; RemoveAccountAsync (Accounts.ACAccount account);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;class System.Tuple`2&lt;bool, class Foundation.NSError&gt;&gt; RemoveAccountAsync(class Accounts.ACAccount account) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Tuple&lt;System.Boolean,Foundation.NSError&gt;&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="account" Type="Accounts.ACAccount" />
+      </Parameters>
+      <Docs>
+        <param name="account">The account to remove.</param>
+        <summary>Removes the specified  from the account store, and runs a completion handler after the operation is complete.</summary>
+        <returns>
+          <para>A task that represents the asynchronous RemoveAccount operation.   The value of the TResult parameter is a <see cref="Accounts.ACAccountStoreRemoveCompletionHandler" />.</para>
+        </returns>
+        <remarks>
+          <para copied="true">The RemoveAccountAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+          <para copied="true">To be added.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RenewCredentials">
+      <MemberSignature Language="C#" Value="public virtual void RenewCredentials (Accounts.ACAccount account, Action&lt;Accounts.ACAccountCredentialRenewResult,Foundation.NSError&gt; completionHandler);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void RenewCredentials(class Accounts.ACAccount account, class System.Action`2&lt;valuetype Accounts.ACAccountCredentialRenewResult, class Foundation.NSError&gt; completionHandler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("renewCredentialsForAccount:completion:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="account" Type="Accounts.ACAccount" />
+        <Parameter Name="completionHandler" Type="System.Action&lt;Accounts.ACAccountCredentialRenewResult,Foundation.NSError&gt;">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDActionArity2V0))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="account">The account whose credentials require renewing.</param>
+        <param name="completionHandler">The handler to be called when the method completes.</param>
+        <summary>Attempts to renew credentials if they have become invalid.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RenewCredentialsAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;Accounts.ACAccountCredentialRenewResult&gt; RenewCredentialsAsync (Accounts.ACAccount account);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;valuetype Accounts.ACAccountCredentialRenewResult&gt; RenewCredentialsAsync(class Accounts.ACAccount account) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;Accounts.ACAccountCredentialRenewResult&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="account" Type="Accounts.ACAccount" />
+      </Parameters>
+      <Docs>
+        <param name="account">The account whose credentials require renewing.</param>
+        <summary>Attempts to renew credentials if they have become invalid.</summary>
+        <returns>
+          <para class="improve-task-t-return-type-description">A task that represents the asynchronous RenewCredentials operation.  The value of the TResult parameter is of type <c>Action&lt;Accounts.ACAccountCredentialRenewResult,Foundation.NSError&gt;</c>.</para>
+        </returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="RequestAccess">
+      <MemberSignature Language="C#" Value="public virtual void RequestAccess (Accounts.ACAccountType accountType, Accounts.ACRequestCompletionHandler completionHandler);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void RequestAccess(class Accounts.ACAccountType accountType, class Accounts.ACRequestCompletionHandler completionHandler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("requestAccessToAccountsWithType:withCompletionHandler:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'RequestAccess (ACAccountType, AccountStoreOptions, ACRequestCompletionHandler)' instead.")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="accountType" Type="Accounts.ACAccountType" />
+        <Parameter Name="completionHandler" Type="Accounts.ACRequestCompletionHandler">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDACRequestCompletionHandler))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="accountType">The type of account for which access is being requested.</param>
+        <param name="completionHandler">The handler to be called when the method completes.</param>
+        <summary>Requests access to a type of social account.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RequestAccess">
+      <MemberSignature Language="C#" Value="public void RequestAccess (Accounts.ACAccountType accountType, Accounts.AccountStoreOptions options, Accounts.ACRequestCompletionHandler completion);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void RequestAccess(class Accounts.ACAccountType accountType, class Accounts.AccountStoreOptions options, class Accounts.ACRequestCompletionHandler completion) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="accountType" Type="Accounts.ACAccountType" />
+        <Parameter Name="options" Type="Accounts.AccountStoreOptions" />
+        <Parameter Name="completion" Type="Accounts.ACRequestCompletionHandler">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDACRequestCompletionHandler))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="accountType">The type of account for which access is being requested.</param>
+        <param name="options">Options for accessing Facebook accounts or <see langword="null" />.</param>
+        <param name="completion">The handler to be called when the method completes.</param>
+        <summary>Requests access to a type of social account.</summary>
+        <remarks>
+          <para>Application developers can retrieve the <paramref name="accountType" /> object with the <see cref="M:Accounts.ACAccountStore.FindAccountType" /> method.
+          </para>
+          <example>
+            <code lang="C#"><![CDATA[
+var objStore = new ACAccountStore();
+var options = new AccountStoreOptions();
+objStore.RequestAccess(objStore.FindAccountType(ACAccountType.Facebook), options, (granted, error) => { });
+]]></code>
+          </example>
+        </remarks>
+        <altmember cref="T:Accounts.AccountStoreOptions" />
+      </Docs>
+    </Member>
+    <Member MemberName="RequestAccess">
+      <MemberSignature Language="C#" Value="protected virtual void RequestAccess (Accounts.ACAccountType accountType, Foundation.NSDictionary options, Accounts.ACRequestCompletionHandler completion);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void RequestAccess(class Accounts.ACAccountType accountType, class Foundation.NSDictionary options, class Accounts.ACRequestCompletionHandler completion) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("requestAccessToAccountsWithType:options:completion:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="accountType" Type="Accounts.ACAccountType" />
+        <Parameter Name="options" Type="Foundation.NSDictionary" />
+        <Parameter Name="completion" Type="Accounts.ACRequestCompletionHandler">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDACRequestCompletionHandler))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="accountType">The type of account for which access is being requested.</param>
+        <param name="options">
+          <para>Options for accessing Facebook accounts or <see langword="null" />.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="completion">The handler to be called when the method completes.</param>
+        <summary>Requests access to a type of social account.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RequestAccessAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;Tuple&lt;bool,Foundation.NSError&gt;&gt; RequestAccessAsync (Accounts.ACAccountType accountType);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;class System.Tuple`2&lt;bool, class Foundation.NSError&gt;&gt; RequestAccessAsync(class Accounts.ACAccountType accountType) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'RequestAccess (ACAccountType, AccountStoreOptions, ACRequestCompletionHandler)' instead.")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Tuple&lt;System.Boolean,Foundation.NSError&gt;&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="accountType" Type="Accounts.ACAccountType" />
+      </Parameters>
+      <Docs>
+        <param name="accountType">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RequestAccessAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;Tuple&lt;bool,Foundation.NSError&gt;&gt; RequestAccessAsync (Accounts.ACAccountType accountType, Accounts.AccountStoreOptions options);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Tuple`2&lt;bool, class Foundation.NSError&gt;&gt; RequestAccessAsync(class Accounts.ACAccountType accountType, class Accounts.AccountStoreOptions options) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Tuple&lt;System.Boolean,Foundation.NSError&gt;&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="accountType" Type="Accounts.ACAccountType" />
+        <Parameter Name="options" Type="Accounts.AccountStoreOptions" />
+      </Parameters>
+      <Docs>
+        <param name="accountType">To be added.</param>
+        <param name="options">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RequestAccessAsync">
+      <MemberSignature Language="C#" Value="protected virtual System.Threading.Tasks.Task&lt;Tuple&lt;bool,Foundation.NSError&gt;&gt; RequestAccessAsync (Accounts.ACAccountType accountType, Foundation.NSDictionary options);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;class System.Tuple`2&lt;bool, class Foundation.NSError&gt;&gt; RequestAccessAsync(class Accounts.ACAccountType accountType, class Foundation.NSDictionary options) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Tuple&lt;System.Boolean,Foundation.NSError&gt;&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="accountType" Type="Accounts.ACAccountType" />
+        <Parameter Name="options" Type="Foundation.NSDictionary" />
+      </Parameters>
+      <Docs>
+        <param name="accountType">To be added.</param>
+        <param name="options">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SaveAccount">
+      <MemberSignature Language="C#" Value="public virtual void SaveAccount (Accounts.ACAccount account, Accounts.ACAccountStoreSaveCompletionHandler completionHandler);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SaveAccount(class Accounts.ACAccount account, class Accounts.ACAccountStoreSaveCompletionHandler completionHandler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("saveAccount:withCompletionHandler:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="account" Type="Accounts.ACAccount" />
+        <Parameter Name="completionHandler" Type="Accounts.ACAccountStoreSaveCompletionHandler">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDACAccountStoreSaveCompletionHandler))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="account">The account to be saved.</param>
+        <param name="completionHandler">The handler to be called when the method completes.</param>
+        <summary>Attempts to save an <see cref="T:MonoToch.Accounts.ACAccount" /> to the Accounts database.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SaveAccountAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;Tuple&lt;bool,Foundation.NSError&gt;&gt; SaveAccountAsync (Accounts.ACAccount account);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;class System.Tuple`2&lt;bool, class Foundation.NSError&gt;&gt; SaveAccountAsync(class Accounts.ACAccount account) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Tuple&lt;System.Boolean,Foundation.NSError&gt;&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="account" Type="Accounts.ACAccount" />
+      </Parameters>
+      <Docs>
+        <param name="account">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

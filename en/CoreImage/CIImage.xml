@@ -1,0 +1,3640 @@
+<Type Name="CIImage" FullName="CoreImage.CIImage">
+  <TypeSignature Language="C#" Value="public class CIImage : Foundation.NSObject, Foundation.INSCopying, Foundation.INSSecureCoding, IDisposable" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit CIImage extends Foundation.NSObject implements class Foundation.INSCoding, class Foundation.INSCopying, class Foundation.INSSecureCoding, class ObjCRuntime.INativeObject, class System.IDisposable" />
+  <AssemblyInfo>
+    <AssemblyName>Xamarin.iOS</AssemblyName>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>Foundation.NSObject</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>Foundation.INSCopying</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>Foundation.INSSecureCoding</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>System.IDisposable</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Attributes>
+    <Attribute>
+      <AttributeName>Foundation.Register("CIImage", true)</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 5, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>Represents a set of instructions to create an image for use by CoreImage.</summary>
+    <remarks>
+      <para>
+
+	Unlike CoreGraphics images (<see cref="T:CoreGraphics.CGImage" />) that are objects
+	that hold the actual image data to be processed, CIImages
+	represents a set of instructions to obtain an image.  These
+	recipes are used during the CoreImage filtering, analysis or rendering
+	pipeline to actually create the bitmap representation.   
+
+      </para>
+      <para>
+
+	CIImages are either the result of loading an image from disk,
+	an NSData array, a CoreVideo buffer a CoreGraphics image, or
+	the result of processing an image pipeline by CoreImage.
+
+      </para>
+      <para>
+
+	CIImages for example are used when chaining various filters
+	(<see cref="T:CoreImage.CIFilter" />) together and
+	only their abstract representation is passed between the
+	output of one filter and the input to another one.  The image
+	might not even reside in the main memory, it could reside
+	entirely on the GPU space as an intermediate step between two
+	filters.
+
+      </para>
+      <format type="text/html">
+        <h2>Auto Enhancement Filters</h2>
+      </format>
+      <para>
+
+	The <see cref="M:CoreImage.CIImage.GetAutoAdjustmentFilters" />
+	method can be used to obtain a list of CIImage filters that
+	can be used to correct various problems found in photos.
+
+      </para>
+      <para>
+	These typically include:
+
+	<list type="bullet"><item><term>
+	      Adjusts the shadow details (using the <see cref="T:CoreImage.CIHighlightShadowAdjust" /> filter).
+	    </term></item><item><term>
+	      Adjusts the image contrast (using the <see cref="T:CoreImage.CIToneCurve" /> filter).
+	    </term></item><item><term>
+	      Adjusts the image saturation (using the <see cref="T:CoreImage.CIVibrance" /> filter).
+	    </term></item><item><term>
+	      Adjusts the face color balance, adjust the tone of the skin (using the <see cref="T:CoreImage.CIFaceBalance" /> filter).
+	    </term></item><item><term>
+	      Red Eye Correction (using the <see cref="T:CoreImage.CIRedEyeCorrection" /> filter).
+	    </term></item></list></para>
+      <para>
+
+	You can configure which kind of filters you want to get or
+	configure by setting the properties of an <see cref="T:CoreImage.CIAutoAdjustmentFilterOptions" />
+	instance and then calling the appropriate method.
+
+      </para>
+      <example>
+        <code lang="C#"><![CDATA[
+void PrepareFixes (CIImage img)
+{
+    var opt = new CIAutoAdjustmentFilterOptions () {
+    	RedEye = true,
+    	AutoAdjustCrop = true
+    };
+    foreach (var filter in img.GetAutoAdjustmentFilters (opt)) {
+    	filter.Image = img;
+    	img = filter.OutputImage;
+    }
+}
+]]></code>
+      </example>
+    </remarks>
+    <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=e2a0ccca-ab10-4e41-9c09-11831a8c1380">coreimage</related>
+    <related type="PlatformDocAPI" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIImage_Class/index.html">Apple documentation for <c>CIImage</c></related>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public CIImage (CoreGraphics.CGImage image);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class CoreGraphics.CGImage image) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("initWithCGImage:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="image" Type="CoreGraphics.CGImage" />
+      </Parameters>
+      <Docs>
+        <param name="image">CoreGraphics image.</param>
+        <summary>Initializes a CoreImage Image from a CoreGraphics bitmap representation</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public CIImage (CoreImage.CIColor color);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class CoreImage.CIColor color) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("initWithColor:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="color" Type="CoreImage.CIColor" />
+      </Parameters>
+      <Docs>
+        <param name="color">Color to use for the image.</param>
+        <summary>Creates an image with infinite dimensions that is filled with the specified color.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public CIImage (CoreVideo.CVImageBuffer imageBuffer);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class CoreVideo.CVImageBuffer imageBuffer) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("initWithCVImageBuffer:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="imageBuffer" Type="CoreVideo.CVImageBuffer" />
+      </Parameters>
+      <Docs>
+        <param name="imageBuffer">CoreVideo image buffer.</param>
+        <summary>Initializes a CoreImage image from the contents of the specified CoreVideo image buffer.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public CIImage (CoreVideo.CVPixelBuffer buffer);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class CoreVideo.CVPixelBuffer buffer) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("initWithCVPixelBuffer:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="buffer" Type="CoreVideo.CVPixelBuffer" />
+      </Parameters>
+      <Docs>
+        <param name="buffer">The pixel buffer that supplies the data for the image.</param>
+        <summary>Constructs a <see cref="T:CoreImage.CIImage" /> with the supplied <paramref name="buffer" /> data.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public CIImage (Foundation.NSCoder coder);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class Foundation.NSCoder coder) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("initWithCoder:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.DesignatedInitializer</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="coder" Type="Foundation.NSCoder" />
+      </Parameters>
+      <Docs>
+        <param name="coder">The unarchiver object.</param>
+        <summary>A constructor that initializes the object from the data stored in the unarchiver object.</summary>
+        <remarks>
+          <para>This constructor is provided to allow the class to be initialized from an unarchiver (for example, during NIB deserialization).   This is part of the <see cref="T:Foundation.NSCoding" />  protocol.</para>
+          <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="T:Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
+          <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public CIImage (Foundation.NSData data);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class Foundation.NSData data) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("initWithData:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="data" Type="Foundation.NSData" />
+      </Parameters>
+      <Docs>
+        <param name="data">Image data, in a format supported by the system.</param>
+        <summary>Creates a new CIImage from the specified data.   The image data must be premultiplied.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected CIImage (Foundation.NSObjectFlag t);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor(class Foundation.NSObjectFlag t) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="t" Type="Foundation.NSObjectFlag" />
+      </Parameters>
+      <Docs>
+        <param name="t">Unused sentinel value, pass NSObjectFlag.Empty.</param>
+        <summary>Constructor to call on derived classes to skip initialization and merely allocate the object.</summary>
+        <remarks>
+          <para>This constructor should be called by derived classes when they completely construct the object in managed code and merely want the runtime to allocate and initialize the NSObject.   This is required to implement the two-step initialization process that Objective-C uses, the first step is to perform the object allocation, the second step is to initialize the object.   When developers invoke the constructor that takes the NSObjectFlag.Empty they take advantage of a direct path that goes all the way up to NSObject to merely allocate the object's memory and bind the Objective-C and C# objects together.    The actual initialization of the object is up to the developer.</para>
+          <para>This constructor is typically used by the binding generator to allocate the object, but prevent the actual initialization to take place.   Once the allocation has taken place, the constructor has to initialize the object.   With constructors generated by the binding generator this means that it manually invokes one of the "init" methods to initialize the object.</para>
+          <para>It is the developer's responsibility to completely initialize the object if they chain up using the NSObjectFlag.Empty path.</para>
+          <para>In general, if the developer's constructor invokes the NSObjectFlag.Empty base implementation, then it should be calling an Objective-C init method.   If this is not the case, developers should instead chain to the proper constructor in their class. </para>
+          <para>The argument value is ignored and merely ensures that the only code that is executed is the construction phase is the basic NSObject allocation and runtime type registration.  Typically the chaining would look like this:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// The NSObjectFlag merely allocates the object and registers the
+// C# class with the Objective-C runtime if necessary, but no actual
+// initXxx method is invoked, that is done later in the constructor
+//
+// This is taken from Xamarin's source code:
+//
+[Export ("initWithFrame:")]
+public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
+{
+// Invoke the init method now.
+	var initWithFrame = new Selector ("initWithFrame:").Handle;
+	if (IsDirectBinding)
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+	else
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public CIImage (Foundation.NSUrl url);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class Foundation.NSUrl url) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("initWithContentsOfURL:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="url" Type="Foundation.NSUrl" />
+      </Parameters>
+      <Docs>
+        <param name="url">Location of the image data.</param>
+        <summary>Initializes a CoreImage image from the contents of the file pointed by the specified url.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public CIImage (IOSurface.IOSurface surface);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class IOSurface.IOSurface surface) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("initWithIOSurface:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 13, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="surface" Type="IOSurface.IOSurface" />
+      </Parameters>
+      <Docs>
+        <param name="surface">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected CIImage (IntPtr handle);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig specialname rtspecialname instance void .ctor(native int handle) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="handle" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="handle">Pointer (handle) to the unmanaged object.</param>
+        <summary>A constructor used when creating managed representations of unmanaged objects;  Called by the runtime.</summary>
+        <remarks>
+          <para>This constructor is invoked by the runtime infrastructure (<see cref="M:ObjCRuntime.Runtime.GetNSObject(System.IntPtr)" />) to create a new managed representation for a pointer to an unmanaged Objective-C object.    Developers should not invoke this method directly, instead they should call the GetNSObject method as it will prevent two instances of a managed object to point to the same native object.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public CIImage (UIKit.UIImage image);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class UIKit.UIImage image) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("initWithImage:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 5, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="image" Type="UIKit.UIImage" />
+      </Parameters>
+      <Docs>
+        <param name="image">UIKit image.</param>
+        <summary>Initializes a CoreImage image from a UIKit image.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public CIImage (CoreGraphics.CGImage image, CoreImage.CIImageInitializationOptionsWithMetadata options);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class CoreGraphics.CGImage image, class CoreImage.CIImageInitializationOptionsWithMetadata options) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="image" Type="CoreGraphics.CGImage" />
+        <Parameter Name="options" Type="CoreImage.CIImageInitializationOptionsWithMetadata" />
+      </Parameters>
+      <Docs>
+        <param name="image">CoreGraphics image.</param>
+        <param name="options">Options to initialize the image with.</param>
+        <summary>Initializes a CoreImage Image from a CoreGraphics bitmap representation</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public CIImage (CoreGraphics.CGImage image, Foundation.NSDictionary d);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class CoreGraphics.CGImage image, class Foundation.NSDictionary d) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("initWithCGImage:options:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="image" Type="CoreGraphics.CGImage" />
+        <Parameter Name="d" Type="Foundation.NSDictionary" />
+      </Parameters>
+      <Docs>
+        <param name="image">CoreGraphics image.</param>
+        <param name="d">
+          <para>Metadata to initialize with, as an NSDictionary.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>Initializes a CoreImage Image from a CoreGraphics bitmap representation</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public CIImage (CoreVideo.CVImageBuffer imageBuffer, CoreImage.CIImageInitializationOptions options);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class CoreVideo.CVImageBuffer imageBuffer, class CoreImage.CIImageInitializationOptions options) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="imageBuffer" Type="CoreVideo.CVImageBuffer" />
+        <Parameter Name="options" Type="CoreImage.CIImageInitializationOptions" />
+      </Parameters>
+      <Docs>
+        <param name="imageBuffer">CoreVideo image buffer.</param>
+        <param name="options">Options to initialize the image with.</param>
+        <summary>Initializes a CoreImage image from the contents of the specified CoreVideo image buffer.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public CIImage (CoreVideo.CVImageBuffer imageBuffer, Foundation.NSDictionary&lt;Foundation.NSString,Foundation.NSObject&gt; dict);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class CoreVideo.CVImageBuffer imageBuffer, class Foundation.NSDictionary`2&lt;class Foundation.NSString, class Foundation.NSObject&gt; dict) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("initWithCVImageBuffer:options:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="imageBuffer" Type="CoreVideo.CVImageBuffer" />
+        <Parameter Name="dict" Type="Foundation.NSDictionary&lt;Foundation.NSString,Foundation.NSObject&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="imageBuffer">Holds the data that is the basis of the image.</param>
+        <param name="dict">Dictionary of strings to objects, holding the options to be applied during construction. (See <see cref="T:CoreImage.CIImageInitializationOptions" />)</param>
+        <summary>Constructs a <see cref="T:CoreImage.CIImage" /> using the options in <paramref name="dict" />.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public CIImage (CoreVideo.CVPixelBuffer buffer, CoreImage.CIImageInitializationOptions options);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class CoreVideo.CVPixelBuffer buffer, class CoreImage.CIImageInitializationOptions options) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="buffer" Type="CoreVideo.CVPixelBuffer" />
+        <Parameter Name="options" Type="CoreImage.CIImageInitializationOptions" />
+      </Parameters>
+      <Docs>
+        <param name="buffer">Holds the data that is the basis of the image.</param>
+        <param name="options">The options to be applied during initialization.</param>
+        <summary>Constructs a <see cref="T:CoreImage.CIImage" /> using <paramref name="options" />.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public CIImage (CoreVideo.CVPixelBuffer buffer, Foundation.NSDictionary dict);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class CoreVideo.CVPixelBuffer buffer, class Foundation.NSDictionary dict) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("initWithCVPixelBuffer:options:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="buffer" Type="CoreVideo.CVPixelBuffer" />
+        <Parameter Name="dict" Type="Foundation.NSDictionary" />
+      </Parameters>
+      <Docs>
+        <param name="buffer">The data that forms the basis of the image.</param>
+        <param name="dict">
+          <para>A dictionary of strings to objects defining the options to be applied during construction. (See <see cref="T:CoreImage.CIImageInitializationOptions" />).</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>Constructs a <see cref="T:CoreImage.CIImage" /> from the data in <paramref name="buffer" />, applying the options specified in <paramref name="dict" />.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public CIImage (Foundation.NSData data, CoreImage.CIImageInitializationOptionsWithMetadata options);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class Foundation.NSData data, class CoreImage.CIImageInitializationOptionsWithMetadata options) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="data" Type="Foundation.NSData" />
+        <Parameter Name="options" Type="CoreImage.CIImageInitializationOptionsWithMetadata" />
+      </Parameters>
+      <Docs>
+        <param name="data">Image data, in a format supported by the system.</param>
+        <param name="options">Options to initialize the image with.</param>
+        <summary>Creates a new CIImage from the specified data.   The image data must be premultiplied.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public CIImage (Foundation.NSData data, Foundation.NSDictionary d);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class Foundation.NSData data, class Foundation.NSDictionary d) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("initWithData:options:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="data" Type="Foundation.NSData" />
+        <Parameter Name="d" Type="Foundation.NSDictionary" />
+      </Parameters>
+      <Docs>
+        <param name="data">Image data, in a format supported by the system.</param>
+        <param name="d">
+          <para>Extra configuration options, as an NSDictionary.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>Creates a new CIImage from the specified data.   The image data must be premultiplied.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public CIImage (Foundation.NSUrl url, CoreImage.CIImageInitializationOptions options);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class Foundation.NSUrl url, class CoreImage.CIImageInitializationOptions options) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="url" Type="Foundation.NSUrl" />
+        <Parameter Name="options" Type="CoreImage.CIImageInitializationOptions" />
+      </Parameters>
+      <Docs>
+        <param name="url">Location of the image data.</param>
+        <param name="options">Options to initialize the image with.</param>
+        <summary>Initializes a CoreImage image from the contents of the file pointed by the specified url.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public CIImage (Foundation.NSUrl url, Foundation.NSDictionary d);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class Foundation.NSUrl url, class Foundation.NSDictionary d) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("initWithContentsOfURL:options:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="url" Type="Foundation.NSUrl" />
+        <Parameter Name="d" Type="Foundation.NSDictionary" />
+      </Parameters>
+      <Docs>
+        <param name="url">Location of the image data.</param>
+        <param name="d">
+          <para>Extra configuration options, as an NSDictionary.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>Initializes a CoreImage image from the contents of the file pointed by the specified url.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public CIImage (IOSurface.IOSurface surface, CoreImage.CIImageInitializationOptions options);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class IOSurface.IOSurface surface, class CoreImage.CIImageInitializationOptions options) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 13, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="surface" Type="IOSurface.IOSurface" />
+        <Parameter Name="options" Type="CoreImage.CIImageInitializationOptions" />
+      </Parameters>
+      <Docs>
+        <param name="surface">To be added.</param>
+        <param name="options">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public CIImage (IOSurface.IOSurface surface, Foundation.NSDictionary options);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class IOSurface.IOSurface surface, class Foundation.NSDictionary options) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("initWithIOSurface:options:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 13, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="surface" Type="IOSurface.IOSurface" />
+        <Parameter Name="options" Type="Foundation.NSDictionary" />
+      </Parameters>
+      <Docs>
+        <param name="surface">To be added.</param>
+        <param name="options">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public CIImage (Metal.IMTLTexture texture, Foundation.NSDictionary options);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class Metal.IMTLTexture texture, class Foundation.NSDictionary options) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("initWithMTLTexture:options:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.Arch64, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="texture" Type="Metal.IMTLTexture" />
+        <Parameter Name="options" Type="Foundation.NSDictionary" />
+      </Parameters>
+      <Docs>
+        <param name="texture">The <see cref="T:Metal.IMTLTexture" /> that is the basis for the <see cref="T:CoreImage.CIImage" />.</param>
+        <param name="options">
+          <para>A dictionary of strings to objects that hold the configuration options.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>Constructs a <see cref="T:CoreImage.CIImage" /> using the <paramref name="options" />.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public CIImage (UIKit.UIImage image, CoreImage.CIImageInitializationOptions options);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class UIKit.UIImage image, class CoreImage.CIImageInitializationOptions options) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 5, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="image" Type="UIKit.UIImage" />
+        <Parameter Name="options" Type="CoreImage.CIImageInitializationOptions" />
+      </Parameters>
+      <Docs>
+        <param name="image">UIKit image.</param>
+        <param name="options">Options to initialize the image with.</param>
+        <summary>Initializes a CoreImage image from a UIKit image.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public CIImage (UIKit.UIImage image, Foundation.NSDictionary options);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class UIKit.UIImage image, class Foundation.NSDictionary options) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("initWithImage:options:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 5, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="image" Type="UIKit.UIImage" />
+        <Parameter Name="options" Type="Foundation.NSDictionary" />
+      </Parameters>
+      <Docs>
+        <param name="image">UIKit image.</param>
+        <param name="options">
+          <para>Extra configuration options, as an NSDictionary.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>Initializes a CoreImage image from a UIKit image.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public CIImage (int glTextureName, CoreGraphics.CGSize size, bool flipped, CoreGraphics.CGColorSpace colorSpace);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(int32 glTextureName, valuetype CoreGraphics.CGSize size, bool flipped, class CoreGraphics.CGColorSpace colorSpace) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("initWithTexture:size:flipped:colorSpace:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="glTextureName" Type="System.Int32" />
+        <Parameter Name="size" Type="CoreGraphics.CGSize" />
+        <Parameter Name="flipped" Type="System.Boolean" />
+        <Parameter Name="colorSpace" Type="CoreGraphics.CGColorSpace" />
+      </Parameters>
+      <Docs>
+        <param name="glTextureName">To be added.</param>
+        <param name="size">To be added.</param>
+        <param name="flipped">To be added.</param>
+        <param name="colorSpace">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public CIImage (Foundation.NSData d, nint bytesPerRow, CoreGraphics.CGSize size, int pixelFormat, CoreGraphics.CGColorSpace colorSpace);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class Foundation.NSData d, valuetype System.nint bytesPerRow, valuetype CoreGraphics.CGSize size, int32 pixelFormat, class CoreGraphics.CGColorSpace colorSpace) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("initWithBitmapData:bytesPerRow:size:format:colorSpace:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="d" Type="Foundation.NSData" />
+        <Parameter Name="bytesPerRow" Type="System.nint" />
+        <Parameter Name="size" Type="CoreGraphics.CGSize" />
+        <Parameter Name="pixelFormat" Type="System.Int32" />
+        <Parameter Name="colorSpace" Type="CoreGraphics.CGColorSpace" />
+      </Parameters>
+      <Docs>
+        <param name="d">To be added.</param>
+        <param name="bytesPerRow">To be added.</param>
+        <param name="size">To be added.</param>
+        <param name="pixelFormat">To be added.</param>
+        <param name="colorSpace">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public CIImage (CoreImage.ICIImageProvider provider, nuint width, nuint height, CoreImage.CIFormat pixelFormat, CoreGraphics.CGColorSpace colorSpace, CoreImage.CIImageProviderOptions options);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class CoreImage.ICIImageProvider provider, valuetype System.nuint width, valuetype System.nuint height, valuetype CoreImage.CIFormat pixelFormat, class CoreGraphics.CGColorSpace colorSpace, class CoreImage.CIImageProviderOptions options) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="provider" Type="CoreImage.ICIImageProvider" />
+        <Parameter Name="width" Type="System.nuint" />
+        <Parameter Name="height" Type="System.nuint" />
+        <Parameter Name="pixelFormat" Type="CoreImage.CIFormat" />
+        <Parameter Name="colorSpace" Type="CoreGraphics.CGColorSpace" />
+        <Parameter Name="options" Type="CoreImage.CIImageProviderOptions" />
+      </Parameters>
+      <Docs>
+        <param name="provider">To be added.</param>
+        <param name="width">To be added.</param>
+        <param name="height">To be added.</param>
+        <param name="pixelFormat">To be added.</param>
+        <param name="colorSpace">To be added.</param>
+        <param name="options">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CGImage">
+      <MemberSignature Language="C#" Value="public virtual CoreGraphics.CGImage CGImage { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class CoreGraphics.CGImage CGImage" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("CGImage")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreGraphics.CGImage</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Copies the <see cref="T:CoreImage.CIImage" /> into a new <see cref="T:CoreGraphics.CGImage" />.</summary>
+        <value>
+          <para>(More documentation for this node is coming)</para>
+          <para tool="nullallowed">This value can be <see langword="null" />.</para>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ClassHandle">
+      <MemberSignature Language="C#" Value="public override IntPtr ClassHandle { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int ClassHandle" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The handle for this class.</summary>
+        <value>The pointer to the Objective-C class.</value>
+        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ColorSpace">
+      <MemberSignature Language="C#" Value="public virtual CoreGraphics.CGColorSpace ColorSpace { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class CoreGraphics.CGColorSpace ColorSpace" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("colorSpace")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreGraphics.CGColorSpace</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>
+          <para>(More documentation for this node is coming)</para>
+          <para tool="nullallowed">This value can be <see langword="null" />.</para>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Copy">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSObject Copy (Foundation.NSZone zone);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Foundation.NSObject Copy(class Foundation.NSZone zone) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("copyWithZone:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="zone" Type="Foundation.NSZone" />
+      </Parameters>
+      <Docs>
+        <param name="zone">Zone to use to allocate this object, or null to use the default zone.</param>
+        <summary>Performs a copy of the underlying Objective-C object.</summary>
+        <returns>This method performs a copy of the underlying Objective-C object state and returns a new instance of it.  It does not actually try to replicate any managed state.</returns>
+        <remarks>Implementation of the INSCopyable interface.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateByApplyingGaussianBlur">
+      <MemberSignature Language="C#" Value="public virtual CoreImage.CIImage CreateByApplyingGaussianBlur (double sigma);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class CoreImage.CIImage CreateByApplyingGaussianBlur(float64 sigma) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("imageByApplyingGaussianBlurWithSigma:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sigma" Type="System.Double" />
+      </Parameters>
+      <Docs>
+        <param name="sigma">The standard deviation defining the 2D Gaussian.</param>
+        <summary>Creates a new <see cref="T:CoreImage.CIImage" /> by applying a Gaussian blur with the provided <paramref name="sigma" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>
+          <para>The 2D Gaussian is defined as:</para>
+          <para>
+            <img href="CoreImage.GaussianEq.png" />
+          </para>
+          <para>Where zeta (<c>z</c>) is a vector holding the pixel coordinates and mu (μ) is a vector holding the mean of the Gaussian in either direction.</para>
+          <para>The <paramref name="sigma" /> defines the rate of falloff of the Gaussian. Smaller <paramref name="sigma" /> values blur over fewer pixels.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateByApplyingOrientation">
+      <MemberSignature Language="C#" Value="public virtual CoreImage.CIImage CreateByApplyingOrientation (ImageIO.CGImagePropertyOrientation orientation);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class CoreImage.CIImage CreateByApplyingOrientation(valuetype ImageIO.CGImagePropertyOrientation orientation) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("imageByApplyingCGOrientation:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 13, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="orientation" Type="ImageIO.CGImagePropertyOrientation" />
+      </Parameters>
+      <Docs>
+        <param name="orientation">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateByClamping">
+      <MemberSignature Language="C#" Value="public virtual CoreImage.CIImage CreateByClamping (CoreGraphics.CGRect rect);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class CoreImage.CIImage CreateByClamping(valuetype CoreGraphics.CGRect rect) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("imageByClampingToRect:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rect" Type="CoreGraphics.CGRect" />
+      </Parameters>
+      <Docs>
+        <param name="rect">The clipping rectangle.</param>
+        <summary>Creates a new <see cref="T:CoreImage.CIImage" /> of infinite extent by cropping this <see cref="T:CoreImage.CIImage" /> to the <paramref name="rect" /> and then extending the pixels at the edges to infinity.</summary>
+        <returns>A <see cref="T:CoreImage.CIImage" /> of infinite extent.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateByClampingToExtent">
+      <MemberSignature Language="C#" Value="public virtual CoreImage.CIImage CreateByClampingToExtent ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class CoreImage.CIImage CreateByClampingToExtent() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("imageByClampingToExtent")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Creates a new image by clamping the current image to the rectangle that is defined by its <see cref="P:CoreImage.CIImage.Extent" /> property.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateByColorMatchingColorSpaceToWorkingSpace">
+      <MemberSignature Language="C#" Value="public virtual CoreImage.CIImage CreateByColorMatchingColorSpaceToWorkingSpace (CoreGraphics.CGColorSpace colorSpace);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class CoreImage.CIImage CreateByColorMatchingColorSpaceToWorkingSpace(class CoreGraphics.CGColorSpace colorSpace) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("imageByColorMatchingColorSpaceToWorkingSpace:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="colorSpace" Type="CoreGraphics.CGColorSpace" />
+      </Parameters>
+      <Docs>
+        <param name="colorSpace">The <see cref="T:CoreGraphics.CGColorSpace" /> to be matched from.</param>
+        <summary>Creates a new <see cref="T:CoreImage.CGImage" /> by matching colors from <paramref name="colorSpace" /> into the working color space.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateByColorMatchingWorkingSpaceToColorSpace">
+      <MemberSignature Language="C#" Value="public virtual CoreImage.CIImage CreateByColorMatchingWorkingSpaceToColorSpace (CoreGraphics.CGColorSpace colorSpace);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class CoreImage.CIImage CreateByColorMatchingWorkingSpaceToColorSpace(class CoreGraphics.CGColorSpace colorSpace) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("imageByColorMatchingWorkingSpaceToColorSpace:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="colorSpace" Type="CoreGraphics.CGColorSpace" />
+      </Parameters>
+      <Docs>
+        <param name="colorSpace">The <see cref="T:CoreGraphics.CGColorSpace" /> to be matched.</param>
+        <summary>Creates a new <see cref="T:CoreImage.CGImage" /> by matching colors from the working space into colors in the specified <paramref name="colorSpace" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateByCompositingOverImage">
+      <MemberSignature Language="C#" Value="public virtual CoreImage.CIImage CreateByCompositingOverImage (CoreImage.CIImage dest);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class CoreImage.CIImage CreateByCompositingOverImage(class CoreImage.CIImage dest) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("imageByCompositingOverImage:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="dest" Type="CoreImage.CIImage" />
+      </Parameters>
+      <Docs>
+        <param name="dest">To be added.</param>
+        <summary>Creates a new image by compositing this <see cref="T:CoreImage.CIImage" /> over <paramref name="dest" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateByFiltering">
+      <MemberSignature Language="C#" Value="public virtual CoreImage.CIImage CreateByFiltering (string filterName);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class CoreImage.CIImage CreateByFiltering(string filterName) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("imageByApplyingFilter:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 13, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="filterName" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="filterName">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateByFiltering">
+      <MemberSignature Language="C#" Value="public virtual CoreImage.CIImage CreateByFiltering (string filterName, Foundation.NSDictionary inputParameters);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class CoreImage.CIImage CreateByFiltering(string filterName, class Foundation.NSDictionary inputParameters) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("imageByApplyingFilter:withInputParameters:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="filterName" Type="System.String" />
+        <Parameter Name="inputParameters" Type="Foundation.NSDictionary" />
+      </Parameters>
+      <Docs>
+        <param name="filterName">To be added.</param>
+        <param name="inputParameters">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>Creates a new image by applying <paramref name="filterName" /> to this <see cref="T:CoreImage.CIImage" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateByPremultiplyingAlpha">
+      <MemberSignature Language="C#" Value="public virtual CoreImage.CIImage CreateByPremultiplyingAlpha ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class CoreImage.CIImage CreateByPremultiplyingAlpha() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("imageByPremultiplyingAlpha")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Creates a new image whose RGB values are created by multiplying this image's RGB values by this image's alpha value.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateBySettingAlphaOne">
+      <MemberSignature Language="C#" Value="public virtual CoreImage.CIImage CreateBySettingAlphaOne (CoreGraphics.CGRect extent);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class CoreImage.CIImage CreateBySettingAlphaOne(valuetype CoreGraphics.CGRect extent) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("imageBySettingAlphaOneInExtent:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="extent" Type="CoreGraphics.CGRect" />
+      </Parameters>
+      <Docs>
+        <param name="extent">The area within the image to have alpha 1.0.</param>
+        <summary>Creates a new image by copying <c>this</c>, setting the alpha of pixels within <paramref name="extent" /> to 1.0 and setting those outside to 0.0.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateBySettingProperties">
+      <MemberSignature Language="C#" Value="public virtual CoreImage.CIImage CreateBySettingProperties (Foundation.NSDictionary properties);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class CoreImage.CIImage CreateBySettingProperties(class Foundation.NSDictionary properties) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("imageBySettingProperties:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="properties" Type="Foundation.NSDictionary" />
+      </Parameters>
+      <Docs>
+        <param name="properties">To be added.</param>
+        <summary>Creates a new <see cref="T:CoreImage.CIImage" /> by copying <c>this</c>, and applying the <paramref name="properties" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateByUnpremultiplyingAlpha">
+      <MemberSignature Language="C#" Value="public virtual CoreImage.CIImage CreateByUnpremultiplyingAlpha ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class CoreImage.CIImage CreateByUnpremultiplyingAlpha() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("imageByUnpremultiplyingAlpha")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Creates a new image whose RGB values are created by dividing this image's RGB values by this image's alpha value.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateWithOrientation">
+      <MemberSignature Language="C#" Value="public virtual CoreImage.CIImage CreateWithOrientation (CoreImage.CIImageOrientation orientation);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class CoreImage.CIImage CreateWithOrientation(valuetype CoreImage.CIImageOrientation orientation) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("imageByApplyingOrientation:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="orientation" Type="CoreImage.CIImageOrientation" />
+      </Parameters>
+      <Docs>
+        <param name="orientation">To be added.</param>
+        <summary>Creates a new image by applying the <paramref name="orientation" /> to this <see cref="T:CoreImage.CIImage" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DepthData">
+      <MemberSignature Language="C#" Value="public virtual AVFoundation.AVDepthData DepthData { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class AVFoundation.AVDepthData DepthData" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 13, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("depthData")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 13, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>AVFoundation.AVDepthData</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>
+          <para>(More documentation for this node is coming)</para>
+          <para tool="nullallowed">This value can be <see langword="null" />.</para>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EmptyImage">
+      <MemberSignature Language="C#" Value="public static CoreImage.CIImage EmptyImage { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class CoreImage.CIImage EmptyImage" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("emptyImage")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The empty image.</summary>
+        <value>
+        </value>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EncodeTo">
+      <MemberSignature Language="C#" Value="public virtual void EncodeTo (Foundation.NSCoder encoder);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void EncodeTo(class Foundation.NSCoder encoder) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("encodeWithCoder:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="encoder" Type="Foundation.NSCoder" />
+      </Parameters>
+      <Docs>
+        <param name="encoder">The encoder object where the state of the object will be stored</param>
+        <summary>Encodes the state of the object on the provided encoder</summary>
+        <remarks>
+          <para>This method is part of the <see cref="T:Foundation.NSCoding" /> protocol and is used by applications to preserve the state of the object into an archive.</para>
+          <para>Users will typically create a <see cref="T:Foundation.NSKeyedArchiver" /> and then invoke the <see cref="M:Foundation.NSKeyedArchiver.ArchiveRootObjectToFile" /> which will call into this method</para>
+          <para>If developers want to allow their object to be archived, they should override this method and store their state in using the provided <paramref name="encoder" /> parameter.   In addition, developers should also implement a constructor that takes an NSCoder argument and is exported with [Export ("initWithCoder:")]</para>
+          <example>
+            <code lang="C#"><![CDATA[public void override EncodeTo (NSCoder coder){
+    coder.Encode (1, key: "version");
+    coder.Encode (userName, key: "userName");
+    coder.Encode (hostName, key: "hostName");]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Extent">
+      <MemberSignature Language="C#" Value="public virtual CoreGraphics.CGRect Extent { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype CoreGraphics.CGRect Extent" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("extent")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreGraphics.CGRect</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Returns the extent of the image.</summary>
+        <value>
+        </value>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FormatA16">
+      <MemberSignature Language="C#" Value="public static int FormatA16 { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property int32 FormatA16" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("kCIFormatA16", "CoreImage")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant kCIFormatA16.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FormatA8">
+      <MemberSignature Language="C#" Value="public static int FormatA8 { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property int32 FormatA8" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("kCIFormatA8", "CoreImage")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant kCIFormatA8.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FormatABGR8">
+      <MemberSignature Language="C#" Value="public static int FormatABGR8 { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property int32 FormatABGR8" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("kCIFormatABGR8", "CoreImage")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant kCIFormatABGR8.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FormatAf">
+      <MemberSignature Language="C#" Value="public static int FormatAf { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property int32 FormatAf" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("kCIFormatAf", "CoreImage")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant kCIFormatAf.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FormatAh">
+      <MemberSignature Language="C#" Value="public static int FormatAh { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property int32 FormatAh" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("kCIFormatAh", "CoreImage")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant kCIFormatAh.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FormatARGB8">
+      <MemberSignature Language="C#" Value="public static int FormatARGB8 { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property int32 FormatARGB8" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("kCIFormatARGB8", "CoreImage")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant kCIFormatARGB8</summary>
+        <value>
+        </value>
+        <remarks>32-bit color in ARGB format.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FormatBGRA8">
+      <MemberSignature Language="C#" Value="public static int FormatBGRA8 { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property int32 FormatBGRA8" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("kCIFormatBGRA8", "CoreImage")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 5, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 5, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant kCIFormatBGRA8</summary>
+        <value>
+        </value>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FormatL16">
+      <MemberSignature Language="C#" Value="public static int FormatL16 { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property int32 FormatL16" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("kCIFormatL16", "CoreImage")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FormatL8">
+      <MemberSignature Language="C#" Value="public static int FormatL8 { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property int32 FormatL8" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("kCIFormatL8", "CoreImage")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FormatLA16">
+      <MemberSignature Language="C#" Value="public static int FormatLA16 { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property int32 FormatLA16" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("kCIFormatLA16", "CoreImage")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FormatLA8">
+      <MemberSignature Language="C#" Value="public static int FormatLA8 { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property int32 FormatLA8" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("kCIFormatLA8", "CoreImage")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FormatLAf">
+      <MemberSignature Language="C#" Value="public static int FormatLAf { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property int32 FormatLAf" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("kCIFormatLAf", "CoreImage")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FormatLAh">
+      <MemberSignature Language="C#" Value="public static int FormatLAh { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property int32 FormatLAh" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("kCIFormatLAh", "CoreImage")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FormatLf">
+      <MemberSignature Language="C#" Value="public static int FormatLf { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property int32 FormatLf" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("kCIFormatLf", "CoreImage")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FormatLh">
+      <MemberSignature Language="C#" Value="public static int FormatLh { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property int32 FormatLh" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("kCIFormatLh", "CoreImage")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FormatR16">
+      <MemberSignature Language="C#" Value="public static int FormatR16 { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property int32 FormatR16" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("kCIFormatR16", "CoreImage")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant kCIFormatR16.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FormatR8">
+      <MemberSignature Language="C#" Value="public static int FormatR8 { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property int32 FormatR8" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("kCIFormatR8", "CoreImage")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant kCIFormatR8.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FormatRf">
+      <MemberSignature Language="C#" Value="public static int FormatRf { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property int32 FormatRf" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("kCIFormatRf", "CoreImage")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant kCIFormatRf.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FormatRG16">
+      <MemberSignature Language="C#" Value="public static int FormatRG16 { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property int32 FormatRG16" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("kCIFormatRG16", "CoreImage")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant kCIFormatRG16.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FormatRG8">
+      <MemberSignature Language="C#" Value="public static int FormatRG8 { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property int32 FormatRG8" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("kCIFormatRG8", "CoreImage")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant kCIFormatRG8.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FormatRGBA16">
+      <MemberSignature Language="C#" Value="public static int FormatRGBA16 { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property int32 FormatRGBA16" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("kCIFormatRGBA16", "CoreImage")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FormatRGBA8">
+      <MemberSignature Language="C#" Value="public static int FormatRGBA8 { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property int32 FormatRGBA8" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("kCIFormatRGBA8", "CoreImage")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 5, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 5, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant kCIFormatRGBA8</summary>
+        <value>
+        </value>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FormatRGBAf">
+      <MemberSignature Language="C#" Value="public static int FormatRGBAf { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property int32 FormatRGBAf" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("kCIFormatRGBAf", "CoreImage")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant kCIFormatRGBAf</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FormatRGBAh">
+      <MemberSignature Language="C#" Value="public static int FormatRGBAh { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property int32 FormatRGBAh" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("kCIFormatRGBAh", "CoreImage")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant kCIFormatRGBAh</summary>
+        <value>
+        </value>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FormatRGf">
+      <MemberSignature Language="C#" Value="public static int FormatRGf { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property int32 FormatRGf" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("kCIFormatRGf", "CoreImage")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant kCIFormatRGf.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FormatRGh">
+      <MemberSignature Language="C#" Value="public static int FormatRGh { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property int32 FormatRGh" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("kCIFormatRGh", "CoreImage")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant kCIFormatRGh.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FormatRh">
+      <MemberSignature Language="C#" Value="public static int FormatRh { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property int32 FormatRh" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("kCIFormatRh", "CoreImage")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant kCIFormatRh.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromCGImage">
+      <MemberSignature Language="C#" Value="public static CoreImage.CIImage FromCGImage (CoreGraphics.CGImage image);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class CoreImage.CIImage FromCGImage(class CoreGraphics.CGImage image) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("imageWithCGImage:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="image" Type="CoreGraphics.CGImage" />
+      </Parameters>
+      <Docs>
+        <param name="image">CoreGraphics image.</param>
+        <summary>Creates an <see cref="T:CoreImage.CIImage" /> from a <see cref="T:CoreGraphics.CGImage" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromCGImage">
+      <MemberSignature Language="C#" Value="public static CoreImage.CIImage FromCGImage (CoreGraphics.CGImage image, CoreGraphics.CGColorSpace colorSpace);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class CoreImage.CIImage FromCGImage(class CoreGraphics.CGImage image, class CoreGraphics.CGColorSpace colorSpace) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="image" Type="CoreGraphics.CGImage" />
+        <Parameter Name="colorSpace" Type="CoreGraphics.CGColorSpace" />
+      </Parameters>
+      <Docs>
+        <param name="image">CoreGraphics image.</param>
+        <param name="colorSpace">Colorspace to use.</param>
+        <summary>Creates a <see cref="T:CoreImage.CIImage" /> in <paramref name="colorspace" /> from a <see cref="T:CoreGraphics.CGImage" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromCGImage">
+      <MemberSignature Language="C#" Value="public static CoreImage.CIImage FromCGImage (CoreGraphics.CGImage image, CoreImage.CIImageInitializationOptionsWithMetadata options);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class CoreImage.CIImage FromCGImage(class CoreGraphics.CGImage image, class CoreImage.CIImageInitializationOptionsWithMetadata options) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="image" Type="CoreGraphics.CGImage" />
+        <Parameter Name="options" Type="CoreImage.CIImageInitializationOptionsWithMetadata" />
+      </Parameters>
+      <Docs>
+        <param name="image">CoreGraphics image.</param>
+        <param name="options">Options to initialize the image with.</param>
+        <summary>Creates a <see cref="T:CoreImage.CIImage" />  from a <see cref="T:CoreGraphics.CGImage" /> with the specified <paramref name="options" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromCGImage">
+      <MemberSignature Language="C#" Value="public static CoreImage.CIImage FromCGImage (CoreGraphics.CGImage image, Foundation.NSDictionary d);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class CoreImage.CIImage FromCGImage(class CoreGraphics.CGImage image, class Foundation.NSDictionary d) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("imageWithCGImage:options:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="image" Type="CoreGraphics.CGImage" />
+        <Parameter Name="d" Type="Foundation.NSDictionary" />
+      </Parameters>
+      <Docs>
+        <param name="image">CoreGraphics image.</param>
+        <param name="d">
+          <para>Extra metadata, as an NSDictionary.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>Creates a <see cref="T:CoreImage.CIImage" />  from a <see cref="T:CoreGraphics.CGImage" /> with the specified metadata,  <paramref name="d" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromData">
+      <MemberSignature Language="C#" Value="public static CoreImage.CIImage FromData (Foundation.NSData data);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class CoreImage.CIImage FromData(class Foundation.NSData data) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("imageWithData:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="data" Type="Foundation.NSData" />
+      </Parameters>
+      <Docs>
+        <param name="data">Image data, in a format supported by the system.</param>
+        <summary>Creates a new image from the specified <paramref name="data" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromData">
+      <MemberSignature Language="C#" Value="public static CoreImage.CIImage FromData (Foundation.NSData data, CoreImage.CIImageInitializationOptionsWithMetadata options);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class CoreImage.CIImage FromData(class Foundation.NSData data, class CoreImage.CIImageInitializationOptionsWithMetadata options) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="data" Type="Foundation.NSData" />
+        <Parameter Name="options" Type="CoreImage.CIImageInitializationOptionsWithMetadata" />
+      </Parameters>
+      <Docs>
+        <param name="data">Image data, in a format supported by the system.</param>
+        <param name="options">Options to initialize the image with.</param>
+        <summary>Creates a new image from the specified <paramref name="data" /> and <paramref name="options" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromData">
+      <MemberSignature Language="C#" Value="public static CoreImage.CIImage FromData (Foundation.NSData data, Foundation.NSDictionary d);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class CoreImage.CIImage FromData(class Foundation.NSData data, class Foundation.NSDictionary d) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("imageWithData:options:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="data" Type="Foundation.NSData" />
+        <Parameter Name="d" Type="Foundation.NSDictionary" />
+      </Parameters>
+      <Docs>
+        <param name="data">Image data, in a format supported by the system.</param>
+        <param name="d">
+          <para>Extra configuration options, as an NSDictionary.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>Creates a new image from the specified <paramref name="data" /> and <paramref name="d" /> options dictionary.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromData">
+      <MemberSignature Language="C#" Value="public static CoreImage.CIImage FromData (Foundation.NSData bitmapData, nint bytesPerRow, CoreGraphics.CGSize size, CoreImage.CIFormat pixelFormat, CoreGraphics.CGColorSpace colorSpace);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class CoreImage.CIImage FromData(class Foundation.NSData bitmapData, valuetype System.nint bytesPerRow, valuetype CoreGraphics.CGSize size, valuetype CoreImage.CIFormat pixelFormat, class CoreGraphics.CGColorSpace colorSpace) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="bitmapData" Type="Foundation.NSData" />
+        <Parameter Name="bytesPerRow" Type="System.nint" />
+        <Parameter Name="size" Type="CoreGraphics.CGSize" />
+        <Parameter Name="pixelFormat" Type="CoreImage.CIFormat" />
+        <Parameter Name="colorSpace" Type="CoreGraphics.CGColorSpace" />
+      </Parameters>
+      <Docs>
+        <param name="bitmapData">To be added.</param>
+        <param name="bytesPerRow">To be added.</param>
+        <param name="size">To be added.</param>
+        <param name="pixelFormat">To be added.</param>
+        <param name="colorSpace">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromImageBuffer">
+      <MemberSignature Language="C#" Value="public static CoreImage.CIImage FromImageBuffer (CoreVideo.CVImageBuffer imageBuffer);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class CoreImage.CIImage FromImageBuffer(class CoreVideo.CVImageBuffer imageBuffer) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("imageWithCVImageBuffer:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="imageBuffer" Type="CoreVideo.CVImageBuffer" />
+      </Parameters>
+      <Docs>
+        <param name="imageBuffer">The source of the image.</param>
+        <summary>Creates a new <see cref="T:CoreImage.CIImage" /> based on the data in the <paramref name="imageBuffer" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromImageBuffer">
+      <MemberSignature Language="C#" Value="public static CoreImage.CIImage FromImageBuffer (CoreVideo.CVPixelBuffer buffer);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class CoreImage.CIImage FromImageBuffer(class CoreVideo.CVPixelBuffer buffer) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("imageWithCVPixelBuffer:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="buffer" Type="CoreVideo.CVPixelBuffer" />
+      </Parameters>
+      <Docs>
+        <param name="buffer">To be added.</param>
+        <summary>Creates a new image from the data that is contained in <paramref name="buffer" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromImageBuffer">
+      <MemberSignature Language="C#" Value="public static CoreImage.CIImage FromImageBuffer (CoreVideo.CVImageBuffer imageBuffer, CoreImage.CIImageInitializationOptions options);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class CoreImage.CIImage FromImageBuffer(class CoreVideo.CVImageBuffer imageBuffer, class CoreImage.CIImageInitializationOptions options) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="imageBuffer" Type="CoreVideo.CVImageBuffer" />
+        <Parameter Name="options" Type="CoreImage.CIImageInitializationOptions" />
+      </Parameters>
+      <Docs>
+        <param name="imageBuffer">To be added.</param>
+        <param name="options">To be added.</param>
+        <summary>Creates a new <see cref="T:CoreImage.CIImage" /> based on the data in the <paramref name="imageBuffer" /> and with the specified <paramref name="options" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromImageBuffer">
+      <MemberSignature Language="C#" Value="public static CoreImage.CIImage FromImageBuffer (CoreVideo.CVImageBuffer imageBuffer, Foundation.NSDictionary&lt;Foundation.NSString,Foundation.NSObject&gt; dict);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class CoreImage.CIImage FromImageBuffer(class CoreVideo.CVImageBuffer imageBuffer, class Foundation.NSDictionary`2&lt;class Foundation.NSString, class Foundation.NSObject&gt; dict) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("imageWithCVImageBuffer:options:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="imageBuffer" Type="CoreVideo.CVImageBuffer" />
+        <Parameter Name="dict" Type="Foundation.NSDictionary&lt;Foundation.NSString,Foundation.NSObject&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="imageBuffer">Source of the data for the image.</param>
+        <param name="dict">A dictionary of strings to objects, holding the options for image creation.</param>
+        <summary>Creates a new <see cref="T:CoreImage.CIImage" /> based on the data in <paramref name="imageBuffer" /> and applying the options in <paramref name="dict" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromImageBuffer">
+      <MemberSignature Language="C#" Value="public static CoreImage.CIImage FromImageBuffer (CoreVideo.CVPixelBuffer buffer, CoreImage.CIImageInitializationOptions options);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class CoreImage.CIImage FromImageBuffer(class CoreVideo.CVPixelBuffer buffer, class CoreImage.CIImageInitializationOptions options) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="buffer" Type="CoreVideo.CVPixelBuffer" />
+        <Parameter Name="options" Type="CoreImage.CIImageInitializationOptions" />
+      </Parameters>
+      <Docs>
+        <param name="buffer">To be added.</param>
+        <param name="options">Options to initialize the image with.</param>
+        <summary>Creates a new image from the data that is contained in <paramref name="buffer" /> by using the specified <paramref name="options" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromImageBuffer">
+      <MemberSignature Language="C#" Value="public static CoreImage.CIImage FromImageBuffer (CoreVideo.CVPixelBuffer buffer, Foundation.NSDictionary dict);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class CoreImage.CIImage FromImageBuffer(class CoreVideo.CVPixelBuffer buffer, class Foundation.NSDictionary dict) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("imageWithCVPixelBuffer:options:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="buffer" Type="CoreVideo.CVPixelBuffer" />
+        <Parameter Name="dict" Type="Foundation.NSDictionary" />
+      </Parameters>
+      <Docs>
+        <param name="buffer">To be added.</param>
+        <param name="dict">
+          <para>Extra configuration options, as an NSDictionary.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>Creates a new image from the data that is contained in <paramref name="buffer" /> by using the options that are specified in <paramref name="dict" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromMetalTexture">
+      <MemberSignature Language="C#" Value="public static CoreImage.CIImage FromMetalTexture (Metal.IMTLTexture texture, Foundation.NSDictionary&lt;Foundation.NSString,Foundation.NSObject&gt; options);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class CoreImage.CIImage FromMetalTexture(class Metal.IMTLTexture texture, class Foundation.NSDictionary`2&lt;class Foundation.NSString, class Foundation.NSObject&gt; options) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("imageWithMTLTexture:options:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.Arch64, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="texture" Type="Metal.IMTLTexture" />
+        <Parameter Name="options" Type="Foundation.NSDictionary&lt;Foundation.NSString,Foundation.NSObject&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="texture">The texture providing the basis of hte <see cref="T:CoreImage.CIImage" />.</param>
+        <param name="options">
+          <para>A dictionary of strings to objects, holding the creation options.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>Creates a new <see cref="T:CoreImage.CIImage" /> from <paramref name="texture" />, applying the creation options specified in <paramref name="options" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromProvider">
+      <MemberSignature Language="C#" Value="public static CoreImage.CIImage FromProvider (CoreImage.ICIImageProvider provider, nuint width, nuint height, CoreImage.CIFormat pixelFormat, CoreGraphics.CGColorSpace colorSpace, CoreImage.CIImageProviderOptions options);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class CoreImage.CIImage FromProvider(class CoreImage.ICIImageProvider provider, valuetype System.nuint width, valuetype System.nuint height, valuetype CoreImage.CIFormat pixelFormat, class CoreGraphics.CGColorSpace colorSpace, class CoreImage.CIImageProviderOptions options) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="provider" Type="CoreImage.ICIImageProvider" />
+        <Parameter Name="width" Type="System.nuint" />
+        <Parameter Name="height" Type="System.nuint" />
+        <Parameter Name="pixelFormat" Type="CoreImage.CIFormat" />
+        <Parameter Name="colorSpace" Type="CoreGraphics.CGColorSpace" />
+        <Parameter Name="options" Type="CoreImage.CIImageProviderOptions" />
+      </Parameters>
+      <Docs>
+        <param name="provider">To be added.</param>
+        <param name="width">To be added.</param>
+        <param name="height">To be added.</param>
+        <param name="pixelFormat">To be added.</param>
+        <param name="colorSpace">To be added.</param>
+        <param name="options">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromSurface">
+      <MemberSignature Language="C#" Value="public static CoreImage.CIImage FromSurface (IOSurface.IOSurface surface);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class CoreImage.CIImage FromSurface(class IOSurface.IOSurface surface) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("imageWithIOSurface:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 13, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="surface" Type="IOSurface.IOSurface" />
+      </Parameters>
+      <Docs>
+        <param name="surface">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromSurface">
+      <MemberSignature Language="C#" Value="public static CoreImage.CIImage FromSurface (IOSurface.IOSurface surface, CoreImage.CIImageInitializationOptions options);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class CoreImage.CIImage FromSurface(class IOSurface.IOSurface surface, class CoreImage.CIImageInitializationOptions options) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 13, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="surface" Type="IOSurface.IOSurface" />
+        <Parameter Name="options" Type="CoreImage.CIImageInitializationOptions" />
+      </Parameters>
+      <Docs>
+        <param name="surface">To be added.</param>
+        <param name="options">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromSurface">
+      <MemberSignature Language="C#" Value="public static CoreImage.CIImage FromSurface (IOSurface.IOSurface surface, Foundation.NSDictionary options);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class CoreImage.CIImage FromSurface(class IOSurface.IOSurface surface, class Foundation.NSDictionary options) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("imageWithIOSurface:options:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 13, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="surface" Type="IOSurface.IOSurface" />
+        <Parameter Name="options" Type="Foundation.NSDictionary" />
+      </Parameters>
+      <Docs>
+        <param name="surface">To be added.</param>
+        <param name="options">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromUrl">
+      <MemberSignature Language="C#" Value="public static CoreImage.CIImage FromUrl (Foundation.NSUrl url);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class CoreImage.CIImage FromUrl(class Foundation.NSUrl url) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("imageWithContentsOfURL:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="url" Type="Foundation.NSUrl" />
+      </Parameters>
+      <Docs>
+        <param name="url">To be added.</param>
+        <summary>Creates a new <see cref="T:CoreImage.CIImage" /> from <paramref name="url" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromUrl">
+      <MemberSignature Language="C#" Value="public static CoreImage.CIImage FromUrl (Foundation.NSUrl url, CoreImage.CIImageInitializationOptions options);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class CoreImage.CIImage FromUrl(class Foundation.NSUrl url, class CoreImage.CIImageInitializationOptions options) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="url" Type="Foundation.NSUrl" />
+        <Parameter Name="options" Type="CoreImage.CIImageInitializationOptions" />
+      </Parameters>
+      <Docs>
+        <param name="url">To be added.</param>
+        <param name="options">Options to initialize the image with.</param>
+        <summary>Creates a new <see cref="T:CoreImage.CIImage" /> from <paramref name="url" /> by using the the specified <paramref name="options" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromUrl">
+      <MemberSignature Language="C#" Value="public static CoreImage.CIImage FromUrl (Foundation.NSUrl url, Foundation.NSDictionary d);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class CoreImage.CIImage FromUrl(class Foundation.NSUrl url, class Foundation.NSDictionary d) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("imageWithContentsOfURL:options:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="url" Type="Foundation.NSUrl" />
+        <Parameter Name="d" Type="Foundation.NSDictionary" />
+      </Parameters>
+      <Docs>
+        <param name="url">To be added.</param>
+        <param name="d">
+          <para>Extra configuration options, as an NSDictionary.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>Creates a new <see cref="T:CoreImage.CIImage" /> from <paramref name="url" /> by using the options that are specified in <paramref name="d" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetAutoAdjustmentFilters">
+      <MemberSignature Language="C#" Value="public CoreImage.CIFilter[] GetAutoAdjustmentFilters ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class CoreImage.CIFilter[] GetAutoAdjustmentFilters() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIFilter[]</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Gets the filters that are required to perform some common image correction steps to an image.</summary>
+        <returns>Returns an array of configured filters to apply to the image to automatically adjust it.</returns>
+        <remarks>
+          <para>
+
+	    In general, you should try to use the <see cref="M:CoreImage.CIImage.GetAutoAdjustmentFilters(CoreImage.CIAutoAdjustmentFilterOptions)" />
+	    as that method allows you to customize which kind of filters you want to get.
+
+	  </para>
+          <para>
+
+	    This method is used to get a list of pre-configured
+	    filters to remedy various common problems found in photos.   
+
+	  </para>
+          <example>
+            <code lang="C#"><![CDATA[
+void PrepareFixes (CIImage img)
+{
+    foreach (var filter in img.GetAutoAdjustmentFilters ()) {
+    	filter.Image = img;
+    	img = filter.OutputImage;
+    }
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetAutoAdjustmentFilters">
+      <MemberSignature Language="C#" Value="public CoreImage.CIFilter[] GetAutoAdjustmentFilters (CoreImage.CIAutoAdjustmentFilterOptions options);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class CoreImage.CIFilter[] GetAutoAdjustmentFilters(class CoreImage.CIAutoAdjustmentFilterOptions options) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIFilter[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="options" Type="CoreImage.CIAutoAdjustmentFilterOptions" />
+      </Parameters>
+      <Docs>
+        <param name="options">Options to initialize the image with.</param>
+        <summary>Gets the filters requires to perform some common image correction steps to an image.</summary>
+        <returns>Returns an array of configured filters to apply to the image to automatically adjust it.</returns>
+        <remarks>
+          <para>
+	    
+	    This method is used to get a list of pre-configured
+	    filters to remedy various common problems found in photos.   
+
+	  </para>
+          <example>
+            <code lang="C#"><![CDATA[
+void PrepareFixes (CIImage img)
+{
+    var opt = new CIAutoAdjustmentFilterOptions () {
+    	RedEye = true,
+    	AutoAdjustCrop = true
+    };
+    CIImage img = null;
+    foreach (var filter in img.GetAutoAdjustmentFilters (opt)) {
+    	filter.Image = img;
+    	img = filter.OutputImage;
+    }
+}
+	    ]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetImageTransform">
+      <MemberSignature Language="C#" Value="public virtual CoreGraphics.CGAffineTransform GetImageTransform (CoreImage.CIImageOrientation orientation);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance valuetype CoreGraphics.CGAffineTransform GetImageTransform(valuetype CoreImage.CIImageOrientation orientation) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("imageTransformForOrientation:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreGraphics.CGAffineTransform</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="orientation" Type="CoreImage.CIImageOrientation" />
+      </Parameters>
+      <Docs>
+        <param name="orientation">To be added.</param>
+        <summary>Gets a transformation that results in <paramref name="orientation" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetImageTransform">
+      <MemberSignature Language="C#" Value="public virtual CoreGraphics.CGAffineTransform GetImageTransform (ImageIO.CGImagePropertyOrientation orientation);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance valuetype CoreGraphics.CGAffineTransform GetImageTransform(valuetype ImageIO.CGImagePropertyOrientation orientation) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("imageTransformForCGOrientation:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 13, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreGraphics.CGAffineTransform</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="orientation" Type="ImageIO.CGImagePropertyOrientation" />
+      </Parameters>
+      <Docs>
+        <param name="orientation">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetRegionOfInterest">
+      <MemberSignature Language="C#" Value="public virtual CoreGraphics.CGRect GetRegionOfInterest (CoreImage.CIImage im, CoreGraphics.CGRect r);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance valuetype CoreGraphics.CGRect GetRegionOfInterest(class CoreImage.CIImage im, valuetype CoreGraphics.CGRect r) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("regionOfInterestForImage:inRect:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreGraphics.CGRect</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="im" Type="CoreImage.CIImage" />
+        <Parameter Name="r" Type="CoreGraphics.CGRect" />
+      </Parameters>
+      <Docs>
+        <param name="im">To be added.</param>
+        <param name="r">To be added.</param>
+        <summary>Gets a rectangle that describes the region in <paramref name="im" />, an image in the transformation list, that corresponds to <paramref name="r" /> in this <see cref="T:CoreImage.CIImage" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ImageByApplyingTransform">
+      <MemberSignature Language="C#" Value="public virtual CoreImage.CIImage ImageByApplyingTransform (CoreGraphics.CGAffineTransform matrix);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class CoreImage.CIImage ImageByApplyingTransform(valuetype CoreGraphics.CGAffineTransform matrix) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("imageByApplyingTransform:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="matrix" Type="CoreGraphics.CGAffineTransform" />
+      </Parameters>
+      <Docs>
+        <param name="matrix">To be added.</param>
+        <summary>Returns a new image that results from applying the affine transform <paramref name="matrix" /> to this <see cref="T:CoreImage.CIImage" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ImageByCroppingToRect">
+      <MemberSignature Language="C#" Value="public virtual CoreImage.CIImage ImageByCroppingToRect (CoreGraphics.CGRect r);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class CoreImage.CIImage ImageByCroppingToRect(valuetype CoreGraphics.CGRect r) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("imageByCroppingToRect:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="r" Type="CoreGraphics.CGRect" />
+      </Parameters>
+      <Docs>
+        <param name="r">To be added.</param>
+        <summary>Creates a new image by cropping this <see cref="T:CoreImage.CIImage" /> to the rectangle <paramref name="r" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ImageWithColor">
+      <MemberSignature Language="C#" Value="public static CoreImage.CIImage ImageWithColor (CoreImage.CIColor color);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class CoreImage.CIImage ImageWithColor(class CoreImage.CIColor color) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("imageWithColor:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="color" Type="CoreImage.CIColor" />
+      </Parameters>
+      <Docs>
+        <param name="color">To be added.</param>
+        <summary>Creates a new single-color image.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ImageWithTexture">
+      <MemberSignature Language="C#" Value="public static CoreImage.CIImage ImageWithTexture (uint glTextureName, CoreGraphics.CGSize size, bool flipped, CoreGraphics.CGColorSpace colorspace);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class CoreImage.CIImage ImageWithTexture(unsigned int32 glTextureName, valuetype CoreGraphics.CGSize size, bool flipped, class CoreGraphics.CGColorSpace colorspace) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("imageWithTexture:size:flipped:colorSpace:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="glTextureName" Type="System.UInt32" />
+        <Parameter Name="size" Type="CoreGraphics.CGSize" />
+        <Parameter Name="flipped" Type="System.Boolean" />
+        <Parameter Name="colorspace" Type="CoreGraphics.CGColorSpace" />
+      </Parameters>
+      <Docs>
+        <param name="glTextureName">To be added.</param>
+        <param name="size">To be added.</param>
+        <param name="flipped">To be added.</param>
+        <param name="colorspace">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="op_Implicit">
+      <MemberSignature Language="C#" Value="public static CoreImage.CIImage op_Implicit (CoreGraphics.CGImage image);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig specialname class CoreImage.CIImage op_Implicit(class CoreGraphics.CGImage image) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>CoreImage.CIImage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="image" Type="CoreGraphics.CGImage" />
+      </Parameters>
+      <Docs>
+        <param name="image">CoreGraphics image</param>
+        <summary>Implicit constructor that wraps a CGImage as a CIImage.</summary>
+        <returns>
+        </returns>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PixelBuffer">
+      <MemberSignature Language="C#" Value="public virtual CoreVideo.CVPixelBuffer PixelBuffer { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class CoreVideo.CVPixelBuffer PixelBuffer" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("pixelBuffer")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreVideo.CVPixelBuffer</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The image data, as a <see cref="T:CoreImage.CVPixelBuffer" />.</summary>
+        <value>
+          <para>(More documentation for this node is coming)</para>
+          <para tool="nullallowed">This value can be <see langword="null" />.</para>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Properties">
+      <MemberSignature Language="C#" Value="public CoreGraphics.CGImageProperties Properties { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class CoreGraphics.CGImageProperties Properties" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 5, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 5, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreGraphics.CGImageProperties</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets a collection of metadata for this <see cref="T:CoreImage.CIImage" />.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Url">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSUrl Url { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Foundation.NSUrl Url" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("url")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSUrl</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>If not <see langword="null" />, the URL from which the image was loaded.</summary>
+        <value>
+          <para>(More documentation for this node is coming)</para>
+          <para tool="nullallowed">This value can be <see langword="null" />.</para>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

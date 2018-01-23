@@ -1,0 +1,3937 @@
+<Type Name="AVAudioSession" FullName="AVFoundation.AVAudioSession">
+  <TypeSignature Language="C#" Value="public class AVAudioSession : Foundation.NSObject" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit AVAudioSession extends Foundation.NSObject" />
+  <AssemblyInfo>
+    <AssemblyName>Xamarin.iOS</AssemblyName>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>Foundation.NSObject</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Attributes>
+    <Attribute>
+      <AttributeName>Foundation.Register("AVAudioSession", true)</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.WatchOS, 3, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>Coordinates an audio playback or capture session.</summary>
+    <remarks>
+      <para> Application developers should use the singleton object
+	retrieved by <see cref="M:AVFoundation.AVAudioSession.SharedInstance" />.
+      </para>
+      <para> 
+	Because the audio hardware of an iOS device is shared
+	between all apps, audio settings can only be "preferred" (see
+	<c>SetPreferred*</c> methods) and the application developer
+	must account for use-cases where these preferences are
+	overridden. 
+      </para>
+      <para> 
+	The interaction of an app with other apps and system
+	services is determined by your audio category.   You can use the <see cref="M:AVFoundation.AVAudioSession.SetCategory" /> method to set this
+      </para>
+      <para>
+
+	You should also control the Mode (using <see cref="M:AVFoundation.AVAudioSession.SetMode" /> to
+	describe how your application will use audio.
+
+      </para>
+      <para>
+	As is common in AV Foundation, many methods in <see cref="T:AVFoundation.AVAudioSession" /> are
+	asynchronous and properties may take some time to reflect
+	their final status. Application developers should be familiar
+	with asynchronous programming techniques.
+      </para>
+      <para>
+	The <see cref="T:AVFoundation.AVAudioSession" />,
+	like the <see cref="T:AVFoundation.AVCaptureSession" /> and <see cref="T:AVFoundation.AVAssetExportSession" /> is a
+	coordinating object between some number of <see cref="P:AVFoundation.AVAudioSession.InputDataSources" />
+	and <see cref="P:AVFoundation.AVAudioSession.OutputDataSources" />.
+	</para>
+      <para>
+
+	  You can register to a few notifications that are posted by the audio system, by using the convenience methods in <see cref="T:AVFoundation.AVAudioSession+Notifications" />. 
+
+	</para>
+      <example>
+        <code lang="C#"><![CDATA[
+void Setup ()
+{
+	AVAudioSession.SharedInstance ().Init ();
+	NSError error;
+	if (!AVAudioSession.SharedInstance ().SetCategory (AVAudioSessionCategory.Playback, out error)) {
+		ReportError (error);
+		return;
+	}
+	AVAudioSession.Notifications.ObserveInterruption (ToneInterruptionListener);
+	
+	if (!AVAudioSession.SharedInstance ().SetActive (true, out error)) {
+		ReportError (error);
+		return;
+	}
+	
+	void ToneInterruptionListener (object sender, AVAudioSessionInterruptionEventArgs interruptArgs)
+	{
+		//
+	}
+}
+]]></code>
+      </example>
+    </remarks>
+    <related type="PlatformDocAPI" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioSession_ClassReference/index.html">Apple documentation for <c>AVAudioSession</c></related>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected AVAudioSession (Foundation.NSObjectFlag t);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor(class Foundation.NSObjectFlag t) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="t" Type="Foundation.NSObjectFlag" />
+      </Parameters>
+      <Docs>
+        <param name="t">Unused sentinel value, pass NSObjectFlag.Empty.</param>
+        <summary>Constructor to call on derived classes to skip initialization and merely allocate the object.</summary>
+        <remarks>
+          <para>This constructor should be called by derived classes when they completely construct the object in managed code and merely want the runtime to allocate and initialize the NSObject.   This is required to implement the two-step initialization process that Objective-C uses, the first step is to perform the object allocation, the second step is to initialize the object.   When developers invoke the constructor that takes the NSObjectFlag.Empty they take advantage of a direct path that goes all the way up to NSObject to merely allocate the object's memory and bind the Objective-C and C# objects together.    The actual initialization of the object is up to the developer.</para>
+          <para>This constructor is typically used by the binding generator to allocate the object, but prevent the actual initialization to take place.   Once the allocation has taken place, the constructor has to initialize the object.   With constructors generated by the binding generator this means that it manually invokes one of the "init" methods to initialize the object.</para>
+          <para>It is the developer's responsibility to completely initialize the object if they chain up using the NSObjectFlag.Empty path.</para>
+          <para>In general, if the developer's constructor invokes the NSObjectFlag.Empty base implementation, then it should be calling an Objective-C init method.   If this is not the case, developers should instead chain to the proper constructor in their class. </para>
+          <para>The argument value is ignored and merely ensures that the only code that is executed is the construction phase is the basic NSObject allocation and runtime type registration.  Typically the chaining would look like this:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// The NSObjectFlag merely allocates the object and registers the
+// C# class with the Objective-C runtime if necessary, but no actual
+// initXxx method is invoked, that is done later in the constructor
+//
+// This is taken from Xamarin's source code:
+//
+[Export ("initWithFrame:")]
+public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
+{
+// Invoke the init method now.
+	var initWithFrame = new Selector ("initWithFrame:").Handle;
+	if (IsDirectBinding)
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+	else
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected AVAudioSession (IntPtr handle);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig specialname rtspecialname instance void .ctor(native int handle) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="handle" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="handle">Pointer (handle) to the unmanaged object.</param>
+        <summary>A constructor used when creating managed representations of unmanaged objects;  Called by the runtime.</summary>
+        <remarks>
+          <para>This constructor is invoked by the runtime infrastructure (<see cref="M:ObjCRuntime.Runtime.GetNSObject(System.IntPtr)" />) to create a new managed representation for a pointer to an unmanaged Objective-C object.    Developers should not invoke this method directly, instead they should call the GetNSObject method as it will prevent two instances of a managed object to point to the same native object.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AvailableCategories">
+      <MemberSignature Language="C#" Value="public virtual string[] AvailableCategories { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string[] AvailableCategories" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("availableCategories")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets an array that contains descriptions of the session categories that the device can provide.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AvailableInputs">
+      <MemberSignature Language="C#" Value="public virtual AVFoundation.AVAudioSessionPortDescription[] AvailableInputs { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class AVFoundation.AVAudioSessionPortDescription[] AvailableInputs" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("availableInputs")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>AVFoundation.AVAudioSessionPortDescription[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets an array that contains <see cref="T:AVFoundation.AVAudioSessionPortDescription" />s that list the available audio sources on the device.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AvailableModes">
+      <MemberSignature Language="C#" Value="public virtual string[] AvailableModes { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string[] AvailableModes" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("availableModes")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets an array that contains the available audio session modes.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginInterruption">
+      <MemberSignature Language="C#" Value="public event EventHandler BeginInterruption;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler BeginInterruption" />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete("Deprecated since iOS 6, Use 'AVAudioSession.Notification.ObserveInterruption' instead.")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Developers should not use this deprecated method. Instead, they should use <see cref="M:AVAudioSession.Notification.ObserveInterruption" />.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Category">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSString Category { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Foundation.NSString Category" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("category")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Weakly-typed audio classification of the app, used to balance its demands with other apps on the device.</summary>
+        <value>Values should be one of 
+	<see cref="P:AVFoundation.AVAudioSession.CategoryAmbient" />, 
+	<see cref="P:AVFoundation.AVAudioSession.CategorySoloAmbient" />, 
+	<see cref="P:AVFoundation.AVAudioSession.CategoryPlayback" />, 
+	<see cref="P:AVFoundation.AVAudioSession.CategoryRecord" />, 
+	<see cref="P:AVFoundation.AVAudioSession.CategoryPlayAndRecord" />, 
+	<see cref="P:AVFoundation.AVAudioSession.CategoryAudioProcessing" />, 
+	<see cref="P:AVFoundation.AVAudioSession.CategoryMultiRoute" /> properties.</value>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CategoryAmbient">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString CategoryAmbient { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString CategoryAmbient" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVAudioSessionCategoryAmbient", "AVFoundation")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVAudioSessionCategoryAmbient</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CategoryAudioProcessing">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString CategoryAudioProcessing { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString CategoryAudioProcessing" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVAudioSessionCategoryAudioProcessing", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 3, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 3, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVAudioSessionCategoryAudioProcessing</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CategoryChanged">
+      <MemberSignature Language="C#" Value="public event EventHandler&lt;AVFoundation.AVCategoryEventArgs&gt; CategoryChanged;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler`1&lt;class AVFoundation.AVCategoryEventArgs&gt; CategoryChanged" />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete("Deprecated since iOS 6, Use 'AVAudioSession.Notification.ObserveAudioRouteChange'.")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler&lt;AVFoundation.AVCategoryEventArgs&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>An event indicating that the <see cref="P:AVFoundation.AVAudioSession.Category" /> has changed.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CategoryMultiRoute">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString CategoryMultiRoute { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString CategoryMultiRoute" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVAudioSessionCategoryMultiRoute", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVAudioSessionCategoryMultiRoute</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CategoryOptions">
+      <MemberSignature Language="C#" Value="public virtual AVFoundation.AVAudioSessionCategoryOptions CategoryOptions { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype AVFoundation.AVAudioSessionCategoryOptions CategoryOptions" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("categoryOptions")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>AVFoundation.AVAudioSessionCategoryOptions</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Options for the <see cref="P:AVFoundation.AVAudioSession.Category" />.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CategoryPlayAndRecord">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString CategoryPlayAndRecord { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString CategoryPlayAndRecord" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVAudioSessionCategoryPlayAndRecord", "AVFoundation")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVAudioSessionCategoryPlayAndRecord</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CategoryPlayback">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString CategoryPlayback { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString CategoryPlayback" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVAudioSessionCategoryPlayback", "AVFoundation")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVAudioSessionCategoryPlayback</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CategoryRecord">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString CategoryRecord { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString CategoryRecord" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVAudioSessionCategoryRecord", "AVFoundation")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVAudioSessionCategoryRecord</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CategorySoloAmbient">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString CategorySoloAmbient { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString CategorySoloAmbient" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVAudioSessionCategorySoloAmbient", "AVFoundation")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVAudioSessionCategorySoloAmbient</summary>
+        <value>
+        </value>
+        <remarks>This is the default category if you do not set the category.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ClassHandle">
+      <MemberSignature Language="C#" Value="public override IntPtr ClassHandle { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int ClassHandle" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The handle for this class.</summary>
+        <value>The pointer to the Objective-C class.</value>
+        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CurrentHardwareInputNumberOfChannels">
+      <MemberSignature Language="C#" Value="public virtual nint CurrentHardwareInputNumberOfChannels { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.nint CurrentHardwareInputNumberOfChannels" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'InputNumberOfChannels' instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 3, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'InputNumberOfChannels' instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("currentHardwareInputNumberOfChannels")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'InputNumberOfChannels' instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 3, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'InputNumberOfChannels' instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.nint</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Application developers should not use this deprecated property. Use <see cref="P:AVFoundation.AVAudioSession.InputNumberOfChannels" /> instead.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CurrentHardwareOutputNumberOfChannels">
+      <MemberSignature Language="C#" Value="public virtual nint CurrentHardwareOutputNumberOfChannels { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.nint CurrentHardwareOutputNumberOfChannels" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'OutputNumberOfChannels' instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 3, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'OutputNumberOfChannels' instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("currentHardwareOutputNumberOfChannels")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'OutputNumberOfChannels' instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 3, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'OutputNumberOfChannels' instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.nint</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Application developers should not use this deprecated property. Use <see cref="P:AVFoundation.AVAudioSession.OutputNumberOfChannels" /> instead.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CurrentHardwareSampleRate">
+      <MemberSignature Language="C#" Value="public virtual double CurrentHardwareSampleRate { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float64 CurrentHardwareSampleRate" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'SampleRate' instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 3, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'SampleRate' instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("currentHardwareSampleRate")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'SampleRate' instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 3, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'SampleRate' instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Double</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Application developers should not use this deprecated property. Use <see cref="P:AVFoundation.AVAudioSession.SampleRate" /> instead.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CurrentRoute">
+      <MemberSignature Language="C#" Value="public virtual AVFoundation.AVAudioSessionRouteDescription CurrentRoute { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class AVFoundation.AVAudioSessionRouteDescription CurrentRoute" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("currentRoute")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>AVFoundation.AVAudioSessionRouteDescription</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The active input-output route.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Delegate">
+      <MemberSignature Language="C#" Value="public AVFoundation.IAVAudioSessionDelegate Delegate { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class AVFoundation.IAVAudioSessionDelegate Delegate" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'AVAudioSession.Notification.Observe*' methods instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 4, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'AVAudioSession.Notification.Observe*' methods instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'AVAudioSession.Notification.Observe*' methods instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 4, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'AVAudioSession.Notification.Observe*' methods instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'AVAudioSession.Notification.Observe*' methods instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 4, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'AVAudioSession.Notification.Observe*' methods instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>AVFoundation.IAVAudioSessionDelegate</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>An instance of the <see cref="AVFoundation.AVAudioSessionDelegate" /> model class which acts as the class delegate.</summary>
+        <value>
+          <para>The instance of the <see cref="AVFoundation.AVAudioSessionDelegate" /> model class</para>
+          <para tool="nullallowed">This value can be <see langword="null" />.</para>
+        </value>
+        <remarks>
+          <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+          <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+          <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Dispose">
+      <MemberSignature Language="C#" Value="protected override void Dispose (bool disposing);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Dispose(bool disposing) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="disposing" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="disposing">
+          <para>If set to <see langword="true" />, the method is invoked directly and will dispose manage and unmanaged resources;   If set to <see langword="false" /> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</para>
+        </param>
+        <summary>Releases the resources used by the AVAudioSession object.</summary>
+        <remarks>
+          <para>This Dispose method releases the resources used by the AVAudioSession class.</para>
+          <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposing <paramref name="disposing" /> is set to <see langword="true" /> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false" />. </para>
+          <para>Calling the Dispose method when the application is finished using the AVAudioSession ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.</para>
+          <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at http://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EndInterruption">
+      <MemberSignature Language="C#" Value="public event EventHandler EndInterruption;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler EndInterruption" />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete("Deprecated since iOS 6, Use 'AVAudioSession.Notification.ObserveInterruption' instead.")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Developers should not use this deprecated method. Instead, they should use <see cref="M:AVAudioSession.Notification.ObserveInterruption" />.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetPreferredInputNumberOfChannels">
+      <MemberSignature Language="C#" Value="public virtual nint GetPreferredInputNumberOfChannels ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance valuetype System.nint GetPreferredInputNumberOfChannels() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("preferredInputNumberOfChannels")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.nint</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Retrieves the preferred number of input channels.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <altmember cref="M:AVFoundation.AVAudioSession.SetPreferredInputNumberOfChannels" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetPreferredOutputNumberOfChannels">
+      <MemberSignature Language="C#" Value="public virtual nint GetPreferredOutputNumberOfChannels ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance valuetype System.nint GetPreferredOutputNumberOfChannels() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("preferredOutputNumberOfChannels")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.nint</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Retrieves the preferred number of output channels.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+        <altmember cref="M:AVFoundation.AVAudioSession.SetPreferredOutputNumberOfChannels" />
+      </Docs>
+    </Member>
+    <Member MemberName="InputAvailabilityChanged">
+      <MemberSignature Language="C#" Value="public event EventHandler&lt;AVFoundation.AVStatusEventArgs&gt; InputAvailabilityChanged;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler`1&lt;class AVFoundation.AVStatusEventArgs&gt; InputAvailabilityChanged" />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete("Deprecated since iOS 6, Use 'AVAudioSession.Notification.ObserveAudioRouteChange'.")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler&lt;AVFoundation.AVStatusEventArgs&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Event indicating that the availability of inputs has changed.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InputAvailable">
+      <MemberSignature Language="C#" Value="public virtual bool InputAvailable { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool InputAvailable" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("isInputAvailable")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Whether any input route supports audio.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InputChannelsChanged">
+      <MemberSignature Language="C#" Value="public event EventHandler&lt;AVFoundation.AVChannelsEventArgs&gt; InputChannelsChanged;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler`1&lt;class AVFoundation.AVChannelsEventArgs&gt; InputChannelsChanged" />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete("Use 'AVAudioSession.Notification.ObserveAudioRouteChange', this event does nothing.")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler&lt;AVFoundation.AVChannelsEventArgs&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Deprecated. This event is no longer raised.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InputDataSource">
+      <MemberSignature Language="C#" Value="public virtual AVFoundation.AVAudioSessionDataSourceDescription InputDataSource { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class AVFoundation.AVAudioSessionDataSourceDescription InputDataSource" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("inputDataSource")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>AVFoundation.AVAudioSessionDataSourceDescription</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The currently selected input <see cref="T:AVFoundation.AVAudioSessionDataSourceDescription" />.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InputDataSources">
+      <MemberSignature Language="C#" Value="public virtual AVFoundation.AVAudioSessionDataSourceDescription[] InputDataSources { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class AVFoundation.AVAudioSessionDataSourceDescription[] InputDataSources" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("inputDataSources")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>AVFoundation.AVAudioSessionDataSourceDescription[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The data sources available for the current input port.</summary>
+        <value>
+          <para>(More documentation for this node is coming)</para>
+          <para tool="nullallowed">This value can be <see langword="null" />.</para>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InputGain">
+      <MemberSignature Language="C#" Value="public virtual float InputGain { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float32 InputGain" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("inputGain")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Single</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Input gain as a floating point value from 0 to 1.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InputGainSettable">
+      <MemberSignature Language="C#" Value="public virtual bool InputGainSettable { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool InputGainSettable" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("isInputGainSettable")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Determines whether input gain is available.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InputIsAvailable">
+      <MemberSignature Language="C#" Value="public virtual bool InputIsAvailable { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool InputIsAvailable" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 3, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("inputIsAvailable")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 3, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Application developers should not use this deprecated. Use <see cref="P:AVFoundation.AVAudioSession.InputAvailable" /> instead.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InputLatency">
+      <MemberSignature Language="C#" Value="public virtual double InputLatency { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float64 InputLatency" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("inputLatency")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Double</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The input latency, in seconds.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InputNumberOfChannels">
+      <MemberSignature Language="C#" Value="public virtual nint InputNumberOfChannels { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.nint InputNumberOfChannels" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("inputNumberOfChannels")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.nint</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The number of channels for the current input route.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InterruptionNotification">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString InterruptionNotification { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString InterruptionNotification" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Advice("Use AVAudioSession.Notifications.ObserveInterruption helper method instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVAudioSessionInterruptionNotification", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Notification constant for Interruption</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:AVFoundation.AVAudioSession+Notifications" />.<see cref="M:AVFoundation.AVAudioSession+Notifications.ObserveInterruptionNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = AVAudioSession.Notifications.ObserveInterruption ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("InterruptionType", args.InterruptionType);
+    Console.WriteLine ("Option", args.Option);
+    Console.WriteLine ("WasSuspended", args.WasSuspended);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, AVFoundation.AVAudioSessionInterruptionEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("InterruptionType", args.InterruptionType);
+    Console.WriteLine ("Option", args.Option);
+    Console.WriteLine ("WasSuspended", args.WasSuspended);
+}
+
+void Setup ()
+{
+    notification = AVAudioSession.Notifications.ObserveInterruption (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+          <para>The following example shows how to use the notification with the DefaultCenter API:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        AVAudioSession.InterruptionNotification, (notification) => {Console.WriteLine ("Received the notification AVAudioSession", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification AVAudioSession", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (AVAudioSession.InterruptionNotification, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IOBufferDuration">
+      <MemberSignature Language="C#" Value="public virtual double IOBufferDuration { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float64 IOBufferDuration" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("IOBufferDuration")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Double</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The duration of the current buffer, in seconds.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="MaximumInputNumberOfChannels">
+      <MemberSignature Language="C#" Value="public virtual nint MaximumInputNumberOfChannels { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.nint MaximumInputNumberOfChannels" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("maximumInputNumberOfChannels")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.nint</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The largest number of channels available for the current input route.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="MaximumOutputNumberOfChannels">
+      <MemberSignature Language="C#" Value="public virtual nint MaximumOutputNumberOfChannels { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.nint MaximumOutputNumberOfChannels" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("maximumOutputNumberOfChannels")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.nint</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The largest number of channels available for the current output route.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="MediaServicesWereLostNotification">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString MediaServicesWereLostNotification { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString MediaServicesWereLostNotification" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Advice("Use AVAudioSession.Notifications.ObserveMediaServicesWereLost helper method instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVAudioSessionMediaServicesWereLostNotification", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Notification constant for MediaServicesWereLost</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:AVFoundation.AVAudioSession+Notifications" />.<see cref="M:AVFoundation.AVAudioSession+Notifications.ObserveMediaServicesWereLostNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = AVAudioSession.Notifications.ObserveMediaServicesWereLost ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = AVAudioSession.Notifications.ObserveMediaServicesWereLost (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+          <para>The following example shows how to use the notification with the DefaultCenter API:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        AVAudioSession.MediaServicesWereLostNotification, (notification) => {Console.WriteLine ("Received the notification AVAudioSession", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification AVAudioSession", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (AVAudioSession.MediaServicesWereLostNotification, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="MediaServicesWereResetNotification">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString MediaServicesWereResetNotification { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString MediaServicesWereResetNotification" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Advice("Use AVAudioSession.Notifications.ObserveMediaServicesWereReset helper method instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVAudioSessionMediaServicesWereResetNotification", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Notification constant for MediaServicesWereReset</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:AVFoundation.AVAudioSession+Notifications" />.<see cref="M:AVFoundation.AVAudioSession+Notifications.ObserveMediaServicesWereResetNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = AVAudioSession.Notifications.ObserveMediaServicesWereReset ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = AVAudioSession.Notifications.ObserveMediaServicesWereReset (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+          <para>The following example shows how to use the notification with the DefaultCenter API:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        AVAudioSession.MediaServicesWereResetNotification, (notification) => {Console.WriteLine ("Received the notification AVAudioSession", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification AVAudioSession", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (AVAudioSession.MediaServicesWereResetNotification, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Mode">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSString Mode { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Foundation.NSString Mode" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 5, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("mode")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 5, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Configuration modes for Audio, it provides finer control over the Category property.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ModeDefault">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString ModeDefault { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString ModeDefault" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVAudioSessionModeDefault", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 5, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 5, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVAudioSessionModeDefault</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ModeGameChat">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString ModeGameChat { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString ModeGameChat" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVAudioSessionModeGameChat", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 5, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 5, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVAudioSessionModeGameChat</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ModeMeasurement">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString ModeMeasurement { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString ModeMeasurement" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVAudioSessionModeMeasurement", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 5, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 5, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVAudioSessionModeMeasurement</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ModeMoviePlayback">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString ModeMoviePlayback { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString ModeMoviePlayback" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVAudioSessionModeMoviePlayback", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVAudioSessionModeMoviePlayback</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ModeSpokenAudio">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString ModeSpokenAudio { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString ModeSpokenAudio" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVAudioSessionModeSpokenAudio", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVAudioSessionModeSpokenAudio.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ModeVideoChat">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString ModeVideoChat { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString ModeVideoChat" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVAudioSessionModeVideoChat", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVAudioSessionModeVideoChat</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ModeVideoRecording">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString ModeVideoRecording { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString ModeVideoRecording" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVAudioSessionModeVideoRecording", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 5, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 5, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVAudioSessionModeVideoRecording</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ModeVoiceChat">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString ModeVoiceChat { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString ModeVoiceChat" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVAudioSessionModeVoiceChat", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 5, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 5, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVAudioSessionModeVoiceChat</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OrientationLeft">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString OrientationLeft { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString OrientationLeft" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVAudioSessionOrientationLeft", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVAudioSessionOrientationLeft</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OrientationRight">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString OrientationRight { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString OrientationRight" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVAudioSessionOrientationRight", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVAudioSessionOrientationRight</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OtherAudioPlaying">
+      <MemberSignature Language="C#" Value="public virtual bool OtherAudioPlaying { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool OtherAudioPlaying" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("isOtherAudioPlaying")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Whether another application is currently playing back audio.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OutputChannelsChanged">
+      <MemberSignature Language="C#" Value="public event EventHandler&lt;AVFoundation.AVChannelsEventArgs&gt; OutputChannelsChanged;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler`1&lt;class AVFoundation.AVChannelsEventArgs&gt; OutputChannelsChanged" />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete("Use 'AVAudioSession.Notification.ObserveAudioRouteChange', this event does nothing.")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler&lt;AVFoundation.AVChannelsEventArgs&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Deprecated. This event is no longer raised.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OutputDataSource">
+      <MemberSignature Language="C#" Value="public virtual AVFoundation.AVAudioSessionDataSourceDescription OutputDataSource { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class AVFoundation.AVAudioSessionDataSourceDescription OutputDataSource" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("outputDataSource")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>AVFoundation.AVAudioSessionDataSourceDescription</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The currently selected output data source.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OutputDataSources">
+      <MemberSignature Language="C#" Value="public virtual AVFoundation.AVAudioSessionDataSourceDescription[] OutputDataSources { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class AVFoundation.AVAudioSessionDataSourceDescription[] OutputDataSources" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("outputDataSources")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>AVFoundation.AVAudioSessionDataSourceDescription[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>An array of <see cref="T:AVFoundation.AVAudioSessionDataSourceDescription" />s that list the available sources of the current output route.</summary>
+        <value>
+          <para>(More documentation for this node is coming)</para>
+          <para tool="nullallowed">This value can be <see langword="null" />.</para>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OutputLatency">
+      <MemberSignature Language="C#" Value="public virtual double OutputLatency { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float64 OutputLatency" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("outputLatency")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Double</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The output latency, in seconds.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OutputNumberOfChannels">
+      <MemberSignature Language="C#" Value="public virtual nint OutputNumberOfChannels { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.nint OutputNumberOfChannels" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("outputNumberOfChannels")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.nint</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The current number of channels in the output route.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OutputVolume">
+      <MemberSignature Language="C#" Value="public virtual float OutputVolume { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float32 OutputVolume" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("outputVolume")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Single</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The current volume.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OverrideOutputAudioPort">
+      <MemberSignature Language="C#" Value="public virtual bool OverrideOutputAudioPort (AVFoundation.AVAudioSessionPortOverride portOverride, out Foundation.NSError outError);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool OverrideOutputAudioPort(valuetype AVFoundation.AVAudioSessionPortOverride portOverride, class Foundation.NSError outError) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("overrideOutputAudioPort:error:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="portOverride" Type="AVFoundation.AVAudioSessionPortOverride" />
+        <Parameter Name="outError" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="portOverride">To be added.</param>
+        <param name="outError">On failure, this contains the error details.</param>
+        <summary>Requests to temporarily change the output audio port.</summary>
+        <returns>
+          <see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PortAirPlay">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString PortAirPlay { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString PortAirPlay" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVAudioSessionPortAirPlay", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVAudioSessionPortAirPlay</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PortBluetoothA2DP">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString PortBluetoothA2DP { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString PortBluetoothA2DP" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVAudioSessionPortBluetoothA2DP", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVAudioSessionPortBluetoothA2DP</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PortBluetoothHfp">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString PortBluetoothHfp { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString PortBluetoothHfp" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVAudioSessionPortBluetoothHFP", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVAudioSessionPortBluetoothHFP</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PortBluetoothLE">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString PortBluetoothLE { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString PortBluetoothLE" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVAudioSessionPortBluetoothLE", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVAudioSessionPortBluetoothLE</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PortBuiltInMic">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString PortBuiltInMic { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString PortBuiltInMic" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVAudioSessionPortBuiltInMic", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVAudioSessionPortBuiltInMic</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PortBuiltInReceiver">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString PortBuiltInReceiver { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString PortBuiltInReceiver" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVAudioSessionPortBuiltInReceiver", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVAudioSessionPortBuiltInReceiver</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PortBuiltInSpeaker">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString PortBuiltInSpeaker { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString PortBuiltInSpeaker" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVAudioSessionPortBuiltInSpeaker", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVAudioSessionPortBuiltInSpeaker</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PortCarAudio">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString PortCarAudio { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString PortCarAudio" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVAudioSessionPortCarAudio", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 1, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 1, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVAudioSessionPortCarAudio</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PortHdmi">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString PortHdmi { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString PortHdmi" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVAudioSessionPortHDMI", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVAudioSessionPortHDMI</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PortHeadphones">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString PortHeadphones { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString PortHeadphones" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVAudioSessionPortHeadphones", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVAudioSessionPortHeadphones</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PortHeadsetMic">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString PortHeadsetMic { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString PortHeadsetMic" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVAudioSessionPortHeadsetMic", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVAudioSessionPortHeadsetMic</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PortLineIn">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString PortLineIn { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString PortLineIn" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVAudioSessionPortLineIn", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVAudioSessionPortLineIn</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PortLineOut">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString PortLineOut { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString PortLineOut" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVAudioSessionPortLineOut", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVAudioSessionPortLineOut</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PortUsbAudio">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString PortUsbAudio { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString PortUsbAudio" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVAudioSessionPortUSBAudio", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVAudioSessionPortUSBAudio</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PreferredHardwareSampleRate">
+      <MemberSignature Language="C#" Value="public virtual double PreferredHardwareSampleRate { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float64 PreferredHardwareSampleRate" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'PreferredSampleRate' instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 3, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'PreferredSampleRate' instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("preferredHardwareSampleRate")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'PreferredSampleRate' instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 3, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'PreferredSampleRate' instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Double</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Your desired audio sample rate.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PreferredInput">
+      <MemberSignature Language="C#" Value="public virtual AVFoundation.AVAudioSessionPortDescription PreferredInput { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class AVFoundation.AVAudioSessionPortDescription PreferredInput" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("preferredInput", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>AVFoundation.AVAudioSessionPortDescription</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The preferred input port for audio routing.</summary>
+        <value>
+          <para>(More documentation for this node is coming)</para>
+          <para tool="nullallowed">This value can be <see langword="null" />.</para>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PreferredIOBufferDuration">
+      <MemberSignature Language="C#" Value="public virtual double PreferredIOBufferDuration { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float64 PreferredIOBufferDuration" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("preferredIOBufferDuration")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Double</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Your application desired buffer size in seconds. </summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PreferredSampleRate">
+      <MemberSignature Language="C#" Value="public virtual double PreferredSampleRate { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float64 PreferredSampleRate" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("preferredSampleRate")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Double</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The app's preferred sample rate, in Hz.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RecordPermission">
+      <MemberSignature Language="C#" Value="public virtual AVFoundation.AVAudioSessionRecordPermission RecordPermission { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype AVFoundation.AVAudioSessionRecordPermission RecordPermission" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("recordPermission")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>AVFoundation.AVAudioSessionRecordPermission</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets a value that describes the currently granted recording permission status.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RequestRecordPermission">
+      <MemberSignature Language="C#" Value="public virtual void RequestRecordPermission (AVFoundation.AVPermissionGranted responseCallback);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void RequestRecordPermission(class AVFoundation.AVPermissionGranted responseCallback) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("requestRecordPermission:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.WatchOS, 4, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="responseCallback" Type="AVFoundation.AVPermissionGranted">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDAVPermissionGranted))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="responseCallback">To be added.</param>
+        <summary>Presents a standard UI to the app user, asking for permission to record.</summary>
+        <remarks>
+          <para>This method will be called automatically the first time the application's <see cref="P:AVFoundation.AVAudioSession.Category" /> is set to a category that includes recording. Or, the application developer can call this method explicitly to control the presentation.</para>
+          <para>Unlike most other privacy settings, there is not a corresponding method to check the status.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RouteChangeNotification">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString RouteChangeNotification { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString RouteChangeNotification" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Advice("Use AVAudioSession.Notifications.ObserveRouteChange helper method instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVAudioSessionRouteChangeNotification", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Notification constant for RouteChange</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:AVFoundation.AVAudioSession+Notifications" />.<see cref="M:AVFoundation.AVAudioSession+Notifications.ObserveRouteChangeNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = AVAudioSession.Notifications.ObserveRouteChange ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("Reason", args.Reason);
+    Console.WriteLine ("PreviousRoute", args.PreviousRoute);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, AVFoundation.AVAudioSessionRouteChangeEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("Reason", args.Reason);
+    Console.WriteLine ("PreviousRoute", args.PreviousRoute);
+}
+
+void Setup ()
+{
+    notification = AVAudioSession.Notifications.ObserveRouteChange (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+          <para>The following example shows how to use the notification with the DefaultCenter API:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        AVAudioSession.RouteChangeNotification, (notification) => {Console.WriteLine ("Received the notification AVAudioSession", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification AVAudioSession", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (AVAudioSession.RouteChangeNotification, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RouteSharingPolicy">
+      <MemberSignature Language="C#" Value="public virtual AVFoundation.AVAudioSessionRouteSharingPolicy RouteSharingPolicy { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype AVFoundation.AVAudioSessionRouteSharingPolicy RouteSharingPolicy" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.MacOSX, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("routeSharingPolicy")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.MacOSX, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>AVFoundation.AVAudioSessionRouteSharingPolicy</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SampleRate">
+      <MemberSignature Language="C#" Value="public virtual double SampleRate { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float64 SampleRate" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("sampleRate")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Double</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The current hardware sample rate, in Hz.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SampleRateChanged">
+      <MemberSignature Language="C#" Value="public event EventHandler&lt;AVFoundation.AVSampleRateEventArgs&gt; SampleRateChanged;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler`1&lt;class AVFoundation.AVSampleRateEventArgs&gt; SampleRateChanged" />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete("Deprecated since iOS 6, Use 'AVAudioSession.Notification.ObserveAudioRouteChange'.")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler&lt;AVFoundation.AVSampleRateEventArgs&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>An event indicating the <see cref="P:AVFoundation.AVAudioSession.SampleRate" /> has changed.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SecondaryAudioShouldBeSilencedHint">
+      <MemberSignature Language="C#" Value="public virtual bool SecondaryAudioShouldBeSilencedHint { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool SecondaryAudioShouldBeSilencedHint" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("secondaryAudioShouldBeSilencedHint")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets a Boolean value that tells whether another app is playing audio.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetActive">
+      <MemberSignature Language="C#" Value="public Foundation.NSError SetActive (bool beActive);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Foundation.NSError SetActive(bool beActive) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSError</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="beActive" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="beActive">Set to true to activate audio, false to deactivate it.</param>
+        <summary>Activates or deactivates the audio session for the application.</summary>
+        <returns>null on success, or an instance of NSError on failure.</returns>
+        <remarks>
+          <para>
+	    Audio activation can fail if an application with a higher audio priority than yours is currently running.
+	  </para>
+          <para>
+	    Audio deactivation can fail if there are running audio
+	    operations in progress (playback, recording, audio queues
+	    or conversions).
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetActive">
+      <MemberSignature Language="C#" Value="public Foundation.NSError SetActive (bool active, AVFoundation.AVAudioSessionSetActiveOptions options);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Foundation.NSError SetActive(bool active, valuetype AVFoundation.AVAudioSessionSetActiveOptions options) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSError</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="active" Type="System.Boolean" />
+        <Parameter Name="options" Type="AVFoundation.AVAudioSessionSetActiveOptions" />
+      </Parameters>
+      <Docs>
+        <param name="active">Set to true to activate audio, false to deactivate it.</param>
+        <param name="options">Options to control the audio activation.</param>
+        <summary>Activates and deactivates the audio session for the application.</summary>
+        <returns>null on success, or an instance of NSError on failure.</returns>
+        <remarks>
+          <para>
+	    Audio activation can fail if an application with a higher audio priority than yours is currently running.
+	  </para>
+          <para>
+	    Audio deactivation can fail if there are running audio
+	    operations in progress (playback, recording, audio queues
+	    or conversions).
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetActive">
+      <MemberSignature Language="C#" Value="public virtual bool SetActive (bool beActive, out Foundation.NSError outError);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool SetActive(bool beActive, class Foundation.NSError outError) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("setActive:error:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="beActive" Type="System.Boolean" />
+        <Parameter Name="outError" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="beActive">Set to true to activate audio, false to deactivate it.</param>
+        <param name="outError">On failure, this contains the error details.</param>
+        <summary>Activates or deactivates the audio session for the application.</summary>
+        <returns>true on success, false on error.   If there is an error the outError parameter contains the new instance of NSError describing the problem.</returns>
+        <remarks>
+          <para>
+	    Audio activation can fail if an application with a higher audio priority than yours is currently running.
+	  </para>
+          <para>
+	    Audio deactivation can fail if there are running audio
+	    operations in progress (playback, recording, audio queues
+	    or conversions).
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetActive">
+      <MemberSignature Language="C#" Value="public virtual bool SetActive (bool beActive, AVFoundation.AVAudioSessionFlags flags, out Foundation.NSError outError);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool SetActive(bool beActive, valuetype AVFoundation.AVAudioSessionFlags flags, class Foundation.NSError outError) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("setActive:withFlags:error:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'SetActive (bool, AVAudioSessionSetActiveOptions, out NSError)' instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 4, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'SetActive (bool, AVAudioSessionSetActiveOptions, out NSError)' instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="beActive" Type="System.Boolean" />
+        <Parameter Name="flags" Type="AVFoundation.AVAudioSessionFlags" />
+        <Parameter Name="outError" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="beActive">To be added.</param>
+        <param name="flags">To be added.</param>
+        <param name="outError">On failure, this contains the error details.</param>
+        <summary>Application developers should not use this deprecated method.</summary>
+        <returns>
+          <see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetActive">
+      <MemberSignature Language="C#" Value="public virtual bool SetActive (bool active, AVFoundation.AVAudioSessionSetActiveOptions options, out Foundation.NSError outError);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool SetActive(bool active, valuetype AVFoundation.AVAudioSessionSetActiveOptions options, class Foundation.NSError outError) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("setActive:withOptions:error:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="active" Type="System.Boolean" />
+        <Parameter Name="options" Type="AVFoundation.AVAudioSessionSetActiveOptions" />
+        <Parameter Name="outError" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="active">Set to true to activate audio, false to deactivate it.</param>
+        <param name="options">Options to control the audio activation.</param>
+        <param name="outError">On failure, this contains the error details.</param>
+        <summary>Activates and deactivates the audio session for the application.</summary>
+        <returns>
+          <see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
+        <remarks>
+          <para>
+	    Audio activation can fail if an application with a higher audio priority than yours is currently running.
+	  </para>
+          <para>
+	    Audio deactivation can fail if there are running audio
+	    operations in progress (playback, recording, audio queues
+	    or conversions).
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetAggregatedIOPreference">
+      <MemberSignature Language="C#" Value="public virtual bool SetAggregatedIOPreference (AVFoundation.AVAudioSessionIOType ioType, out Foundation.NSError error);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool SetAggregatedIOPreference(valuetype AVFoundation.AVAudioSessionIOType ioType, class Foundation.NSError error) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("setAggregatedIOPreference:error:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="ioType" Type="AVFoundation.AVAudioSessionIOType" />
+        <Parameter Name="error" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="ioType">To be added.</param>
+        <param name="error">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetCategory">
+      <MemberSignature Language="C#" Value="public Foundation.NSError SetCategory (AVFoundation.AVAudioSessionCategory category);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Foundation.NSError SetCategory(valuetype AVFoundation.AVAudioSessionCategory category) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSError</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="category" Type="AVFoundation.AVAudioSessionCategory" />
+      </Parameters>
+      <Docs>
+        <param name="category">The desired category.</param>
+        <summary>Requests a change to the <see cref="P:AVFoundation.AVAudioSession.Category" />.</summary>
+        <returns>
+	  null on success, or an instance of NSError in case of failure with the details about the error.
+	</returns>
+        <remarks>
+          <para>
+	    In general, you should set the category before activating
+	    your audio session with <see cref="M:AVFoundation.AVAudioSession.SetActive" />.
+	    If you change the category at runtime, the route will change. 
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetCategory">
+      <MemberSignature Language="C#" Value="public Foundation.NSError SetCategory (Foundation.NSString theCategory);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Foundation.NSError SetCategory(class Foundation.NSString theCategory) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSError</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="theCategory" Type="Foundation.NSString" />
+      </Parameters>
+      <Docs>
+        <param name="theCategory">One of 
+	<see cref="P:AVFoundation.AVAudioSession.CategoryAmbient" />, 
+	<see cref="P:AVFoundation.AVAudioSession.CategorySoloAmbient" />, 
+	<see cref="P:AVFoundation.AVAudioSession.CategoryPlayback" />, 
+	<see cref="P:AVFoundation.AVAudioSession.CategoryRecord" />, 
+	<see cref="P:AVFoundation.AVAudioSession.CategoryPlayAndRecord" />, 
+	<see cref="P:AVFoundation.AVAudioSession.CategoryAudioProcessing" />, 
+	<see cref="P:AVFoundation.AVAudioSession.CategoryMultiRoute" />.
+	</param>
+        <summary>Weakly typed;  Requests a change to the <see cref="P:AVFoundation.AVAudioSession.Category" />.</summary>
+        <returns>
+	  null on success, or an instance of NSError in case of failure with the details about the error.
+	</returns>
+        <remarks>
+          <para>
+	    In general, you should set the category before activating
+	    your audio session with <see cref="M:AVFoundation.AVAudioSession.SetActive" />.
+	    If you change the category at runtime, the route will change. 
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetCategory">
+      <MemberSignature Language="C#" Value="public Foundation.NSError SetCategory (AVFoundation.AVAudioSessionCategory category, AVFoundation.AVAudioSessionCategoryOptions options);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Foundation.NSError SetCategory(valuetype AVFoundation.AVAudioSessionCategory category, valuetype AVFoundation.AVAudioSessionCategoryOptions options) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSError</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="category" Type="AVFoundation.AVAudioSessionCategory" />
+        <Parameter Name="options" Type="AVFoundation.AVAudioSessionCategoryOptions" />
+      </Parameters>
+      <Docs>
+        <param name="category">The desired category.</param>
+        <param name="options">Options on how to handle audio.</param>
+        <summary>Requests a change to the <see cref="P:AVFoundation.AVAudioSession.Category" />.</summary>
+        <returns>null on success, or an instance of NSError in case of failure with the details about the error.</returns>
+        <remarks>
+          <para>
+	    In general, you should set the category before activating
+	    your audio session with <see cref="M:AVFoundation.AVAudioSession.SetActive" />.
+	    If you change the category at runtime, the route will change. 
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetCategory">
+      <MemberSignature Language="C#" Value="public virtual bool SetCategory (Foundation.NSString theCategory, out Foundation.NSError outError);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool SetCategory(class Foundation.NSString theCategory, class Foundation.NSError outError) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("setCategory:error:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="theCategory" Type="Foundation.NSString" />
+        <Parameter Name="outError" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="theCategory">One of 
+	<see cref="P:AVFoundation.AVAudioSession.CategoryAmbient" />, 
+	<see cref="P:AVFoundation.AVAudioSession.CategorySoloAmbient" />, 
+	<see cref="P:AVFoundation.AVAudioSession.CategoryPlayback" />, 
+	<see cref="P:AVFoundation.AVAudioSession.CategoryRecord" />, 
+	<see cref="P:AVFoundation.AVAudioSession.CategoryPlayAndRecord" />, 
+	<see cref="P:AVFoundation.AVAudioSession.CategoryAudioProcessing" />, 
+	<see cref="P:AVFoundation.AVAudioSession.CategoryMultiRoute" />.
+	</param>
+        <param name="outError">On failure, this contains the error details.</param>
+        <summary>Weakly typed; Requests a change to the <see cref="P:AVFoundation.AVAudioSession.Category" />.</summary>
+        <returns>true on success, false on error.   If there is an error the outError parameter contains the new instance of NSError describing the problem.</returns>
+        <remarks>
+          <para>
+	    In general, you should set the category before activating
+	    your audio session with <see cref="M:AVFoundation.AVAudioSession.SetActive" />.
+	    If you change the category at runtime, the route will change. 
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetCategory">
+      <MemberSignature Language="C#" Value="public virtual bool SetCategory (string category, AVFoundation.AVAudioSessionCategoryOptions options, out Foundation.NSError outError);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool SetCategory(string category, valuetype AVFoundation.AVAudioSessionCategoryOptions options, class Foundation.NSError outError) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("setCategory:withOptions:error:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="category" Type="System.String" />
+        <Parameter Name="options" Type="AVFoundation.AVAudioSessionCategoryOptions" />
+        <Parameter Name="outError" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="category">One of 
+	<see cref="P:AVFoundation.AVAudioSession.CategoryAmbient" />, 
+	<see cref="P:AVFoundation.AVAudioSession.CategorySoloAmbient" />, 
+	<see cref="P:AVFoundation.AVAudioSession.CategoryPlayback" />, 
+	<see cref="P:AVFoundation.AVAudioSession.CategoryRecord" />, 
+	<see cref="P:AVFoundation.AVAudioSession.CategoryPlayAndRecord" />, 
+	<see cref="P:AVFoundation.AVAudioSession.CategoryAudioProcessing" />, 
+	<see cref="P:AVFoundation.AVAudioSession.CategoryMultiRoute" />.</param>
+        <param name="options">Options on how to handle audio.</param>
+        <param name="outError">On failure, this contains the error details.</param>
+        <summary>Weakly typed;  Requests a change to the <see cref="P:AVFoundation.AVAudioSession.Category" />.</summary>
+        <returns>
+          <see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
+        <remarks>
+          <para>
+	    In general, you should set the category before activating
+	    your audio session with <see cref="M:AVFoundation.AVAudioSession.SetActive" />.
+	    If you change the category at runtime, the route will change. 
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetCategory">
+      <MemberSignature Language="C#" Value="public virtual bool SetCategory (string category, string mode, AVFoundation.AVAudioSessionCategoryOptions options, out Foundation.NSError outError);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool SetCategory(string category, string mode, valuetype AVFoundation.AVAudioSessionCategoryOptions options, class Foundation.NSError outError) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("setCategory:mode:options:error:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.WatchOS, 3, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="category" Type="System.String" />
+        <Parameter Name="mode" Type="System.String" />
+        <Parameter Name="options" Type="AVFoundation.AVAudioSessionCategoryOptions" />
+        <Parameter Name="outError" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="category">To be added.</param>
+        <param name="mode">To be added.</param>
+        <param name="options">To be added.</param>
+        <param name="outError">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetCategory">
+      <MemberSignature Language="C#" Value="public virtual bool SetCategory (string category, string mode, AVFoundation.AVAudioSessionRouteSharingPolicy policy, AVFoundation.AVAudioSessionCategoryOptions options, out Foundation.NSError outError);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool SetCategory(string category, string mode, valuetype AVFoundation.AVAudioSessionRouteSharingPolicy policy, valuetype AVFoundation.AVAudioSessionCategoryOptions options, class Foundation.NSError outError) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("setCategory:mode:routeSharingPolicy:options:error:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.MacOSX, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="category" Type="System.String" />
+        <Parameter Name="mode" Type="System.String" />
+        <Parameter Name="policy" Type="AVFoundation.AVAudioSessionRouteSharingPolicy" />
+        <Parameter Name="options" Type="AVFoundation.AVAudioSessionCategoryOptions" />
+        <Parameter Name="outError" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="category">To be added.</param>
+        <param name="mode">To be added.</param>
+        <param name="policy">To be added.</param>
+        <param name="options">To be added.</param>
+        <param name="outError">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetInputDataSource">
+      <MemberSignature Language="C#" Value="public virtual bool SetInputDataSource (AVFoundation.AVAudioSessionDataSourceDescription dataSource, out Foundation.NSError outError);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool SetInputDataSource(class AVFoundation.AVAudioSessionDataSourceDescription dataSource, class Foundation.NSError outError) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("setInputDataSource:error:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="dataSource" Type="AVFoundation.AVAudioSessionDataSourceDescription" />
+        <Parameter Name="outError" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="dataSource">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="outError">On failure, this contains the error details.</param>
+        <summary>Selects the specified <paramref name="dataSource" />.</summary>
+        <returns>
+          <see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetInputGain">
+      <MemberSignature Language="C#" Value="public virtual bool SetInputGain (float gain, out Foundation.NSError outError);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool SetInputGain(float32 gain, class Foundation.NSError outError) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("setInputGain:error:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="gain" Type="System.Single" />
+        <Parameter Name="outError" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="gain">To be added.</param>
+        <param name="outError">On failure, this contains the error details.</param>
+        <summary>Requests a specific gain level.</summary>
+        <returns>
+          <see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetMode">
+      <MemberSignature Language="C#" Value="public virtual bool SetMode (Foundation.NSString mode, out Foundation.NSError error);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool SetMode(class Foundation.NSString mode, class Foundation.NSError error) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("setMode:error:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 5, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="mode" Type="Foundation.NSString" />
+        <Parameter Name="error" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="mode">The value should be one of 
+	<see cref="P:AVFoundation.AVAudioSession.ModeDefault" />,
+	<see cref="P:AVFoundation.AVAudioSession.ModeVoiceChat" />,
+	<see cref="T:AVFoundation.AVAudioSession.ModeGameCha" />,
+	<see cref="P:AVFoundation.AVAudioSession.ModeVideoRecording" />,
+	<see cref="P:AVFoundation.AVAudioSession.ModeMeasurement" />,
+	<see cref="P:AVFoundation.AVAudioSession.ModeMoviePlayback" /> or
+	<see cref="P:AVFoundation.AVAudioSession.ModeVideoChat" />.
+      </param>
+        <param name="error">On failure, this contains the error details.</param>
+        <summary>Requests a specific mode.</summary>
+        <returns>
+          <see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetOutputDataSource">
+      <MemberSignature Language="C#" Value="public virtual bool SetOutputDataSource (AVFoundation.AVAudioSessionDataSourceDescription dataSource, out Foundation.NSError outError);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool SetOutputDataSource(class AVFoundation.AVAudioSessionDataSourceDescription dataSource, class Foundation.NSError outError) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("setOutputDataSource:error:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="dataSource" Type="AVFoundation.AVAudioSessionDataSourceDescription" />
+        <Parameter Name="outError" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="dataSource">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="outError">On failure, this contains the error details.</param>
+        <summary>Selects the specific output <paramref name="dataSource" />.</summary>
+        <returns>
+          <see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetPreferredHardwareSampleRate">
+      <MemberSignature Language="C#" Value="public virtual bool SetPreferredHardwareSampleRate (double sampleRate, out Foundation.NSError outError);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool SetPreferredHardwareSampleRate(float64 sampleRate, class Foundation.NSError outError) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("setPreferredHardwareSampleRate:error:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'SetPreferredSampleRate' instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 3, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'SetPreferredSampleRate' instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sampleRate" Type="System.Double" />
+        <Parameter Name="outError" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="sampleRate">To be added.</param>
+        <param name="outError">On failure, this contains the error details.</param>
+        <summary>Application developers should not use this deprecated method. Instead use <see cref="M:AVFoundation.AVAudioSession.SetPreferredSampleRate(Double, out NSError)" /></summary>
+        <returns>
+          <see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetPreferredInput">
+      <MemberSignature Language="C#" Value="public virtual bool SetPreferredInput (AVFoundation.AVAudioSessionPortDescription inPort, out Foundation.NSError outError);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool SetPreferredInput(class AVFoundation.AVAudioSessionPortDescription inPort, class Foundation.NSError outError) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("setPreferredInput:error:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="inPort" Type="AVFoundation.AVAudioSessionPortDescription" />
+        <Parameter Name="outError" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="inPort">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="outError">On failure, this contains the error details.</param>
+        <summary>Sets the preferred input data source.</summary>
+        <returns>
+          <see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetPreferredInputNumberOfChannels">
+      <MemberSignature Language="C#" Value="public virtual bool SetPreferredInputNumberOfChannels (nint count, out Foundation.NSError outError);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool SetPreferredInputNumberOfChannels(valuetype System.nint count, class Foundation.NSError outError) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("setPreferredInputNumberOfChannels:error:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="count" Type="System.nint" />
+        <Parameter Name="outError" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="count">To be added.</param>
+        <param name="outError">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetPreferredIOBufferDuration">
+      <MemberSignature Language="C#" Value="public virtual bool SetPreferredIOBufferDuration (double duration, out Foundation.NSError outError);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool SetPreferredIOBufferDuration(float64 duration, class Foundation.NSError outError) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("setPreferredIOBufferDuration:error:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="duration" Type="System.Double" />
+        <Parameter Name="outError" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="duration">To be added.</param>
+        <param name="outError">On failure, this contains the error details.</param>
+        <summary>Sets the preferred duration, in seconds, of the IO buffer.</summary>
+        <returns>
+          <see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetPreferredOutputNumberOfChannels">
+      <MemberSignature Language="C#" Value="public virtual bool SetPreferredOutputNumberOfChannels (nint count, out Foundation.NSError outError);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool SetPreferredOutputNumberOfChannels(valuetype System.nint count, class Foundation.NSError outError) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("setPreferredOutputNumberOfChannels:error:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="count" Type="System.nint" />
+        <Parameter Name="outError" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="count">To be added.</param>
+        <param name="outError">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetPreferredSampleRate">
+      <MemberSignature Language="C#" Value="public virtual bool SetPreferredSampleRate (double sampleRate, out Foundation.NSError error);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool SetPreferredSampleRate(float64 sampleRate, class Foundation.NSError error) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("setPreferredSampleRate:error:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sampleRate" Type="System.Double" />
+        <Parameter Name="error" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="sampleRate">To be added.</param>
+        <param name="error">On failure, this contains the error details.</param>
+        <summary>Sets the preferred sample rate, in Hz.</summary>
+        <returns>
+          <see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SharedInstance">
+      <MemberSignature Language="C#" Value="public static AVFoundation.AVAudioSession SharedInstance ();" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class AVFoundation.AVAudioSession SharedInstance() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("sharedInstance")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>AVFoundation.AVAudioSession</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Factory method that returns the shared <see cref="T:AVFoundation.AVAudioSession" /> object.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SilenceSecondaryAudioHintNotification">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString SilenceSecondaryAudioHintNotification { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString SilenceSecondaryAudioHintNotification" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Advice("Use AVAudioSession.Notifications.ObserveSilenceSecondaryAudioHint helper method instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVAudioSessionSilenceSecondaryAudioHintNotification", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Notification constant for SilenceSecondaryAudioHint</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:AVFoundation.AVAudioSession+Notifications" />.<see cref="M:AVFoundation.AVAudioSession+Notifications.ObserveSilenceSecondaryAudioHintNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = AVAudioSession.Notifications.ObserveSilenceSecondaryAudioHint ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("Hint", args.Hint);
+    Console.WriteLine ("HintType", args.HintType);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, AVFoundation.AVAudioSessionSecondaryAudioHintEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("Hint", args.Hint);
+    Console.WriteLine ("HintType", args.HintType);
+}
+
+void Setup ()
+{
+    notification = AVAudioSession.Notifications.ObserveSilenceSecondaryAudioHint (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+          <para>The following example shows how to use the notification with the DefaultCenter API:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        AVAudioSession.SilenceSecondaryAudioHintNotification, (notification) => {Console.WriteLine ("Received the notification AVAudioSession", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification AVAudioSession", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (AVAudioSession.SilenceSecondaryAudioHintNotification, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WeakDelegate">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSObject WeakDelegate { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Foundation.NSObject WeakDelegate" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("delegate", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setDelegate:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>An object that can respond to the delegate protocol for this type</summary>
+        <value>
+          <para>The instance that will respond to events and data requests.</para>
+          <para tool="nullallowed">This value can be <see langword="null" />.</para>
+        </value>
+        <remarks>
+          <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+          <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+          <para>   Methods must be decorated with the [Export ("selectorName")] attribute to respond to each method from the protocol.   Alternatively use the Delegate method which is strongly typed and does not require the [Export] attributes on methods.</para>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

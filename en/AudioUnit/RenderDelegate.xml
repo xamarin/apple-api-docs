@@ -1,0 +1,49 @@
+<Type Name="RenderDelegate" FullName="AudioUnit.RenderDelegate">
+  <TypeSignature Language="C#" Value="public delegate AudioUnit.AudioUnitStatus RenderDelegate(AudioUnitRenderActionFlags actionFlags, AudioTimeStamp timeStamp, uint busNumber, uint numberFrames, AudioBuffers data);" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed RenderDelegate extends System.MulticastDelegate" />
+  <AssemblyInfo>
+    <AssemblyName>Xamarin.iOS</AssemblyName>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Delegate</BaseTypeName>
+  </Base>
+  <Parameters>
+    <Parameter Name="actionFlags" Type="AudioUnit.AudioUnitRenderActionFlags" />
+    <Parameter Name="timeStamp" Type="AudioToolbox.AudioTimeStamp" />
+    <Parameter Name="busNumber" Type="System.UInt32" />
+    <Parameter Name="numberFrames" Type="System.UInt32" />
+    <Parameter Name="data" Type="AudioToolbox.AudioBuffers" />
+  </Parameters>
+  <ReturnValue>
+    <ReturnType>AudioUnit.AudioUnitStatus</ReturnType>
+  </ReturnValue>
+  <Docs>
+    <param name="actionFlags">Context for the operation of this call.</param>
+    <param name="timeStamp">Timestamp for this render operation.</param>
+    <param name="busNumber">Bus number.</param>
+    <param name="numberFrames">Number of frames.</param>
+    <param name="data">AudioBuffers that will hold the data.</param>
+    <summary>Signature used by AudioUnit callbacks that provide audio samples to an AudioUnit.</summary>
+    <returns>An OSX/iOS Status code.</returns>
+    <remarks>
+      <example>
+        <code lang="C#"><![CDATA[
+void SetupRender ()
+{
+    var convertNode = auGraph.AddNode (AudioComponentDescription.CreateConverter (AudioTypeConverter.AU));
+    var convertUnit = auGraph.GetNodeInfo (convertToEffectNode);
+
+    convertUnit.SetRenderCallback (ConvertInputRenderCallback, AudioUnitScopeType.Global) 
+}
+
+AudioUnitStatus ConvertInputRenderCallback (AudioUnitRenderActionFlags actionFlags, AudioTimeStamp timeStamp, uint busNumber, uint numberFrames, AudioBuffers data)
+{
+    data.SetData (0, preRenderData);
+    return AudioUnitStatus.NoError;
+}
+]]></code>
+      </example>
+    </remarks>
+  </Docs>
+</Type>

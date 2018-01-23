@@ -1,0 +1,540 @@
+<Type Name="MPSBinaryImageKernel" FullName="MetalPerformanceShaders.MPSBinaryImageKernel">
+  <TypeSignature Language="C#" Value="public class MPSBinaryImageKernel : MetalPerformanceShaders.MPSKernel" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit MPSBinaryImageKernel extends MetalPerformanceShaders.MPSKernel" />
+  <AssemblyInfo>
+    <AssemblyName>Xamarin.iOS</AssemblyName>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>MetalPerformanceShaders.MPSKernel</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Attributes>
+    <Attribute>
+      <AttributeName>Foundation.Register("MPSBinaryImageKernel", true)</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 13, ObjCRuntime.PlatformArchitecture.Arch64, null)</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>A image kernel that combines two textures into one texture result.</summary>
+    <remarks>To be added.</remarks>
+    <related type="PlatformDocAPI" href="https://developer.apple.com/library/ios/documentation/MetalPerformanceShaders/Reference/MPSBinaryImageKernel_ClassReference/index.html">Apple documentation for <c>MPSBinaryImageKernel</c></related>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public MPSBinaryImageKernel (Foundation.NSCoder coder);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class Foundation.NSCoder coder) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("initWithCoder:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.DesignatedInitializer</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="coder" Type="Foundation.NSCoder" />
+      </Parameters>
+      <Docs>
+        <param name="coder">The unarchiver object.</param>
+        <summary>A constructor that initializes the object from the data stored in the unarchiver object.</summary>
+        <remarks>
+          <para>This constructor is provided to allow the class to be initialized from an unarchiver (for example, during NIB deserialization).   This is part of the <see cref="T:Foundation.NSCoding" />  protocol.</para>
+          <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="T:Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
+          <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected MPSBinaryImageKernel (Foundation.NSObjectFlag t);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor(class Foundation.NSObjectFlag t) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="t" Type="Foundation.NSObjectFlag" />
+      </Parameters>
+      <Docs>
+        <param name="t">Unused sentinel value, pass NSObjectFlag.Empty.</param>
+        <summary>Constructor to call on derived classes to skip initialization and merely allocate the object.</summary>
+        <remarks>
+          <para>This constructor should be called by derived classes when they completely construct the object in managed code and merely want the runtime to allocate and initialize the NSObject.   This is required to implement the two-step initialization process that Objective-C uses, the first step is to perform the object allocation, the second step is to initialize the object.   When developers invoke the constructor that takes the NSObjectFlag.Empty they take advantage of a direct path that goes all the way up to NSObject to merely allocate the object's memory and bind the Objective-C and C# objects together.    The actual initialization of the object is up to the developer.</para>
+          <para>This constructor is typically used by the binding generator to allocate the object, but prevent the actual initialization to take place.   Once the allocation has taken place, the constructor has to initialize the object.   With constructors generated by the binding generator this means that it manually invokes one of the "init" methods to initialize the object.</para>
+          <para>It is the developer's responsibility to completely initialize the object if they chain up using the NSObjectFlag.Empty path.</para>
+          <para>In general, if the developer's constructor invokes the NSObjectFlag.Empty base implementation, then it should be calling an Objective-C init method.   If this is not the case, developers should instead chain to the proper constructor in their class. </para>
+          <para>The argument value is ignored and merely ensures that the only code that is executed is the construction phase is the basic NSObject allocation and runtime type registration.  Typically the chaining would look like this:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// The NSObjectFlag merely allocates the object and registers the
+// C# class with the Objective-C runtime if necessary, but no actual
+// initXxx method is invoked, that is done later in the constructor
+//
+// This is taken from Xamarin's source code:
+//
+[Export ("initWithFrame:")]
+public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
+{
+// Invoke the init method now.
+	var initWithFrame = new Selector ("initWithFrame:").Handle;
+	if (IsDirectBinding)
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+	else
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public MPSBinaryImageKernel (Metal.IMTLDevice device);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class Metal.IMTLDevice device) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("initWithDevice:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.DesignatedInitializer</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="device" Type="Metal.IMTLDevice" />
+      </Parameters>
+      <Docs>
+        <param name="device">To be added.</param>
+        <summary>Creates a new MPSBinaryImageKernel for the specified metal device.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected MPSBinaryImageKernel (IntPtr handle);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig specialname rtspecialname instance void .ctor(native int handle) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="handle" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="handle">Pointer (handle) to the unmanaged object.</param>
+        <summary>A constructor used when creating managed representations of unmanaged objects;  Called by the runtime.</summary>
+        <remarks>
+          <para>This constructor is invoked by the runtime infrastructure (<see cref="M:ObjCRuntime.Runtime.GetNSObject(System.IntPtr)" />) to create a new managed representation for a pointer to an unmanaged Objective-C object.    Developers should not invoke this method directly, instead they should call the GetNSObject method as it will prevent two instances of a managed object to point to the same native object.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public MPSBinaryImageKernel (Foundation.NSCoder aDecoder, Metal.IMTLDevice device);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class Foundation.NSCoder aDecoder, class Metal.IMTLDevice device) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("initWithCoder:device:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.DesignatedInitializer</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 13, ObjCRuntime.PlatformArchitecture.Arch64, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="aDecoder" Type="Foundation.NSCoder" />
+        <Parameter Name="device" Type="Metal.IMTLDevice" />
+      </Parameters>
+      <Docs>
+        <param name="aDecoder">To be added.</param>
+        <param name="device">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ClassHandle">
+      <MemberSignature Language="C#" Value="public override IntPtr ClassHandle { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int ClassHandle" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The handle for this class.</summary>
+        <value>The pointer to the Objective-C class.</value>
+        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ClipRect">
+      <MemberSignature Language="C#" Value="public virtual Metal.MTLRegion ClipRect { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Metal.MTLRegion ClipRect" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("clipRect", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setClipRect:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Metal.MTLRegion</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The region of the destination in which to write data.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EncodeToCommandBuffer">
+      <MemberSignature Language="C#" Value="public virtual bool EncodeToCommandBuffer (Metal.IMTLCommandBuffer commandBuffer, out Foundation.NSObject inPlacePrimaryTexture, Metal.IMTLTexture secondaryTexture, MetalPerformanceShaders.MPSCopyAllocator copyAllocator);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool EncodeToCommandBuffer(class Metal.IMTLCommandBuffer commandBuffer, class Foundation.NSObject inPlacePrimaryTexture, class Metal.IMTLTexture secondaryTexture, class MetalPerformanceShaders.MPSCopyAllocator copyAllocator) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("encodeToCommandBuffer:inPlacePrimaryTexture:secondaryTexture:fallbackCopyAllocator:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="commandBuffer" Type="Metal.IMTLCommandBuffer" />
+        <Parameter Name="inPlacePrimaryTexture" Type="Foundation.NSObject&amp;" RefType="out" />
+        <Parameter Name="secondaryTexture" Type="Metal.IMTLTexture" />
+        <Parameter Name="copyAllocator" Type="MetalPerformanceShaders.MPSCopyAllocator">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDMPSCopyAllocator))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="commandBuffer">To be added.</param>
+        <param name="inPlacePrimaryTexture">To be added.</param>
+        <param name="secondaryTexture">To be added.</param>
+        <param name="copyAllocator">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>Attempts to apply the kernel to <paramref name="inPlacePrimaryTexture" />, using <paramref name="copyAllocator" /> to allocate and write to a new texture if in-place application fails.</summary>
+        <returns>
+          <see langword="true" /> if in-place application succeeds. Otherwise, returns <see langword="false" />.</returns>
+        <remarks>If <see langword="false" /> is returned and a non-null copy allocator was supplied, <paramref name="inPlacePrimaryTexture" /> will point to the newly allocated texture.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EncodeToCommandBuffer">
+      <MemberSignature Language="C#" Value="public virtual bool EncodeToCommandBuffer (Metal.IMTLCommandBuffer commandBuffer, Metal.IMTLTexture primaryTexture, out Foundation.NSObject inPlaceSecondaryTexture, MetalPerformanceShaders.MPSCopyAllocator copyAllocator);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool EncodeToCommandBuffer(class Metal.IMTLCommandBuffer commandBuffer, class Metal.IMTLTexture primaryTexture, class Foundation.NSObject inPlaceSecondaryTexture, class MetalPerformanceShaders.MPSCopyAllocator copyAllocator) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("encodeToCommandBuffer:primaryTexture:inPlaceSecondaryTexture:fallbackCopyAllocator:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="commandBuffer" Type="Metal.IMTLCommandBuffer" />
+        <Parameter Name="primaryTexture" Type="Metal.IMTLTexture" />
+        <Parameter Name="inPlaceSecondaryTexture" Type="Foundation.NSObject&amp;" RefType="out" />
+        <Parameter Name="copyAllocator" Type="MetalPerformanceShaders.MPSCopyAllocator">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDMPSCopyAllocator))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="commandBuffer">To be added.</param>
+        <param name="primaryTexture">To be added.</param>
+        <param name="inPlaceSecondaryTexture">To be added.</param>
+        <param name="copyAllocator">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>Attempts to apply the kernel to <paramref name="inPlaceSecondaryTexture" />, using <paramref name="copyAllocator" /> to allocate and write to a new texture if in-place application fails.</summary>
+        <returns>
+          <see langword="true" /> if in-place application succeeds. Otherwise, returns <see langword="false" />.</returns>
+        <remarks>If <see langword="false" /> is returned and a non-null copy allocator was supplied, <paramref name="inPlaceSecondaryTexture" /> will point to the newly allocated texture.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EncodeToCommandBuffer">
+      <MemberSignature Language="C#" Value="public virtual void EncodeToCommandBuffer (Metal.IMTLCommandBuffer commandBuffer, Metal.IMTLTexture primaryTexture, Metal.IMTLTexture secondaryTexture, Metal.IMTLTexture destinationTexture);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void EncodeToCommandBuffer(class Metal.IMTLCommandBuffer commandBuffer, class Metal.IMTLTexture primaryTexture, class Metal.IMTLTexture secondaryTexture, class Metal.IMTLTexture destinationTexture) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("encodeToCommandBuffer:primaryTexture:secondaryTexture:destinationTexture:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="commandBuffer" Type="Metal.IMTLCommandBuffer" />
+        <Parameter Name="primaryTexture" Type="Metal.IMTLTexture" />
+        <Parameter Name="secondaryTexture" Type="Metal.IMTLTexture" />
+        <Parameter Name="destinationTexture" Type="Metal.IMTLTexture" />
+      </Parameters>
+      <Docs>
+        <param name="commandBuffer">To be added.</param>
+        <param name="primaryTexture">To be added.</param>
+        <param name="secondaryTexture">To be added.</param>
+        <param name="destinationTexture">To be added.</param>
+        <summary>Encodes the kernel to <paramref name="commandBuffer" />, which will overwrite <paramref name="destinationTexture" /> with the result of applying the kernel to <paramref name="primaryTexture" /> and <paramref name="secondaryTexture" />.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EncodeToCommandBuffer">
+      <MemberSignature Language="C#" Value="public virtual void EncodeToCommandBuffer (Metal.IMTLCommandBuffer commandBuffer, MetalPerformanceShaders.MPSImage primaryImage, MetalPerformanceShaders.MPSImage secondaryImage, MetalPerformanceShaders.MPSImage destinationImage);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void EncodeToCommandBuffer(class Metal.IMTLCommandBuffer commandBuffer, class MetalPerformanceShaders.MPSImage primaryImage, class MetalPerformanceShaders.MPSImage secondaryImage, class MetalPerformanceShaders.MPSImage destinationImage) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("encodeToCommandBuffer:primaryImage:secondaryImage:destinationImage:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="commandBuffer" Type="Metal.IMTLCommandBuffer" />
+        <Parameter Name="primaryImage" Type="MetalPerformanceShaders.MPSImage" />
+        <Parameter Name="secondaryImage" Type="MetalPerformanceShaders.MPSImage" />
+        <Parameter Name="destinationImage" Type="MetalPerformanceShaders.MPSImage" />
+      </Parameters>
+      <Docs>
+        <param name="commandBuffer">To be added.</param>
+        <param name="primaryImage">To be added.</param>
+        <param name="secondaryImage">To be added.</param>
+        <param name="destinationImage">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PrimaryEdgeMode">
+      <MemberSignature Language="C#" Value="public virtual MetalPerformanceShaders.MPSImageEdgeMode PrimaryEdgeMode { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype MetalPerformanceShaders.MPSImageEdgeMode PrimaryEdgeMode" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("primaryEdgeMode", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setPrimaryEdgeMode:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>MetalPerformanceShaders.MPSImageEdgeMode</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets or sets the behavior to use when the shader encounters the edge of the primary image.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PrimaryOffset">
+      <MemberSignature Language="C#" Value="public virtual MetalPerformanceShaders.MPSOffset PrimaryOffset { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype MetalPerformanceShaders.MPSOffset PrimaryOffset" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("primaryOffset", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setPrimaryOffset:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>MetalPerformanceShaders.MPSOffset</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets or sets the location of the destination clipping rectangle in the primary texture.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PrimarySourceRegionForDestinationSize">
+      <MemberSignature Language="C#" Value="public virtual MetalPerformanceShaders.MPSRegion PrimarySourceRegionForDestinationSize (Metal.MTLSize destinationSize);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance valuetype MetalPerformanceShaders.MPSRegion PrimarySourceRegionForDestinationSize(valuetype Metal.MTLSize destinationSize) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("primarySourceRegionForDestinationSize:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>MetalPerformanceShaders.MPSRegion</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="destinationSize" Type="Metal.MTLSize" />
+      </Parameters>
+      <Docs>
+        <param name="destinationSize">To be added.</param>
+        <summary>Calculates and returns the area of the primary source texture that will be read for the specified <paramref name="destinationSize" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SecondaryEdgeMode">
+      <MemberSignature Language="C#" Value="public virtual MetalPerformanceShaders.MPSImageEdgeMode SecondaryEdgeMode { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype MetalPerformanceShaders.MPSImageEdgeMode SecondaryEdgeMode" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("secondaryEdgeMode", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setSecondaryEdgeMode:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>MetalPerformanceShaders.MPSImageEdgeMode</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets or sets the behavior to use when the shader encounters the edge of the secondary image.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SecondaryOffset">
+      <MemberSignature Language="C#" Value="public virtual MetalPerformanceShaders.MPSOffset SecondaryOffset { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype MetalPerformanceShaders.MPSOffset SecondaryOffset" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("secondaryOffset", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setSecondaryOffset:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>MetalPerformanceShaders.MPSOffset</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets or sets the location of the destination clipping rectangle in the secondary texture.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SecondarySourceRegionForDestinationSize">
+      <MemberSignature Language="C#" Value="public virtual MetalPerformanceShaders.MPSRegion SecondarySourceRegionForDestinationSize (Metal.MTLSize destinationSize);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance valuetype MetalPerformanceShaders.MPSRegion SecondarySourceRegionForDestinationSize(valuetype Metal.MTLSize destinationSize) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("secondarySourceRegionForDestinationSize:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>MetalPerformanceShaders.MPSRegion</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="destinationSize" Type="Metal.MTLSize" />
+      </Parameters>
+      <Docs>
+        <param name="destinationSize">To be added.</param>
+        <summary>Calculates and returns the area of the secondary source texture that will be read for the specified <paramref name="destinationSize" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

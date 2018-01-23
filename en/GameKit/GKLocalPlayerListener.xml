@@ -1,0 +1,795 @@
+<Type Name="GKLocalPlayerListener" FullName="GameKit.GKLocalPlayerListener">
+  <TypeSignature Language="C#" Value="public class GKLocalPlayerListener : Foundation.NSObject, GameKit.IGKLocalPlayerListener, IDisposable" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit GKLocalPlayerListener extends Foundation.NSObject implements class GameKit.IGKChallengeListener, class GameKit.IGKInviteEventListener, class GameKit.IGKLocalPlayerListener, class GameKit.IGKSavedGameListener, class GameKit.IGKTurnBasedEventListener, class ObjCRuntime.INativeObject, class System.IDisposable" />
+  <AssemblyInfo>
+    <AssemblyName>Xamarin.iOS</AssemblyName>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>Foundation.NSObject</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>GameKit.IGKLocalPlayerListener</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>System.IDisposable</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Attributes>
+    <Attribute>
+      <AttributeName>Foundation.Model</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>Foundation.Protocol</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>Foundation.Register("GKLocalPlayerListener", false)</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.WatchOS, 3, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>A listener that listens for challenges, invitations, and turn based events.</summary>
+    <remarks>To be added.</remarks>
+    <related type="PlatformDocAPI" href="https://developer.apple.com/library/ios/documentation/GameKit/Reference/GKLocalPlayerListener_Ref/index.html">Apple documentation for <c>GKLocalPlayerListener</c></related>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public GKLocalPlayerListener ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("init")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters />
+      <Docs>
+        <summary>Default constructor, initializes a new instance of this class.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected GKLocalPlayerListener (Foundation.NSObjectFlag t);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor(class Foundation.NSObjectFlag t) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="t" Type="Foundation.NSObjectFlag" />
+      </Parameters>
+      <Docs>
+        <param name="t">Unused sentinel value, pass NSObjectFlag.Empty.</param>
+        <summary>Constructor to call on derived classes to skip initialization and merely allocate the object.</summary>
+        <remarks>
+          <para>This constructor should be called by derived classes when they completely construct the object in managed code and merely want the runtime to allocate and initialize the NSObject.   This is required to implement the two-step initialization process that Objective-C uses, the first step is to perform the object allocation, the second step is to initialize the object.   When developers invoke the constructor that takes the NSObjectFlag.Empty they take advantage of a direct path that goes all the way up to NSObject to merely allocate the object's memory and bind the Objective-C and C# objects together.    The actual initialization of the object is up to the developer.</para>
+          <para>This constructor is typically used by the binding generator to allocate the object, but prevent the actual initialization to take place.   Once the allocation has taken place, the constructor has to initialize the object.   With constructors generated by the binding generator this means that it manually invokes one of the "init" methods to initialize the object.</para>
+          <para>It is the developer's responsibility to completely initialize the object if they chain up using the NSObjectFlag.Empty path.</para>
+          <para>In general, if the developer's constructor invokes the NSObjectFlag.Empty base implementation, then it should be calling an Objective-C init method.   If this is not the case, developers should instead chain to the proper constructor in their class. </para>
+          <para>The argument value is ignored and merely ensures that the only code that is executed is the construction phase is the basic NSObject allocation and runtime type registration.  Typically the chaining would look like this:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// The NSObjectFlag merely allocates the object and registers the
+// C# class with the Objective-C runtime if necessary, but no actual
+// initXxx method is invoked, that is done later in the constructor
+//
+// This is taken from Xamarin's source code:
+//
+[Export ("initWithFrame:")]
+public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
+{
+// Invoke the init method now.
+	var initWithFrame = new Selector ("initWithFrame:").Handle;
+	if (IsDirectBinding)
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+	else
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected GKLocalPlayerListener (IntPtr handle);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig specialname rtspecialname instance void .ctor(native int handle) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="handle" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="handle">Pointer (handle) to the unmanaged object.</param>
+        <summary>A constructor used when creating managed representations of unmanaged objects;  Called by the runtime.</summary>
+        <remarks>
+          <para>This constructor is invoked by the runtime infrastructure (<see cref="M:ObjCRuntime.Runtime.GetNSObject(System.IntPtr)" />) to create a new managed representation for a pointer to an unmanaged Objective-C object.    Developers should not invoke this method directly, instead they should call the GetNSObject method as it will prevent two instances of a managed object to point to the same native object.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DidAcceptInvite">
+      <MemberSignature Language="C#" Value="public virtual void DidAcceptInvite (GameKit.GKPlayer player, GameKit.GKInvite invite);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void DidAcceptInvite(class GameKit.GKPlayer player, class GameKit.GKInvite invite) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("player:didAcceptInvite:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="player" Type="GameKit.GKPlayer" />
+        <Parameter Name="invite" Type="GameKit.GKInvite" />
+      </Parameters>
+      <Docs>
+        <param name="player">To be added.</param>
+        <param name="invite">To be added.</param>
+        <summary>Method that is called when the specified <paramref name="player" /> accepts the provided match invitation.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DidCompleteChallenge">
+      <MemberSignature Language="C#" Value="public virtual void DidCompleteChallenge (GameKit.GKPlayer player, GameKit.GKChallenge challenge, GameKit.GKPlayer friendPlayer);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void DidCompleteChallenge(class GameKit.GKPlayer player, class GameKit.GKChallenge challenge, class GameKit.GKPlayer friendPlayer) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("player:didCompleteChallenge:issuedByFriend:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="player" Type="GameKit.GKPlayer" />
+        <Parameter Name="challenge" Type="GameKit.GKChallenge" />
+        <Parameter Name="friendPlayer" Type="GameKit.GKPlayer" />
+      </Parameters>
+      <Docs>
+        <param name="player">To be added.</param>
+        <param name="challenge">To be added.</param>
+        <param name="friendPlayer">To be added.</param>
+        <summary>Method that is called when the <paramref name="player" /> completes the <paramref name="challenge" /> that was issued by a <paramref name="friendPlayer" />.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DidModifySavedGame">
+      <MemberSignature Language="C#" Value="public virtual void DidModifySavedGame (GameKit.GKPlayer player, GameKit.GKSavedGame savedGame);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void DidModifySavedGame(class GameKit.GKPlayer player, class GameKit.GKSavedGame savedGame) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("player:didModifySavedGame:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="player" Type="GameKit.GKPlayer" />
+        <Parameter Name="savedGame" Type="GameKit.GKSavedGame" />
+      </Parameters>
+      <Docs>
+        <param name="player">To be added.</param>
+        <param name="savedGame">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DidReceiveChallenge">
+      <MemberSignature Language="C#" Value="public virtual void DidReceiveChallenge (GameKit.GKPlayer player, GameKit.GKChallenge challenge);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void DidReceiveChallenge(class GameKit.GKPlayer player, class GameKit.GKChallenge challenge) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("player:didReceiveChallenge:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="player" Type="GameKit.GKPlayer" />
+        <Parameter Name="challenge" Type="GameKit.GKChallenge" />
+      </Parameters>
+      <Docs>
+        <param name="player">To be added.</param>
+        <param name="challenge">To be added.</param>
+        <summary>Method that is called when the <paramref name="player" /> receives a <paramref name="challenge" />.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DidRequestMatch">
+      <MemberSignature Language="C#" Value="public virtual void DidRequestMatch (GameKit.GKPlayer player, GameKit.GKPlayer[] recipientPlayers);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void DidRequestMatch(class GameKit.GKPlayer player, class GameKit.GKPlayer[] recipientPlayers) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("player:didRequestMatchWithRecipients:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="player" Type="GameKit.GKPlayer" />
+        <Parameter Name="recipientPlayers" Type="GameKit.GKPlayer[]" />
+      </Parameters>
+      <Docs>
+        <param name="player">To be added.</param>
+        <param name="recipientPlayers">To be added.</param>
+        <summary>Method that is called when the <paramref name="player" /> requests a match with a group of <paramref name="friendPlayers" />.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DidRequestMatch">
+      <MemberSignature Language="C#" Value="public virtual void DidRequestMatch (GameKit.GKPlayer player, string[] playerIDs);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void DidRequestMatch(class GameKit.GKPlayer player, string[] playerIDs) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("player:didRequestMatchWithPlayers:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'DidRequestMatch (GKPlayer player, GKPlayer[] recipientPlayers)' instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="player" Type="GameKit.GKPlayer" />
+        <Parameter Name="playerIDs" Type="System.String[]" />
+      </Parameters>
+      <Docs>
+        <param name="player">To be added.</param>
+        <param name="playerIDs">To be added.</param>
+        <summary>Method that is called when the <paramref name="player" /> requests a match with a group of players who are identified by the provided <paramref name="playerIDs" />.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DidRequestMatchWithOtherPlayers">
+      <MemberSignature Language="C#" Value="public virtual void DidRequestMatchWithOtherPlayers (GameKit.GKPlayer player, GameKit.GKPlayer[] playersToInvite);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void DidRequestMatchWithOtherPlayers(class GameKit.GKPlayer player, class GameKit.GKPlayer[] playersToInvite) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("player:didRequestMatchWithOtherPlayers:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.WatchOS, 3, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="player" Type="GameKit.GKPlayer" />
+        <Parameter Name="playersToInvite" Type="GameKit.GKPlayer[]" />
+      </Parameters>
+      <Docs>
+        <param name="player">To be added.</param>
+        <param name="playersToInvite">To be added.</param>
+        <summary>Method that is called when the <paramref name="player" /> invites a group of <paramref name="playersToInvite" /> to play a match.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DidRequestMatchWithPlayers">
+      <MemberSignature Language="C#" Value="public virtual void DidRequestMatchWithPlayers (GameKit.GKPlayer player, string[] playerIDsToInvite);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void DidRequestMatchWithPlayers(class GameKit.GKPlayer player, string[] playerIDsToInvite) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'DidRequestMatchWithOtherPlayers' instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.Obsolete("Use 'DidRequestMatch (GKPlayer player, GKPlayer[] recipientPlayers)' instead.")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="player" Type="GameKit.GKPlayer" />
+        <Parameter Name="playerIDsToInvite" Type="System.String[]" />
+      </Parameters>
+      <Docs>
+        <param name="player">To be added.</param>
+        <param name="playerIDsToInvite">To be added.</param>
+        <summary>Method that is called when the <paramref name="player" /> invites a group of players, who are identified by <paramref name="playersIDsToInvite" />, to play a match.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="HasConflictingSavedGames">
+      <MemberSignature Language="C#" Value="public virtual void HasConflictingSavedGames (GameKit.GKPlayer player, GameKit.GKSavedGame[] savedGames);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void HasConflictingSavedGames(class GameKit.GKPlayer player, class GameKit.GKSavedGame[] savedGames) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("player:hasConflictingSavedGames:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="player" Type="GameKit.GKPlayer" />
+        <Parameter Name="savedGames" Type="GameKit.GKSavedGame[]" />
+      </Parameters>
+      <Docs>
+        <param name="player">To be added.</param>
+        <param name="savedGames">To be added.</param>
+        <summary>Method that is called when a conflict is detected in a player's saved games.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IssuedChallengeWasCompleted">
+      <MemberSignature Language="C#" Value="public virtual void IssuedChallengeWasCompleted (GameKit.GKPlayer player, GameKit.GKChallenge challenge, GameKit.GKPlayer friendPlayer);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void IssuedChallengeWasCompleted(class GameKit.GKPlayer player, class GameKit.GKChallenge challenge, class GameKit.GKPlayer friendPlayer) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("player:issuedChallengeWasCompleted:byFriend:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="player" Type="GameKit.GKPlayer" />
+        <Parameter Name="challenge" Type="GameKit.GKChallenge" />
+        <Parameter Name="friendPlayer" Type="GameKit.GKPlayer" />
+      </Parameters>
+      <Docs>
+        <param name="player">To be added.</param>
+        <param name="challenge">To be added.</param>
+        <param name="friendPlayer">To be added.</param>
+        <summary>Method that is called when the <paramref name="player" /> completes a <see cref="T:challenge" /> from <paramref name="friendPlayer" />.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="MatchEnded">
+      <MemberSignature Language="C#" Value="public virtual void MatchEnded (GameKit.GKPlayer player, GameKit.GKTurnBasedMatch match);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void MatchEnded(class GameKit.GKPlayer player, class GameKit.GKTurnBasedMatch match) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("player:matchEnded:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.WatchOS, 3, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="player" Type="GameKit.GKPlayer" />
+        <Parameter Name="match" Type="GameKit.GKTurnBasedMatch" />
+      </Parameters>
+      <Docs>
+        <param name="player">To be added.</param>
+        <param name="match">To be added.</param>
+        <summary>Method that is called after a match ends.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ReceivedExchangeCancellation">
+      <MemberSignature Language="C#" Value="public virtual void ReceivedExchangeCancellation (GameKit.GKPlayer player, GameKit.GKTurnBasedExchange exchange, GameKit.GKTurnBasedMatch match);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void ReceivedExchangeCancellation(class GameKit.GKPlayer player, class GameKit.GKTurnBasedExchange exchange, class GameKit.GKTurnBasedMatch match) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("player:receivedExchangeCancellation:forMatch:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.WatchOS, 3, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="player" Type="GameKit.GKPlayer" />
+        <Parameter Name="exchange" Type="GameKit.GKTurnBasedExchange" />
+        <Parameter Name="match" Type="GameKit.GKTurnBasedMatch" />
+      </Parameters>
+      <Docs>
+        <param name="player">To be added.</param>
+        <param name="exchange">To be added.</param>
+        <param name="match">To be added.</param>
+        <summary>Method that is called when an exchange is cancelled.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ReceivedExchangeReplies">
+      <MemberSignature Language="C#" Value="public virtual void ReceivedExchangeReplies (GameKit.GKPlayer player, GameKit.GKTurnBasedExchangeReply[] replies, GameKit.GKTurnBasedExchange exchange, GameKit.GKTurnBasedMatch match);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void ReceivedExchangeReplies(class GameKit.GKPlayer player, class GameKit.GKTurnBasedExchangeReply[] replies, class GameKit.GKTurnBasedExchange exchange, class GameKit.GKTurnBasedMatch match) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("player:receivedExchangeReplies:forCompletedExchange:forMatch:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.WatchOS, 3, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="player" Type="GameKit.GKPlayer" />
+        <Parameter Name="replies" Type="GameKit.GKTurnBasedExchangeReply[]" />
+        <Parameter Name="exchange" Type="GameKit.GKTurnBasedExchange" />
+        <Parameter Name="match" Type="GameKit.GKTurnBasedMatch" />
+      </Parameters>
+      <Docs>
+        <param name="player">To be added.</param>
+        <param name="replies">To be added.</param>
+        <param name="exchange">To be added.</param>
+        <param name="match">To be added.</param>
+        <summary>Method that is called after an exchange completes.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ReceivedExchangeRequest">
+      <MemberSignature Language="C#" Value="public virtual void ReceivedExchangeRequest (GameKit.GKPlayer player, GameKit.GKTurnBasedExchange exchange, GameKit.GKTurnBasedMatch match);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void ReceivedExchangeRequest(class GameKit.GKPlayer player, class GameKit.GKTurnBasedExchange exchange, class GameKit.GKTurnBasedMatch match) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("player:receivedExchangeRequest:forMatch:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.WatchOS, 3, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="player" Type="GameKit.GKPlayer" />
+        <Parameter Name="exchange" Type="GameKit.GKTurnBasedExchange" />
+        <Parameter Name="match" Type="GameKit.GKTurnBasedMatch" />
+      </Parameters>
+      <Docs>
+        <param name="player">To be added.</param>
+        <param name="exchange">To be added.</param>
+        <param name="match">To be added.</param>
+        <summary>Method that is called when an exchange is requested.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ReceivedTurnEvent">
+      <MemberSignature Language="C#" Value="public virtual void ReceivedTurnEvent (GameKit.GKPlayer player, GameKit.GKTurnBasedMatch match, bool becameActive);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void ReceivedTurnEvent(class GameKit.GKPlayer player, class GameKit.GKTurnBasedMatch match, bool becameActive) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("player:receivedTurnEventForMatch:didBecomeActive:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.WatchOS, 3, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="player" Type="GameKit.GKPlayer" />
+        <Parameter Name="match" Type="GameKit.GKTurnBasedMatch" />
+        <Parameter Name="becameActive" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="player">To be added.</param>
+        <param name="match">To be added.</param>
+        <param name="becameActive">To be added.</param>
+        <summary>Method that is called when it becomes the <paramref name="player" />'s turn.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WantsToPlayChallenge">
+      <MemberSignature Language="C#" Value="public virtual void WantsToPlayChallenge (GameKit.GKPlayer player, GameKit.GKChallenge challenge);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void WantsToPlayChallenge(class GameKit.GKPlayer player, class GameKit.GKChallenge challenge) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("player:wantsToPlayChallenge:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="player" Type="GameKit.GKPlayer" />
+        <Parameter Name="challenge" Type="GameKit.GKChallenge" />
+      </Parameters>
+      <Docs>
+        <param name="player">To be added.</param>
+        <param name="challenge">To be added.</param>
+        <summary>Method that is called when <paramref name="player" /> starts a game in order to complete a challenge.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WantsToQuitMatch">
+      <MemberSignature Language="C#" Value="public virtual void WantsToQuitMatch (GameKit.GKPlayer player, GameKit.GKTurnBasedMatch match);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void WantsToQuitMatch(class GameKit.GKPlayer player, class GameKit.GKTurnBasedMatch match) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("player:wantsToQuitMatch:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.WatchOS, 3, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="player" Type="GameKit.GKPlayer" />
+        <Parameter Name="match" Type="GameKit.GKTurnBasedMatch" />
+      </Parameters>
+      <Docs>
+        <param name="player">To be added.</param>
+        <param name="match">To be added.</param>
+        <summary>Method that is called when a player wants to quit.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

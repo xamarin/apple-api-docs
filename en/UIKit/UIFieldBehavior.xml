@@ -1,0 +1,749 @@
+<Type Name="UIFieldBehavior" FullName="UIKit.UIFieldBehavior">
+  <TypeSignature Language="C#" Value="public class UIFieldBehavior : UIKit.UIDynamicBehavior" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit UIFieldBehavior extends UIKit.UIDynamicBehavior" />
+  <AssemblyInfo>
+    <AssemblyName>Xamarin.iOS</AssemblyName>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>UIKit.UIDynamicBehavior</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Attributes>
+    <Attribute>
+      <AttributeName>Foundation.Register("UIFieldBehavior", true)</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>A <see cref="T:UIKit.UIDynamicBehavior" /> that models a field, such as gravity, electricity, or turbulence.</summary>
+    <remarks>
+      <para>
+        <see cref="T:UIKit.UIFieldBehavior" /> objects apply a force vector to one or more <see cref="T:UIKit.IUIDynamicItem" /> objects (such as <see cref="T:UIKit.UIView" /> objects). The vector depends on the type of field generated, as shown in the following:</para>
+      <para>
+        <img href="UIFieldBehavior.Gallery.png" />
+      </para>
+      <para>A <see cref="T:UIKit.UIFieldBehavior" /> only applies to the <see cref="T:UIKit.IUIDynamicItem" /> objects in its <see cref="P:UIKit.UIFieldBehavior.Items" /> array. The following example creates a vortex field centered in the main screen. The field applies to each of the items in the <c>wanderers</c> array of <see cref="T:UIKit.UIView" /> objects. Once the <see cref="T:UIKit.UIFieldBehavior" /> is created and applied to the <see cref="T:UIKit.UIDynamicItemBehavior" /> objects associated with the views in <c>wanderers</c>, the behavior is added to the <see cref="T:UIKit.UIDynamicAnimator" />.</para>
+      <example>
+        <code lang="F#"><![CDATA[
+let fieldBehavior = UIFieldBehavior.CreateVortexField()
+fieldBehavior.Position <- new CGPoint(this.View.Frame.Left + this.View.Frame.Width / nfloat 2.0, this.View.Frame.Top + this.View.Frame.Height / nfloat 2.0)
+fieldBehavior.MinimumRadius <- nfloat 5.0
+
+let animator = new UIDynamicAnimator(this.View)
+
+let wanderers = 
+    seq { 20.0 .. 60.0 .. (Math.Floor(float frame.Height)) }
+    |> Seq.map (fun y -> new CGRect(20.0, y, 20.0, 20.0))
+    |> Seq.map (fun frame -> 
+        let v = new UIView(frame)
+        v.BackgroundColor <- UIColor.Red
+        v
+        ) |> Array.ofSeq
+this.View.AddSubviews(wanderers)
+
+wanderers 
+|> Seq.map (fun w -> new UIDynamicItemBehavior([| w :> IUIDynamicItem|])) 
+|> Seq.iter (fun itemBehavior ->
+    itemBehavior.Density <- nfloat 0.01
+    itemBehavior.Resistance <- nfloat 0.0
+    itemBehavior.Friction <- nfloat 0.0
+    itemBehavior.AllowsRotation <- true
+    itemBehavior.Charge <- nfloat -1.0
+    animator.AddBehavior(itemBehavior)
+    )
+
+wanderers |> Seq.iter fieldBehavior.AddItem
+
+animator.AddBehavior(fieldBehavior)
+
+]]></code>
+      </example>
+      <para>The vortex force vectors are shown here:</para>
+      <para>
+        <img href="UIFieldBehavior.CreateVortexField.png" />
+      </para>
+      <para>Developers may visualize the field with <c>PerformSelector(new ObjCRuntime.Selector("setDebugEnabled:"), Foundation.NSObject.FromObject(true))</c>.</para>
+    </remarks>
+    <related type="PlatformDocAPI" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIFieldBehavior_class/index.html">Apple documentation for <c>UIFieldBehavior</c></related>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected UIFieldBehavior (Foundation.NSObjectFlag t);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor(class Foundation.NSObjectFlag t) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="t" Type="Foundation.NSObjectFlag" />
+      </Parameters>
+      <Docs>
+        <param name="t">Unused sentinel value, pass NSObjectFlag.Empty.</param>
+        <summary>Constructor to call on derived classes to skip initialization and merely allocate the object.</summary>
+        <remarks>
+          <para>This constructor should be called by derived classes when they completely construct the object in managed code and merely want the runtime to allocate and initialize the NSObject.   This is required to implement the two-step initialization process that Objective-C uses, the first step is to perform the object allocation, the second step is to initialize the object.   When developers invoke the constructor that takes the NSObjectFlag.Empty they take advantage of a direct path that goes all the way up to NSObject to merely allocate the object's memory and bind the Objective-C and C# objects together.    The actual initialization of the object is up to the developer.</para>
+          <para>This constructor is typically used by the binding generator to allocate the object, but prevent the actual initialization to take place.   Once the allocation has taken place, the constructor has to initialize the object.   With constructors generated by the binding generator this means that it manually invokes one of the "init" methods to initialize the object.</para>
+          <para>It is the developer's responsibility to completely initialize the object if they chain up using the NSObjectFlag.Empty path.</para>
+          <para>In general, if the developer's constructor invokes the NSObjectFlag.Empty base implementation, then it should be calling an Objective-C init method.   If this is not the case, developers should instead chain to the proper constructor in their class. </para>
+          <para>The argument value is ignored and merely ensures that the only code that is executed is the construction phase is the basic NSObject allocation and runtime type registration.  Typically the chaining would look like this:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// The NSObjectFlag merely allocates the object and registers the
+// C# class with the Objective-C runtime if necessary, but no actual
+// initXxx method is invoked, that is done later in the constructor
+//
+// This is taken from Xamarin's source code:
+//
+[Export ("initWithFrame:")]
+public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
+{
+// Invoke the init method now.
+	var initWithFrame = new Selector ("initWithFrame:").Handle;
+	if (IsDirectBinding)
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+	else
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected UIFieldBehavior (IntPtr handle);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig specialname rtspecialname instance void .ctor(native int handle) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="handle" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="handle">Pointer (handle) to the unmanaged object.</param>
+        <summary>A constructor used when creating managed representations of unmanaged objects;  Called by the runtime.</summary>
+        <remarks>
+          <para>This constructor is invoked by the runtime infrastructure (<see cref="M:ObjCRuntime.Runtime.GetNSObject(System.IntPtr)" />) to create a new managed representation for a pointer to an unmanaged Objective-C object.    Developers should not invoke this method directly, instead they should call the GetNSObject method as it will prevent two instances of a managed object to point to the same native object.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AddItem">
+      <MemberSignature Language="C#" Value="public virtual void AddItem (UIKit.IUIDynamicItem item);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void AddItem(class UIKit.IUIDynamicItem item) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("addItem:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="item" Type="UIKit.IUIDynamicItem" />
+      </Parameters>
+      <Docs>
+        <param name="item">To be added.</param>
+        <summary>Adds the <paramref name="item" /> to this <see cref="T:UIKit.UIFieldBehavior" />.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AnimationSpeed">
+      <MemberSignature Language="C#" Value="public virtual nfloat AnimationSpeed { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.nfloat AnimationSpeed" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("animationSpeed", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setAnimationSpeed:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.nfloat</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>In noise and turbulence fields, the multiplier for animation.</summary>
+        <value>For noise and turbulence fields, the default value is 1.0. For other fields, the value is 0.0.</value>
+        <remarks>
+          <para>For noise and turbulence fields, values greater than 1.0 animate the field faster than normal, while a value of 0.0 is not animated at all.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ClassHandle">
+      <MemberSignature Language="C#" Value="public override IntPtr ClassHandle { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int ClassHandle" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The handle for this class.</summary>
+        <value>The pointer to the Objective-C class.</value>
+        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateCustomField">
+      <MemberSignature Language="C#" Value="public static UIKit.UIFieldBehavior CreateCustomField (UIKit.UIFieldCustomEvaluator evaluator);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class UIKit.UIFieldBehavior CreateCustomField(class UIKit.UIFieldCustomEvaluator evaluator) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("fieldWithEvaluationBlock:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UIFieldBehavior</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="evaluator" Type="UIKit.UIFieldCustomEvaluator">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDUIFieldCustomEvaluator))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="evaluator">To be added.</param>
+        <summary>Creates a custom field defined by <paramref name="evaluator" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateDragField">
+      <MemberSignature Language="C#" Value="public static UIKit.UIFieldBehavior CreateDragField ();" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class UIKit.UIFieldBehavior CreateDragField() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("dragField")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UIFieldBehavior</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Factory method to create a field that mimics drag.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateElectricField">
+      <MemberSignature Language="C#" Value="public static UIKit.UIFieldBehavior CreateElectricField ();" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class UIKit.UIFieldBehavior CreateElectricField() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("electricField")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UIFieldBehavior</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Factory method to create a field that mimics an EM field interacting with <see cref="P:UIKit.UIDynamicItemBehavior.Charge" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateLinearGravityField">
+      <MemberSignature Language="C#" Value="public static UIKit.UIFieldBehavior CreateLinearGravityField (CoreGraphics.CGVector direction);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class UIKit.UIFieldBehavior CreateLinearGravityField(valuetype CoreGraphics.CGVector direction) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("linearGravityFieldWithVector:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UIFieldBehavior</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="direction" Type="CoreGraphics.CGVector" />
+      </Parameters>
+      <Docs>
+        <param name="direction">Downward gravity uses a positive Y value.</param>
+        <summary>Factory method to create a field that mimics gravity pulling in a single direction.</summary>
+        <returns>To be added.</returns>
+        <remarks>
+          <para>The field vectors of a linear gravity field look like:</para>
+          <para>
+            <img href="UIFieldBehavior.CreateLinearGravityField.png" />
+          </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateMagneticField">
+      <MemberSignature Language="C#" Value="public static UIKit.UIFieldBehavior CreateMagneticField ();" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class UIKit.UIFieldBehavior CreateMagneticField() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("magneticField")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UIFieldBehavior</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Factory method to create a field that mimics gravity pulling in a single direction.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateNoiseField">
+      <MemberSignature Language="C#" Value="public static UIKit.UIFieldBehavior CreateNoiseField (nfloat smoothness, nfloat speed);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class UIKit.UIFieldBehavior CreateNoiseField(valuetype System.nfloat smoothness, valuetype System.nfloat speed) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("noiseFieldWithSmoothness:animationSpeed:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UIFieldBehavior</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="smoothness" Type="System.nfloat" />
+        <Parameter Name="speed" Type="System.nfloat" />
+      </Parameters>
+      <Docs>
+        <param name="smoothness">To be added.</param>
+        <param name="speed">To be added.</param>
+        <summary>Factory method to create a field with random forces.</summary>
+        <returns>To be added.</returns>
+        <remarks>
+          <para>The field vectors of a noise field are dynamic. The following is a snapshot:</para>
+          <para>
+            <img href="UIFieldBehavior.CreateNoiseField.png" />
+          </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateRadialGravityField">
+      <MemberSignature Language="C#" Value="public static UIKit.UIFieldBehavior CreateRadialGravityField (CoreGraphics.CGPoint position);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class UIKit.UIFieldBehavior CreateRadialGravityField(valuetype CoreGraphics.CGPoint position) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("radialGravityFieldWithPosition:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UIFieldBehavior</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="position" Type="CoreGraphics.CGPoint" />
+      </Parameters>
+      <Docs>
+        <param name="position">To be added.</param>
+        <summary>Factory method to create a field that attracts objects to a point.</summary>
+        <returns>To be added.</returns>
+        <remarks>
+          <para>Developers should set <see cref="P:UIKit.UIFieldBehavior.MinimumRadius" /> or otherwise prevent object's from approaching <paramref name="position" /> too closely, as items can be "slingshotted" off the screen otherwise.</para>
+          <para>The field vectors of a radial gravity field look like:</para>
+          <para>
+            <img href="UIFieldBehavior.CreateRadialGravityField.png" />
+          </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateSpringField">
+      <MemberSignature Language="C#" Value="public static UIKit.UIFieldBehavior CreateSpringField ();" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class UIKit.UIFieldBehavior CreateSpringField() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("springField")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UIFieldBehavior</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Factory method to create a field that acts like a spring.</summary>
+        <returns>To be added.</returns>
+        <remarks>
+          <para>The field vectors of a spring field look like:</para>
+          <para>
+            <img href="UIFieldBehavior.CreateSpringField.png" />
+          </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateTurbulenceField">
+      <MemberSignature Language="C#" Value="public static UIKit.UIFieldBehavior CreateTurbulenceField (nfloat smoothness, nfloat speed);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class UIKit.UIFieldBehavior CreateTurbulenceField(valuetype System.nfloat smoothness, valuetype System.nfloat speed) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("turbulenceFieldWithSmoothness:animationSpeed:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UIFieldBehavior</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="smoothness" Type="System.nfloat" />
+        <Parameter Name="speed" Type="System.nfloat" />
+      </Parameters>
+      <Docs>
+        <param name="smoothness">To be added.</param>
+        <param name="speed">To be added.</param>
+        <summary>Factory method to create a field that simulates turbulence.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateVelocityField">
+      <MemberSignature Language="C#" Value="public static UIKit.UIFieldBehavior CreateVelocityField (CoreGraphics.CGVector direction);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class UIKit.UIFieldBehavior CreateVelocityField(valuetype CoreGraphics.CGVector direction) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("velocityFieldWithVector:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UIFieldBehavior</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="direction" Type="CoreGraphics.CGVector" />
+      </Parameters>
+      <Docs>
+        <param name="direction">To be added.</param>
+        <summary>Factory method to create a field that applies a linear velocity to affected items.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateVortexField">
+      <MemberSignature Language="C#" Value="public static UIKit.UIFieldBehavior CreateVortexField ();" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class UIKit.UIFieldBehavior CreateVortexField() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("vortexField")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UIFieldBehavior</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Factory method to create a spiraling field.</summary>
+        <returns>To be added.</returns>
+        <remarks>
+          <para>The field vectors of a vortex field look like:</para>
+          <para>
+            <img href="UIFieldBehavior.CreateVortexField.png" />
+          </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Direction">
+      <MemberSignature Language="C#" Value="public virtual CoreGraphics.CGVector Direction { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype CoreGraphics.CGVector Direction" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("direction", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setDirection:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreGraphics.CGVector</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The direction of motion in linear and gravity fields.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Falloff">
+      <MemberSignature Language="C#" Value="public virtual nfloat Falloff { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.nfloat Falloff" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("falloff", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setFalloff:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.nfloat</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The rate of field diminishment at distances greater than <see cref="P:UIKit.UIFieldBehavior.MinimumRadius" />.</summary>
+        <value>The default value is 0.0, specifying that the field strength does not diminish over distance.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Items">
+      <MemberSignature Language="C#" Value="public virtual UIKit.IUIDynamicItem[] Items { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class UIKit.IUIDynamicItem[] Items" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("items", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.IUIDynamicItem[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The set of <see cref="T:UIKit.IUIDynamicItem" /> objects to which this field applies.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="MinimumRadius">
+      <MemberSignature Language="C#" Value="public virtual nfloat MinimumRadius { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.nfloat MinimumRadius" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("minimumRadius", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setMinimumRadius:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.nfloat</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Objects closer than this distance are calculated as if they were at this minimum distance.</summary>
+        <value>The default value for this is a very small, non-zero value.</value>
+        <remarks>
+          <para>Developers may use this method to avoid, for instance, gravitational "slingshot" effects.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Position">
+      <MemberSignature Language="C#" Value="public virtual CoreGraphics.CGPoint Position { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype CoreGraphics.CGPoint Position" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("position", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setPosition:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreGraphics.CGPoint</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The location of the center of the field, in view coordinates.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Region">
+      <MemberSignature Language="C#" Value="public virtual UIKit.UIRegion Region { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class UIKit.UIRegion Region" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("region", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setRegion:", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UIRegion</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>This, with <see cref="P:UIKit.UIFieldBehavior.Position" />, determines the limits of the field's effects.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RemoveItem">
+      <MemberSignature Language="C#" Value="public virtual void RemoveItem (UIKit.IUIDynamicItem item);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void RemoveItem(class UIKit.IUIDynamicItem item) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("removeItem:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="item" Type="UIKit.IUIDynamicItem" />
+      </Parameters>
+      <Docs>
+        <param name="item">To be added.</param>
+        <summary>Removes <paramref name="item" /> from <see cref="P:UIKit.UIFieldBehavior.Items" />.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Smoothness">
+      <MemberSignature Language="C#" Value="public virtual nfloat Smoothness { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.nfloat Smoothness" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("smoothness", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setSmoothness:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.nfloat</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>In noise or turbulence fields, the amount of noise or turbulence, in the range 0 (maximum) to 1 (minimum).</summary>
+        <value>To be added.</value>
+        <remarks>
+          <para>Developers should note that a value of 0.0 represents maximum noise and a value of 1.0 represents minimum noise.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Strength">
+      <MemberSignature Language="C#" Value="public virtual nfloat Strength { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.nfloat Strength" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("strength", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setStrength:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.nfloat</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The strength of the field, in arbitrary units that differ among fields</summary>
+        <value>The default value is 1.0.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

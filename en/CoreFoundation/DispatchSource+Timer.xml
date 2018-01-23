@@ -1,0 +1,176 @@
+<Type Name="DispatchSource+Timer" FullName="CoreFoundation.DispatchSource+Timer">
+  <TypeSignature Language="C#" Value="public class DispatchSource.Timer : CoreFoundation.DispatchSource" />
+  <TypeSignature Language="ILAsm" Value=".class nested public auto ansi beforefieldinit DispatchSource/Timer extends CoreFoundation.DispatchSource" />
+  <AssemblyInfo>
+    <AssemblyName>Xamarin.iOS</AssemblyName>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>CoreFoundation.DispatchSource</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>Sources of this type periodically invoke the event handler on the target queue. </summary>
+    <remarks>
+      <para>The timer parameters are configured with the dispatch_source_set_timer() function. Once this function returns, any pending source data accumulated for the previous timer parameters has been cleared; the next fire of the timer will occur at start, and every interval nanoseconds thereafter until the timer source is canceled.</para>
+      <para>
+      </para>
+      <para>Any fire of the timer may be delayed by the system in order to improve power consumption and system performance. The upper limit to the allowable delay may be configured with the leeway argument, the lower limit is under the control of the system.</para>
+      <para>
+      </para>
+      <para>For the initial timer fire at start, the upper limit to the allowable delay is set to leeway nanoseconds. For the subsequent timer fires at start + N * interval, the upper limit is MIN(leeway, interval / 2 ).</para>
+      <para>
+      </para>
+      <para>The lower limit to the allowable delay may vary with process state such as visibility of application UI. If the specified timer source was created with a the constructor that sets "strict" to true, the system will make a best effort to strictly observe the provided leeway value even if it is smaller than the current lower limit. Note that a minimal amount of delay is to be expected even if this flag is specified.</para>
+      <para>
+      </para>
+      <example>
+        <code lang="c#"><![CDATA[
+var dispatchSource = new DispatchSource.Timer (strict: true, queue: DispatchQueue.MainQueue);
+
+long delay = 2000000000;
+long leeway = 5000000000;
+dispatchSource.SetTimer (DispatchTime.Now, delay, leeway);
+
+dispatchSource.SetRegistrationHandler (() => {
+    Console.WriteLine ("Timer registered");
+});
+
+dispatchSource.SetEventHandler (() => {
+Console.WriteLine ("Timer tick");
+});
+
+dispatchSource.SetCancelHandler (() => {
+Console.WriteLine ("Timer stopped");
+});
+
+dispatchSource.Resume ();
+]]></code>
+      </example>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Timer (CoreFoundation.DispatchQueue queue = null);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class CoreFoundation.DispatchQueue queue) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="queue" Type="CoreFoundation.DispatchQueue" />
+      </Parameters>
+      <Docs>
+        <param name="queue">The target queue for this dispatch source object.   Pass null to use the default target queue (the default priority global concurrent queue).</param>
+        <summary>Creates a timer dispatch source that will be invoked at periodic intervals.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Timer (IntPtr handle);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int handle) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="handle" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="handle">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Timer (bool strict = false, CoreFoundation.DispatchQueue queue = null);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(bool strict, class CoreFoundation.DispatchQueue queue) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="strict" Type="System.Boolean" />
+        <Parameter Name="queue" Type="CoreFoundation.DispatchQueue" />
+      </Parameters>
+      <Docs>
+        <param name="strict">To be added.</param>
+        <param name="queue">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Timer (IntPtr handle, bool owns);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int handle, bool owns) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="handle" Type="System.IntPtr" />
+        <Parameter Name="owns" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="handle">To be added.</param>
+        <param name="owns">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetTimer">
+      <MemberSignature Language="C#" Value="public void SetTimer (CoreFoundation.DispatchTime time, long nanosecondInterval, long nanosecondLeeway);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetTimer(valuetype CoreFoundation.DispatchTime time, int64 nanosecondInterval, int64 nanosecondLeeway) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="time" Type="CoreFoundation.DispatchTime" />
+        <Parameter Name="nanosecondInterval" Type="System.Int64" />
+        <Parameter Name="nanosecondLeeway" Type="System.Int64" />
+      </Parameters>
+      <Docs>
+        <param name="time">Initial time for the timer to be fired.   If the value is zero, then the timer is based on mach_absolute_time.</param>
+        <param name="nanosecondInterval">Interval in nanosecond at which the timer will be fired after the initial time.</param>
+        <param name="nanosecondLeeway">Upper limit of the allowed delay (as the system might put the system to sleep).</param>
+        <summary>Configures the paramters to the timer.</summary>
+        <remarks>
+          <para>Once this method returns, any pending source data accumulated for the previous timer parameters has been cleared; the next fire of the timer will occur at <paramref name="time" />, and every interval <paramref name="nanosecondInterval" /> thereafter until the timer source is canceled.</para>
+          <para />
+          <para />
+          <para />
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TimerFiredCount">
+      <MemberSignature Language="C#" Value="public int TimerFiredCount { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 TimerFiredCount" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <para>Number of times the timer has fired since the last invocation of the event handler</para>
+        </summary>
+        <value>Number of times the timer has fired since the last invocation of the event handler</value>
+        <remarks>
+          <para />
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

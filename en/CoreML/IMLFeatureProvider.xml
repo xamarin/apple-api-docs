@@ -1,0 +1,129 @@
+<Type Name="IMLFeatureProvider" FullName="CoreML.IMLFeatureProvider">
+  <TypeSignature Language="C#" Value="public interface IMLFeatureProvider : IDisposable, ObjCRuntime.INativeObject" />
+  <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract IMLFeatureProvider implements class ObjCRuntime.INativeObject, class System.IDisposable" />
+  <AssemblyInfo>
+    <AssemblyName>Xamarin.iOS</AssemblyName>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>ObjCRuntime.INativeObject</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>System.IDisposable</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Attributes>
+    <Attribute>
+      <AttributeName>Foundation.Protocol(Name="MLFeatureProvider", WrapperType=typeof(CoreML.MLFeatureProviderWrapper))</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>Foundation.ProtocolMember(IsProperty=false, IsRequired=true, IsStatic=false, Name="GetFeatureValue", ParameterByRef=Mono.Cecil.CustomAttributeArgument[], ParameterType=Mono.Cecil.CustomAttributeArgument[], ReturnType=typeof(CoreML.MLFeatureValue), Selector="featureValueForName:")</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>Foundation.ProtocolMember(ArgumentSemantic=ObjCRuntime.ArgumentSemantic.None, GetterSelector="featureNames", IsProperty=true, IsRequired=true, IsStatic=false, Name="FeatureNames", PropertyType=typeof(Foundation.NSSet`1&lt;Foundation.NSString&gt;), Selector="featureNames")</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.WatchOS, 4, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 13, ObjCRuntime.PlatformArchitecture.Arch64, null)</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>An interface that defines input or output features and allows access to their values.</summary>
+    <remarks>
+      <para>CoreML does not directly read and write system-native data. Rather it uses this class to map strings to values for the inputs and outputs of the <see cref="T:Monotouch.CoreML.MLModel" /> object.</para>
+      <para>The following example shows a <see cref="T:Monotouch.CoreML.IMLFeatureProvider" /> that provides 3 inputs variables, all of type <see langword="double" />:</para>
+      <example>
+        <code lang="C#"><![CDATA[
+public class MarsHabitatPricerInput : NSObject, IMLFeatureProvider
+{
+	public double SolarPanels { get; set; }
+	public double Greenhouses { get; set; }
+	public double Size { get; set; }
+
+	public NSSet<NSString> FeatureNames => new NSSet<NSString>(new NSString("solarPanels"), new NSString("greenhouses"), new NSString("size"));
+
+	public MLFeatureValue GetFeatureValue(string featureName)
+	{
+		switch (featureName)
+		{
+			case "solarPanels":
+				return MLFeatureValue.Create(SolarPanels);
+			case "greenhouses":
+				return MLFeatureValue.Create(Greenhouses);
+			case "size":
+				return MLFeatureValue.Create(Size);
+			default:
+				return MLFeatureValue.Create(0);
+		}
+	}
+}
+    ]]></code>
+      </example>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName="FeatureNames">
+      <MemberSignature Language="C#" Value="public Foundation.NSSet&lt;Foundation.NSString&gt; FeatureNames { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Foundation.NSSet`1&lt;class Foundation.NSString&gt; FeatureNames" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Preserve(Conditional=true)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("featureNames")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSSet&lt;Foundation.NSString&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The names of the feature, as defined by the <see cref="T:Monotouch.CoreML.MLModel" />.</summary>
+        <value>The <see cref="T:Monotouch.Foundation.NSSet" /> of feature names.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetFeatureValue">
+      <MemberSignature Language="C#" Value="public CoreML.MLFeatureValue GetFeatureValue (string featureName);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class CoreML.MLFeatureValue GetFeatureValue(string featureName) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("featureValueForName:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>Foundation.Preserve(Conditional=true)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreML.MLFeatureValue</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="featureName" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="featureName">The feature whose value will be returned.</param>
+        <summary>Retrieves the value of the <param name="featureName" />.</summary>
+        <returns>The value of the <param name="featureName" />.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

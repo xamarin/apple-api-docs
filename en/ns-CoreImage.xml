@@ -1,0 +1,167 @@
+﻿<Namespace Name="CoreImage">
+  <Docs>
+    <summary>The CoreImage namespace provides hardware-accelerated image processing.</summary>
+    <remarks>
+      <para>
+
+	CoreImage provides a framework for processing still images and
+	applying a set of operations on them to either produce new
+	images or perform image analysis (like performing face
+	detection and photography auto-enhance).  The operations are
+	hardware accelerated and provide better performance than most
+	hand written implementations.
+
+      </para>
+      <para>
+
+	CoreImage can apply either one filter to an image or you can
+	use the built-in chaining support to apply a series of filters
+	at once to an image.  For example, you could apply a Sepia
+	Filter, followed by a Hue adjustment filter, followed by a
+	contrast filter.  The idea behind the chaining support is to
+	avoid intermediate copies and intermediate buffers during
+	image processing.  Additionally, some of these filtering
+	operations can be performed entirely on the GPU in a single
+	pass, without having to copy data back and forth from the GPU
+	to the main memory.
+
+      </para>
+      <para>
+
+	The CoreImage runtime sits below the <see cref="N:CoreGraphics" />, <see cref="N:CoreVideo" /> and <see cref="N:ImageIO" /> stacks and provides services to
+	all of them.  Depending on the filter operations and the
+	hardware platform, CoreImage will execute the filters in the
+	CPU or the GPU.
+
+      </para>
+      <para>
+	To use CoreImage on iOS, you follow these steps:
+      </para>
+      <list type="bullet">
+        <item>
+          <term>
+
+	    Create a <see cref="T:CoreImage.CIImage" />
+	    object.  You can create these from multiple sources:
+	    CoreGraphics images, bitmap data, images on disk or
+	    CoreVideo image buffers.  CIImage objects are immutable
+	    and represent recipes, that is, they will be computed on
+	    demand.
+
+	  </term>
+        </item>
+        <item>
+          <term>
+
+	    Create and configure a <see cref="T:CoreImage.CIFilters" /> object.  This object
+	    combines image inputs or numeric input parameters to
+	    configure the effects of the filter.  The configuration is
+	    done by setting various properties using the object
+	    indexer to any of the values documented in the 
+
+	  </term>
+        </item>
+        <item>
+          <term>
+
+	    Create a <see cref="T:CoreImage.CIContext" /> object to track the processing
+	    pipeline.  This is the object trough which CoreImage
+	    draws and it can be CPU or GPU bound.
+
+	  </term>
+        </item>
+        <item>
+          <term>
+	    Render the filter output into a target image using one of the CIContext methods.
+	  </term>
+        </item>
+      </list>
+      <example>
+        <code lang="C#"><![CDATA[
+	// This sample turns the image into a sepia image
+
+	// Load the image using UIImage, it is convenient
+	var uiimage = UIImage.FromFile ("sample.jpg");
+
+	// Create the CIImage, using the UIImage's CGImage as a reference
+	var image = new CIImage (uiimage.CGImage);
+
+	// Create the filter
+	var sepia = new CISepiaTone () {
+		Image = image,
+		Intensity = .8f
+	};
+
+	// Generate the recipe.   It is important to note that at this point
+	// the resulting CIImage merely contains the recipe on how to create
+	// the image, this is important, because you can use this result as
+	// the input to another filter to chain filters together and only 
+	// at the last minute, when the CIContext rendering APIs are used,
+	// does the actual pipeline execute.   This allows for a series of
+	// operations to all be performed in one step without intermediate
+	// buffer copies.
+	CIImage output = sepia.OutputImage;
+
+	// To render the results, we need to create a context, and then
+	// use one of the context rendering APIs, in this case, we render the
+	// result into a CoreGraphics image, which is merely a useful representation
+	//
+	var context = CIContext.FromOptions (null);
+			
+	var cgimage = context.CreateCGImage (output, output.Extent);
+
+	// The above cgimage can be added to a screen view, for example, this
+	// would add it to a UIImageView on the screen:
+	myImageView.Image = UIImage.FromImage (cgimage);
+	]]></code>
+      </example>
+      <para>
+
+	Face detection is done with the <see cref="T:CoreImage.CIDetector" /> class by calling the
+	<see cref="M:CoreImage.CIDetector.CreateFaceDetector(CoreImage.CIContext,bool)" />
+	method which returns an array of <see cref="T:CoreImage.CIFeature" /> objects with any
+	detected face features found.
+
+      </para>
+      <para>
+
+	Auto-adjustments are implemented by calling the <see cref="M:CoreImage.GetAutoAdjustmentFilters()" />
+	method.  This method returns a list of suggested CIFilter
+	which you in turn would apply to your image and render to a
+	context.
+
+      </para>
+      <para>
+
+	To chain filters, all you have to do is connect the
+	OutputImage property from a filter to the Image property of
+	another filter.  This is a modified version of the previous
+	example showing how to chain two filters together:
+
+      </para>
+      <example>
+        <code lang="C#"><![CDATA[
+	var uiimage = UIImage.FromFile ("sample.jpg");
+	var image = new CIImage (uiimage.CGImage);
+
+	var sepia = new CISepiaTone () {
+		Image = image,
+		Intensity = .8f
+	};
+	
+	// Chain the Sepia filter to a Color inversion filter, this is done
+	// by assigning the CIColorInvert.Input to the sepia.OutputImage
+	var invert = new CIColorInvert () {
+		Image = sepia.OutputImage;
+	}
+
+	CIImage output = invert.OutputImage;
+	var context = CIContext.FromOptions (null);
+	var cgimage = context.CreateCGImage (output, output.Extent);
+
+	myImageView.Image = UIImage.FromImage (cgimage);
+	]]></code>
+      </example>
+    </remarks>
+  </Docs>
+</Namespace>

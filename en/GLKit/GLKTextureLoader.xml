@@ -1,0 +1,1796 @@
+<Type Name="GLKTextureLoader" FullName="GLKit.GLKTextureLoader">
+  <TypeSignature Language="C#" Value="public class GLKTextureLoader : Foundation.NSObject" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit GLKTextureLoader extends Foundation.NSObject" />
+  <AssemblyInfo>
+    <AssemblyName>Xamarin.iOS</AssemblyName>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>Foundation.NSObject</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Attributes>
+    <Attribute>
+      <AttributeName>Foundation.Register("GLKTextureLoader", true)</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 5, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 8, ObjCRuntime.PlatformArchitecture.Arch64, null)</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>Loads Image and cube maps into OpenGL textures.</summary>
+    <remarks>
+      <para>
+
+	GLTextureLoader simplifies the process of loading textures and
+	cube maps by providing a high-level API that can load images
+	on a variety of graphic file formats (PNG, JPEG, TIFF and
+	other formats supported by <see cref="N:ImageIO" />.
+	The data can be loaded both synchronously and asynchrously from <see cref="T:MonoTOuch.CoreGraphics.CGImage" /> objects, in-memory
+	binary data, files and arbitrary <see cref="T:Foundation.NSUrl" /> locations.
+
+      </para>
+      <para>
+
+	You can control how textures are loaded by configuring the
+	<see cref="T:GLKit.GLKTextureOperations" /> object.
+	You can configure whether the texture will be premultiplied by
+	their alpha channel or not, whether mipmaps should be created
+	from the source image when the texture is loaded and whether
+	the image should be flipped when it is loaded.
+
+      </para>
+      <para>
+
+	To use the texture loader, make an <see cref="T:OpenGLES.EAGLContext" /> current, use one of
+	the loading methods in this class and use the values in the
+	returned <see cref="T:GLKit.GLKTextureInfo" /> which
+	contains the OpenGL object name (an uint), properties such as
+	width, heigh, alpha, origin and mipmapping.
+	
+      </para>
+      <para>
+	To use the texture loaded asynchrously, create the context using the <see cref="T:OpenGLES.EAGLContext" />'s sharegroup.   Then you call one of the 
+      </para>
+      <example>
+        <code lang="C#"><![CDATA[
+//
+// if myQueue is null, it dispatches into the main queue.
+void AsyncLoad (EAGLContext context, DispatchQueue myQueue)
+{
+    var shareGroup = context.ShareGroup;
+    var loader = new GLTextureLoader (shareGroup);
+    var textureOperations = new GLKTextureOperations () {
+        ApplyPremultiplication = true,
+        GenerateMipmaps = true
+    }
+
+    loader.BeginTextureLoad ("file.png", textureOperations, myQueue, TextureLoadedCallback);
+}
+
+// 
+// Called on the specified queue.
+//
+void TextureLoadedCallback (GLKTextureInfo textureInfo, NSError error)
+{
+    // Use texture info here.
+}
+]]></code>
+      </example>
+      <para>
+      </para>
+    </remarks>
+    <related type="PlatformDocAPI" href="https://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKTextureLoader_ClassRef/index.html">Apple documentation for <c>GLKTextureLoader</c></related>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public GLKTextureLoader ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("init")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters />
+      <Docs>
+        <summary>Default constructor that initializes a new instance of this class with no parameters.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected GLKTextureLoader (Foundation.NSObjectFlag t);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor(class Foundation.NSObjectFlag t) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="t" Type="Foundation.NSObjectFlag" />
+      </Parameters>
+      <Docs>
+        <param name="t">Unused sentinel value, pass NSObjectFlag.Empty.</param>
+        <summary>Constructor to call on derived classes to skip initialization and merely allocate the object.</summary>
+        <remarks>
+          <para>This constructor should be called by derived classes when they completely construct the object in managed code and merely want the runtime to allocate and initialize the NSObject.   This is required to implement the two-step initialization process that Objective-C uses, the first step is to perform the object allocation, the second step is to initialize the object.   When developers invoke the constructor that takes the NSObjectFlag.Empty they take advantage of a direct path that goes all the way up to NSObject to merely allocate the object's memory and bind the Objective-C and C# objects together.    The actual initialization of the object is up to the developer.</para>
+          <para>This constructor is typically used by the binding generator to allocate the object, but prevent the actual initialization to take place.   Once the allocation has taken place, the constructor has to initialize the object.   With constructors generated by the binding generator this means that it manually invokes one of the "init" methods to initialize the object.</para>
+          <para>It is the developer's responsibility to completely initialize the object if they chain up using the NSObjectFlag.Empty path.</para>
+          <para>In general, if the developer's constructor invokes the NSObjectFlag.Empty base implementation, then it should be calling an Objective-C init method.   If this is not the case, developers should instead chain to the proper constructor in their class. </para>
+          <para>The argument value is ignored and merely ensures that the only code that is executed is the construction phase is the basic NSObject allocation and runtime type registration.  Typically the chaining would look like this:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// The NSObjectFlag merely allocates the object and registers the
+// C# class with the Objective-C runtime if necessary, but no actual
+// initXxx method is invoked, that is done later in the constructor
+//
+// This is taken from Xamarin's source code:
+//
+[Export ("initWithFrame:")]
+public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
+{
+// Invoke the init method now.
+	var initWithFrame = new Selector ("initWithFrame:").Handle;
+	if (IsDirectBinding)
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+	else
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public GLKTextureLoader (OpenGLES.EAGLSharegroup sharegroup);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class OpenGLES.EAGLSharegroup sharegroup) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("initWithSharegroup:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sharegroup" Type="OpenGLES.EAGLSharegroup" />
+      </Parameters>
+      <Docs>
+        <param name="sharegroup">Share context where the textures will be loaded.</param>
+        <summary>Creates a GLKTextureLoader for an EAGLSharegroup, used for asynchronous texture loading.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected GLKTextureLoader (IntPtr handle);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig specialname rtspecialname instance void .ctor(native int handle) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="handle" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="handle">Pointer (handle) to the unmanaged object.</param>
+        <summary>A constructor used when creating managed representations of unmanaged objects;  Called by the runtime.</summary>
+        <remarks>
+          <para>This constructor is invoked by the runtime infrastructure (<see cref="M:ObjCRuntime.Runtime.GetNSObject(System.IntPtr)" />) to create a new managed representation for a pointer to an unmanaged Objective-C object.    Developers should not invoke this method directly, instead they should call the GetNSObject method as it will prevent two instances of a managed object to point to the same native object.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ApplyPremultiplication">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString ApplyPremultiplication { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString ApplyPremultiplication" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("GLKTextureLoaderApplyPremultiplication", "GLKit")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant GLKTextureLoaderApplyPremultiplication</summary>
+        <value>
+        </value>
+        <remarks>Used as a key for textureOperations if you are using the NSDictionary overloads instead of the strongly typed GLKTextureOperations class.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginLoadCubeMap">
+      <MemberSignature Language="C#" Value="public virtual void BeginLoadCubeMap (Foundation.NSUrl filePath, Foundation.NSDictionary textureOperations, CoreFoundation.DispatchQueue queue, GLKit.GLKTextureLoaderCallback onComplete);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void BeginLoadCubeMap(class Foundation.NSUrl filePath, class Foundation.NSDictionary textureOperations, class CoreFoundation.DispatchQueue queue, class GLKit.GLKTextureLoaderCallback onComplete) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("cubeMapWithContentsOfURL:options:queue:completionHandler:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="filePath" Type="Foundation.NSUrl" />
+        <Parameter Name="textureOperations" Type="Foundation.NSDictionary" />
+        <Parameter Name="queue" Type="CoreFoundation.DispatchQueue" />
+        <Parameter Name="onComplete" Type="GLKit.GLKTextureLoaderCallback">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDGLKTextureLoaderCallback))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="filePath">The file that contains the texture.</param>
+        <param name="textureOperations">
+          <para>An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="queue">
+          <para>The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="onComplete">Callback to invoke when the texture is loaded.   The callback receives a GLKTextureInfo and an NSError.</param>
+        <summary>Asynchronously loads a cube map.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginLoadCubeMap">
+      <MemberSignature Language="C#" Value="public void BeginLoadCubeMap (Foundation.NSUrl filePath, GLKit.GLKTextureOperations textureOperations, CoreFoundation.DispatchQueue queue, GLKit.GLKTextureLoaderCallback onComplete);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void BeginLoadCubeMap(class Foundation.NSUrl filePath, class GLKit.GLKTextureOperations textureOperations, class CoreFoundation.DispatchQueue queue, class GLKit.GLKTextureLoaderCallback onComplete) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="filePath" Type="Foundation.NSUrl" />
+        <Parameter Name="textureOperations" Type="GLKit.GLKTextureOperations" />
+        <Parameter Name="queue" Type="CoreFoundation.DispatchQueue" />
+        <Parameter Name="onComplete" Type="GLKit.GLKTextureLoaderCallback" />
+      </Parameters>
+      <Docs>
+        <param name="filePath">The file that contains the texture.</param>
+        <param name="textureOperations">Operations to be performed during the image loading on the texture.</param>
+        <param name="queue">The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.</param>
+        <param name="onComplete">Callback to invoke when the texture is loaded.   The callback receives a GLKTextureInfo and an NSError.</param>
+        <summary>Asynchronously loads a cube map.</summary>
+        <remarks>
+          <para>
+	    Loads the data in the background.  When the data has loaded,
+	    or an error has been encountered, the provided
+	    callback is invoked on the specified queue.  If no queue is
+	    specified, the callback is invoked on the main queue.
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginLoadCubeMap">
+      <MemberSignature Language="C#" Value="public void BeginLoadCubeMap (Foundation.NSUrl[] urls, Foundation.NSDictionary textureOperations, CoreFoundation.DispatchQueue queue, GLKit.GLKTextureLoaderCallback onComplete);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void BeginLoadCubeMap(class Foundation.NSUrl[] urls, class Foundation.NSDictionary textureOperations, class CoreFoundation.DispatchQueue queue, class GLKit.GLKTextureLoaderCallback onComplete) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="urls" Type="Foundation.NSUrl[]" />
+        <Parameter Name="textureOperations" Type="Foundation.NSDictionary" />
+        <Parameter Name="queue" Type="CoreFoundation.DispatchQueue" />
+        <Parameter Name="onComplete" Type="GLKit.GLKTextureLoaderCallback" />
+      </Parameters>
+      <Docs>
+        <param name="urls">Six URLs that point to the sides of the cube.</param>
+        <param name="textureOperations">An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.</param>
+        <param name="queue">The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.</param>
+        <param name="onComplete">Callback to invoke when the texture is loaded.   The callback receives a GLKTextureInfo and an NSError.</param>
+        <summary>Asynchronously loads a cube map.</summary>
+        <remarks>
+          <para>
+	    Loads the data in the background.  When the data has
+	    loaded, or an error has been encountered, the provided
+	    callback is invoked on the specified queue.  If no queue
+	    is specified, the callback is invoked on the main queue.
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginLoadCubeMap">
+      <MemberSignature Language="C#" Value="public void BeginLoadCubeMap (Foundation.NSUrl[] urls, GLKit.GLKTextureOperations textureOperations, CoreFoundation.DispatchQueue queue, GLKit.GLKTextureLoaderCallback onComplete);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void BeginLoadCubeMap(class Foundation.NSUrl[] urls, class GLKit.GLKTextureOperations textureOperations, class CoreFoundation.DispatchQueue queue, class GLKit.GLKTextureLoaderCallback onComplete) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="urls" Type="Foundation.NSUrl[]" />
+        <Parameter Name="textureOperations" Type="GLKit.GLKTextureOperations" />
+        <Parameter Name="queue" Type="CoreFoundation.DispatchQueue" />
+        <Parameter Name="onComplete" Type="GLKit.GLKTextureLoaderCallback" />
+      </Parameters>
+      <Docs>
+        <param name="urls">Six URLs that point to the sides of the cube.</param>
+        <param name="textureOperations">Operations to be performed during the image loading on the texture.</param>
+        <param name="queue">The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.</param>
+        <param name="onComplete">Callback to invoke when the texture is loaded.   The callback receives a GLKTextureInfo and an NSError.</param>
+        <summary>Asynchronously loads a cube map.</summary>
+        <remarks>
+          <para>
+
+	    Loads the data in the background.  When the data has
+	    loaded, or an error has been encountered, the provided
+	    callback is invoked on the specified queue.  If no queue
+	    is specified, the callback is invoked on the main queue.
+
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginLoadCubeMap">
+      <MemberSignature Language="C#" Value="public virtual void BeginLoadCubeMap (string fileName, Foundation.NSDictionary textureOperations, CoreFoundation.DispatchQueue queue, GLKit.GLKTextureLoaderCallback onComplete);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void BeginLoadCubeMap(string fileName, class Foundation.NSDictionary textureOperations, class CoreFoundation.DispatchQueue queue, class GLKit.GLKTextureLoaderCallback onComplete) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("cubeMapWithContentsOfFile:options:queue:completionHandler:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="fileName" Type="System.String" />
+        <Parameter Name="textureOperations" Type="Foundation.NSDictionary" />
+        <Parameter Name="queue" Type="CoreFoundation.DispatchQueue" />
+        <Parameter Name="onComplete" Type="GLKit.GLKTextureLoaderCallback">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDGLKTextureLoaderCallback))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="fileName">File name where the data will be loaded from.</param>
+        <param name="textureOperations">
+          <para>An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="queue">
+          <para>The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="onComplete">Callback to invoke when the texture is loaded.   The callback receives a GLKTextureInfo and an NSError.</param>
+        <summary>Asynchronously loads a cube map.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginLoadCubeMap">
+      <MemberSignature Language="C#" Value="public void BeginLoadCubeMap (string fileName, GLKit.GLKTextureOperations textureOperations, CoreFoundation.DispatchQueue queue, GLKit.GLKTextureLoaderCallback onComplete);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void BeginLoadCubeMap(string fileName, class GLKit.GLKTextureOperations textureOperations, class CoreFoundation.DispatchQueue queue, class GLKit.GLKTextureLoaderCallback onComplete) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="fileName" Type="System.String" />
+        <Parameter Name="textureOperations" Type="GLKit.GLKTextureOperations" />
+        <Parameter Name="queue" Type="CoreFoundation.DispatchQueue" />
+        <Parameter Name="onComplete" Type="GLKit.GLKTextureLoaderCallback" />
+      </Parameters>
+      <Docs>
+        <param name="fileName">File name where the data will be loaded from.</param>
+        <param name="textureOperations">Operations to be performed during the image loading on the texture.</param>
+        <param name="queue">The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.</param>
+        <param name="onComplete">Callback to invoke when the texture is loaded.   The callback receives a GLKTextureInfo and an NSError.</param>
+        <summary>Asynchronously loads a cube map.</summary>
+        <remarks>
+          <para>
+
+	    Loads the data in the background.  When the data has
+	    loaded, or an error has been encountered, the provided
+	    callback is invoked on the specified queue.  If no queue
+	    is specified, the callback is invoked on the main queue.
+
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginLoadCubeMap">
+      <MemberSignature Language="C#" Value="public void BeginLoadCubeMap (string[] files, Foundation.NSDictionary textureOperations, CoreFoundation.DispatchQueue queue, GLKit.GLKTextureLoaderCallback onComplete);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void BeginLoadCubeMap(string[] files, class Foundation.NSDictionary textureOperations, class CoreFoundation.DispatchQueue queue, class GLKit.GLKTextureLoaderCallback onComplete) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="files" Type="System.String[]" />
+        <Parameter Name="textureOperations" Type="Foundation.NSDictionary" />
+        <Parameter Name="queue" Type="CoreFoundation.DispatchQueue" />
+        <Parameter Name="onComplete" Type="GLKit.GLKTextureLoaderCallback" />
+      </Parameters>
+      <Docs>
+        <param name="files">Six files that point to the sides of the cube.</param>
+        <param name="textureOperations">An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.</param>
+        <param name="queue">The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.</param>
+        <param name="onComplete">Callback to invoke when the texture is loaded.   The callback receives a GLKTextureInfo and an NSError.</param>
+        <summary>Asynchronously loads a cube map.</summary>
+        <remarks>
+          <para>
+
+	    Loads the data in the background.  When the data has
+	    loaded, or an error has been encountered, the provided
+	    callback is invoked on the specified queue.  If no queue
+	    is specified, the callback is invoked on the main queue.
+
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginLoadCubeMap">
+      <MemberSignature Language="C#" Value="public void BeginLoadCubeMap (string[] files, GLKit.GLKTextureOperations textureOperations, CoreFoundation.DispatchQueue queue, GLKit.GLKTextureLoaderCallback onComplete);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void BeginLoadCubeMap(string[] files, class GLKit.GLKTextureOperations textureOperations, class CoreFoundation.DispatchQueue queue, class GLKit.GLKTextureLoaderCallback onComplete) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="files" Type="System.String[]" />
+        <Parameter Name="textureOperations" Type="GLKit.GLKTextureOperations" />
+        <Parameter Name="queue" Type="CoreFoundation.DispatchQueue" />
+        <Parameter Name="onComplete" Type="GLKit.GLKTextureLoaderCallback" />
+      </Parameters>
+      <Docs>
+        <param name="files">Six files that point to the sides of the cube.</param>
+        <param name="textureOperations">Operations to be performed during the image loading on the texture.</param>
+        <param name="queue">The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.</param>
+        <param name="onComplete">Callback to invoke when the texture is loaded.   The callback receives a GLKTextureInfo and an NSError.</param>
+        <summary>Asynchronously loads a cube map.</summary>
+        <remarks>
+          <para>
+
+	    Loads the data in the background.  When the data has
+	    loaded, or an error has been encountered, the provided
+	    callback is invoked on the specified queue.  If no queue
+	    is specified, the callback is invoked on the main queue.
+
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginLoadCubeMapAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;GLKit.GLKTextureInfo&gt; BeginLoadCubeMapAsync (Foundation.NSUrl filePath, Foundation.NSDictionary textureOperations, CoreFoundation.DispatchQueue queue);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;class GLKit.GLKTextureInfo&gt; BeginLoadCubeMapAsync(class Foundation.NSUrl filePath, class Foundation.NSDictionary textureOperations, class CoreFoundation.DispatchQueue queue) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;GLKit.GLKTextureInfo&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="filePath" Type="Foundation.NSUrl" />
+        <Parameter Name="textureOperations" Type="Foundation.NSDictionary" />
+        <Parameter Name="queue" Type="CoreFoundation.DispatchQueue" />
+      </Parameters>
+      <Docs>
+        <param name="filePath">The file that contains the texture.</param>
+        <param name="textureOperations">An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.This parameter can be .</param>
+        <param name="queue">The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.This parameter can be .</param>
+        <summary>Asynchronously loads a cube map.</summary>
+        <returns>
+          <para>A task that represents the asynchronous BeginLoadCubeMap operation.   The value of the TResult parameter is a <see cref="GLKit.GLKTextureLoaderCallback" />.</para>
+        </returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="BeginLoadCubeMapAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;GLKit.GLKTextureInfo&gt; BeginLoadCubeMapAsync (string fileName, Foundation.NSDictionary textureOperations, CoreFoundation.DispatchQueue queue);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;class GLKit.GLKTextureInfo&gt; BeginLoadCubeMapAsync(string fileName, class Foundation.NSDictionary textureOperations, class CoreFoundation.DispatchQueue queue) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;GLKit.GLKTextureInfo&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="fileName" Type="System.String" />
+        <Parameter Name="textureOperations" Type="Foundation.NSDictionary" />
+        <Parameter Name="queue" Type="CoreFoundation.DispatchQueue" />
+      </Parameters>
+      <Docs>
+        <param name="fileName">File name where the data will be loaded from.</param>
+        <param name="textureOperations">An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.This parameter can be .</param>
+        <param name="queue">The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.This parameter can be .</param>
+        <summary>Asynchronously loads a cube map.</summary>
+        <returns>
+          <para>A task that represents the asynchronous BeginLoadCubeMap operation.   The value of the TResult parameter is a <see cref="GLKit.GLKTextureLoaderCallback" />.</para>
+        </returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="BeginTextureLoad">
+      <MemberSignature Language="C#" Value="public virtual void BeginTextureLoad (CoreGraphics.CGImage image, Foundation.NSDictionary textureOperations, CoreFoundation.DispatchQueue queue, GLKit.GLKTextureLoaderCallback onComplete);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void BeginTextureLoad(class CoreGraphics.CGImage image, class Foundation.NSDictionary textureOperations, class CoreFoundation.DispatchQueue queue, class GLKit.GLKTextureLoaderCallback onComplete) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("textureWithCGImage:options:queue:completionHandler:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="image" Type="CoreGraphics.CGImage" />
+        <Parameter Name="textureOperations" Type="Foundation.NSDictionary" />
+        <Parameter Name="queue" Type="CoreFoundation.DispatchQueue" />
+        <Parameter Name="onComplete" Type="GLKit.GLKTextureLoaderCallback">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDGLKTextureLoaderCallback))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="image">CGImage that contains the image to be loaded into the texture.</param>
+        <param name="textureOperations">
+          <para>An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="queue">
+          <para>The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="onComplete">Callback to invoke when the texture is loaded.   The callback receives a GLKTextureInfo and an NSError.</param>
+        <summary>Asynchronously loads a texture.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginTextureLoad">
+      <MemberSignature Language="C#" Value="public void BeginTextureLoad (CoreGraphics.CGImage image, GLKit.GLKTextureOperations textureOperations, CoreFoundation.DispatchQueue queue, GLKit.GLKTextureLoaderCallback onComplete);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void BeginTextureLoad(class CoreGraphics.CGImage image, class GLKit.GLKTextureOperations textureOperations, class CoreFoundation.DispatchQueue queue, class GLKit.GLKTextureLoaderCallback onComplete) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="image" Type="CoreGraphics.CGImage" />
+        <Parameter Name="textureOperations" Type="GLKit.GLKTextureOperations" />
+        <Parameter Name="queue" Type="CoreFoundation.DispatchQueue" />
+        <Parameter Name="onComplete" Type="GLKit.GLKTextureLoaderCallback" />
+      </Parameters>
+      <Docs>
+        <param name="image">CGImage that contains the image to be loaded into the texture.</param>
+        <param name="textureOperations">Operations to be performed during the image loading on the texture.</param>
+        <param name="queue">The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.</param>
+        <param name="onComplete">Callback to invoke when the texture is loaded.   The callback receives a GLKTextureInfo and an NSError.</param>
+        <summary>Asynchronously loads a texture.</summary>
+        <remarks>
+          <para>
+
+	    Loads the data in the background.  When the data has
+	    loaded, or an error has been encountered, the provided
+	    callback is invoked on the specified queue.  If no queue
+	    is specified, the callback is invoked on the main queue.
+
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginTextureLoad">
+      <MemberSignature Language="C#" Value="public virtual void BeginTextureLoad (Foundation.NSData data, Foundation.NSDictionary textureOperations, CoreFoundation.DispatchQueue queue, GLKit.GLKTextureLoaderCallback onComplete);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void BeginTextureLoad(class Foundation.NSData data, class Foundation.NSDictionary textureOperations, class CoreFoundation.DispatchQueue queue, class GLKit.GLKTextureLoaderCallback onComplete) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("textureWithContentsOfData:options:queue:completionHandler:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="data" Type="Foundation.NSData" />
+        <Parameter Name="textureOperations" Type="Foundation.NSDictionary" />
+        <Parameter Name="queue" Type="CoreFoundation.DispatchQueue" />
+        <Parameter Name="onComplete" Type="GLKit.GLKTextureLoaderCallback">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDGLKTextureLoaderCallback))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="data">NSData object that contains the bitmap that will be loaded into the texture.</param>
+        <param name="textureOperations">
+          <para>An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="queue">
+          <para>The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="onComplete">Callback to invoke when the texture is loaded.   The callback receives a GLKTextureInfo and an NSError.</param>
+        <summary>Asynchronously loads a texture.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginTextureLoad">
+      <MemberSignature Language="C#" Value="public void BeginTextureLoad (Foundation.NSData data, GLKit.GLKTextureOperations textureOperations, CoreFoundation.DispatchQueue queue, GLKit.GLKTextureLoaderCallback onComplete);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void BeginTextureLoad(class Foundation.NSData data, class GLKit.GLKTextureOperations textureOperations, class CoreFoundation.DispatchQueue queue, class GLKit.GLKTextureLoaderCallback onComplete) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="data" Type="Foundation.NSData" />
+        <Parameter Name="textureOperations" Type="GLKit.GLKTextureOperations" />
+        <Parameter Name="queue" Type="CoreFoundation.DispatchQueue" />
+        <Parameter Name="onComplete" Type="GLKit.GLKTextureLoaderCallback" />
+      </Parameters>
+      <Docs>
+        <param name="data">NSData object that contains the bitmap that will be loaded into the texture.</param>
+        <param name="textureOperations">Operations to be performed during the image loading on the texture.</param>
+        <param name="queue">The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.</param>
+        <param name="onComplete">Callback to invoke when the texture is loaded.   The callback receives a GLKTextureInfo and an NSError.</param>
+        <summary>Asynchronously loads a texture.</summary>
+        <remarks>
+          <para>
+
+	    Loads the data in the background.  When the data has
+	    loaded, or an error has been encountered, the provided
+	    callback is invoked on the specified queue.  If no queue
+	    is specified, the callback is invoked on the main queue.
+
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginTextureLoad">
+      <MemberSignature Language="C#" Value="public virtual void BeginTextureLoad (Foundation.NSUrl filePath, Foundation.NSDictionary textureOperations, CoreFoundation.DispatchQueue queue, GLKit.GLKTextureLoaderCallback onComplete);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void BeginTextureLoad(class Foundation.NSUrl filePath, class Foundation.NSDictionary textureOperations, class CoreFoundation.DispatchQueue queue, class GLKit.GLKTextureLoaderCallback onComplete) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("textureWithContentsOfURL:options:queue:completionHandler:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="filePath" Type="Foundation.NSUrl" />
+        <Parameter Name="textureOperations" Type="Foundation.NSDictionary" />
+        <Parameter Name="queue" Type="CoreFoundation.DispatchQueue" />
+        <Parameter Name="onComplete" Type="GLKit.GLKTextureLoaderCallback">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDGLKTextureLoaderCallback))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="filePath">The file that contains the texture.</param>
+        <param name="textureOperations">
+          <para>An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="queue">
+          <para>The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="onComplete">Callback to invoke when the texture is loaded.   The callback receives a GLKTextureInfo and an NSError.</param>
+        <summary>Asynchronously loads a texture.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginTextureLoad">
+      <MemberSignature Language="C#" Value="public void BeginTextureLoad (Foundation.NSUrl filePath, GLKit.GLKTextureOperations textureOperations, CoreFoundation.DispatchQueue queue, GLKit.GLKTextureLoaderCallback onComplete);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void BeginTextureLoad(class Foundation.NSUrl filePath, class GLKit.GLKTextureOperations textureOperations, class CoreFoundation.DispatchQueue queue, class GLKit.GLKTextureLoaderCallback onComplete) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="filePath" Type="Foundation.NSUrl" />
+        <Parameter Name="textureOperations" Type="GLKit.GLKTextureOperations" />
+        <Parameter Name="queue" Type="CoreFoundation.DispatchQueue" />
+        <Parameter Name="onComplete" Type="GLKit.GLKTextureLoaderCallback" />
+      </Parameters>
+      <Docs>
+        <param name="filePath">The file that contains the texture.</param>
+        <param name="textureOperations">Operations to be performed during the image loading on the texture.</param>
+        <param name="queue">The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.</param>
+        <param name="onComplete">Callback to invoke when the texture is loaded.   The callback receives a GLKTextureInfo and an NSError.</param>
+        <summary>Asynchronously loads a texture.</summary>
+        <remarks>
+          <para>
+
+	    Loads the data in the background.  When the data has
+	    loaded, or an error has been encountered, the provided
+	    callback is invoked on the specified queue.  If no queue
+	    is specified, the callback is invoked on the main queue.
+
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginTextureLoad">
+      <MemberSignature Language="C#" Value="public virtual void BeginTextureLoad (string file, Foundation.NSDictionary textureOperations, CoreFoundation.DispatchQueue queue, GLKit.GLKTextureLoaderCallback onComplete);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void BeginTextureLoad(string file, class Foundation.NSDictionary textureOperations, class CoreFoundation.DispatchQueue queue, class GLKit.GLKTextureLoaderCallback onComplete) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("textureWithContentsOfFile:options:queue:completionHandler:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="file" Type="System.String" />
+        <Parameter Name="textureOperations" Type="Foundation.NSDictionary" />
+        <Parameter Name="queue" Type="CoreFoundation.DispatchQueue" />
+        <Parameter Name="onComplete" Type="GLKit.GLKTextureLoaderCallback">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDGLKTextureLoaderCallback))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="file">The file that contains the texture.</param>
+        <param name="textureOperations">
+          <para>An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="queue">
+          <para>The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="onComplete">Callback to invoke when the texture is loaded.   The callback receives a GLKTextureInfo and an NSError.</param>
+        <summary>Asynchronously loads a texture.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginTextureLoad">
+      <MemberSignature Language="C#" Value="public void BeginTextureLoad (string file, GLKit.GLKTextureOperations textureOperations, CoreFoundation.DispatchQueue queue, GLKit.GLKTextureLoaderCallback onComplete);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void BeginTextureLoad(string file, class GLKit.GLKTextureOperations textureOperations, class CoreFoundation.DispatchQueue queue, class GLKit.GLKTextureLoaderCallback onComplete) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="file" Type="System.String" />
+        <Parameter Name="textureOperations" Type="GLKit.GLKTextureOperations" />
+        <Parameter Name="queue" Type="CoreFoundation.DispatchQueue" />
+        <Parameter Name="onComplete" Type="GLKit.GLKTextureLoaderCallback" />
+      </Parameters>
+      <Docs>
+        <param name="file">The file that contains the texture.</param>
+        <param name="textureOperations">Operations to be performed during the image loading on the texture.</param>
+        <param name="queue">The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.</param>
+        <param name="onComplete">Callback to invoke when the texture is loaded.   The callback receives a GLKTextureInfo and an NSError.</param>
+        <summary>Asynchronously loads a texture.</summary>
+        <remarks>
+          <para>
+
+	    Loads the data in the background.  When the data has
+	    loaded, or an error has been encountered, the provided
+	    callback is invoked on the specified queue.  If no queue
+	    is specified, the callback is invoked on the main queue.
+
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginTextureLoad">
+      <MemberSignature Language="C#" Value="public virtual void BeginTextureLoad (string name, nfloat scaleFactor, Foundation.NSBundle bundle, Foundation.NSDictionary&lt;Foundation.NSString,Foundation.NSNumber&gt; options, CoreFoundation.DispatchQueue queue, GLKit.GLKTextureLoaderCallback block);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void BeginTextureLoad(string name, valuetype System.nfloat scaleFactor, class Foundation.NSBundle bundle, class Foundation.NSDictionary`2&lt;class Foundation.NSString, class Foundation.NSNumber&gt; options, class CoreFoundation.DispatchQueue queue, class GLKit.GLKTextureLoaderCallback block) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("textureWithName:scaleFactor:bundle:options:queue:completionHandler:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.Arch64, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="scaleFactor" Type="System.nfloat" />
+        <Parameter Name="bundle" Type="Foundation.NSBundle" />
+        <Parameter Name="options" Type="Foundation.NSDictionary&lt;Foundation.NSString,Foundation.NSNumber&gt;" />
+        <Parameter Name="queue" Type="CoreFoundation.DispatchQueue" />
+        <Parameter Name="block" Type="GLKit.GLKTextureLoaderCallback">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDGLKTextureLoaderCallback))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="name">To be added.</param>
+        <param name="scaleFactor">To be added.</param>
+        <param name="bundle">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="options">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="queue">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="block">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginTextureLoadAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;GLKit.GLKTextureInfo&gt; BeginTextureLoadAsync (CoreGraphics.CGImage image, Foundation.NSDictionary textureOperations, CoreFoundation.DispatchQueue queue);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;class GLKit.GLKTextureInfo&gt; BeginTextureLoadAsync(class CoreGraphics.CGImage image, class Foundation.NSDictionary textureOperations, class CoreFoundation.DispatchQueue queue) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;GLKit.GLKTextureInfo&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="image" Type="CoreGraphics.CGImage" />
+        <Parameter Name="textureOperations" Type="Foundation.NSDictionary" />
+        <Parameter Name="queue" Type="CoreFoundation.DispatchQueue" />
+      </Parameters>
+      <Docs>
+        <param name="image">CGImage that contains the image to be loaded into the texture.</param>
+        <param name="textureOperations">An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.This parameter can be .</param>
+        <param name="queue">The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.This parameter can be .</param>
+        <summary>Asynchronously loads a texture.</summary>
+        <returns>
+          <para>A task that represents the asynchronous BeginTextureLoad operation.   The value of the TResult parameter is a <see cref="GLKit.GLKTextureLoaderCallback" />.</para>
+        </returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="BeginTextureLoadAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;GLKit.GLKTextureInfo&gt; BeginTextureLoadAsync (Foundation.NSData data, Foundation.NSDictionary textureOperations, CoreFoundation.DispatchQueue queue);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;class GLKit.GLKTextureInfo&gt; BeginTextureLoadAsync(class Foundation.NSData data, class Foundation.NSDictionary textureOperations, class CoreFoundation.DispatchQueue queue) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;GLKit.GLKTextureInfo&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="data" Type="Foundation.NSData" />
+        <Parameter Name="textureOperations" Type="Foundation.NSDictionary" />
+        <Parameter Name="queue" Type="CoreFoundation.DispatchQueue" />
+      </Parameters>
+      <Docs>
+        <param name="data">NSData object that contains the bitmap that will be loaded into the texture.</param>
+        <param name="textureOperations">An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.This parameter can be .</param>
+        <param name="queue">The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.This parameter can be .</param>
+        <summary>Asynchronously loads a texture.</summary>
+        <returns>
+          <para>A task that represents the asynchronous BeginTextureLoad operation.   The value of the TResult parameter is a <see cref="GLKit.GLKTextureLoaderCallback" />.</para>
+        </returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="BeginTextureLoadAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;GLKit.GLKTextureInfo&gt; BeginTextureLoadAsync (Foundation.NSUrl filePath, Foundation.NSDictionary textureOperations, CoreFoundation.DispatchQueue queue);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;class GLKit.GLKTextureInfo&gt; BeginTextureLoadAsync(class Foundation.NSUrl filePath, class Foundation.NSDictionary textureOperations, class CoreFoundation.DispatchQueue queue) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;GLKit.GLKTextureInfo&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="filePath" Type="Foundation.NSUrl" />
+        <Parameter Name="textureOperations" Type="Foundation.NSDictionary" />
+        <Parameter Name="queue" Type="CoreFoundation.DispatchQueue" />
+      </Parameters>
+      <Docs>
+        <param name="filePath">The file that contains the texture.</param>
+        <param name="textureOperations">An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.This parameter can be .</param>
+        <param name="queue">The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.This parameter can be .</param>
+        <summary>Asynchronously loads a texture.</summary>
+        <returns>
+          <para>A task that represents the asynchronous BeginTextureLoad operation.   The value of the TResult parameter is a <see cref="GLKit.GLKTextureLoaderCallback" />.</para>
+        </returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="BeginTextureLoadAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;GLKit.GLKTextureInfo&gt; BeginTextureLoadAsync (string file, Foundation.NSDictionary textureOperations, CoreFoundation.DispatchQueue queue);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;class GLKit.GLKTextureInfo&gt; BeginTextureLoadAsync(string file, class Foundation.NSDictionary textureOperations, class CoreFoundation.DispatchQueue queue) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;GLKit.GLKTextureInfo&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="file" Type="System.String" />
+        <Parameter Name="textureOperations" Type="Foundation.NSDictionary" />
+        <Parameter Name="queue" Type="CoreFoundation.DispatchQueue" />
+      </Parameters>
+      <Docs>
+        <param name="file">The file that contains the texture.</param>
+        <param name="textureOperations">An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.This parameter can be .</param>
+        <param name="queue">The queue on which the callback method will be invoked, or null to invoke the method on the main dispatch queue.This parameter can be .</param>
+        <summary>Asynchronously loads a texture.</summary>
+        <returns>
+          <para>A task that represents the asynchronous BeginTextureLoad operation.   The value of the TResult parameter is a <see cref="GLKit.GLKTextureLoaderCallback" />.</para>
+        </returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="BeginTextureLoadAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;GLKit.GLKTextureInfo&gt; BeginTextureLoadAsync (string name, nfloat scaleFactor, Foundation.NSBundle bundle, Foundation.NSDictionary&lt;Foundation.NSString,Foundation.NSNumber&gt; options, CoreFoundation.DispatchQueue queue);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;class GLKit.GLKTextureInfo&gt; BeginTextureLoadAsync(string name, valuetype System.nfloat scaleFactor, class Foundation.NSBundle bundle, class Foundation.NSDictionary`2&lt;class Foundation.NSString, class Foundation.NSNumber&gt; options, class CoreFoundation.DispatchQueue queue) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.Arch64, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;GLKit.GLKTextureInfo&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="scaleFactor" Type="System.nfloat" />
+        <Parameter Name="bundle" Type="Foundation.NSBundle" />
+        <Parameter Name="options" Type="Foundation.NSDictionary&lt;Foundation.NSString,Foundation.NSNumber&gt;" />
+        <Parameter Name="queue" Type="CoreFoundation.DispatchQueue" />
+      </Parameters>
+      <Docs>
+        <param name="name">To be added.</param>
+        <param name="scaleFactor">To be added.</param>
+        <param name="bundle">To be added. This parameter can be <see langwor="null" />.</param>
+        <param name="options">To be added. This parameter can be <see langwor="null" />.</param>
+        <param name="queue">To be added. This parameter can be <see langwor="null" />.</param>
+        <summary>To be added.</summary>
+        <returns>
+          <para>A task that represents the asynchronous BeginTextureLoad operation.   The value of the TResult parameter is a <see cref="GLKit.GLKTextureLoaderCallback" />.</para>
+        </returns>
+        <remarks>
+          <para copied="true">The BeginTextureLoadAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+          <para copied="true">To be added.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ClassHandle">
+      <MemberSignature Language="C#" Value="public override IntPtr ClassHandle { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int ClassHandle" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The handle for this class.</summary>
+        <value>The pointer to the Objective-C class.</value>
+        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CubeMapFromFile">
+      <MemberSignature Language="C#" Value="public static GLKit.GLKTextureInfo CubeMapFromFile (string path, Foundation.NSDictionary textureOperations, out Foundation.NSError error);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class GLKit.GLKTextureInfo CubeMapFromFile(string path, class Foundation.NSDictionary textureOperations, class Foundation.NSError error) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("cubeMapWithContentsOfFile:options:error:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>GLKit.GLKTextureInfo</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="path" Type="System.String" />
+        <Parameter Name="textureOperations" Type="Foundation.NSDictionary" />
+        <Parameter Name="error" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="path">The file that contains the texture.</param>
+        <param name="textureOperations">
+          <para>An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="error">Error result.</param>
+        <summary>Loads a cube map synchronously.</summary>
+        <returns>On error, this will return null, the details of the error will be stored in the NSError parameter.   Otherwise the instance of the GLKTextureInfo.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CubeMapFromFile">
+      <MemberSignature Language="C#" Value="public static GLKit.GLKTextureInfo CubeMapFromFile (string path, GLKit.GLKTextureOperations textureOperations, out Foundation.NSError error);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class GLKit.GLKTextureInfo CubeMapFromFile(string path, class GLKit.GLKTextureOperations textureOperations, class Foundation.NSError error) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>GLKit.GLKTextureInfo</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="path" Type="System.String" />
+        <Parameter Name="textureOperations" Type="GLKit.GLKTextureOperations" />
+        <Parameter Name="error" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="path">The file that contains the texture.</param>
+        <param name="textureOperations">Operations to be performed during the image loading on the texture.</param>
+        <param name="error">Error result.</param>
+        <summary>Loads a cube map synchronously.</summary>
+        <returns>On error, this will return null, the details of the error will be stored in the NSError parameter.   Otherwise the instance of the GLKTextureInfo.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CubeMapFromFiles">
+      <MemberSignature Language="C#" Value="public static GLKit.GLKTextureInfo CubeMapFromFiles (string[] files, Foundation.NSDictionary textureOperations, out Foundation.NSError error);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class GLKit.GLKTextureInfo CubeMapFromFiles(string[] files, class Foundation.NSDictionary textureOperations, class Foundation.NSError error) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>GLKit.GLKTextureInfo</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="files" Type="System.String[]" />
+        <Parameter Name="textureOperations" Type="Foundation.NSDictionary" />
+        <Parameter Name="error" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="files">Six files that point to the sides of the cube.</param>
+        <param name="textureOperations">An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.</param>
+        <param name="error">Error result.</param>
+        <summary>Loads a cube map synchronously.</summary>
+        <returns>On error, this will return null, the details of the error will be stored in the NSError parameter.   Otherwise the instance of the GLKTextureInfo.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CubeMapFromFiles">
+      <MemberSignature Language="C#" Value="public static GLKit.GLKTextureInfo CubeMapFromFiles (string[] files, GLKit.GLKTextureOperations textureOperations, out Foundation.NSError error);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class GLKit.GLKTextureInfo CubeMapFromFiles(string[] files, class GLKit.GLKTextureOperations textureOperations, class Foundation.NSError error) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>GLKit.GLKTextureInfo</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="files" Type="System.String[]" />
+        <Parameter Name="textureOperations" Type="GLKit.GLKTextureOperations" />
+        <Parameter Name="error" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="files">Six files that point to the sides of the cube.</param>
+        <param name="textureOperations">Operations to be performed during the image loading on the texture.</param>
+        <param name="error">Error result.</param>
+        <summary>Loads a cube map synchronously.</summary>
+        <returns>On error, this will return null, the details of the error will be stored in the NSError parameter.   Otherwise the instance of the GLKTextureInfo.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CubeMapFromUrl">
+      <MemberSignature Language="C#" Value="public static GLKit.GLKTextureInfo CubeMapFromUrl (Foundation.NSUrl url, Foundation.NSDictionary textureOperations, out Foundation.NSError error);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class GLKit.GLKTextureInfo CubeMapFromUrl(class Foundation.NSUrl url, class Foundation.NSDictionary textureOperations, class Foundation.NSError error) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("cubeMapWithContentsOfURL:options:error:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>GLKit.GLKTextureInfo</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="url" Type="Foundation.NSUrl" />
+        <Parameter Name="textureOperations" Type="Foundation.NSDictionary" />
+        <Parameter Name="error" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="url">URL pointing to the texture to load.</param>
+        <param name="textureOperations">
+          <para>An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="error">Error result.</param>
+        <summary>Loads a cube map synchronously.</summary>
+        <returns>On error, this will return null, the details of the error will be stored in the NSError parameter.   Otherwise the instance of the GLKTextureInfo.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CubeMapFromUrl">
+      <MemberSignature Language="C#" Value="public static GLKit.GLKTextureInfo CubeMapFromUrl (Foundation.NSUrl url, GLKit.GLKTextureOperations textureOperations, out Foundation.NSError error);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class GLKit.GLKTextureInfo CubeMapFromUrl(class Foundation.NSUrl url, class GLKit.GLKTextureOperations textureOperations, class Foundation.NSError error) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>GLKit.GLKTextureInfo</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="url" Type="Foundation.NSUrl" />
+        <Parameter Name="textureOperations" Type="GLKit.GLKTextureOperations" />
+        <Parameter Name="error" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="url">URL pointing to the texture to load.</param>
+        <param name="textureOperations">Operations to be performed during the image loading on the texture.</param>
+        <param name="error">Error result.</param>
+        <summary>Loads a cube map synchronously.</summary>
+        <returns>On error, this will return null, the details of the error will be stored in the NSError parameter.   Otherwise the instance of the GLKTextureInfo.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CubeMapFromUrls">
+      <MemberSignature Language="C#" Value="public static GLKit.GLKTextureInfo CubeMapFromUrls (Foundation.NSUrl[] urls, Foundation.NSDictionary textureOperations, out Foundation.NSError error);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class GLKit.GLKTextureInfo CubeMapFromUrls(class Foundation.NSUrl[] urls, class Foundation.NSDictionary textureOperations, class Foundation.NSError error) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>GLKit.GLKTextureInfo</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="urls" Type="Foundation.NSUrl[]" />
+        <Parameter Name="textureOperations" Type="Foundation.NSDictionary" />
+        <Parameter Name="error" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="urls">Six URLs that point to the sides of the cube.</param>
+        <param name="textureOperations">An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.</param>
+        <param name="error">Error result.</param>
+        <summary>Loads a cube map synchronously.</summary>
+        <returns>On error, this will return null, the details of the error will be stored in the NSError parameter.   Otherwise the instance of the GLKTextureInfo.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CubeMapFromUrls">
+      <MemberSignature Language="C#" Value="public static GLKit.GLKTextureInfo CubeMapFromUrls (Foundation.NSUrl[] urls, GLKit.GLKTextureOperations textureOperations, out Foundation.NSError error);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class GLKit.GLKTextureInfo CubeMapFromUrls(class Foundation.NSUrl[] urls, class GLKit.GLKTextureOperations textureOperations, class Foundation.NSError error) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>GLKit.GLKTextureInfo</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="urls" Type="Foundation.NSUrl[]" />
+        <Parameter Name="textureOperations" Type="GLKit.GLKTextureOperations" />
+        <Parameter Name="error" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="urls">Six URLs that point to the sides of the cube.</param>
+        <param name="textureOperations">Operations to be performed during the image loading on the texture.</param>
+        <param name="error">Error result.</param>
+        <summary>Loads a cube map synchronously.</summary>
+        <returns>On error, this will return null, the details of the error will be stored in the NSError parameter.   Otherwise the instance of the GLKTextureInfo.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ErrorDomain">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString ErrorDomain { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString ErrorDomain" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("GLKTextureLoaderErrorDomain", "GLKit")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant GLKTextureLoaderErrorDomain</summary>
+        <value>
+        </value>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ErrorKey">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString ErrorKey { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString ErrorKey" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("GLKTextureLoaderErrorKey", "GLKit")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant GLKTextureLoaderErrorKey</summary>
+        <value>
+        </value>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromData">
+      <MemberSignature Language="C#" Value="public static GLKit.GLKTextureInfo FromData (Foundation.NSData data, Foundation.NSDictionary textureOperations, out Foundation.NSError error);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class GLKit.GLKTextureInfo FromData(class Foundation.NSData data, class Foundation.NSDictionary textureOperations, class Foundation.NSError error) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("textureWithContentsOfData:options:error:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>GLKit.GLKTextureInfo</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="data" Type="Foundation.NSData" />
+        <Parameter Name="textureOperations" Type="Foundation.NSDictionary" />
+        <Parameter Name="error" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="data">NSData object that contains the bitmap that will be loaded into the texture.</param>
+        <param name="textureOperations">
+          <para>An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="error">Error result.</param>
+        <summary>Loads a texture from an NSData source.</summary>
+        <returns>On error, this will return null, the details of the error will be stored in the NSError parameter.   Otherwise the instance of the GLKTextureInfo.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromData">
+      <MemberSignature Language="C#" Value="public static GLKit.GLKTextureInfo FromData (Foundation.NSData data, GLKit.GLKTextureOperations textureOperations, out Foundation.NSError error);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class GLKit.GLKTextureInfo FromData(class Foundation.NSData data, class GLKit.GLKTextureOperations textureOperations, class Foundation.NSError error) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>GLKit.GLKTextureInfo</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="data" Type="Foundation.NSData" />
+        <Parameter Name="textureOperations" Type="GLKit.GLKTextureOperations" />
+        <Parameter Name="error" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="data">NSData object that contains the bitmap that will be loaded into the texture.</param>
+        <param name="textureOperations">Operations to be performed during the image loading on the texture.</param>
+        <param name="error">Error result.</param>
+        <summary>Loads a texture from an NSData source.</summary>
+        <returns>On error, this will return null, the details of the error will be stored in the NSError parameter.   Otherwise the instance of the GLKTextureInfo.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromFile">
+      <MemberSignature Language="C#" Value="public static GLKit.GLKTextureInfo FromFile (string path, Foundation.NSDictionary textureOperations, out Foundation.NSError error);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class GLKit.GLKTextureInfo FromFile(string path, class Foundation.NSDictionary textureOperations, class Foundation.NSError error) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("textureWithContentsOfFile:options:error:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>GLKit.GLKTextureInfo</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="path" Type="System.String" />
+        <Parameter Name="textureOperations" Type="Foundation.NSDictionary" />
+        <Parameter Name="error" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="path">File name where the data will be loaded from.</param>
+        <param name="textureOperations">
+          <para>An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="error">Error result.</param>
+        <summary>Loads a texture from a file synchronously.</summary>
+        <returns>On error, this will return null, the details of the error will be stored in the NSError parameter.   Otherwise the instance of the GLKTextureInfo.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromFile">
+      <MemberSignature Language="C#" Value="public static GLKit.GLKTextureInfo FromFile (string path, GLKit.GLKTextureOperations textureOperations, out Foundation.NSError error);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class GLKit.GLKTextureInfo FromFile(string path, class GLKit.GLKTextureOperations textureOperations, class Foundation.NSError error) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>GLKit.GLKTextureInfo</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="path" Type="System.String" />
+        <Parameter Name="textureOperations" Type="GLKit.GLKTextureOperations" />
+        <Parameter Name="error" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="path">File name where the data will be loaded from.</param>
+        <param name="textureOperations">Operations to be performed during the image loading on the texture.</param>
+        <param name="error">Error result.</param>
+        <summary>Loads a texture from a file synchronously.</summary>
+        <returns>On error, this will return null, the details of the error will be stored in the NSError parameter.   Otherwise the instance of the GLKTextureInfo.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromImage">
+      <MemberSignature Language="C#" Value="public static GLKit.GLKTextureInfo FromImage (CoreGraphics.CGImage cgImage, Foundation.NSDictionary textureOperations, out Foundation.NSError error);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class GLKit.GLKTextureInfo FromImage(class CoreGraphics.CGImage cgImage, class Foundation.NSDictionary textureOperations, class Foundation.NSError error) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("textureWithCGImage:options:error:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>GLKit.GLKTextureInfo</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="cgImage" Type="CoreGraphics.CGImage" />
+        <Parameter Name="textureOperations" Type="Foundation.NSDictionary" />
+        <Parameter Name="error" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="cgImage">CGImage that contains the image to be loaded into the texture.</param>
+        <param name="textureOperations">
+          <para>An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="error">Error result.</param>
+        <summary>Loads a texture from a CGImage.</summary>
+        <returns>On error, this will return null, the details of the error will be stored in the NSError parameter.   Otherwise the instance of the GLKTextureInfo be added.</returns>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromImage">
+      <MemberSignature Language="C#" Value="public static GLKit.GLKTextureInfo FromImage (CoreGraphics.CGImage cgImage, GLKit.GLKTextureOperations textureOperations, out Foundation.NSError error);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class GLKit.GLKTextureInfo FromImage(class CoreGraphics.CGImage cgImage, class GLKit.GLKTextureOperations textureOperations, class Foundation.NSError error) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>GLKit.GLKTextureInfo</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="cgImage" Type="CoreGraphics.CGImage" />
+        <Parameter Name="textureOperations" Type="GLKit.GLKTextureOperations" />
+        <Parameter Name="error" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="cgImage">CGImage that contains the image to be loaded into the texture.</param>
+        <param name="textureOperations">Operations to be performed during the image loading on the texture.</param>
+        <param name="error">Error result.</param>
+        <summary>Loads a texture from a CGImage.</summary>
+        <returns>On error, this will return null, the details of the error will be stored in the NSError parameter.   Otherwise the instance of the GLKTextureInfo.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromName">
+      <MemberSignature Language="C#" Value="public static GLKit.GLKTextureInfo FromName (string name, nfloat scaleFactor, Foundation.NSBundle bundle, Foundation.NSDictionary&lt;Foundation.NSString,Foundation.NSNumber&gt; options, out Foundation.NSError outError);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class GLKit.GLKTextureInfo FromName(string name, valuetype System.nfloat scaleFactor, class Foundation.NSBundle bundle, class Foundation.NSDictionary`2&lt;class Foundation.NSString, class Foundation.NSNumber&gt; options, class Foundation.NSError outError) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("textureWithName:scaleFactor:bundle:options:error:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.Arch64, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>GLKit.GLKTextureInfo</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="scaleFactor" Type="System.nfloat" />
+        <Parameter Name="bundle" Type="Foundation.NSBundle" />
+        <Parameter Name="options" Type="Foundation.NSDictionary&lt;Foundation.NSString,Foundation.NSNumber&gt;" />
+        <Parameter Name="outError" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="name">To be added.</param>
+        <param name="scaleFactor">To be added.</param>
+        <param name="bundle">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="options">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="outError">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromUrl">
+      <MemberSignature Language="C#" Value="public static GLKit.GLKTextureInfo FromUrl (Foundation.NSUrl url, Foundation.NSDictionary textureOperations, out Foundation.NSError error);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class GLKit.GLKTextureInfo FromUrl(class Foundation.NSUrl url, class Foundation.NSDictionary textureOperations, class Foundation.NSError error) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("textureWithContentsOfURL:options:error:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>GLKit.GLKTextureInfo</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="url" Type="Foundation.NSUrl" />
+        <Parameter Name="textureOperations" Type="Foundation.NSDictionary" />
+        <Parameter Name="error" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="url">URL pointing to the texture to load.</param>
+        <param name="textureOperations">
+          <para>An NSDictionary populated with configuration options.   Alternatively, use the strongly-typed version of this method that takes a GLKTextureOperations object.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="error">Error result.</param>
+        <summary>Loads a texture from a file pointed to by the url.</summary>
+        <returns>On error, this will return null, the details of the error will be stored in the NSError parameter.   Otherwise the instance of the GLKTextureInfo.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromUrl">
+      <MemberSignature Language="C#" Value="public static GLKit.GLKTextureInfo FromUrl (Foundation.NSUrl url, GLKit.GLKTextureOperations textureOperations, out Foundation.NSError error);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class GLKit.GLKTextureInfo FromUrl(class Foundation.NSUrl url, class GLKit.GLKTextureOperations textureOperations, class Foundation.NSError error) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>GLKit.GLKTextureInfo</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="url" Type="Foundation.NSUrl" />
+        <Parameter Name="textureOperations" Type="GLKit.GLKTextureOperations" />
+        <Parameter Name="error" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="url">URL pointing to the texture to load.</param>
+        <param name="textureOperations">Operations to be performed during the image loading on the texture.</param>
+        <param name="error">Error result.</param>
+        <summary>Loads a texture from a file pointed to by the url.</summary>
+        <returns>On error, this will return null, the details of the error will be stored in the NSError parameter.   Otherwise the instance of the GLKTextureInfo.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GenerateMipmaps">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString GenerateMipmaps { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString GenerateMipmaps" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("GLKTextureLoaderGenerateMipmaps", "GLKit")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant GLKTextureLoaderGenerateMipmaps</summary>
+        <value>
+        </value>
+        <remarks>Used as a key for textureOperations if you are using the NSDictionary overloads instead of the strongly typed GLKTextureOperations class.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GLErrorKey">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString GLErrorKey { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString GLErrorKey" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("GLKTextureLoaderGLErrorKey", "GLKit")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant GLKTextureLoaderGLErrorKey</summary>
+        <value>
+        </value>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GrayscaleAsAlpha">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString GrayscaleAsAlpha { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString GrayscaleAsAlpha" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("GLKTextureLoaderGrayscaleAsAlpha", "GLKit")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant GLKTextureLoaderGrayscaleAsAlpha</summary>
+        <value>
+        </value>
+        <remarks>Used as a key for textureOperations if you are using the NSDictionary overloads instead of the strongly typed GLKTextureOperations class.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OriginBottomLeft">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString OriginBottomLeft { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString OriginBottomLeft" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("GLKTextureLoaderOriginBottomLeft", "GLKit")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant GLKTextureLoaderOriginBottomLeft</summary>
+        <value>
+        </value>
+        <remarks>Used as a key for textureOperations if you are using the NSDictionary overloads instead of the strongly typed GLKTextureOperations class.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SRGB">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString SRGB { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString SRGB" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("GLKTextureLoaderSRGB", "GLKit")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant GLKTextureLoaderSRGB</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

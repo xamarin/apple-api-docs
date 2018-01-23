@@ -1,0 +1,1264 @@
+<Type Name="AVAudioPlayerNode" FullName="AVFoundation.AVAudioPlayerNode">
+  <TypeSignature Language="C#" Value="public class AVAudioPlayerNode : AVFoundation.AVAudioNode, AVFoundation.IAVAudioMixing, IDisposable" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit AVAudioPlayerNode extends AVFoundation.AVAudioNode implements class AVFoundation.IAVAudio3DMixing, class AVFoundation.IAVAudioMixing, class AVFoundation.IAVAudioStereoMixing, class ObjCRuntime.INativeObject, class System.IDisposable" />
+  <AssemblyInfo>
+    <AssemblyName>Xamarin.iOS</AssemblyName>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>AVFoundation.AVAudioNode</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>AVFoundation.IAVAudioMixing</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>System.IDisposable</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Attributes>
+    <Attribute>
+      <AttributeName>Foundation.Register("AVAudioPlayerNode", true)</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.WatchOS, 3, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>A <see cref="T:AVFoundation.AVAudioNode" /> that plays segments of audio files.</summary>
+    <remarks>To be added.</remarks>
+    <related type="PlatformDocAPI" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioPlayerNode_Class/index.html">Apple documentation for <c>AVAudioPlayerNode</c></related>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public AVAudioPlayerNode ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("init")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters />
+      <Docs>
+        <summary>Default constructor, initializes a new instance of this class.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected AVAudioPlayerNode (Foundation.NSObjectFlag t);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor(class Foundation.NSObjectFlag t) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="t" Type="Foundation.NSObjectFlag" />
+      </Parameters>
+      <Docs>
+        <param name="t">Unused sentinel value, pass NSObjectFlag.Empty.</param>
+        <summary>Constructor to call on derived classes to skip initialization and merely allocate the object.</summary>
+        <remarks>
+          <para>This constructor should be called by derived classes when they completely construct the object in managed code and merely want the runtime to allocate and initialize the NSObject.   This is required to implement the two-step initialization process that Objective-C uses, the first step is to perform the object allocation, the second step is to initialize the object.   When developers invoke the constructor that takes the NSObjectFlag.Empty they take advantage of a direct path that goes all the way up to NSObject to merely allocate the object's memory and bind the Objective-C and C# objects together.    The actual initialization of the object is up to the developer.</para>
+          <para>This constructor is typically used by the binding generator to allocate the object, but prevent the actual initialization to take place.   Once the allocation has taken place, the constructor has to initialize the object.   With constructors generated by the binding generator this means that it manually invokes one of the "init" methods to initialize the object.</para>
+          <para>It is the developer's responsibility to completely initialize the object if they chain up using the NSObjectFlag.Empty path.</para>
+          <para>In general, if the developer's constructor invokes the NSObjectFlag.Empty base implementation, then it should be calling an Objective-C init method.   If this is not the case, developers should instead chain to the proper constructor in their class. </para>
+          <para>The argument value is ignored and merely ensures that the only code that is executed is the construction phase is the basic NSObject allocation and runtime type registration.  Typically the chaining would look like this:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// The NSObjectFlag merely allocates the object and registers the
+// C# class with the Objective-C runtime if necessary, but no actual
+// initXxx method is invoked, that is done later in the constructor
+//
+// This is taken from Xamarin's source code:
+//
+[Export ("initWithFrame:")]
+public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
+{
+// Invoke the init method now.
+	var initWithFrame = new Selector ("initWithFrame:").Handle;
+	if (IsDirectBinding)
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+	else
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected AVAudioPlayerNode (IntPtr handle);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig specialname rtspecialname instance void .ctor(native int handle) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="handle" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="handle">Pointer (handle) to the unmanaged object.</param>
+        <summary>A constructor used when creating managed representations of unmanaged objects;  Called by the runtime.</summary>
+        <remarks>
+          <para>This constructor is invoked by the runtime infrastructure (<see cref="M:ObjCRuntime.Runtime.GetNSObject(System.IntPtr)" />) to create a new managed representation for a pointer to an unmanaged Objective-C object.    Developers should not invoke this method directly, instead they should call the GetNSObject method as it will prevent two instances of a managed object to point to the same native object.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ClassHandle">
+      <MemberSignature Language="C#" Value="public override IntPtr ClassHandle { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int ClassHandle" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The handle for this class.</summary>
+        <value>The pointer to the Objective-C class.</value>
+        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DestinationForMixer">
+      <MemberSignature Language="C#" Value="public virtual AVFoundation.AVAudioMixingDestination DestinationForMixer (AVFoundation.AVAudioNode mixer, nuint bus);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class AVFoundation.AVAudioMixingDestination DestinationForMixer(class AVFoundation.AVAudioNode mixer, valuetype System.nuint bus) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("destinationForMixer:bus:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.WatchOS, 3, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>AVFoundation.AVAudioMixingDestination</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="mixer" Type="AVFoundation.AVAudioNode" />
+        <Parameter Name="bus" Type="System.nuint" />
+      </Parameters>
+      <Docs>
+        <param name="mixer">To be added.</param>
+        <param name="bus">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetNodeTimeFromPlayerTime">
+      <MemberSignature Language="C#" Value="public virtual AVFoundation.AVAudioTime GetNodeTimeFromPlayerTime (AVFoundation.AVAudioTime playerTime);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class AVFoundation.AVAudioTime GetNodeTimeFromPlayerTime(class AVFoundation.AVAudioTime playerTime) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("nodeTimeForPlayerTime:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>AVFoundation.AVAudioTime</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="playerTime" Type="AVFoundation.AVAudioTime" />
+      </Parameters>
+      <Docs>
+        <param name="playerTime">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetPlayerTimeFromNodeTime">
+      <MemberSignature Language="C#" Value="public virtual AVFoundation.AVAudioTime GetPlayerTimeFromNodeTime (AVFoundation.AVAudioTime nodeTime);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class AVFoundation.AVAudioTime GetPlayerTimeFromNodeTime(class AVFoundation.AVAudioTime nodeTime) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("playerTimeForNodeTime:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>AVFoundation.AVAudioTime</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="nodeTime" Type="AVFoundation.AVAudioTime" />
+      </Parameters>
+      <Docs>
+        <param name="nodeTime">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Obstruction">
+      <MemberSignature Language="C#" Value="public virtual float Obstruction { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float32 Obstruction" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("obstruction")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setObstruction:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Single</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Occlusion">
+      <MemberSignature Language="C#" Value="public virtual float Occlusion { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float32 Occlusion" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("occlusion")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setOcclusion:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Single</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Pan">
+      <MemberSignature Language="C#" Value="public virtual float Pan { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float32 Pan" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.WatchOS, 3, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("pan")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setPan:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Single</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Pause">
+      <MemberSignature Language="C#" Value="public virtual void Pause ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Pause() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("pause")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Pauses playback.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Play">
+      <MemberSignature Language="C#" Value="public virtual void Play ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Play() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("play")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PlayAtTime">
+      <MemberSignature Language="C#" Value="public virtual void PlayAtTime (AVFoundation.AVAudioTime when);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void PlayAtTime(class AVFoundation.AVAudioTime when) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("playAtTime:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="when" Type="AVFoundation.AVAudioTime" />
+      </Parameters>
+      <Docs>
+        <param name="when">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Playing">
+      <MemberSignature Language="C#" Value="public virtual bool Playing { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool Playing" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("isPlaying")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets whether the player is currently playing.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Position">
+      <MemberSignature Language="C#" Value="public virtual OpenTK.Vector3 Position { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype OpenTK.Vector3 Position" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("position")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setPosition:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>OpenTK.Vector3</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PrepareWithFrameCount">
+      <MemberSignature Language="C#" Value="public virtual void PrepareWithFrameCount (uint frameCount);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void PrepareWithFrameCount(unsigned int32 frameCount) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("prepareWithFrameCount:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="frameCount" Type="System.UInt32" />
+      </Parameters>
+      <Docs>
+        <param name="frameCount">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Rate">
+      <MemberSignature Language="C#" Value="public virtual float Rate { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float32 Rate" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("rate")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setRate:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Single</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RenderingAlgorithm">
+      <MemberSignature Language="C#" Value="public virtual AVFoundation.AVAudio3DMixingRenderingAlgorithm RenderingAlgorithm { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype AVFoundation.AVAudio3DMixingRenderingAlgorithm RenderingAlgorithm" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("renderingAlgorithm")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setRenderingAlgorithm:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>AVFoundation.AVAudio3DMixingRenderingAlgorithm</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ReverbBlend">
+      <MemberSignature Language="C#" Value="public virtual float ReverbBlend { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float32 ReverbBlend" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("reverbBlend")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setReverbBlend:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Single</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ScheduleBuffer">
+      <MemberSignature Language="C#" Value="public virtual void ScheduleBuffer (AVFoundation.AVAudioPcmBuffer buffer, Action completionHandler);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void ScheduleBuffer(class AVFoundation.AVAudioPcmBuffer buffer, class System.Action completionHandler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("scheduleBuffer:completionHandler:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="buffer" Type="AVFoundation.AVAudioPcmBuffer" />
+        <Parameter Name="completionHandler" Type="System.Action">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDAction))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="buffer">To be added.</param>
+        <param name="completionHandler">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>Schedules playback from <paramref name="buffer" />.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ScheduleBuffer">
+      <MemberSignature Language="C#" Value="public virtual void ScheduleBuffer (AVFoundation.AVAudioPcmBuffer buffer, AVFoundation.AVAudioPlayerNodeCompletionCallbackType callbackType, Action&lt;AVFoundation.AVAudioPlayerNodeCompletionCallbackType&gt; completionHandler);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void ScheduleBuffer(class AVFoundation.AVAudioPcmBuffer buffer, valuetype AVFoundation.AVAudioPlayerNodeCompletionCallbackType callbackType, class System.Action`1&lt;valuetype AVFoundation.AVAudioPlayerNodeCompletionCallbackType&gt; completionHandler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("scheduleBuffer:completionCallbackType:completionHandler:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.WatchOS, 4, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 13, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="buffer" Type="AVFoundation.AVAudioPcmBuffer" />
+        <Parameter Name="callbackType" Type="AVFoundation.AVAudioPlayerNodeCompletionCallbackType" />
+        <Parameter Name="completionHandler" Type="System.Action&lt;AVFoundation.AVAudioPlayerNodeCompletionCallbackType&gt;">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDActionArity1V4))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="buffer">To be added.</param>
+        <param name="callbackType">To be added.</param>
+        <param name="completionHandler">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ScheduleBuffer">
+      <MemberSignature Language="C#" Value="public virtual void ScheduleBuffer (AVFoundation.AVAudioPcmBuffer buffer, AVFoundation.AVAudioTime when, AVFoundation.AVAudioPlayerNodeBufferOptions options, Action completionHandler);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void ScheduleBuffer(class AVFoundation.AVAudioPcmBuffer buffer, class AVFoundation.AVAudioTime when, valuetype AVFoundation.AVAudioPlayerNodeBufferOptions options, class System.Action completionHandler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("scheduleBuffer:atTime:options:completionHandler:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="buffer" Type="AVFoundation.AVAudioPcmBuffer" />
+        <Parameter Name="when" Type="AVFoundation.AVAudioTime" />
+        <Parameter Name="options" Type="AVFoundation.AVAudioPlayerNodeBufferOptions" />
+        <Parameter Name="completionHandler" Type="System.Action">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDAction))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="buffer">To be added.</param>
+        <param name="when">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="options">To be added.</param>
+        <param name="completionHandler">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>Schedules playback from <paramref name="buffer" />.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ScheduleBuffer">
+      <MemberSignature Language="C#" Value="public virtual void ScheduleBuffer (AVFoundation.AVAudioPcmBuffer buffer, AVFoundation.AVAudioTime when, AVFoundation.AVAudioPlayerNodeBufferOptions options, AVFoundation.AVAudioPlayerNodeCompletionCallbackType callbackType, Action&lt;AVFoundation.AVAudioPlayerNodeCompletionCallbackType&gt; completionHandler);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void ScheduleBuffer(class AVFoundation.AVAudioPcmBuffer buffer, class AVFoundation.AVAudioTime when, valuetype AVFoundation.AVAudioPlayerNodeBufferOptions options, valuetype AVFoundation.AVAudioPlayerNodeCompletionCallbackType callbackType, class System.Action`1&lt;valuetype AVFoundation.AVAudioPlayerNodeCompletionCallbackType&gt; completionHandler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("scheduleBuffer:atTime:options:completionCallbackType:completionHandler:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.WatchOS, 4, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 13, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="buffer" Type="AVFoundation.AVAudioPcmBuffer" />
+        <Parameter Name="when" Type="AVFoundation.AVAudioTime" />
+        <Parameter Name="options" Type="AVFoundation.AVAudioPlayerNodeBufferOptions" />
+        <Parameter Name="callbackType" Type="AVFoundation.AVAudioPlayerNodeCompletionCallbackType" />
+        <Parameter Name="completionHandler" Type="System.Action&lt;AVFoundation.AVAudioPlayerNodeCompletionCallbackType&gt;">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDActionArity1V4))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="buffer">The buffer to play.</param>
+        <param name="when">The time at which to play the buffer. May be <see langword="null" />.</param>
+        <param name="options">Playback options, such as priority or whether to loop the playback.</param>
+        <param name="callbackType">When to call the callback in the playback life cycle.</param>
+        <param name="completionHandler">The handler to call during the playback life cycle. May be <see langword="null" />.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ScheduleBufferAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task ScheduleBufferAsync (AVFoundation.AVAudioPcmBuffer buffer);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task ScheduleBufferAsync(class AVFoundation.AVAudioPcmBuffer buffer) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="buffer" Type="AVFoundation.AVAudioPcmBuffer" />
+      </Parameters>
+      <Docs>
+        <param name="buffer">The buffer to play.</param>
+        <summary>To be added.</summary>
+        <returns>A task that represents the asynchronous ScheduleBuffer operation</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="ScheduleBufferAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;AVFoundation.AVAudioPlayerNodeCompletionCallbackType&gt; ScheduleBufferAsync (AVFoundation.AVAudioPcmBuffer buffer, AVFoundation.AVAudioPlayerNodeCompletionCallbackType callbackType);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;valuetype AVFoundation.AVAudioPlayerNodeCompletionCallbackType&gt; ScheduleBufferAsync(class AVFoundation.AVAudioPcmBuffer buffer, valuetype AVFoundation.AVAudioPlayerNodeCompletionCallbackType callbackType) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.WatchOS, 4, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 13, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;AVFoundation.AVAudioPlayerNodeCompletionCallbackType&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="buffer" Type="AVFoundation.AVAudioPcmBuffer" />
+        <Parameter Name="callbackType" Type="AVFoundation.AVAudioPlayerNodeCompletionCallbackType" />
+      </Parameters>
+      <Docs>
+        <param name="buffer">The buffer to play.</param>
+        <param name="callbackType">When to call the callback in the playback life cycle.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ScheduleBufferAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task ScheduleBufferAsync (AVFoundation.AVAudioPcmBuffer buffer, AVFoundation.AVAudioTime when, AVFoundation.AVAudioPlayerNodeBufferOptions options);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task ScheduleBufferAsync(class AVFoundation.AVAudioPcmBuffer buffer, class AVFoundation.AVAudioTime when, valuetype AVFoundation.AVAudioPlayerNodeBufferOptions options) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="buffer" Type="AVFoundation.AVAudioPcmBuffer" />
+        <Parameter Name="when" Type="AVFoundation.AVAudioTime" />
+        <Parameter Name="options" Type="AVFoundation.AVAudioPlayerNodeBufferOptions" />
+      </Parameters>
+      <Docs>
+        <param name="buffer">The buffer to play.</param>
+        <param name="when">The time at which to play the buffer. May be <see langword="null" />.</param>
+        <param name="options">Playback options, such as priority or whether to loop the playback.</param>
+        <summary>Asynchronously schedules playback from <paramref name="buffer" />, returning a task that indicates success or failure.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ScheduleBufferAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;AVFoundation.AVAudioPlayerNodeCompletionCallbackType&gt; ScheduleBufferAsync (AVFoundation.AVAudioPcmBuffer buffer, AVFoundation.AVAudioTime when, AVFoundation.AVAudioPlayerNodeBufferOptions options, AVFoundation.AVAudioPlayerNodeCompletionCallbackType callbackType);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;valuetype AVFoundation.AVAudioPlayerNodeCompletionCallbackType&gt; ScheduleBufferAsync(class AVFoundation.AVAudioPcmBuffer buffer, class AVFoundation.AVAudioTime when, valuetype AVFoundation.AVAudioPlayerNodeBufferOptions options, valuetype AVFoundation.AVAudioPlayerNodeCompletionCallbackType callbackType) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.WatchOS, 4, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 13, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;AVFoundation.AVAudioPlayerNodeCompletionCallbackType&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="buffer" Type="AVFoundation.AVAudioPcmBuffer" />
+        <Parameter Name="when" Type="AVFoundation.AVAudioTime" />
+        <Parameter Name="options" Type="AVFoundation.AVAudioPlayerNodeBufferOptions" />
+        <Parameter Name="callbackType" Type="AVFoundation.AVAudioPlayerNodeCompletionCallbackType" />
+      </Parameters>
+      <Docs>
+        <param name="buffer">The buffer to play.</param>
+        <param name="when">The time at which to play the buffer. May be <see langword="null" />.</param>
+        <param name="options">Playback options, such as priority or whether to loop the playback.</param>
+        <param name="callbackType">When to call the callback in the playback life cycle.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ScheduleFile">
+      <MemberSignature Language="C#" Value="public virtual void ScheduleFile (AVFoundation.AVAudioFile file, AVFoundation.AVAudioTime when, Action completionHandler);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void ScheduleFile(class AVFoundation.AVAudioFile file, class AVFoundation.AVAudioTime when, class System.Action completionHandler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("scheduleFile:atTime:completionHandler:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="file" Type="AVFoundation.AVAudioFile" />
+        <Parameter Name="when" Type="AVFoundation.AVAudioTime" />
+        <Parameter Name="completionHandler" Type="System.Action">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDAction))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="file">To be added.</param>
+        <param name="when">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="completionHandler">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>Schedules the playing of the specified audio <paramref name="file" />.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ScheduleFile">
+      <MemberSignature Language="C#" Value="public virtual void ScheduleFile (AVFoundation.AVAudioFile file, AVFoundation.AVAudioTime when, AVFoundation.AVAudioPlayerNodeCompletionCallbackType callbackType, Action&lt;AVFoundation.AVAudioPlayerNodeCompletionCallbackType&gt; completionHandler);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void ScheduleFile(class AVFoundation.AVAudioFile file, class AVFoundation.AVAudioTime when, valuetype AVFoundation.AVAudioPlayerNodeCompletionCallbackType callbackType, class System.Action`1&lt;valuetype AVFoundation.AVAudioPlayerNodeCompletionCallbackType&gt; completionHandler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("scheduleFile:atTime:completionCallbackType:completionHandler:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.WatchOS, 4, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 13, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="file" Type="AVFoundation.AVAudioFile" />
+        <Parameter Name="when" Type="AVFoundation.AVAudioTime" />
+        <Parameter Name="callbackType" Type="AVFoundation.AVAudioPlayerNodeCompletionCallbackType" />
+        <Parameter Name="completionHandler" Type="System.Action&lt;AVFoundation.AVAudioPlayerNodeCompletionCallbackType&gt;">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDActionArity1V4))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="file">To be added.</param>
+        <param name="when">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="callbackType">To be added.</param>
+        <param name="completionHandler">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ScheduleFileAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task ScheduleFileAsync (AVFoundation.AVAudioFile file, AVFoundation.AVAudioTime when);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task ScheduleFileAsync(class AVFoundation.AVAudioFile file, class AVFoundation.AVAudioTime when) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="file" Type="AVFoundation.AVAudioFile" />
+        <Parameter Name="when" Type="AVFoundation.AVAudioTime" />
+      </Parameters>
+      <Docs>
+        <param name="file">To be added.</param>
+        <param name="when">To be added. This parameter can be <see langwor="null" />.</param>
+        <summary>To be added.</summary>
+        <returns>A task that represents the asynchronous ScheduleFile operation</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="ScheduleFileAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;AVFoundation.AVAudioPlayerNodeCompletionCallbackType&gt; ScheduleFileAsync (AVFoundation.AVAudioFile file, AVFoundation.AVAudioTime when, AVFoundation.AVAudioPlayerNodeCompletionCallbackType callbackType);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;valuetype AVFoundation.AVAudioPlayerNodeCompletionCallbackType&gt; ScheduleFileAsync(class AVFoundation.AVAudioFile file, class AVFoundation.AVAudioTime when, valuetype AVFoundation.AVAudioPlayerNodeCompletionCallbackType callbackType) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.WatchOS, 4, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 13, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;AVFoundation.AVAudioPlayerNodeCompletionCallbackType&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="file" Type="AVFoundation.AVAudioFile" />
+        <Parameter Name="when" Type="AVFoundation.AVAudioTime" />
+        <Parameter Name="callbackType" Type="AVFoundation.AVAudioPlayerNodeCompletionCallbackType" />
+      </Parameters>
+      <Docs>
+        <param name="file">To be added.</param>
+        <param name="when">To be added.</param>
+        <param name="callbackType">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ScheduleSegment">
+      <MemberSignature Language="C#" Value="public virtual void ScheduleSegment (AVFoundation.AVAudioFile file, long startFrame, uint numberFrames, AVFoundation.AVAudioTime when, Action completionHandler);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void ScheduleSegment(class AVFoundation.AVAudioFile file, int64 startFrame, unsigned int32 numberFrames, class AVFoundation.AVAudioTime when, class System.Action completionHandler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("scheduleSegment:startingFrame:frameCount:atTime:completionHandler:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="file" Type="AVFoundation.AVAudioFile" />
+        <Parameter Name="startFrame" Type="System.Int64" />
+        <Parameter Name="numberFrames" Type="System.UInt32" />
+        <Parameter Name="when" Type="AVFoundation.AVAudioTime" />
+        <Parameter Name="completionHandler" Type="System.Action">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDAction))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="file">To be added.</param>
+        <param name="startFrame">To be added.</param>
+        <param name="numberFrames">To be added.</param>
+        <param name="when">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="completionHandler">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>Schedules the playing of a portion of the audio <paramref name="file" />.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ScheduleSegment">
+      <MemberSignature Language="C#" Value="public virtual void ScheduleSegment (AVFoundation.AVAudioFile file, long startFrame, uint numberFrames, AVFoundation.AVAudioTime when, AVFoundation.AVAudioPlayerNodeCompletionCallbackType callbackType, Action&lt;AVFoundation.AVAudioPlayerNodeCompletionCallbackType&gt; completionHandler);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void ScheduleSegment(class AVFoundation.AVAudioFile file, int64 startFrame, unsigned int32 numberFrames, class AVFoundation.AVAudioTime when, valuetype AVFoundation.AVAudioPlayerNodeCompletionCallbackType callbackType, class System.Action`1&lt;valuetype AVFoundation.AVAudioPlayerNodeCompletionCallbackType&gt; completionHandler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("scheduleSegment:startingFrame:frameCount:atTime:completionCallbackType:completionHandler:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.WatchOS, 4, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 13, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="file" Type="AVFoundation.AVAudioFile" />
+        <Parameter Name="startFrame" Type="System.Int64" />
+        <Parameter Name="numberFrames" Type="System.UInt32" />
+        <Parameter Name="when" Type="AVFoundation.AVAudioTime" />
+        <Parameter Name="callbackType" Type="AVFoundation.AVAudioPlayerNodeCompletionCallbackType" />
+        <Parameter Name="completionHandler" Type="System.Action&lt;AVFoundation.AVAudioPlayerNodeCompletionCallbackType&gt;">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDActionArity1V4))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="file">To be added.</param>
+        <param name="startFrame">To be added.</param>
+        <param name="numberFrames">To be added.</param>
+        <param name="when">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="callbackType">To be added.</param>
+        <param name="completionHandler">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ScheduleSegmentAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task ScheduleSegmentAsync (AVFoundation.AVAudioFile file, long startFrame, uint numberFrames, AVFoundation.AVAudioTime when);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task ScheduleSegmentAsync(class AVFoundation.AVAudioFile file, int64 startFrame, unsigned int32 numberFrames, class AVFoundation.AVAudioTime when) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="file" Type="AVFoundation.AVAudioFile" />
+        <Parameter Name="startFrame" Type="System.Int64" />
+        <Parameter Name="numberFrames" Type="System.UInt32" />
+        <Parameter Name="when" Type="AVFoundation.AVAudioTime" />
+      </Parameters>
+      <Docs>
+        <param name="file">To be added.</param>
+        <param name="startFrame">To be added.</param>
+        <param name="numberFrames">To be added.</param>
+        <param name="when">To be added. This parameter can be <see langwor="null" />.</param>
+        <summary>To be added.</summary>
+        <returns>A task that represents the asynchronous ScheduleSegment operation</returns>
+        <remarks>
+          <para copied="true">The ScheduleSegmentAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+          <para copied="true">To be added.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ScheduleSegmentAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;AVFoundation.AVAudioPlayerNodeCompletionCallbackType&gt; ScheduleSegmentAsync (AVFoundation.AVAudioFile file, long startFrame, uint numberFrames, AVFoundation.AVAudioTime when, AVFoundation.AVAudioPlayerNodeCompletionCallbackType callbackType);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;valuetype AVFoundation.AVAudioPlayerNodeCompletionCallbackType&gt; ScheduleSegmentAsync(class AVFoundation.AVAudioFile file, int64 startFrame, unsigned int32 numberFrames, class AVFoundation.AVAudioTime when, valuetype AVFoundation.AVAudioPlayerNodeCompletionCallbackType callbackType) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.WatchOS, 4, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 13, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;AVFoundation.AVAudioPlayerNodeCompletionCallbackType&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="file" Type="AVFoundation.AVAudioFile" />
+        <Parameter Name="startFrame" Type="System.Int64" />
+        <Parameter Name="numberFrames" Type="System.UInt32" />
+        <Parameter Name="when" Type="AVFoundation.AVAudioTime" />
+        <Parameter Name="callbackType" Type="AVFoundation.AVAudioPlayerNodeCompletionCallbackType" />
+      </Parameters>
+      <Docs>
+        <param name="file">To be added.</param>
+        <param name="startFrame">To be added.</param>
+        <param name="numberFrames">To be added.</param>
+        <param name="when">To be added.</param>
+        <param name="callbackType">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Stop">
+      <MemberSignature Language="C#" Value="public virtual void Stop ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Stop() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("stop")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Stops playback and clears all scheduled events.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Volume">
+      <MemberSignature Language="C#" Value="public virtual float Volume { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float32 Volume" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.WatchOS, 3, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("volume")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setVolume:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Single</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

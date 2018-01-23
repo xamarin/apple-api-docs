@@ -1,0 +1,1471 @@
+<Type Name="UICollectionViewLayout" FullName="UIKit.UICollectionViewLayout">
+  <TypeSignature Language="C#" Value="public class UICollectionViewLayout : Foundation.NSObject, Foundation.INSCoding, IDisposable" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit UICollectionViewLayout extends Foundation.NSObject implements class Foundation.INSCoding, class ObjCRuntime.INativeObject, class System.IDisposable" />
+  <AssemblyInfo>
+    <AssemblyName>Xamarin.iOS</AssemblyName>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>Foundation.NSObject</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>Foundation.INSCoding</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>System.IDisposable</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Attributes>
+    <Attribute>
+      <AttributeName>Foundation.Register("UICollectionViewLayout", true)</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>Base class for specifying the layout of a <see cref="T:UIKit.UICollectionView" />.</summary>
+    <remarks>
+      <para>
+        Collection Views allow content to be displayed using arbitrary layouts. Grid-like layouts can use the <see cref="T:UIKit.UICollectionViewFlowLayout" /> or application developers can subtype <see cref="T:UIKit.UICollectionViewLayout" /> to create their own flexible pattern.
+      </para>
+      <para>The layout of the <see cref="T:UIKit.UICollectionViewCell" />s in a <see cref="T:UIKit.UICollectionView" /> is controlled by a <see cref="T:UIKit.UICollectionViewLayout" />, which can be passed in to the <see cref="C:UIKit.UICollectionView(UICollectionViewLayout)" /> constructor or can changed with <see cref="M:UIKit.UICollectionView.SetCollectionViewLayout" />. </para>
+      <para>Application developers can create fully custom layouts by subclassing either <see cref="T:UIKit.UICollectionViewFlowLayout" /> or <see cref="T:UIKit.UICollectionViewLayout" />. </para>
+      <para>
+        The key methods to override are:
+      </para>
+      <para>
+        <list type="table">
+          <listheader>
+            <term>Method</term>
+            <description>Description</description>
+          </listheader>
+          <item>
+            <term>
+              <see cref="M:UIKit.UICollectionViewLayout.PrepareLayout" />
+            </term>
+            <description>Used for performing initial geometric calculations that will be used throughout the layout process.</description>
+          </item>
+          <item>
+            <term>
+              <see cref="P:UIKit.UICollectionViewLayout.CollectionViewContentSize" />
+            </term>
+            <description>
+              Returns the size of the area used to display content.
+            </description>
+          </item>
+          <item>
+            <term>
+              <see cref="M:UIKit.UICollectionViewLayout.LayoutAttributesForElementsInRect" />
+            </term>
+            <description>Returns the layout attributes for all the cells and views within the specified rectangle.
+            </description>
+          </item>
+          <item>
+            <term>
+              <see cref="M:UIKit.UICollectionViewLayout.LayoutAttributesForItem" />
+            </term>
+            <description>The layout attributes of a specific cell
+            </description>
+          </item>
+          <item>
+            <term>
+              <see cref="M:UIKit.UICollectionViewLayout.ShouldInvalidateLayoutForBoundsChange" />
+            </term>
+            <description>Returns <see langword="true" /> if the new bounds require an update of the layout.</description>
+          </item>
+        </list>
+      </para>
+      <para>The following code, taken from the "Introduction to Collection Views" class, creates a circular layout, as shown in the following image:</para>
+      <example>
+        <code lang="C#"><![CDATA[
+          public override UICollectionViewLayoutAttributes LayoutAttributesForItem (NSIndexPath path)
+          {
+            UICollectionViewLayoutAttributes attributes = UICollectionViewLayoutAttributes.CreateForCell (path);
+            attributes.Size = new SizeF (ItemSize, ItemSize);
+          
+            attributes.Center = new PointF (center.X + radius * (float)Math.Cos (2 * path.Row * Math.PI / cellCount),
+              center.Y + radius * (float)Math.Sin (2 * path.Row * Math.PI / cellCount));
+            return attributes;
+          }
+        ]]></code>
+      </example>
+      <para>
+        <img href="UIKit.UICollectionView.CircleLayout.png" />
+      </para>
+    </remarks>
+    <altmember cref="T:UIKit.UICollectionView" />
+    <altmember cref="T:UIKit.UICollectionViewController" />
+    <altmember cref="T:UIKit.UICollectionViewFlowLayout" />
+    <related type="article" href="http://docs.xamarin.com/ios/Guides/User_Interface/Introduction_to_Collection_Views">Introduction to Collection Views</related>
+    <related type="PlatformDocAPI" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UICollectionViewLayout_class/index.html">Apple documentation for <c>UICollectionViewLayout</c></related>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public UICollectionViewLayout ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("init")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters />
+      <Docs>
+        <summary>Default constructor, initializes a new instance of this class.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public UICollectionViewLayout (Foundation.NSCoder coder);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class Foundation.NSCoder coder) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("initWithCoder:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.DesignatedInitializer</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="coder" Type="Foundation.NSCoder" />
+      </Parameters>
+      <Docs>
+        <param name="coder">The unarchiver object.</param>
+        <summary>A constructor that initializes the object from the data stored in the unarchiver object.</summary>
+        <remarks>
+          <para>This constructor is provided to allow the class to be initialized from an unarchiver (for example, during NIB deserialization).   This is part of the <see cref="T:Foundation.NSCoding" />  protocol.</para>
+          <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="T:Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
+          <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected UICollectionViewLayout (Foundation.NSObjectFlag t);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor(class Foundation.NSObjectFlag t) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="t" Type="Foundation.NSObjectFlag" />
+      </Parameters>
+      <Docs>
+        <param name="t">Unused sentinel value, pass NSObjectFlag.Empty.</param>
+        <summary>Constructor to call on derived classes to skip initialization and merely allocate the object.</summary>
+        <remarks>
+          <para>This constructor should be called by derived classes when they completely construct the object in managed code and merely want the runtime to allocate and initialize the NSObject.   This is required to implement the two-step initialization process that Objective-C uses, the first step is to perform the object allocation, the second step is to initialize the object.   When developers invoke the constructor that takes the NSObjectFlag.Empty they take advantage of a direct path that goes all the way up to NSObject to merely allocate the object's memory and bind the Objective-C and C# objects together.    The actual initialization of the object is up to the developer.</para>
+          <para>This constructor is typically used by the binding generator to allocate the object, but prevent the actual initialization to take place.   Once the allocation has taken place, the constructor has to initialize the object.   With constructors generated by the binding generator this means that it manually invokes one of the "init" methods to initialize the object.</para>
+          <para>It is the developer's responsibility to completely initialize the object if they chain up using the NSObjectFlag.Empty path.</para>
+          <para>In general, if the developer's constructor invokes the NSObjectFlag.Empty base implementation, then it should be calling an Objective-C init method.   If this is not the case, developers should instead chain to the proper constructor in their class. </para>
+          <para>The argument value is ignored and merely ensures that the only code that is executed is the construction phase is the basic NSObject allocation and runtime type registration.  Typically the chaining would look like this:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// The NSObjectFlag merely allocates the object and registers the
+// C# class with the Objective-C runtime if necessary, but no actual
+// initXxx method is invoked, that is done later in the constructor
+//
+// This is taken from Xamarin's source code:
+//
+[Export ("initWithFrame:")]
+public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
+{
+// Invoke the init method now.
+	var initWithFrame = new Selector ("initWithFrame:").Handle;
+	if (IsDirectBinding)
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+	else
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected UICollectionViewLayout (IntPtr handle);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig specialname rtspecialname instance void .ctor(native int handle) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="handle" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="handle">Pointer (handle) to the unmanaged object.</param>
+        <summary>A constructor used when creating managed representations of unmanaged objects;  Called by the runtime.</summary>
+        <remarks>
+          <para>This constructor is invoked by the runtime infrastructure (<see cref="M:ObjCRuntime.Runtime.GetNSObject(System.IntPtr)" />) to create a new managed representation for a pointer to an unmanaged Objective-C object.    Developers should not invoke this method directly, instead they should call the GetNSObject method as it will prevent two instances of a managed object to point to the same native object.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ClassHandle">
+      <MemberSignature Language="C#" Value="public override IntPtr ClassHandle { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int ClassHandle" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The handle for this class.</summary>
+        <value>The pointer to the Objective-C class.</value>
+        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CollectionView">
+      <MemberSignature Language="C#" Value="public virtual UIKit.UICollectionView CollectionView { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class UIKit.UICollectionView CollectionView" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("collectionView")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UICollectionView</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The <see cref="T:UIKit.UICollectionView" /> which this <see cref="T:UIKit.UICollectionViewLayout" /> is laying out.</summary>
+        <value>The default value is <see langword="null" />.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CollectionViewContentSize">
+      <MemberSignature Language="C#" Value="public virtual CoreGraphics.CGSize CollectionViewContentSize { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype CoreGraphics.CGSize CollectionViewContentSize" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("collectionViewContentSize")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreGraphics.CGSize</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The SizeF of this UICollectionViewLayout's content.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DevelopmentLayoutDirection">
+      <MemberSignature Language="C#" Value="public virtual UIKit.UIUserInterfaceLayoutDirection DevelopmentLayoutDirection { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype UIKit.UIUserInterfaceLayoutDirection DevelopmentLayoutDirection" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("developmentLayoutDirection")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UIUserInterfaceLayoutDirection</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets the language direction that was used during development.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EncodeTo">
+      <MemberSignature Language="C#" Value="public virtual void EncodeTo (Foundation.NSCoder encoder);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void EncodeTo(class Foundation.NSCoder encoder) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("encodeWithCoder:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="encoder" Type="Foundation.NSCoder" />
+      </Parameters>
+      <Docs>
+        <param name="encoder">The encoder object where the state of the object will be stored</param>
+        <summary>Encodes the state of the object on the provided encoder</summary>
+        <remarks>
+          <para>This method is part of the <see cref="T:Foundation.NSCoding" /> protocol and is used by applications to preserve the state of the object into an archive.</para>
+          <para>Users will typically create a <see cref="T:Foundation.NSKeyedArchiver" /> and then invoke the <see cref="M:Foundation.NSKeyedArchiver.ArchiveRootObjectToFile" /> which will call into this method</para>
+          <para>If developers want to allow their object to be archived, they should override this method and store their state in using the provided <paramref name="encoder" /> parameter.   In addition, developers should also implement a constructor that takes an NSCoder argument and is exported with [Export ("initWithCoder:")]</para>
+          <example>
+            <code lang="C#"><![CDATA[public void override EncodeTo (NSCoder coder){
+    coder.Encode (1, key: "version");
+    coder.Encode (userName, key: "userName");
+    coder.Encode (hostName, key: "hostName");]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FinalizeAnimatedBoundsChange">
+      <MemberSignature Language="C#" Value="public virtual void FinalizeAnimatedBoundsChange ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void FinalizeAnimatedBoundsChange() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("finalizeAnimatedBoundsChange")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>When overridden, performs custom cleanup after animated changes to the bounds or after items have been inserted or deleted.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FinalizeCollectionViewUpdates">
+      <MemberSignature Language="C#" Value="public virtual void FinalizeCollectionViewUpdates ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void FinalizeCollectionViewUpdates() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("finalizeCollectionViewUpdates")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>When overridden, allows additional animations or clean up during an update.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FinalizeLayoutTransition">
+      <MemberSignature Language="C#" Value="public virtual void FinalizeLayoutTransition ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void FinalizeLayoutTransition() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("finalizeLayoutTransition")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Called prior to transition animations, informs the layout object to perform any steps necessary before the animations.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FinalLayoutAttributesForDisappearingDecorationElement">
+      <MemberSignature Language="C#" Value="public virtual UIKit.UICollectionViewLayoutAttributes FinalLayoutAttributesForDisappearingDecorationElement (Foundation.NSString elementKind, Foundation.NSIndexPath decorationIndexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class UIKit.UICollectionViewLayoutAttributes FinalLayoutAttributesForDisappearingDecorationElement(class Foundation.NSString elementKind, class Foundation.NSIndexPath decorationIndexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("finalLayoutAttributesForDisappearingDecorationElementOfKind:atIndexPath:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UICollectionViewLayoutAttributes</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="elementKind" Type="Foundation.NSString" />
+        <Parameter Name="decorationIndexPath" Type="Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="elementKind">To be added.</param>
+        <param name="decorationIndexPath">To be added.</param>
+        <summary>The final layout information for a decoration element that is about to be removed from this UICollectionViewLayout.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FinalLayoutAttributesForDisappearingItem">
+      <MemberSignature Language="C#" Value="public virtual UIKit.UICollectionViewLayoutAttributes FinalLayoutAttributesForDisappearingItem (Foundation.NSIndexPath itemIndexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class UIKit.UICollectionViewLayoutAttributes FinalLayoutAttributesForDisappearingItem(class Foundation.NSIndexPath itemIndexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("finalLayoutAttributesForDisappearingItemAtIndexPath:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UICollectionViewLayoutAttributes</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="itemIndexPath" Type="Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="itemIndexPath">To be added.</param>
+        <summary>The final layout information for an item that is about to be removed from the UICollectionView.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FinalLayoutAttributesForDisappearingSupplementaryElement">
+      <MemberSignature Language="C#" Value="public virtual UIKit.UICollectionViewLayoutAttributes FinalLayoutAttributesForDisappearingSupplementaryElement (Foundation.NSString elementKind, Foundation.NSIndexPath elementIndexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class UIKit.UICollectionViewLayoutAttributes FinalLayoutAttributesForDisappearingSupplementaryElement(class Foundation.NSString elementKind, class Foundation.NSIndexPath elementIndexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("finalLayoutAttributesForDisappearingSupplementaryElementOfKind:atIndexPath:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UICollectionViewLayoutAttributes</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="elementKind" Type="Foundation.NSString" />
+        <Parameter Name="elementIndexPath" Type="Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="elementKind">To be added.</param>
+        <param name="elementIndexPath">To be added.</param>
+        <summary>The final layout information for a supplementary view that is about to be removed from the collection view.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FlipsHorizontallyInOppositeLayoutDirection">
+      <MemberSignature Language="C#" Value="public virtual bool FlipsHorizontallyInOppositeLayoutDirection { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool FlipsHorizontallyInOppositeLayoutDirection" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("flipsHorizontallyInOppositeLayoutDirection")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets a Boolean that tells whether the coordinate system horizontally reverses for reversed layout directions.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetIndexPathsToDeleteForDecorationViewOfKind">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSIndexPath[] GetIndexPathsToDeleteForDecorationViewOfKind (Foundation.NSString kind);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Foundation.NSIndexPath[] GetIndexPathsToDeleteForDecorationViewOfKind(class Foundation.NSString kind) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("indexPathsToDeleteForDecorationViewOfKind:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSIndexPath[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="kind" Type="Foundation.NSString" />
+      </Parameters>
+      <Docs>
+        <param name="kind">To be added.</param>
+        <summary>An array of NSIndexPaths indicating the decoration views to remove.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetIndexPathsToDeleteForSupplementaryView">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSIndexPath[] GetIndexPathsToDeleteForSupplementaryView (Foundation.NSString kind);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Foundation.NSIndexPath[] GetIndexPathsToDeleteForSupplementaryView(class Foundation.NSString kind) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("indexPathsToDeleteForSupplementaryViewOfKind:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSIndexPath[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="kind" Type="Foundation.NSString" />
+      </Parameters>
+      <Docs>
+        <param name="kind">To be added.</param>
+        <summary>An array of NSIndexPaths indicating the supplementary views to remove.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetIndexPathsToInsertForDecorationView">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSIndexPath[] GetIndexPathsToInsertForDecorationView (Foundation.NSString kind);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Foundation.NSIndexPath[] GetIndexPathsToInsertForDecorationView(class Foundation.NSString kind) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("indexPathsToInsertForDecorationViewOfKind:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSIndexPath[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="kind" Type="Foundation.NSString" />
+      </Parameters>
+      <Docs>
+        <param name="kind">To be added.</param>
+        <summary>An array of NSIndexPaths indicating the decoration views to add.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetIndexPathsToInsertForSupplementaryView">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSIndexPath[] GetIndexPathsToInsertForSupplementaryView (Foundation.NSString kind);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Foundation.NSIndexPath[] GetIndexPathsToInsertForSupplementaryView(class Foundation.NSString kind) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("indexPathsToInsertForSupplementaryViewOfKind:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSIndexPath[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="kind" Type="Foundation.NSString" />
+      </Parameters>
+      <Docs>
+        <param name="kind">To be added.</param>
+        <summary>An array of index paths indicating the supplementary views to add.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetInvalidationContext">
+      <MemberSignature Language="C#" Value="public virtual UIKit.UICollectionViewLayoutInvalidationContext GetInvalidationContext (UIKit.UICollectionViewLayoutAttributes preferredAttributes, UIKit.UICollectionViewLayoutAttributes originalAttributes);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class UIKit.UICollectionViewLayoutInvalidationContext GetInvalidationContext(class UIKit.UICollectionViewLayoutAttributes preferredAttributes, class UIKit.UICollectionViewLayoutAttributes originalAttributes) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("invalidationContextForPreferredLayoutAttributes:withOriginalAttributes:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UICollectionViewLayoutInvalidationContext</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="preferredAttributes" Type="UIKit.UICollectionViewLayoutAttributes" />
+        <Parameter Name="originalAttributes" Type="UIKit.UICollectionViewLayoutAttributes" />
+      </Parameters>
+      <Docs>
+        <param name="preferredAttributes">To be added.</param>
+        <param name="originalAttributes">To be added.</param>
+        <summary>Gets the invalidated areas for a change from <paramref name="originalAttributes" /> to <paramref name="preferredAttributes" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetInvalidationContextForBoundsChange">
+      <MemberSignature Language="C#" Value="public virtual UIKit.UICollectionViewLayoutInvalidationContext GetInvalidationContextForBoundsChange (CoreGraphics.CGRect newBounds);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class UIKit.UICollectionViewLayoutInvalidationContext GetInvalidationContextForBoundsChange(valuetype CoreGraphics.CGRect newBounds) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("invalidationContextForBoundsChange:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UICollectionViewLayoutInvalidationContext</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="newBounds" Type="CoreGraphics.CGRect" />
+      </Parameters>
+      <Docs>
+        <param name="newBounds">To be added.</param>
+        <summary>Returns a UICollectionViewLayoutInvalidationContext that specifies the portions of the layout that change in response to a change in bounds.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetInvalidationContextForEndingInteractiveMovementOfItems">
+      <MemberSignature Language="C#" Value="public virtual UIKit.UICollectionViewLayoutInvalidationContext GetInvalidationContextForEndingInteractiveMovementOfItems (Foundation.NSIndexPath[] finalIndexPaths, Foundation.NSIndexPath[] previousIndexPaths, bool movementCancelled);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class UIKit.UICollectionViewLayoutInvalidationContext GetInvalidationContextForEndingInteractiveMovementOfItems(class Foundation.NSIndexPath[] finalIndexPaths, class Foundation.NSIndexPath[] previousIndexPaths, bool movementCancelled) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("invalidationContextForEndingInteractiveMovementOfItemsToFinalIndexPaths:previousIndexPaths:movementCancelled:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UICollectionViewLayoutInvalidationContext</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="finalIndexPaths" Type="Foundation.NSIndexPath[]" />
+        <Parameter Name="previousIndexPaths" Type="Foundation.NSIndexPath[]" />
+        <Parameter Name="movementCancelled" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="finalIndexPaths">To be added.</param>
+        <param name="previousIndexPaths">To be added.</param>
+        <param name="movementCancelled">To be added.</param>
+        <summary>Returns a validation context for the moved items.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetInvalidationContextForInteractivelyMovingItems">
+      <MemberSignature Language="C#" Value="public virtual UIKit.UICollectionViewLayoutInvalidationContext GetInvalidationContextForInteractivelyMovingItems (Foundation.NSIndexPath[] targetIndexPaths, CoreGraphics.CGPoint targetPosition, Foundation.NSIndexPath[] previousIndexPaths, CoreGraphics.CGPoint previousPosition);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class UIKit.UICollectionViewLayoutInvalidationContext GetInvalidationContextForInteractivelyMovingItems(class Foundation.NSIndexPath[] targetIndexPaths, valuetype CoreGraphics.CGPoint targetPosition, class Foundation.NSIndexPath[] previousIndexPaths, valuetype CoreGraphics.CGPoint previousPosition) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("invalidationContextForInteractivelyMovingItems:withTargetPosition:previousIndexPaths:previousPosition:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UICollectionViewLayoutInvalidationContext</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="targetIndexPaths" Type="Foundation.NSIndexPath[]" />
+        <Parameter Name="targetPosition" Type="CoreGraphics.CGPoint" />
+        <Parameter Name="previousIndexPaths" Type="Foundation.NSIndexPath[]" />
+        <Parameter Name="previousPosition" Type="CoreGraphics.CGPoint" />
+      </Parameters>
+      <Docs>
+        <param name="targetIndexPaths">To be added.</param>
+        <param name="targetPosition">To be added.</param>
+        <param name="previousIndexPaths">To be added.</param>
+        <param name="previousPosition">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetLayoutAttributesForInteractivelyMovingItem">
+      <MemberSignature Language="C#" Value="public virtual UIKit.UICollectionViewLayoutAttributes GetLayoutAttributesForInteractivelyMovingItem (Foundation.NSIndexPath indexPath, CoreGraphics.CGPoint targetPosition);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class UIKit.UICollectionViewLayoutAttributes GetLayoutAttributesForInteractivelyMovingItem(class Foundation.NSIndexPath indexPath, valuetype CoreGraphics.CGPoint targetPosition) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("layoutAttributesForInteractivelyMovingItemAtIndexPath:withTargetPosition:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UICollectionViewLayoutAttributes</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="indexPath" Type="Foundation.NSIndexPath" />
+        <Parameter Name="targetPosition" Type="CoreGraphics.CGPoint" />
+      </Parameters>
+      <Docs>
+        <param name="indexPath">To be added.</param>
+        <param name="targetPosition">To be added.</param>
+        <summary>Returns the layout attributes for items that the user is moving.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetTargetIndexPathForInteractivelyMovingItem">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSIndexPath GetTargetIndexPathForInteractivelyMovingItem (Foundation.NSIndexPath previousIndexPath, CoreGraphics.CGPoint position);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Foundation.NSIndexPath GetTargetIndexPathForInteractivelyMovingItem(class Foundation.NSIndexPath previousIndexPath, valuetype CoreGraphics.CGPoint position) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("targetIndexPathForInteractivelyMovingItem:withPosition:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSIndexPath</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="previousIndexPath" Type="Foundation.NSIndexPath" />
+        <Parameter Name="position" Type="CoreGraphics.CGPoint" />
+      </Parameters>
+      <Docs>
+        <param name="previousIndexPath">To be added.</param>
+        <param name="position">To be added.</param>
+        <summary>Returns the target index path for items that the user is moving.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InitialLayoutAttributesForAppearingDecorationElement">
+      <MemberSignature Language="C#" Value="public virtual UIKit.UICollectionViewLayoutAttributes InitialLayoutAttributesForAppearingDecorationElement (Foundation.NSString elementKind, Foundation.NSIndexPath decorationIndexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class UIKit.UICollectionViewLayoutAttributes InitialLayoutAttributesForAppearingDecorationElement(class Foundation.NSString elementKind, class Foundation.NSIndexPath decorationIndexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("initialLayoutAttributesForAppearingDecorationElementOfKind:atIndexPath:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UICollectionViewLayoutAttributes</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="elementKind" Type="Foundation.NSString" />
+        <Parameter Name="decorationIndexPath" Type="Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="elementKind">To be added.</param>
+        <param name="decorationIndexPath">To be added.</param>
+        <summary>Information on the starting layout of a decoration view that is being inserted into the UICollectionView.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InitialLayoutAttributesForAppearingItem">
+      <MemberSignature Language="C#" Value="public virtual UIKit.UICollectionViewLayoutAttributes InitialLayoutAttributesForAppearingItem (Foundation.NSIndexPath itemIndexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class UIKit.UICollectionViewLayoutAttributes InitialLayoutAttributesForAppearingItem(class Foundation.NSIndexPath itemIndexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("initialLayoutAttributesForAppearingItemAtIndexPath:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UICollectionViewLayoutAttributes</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="itemIndexPath" Type="Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="itemIndexPath">To be added.</param>
+        <summary>Information on the starting layout of an item that is being inserted into the UICollectionView.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InitialLayoutAttributesForAppearingSupplementaryElement">
+      <MemberSignature Language="C#" Value="public virtual UIKit.UICollectionViewLayoutAttributes InitialLayoutAttributesForAppearingSupplementaryElement (Foundation.NSString elementKind, Foundation.NSIndexPath elementIndexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class UIKit.UICollectionViewLayoutAttributes InitialLayoutAttributesForAppearingSupplementaryElement(class Foundation.NSString elementKind, class Foundation.NSIndexPath elementIndexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("initialLayoutAttributesForAppearingSupplementaryElementOfKind:atIndexPath:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UICollectionViewLayoutAttributes</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="elementKind" Type="Foundation.NSString" />
+        <Parameter Name="elementIndexPath" Type="Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="elementKind">To be added.</param>
+        <param name="elementIndexPath">To be added.</param>
+        <summary>Information on the starting layout of a supplementary view that is being inserted into the UICollectionView.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InvalidateLayout">
+      <MemberSignature Language="C#" Value="public virtual void InvalidateLayout ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void InvalidateLayout() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("invalidateLayout")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Invalidates the current layout and initiates an update.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InvalidateLayout">
+      <MemberSignature Language="C#" Value="public virtual void InvalidateLayout (UIKit.UICollectionViewLayoutInvalidationContext context);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void InvalidateLayout(class UIKit.UICollectionViewLayoutInvalidationContext context) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("invalidateLayoutWithContext:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="context" Type="UIKit.UICollectionViewLayoutInvalidationContext" />
+      </Parameters>
+      <Docs>
+        <param name="context">To be added.</param>
+        <summary>Forces recomputation and application of the collection view.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InvalidationContextClass">
+      <MemberSignature Language="C#" Value="public static ObjCRuntime.Class InvalidationContextClass ();" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class ObjCRuntime.Class InvalidationContextClass() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("invalidationContextClass")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>ObjCRuntime.Class</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>The custom UICollectionViewLayoutInvalidationContext used for this UICollectionViewLayout.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LayoutAttributesClass">
+      <MemberSignature Language="C#" Value="public static ObjCRuntime.Class LayoutAttributesClass { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class ObjCRuntime.Class LayoutAttributesClass" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("layoutAttributesClass")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>ObjCRuntime.Class</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The UICollectionViewLayoutAttributes used for layout attributes for this UICollectionViewLayout.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LayoutAttributesForDecorationView">
+      <MemberSignature Language="C#" Value="public virtual UIKit.UICollectionViewLayoutAttributes LayoutAttributesForDecorationView (Foundation.NSString kind, Foundation.NSIndexPath indexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class UIKit.UICollectionViewLayoutAttributes LayoutAttributesForDecorationView(class Foundation.NSString kind, class Foundation.NSIndexPath indexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("layoutAttributesForDecorationViewOfKind:atIndexPath:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UICollectionViewLayoutAttributes</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="kind" Type="Foundation.NSString" />
+        <Parameter Name="indexPath" Type="Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="kind">To be added.</param>
+        <param name="indexPath">To be added.</param>
+        <summary>The UICollectionViewLayoutAttributes for the specified decoration view.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LayoutAttributesForElementsInRect">
+      <MemberSignature Language="C#" Value="public virtual UIKit.UICollectionViewLayoutAttributes[] LayoutAttributesForElementsInRect (CoreGraphics.CGRect rect);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class UIKit.UICollectionViewLayoutAttributes[] LayoutAttributesForElementsInRect(valuetype CoreGraphics.CGRect rect) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("layoutAttributesForElementsInRect:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UICollectionViewLayoutAttributes[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rect" Type="CoreGraphics.CGRect" />
+      </Parameters>
+      <Docs>
+        <param name="rect">To be added.</param>
+        <summary>The UICollectionViewLayoutAttributes for all the cells and views in the specified <see cref="T:System.Drawing.RectangleF" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LayoutAttributesForItem">
+      <MemberSignature Language="C#" Value="public virtual UIKit.UICollectionViewLayoutAttributes LayoutAttributesForItem (Foundation.NSIndexPath indexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class UIKit.UICollectionViewLayoutAttributes LayoutAttributesForItem(class Foundation.NSIndexPath indexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("layoutAttributesForItemAtIndexPath:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UICollectionViewLayoutAttributes</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="indexPath" Type="Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="indexPath">To be added.</param>
+        <summary>The UICollectionViewLayoutAttributes for the specified NSIndexPath.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LayoutAttributesForSupplementaryView">
+      <MemberSignature Language="C#" Value="public virtual UIKit.UICollectionViewLayoutAttributes LayoutAttributesForSupplementaryView (Foundation.NSString kind, Foundation.NSIndexPath indexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class UIKit.UICollectionViewLayoutAttributes LayoutAttributesForSupplementaryView(class Foundation.NSString kind, class Foundation.NSIndexPath indexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("layoutAttributesForSupplementaryViewOfKind:atIndexPath:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UICollectionViewLayoutAttributes</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="kind" Type="Foundation.NSString" />
+        <Parameter Name="indexPath" Type="Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="kind">To be added.</param>
+        <param name="indexPath">To be added.</param>
+        <summary>The UICollectionViewLayoutAttributes for the specified supplementary view.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LayoutAttributesForSupplementaryView">
+      <MemberSignature Language="C#" Value="public UIKit.UICollectionViewLayoutAttributes LayoutAttributesForSupplementaryView (UIKit.UICollectionElementKindSection section, Foundation.NSIndexPath indexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class UIKit.UICollectionViewLayoutAttributes LayoutAttributesForSupplementaryView(valuetype UIKit.UICollectionElementKindSection section, class Foundation.NSIndexPath indexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>UIKit.UICollectionViewLayoutAttributes</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="section" Type="UIKit.UICollectionElementKindSection" />
+        <Parameter Name="indexPath" Type="Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="section">To be added.</param>
+        <param name="indexPath">To be added.</param>
+        <summary>The attributes for the supplementary view at the specified indexPath.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PrepareForAnimatedBoundsChange">
+      <MemberSignature Language="C#" Value="public virtual void PrepareForAnimatedBoundsChange (CoreGraphics.CGRect oldBounds);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void PrepareForAnimatedBoundsChange(valuetype CoreGraphics.CGRect oldBounds) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("prepareForAnimatedBoundsChange:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="oldBounds" Type="CoreGraphics.CGRect" />
+      </Parameters>
+      <Docs>
+        <param name="oldBounds">To be added.</param>
+        <summary>Called prior to animated changes to the bounds or before insertion or deletion of items.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PrepareForCollectionViewUpdates">
+      <MemberSignature Language="C#" Value="public virtual void PrepareForCollectionViewUpdates (UIKit.UICollectionViewUpdateItem[] updateItems);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void PrepareForCollectionViewUpdates(class UIKit.UICollectionViewUpdateItem[] updateItems) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("prepareForCollectionViewUpdates:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="updateItems" Type="UIKit.UICollectionViewUpdateItem[]" />
+      </Parameters>
+      <Docs>
+        <param name="updateItems">To be added.</param>
+        <summary>Notifies the layout object that the contents of the UICollectionView are about to change.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PrepareForTransitionFromLayout">
+      <MemberSignature Language="C#" Value="public virtual void PrepareForTransitionFromLayout (UIKit.UICollectionViewLayout oldLayout);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void PrepareForTransitionFromLayout(class UIKit.UICollectionViewLayout oldLayout) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("prepareForTransitionFromLayout:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="oldLayout" Type="UIKit.UICollectionViewLayout" />
+      </Parameters>
+      <Docs>
+        <param name="oldLayout">To be added.</param>
+        <summary>Notifies the layout object that it will shortly be installed as the layout for the UICollectionView.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PrepareForTransitionToLayout">
+      <MemberSignature Language="C#" Value="public virtual void PrepareForTransitionToLayout (UIKit.UICollectionViewLayout newLayout);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void PrepareForTransitionToLayout(class UIKit.UICollectionViewLayout newLayout) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("prepareForTransitionToLayout:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="newLayout" Type="UIKit.UICollectionViewLayout" />
+      </Parameters>
+      <Docs>
+        <param name="newLayout">To be added.</param>
+        <summary>Tells the layout object that it will shortly be removed as the layout for the UICollectionView.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PrepareLayout">
+      <MemberSignature Language="C#" Value="public virtual void PrepareLayout ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void PrepareLayout() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("prepareLayout")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Tells the layout object to update the layout.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RegisterClassForDecorationView">
+      <MemberSignature Language="C#" Value="public void RegisterClassForDecorationView (Type viewType, Foundation.NSString kind);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void RegisterClassForDecorationView(class System.Type viewType, class Foundation.NSString kind) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="viewType" Type="System.Type" />
+        <Parameter Name="kind" Type="Foundation.NSString" />
+      </Parameters>
+      <Docs>
+        <param name="viewType">The type of the class that will provide the decoration.   Use null to unregister the previous.</param>
+        <param name="kind">The element kind for which the registered type will be used.</param>
+        <summary>Registers the class identified by kind as a decoration view.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RegisterNibForDecorationView">
+      <MemberSignature Language="C#" Value="public virtual void RegisterNibForDecorationView (UIKit.UINib nib, Foundation.NSString kind);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void RegisterNibForDecorationView(class UIKit.UINib nib, class Foundation.NSString kind) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("registerNib:forDecorationViewOfKind:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="nib" Type="UIKit.UINib" />
+        <Parameter Name="kind" Type="Foundation.NSString" />
+      </Parameters>
+      <Docs>
+        <param name="nib">
+          <para>The object containing the cell definition, the nib file should contain a single UICollectionReusableView object.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="kind">The element kind for which the registered type will be used.</param>
+        <summary>Registers the UINib for use as a template for decoration views.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ShouldInvalidateLayout">
+      <MemberSignature Language="C#" Value="public virtual bool ShouldInvalidateLayout (UIKit.UICollectionViewLayoutAttributes preferredAttributes, UIKit.UICollectionViewLayoutAttributes originalAttributes);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool ShouldInvalidateLayout(class UIKit.UICollectionViewLayoutAttributes preferredAttributes, class UIKit.UICollectionViewLayoutAttributes originalAttributes) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("shouldInvalidateLayoutForPreferredLayoutAttributes:withOriginalAttributes:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="preferredAttributes" Type="UIKit.UICollectionViewLayoutAttributes" />
+        <Parameter Name="originalAttributes" Type="UIKit.UICollectionViewLayoutAttributes" />
+      </Parameters>
+      <Docs>
+        <param name="preferredAttributes">To be added.</param>
+        <param name="originalAttributes">To be added.</param>
+        <summary>Returns true if the collection view needs to invalidate for a change from <paramref name="preferredAttributes" /> to <paramref name="originalAttributes" />.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ShouldInvalidateLayoutForBoundsChange">
+      <MemberSignature Language="C#" Value="public virtual bool ShouldInvalidateLayoutForBoundsChange (CoreGraphics.CGRect newBounds);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool ShouldInvalidateLayoutForBoundsChange(valuetype CoreGraphics.CGRect newBounds) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("shouldInvalidateLayoutForBoundsChange:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="newBounds" Type="CoreGraphics.CGRect" />
+      </Parameters>
+      <Docs>
+        <param name="newBounds">To be added.</param>
+        <summary>Whether the new bounds requires a layout update.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TargetContentOffset">
+      <MemberSignature Language="C#" Value="public virtual CoreGraphics.CGPoint TargetContentOffset (CoreGraphics.CGPoint proposedContentOffset, CoreGraphics.CGPoint scrollingVelocity);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance valuetype CoreGraphics.CGPoint TargetContentOffset(valuetype CoreGraphics.CGPoint proposedContentOffset, valuetype CoreGraphics.CGPoint scrollingVelocity) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("targetContentOffsetForProposedContentOffset:withScrollingVelocity:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreGraphics.CGPoint</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="proposedContentOffset" Type="CoreGraphics.CGPoint" />
+        <Parameter Name="scrollingVelocity" Type="CoreGraphics.CGPoint" />
+      </Parameters>
+      <Docs>
+        <param name="proposedContentOffset">To be added.</param>
+        <param name="scrollingVelocity">To be added.</param>
+        <summary>The PointF at which to stop scrolling.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TargetContentOffsetForProposedContentOffset">
+      <MemberSignature Language="C#" Value="public virtual CoreGraphics.CGPoint TargetContentOffsetForProposedContentOffset (CoreGraphics.CGPoint proposedContentOffset);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance valuetype CoreGraphics.CGPoint TargetContentOffsetForProposedContentOffset(valuetype CoreGraphics.CGPoint proposedContentOffset) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("targetContentOffsetForProposedContentOffset:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreGraphics.CGPoint</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="proposedContentOffset" Type="CoreGraphics.CGPoint" />
+      </Parameters>
+      <Docs>
+        <param name="proposedContentOffset">To be added.</param>
+        <summary>The content offset to use after an animated layout change.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

@@ -1,0 +1,1185 @@
+<Type Name="MTKView" FullName="MetalKit.MTKView">
+  <TypeSignature Language="C#" Value="public class MTKView : UIKit.UIView, IDisposable" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit MTKView extends UIKit.UIView implements class CoreAnimation.ICALayerDelegate, class Foundation.INSCoding, class ObjCRuntime.INativeObject, class System.IDisposable" />
+  <AssemblyInfo>
+    <AssemblyName>Xamarin.iOS</AssemblyName>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>UIKit.UIView</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>System.IDisposable</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Attributes>
+    <Attribute>
+      <AttributeName>Foundation.Register("MTKView", true)</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.Arch64, null)</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>A <see cref="T:UIKit.UIView" /> that is Metal-aware.</summary>
+    <remarks>To be added.</remarks>
+    <related type="PlatformDocAPI" href="https://developer.apple.com/library/ios/documentation/MetalKit/Reference/MTKView_ClassReference/index.html">Apple documentation for <c>MTKView</c></related>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public MTKView (Foundation.NSCoder coder);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class Foundation.NSCoder coder) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("initWithCoder:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.DesignatedInitializer</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="coder" Type="Foundation.NSCoder" />
+      </Parameters>
+      <Docs>
+        <param name="coder">The unarchiver object.</param>
+        <summary>A constructor that initializes the object from the data stored in the unarchiver object.</summary>
+        <remarks>
+          <para>This constructor is provided to allow the class to be initialized from an unarchiver (for example, during NIB deserialization).   This is part of the <see cref="T:Foundation.NSCoding" />  protocol.</para>
+          <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="T:Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
+          <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected MTKView (Foundation.NSObjectFlag t);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor(class Foundation.NSObjectFlag t) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="t" Type="Foundation.NSObjectFlag" />
+      </Parameters>
+      <Docs>
+        <param name="t">Unused sentinel value, pass NSObjectFlag.Empty.</param>
+        <summary>Constructor to call on derived classes to skip initialization and merely allocate the object.</summary>
+        <remarks>
+          <para>This constructor should be called by derived classes when they completely construct the object in managed code and merely want the runtime to allocate and initialize the NSObject.   This is required to implement the two-step initialization process that Objective-C uses, the first step is to perform the object allocation, the second step is to initialize the object.   When developers invoke the constructor that takes the NSObjectFlag.Empty they take advantage of a direct path that goes all the way up to NSObject to merely allocate the object's memory and bind the Objective-C and C# objects together.    The actual initialization of the object is up to the developer.</para>
+          <para>This constructor is typically used by the binding generator to allocate the object, but prevent the actual initialization to take place.   Once the allocation has taken place, the constructor has to initialize the object.   With constructors generated by the binding generator this means that it manually invokes one of the "init" methods to initialize the object.</para>
+          <para>It is the developer's responsibility to completely initialize the object if they chain up using the NSObjectFlag.Empty path.</para>
+          <para>In general, if the developer's constructor invokes the NSObjectFlag.Empty base implementation, then it should be calling an Objective-C init method.   If this is not the case, developers should instead chain to the proper constructor in their class. </para>
+          <para>The argument value is ignored and merely ensures that the only code that is executed is the construction phase is the basic NSObject allocation and runtime type registration.  Typically the chaining would look like this:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// The NSObjectFlag merely allocates the object and registers the
+// C# class with the Objective-C runtime if necessary, but no actual
+// initXxx method is invoked, that is done later in the constructor
+//
+// This is taken from Xamarin's source code:
+//
+[Export ("initWithFrame:")]
+public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
+{
+// Invoke the init method now.
+	var initWithFrame = new Selector ("initWithFrame:").Handle;
+	if (IsDirectBinding)
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+	else
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected MTKView (IntPtr handle);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig specialname rtspecialname instance void .ctor(native int handle) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="handle" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="handle">Pointer (handle) to the unmanaged object.</param>
+        <summary>A constructor used when creating managed representations of unmanaged objects;  Called by the runtime.</summary>
+        <remarks>
+          <para>This constructor is invoked by the runtime infrastructure (<see cref="M:ObjCRuntime.Runtime.GetNSObject(System.IntPtr)" />) to create a new managed representation for a pointer to an unmanaged Objective-C object.    Developers should not invoke this method directly, instead they should call the GetNSObject method as it will prevent two instances of a managed object to point to the same native object.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public MTKView (CoreGraphics.CGRect frameRect, Metal.IMTLDevice device);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(valuetype CoreGraphics.CGRect frameRect, class Metal.IMTLDevice device) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("initWithFrame:device:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.DesignatedInitializer</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="frameRect" Type="CoreGraphics.CGRect" />
+        <Parameter Name="device" Type="Metal.IMTLDevice" />
+      </Parameters>
+      <Docs>
+        <param name="frameRect">To be added.</param>
+        <param name="device">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ActionForLayer">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSObject ActionForLayer (CoreAnimation.CALayer layer, string eventKey);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Foundation.NSObject ActionForLayer(class CoreAnimation.CALayer layer, string eventKey) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("actionForLayer:forKey:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="layer" Type="CoreAnimation.CALayer" />
+        <Parameter Name="eventKey" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="layer">To be added.</param>
+        <param name="eventKey">To be added.</param>
+        <summary>Returns the action for the specified layer and event key.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Appearance">
+      <MemberSignature Language="C#" Value="public static MetalKit.MTKView.MTKViewAppearance Appearance { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class MetalKit.MTKView/MTKViewAppearance Appearance" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MetalKit.MTKView+MTKViewAppearance</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Strongly-typed property that returns the UIAppearance class for this class.</summary>
+        <value>
+        </value>
+        <remarks>
+          <para>Setting any appearance properties on this instance will affect the appearance of all instances of MTKView.</para>
+          <para>If developers want to control the appearance of subclasses of MTKView, they should use the <see cref="M:MetalKit.MTKView.GetAppearance" /> method.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AppearanceWhenContainedIn">
+      <MemberSignature Language="C#" Value="public static MetalKit.MTKView.MTKViewAppearance AppearanceWhenContainedIn (Type[] containers);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MetalKit.MTKView/MTKViewAppearance AppearanceWhenContainedIn(class System.Type[] containers) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MetalKit.MTKView+MTKViewAppearance</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="containers" Type="System.Type[]">
+          <Attributes>
+            <Attribute>
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="containers">List of types that developers want to have as the containers to apply this particular appearance</param>
+        <summary>Returns a strongly typed UIAppearance for instances of this class when the view is hosted in the specified hierarchy.</summary>
+        <returns>The appearance proxy object that developers can use to set properties when the given container hierarchy is active</returns>
+        <remarks>
+          <para>The returned object represents the UIAppearance proxy where developers can set appearance properties for instances of MTKView when those instances are contained in the hierarchy specified by the <paramref name="containers" /> parameter.</para>
+          <para>If developers want to control the appearance of subclasses of MTKView, they should use the <see cref="M:MetalKit.MTKView.GetAppearance" /> method.</para>
+          <para>The following example shows how the AppearanceWhenContainedIn method works</para>
+          <example>
+            <code lang="C#"><![CDATA[
+var mySliders = UISlider.AppearanceWhenContainedIn (typeof (UINavigationBar), typeof (UIPopoverController));
+mySliders.TintColor = UIColor.Red;
+]]></code>
+          </example>
+          <para>For more information, see the documentation for the <see cref="T:UIKit.UIAppearance" /> class.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AutoResizeDrawable">
+      <MemberSignature Language="C#" Value="public virtual bool AutoResizeDrawable { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool AutoResizeDrawable" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("autoResizeDrawable")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setAutoResizeDrawable:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets or sets a Boolean value that controls whether to redraw the view when it is resized.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ClassHandle">
+      <MemberSignature Language="C#" Value="public override IntPtr ClassHandle { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int ClassHandle" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The handle for this class.</summary>
+        <value>The pointer to the Objective-C class.</value>
+        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ClearColor">
+      <MemberSignature Language="C#" Value="public virtual Metal.MTLClearColor ClearColor { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Metal.MTLClearColor ClearColor" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("clearColor", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setClearColor:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Metal.MTLClearColor</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets or sets the color to use when clearing the view.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ClearDepth">
+      <MemberSignature Language="C#" Value="public virtual double ClearDepth { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float64 ClearDepth" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("clearDepth")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setClearDepth:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Double</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets or sets the depth to use when clearing the view.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ClearStencil">
+      <MemberSignature Language="C#" Value="public virtual uint ClearStencil { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance unsigned int32 ClearStencil" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("clearStencil")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setClearStencil:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.UInt32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets or sets the stencil value to use when clearing the view.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ColorPixelFormat">
+      <MemberSignature Language="C#" Value="public virtual Metal.MTLPixelFormat ColorPixelFormat { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Metal.MTLPixelFormat ColorPixelFormat" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("colorPixelFormat", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setColorPixelFormat:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Metal.MTLPixelFormat</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets or sets the pixel format for the current drawable.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CurrentDrawable">
+      <MemberSignature Language="C#" Value="public virtual CoreAnimation.ICAMetalDrawable CurrentDrawable { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class CoreAnimation.ICAMetalDrawable CurrentDrawable" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("currentDrawable")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreAnimation.ICAMetalDrawable</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets the drawable for the current frame.</summary>
+        <value>
+          <para>(More documentation for this node is coming)</para>
+          <para tool="nullallowed">This value can be <see langword="null" />.</para>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CurrentRenderPassDescriptor">
+      <MemberSignature Language="C#" Value="public virtual Metal.MTLRenderPassDescriptor CurrentRenderPassDescriptor { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Metal.MTLRenderPassDescriptor CurrentRenderPassDescriptor" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("currentRenderPassDescriptor")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Metal.MTLRenderPassDescriptor</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets the render pass descriptor for the current frame.</summary>
+        <value>
+          <para>(More documentation for this node is coming)</para>
+          <para tool="nullallowed">This value can be <see langword="null" />.</para>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Delegate">
+      <MemberSignature Language="C#" Value="public MetalKit.IMTKViewDelegate Delegate { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class MetalKit.IMTKViewDelegate Delegate" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MetalKit.IMTKViewDelegate</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>An instance of the <see cref="MetalKit.MTKViewDelegate" /> model class which acts as the class delegate.</summary>
+        <value>
+          <para>The instance of the <see cref="MetalKit.MTKViewDelegate" /> model class</para>
+          <para tool="nullallowed">This value can be <see langword="null" />.</para>
+        </value>
+        <remarks>
+          <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+          <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+          <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DepthStencilPixelFormat">
+      <MemberSignature Language="C#" Value="public virtual Metal.MTLPixelFormat DepthStencilPixelFormat { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype Metal.MTLPixelFormat DepthStencilPixelFormat" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("depthStencilPixelFormat", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setDepthStencilPixelFormat:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Metal.MTLPixelFormat</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets or sets the pixel format for the depth stencil.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DepthStencilTexture">
+      <MemberSignature Language="C#" Value="public virtual Metal.IMTLTexture DepthStencilTexture { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Metal.IMTLTexture DepthStencilTexture" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("depthStencilTexture")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Metal.IMTLTexture</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets or sets the depth stencil texture.</summary>
+        <value>
+          <para>(More documentation for this node is coming)</para>
+          <para tool="nullallowed">This value can be <see langword="null" />.</para>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Device">
+      <MemberSignature Language="C#" Value="public virtual Metal.IMTLDevice Device { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Metal.IMTLDevice Device" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("device", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setDevice:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Metal.IMTLDevice</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets or sets the device for the view.</summary>
+        <value>
+          <para>(More documentation for this node is coming)</para>
+          <para tool="nullallowed">This value can be <see langword="null" />.</para>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DisplayLayer">
+      <MemberSignature Language="C#" Value="public virtual void DisplayLayer (CoreAnimation.CALayer layer);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void DisplayLayer(class CoreAnimation.CALayer layer) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("displayLayer:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="layer" Type="CoreAnimation.CALayer" />
+      </Parameters>
+      <Docs>
+        <param name="layer">To be added.</param>
+        <summary>Displays the specified Core Animation layer.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Dispose">
+      <MemberSignature Language="C#" Value="protected override void Dispose (bool disposing);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Dispose(bool disposing) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="disposing" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="disposing">
+          <para>If set to <see langword="true" />, the method is invoked directly and will dispose manage and unmanaged resources;   If set to <see langword="false" /> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</para>
+        </param>
+        <summary>Releases the resources used by the MTKView object.</summary>
+        <remarks>
+          <para>This Dispose method releases the resources used by the MTKView class.</para>
+          <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposing <paramref name="disposing" /> is set to <see langword="true" /> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false" />. </para>
+          <para>Calling the Dispose method when the application is finished using the MTKView ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.</para>
+          <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at http://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Draw">
+      <MemberSignature Language="C#" Value="public virtual void Draw ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Draw() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("draw")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Draws the view.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DrawableSize">
+      <MemberSignature Language="C#" Value="public virtual CoreGraphics.CGSize DrawableSize { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype CoreGraphics.CGSize DrawableSize" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("drawableSize", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setDrawableSize:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreGraphics.CGSize</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets the size of the drawable textures for the view.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DrawLayer">
+      <MemberSignature Language="C#" Value="public virtual void DrawLayer (CoreAnimation.CALayer layer, CoreGraphics.CGContext context);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void DrawLayer(class CoreAnimation.CALayer layer, class CoreGraphics.CGContext context) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("drawLayer:inContext:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="layer" Type="CoreAnimation.CALayer" />
+        <Parameter Name="context" Type="CoreGraphics.CGContext" />
+      </Parameters>
+      <Docs>
+        <param name="layer">To be added.</param>
+        <param name="context">To be added.</param>
+        <summary>Draws the specified layer with the specified context.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EnableSetNeedsDisplay">
+      <MemberSignature Language="C#" Value="public virtual bool EnableSetNeedsDisplay { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool EnableSetNeedsDisplay" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("enableSetNeedsDisplay")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setEnableSetNeedsDisplay:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets or sets a Boolean value that controls whether the view will respect SetNeedsDisplay() regarding whether to pause its internal draw loop when the view is paused.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EncodeTo">
+      <MemberSignature Language="C#" Value="public virtual void EncodeTo (Foundation.NSCoder encoder);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void EncodeTo(class Foundation.NSCoder encoder) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("encodeWithCoder:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="encoder" Type="Foundation.NSCoder" />
+      </Parameters>
+      <Docs>
+        <param name="encoder">The encoder object where the state of the object will be stored</param>
+        <summary>Encodes the state of the object on the provided encoder</summary>
+        <remarks>
+          <para>This method is part of the <see cref="T:Foundation.NSCoding" /> protocol and is used by applications to preserve the state of the object into an archive.</para>
+          <para>Users will typically create a <see cref="T:Foundation.NSKeyedArchiver" /> and then invoke the <see cref="M:Foundation.NSKeyedArchiver.ArchiveRootObjectToFile" /> which will call into this method</para>
+          <para>If developers want to allow their object to be archived, they should override this method and store their state in using the provided <paramref name="encoder" /> parameter.   In addition, developers should also implement a constructor that takes an NSCoder argument and is exported with [Export ("initWithCoder:")]</para>
+          <example>
+            <code lang="C#"><![CDATA[public void override EncodeTo (NSCoder coder){
+    coder.Encode (1, key: "version");
+    coder.Encode (userName, key: "userName");
+    coder.Encode (hostName, key: "hostName");]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FramebufferOnly">
+      <MemberSignature Language="C#" Value="public virtual bool FramebufferOnly { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool FramebufferOnly" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("framebufferOnly")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setFramebufferOnly:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets or sets a Boolean value that controls whether the texture is optimized for display purposes, rather than allowing for sampling or read/write operations.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetAppearance">
+      <MemberSignature Language="C#" Value="public static MetalKit.MTKView.MTKViewAppearance GetAppearance (UIKit.UITraitCollection traits);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MetalKit.MTKView/MTKViewAppearance GetAppearance(class UIKit.UITraitCollection traits) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MetalKit.MTKView+MTKViewAppearance</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="traits" Type="UIKit.UITraitCollection" />
+      </Parameters>
+      <Docs>
+        <param name="traits">To be added.</param>
+        <summary>Gets the appearance traits collection for the view.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetAppearance">
+      <MemberSignature Language="C#" Value="public static MetalKit.MTKView.MTKViewAppearance GetAppearance (UIKit.UITraitCollection traits, Type[] containers);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MetalKit.MTKView/MTKViewAppearance GetAppearance(class UIKit.UITraitCollection traits, class System.Type[] containers) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MetalKit.MTKView+MTKViewAppearance</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="traits" Type="UIKit.UITraitCollection" />
+        <Parameter Name="containers" Type="System.Type[]">
+          <Attributes>
+            <Attribute>
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="traits">To be added.</param>
+        <param name="containers">To be added.</param>
+        <summary>Gets the appearance traits collection for the view.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetAppearance&lt;T&gt;">
+      <MemberSignature Language="C#" Value="public static MetalKit.MTKView.MTKViewAppearance GetAppearance&lt;T&gt; () where T : MetalKit.MTKView;" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MetalKit.MTKView/MTKViewAppearance GetAppearance&lt;(class MetalKit.MTKView) T&gt;() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MetalKit.MTKView+MTKViewAppearance</ReturnType>
+      </ReturnValue>
+      <TypeParameters>
+        <TypeParameter Name="T">
+          <Constraints>
+            <BaseTypeName>MetalKit.MTKView</BaseTypeName>
+          </Constraints>
+        </TypeParameter>
+      </TypeParameters>
+      <Parameters />
+      <Docs>
+        <typeparam name="T">The type for which the UIAppearance proxy must be returned.  This is a subclass of MTKView.</typeparam>
+        <summary>
+          <para>Obtains the appearance proxy <see cref="T:MetalKit.MTKView.MTKViewAppearance" /> for the subclass of MTKView.</para>
+        </summary>
+        <returns>
+          <para>appearance proxy object for the specified type.</para>
+        </returns>
+        <remarks>
+          <para>Setting any appearance properties on the returned object will affect the appearance of all classes and subclasses of the type parameter.</para>
+          <para>Unlike the <see cref="P:MetalKit.MTKView.Appearance" /> property, or the <see cref="M:MetalKit.MTKViewAppearanceWhenContainedIn" /> method which only work on instances of this particular class, the proxies returned by GetAppearance can be used to change the style of subclasses.</para>
+          <para>The following example shows how the GetAppearance method works</para>
+          <example>
+            <code lang="C#"><![CDATA[
+var myTheme = MTKView.GetAppearance<MyMTKViewSubclass> ();
+myTheme.TintColor = UIColor.Red;
+]]></code>
+          </example>
+          <para>For more information, see the documentation for the <see cref="T:UIKit.UIAppearance" /> class.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetAppearance&lt;T&gt;">
+      <MemberSignature Language="C#" Value="public static MetalKit.MTKView.MTKViewAppearance GetAppearance&lt;T&gt; (UIKit.UITraitCollection traits) where T : MetalKit.MTKView;" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MetalKit.MTKView/MTKViewAppearance GetAppearance&lt;(class MetalKit.MTKView) T&gt;(class UIKit.UITraitCollection traits) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MetalKit.MTKView+MTKViewAppearance</ReturnType>
+      </ReturnValue>
+      <TypeParameters>
+        <TypeParameter Name="T">
+          <Constraints>
+            <BaseTypeName>MetalKit.MTKView</BaseTypeName>
+          </Constraints>
+        </TypeParameter>
+      </TypeParameters>
+      <Parameters>
+        <Parameter Name="traits" Type="UIKit.UITraitCollection" />
+      </Parameters>
+      <Docs>
+        <typeparam name="T">The type for which the UIAppearance proxy must be returned.  This is a subclass of MTKView.</typeparam>
+        <param name="traits">Trait collection to match.</param>
+        <summary>
+          <para>Obtains the appearance proxy <see cref="T:MetalKit.MTKView.MTKViewAppearance" /> for the subclass of MTKView.</para>
+        </summary>
+        <returns>
+          <para>appearance proxy object for the specified type.</para>
+        </returns>
+        <remarks>
+          <para>The returned object represents the UIAppearance proxy where developers can set appearance properties for instances of MTKView.</para>
+          <para>Unlike the <see cref="P:MetalKit.MTKView.Appearance" /> property, or the <see cref="M:MetalKit.MTKViewAppearanceWhenContainedIn" /> method which only work on instances of this particular class, the proxies returned by GetAppearance can be used to change the style of subclasses.</para>
+          <para>The following example shows how the GetAppearance method works</para>
+          <example>
+            <code lang="C#"><![CDATA[
+var myTheme = MTKView.GetAppearance<MyMTKViewSubclass> (myTraits, );
+myTheme.TintColor = UIColor.Red;
+]]></code>
+          </example>
+          <para>For more information, see the documentation for the <see cref="T:UIKit.UIAppearance" /> class.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetAppearance&lt;T&gt;">
+      <MemberSignature Language="C#" Value="public static MetalKit.MTKView.MTKViewAppearance GetAppearance&lt;T&gt; (UIKit.UITraitCollection traits, Type[] containers) where T : MetalKit.MTKView;" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class MetalKit.MTKView/MTKViewAppearance GetAppearance&lt;(class MetalKit.MTKView) T&gt;(class UIKit.UITraitCollection traits, class System.Type[] containers) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>MetalKit.MTKView+MTKViewAppearance</ReturnType>
+      </ReturnValue>
+      <TypeParameters>
+        <TypeParameter Name="T">
+          <Constraints>
+            <BaseTypeName>MetalKit.MTKView</BaseTypeName>
+          </Constraints>
+        </TypeParameter>
+      </TypeParameters>
+      <Parameters>
+        <Parameter Name="traits" Type="UIKit.UITraitCollection" />
+        <Parameter Name="containers" Type="System.Type[]">
+          <Attributes>
+            <Attribute>
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <typeparam name="T">The type for which the UIAppearance proxy must be returned.  This is a subclass of MTKView.</typeparam>
+        <param name="traits">Trait collection to match.</param>
+        <param name="containers">List of types that the developer wishes to have as the containers to apply this particular appearance.</param>
+        <summary>
+          <para>Obtains the appearance proxy <see cref="T:MetalKit.MTKView.MTKViewAppearance" /> for the subclass of MTKView that has the specified trait collection when the view is hosted in the specified hierarchy.</para>
+        </summary>
+        <returns>
+          <para>appearance proxy object for the specified type.</para>
+        </returns>
+        <remarks>
+          <para>The returned object represents the UIAppearance proxy where developers can set appearance properties for instances of MTKView that has the specified trait collection when the view is hosted in the specified hierarchy when those instances are contained in the hierarchy specified by the <paramref name="containers" /> parameter.</para>
+          <para>Unlike the <see cref="P:MetalKit.MTKView.Appearance" /> property, or the <see cref="M:MetalKit.MTKViewAppearanceWhenContainedIn" /> method which only work on instances of this particular class, the proxies returned by GetAppearance can be used to change the style of subclasses.</para>
+          <para>The following example shows how the GetAppearance method works</para>
+          <example>
+            <code lang="C#"><![CDATA[
+var myTheme = MTKView.GetAppearance<MyMTKViewSubclass> (myTraits, typeof (UINavigationBar), typeof (UIPopoverController));
+myTheme.TintColor = UIColor.Red;
+]]></code>
+          </example>
+          <para>For more information, see the documentation for the <see cref="T:UIKit.UIAppearance" /> class.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LayoutSublayersOfLayer">
+      <MemberSignature Language="C#" Value="public virtual void LayoutSublayersOfLayer (CoreAnimation.CALayer layer);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void LayoutSublayersOfLayer(class CoreAnimation.CALayer layer) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("layoutSublayersOfLayer:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="layer" Type="CoreAnimation.CALayer" />
+      </Parameters>
+      <Docs>
+        <param name="layer">To be added.</param>
+        <summary>Lays out the sublayers of the specified <paramref name="layer" />.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="MultisampleColorTexture">
+      <MemberSignature Language="C#" Value="public virtual Metal.IMTLTexture MultisampleColorTexture { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Metal.IMTLTexture MultisampleColorTexture" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("multisampleColorTexture")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Metal.IMTLTexture</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets the multisample color texture for the current drawable's texture.</summary>
+        <value>
+          <para>(More documentation for this node is coming)</para>
+          <para tool="nullallowed">This value can be <see langword="null" />.</para>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Paused">
+      <MemberSignature Language="C#" Value="public virtual bool Paused { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool Paused" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("isPaused")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setPaused:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets or sets a Boolean value that controls whether the draw loop is paused.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PreferredFramesPerSecond">
+      <MemberSignature Language="C#" Value="public virtual nint PreferredFramesPerSecond { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.nint PreferredFramesPerSecond" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("preferredFramesPerSecond", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setPreferredFramesPerSecond:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.nint</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets or sets the developer's preferred FPS for the view.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PresentsWithTransaction">
+      <MemberSignature Language="C#" Value="public virtual bool PresentsWithTransaction { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool PresentsWithTransaction" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("presentsWithTransaction")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setPresentsWithTransaction:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets or sets a Boolean value that controls whether the current layer is presented asynchronously.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ReleaseDrawables">
+      <MemberSignature Language="C#" Value="public virtual void ReleaseDrawables ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void ReleaseDrawables() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("releaseDrawables")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Releases the depth stencil texture and multisample color texture.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SampleCount">
+      <MemberSignature Language="C#" Value="public virtual nuint SampleCount { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.nuint SampleCount" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("sampleCount", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setSampleCount:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.nuint</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets or sets the sample count for multisample antialiasing.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WeakDelegate">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSObject WeakDelegate { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Foundation.NSObject WeakDelegate" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("delegate", ObjCRuntime.ArgumentSemantic.Weak)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setDelegate:", ObjCRuntime.ArgumentSemantic.Weak)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>An object that can respond to the delegate protocol for this type</summary>
+        <value>
+          <para>The instance that will respond to events and data requests.</para>
+          <para tool="nullallowed">This value can be <see langword="null" />.</para>
+        </value>
+        <remarks>
+          <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+          <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+          <para>   Methods must be decorated with the [Export ("selectorName")] attribute to respond to each method from the protocol.   Alternatively use the Delegate method which is strongly typed and does not require the [Export] attributes on methods.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WillDrawLayer">
+      <MemberSignature Language="C#" Value="public virtual void WillDrawLayer (CoreAnimation.CALayer layer);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void WillDrawLayer(class CoreAnimation.CALayer layer) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("layerWillDraw:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.WatchOS, 3, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="layer" Type="CoreAnimation.CALayer" />
+      </Parameters>
+      <Docs>
+        <param name="layer">To be added.</param>
+        <summary>Method that is called before <paramref name="layer" /> is drawn.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

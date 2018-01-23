@@ -1,0 +1,235 @@
+﻿<Namespace Name="SceneKit">
+  <Docs>
+    <summary>The SceneKit namespace provides high-level, scene-graph-based 3D graphics.</summary>
+    <remarks>
+      <para>Scene Kit is a framework for 3D graphics, based on hierarchical scene-graphs.</para>
+      <para>The fundamental classes in Scene Kit are <see cref="T:SceneKit.SCNScene" />, which holds all content, and  <see cref="T:CoreGraphics.SceneKit.SCNView" />, a <see cref="T:UIKit.UIView" /> that renders an <see cref="T:SceneKit.SCNScene" />.</para>
+      <para>An <see cref="T:SceneKit.SCNScene" /> has a <see cref="P:SceneKit.SCNScene.RootNode" /> property of type <see cref="T:SceneKit.SCNNode" />. <see cref="T:SceneKit.SCNNode" />'s have <see cref="P:SceneKit.SCNNode.ChildNode" />s and implement <c><![CDATA[System.Collections.Generic.IEnumerable`1<class MonoTouch.SceneKit.SCNNode>]]></c>. Properties of <see cref="T:SceneKit.SCNNode" /> include <see cref="P:SceneKit.SCNNode.Camera" />, of type <see cref="T:SceneKit.SCNCamera" />, <see cref="P:SceneKit.SCNNode.Geometry" />, of type <see cref="T:SceneKit.SCNGeometry" />, and <see cref="P:SceneKit.SCNNode.Light" />, of type <see cref="T:SceneKit.SCNLight" />.</para>
+      <para>Additionally, every <see cref="T:SceneKit.SCNNode" /> has a <see cref="P:SceneKit.SCNNode.Position" /> property that defines a location in space relative to the <see cref="T:SceneKit.SCNNode" />'s <see cref="P:SceneKit.SCNNode.ParentNode" /> and <see cref="P:SceneKit.SCNNode.FirstMaterial" /> and <see cref="P:SceneKit.SCNNode.Materials" /> that create the <see cref="T:SceneKit.SCNNode" />'s appearance.</para>
+      <para>The following example shows a minimal Scene Kit view:</para>
+      <example>
+        <code lang="C#"><![CDATA[
+public MySceneView (RectangleF frame) : base(frame)
+{
+	BackgroundColor = UIColor.Blue;
+	this.Scene = new SCNScene ();
+
+	var material = new SCNMaterial ();
+	material.Diffuse.Contents = UIImage.FromFile("textureX.png");
+	material.Specular.Contents = UIColor.Gray;
+	material.LocksAmbientWithDiffuse = true;
+
+	Scene.RootNode.Geometry = new SCNBox {
+		Width = 1,
+		Height = 1,
+		Length = 1,
+		ChamferRadius = 0.2f,
+		FirstMaterial = material
+	};
+
+	Scene.RootNode.Light = new SCNLight {
+		LightType = SCNLightType.Ambient,
+		Color = UIColor.Gray,
+	};
+
+	var camera = new SCNCamera ();
+	var cameraNode = new SCNNode () {
+		Camera = camera,
+		Position = new SCNVector3 (3, 3, 3),
+		Constraints = new SCNConstraint[] { SCNLookAtConstraint.Create(Scene.RootNode) }
+	};
+	Scene.RootNode.AddChildNode (cameraNode);
+}          
+          ]]></code>
+      </example>
+      <para>
+        <img href="SceneKit.Namespace.Image1.png" />
+      </para>
+      <format type="text/html">
+        <h3>Geometry</h3>
+      </format>
+      <para>All geometry in SceneKit is described by subclasses of <see cref="T:SceneKit.SCNGeometry" />:</para>
+      <list type="table">
+        <item>
+          <term>
+            <see cref="T:SceneKit.SCNCapsule" />
+          </term>
+          <description>A pill-shaped capsule with adjustable end caps</description>
+          <description>
+            <img href="SceneKit.SCNCapsule.png" />
+          </description>
+        </item>
+        <item>
+          <term>
+            <see cref="T:SceneKit.SCNCone" />
+          </term>
+          <description>A cone whose top can be truncated</description>
+          <description>
+            <img href="SceneKit.SCNCone.png" />
+          </description>
+        </item>
+        <item>
+          <term>
+            <see cref="T:SceneKit.SCNCube" />
+          </term>
+          <description>A rectangular box.</description>
+          <description>
+            <img href="SceneKit.SCNCube.png" />
+          </description>
+        </item>
+        <item>
+          <term>
+            <see cref="T:SceneKit.SCNCylinder" />
+          </term>
+          <description>A cylinder.</description>
+          <description>
+            <img href="SceneKit.SCNCylinder.png" />
+          </description>
+        </item>
+        <item>
+          <term>
+            <see cref="T:SceneKit.SCNFloor" />
+          </term>
+          <description>An infinite plane with the ability to reflect the geometry above it.</description>
+          <description>
+            <img href="SceneKit.SCNFloor.png" />
+          </description>
+        </item>
+        <item>
+          <term>
+            <see cref="T:SceneKit.SCNPlane" />
+          </term>
+          <description>A one-sided rectangle.</description>
+          <description>
+            <img href="SceneKit.SCNPlane.png" />
+          </description>
+        </item>
+        <item>
+          <term>
+            <see cref="T:SceneKit.SCNPyramid" />
+          </term>
+          <description>A tetrahedron.</description>
+          <description>
+            <img href="SceneKit.SCNPyramid.png" />
+          </description>
+        </item>
+        <item>
+          <term>
+            <see cref="T:SceneKit.SCNShape" />
+          </term>
+          <description>A 2D shape that has been extruded into the 3rd dimension.</description>
+          <description>
+            <img href="SceneKit.SCNShape.png" />
+          </description>
+        </item>
+        <item>
+          <term>
+            <see cref="T:SceneKit.SCNSphere" />
+          </term>
+          <description>A ball.</description>
+          <description>
+            <img href="SceneKit.SCNSphere.png" />
+          </description>
+        </item>
+        <item>
+          <term>
+            <see cref="T:SceneKit.SCNText" />
+          </term>
+          <description>Extruded text.</description>
+          <description>
+            <img href="SceneKit.SCNText.png" />
+          </description>
+        </item>
+        <item>
+          <term>
+            <see cref="T:SceneKit.SCNTorus" />
+          </term>
+          <description>A donut shape.</description>
+          <description>
+            <img href="SceneKit.SCNTorus.png" />
+          </description>
+        </item>
+        <item>
+          <term>
+            <see cref="T:SceneKit.SCNTube" />
+          </term>
+          <description>An uncapped cylinder.</description>
+          <description>
+            <img href="SceneKit.SCNCylinder.png" />
+          </description>
+        </item>
+      </list>
+      <para>In addition, SceneKit can load entire scenes from .DAE files with the <see cref="M:SceneKit.SCNScene.FromFile" /> method.</para>
+      <para>Finally, developers can create custom geometry using the <see cref="M:SceneKit.SCNGeometry.Create(SceneKit.SCNGeometrySource[], SceneKit.SCNGeometryElement[]" /> method with arrays of appropriate <see cref="T:SceneKit.SCNGeometrySource" /> and <see cref="T:SceneKit.SCNGeometryElement" /> objects. The following shows the creation of a custom pyramid:</para>
+      <example>
+        <code lang="C#"><![CDATA[
+//Lower-left
+var a = new SCNVector3(-1, -1, 0);
+//Upper-right
+var b = new SCNVector3(1, 1, 0);
+
+var halfX = (c.X + a.X) / 2;
+var halfY = (c.Y + a.Y) / 2;
+var halfZ = (c.Z + a.Z) / 2;
+
+var b = new SCNVector3(a.X, c.Y, halfZ);
+var d = new SCNVector3(c.X, a.Y, halfZ);
+//Elevate the midpoint so that it's clearly a pyramid
+var midPoint = new SCNVector3(halfX, halfY, halfZ + 1.0);
+
+//The vertices of the geometry
+var locs = new [] {
+	a, b, c, d, midPoint
+};
+var locSource = SCNGeometrySource.FromVertices(locs);
+
+//Note that this relies on the ordering of locs above
+//and it defines triangles (could be triangle strips, etc.)
+var indices = new [] {
+	//Triangles are defined counter-clockwise!
+	4, 1, 0,
+	1, 4, 2,
+	2, 4, 3,
+	3, 4, 0
+};
+
+
+var idxArray = new byte[indices.Length][];
+for(int i = 0; i < idxArray.Length; i++)
+{
+	idxArray[i] = BitConverter.GetBytes(indices[i]);
+}
+var idxData = NSData.FromArray(idxArray.SelectMany(id => id).ToArray());
+
+//Note that this relies on indices defining triangles
+var element = SCNGeometryElement.FromData(idxData, SCNGeometryPrimitiveType.Triangles, indices.Length / 3, sizeof(int));
+
+//Normals are relative to geometry
+var normals = new [] {
+	new SCNVector3(0, 0, 1),
+	new SCNVector3(0, 0, 1),
+	new SCNVector3(0, 0, 1),
+	new SCNVector3(0, 0, 1),
+	new SCNVector3(0, 0, 1),
+};;
+var normSource = SCNGeometrySource.FromNormals(normals);
+
+//These texture coords will cause the texture to wrap 
+var txCoords = new [] {
+	new CGPoint(-1, -1),
+	new CGPoint(-1, 1),
+	new CGPoint(1, 1),
+	new CGPoint(1, -1)
+};
+
+var txCoordsSource = SCNGeometrySource.FromTextureCoordinates(txCoords);
+
+var geometry = SCNGeometry.Create(new [] { locSource, normSource, txCoordsSource }, new [] { element });
+    ]]></code>
+      </example>
+      <para>
+        <img href="SceneKit.CustomGeometry.png" />
+      </para>
+    </remarks>
+  </Docs>
+</Namespace>

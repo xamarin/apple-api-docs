@@ -1,0 +1,130 @@
+<Type Name="NSUbiquitousKeyValueStore+Notifications" FullName="Foundation.NSUbiquitousKeyValueStore+Notifications">
+  <TypeSignature Language="C#" Value="public static class NSUbiquitousKeyValueStore.Notifications" />
+  <TypeSignature Language="ILAsm" Value=".class nested public auto ansi abstract sealed beforefieldinit NSUbiquitousKeyValueStore/Notifications extends System.Object" />
+  <AssemblyInfo>
+    <AssemblyName>Xamarin.iOS</AssemblyName>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>
+      <para>Notification posted by the <see cref="T:Foundation.NSUbiquitousKeyValueStore" /> class.</para>
+    </summary>
+    <remarks>
+      <para>This is a static class which contains various helper methods that allow developers to observe events posted in the iOS notification hub (<see cref="T:Foundation.NSNotificationCenter" />).</para>
+      <para>The methods defined in this class post events invoke the provided method or lambda with a <see cref="T:Foundation.NSNotificationEventArgs" /> parameter which contains strongly typed properties for the notification arguments.</para>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName="ObserveDidChangeExternally">
+      <MemberSignature Language="C#" Value="public static Foundation.NSObject ObserveDidChangeExternally (EventHandler&lt;Foundation.NSUbiquitousKeyValueStoreChangeEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSObject ObserveDidChangeExternally(class System.EventHandler`1&lt;class Foundation.NSUbiquitousKeyValueStoreChangeEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="handler" Type="System.EventHandler&lt;Foundation.NSUbiquitousKeyValueStoreChangeEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="handler">Method to invoke when the notification is posted.</param>
+        <summary>Registers a method to be notified when the NSUbiquitousKeyValueStoreDidChangeExternallyNotification notification is posted.</summary>
+        <returns>
+          <para>The returned NSObject represents the registered notification.   Either call Dispose on the object to stop receiving notifications, or pass it to <see cref="M:Foundation.NSNotificationCenter.RemoveObserver" /></para>
+        </returns>
+        <remarks>
+          <para>The following example shows how developers can use this method in their code:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = NSUbiquitousKeyValueStore.Notifications.ObserveDidChangeExternally ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("ChangedKeys", args.ChangedKeys);
+    Console.WriteLine ("ChangeReason", args.ChangeReason);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+//Method style
+//
+NSObject notification;
+void Callback (object sender, Foundation.NSUbiquitousKeyValueStoreChangeEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("ChangedKeys", args.ChangedKeys);
+    Console.WriteLine ("ChangeReason", args.ChangeReason);
+}
+
+void Setup ()
+{
+    notification = NSUbiquitousKeyValueStore.Notifications.ObserveDidChangeExternally (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ObserveDidChangeExternally">
+      <MemberSignature Language="C#" Value="public static Foundation.NSObject ObserveDidChangeExternally (Foundation.NSObject objectToObserve, EventHandler&lt;Foundation.NSUbiquitousKeyValueStoreChangeEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSObject ObserveDidChangeExternally(class Foundation.NSObject objectToObserve, class System.EventHandler`1&lt;class Foundation.NSUbiquitousKeyValueStoreChangeEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="objectToObserve" Type="Foundation.NSObject" />
+        <Parameter Name="handler" Type="System.EventHandler&lt;Foundation.NSUbiquitousKeyValueStoreChangeEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="objectToObserve">The object to observe.</param>
+        <param name="handler">Method to invoke when the notification is posted.</param>
+        <summary>Strongly typed notification for the <see cref="P:Foundation.NSUbiquitousKeyValueStore.DidChangeExternallyNotification" /> constant.</summary>
+        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="M:Foundation.NSNotificationCenter.RemoveObserver" /></returns>
+        <remarks>
+          <para id="tool-remark">This method can be used to subscribe for <see cref="P:Foundation.NSUbiquitousKeyValueStore.DidChangeExternallyNotification" /> notifications.</para>
+          <example>
+            <code lang="C#"><![CDATA[
+// Listen to all notifications posted for any object
+var token = NSUbiquitousKeyValueStore.Notifications.ObserveDidChangeExternally ((notification) => {
+	Console.WriteLine ("Observed DidChangeExternallyNotification!");
+};
+
+// Listen to all notifications posted for a single object
+var token = NSUbiquitousKeyValueStore.Notifications.ObserveDidChangeExternally (objectToObserve, (notification) => {
+	Console.WriteLine ($"Observed DidChangeExternallyNotification for {nameof (objectToObserve)}!");
+};
+
+// Stop listening for notifications
+token.Dispose ();
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

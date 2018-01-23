@@ -1,0 +1,358 @@
+<Type Name="NetworkReachability" FullName="SystemConfiguration.NetworkReachability">
+  <TypeSignature Language="C#" Value="public class NetworkReachability : IDisposable, ObjCRuntime.INativeObject" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit NetworkReachability extends System.Object implements class ObjCRuntime.INativeObject, class System.IDisposable" />
+  <AssemblyInfo>
+    <AssemblyName>Xamarin.iOS</AssemblyName>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>ObjCRuntime.INativeObject</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>System.IDisposable</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Docs>
+    <summary>Used to detect the reachability of the network and to get notifications on network reachability changes.</summary>
+    <remarks>
+      <para>You instantiate this class with a hostname or an IP address, and then use the <see cref="M:SystemConfiguration.NetworkReachability.TryGetFlags" /> to get the reachability status. </para>
+      <para>To be notified of changes in the reachability of the specified host, you use the <see cref="M:SystemConfiguration.NetworkReachability.SetNotification" /> method to register a callback that will be invoked when there is a network reachability event and then call one of the <see cref="M:SystemConfiguration.NetworkReachability.Schedule" /> methods to start the event delivery.   Additionally,  <see cref="M:SystemConfiguration.NetworkReachability.SetDispatchQueue" /> can be used to configure the queue upon which the notification is invoked.</para>
+      <para>
+You can detect the ad-hoc WiFi network using the IP address 169.254.0.0 and the general network availability with 0.0.0.0. </para>
+      <example>
+        <code lang="C#"><![CDATA[// Track the reachability to a specific host
+void Setup ()
+{
+    reachability = new NetworkReachability ("www.google.com");
+    
+    // Need to probe before we queue, or we wont get any meaningful values
+    // this only happens when you create NetworkReachability from a hostname
+    reachable = reachability.TryGetFlags (out flags);
+    
+    reachability.SetNotification (OnChange);
+    reachability.Schedule (CFRunLoop.Current, CFRunLoop.ModeDefault);
+}
+
+void OnChange (NetworkReachabilityFlags flags)
+{
+    Console.WriteLine ("New state for host: " + flags);
+}
+]]></code>
+      </example>
+    </remarks>
+    <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=7973effb-bd18-4109-b01f-a377f6f9cb73">reachability</related>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public NetworkReachability (System.Net.IPAddress ip);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Net.IPAddress ip) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="ip" Type="System.Net.IPAddress" />
+      </Parameters>
+      <Docs>
+        <param name="ip">The IP address.   Only IPV4 is supported.</param>
+        <summary>Creates a network reachability class based on an IP address.</summary>
+        <remarks>In addition to probing general hosts on the Internet, you can detect the ad-hoc WiFi network using the IP address 169.254.0.0 and the general network availability with 0.0.0.0. </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public NetworkReachability (string address);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string address) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="address" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="address">A host name.</param>
+        <summary>Creates a network reachability object from a hostname.</summary>
+        <remarks>The hostname is resolved using the current DNS settings.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public NetworkReachability (System.Net.IPAddress localAddress, System.Net.IPAddress remoteAddress);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Net.IPAddress localAddress, class System.Net.IPAddress remoteAddress) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="localAddress" Type="System.Net.IPAddress" />
+        <Parameter Name="remoteAddress" Type="System.Net.IPAddress" />
+      </Parameters>
+      <Docs>
+        <param name="localAddress">Local address to monitor, this can be null if you are not interested in the local changes.</param>
+        <param name="remoteAddress">Remote address to monitor, this can be null if you are not interested in the remote changes.</param>
+        <summary>Creates a network reachability object from a local IP address and a remote one.</summary>
+        <remarks>
+          <para />
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Dispose">
+      <MemberSignature Language="C#" Value="public void Dispose ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Dispose() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Releases the resources used by the NetworkReachability object.</summary>
+        <remarks>
+          <para>The Dispose method releases the resources used by the NetworkReachability class.</para>
+          <para>Calling the Dispose method when the application is finished using the NetworkReachability ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.  For more information on releasing resources see ``Cleaning up Unmananaged Resources'' at http://msdn.microsoft.com/en-us/library/498928w2.aspx</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Dispose">
+      <MemberSignature Language="C#" Value="protected virtual void Dispose (bool disposing);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void Dispose(bool disposing) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="disposing" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="disposing">
+          <para>If set to <see langword="true" />, the method is invoked directly and will dispose manage and unmanaged resources;   If set to <see langword="false" /> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</para>
+        </param>
+        <summary>Releases the resources used by the NetworkReachability object.</summary>
+        <remarks>
+          <para>This Dispose method releases the resources used by the NetworkReachability class.</para>
+          <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposing <paramref name="disposing" /> is set to <see langword="true" /> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false" />. </para>
+          <para>Calling the Dispose method when the application is finished using the NetworkReachability ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.</para>
+          <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at http://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Finalize">
+      <MemberSignature Language="C#" Value="~NetworkReachability ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Finalize() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Finalizer for the NetworkReachability object</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetFlags">
+      <MemberSignature Language="C#" Value="public SystemConfiguration.StatusCode GetFlags (out SystemConfiguration.NetworkReachabilityFlags flags);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype SystemConfiguration.StatusCode GetFlags(valuetype SystemConfiguration.NetworkReachabilityFlags flags) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>SystemConfiguration.StatusCode</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="flags" Type="SystemConfiguration.NetworkReachabilityFlags&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="flags">Returned value of the current reachability for the specified host.</param>
+        <summary>Method used to get the current reachability flags for this host.</summary>
+        <returns>Returned value of the current reachability for the specified host.</returns>
+        <remarks>
+          <para />
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Handle">
+      <MemberSignature Language="C#" Value="public IntPtr Handle { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int Handle" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Handle (pointer) to the unmanaged object representation.</summary>
+        <value>A pointer</value>
+        <remarks>This IntPtr is a handle to the underlying unmanaged representation for this object.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Schedule">
+      <MemberSignature Language="C#" Value="public bool Schedule ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool Schedule() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Schedules the delivery of the events (what is set with SetCallback) on the current loop.</summary>
+        <returns>True if the operation succeeded, false otherwise.</returns>
+        <remarks>This schedules using the <see cref="P:CoreFoundation.CFRunLoop.Current" /> and the <see cref="P:CoreFoundation.CFRunLoop.ModeDefault" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Schedule">
+      <MemberSignature Language="C#" Value="public bool Schedule (CoreFoundation.CFRunLoop runLoop, string mode);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool Schedule(class CoreFoundation.CFRunLoop runLoop, string mode) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="runLoop" Type="CoreFoundation.CFRunLoop" />
+        <Parameter Name="mode" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="runLoop">The run loop where the reachability callback is invoked.</param>
+        <param name="mode">The run loop mode.</param>
+        <summary>Schedules the delivery of the events (what is set with SetCallback) on the given run loop.</summary>
+        <returns>True if the operation succeeded, false otherwise.</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="SetDispatchQueue">
+      <MemberSignature Language="C#" Value="public bool SetDispatchQueue (CoreFoundation.DispatchQueue queue);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool SetDispatchQueue(class CoreFoundation.DispatchQueue queue) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="queue" Type="CoreFoundation.DispatchQueue" />
+      </Parameters>
+      <Docs>
+        <param name="queue">The queue on which the notification will be posted.   Pass <see langword="null" /> to disable notifications on the specified queue.</param>
+        <summary>Specifies the <see cref="T:CoreFoundation.DispatchQueue" /> to be used for callbacks.</summary>
+        <returns>True on success, false on failure.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetNotification">
+      <MemberSignature Language="C#" Value="public SystemConfiguration.StatusCode SetNotification (SystemConfiguration.NetworkReachability.Notification callback);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype SystemConfiguration.StatusCode SetNotification(class SystemConfiguration.NetworkReachability/Notification callback) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>SystemConfiguration.StatusCode</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="callback" Type="SystemConfiguration.NetworkReachability+Notification" />
+      </Parameters>
+      <Docs>
+        <param name="callback">The method to invoke on a network reachability change.</param>
+        <summary>Configures the method to be invoked when network reachability changes.</summary>
+        <returns>True if the operation succeeded, false otherwise.</returns>
+        <remarks>The notification is invoked on either the runloop configured in the call to <see cref="M:SystemConfiguration.NetworkReachability.Schedule" />, or dispatched on the queue specified with <see cref="M:SystemConfiguration.NetworkReachability.SetDispatchQueue." /></remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TryGetFlags">
+      <MemberSignature Language="C#" Value="public bool TryGetFlags (out SystemConfiguration.NetworkReachabilityFlags flags);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool TryGetFlags(valuetype SystemConfiguration.NetworkReachabilityFlags flags) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="flags" Type="SystemConfiguration.NetworkReachabilityFlags&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="flags">Returned value of the current reachability for the specified host.</param>
+        <summary>Method used to get the current reachability flags for this host.</summary>
+        <returns>Detailed status flag.</returns>
+        <remarks>
+          <para />
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Unschedule">
+      <MemberSignature Language="C#" Value="public bool Unschedule ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool Unschedule() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Removes the NetworkRechability from the given run loop.</summary>
+        <returns>True if the operation succeeded, false otherwise.</returns>
+        <remarks>This unschedules the notifications from the <see cref="P:CoreFoundation.CFRunLoop.Current" /> and the <see cref="P:CoreFoundation.CFRunLoop.ModeDefault" />.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Unschedule">
+      <MemberSignature Language="C#" Value="public bool Unschedule (CoreFoundation.CFRunLoop runLoop, string mode);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool Unschedule(class CoreFoundation.CFRunLoop runLoop, string mode) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="runLoop" Type="CoreFoundation.CFRunLoop" />
+        <Parameter Name="mode" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="runLoop">The run loop where the object was previously scheduled.</param>
+        <param name="mode">The mode used.</param>
+        <summary>Removes the NetworkRechability from the given run loop.</summary>
+        <returns>True on success.</returns>
+        <remarks />
+      </Docs>
+    </Member>
+  </Members>
+</Type>

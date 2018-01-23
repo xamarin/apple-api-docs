@@ -1,0 +1,43 @@
+<Type Name="VNRequestCompletionHandler" FullName="Vision.VNRequestCompletionHandler">
+  <TypeSignature Language="C#" Value="public delegate void VNRequestCompletionHandler(VNRequest request, NSError error);" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed VNRequestCompletionHandler extends System.MulticastDelegate" />
+  <AssemblyInfo>
+    <AssemblyName>Xamarin.iOS</AssemblyName>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Delegate</BaseTypeName>
+  </Base>
+  <Parameters>
+    <Parameter Name="request" Type="Vision.VNRequest" />
+    <Parameter Name="error" Type="Foundation.NSError" />
+  </Parameters>
+  <ReturnValue>
+    <ReturnType>System.Void</ReturnType>
+  </ReturnValue>
+  <Docs>
+    <param name="request">The <see cref="T:Vision.VNRequest" /> for which this is the delegate.</param>
+    <param name="error">If not <see langword="null" />, an error that occurred during vision processing.</param>
+    <summary>A delegate that is called once for each feature detected in a <see cref="T:Vision.VNRequest" />.</summary>
+    <remarks>
+      <para>Developers will typically downcast the <param name="request" /> to the expected subtype and retrieve relevant data from the downcast value:</para>
+      <example>
+        <code lang="C#"><![CDATA[
+var findFacesRequest = new VNDetectFaceRectanglesRequest((request, error) =>
+{
+   if (error != null)
+   {
+	   HandleError(error);
+   }
+   else
+   {
+		var frs = request as VNDetectFaceRectanglesRequest;
+		// Assert frs == findFacesRequest  
+		var rs = frs.GetResults<VNFaceObservation>();
+		foreach (var fo in rs)
+		{ // ... etc ...
+    ]]></code>
+      </example>
+    </remarks>
+  </Docs>
+</Type>

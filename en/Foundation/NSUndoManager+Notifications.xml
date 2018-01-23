@@ -1,0 +1,827 @@
+<Type Name="NSUndoManager+Notifications" FullName="Foundation.NSUndoManager+Notifications">
+  <TypeSignature Language="C#" Value="public static class NSUndoManager.Notifications" />
+  <TypeSignature Language="ILAsm" Value=".class nested public auto ansi abstract sealed beforefieldinit NSUndoManager/Notifications extends System.Object" />
+  <AssemblyInfo>
+    <AssemblyName>Xamarin.iOS</AssemblyName>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>
+      <para>Notification posted by the <see cref="T:Foundation.NSUndoManager" /> class.</para>
+    </summary>
+    <remarks>
+      <para>This is a static class which contains various helper methods that allow developers to observe events posted in the iOS notification hub (<see cref="T:Foundation.NSNotificationCenter" />).</para>
+      <para>The methods defined in this class post events invoke the provided method or lambda with a <see cref="T:Foundation.NSNotificationEventArgs" /> parameter which contains strongly typed properties for the notification arguments.</para>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName="ObserveCheckpoint">
+      <MemberSignature Language="C#" Value="public static Foundation.NSObject ObserveCheckpoint (EventHandler&lt;Foundation.NSNotificationEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSObject ObserveCheckpoint(class System.EventHandler`1&lt;class Foundation.NSNotificationEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="handler" Type="System.EventHandler&lt;Foundation.NSNotificationEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="handler">Method to invoke when the notification is posted.</param>
+        <summary>Strongly typed notification for the <see cref="P:Foundation.NSUndoManager.CheckpointNotification" /> constant.</summary>
+        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="M:Foundation.NSNotificationCenter.RemoveObserver" /></returns>
+        <remarks>
+          <para>The following example shows how you can use this method in your code</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = NSUndoManager.Notifications.ObserveCheckpoint ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+//Method style
+//
+NSObject notification;
+void Callback (object sender, Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = NSUndoManager.Notifications.ObserveCheckpoint (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ObserveCheckpoint">
+      <MemberSignature Language="C#" Value="public static Foundation.NSObject ObserveCheckpoint (Foundation.NSObject objectToObserve, EventHandler&lt;Foundation.NSNotificationEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSObject ObserveCheckpoint(class Foundation.NSObject objectToObserve, class System.EventHandler`1&lt;class Foundation.NSNotificationEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="objectToObserve" Type="Foundation.NSObject" />
+        <Parameter Name="handler" Type="System.EventHandler&lt;Foundation.NSNotificationEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="objectToObserve">The object to observe.</param>
+        <param name="handler">Method to invoke when the notification is posted.</param>
+        <summary>Strongly typed notification for the <see cref="P:Foundation.NSUndoManager.CheckpointNotification" /> constant.</summary>
+        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="M:Foundation.NSNotificationCenter.RemoveObserver" /></returns>
+        <remarks>
+          <para id="tool-remark">This method can be used to subscribe for <see cref="P:Foundation.NSUndoManager.CheckpointNotification" /> notifications.</para>
+          <example>
+            <code lang="C#"><![CDATA[
+// Listen to all notifications posted for any object
+var token = NSUndoManager.Notifications.ObserveCheckpoint ((notification) => {
+	Console.WriteLine ("Observed CheckpointNotification!");
+};
+
+// Listen to all notifications posted for a single object
+var token = NSUndoManager.Notifications.ObserveCheckpoint (objectToObserve, (notification) => {
+	Console.WriteLine ($"Observed CheckpointNotification for {nameof (objectToObserve)}!");
+};
+
+// Stop listening for notifications
+token.Dispose ();
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ObserveDidCloseUndoGroup">
+      <MemberSignature Language="C#" Value="public static Foundation.NSObject ObserveDidCloseUndoGroup (EventHandler&lt;Foundation.NSUndoManagerCloseUndoGroupEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSObject ObserveDidCloseUndoGroup(class System.EventHandler`1&lt;class Foundation.NSUndoManagerCloseUndoGroupEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="handler" Type="System.EventHandler&lt;Foundation.NSUndoManagerCloseUndoGroupEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="handler">Method to invoke when the notification is posted.</param>
+        <summary>Registers a method to be notified when the NSUndoManagerDidCloseUndoGroupNotification notification is posted.</summary>
+        <returns>
+          <para>The returned NSObject represents the registered notification.   Either call Dispose on the object to stop receiving notifications, or pass it to <see cref="M:Foundation.NSNotificationCenter.RemoveObserver" /></para>
+        </returns>
+        <remarks>
+          <para>The following example shows how developers can use this method in their code:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = NSUndoManager.Notifications.ObserveDidCloseUndoGroup ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("Discardable", args.Discardable);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+//Method style
+//
+NSObject notification;
+void Callback (object sender, Foundation.NSUndoManagerCloseUndoGroupEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("Discardable", args.Discardable);
+}
+
+void Setup ()
+{
+    notification = NSUndoManager.Notifications.ObserveDidCloseUndoGroup (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ObserveDidCloseUndoGroup">
+      <MemberSignature Language="C#" Value="public static Foundation.NSObject ObserveDidCloseUndoGroup (Foundation.NSObject objectToObserve, EventHandler&lt;Foundation.NSUndoManagerCloseUndoGroupEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSObject ObserveDidCloseUndoGroup(class Foundation.NSObject objectToObserve, class System.EventHandler`1&lt;class Foundation.NSUndoManagerCloseUndoGroupEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="objectToObserve" Type="Foundation.NSObject" />
+        <Parameter Name="handler" Type="System.EventHandler&lt;Foundation.NSUndoManagerCloseUndoGroupEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="objectToObserve">The object to observe.</param>
+        <param name="handler">Method to invoke when the notification is posted.</param>
+        <summary>Strongly typed notification for the <see cref="P:Foundation.NSUndoManager.DidCloseUndoGroupNotification" /> constant.</summary>
+        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="M:Foundation.NSNotificationCenter.RemoveObserver" /></returns>
+        <remarks>
+          <para id="tool-remark">This method can be used to subscribe for <see cref="P:Foundation.NSUndoManager.DidCloseUndoGroupNotification" /> notifications.</para>
+          <example>
+            <code lang="C#"><![CDATA[
+// Listen to all notifications posted for any object
+var token = NSUndoManager.Notifications.ObserveDidCloseUndoGroup ((notification) => {
+	Console.WriteLine ("Observed DidCloseUndoGroupNotification!");
+};
+
+// Listen to all notifications posted for a single object
+var token = NSUndoManager.Notifications.ObserveDidCloseUndoGroup (objectToObserve, (notification) => {
+	Console.WriteLine ($"Observed DidCloseUndoGroupNotification for {nameof (objectToObserve)}!");
+};
+
+// Stop listening for notifications
+token.Dispose ();
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ObserveDidOpenUndoGroup">
+      <MemberSignature Language="C#" Value="public static Foundation.NSObject ObserveDidOpenUndoGroup (EventHandler&lt;Foundation.NSNotificationEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSObject ObserveDidOpenUndoGroup(class System.EventHandler`1&lt;class Foundation.NSNotificationEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="handler" Type="System.EventHandler&lt;Foundation.NSNotificationEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="handler">Method to invoke when the notification is posted.</param>
+        <summary>Strongly typed notification for the <see cref="P:Foundation.NSUndoManager.DidOpenUndoGroupNotification" /> constant.</summary>
+        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="M:Foundation.NSNotificationCenter.RemoveObserver" /></returns>
+        <remarks>
+          <para>The following example shows how you can use this method in your code</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = NSUndoManager.Notifications.ObserveDidOpenUndoGroup ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+//Method style
+//
+NSObject notification;
+void Callback (object sender, Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = NSUndoManager.Notifications.ObserveDidOpenUndoGroup (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ObserveDidOpenUndoGroup">
+      <MemberSignature Language="C#" Value="public static Foundation.NSObject ObserveDidOpenUndoGroup (Foundation.NSObject objectToObserve, EventHandler&lt;Foundation.NSNotificationEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSObject ObserveDidOpenUndoGroup(class Foundation.NSObject objectToObserve, class System.EventHandler`1&lt;class Foundation.NSNotificationEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="objectToObserve" Type="Foundation.NSObject" />
+        <Parameter Name="handler" Type="System.EventHandler&lt;Foundation.NSNotificationEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="objectToObserve">The object to observe.</param>
+        <param name="handler">Method to invoke when the notification is posted.</param>
+        <summary>Strongly typed notification for the <see cref="P:Foundation.NSUndoManager.DidOpenUndoGroupNotification" /> constant.</summary>
+        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="M:Foundation.NSNotificationCenter.RemoveObserver" /></returns>
+        <remarks>
+          <para id="tool-remark">This method can be used to subscribe for <see cref="P:Foundation.NSUndoManager.DidOpenUndoGroupNotification" /> notifications.</para>
+          <example>
+            <code lang="C#"><![CDATA[
+// Listen to all notifications posted for any object
+var token = NSUndoManager.Notifications.ObserveDidOpenUndoGroup ((notification) => {
+	Console.WriteLine ("Observed DidOpenUndoGroupNotification!");
+};
+
+// Listen to all notifications posted for a single object
+var token = NSUndoManager.Notifications.ObserveDidOpenUndoGroup (objectToObserve, (notification) => {
+	Console.WriteLine ($"Observed DidOpenUndoGroupNotification for {nameof (objectToObserve)}!");
+};
+
+// Stop listening for notifications
+token.Dispose ();
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ObserveDidRedoChange">
+      <MemberSignature Language="C#" Value="public static Foundation.NSObject ObserveDidRedoChange (EventHandler&lt;Foundation.NSNotificationEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSObject ObserveDidRedoChange(class System.EventHandler`1&lt;class Foundation.NSNotificationEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="handler" Type="System.EventHandler&lt;Foundation.NSNotificationEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="handler">Method to invoke when the notification is posted.</param>
+        <summary>Strongly typed notification for the <see cref="P:Foundation.NSUndoManager.DidRedoChangeNotification" /> constant.</summary>
+        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="M:Foundation.NSNotificationCenter.RemoveObserver" /></returns>
+        <remarks>
+          <para>The following example shows how you can use this method in your code</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = NSUndoManager.Notifications.ObserveDidRedoChange ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+//Method style
+//
+NSObject notification;
+void Callback (object sender, Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = NSUndoManager.Notifications.ObserveDidRedoChange (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ObserveDidRedoChange">
+      <MemberSignature Language="C#" Value="public static Foundation.NSObject ObserveDidRedoChange (Foundation.NSObject objectToObserve, EventHandler&lt;Foundation.NSNotificationEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSObject ObserveDidRedoChange(class Foundation.NSObject objectToObserve, class System.EventHandler`1&lt;class Foundation.NSNotificationEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="objectToObserve" Type="Foundation.NSObject" />
+        <Parameter Name="handler" Type="System.EventHandler&lt;Foundation.NSNotificationEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="objectToObserve">The object to observe.</param>
+        <param name="handler">Method to invoke when the notification is posted.</param>
+        <summary>Strongly typed notification for the <see cref="P:Foundation.NSUndoManager.DidRedoChangeNotification" /> constant.</summary>
+        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="M:Foundation.NSNotificationCenter.RemoveObserver" /></returns>
+        <remarks>
+          <para id="tool-remark">This method can be used to subscribe for <see cref="P:Foundation.NSUndoManager.DidRedoChangeNotification" /> notifications.</para>
+          <example>
+            <code lang="C#"><![CDATA[
+// Listen to all notifications posted for any object
+var token = NSUndoManager.Notifications.ObserveDidRedoChange ((notification) => {
+	Console.WriteLine ("Observed DidRedoChangeNotification!");
+};
+
+// Listen to all notifications posted for a single object
+var token = NSUndoManager.Notifications.ObserveDidRedoChange (objectToObserve, (notification) => {
+	Console.WriteLine ($"Observed DidRedoChangeNotification for {nameof (objectToObserve)}!");
+};
+
+// Stop listening for notifications
+token.Dispose ();
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ObserveDidUndoChange">
+      <MemberSignature Language="C#" Value="public static Foundation.NSObject ObserveDidUndoChange (EventHandler&lt;Foundation.NSNotificationEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSObject ObserveDidUndoChange(class System.EventHandler`1&lt;class Foundation.NSNotificationEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="handler" Type="System.EventHandler&lt;Foundation.NSNotificationEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="handler">Method to invoke when the notification is posted.</param>
+        <summary>Strongly typed notification for the <see cref="P:Foundation.NSUndoManager.DidUndoChangeNotification" /> constant.</summary>
+        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="M:Foundation.NSNotificationCenter.RemoveObserver" /></returns>
+        <remarks>
+          <para>The following example shows how you can use this method in your code</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = NSUndoManager.Notifications.ObserveDidUndoChange ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+//Method style
+//
+NSObject notification;
+void Callback (object sender, Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = NSUndoManager.Notifications.ObserveDidUndoChange (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ObserveDidUndoChange">
+      <MemberSignature Language="C#" Value="public static Foundation.NSObject ObserveDidUndoChange (Foundation.NSObject objectToObserve, EventHandler&lt;Foundation.NSNotificationEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSObject ObserveDidUndoChange(class Foundation.NSObject objectToObserve, class System.EventHandler`1&lt;class Foundation.NSNotificationEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="objectToObserve" Type="Foundation.NSObject" />
+        <Parameter Name="handler" Type="System.EventHandler&lt;Foundation.NSNotificationEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="objectToObserve">The object to observe.</param>
+        <param name="handler">Method to invoke when the notification is posted.</param>
+        <summary>Strongly typed notification for the <see cref="P:Foundation.NSUndoManager.DidUndoChangeNotification" /> constant.</summary>
+        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="M:Foundation.NSNotificationCenter.RemoveObserver" /></returns>
+        <remarks>
+          <para id="tool-remark">This method can be used to subscribe for <see cref="P:Foundation.NSUndoManager.DidUndoChangeNotification" /> notifications.</para>
+          <example>
+            <code lang="C#"><![CDATA[
+// Listen to all notifications posted for any object
+var token = NSUndoManager.Notifications.ObserveDidUndoChange ((notification) => {
+	Console.WriteLine ("Observed DidUndoChangeNotification!");
+};
+
+// Listen to all notifications posted for a single object
+var token = NSUndoManager.Notifications.ObserveDidUndoChange (objectToObserve, (notification) => {
+	Console.WriteLine ($"Observed DidUndoChangeNotification for {nameof (objectToObserve)}!");
+};
+
+// Stop listening for notifications
+token.Dispose ();
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ObserveWillCloseUndoGroup">
+      <MemberSignature Language="C#" Value="public static Foundation.NSObject ObserveWillCloseUndoGroup (EventHandler&lt;Foundation.NSUndoManagerCloseUndoGroupEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSObject ObserveWillCloseUndoGroup(class System.EventHandler`1&lt;class Foundation.NSUndoManagerCloseUndoGroupEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="handler" Type="System.EventHandler&lt;Foundation.NSUndoManagerCloseUndoGroupEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="handler">Method to invoke when the notification is posted.</param>
+        <summary>Registers a method to be notified when the NSUndoManagerWillCloseUndoGroupNotification notification is posted.</summary>
+        <returns>
+          <para>The returned NSObject represents the registered notification.   Either call Dispose on the object to stop receiving notifications, or pass it to <see cref="M:Foundation.NSNotificationCenter.RemoveObserver" /></para>
+        </returns>
+        <remarks>
+          <para>The following example shows how developers can use this method in their code:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = NSUndoManager.Notifications.ObserveWillCloseUndoGroup ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("Discardable", args.Discardable);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+//Method style
+//
+NSObject notification;
+void Callback (object sender, Foundation.NSUndoManagerCloseUndoGroupEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("Discardable", args.Discardable);
+}
+
+void Setup ()
+{
+    notification = NSUndoManager.Notifications.ObserveWillCloseUndoGroup (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ObserveWillCloseUndoGroup">
+      <MemberSignature Language="C#" Value="public static Foundation.NSObject ObserveWillCloseUndoGroup (Foundation.NSObject objectToObserve, EventHandler&lt;Foundation.NSUndoManagerCloseUndoGroupEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSObject ObserveWillCloseUndoGroup(class Foundation.NSObject objectToObserve, class System.EventHandler`1&lt;class Foundation.NSUndoManagerCloseUndoGroupEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="objectToObserve" Type="Foundation.NSObject" />
+        <Parameter Name="handler" Type="System.EventHandler&lt;Foundation.NSUndoManagerCloseUndoGroupEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="objectToObserve">The object to observe.</param>
+        <param name="handler">Method to invoke when the notification is posted.</param>
+        <summary>Strongly typed notification for the <see cref="P:Foundation.NSUndoManager.WillCloseUndoGroupNotification" /> constant.</summary>
+        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="M:Foundation.NSNotificationCenter.RemoveObserver" /></returns>
+        <remarks>
+          <para id="tool-remark">This method can be used to subscribe for <see cref="P:Foundation.NSUndoManager.WillCloseUndoGroupNotification" /> notifications.</para>
+          <example>
+            <code lang="C#"><![CDATA[
+// Listen to all notifications posted for any object
+var token = NSUndoManager.Notifications.ObserveWillCloseUndoGroup ((notification) => {
+	Console.WriteLine ("Observed WillCloseUndoGroupNotification!");
+};
+
+// Listen to all notifications posted for a single object
+var token = NSUndoManager.Notifications.ObserveWillCloseUndoGroup (objectToObserve, (notification) => {
+	Console.WriteLine ($"Observed WillCloseUndoGroupNotification for {nameof (objectToObserve)}!");
+};
+
+// Stop listening for notifications
+token.Dispose ();
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ObserveWillRedoChange">
+      <MemberSignature Language="C#" Value="public static Foundation.NSObject ObserveWillRedoChange (EventHandler&lt;Foundation.NSNotificationEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSObject ObserveWillRedoChange(class System.EventHandler`1&lt;class Foundation.NSNotificationEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="handler" Type="System.EventHandler&lt;Foundation.NSNotificationEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="handler">Method to invoke when the notification is posted.</param>
+        <summary>Strongly typed notification for the <see cref="P:Foundation.NSUndoManager.WillRedoChangeNotification" /> constant.</summary>
+        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="M:Foundation.NSNotificationCenter.RemoveObserver" /></returns>
+        <remarks>
+          <para>The following example shows how you can use this method in your code</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = NSUndoManager.Notifications.ObserveWillRedoChange ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+//Method style
+//
+NSObject notification;
+void Callback (object sender, Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = NSUndoManager.Notifications.ObserveWillRedoChange (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ObserveWillRedoChange">
+      <MemberSignature Language="C#" Value="public static Foundation.NSObject ObserveWillRedoChange (Foundation.NSObject objectToObserve, EventHandler&lt;Foundation.NSNotificationEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSObject ObserveWillRedoChange(class Foundation.NSObject objectToObserve, class System.EventHandler`1&lt;class Foundation.NSNotificationEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="objectToObserve" Type="Foundation.NSObject" />
+        <Parameter Name="handler" Type="System.EventHandler&lt;Foundation.NSNotificationEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="objectToObserve">The object to observe.</param>
+        <param name="handler">Method to invoke when the notification is posted.</param>
+        <summary>Strongly typed notification for the <see cref="P:Foundation.NSUndoManager.WillRedoChangeNotification" /> constant.</summary>
+        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="M:Foundation.NSNotificationCenter.RemoveObserver" /></returns>
+        <remarks>
+          <para id="tool-remark">This method can be used to subscribe for <see cref="P:Foundation.NSUndoManager.WillRedoChangeNotification" /> notifications.</para>
+          <example>
+            <code lang="C#"><![CDATA[
+// Listen to all notifications posted for any object
+var token = NSUndoManager.Notifications.ObserveWillRedoChange ((notification) => {
+	Console.WriteLine ("Observed WillRedoChangeNotification!");
+};
+
+// Listen to all notifications posted for a single object
+var token = NSUndoManager.Notifications.ObserveWillRedoChange (objectToObserve, (notification) => {
+	Console.WriteLine ($"Observed WillRedoChangeNotification for {nameof (objectToObserve)}!");
+};
+
+// Stop listening for notifications
+token.Dispose ();
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ObserveWillUndoChange">
+      <MemberSignature Language="C#" Value="public static Foundation.NSObject ObserveWillUndoChange (EventHandler&lt;Foundation.NSNotificationEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSObject ObserveWillUndoChange(class System.EventHandler`1&lt;class Foundation.NSNotificationEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="handler" Type="System.EventHandler&lt;Foundation.NSNotificationEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="handler">Method to invoke when the notification is posted.</param>
+        <summary>Strongly typed notification for the <see cref="P:Foundation.NSUndoManager.WillUndoChangeNotification" /> constant.</summary>
+        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="M:Foundation.NSNotificationCenter.RemoveObserver" /></returns>
+        <remarks>
+          <para>The following example shows how you can use this method in your code</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = NSUndoManager.Notifications.ObserveWillUndoChange ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+//Method style
+//
+NSObject notification;
+void Callback (object sender, Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = NSUndoManager.Notifications.ObserveWillUndoChange (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ObserveWillUndoChange">
+      <MemberSignature Language="C#" Value="public static Foundation.NSObject ObserveWillUndoChange (Foundation.NSObject objectToObserve, EventHandler&lt;Foundation.NSNotificationEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSObject ObserveWillUndoChange(class Foundation.NSObject objectToObserve, class System.EventHandler`1&lt;class Foundation.NSNotificationEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="objectToObserve" Type="Foundation.NSObject" />
+        <Parameter Name="handler" Type="System.EventHandler&lt;Foundation.NSNotificationEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="objectToObserve">The object to observe.</param>
+        <param name="handler">Method to invoke when the notification is posted.</param>
+        <summary>Strongly typed notification for the <see cref="P:Foundation.NSUndoManager.WillUndoChangeNotification" /> constant.</summary>
+        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="M:Foundation.NSNotificationCenter.RemoveObserver" /></returns>
+        <remarks>
+          <para id="tool-remark">This method can be used to subscribe for <see cref="P:Foundation.NSUndoManager.WillUndoChangeNotification" /> notifications.</para>
+          <example>
+            <code lang="C#"><![CDATA[
+// Listen to all notifications posted for any object
+var token = NSUndoManager.Notifications.ObserveWillUndoChange ((notification) => {
+	Console.WriteLine ("Observed WillUndoChangeNotification!");
+};
+
+// Listen to all notifications posted for a single object
+var token = NSUndoManager.Notifications.ObserveWillUndoChange (objectToObserve, (notification) => {
+	Console.WriteLine ($"Observed WillUndoChangeNotification for {nameof (objectToObserve)}!");
+};
+
+// Stop listening for notifications
+token.Dispose ();
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

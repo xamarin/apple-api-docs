@@ -1,0 +1,1523 @@
+<Type Name="UICollectionViewSource" FullName="UIKit.UICollectionViewSource">
+  <TypeSignature Language="C#" Value="public class UICollectionViewSource : Foundation.NSObject, IDisposable, UIKit.IUICollectionViewSource" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit UICollectionViewSource extends Foundation.NSObject implements class ObjCRuntime.INativeObject, class System.IDisposable, class UIKit.IUICollectionViewDataSource, class UIKit.IUICollectionViewDelegate, class UIKit.IUICollectionViewSource, class UIKit.IUIScrollViewDelegate" />
+  <AssemblyInfo>
+    <AssemblyName>Xamarin.iOS</AssemblyName>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>Foundation.NSObject</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>System.IDisposable</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>UIKit.IUICollectionViewSource</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Attributes>
+    <Attribute>
+      <AttributeName>Foundation.Model</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>Foundation.Protocol</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>Foundation.Register("UICollectionViewSource", false)</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>An alternative to the <see cref="T:UIKit.UICollectionViewDelegate" /> and <see cref="T:UIKit.UICollectionViewDataSource" /> classes.</summary>
+    <remarks>
+      <para>The <see cref="T:UIKit.UICollectionViewSource" /> combines the <see cref="T:UIKit.UICollectionViewDelegate" /> and <see cref="T:UIKit.UICollectionViewDataSource" /> APIs in a single convenience class. It is available via the <see cref="P:UIKit.UICollectionView.Source" /> property.
+      </para>
+    </remarks>
+    <altmember cref="T:UIKit.UICollectionViewDelegate" />
+    <altmember cref="T:UIKit.UICollectionViewDataSource" />
+    <related type="article" href="http://docs.xamarin.com/ios/Guides/User_Interface/Introduction_to_Collection_Views">Introduction to Collection Views</related>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public UICollectionViewSource ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("init")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters />
+      <Docs>
+        <summary>Default constructor, initializes a new instance of this class.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected UICollectionViewSource (Foundation.NSObjectFlag t);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor(class Foundation.NSObjectFlag t) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="t" Type="Foundation.NSObjectFlag" />
+      </Parameters>
+      <Docs>
+        <param name="t">Unused sentinel value, pass NSObjectFlag.Empty.</param>
+        <summary>Constructor to call on derived classes to skip initialization and merely allocate the object.</summary>
+        <remarks>
+          <para>This constructor should be called by derived classes when they completely construct the object in managed code and merely want the runtime to allocate and initialize the NSObject.   This is required to implement the two-step initialization process that Objective-C uses, the first step is to perform the object allocation, the second step is to initialize the object.   When developers invoke the constructor that takes the NSObjectFlag.Empty they take advantage of a direct path that goes all the way up to NSObject to merely allocate the object's memory and bind the Objective-C and C# objects together.    The actual initialization of the object is up to the developer.</para>
+          <para>This constructor is typically used by the binding generator to allocate the object, but prevent the actual initialization to take place.   Once the allocation has taken place, the constructor has to initialize the object.   With constructors generated by the binding generator this means that it manually invokes one of the "init" methods to initialize the object.</para>
+          <para>It is the developer's responsibility to completely initialize the object if they chain up using the NSObjectFlag.Empty path.</para>
+          <para>In general, if the developer's constructor invokes the NSObjectFlag.Empty base implementation, then it should be calling an Objective-C init method.   If this is not the case, developers should instead chain to the proper constructor in their class. </para>
+          <para>The argument value is ignored and merely ensures that the only code that is executed is the construction phase is the basic NSObject allocation and runtime type registration.  Typically the chaining would look like this:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// The NSObjectFlag merely allocates the object and registers the
+// C# class with the Objective-C runtime if necessary, but no actual
+// initXxx method is invoked, that is done later in the constructor
+//
+// This is taken from Xamarin's source code:
+//
+[Export ("initWithFrame:")]
+public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
+{
+// Invoke the init method now.
+	var initWithFrame = new Selector ("initWithFrame:").Handle;
+	if (IsDirectBinding)
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+	else
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected UICollectionViewSource (IntPtr handle);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig specialname rtspecialname instance void .ctor(native int handle) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="handle" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="handle">Pointer (handle) to the unmanaged object.</param>
+        <summary>A constructor used when creating managed representations of unmanaged objects;  Called by the runtime.</summary>
+        <remarks>
+          <para>This constructor is invoked by the runtime infrastructure (<see cref="M:ObjCRuntime.Runtime.GetNSObject(System.IntPtr)" />) to create a new managed representation for a pointer to an unmanaged Objective-C object.    Developers should not invoke this method directly, instead they should call the GetNSObject method as it will prevent two instances of a managed object to point to the same native object.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CanFocusItem">
+      <MemberSignature Language="C#" Value="public virtual bool CanFocusItem (UIKit.UICollectionView collectionView, Foundation.NSIndexPath indexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool CanFocusItem(class UIKit.UICollectionView collectionView, class Foundation.NSIndexPath indexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("collectionView:canFocusItemAtIndexPath:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="collectionView" Type="UIKit.UICollectionView" />
+        <Parameter Name="indexPath" Type="Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="collectionView">The <see cref="T:UIKit.UICollectionView" /> is associated with <c>this</c>.</param>
+        <param name="indexPath">The <see cref="T:Foundation.NSIndexPath" /> of the item being checked.</param>
+        <summary>Whether the item at <paramref name="indexPath" /> can be focused.</summary>
+        <returns>Returns <see langword="true" /> if the item can be focused.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CanMoveItem">
+      <MemberSignature Language="C#" Value="public virtual bool CanMoveItem (UIKit.UICollectionView collectionView, Foundation.NSIndexPath indexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool CanMoveItem(class UIKit.UICollectionView collectionView, class Foundation.NSIndexPath indexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("collectionView:canMoveItemAtIndexPath:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="collectionView" Type="UIKit.UICollectionView" />
+        <Parameter Name="indexPath" Type="Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="collectionView">The collection view that originated the request.</param>
+        <param name="indexPath">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CanPerformAction">
+      <MemberSignature Language="C#" Value="public virtual bool CanPerformAction (UIKit.UICollectionView collectionView, ObjCRuntime.Selector action, Foundation.NSIndexPath indexPath, Foundation.NSObject sender);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool CanPerformAction(class UIKit.UICollectionView collectionView, class ObjCRuntime.Selector action, class Foundation.NSIndexPath indexPath, class Foundation.NSObject sender) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("collectionView:canPerformAction:forItemAtIndexPath:withSender:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="collectionView" Type="UIKit.UICollectionView" />
+        <Parameter Name="action" Type="ObjCRuntime.Selector" />
+        <Parameter Name="indexPath" Type="Foundation.NSIndexPath" />
+        <Parameter Name="sender" Type="Foundation.NSObject" />
+      </Parameters>
+      <Docs>
+        <param name="collectionView">The collection view that originated the request.</param>
+        <param name="action">To be added.</param>
+        <param name="indexPath">To be added.</param>
+        <param name="sender">To be added.</param>
+        <summary>Whether the cell at the specified indexPath supports the specified action.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CellDisplayingEnded">
+      <MemberSignature Language="C#" Value="public virtual void CellDisplayingEnded (UIKit.UICollectionView collectionView, UIKit.UICollectionViewCell cell, Foundation.NSIndexPath indexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void CellDisplayingEnded(class UIKit.UICollectionView collectionView, class UIKit.UICollectionViewCell cell, class Foundation.NSIndexPath indexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("collectionView:didEndDisplayingCell:forItemAtIndexPath:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="collectionView" Type="UIKit.UICollectionView" />
+        <Parameter Name="cell" Type="UIKit.UICollectionViewCell" />
+        <Parameter Name="indexPath" Type="Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="collectionView">The collection view that originated the request.</param>
+        <param name="cell">To be added.</param>
+        <param name="indexPath">To be added.</param>
+        <summary>Indicates that the specified cell has stopped displaying.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DecelerationEnded">
+      <MemberSignature Language="C#" Value="public virtual void DecelerationEnded (UIKit.UIScrollView scrollView);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void DecelerationEnded(class UIKit.UIScrollView scrollView) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("scrollViewDidEndDecelerating:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="scrollView" Type="UIKit.UIScrollView" />
+      </Parameters>
+      <Docs>
+        <param name="scrollView">To be added.</param>
+        <summary>Indicates that deceleration from a scrolling event has ended.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DecelerationStarted">
+      <MemberSignature Language="C#" Value="public virtual void DecelerationStarted (UIKit.UIScrollView scrollView);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void DecelerationStarted(class UIKit.UIScrollView scrollView) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("scrollViewWillBeginDecelerating:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="scrollView" Type="UIKit.UIScrollView" />
+      </Parameters>
+      <Docs>
+        <param name="scrollView">To be added.</param>
+        <summary>Indicates that deceleration from a scrolling event has begun.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DidChangeAdjustedContentInset">
+      <MemberSignature Language="C#" Value="public virtual void DidChangeAdjustedContentInset (UIKit.UIScrollView scrollView);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void DidChangeAdjustedContentInset(class UIKit.UIScrollView scrollView) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("scrollViewDidChangeAdjustedContentInset:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="scrollView" Type="UIKit.UIScrollView" />
+      </Parameters>
+      <Docs>
+        <param name="scrollView">The scroll view whose insets changed.</param>
+        <summary>Method that is called when the inset values change.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DidUpdateFocus">
+      <MemberSignature Language="C#" Value="public virtual void DidUpdateFocus (UIKit.UICollectionView collectionView, UIKit.UICollectionViewFocusUpdateContext context, UIKit.UIFocusAnimationCoordinator coordinator);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void DidUpdateFocus(class UIKit.UICollectionView collectionView, class UIKit.UICollectionViewFocusUpdateContext context, class UIKit.UIFocusAnimationCoordinator coordinator) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("collectionView:didUpdateFocusInContext:withAnimationCoordinator:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="collectionView" Type="UIKit.UICollectionView" />
+        <Parameter Name="context" Type="UIKit.UICollectionViewFocusUpdateContext" />
+        <Parameter Name="coordinator" Type="UIKit.UIFocusAnimationCoordinator" />
+      </Parameters>
+      <Docs>
+        <param name="collectionView">The collection view that originated the request.</param>
+        <param name="context">A <see cref="T:UIKit.UICollectionViewFocusUpdateContext" /> object containing metadata.</param>
+        <param name="coordinator">A <see cref="T:UIKit.UIFocusAnimationCoordinator" /> object containing metadata.</param>
+        <summary>Indicates that the focus changed as detailed in the <paramref name="context" />.</summary>
+        <remarks>
+          <para>The values of <see cref="P:UIKit.UICollectionViewFocusUpdateContext.PreviouslyFocusedIndexPath" /> and <see cref="P:UIKit.UICollectionViewFocusUpdateContext.NextFocusedIndexPath" /> may be <see langword="null" /> if focus was previously not within, or just departed, the <paramref name="collectionView" />.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DidZoom">
+      <MemberSignature Language="C#" Value="public virtual void DidZoom (UIKit.UIScrollView scrollView);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void DidZoom(class UIKit.UIScrollView scrollView) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("scrollViewDidZoom:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 3, 2, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="scrollView" Type="UIKit.UIScrollView" />
+      </Parameters>
+      <Docs>
+        <param name="scrollView">To be added.</param>
+        <summary>Indicates that a zoom occurred in the UIScrollView.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DraggingEnded">
+      <MemberSignature Language="C#" Value="public virtual void DraggingEnded (UIKit.UIScrollView scrollView, bool willDecelerate);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void DraggingEnded(class UIKit.UIScrollView scrollView, bool willDecelerate) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("scrollViewDidEndDragging:willDecelerate:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="scrollView" Type="UIKit.UIScrollView" />
+        <Parameter Name="willDecelerate" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="scrollView">To be added.</param>
+        <param name="willDecelerate">To be added.</param>
+        <summary>Indicates that dragging has ended in the UIScrollView.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DraggingStarted">
+      <MemberSignature Language="C#" Value="public virtual void DraggingStarted (UIKit.UIScrollView scrollView);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void DraggingStarted(class UIKit.UIScrollView scrollView) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("scrollViewWillBeginDragging:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="scrollView" Type="UIKit.UIScrollView" />
+      </Parameters>
+      <Docs>
+        <param name="scrollView">To be added.</param>
+        <summary>Indicates that dragging has begun in the UIScrollView.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetCell">
+      <MemberSignature Language="C#" Value="public virtual UIKit.UICollectionViewCell GetCell (UIKit.UICollectionView collectionView, Foundation.NSIndexPath indexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class UIKit.UICollectionViewCell GetCell(class UIKit.UICollectionView collectionView, class Foundation.NSIndexPath indexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("collectionView:cellForItemAtIndexPath:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UICollectionViewCell</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="collectionView" Type="UIKit.UICollectionView" />
+        <Parameter Name="indexPath" Type="Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="collectionView">The collection view that originated the request.</param>
+        <param name="indexPath">To be added.</param>
+        <summary>Retrieves the UICollectionViewCell at the specified NSIndexPath.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetIndexPath">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSIndexPath GetIndexPath (UIKit.UICollectionView collectionView, string title, nint atIndex);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Foundation.NSIndexPath GetIndexPath(class UIKit.UICollectionView collectionView, string title, valuetype System.nint atIndex) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("collectionView:indexPathForIndexTitle:atIndex:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 3, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 2, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSIndexPath</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="collectionView" Type="UIKit.UICollectionView" />
+        <Parameter Name="title" Type="System.String" />
+        <Parameter Name="atIndex" Type="System.nint" />
+      </Parameters>
+      <Docs>
+        <param name="collectionView">The collection view that originated the request.</param>
+        <param name="title">The title of the item.</param>
+        <param name="atIndex">The index into the index titles for which to retrieve the index path.</param>
+        <summary>Requests the index path for the item in the collection view at the specified index with the specified title.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetIndexPathForPreferredFocusedView">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSIndexPath GetIndexPathForPreferredFocusedView (UIKit.UICollectionView collectionView);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Foundation.NSIndexPath GetIndexPathForPreferredFocusedView(class UIKit.UICollectionView collectionView) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("indexPathForPreferredFocusedViewInCollectionView:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSIndexPath</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="collectionView" Type="UIKit.UICollectionView" />
+      </Parameters>
+      <Docs>
+        <param name="collectionView">The collection view that originated the request.</param>
+        <summary>When overridden, allows the developer to specify the item that should initially receive focus.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetIndexTitles">
+      <MemberSignature Language="C#" Value="public virtual string[] GetIndexTitles (UIKit.UICollectionView collectionView);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance string[] GetIndexTitles(class UIKit.UICollectionView collectionView) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("indexTitlesForCollectionView:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 3, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 2, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="collectionView" Type="UIKit.UICollectionView" />
+      </Parameters>
+      <Docs>
+        <param name="collectionView">The collection view that originated the request.</param>
+        <summary>Requests the index titles for the items in the specified collection view.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetItemsCount">
+      <MemberSignature Language="C#" Value="public virtual nint GetItemsCount (UIKit.UICollectionView collectionView, nint section);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance valuetype System.nint GetItemsCount(class UIKit.UICollectionView collectionView, valuetype System.nint section) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("collectionView:numberOfItemsInSection:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.nint</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="collectionView" Type="UIKit.UICollectionView" />
+        <Parameter Name="section" Type="System.nint" />
+      </Parameters>
+      <Docs>
+        <param name="collectionView">The collection view that originated the request.</param>
+        <param name="section">To be added.</param>
+        <summary>Returns the number of items in the specified section.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetTargetContentOffset">
+      <MemberSignature Language="C#" Value="public virtual CoreGraphics.CGPoint GetTargetContentOffset (UIKit.UICollectionView collectionView, CoreGraphics.CGPoint proposedContentOffset);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance valuetype CoreGraphics.CGPoint GetTargetContentOffset(class UIKit.UICollectionView collectionView, valuetype CoreGraphics.CGPoint proposedContentOffset) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("collectionView:targetContentOffsetForProposedContentOffset:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreGraphics.CGPoint</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="collectionView" Type="UIKit.UICollectionView" />
+        <Parameter Name="proposedContentOffset" Type="CoreGraphics.CGPoint" />
+      </Parameters>
+      <Docs>
+        <param name="collectionView">The collection view that originated the request.</param>
+        <param name="proposedContentOffset">To be added.</param>
+        <summary>When overridden, allows the developer to modify the content offset for layout and animation changes.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetTargetIndexPathForMove">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSIndexPath GetTargetIndexPathForMove (UIKit.UICollectionView collectionView, Foundation.NSIndexPath originalIndexPath, Foundation.NSIndexPath proposedIndexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Foundation.NSIndexPath GetTargetIndexPathForMove(class UIKit.UICollectionView collectionView, class Foundation.NSIndexPath originalIndexPath, class Foundation.NSIndexPath proposedIndexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("collectionView:targetIndexPathForMoveFromItemAtIndexPath:toProposedIndexPath:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSIndexPath</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="collectionView" Type="UIKit.UICollectionView" />
+        <Parameter Name="originalIndexPath" Type="Foundation.NSIndexPath" />
+        <Parameter Name="proposedIndexPath" Type="Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="collectionView">The collection view that originated the request.</param>
+        <param name="originalIndexPath">To be added.</param>
+        <param name="proposedIndexPath">To be added.</param>
+        <summary>When overridden, allows the developer to modify the final location of a moved item. (For instance, to disallow a move to a particular <paramref name="proposedIndexPath" />.)</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetViewForSupplementaryElement">
+      <MemberSignature Language="C#" Value="public virtual UIKit.UICollectionReusableView GetViewForSupplementaryElement (UIKit.UICollectionView collectionView, Foundation.NSString elementKind, Foundation.NSIndexPath indexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class UIKit.UICollectionReusableView GetViewForSupplementaryElement(class UIKit.UICollectionView collectionView, class Foundation.NSString elementKind, class Foundation.NSIndexPath indexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("collectionView:viewForSupplementaryElementOfKind:atIndexPath:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UICollectionReusableView</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="collectionView" Type="UIKit.UICollectionView" />
+        <Parameter Name="elementKind" Type="Foundation.NSString" />
+        <Parameter Name="indexPath" Type="Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="collectionView">The collection view that originated the request.</param>
+        <param name="elementKind">To be added.</param>
+        <param name="indexPath">To be added.</param>
+        <summary>Retrieves the UICollectionReusableView used for the supplement elementKind at the specified indexPath.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ItemDeselected">
+      <MemberSignature Language="C#" Value="public virtual void ItemDeselected (UIKit.UICollectionView collectionView, Foundation.NSIndexPath indexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void ItemDeselected(class UIKit.UICollectionView collectionView, class Foundation.NSIndexPath indexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("collectionView:didDeselectItemAtIndexPath:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="collectionView" Type="UIKit.UICollectionView" />
+        <Parameter Name="indexPath" Type="Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="collectionView">The collection view that originated the request.</param>
+        <param name="indexPath">To be added.</param>
+        <summary>Indicates that the item at the specified indexPath has been deselected.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ItemHighlighted">
+      <MemberSignature Language="C#" Value="public virtual void ItemHighlighted (UIKit.UICollectionView collectionView, Foundation.NSIndexPath indexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void ItemHighlighted(class UIKit.UICollectionView collectionView, class Foundation.NSIndexPath indexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("collectionView:didHighlightItemAtIndexPath:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="collectionView" Type="UIKit.UICollectionView" />
+        <Parameter Name="indexPath" Type="Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="collectionView">The collection view that originated the request.</param>
+        <param name="indexPath">To be added.</param>
+        <summary>Indicates that the item at the specified indexPath has been highlighted.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ItemSelected">
+      <MemberSignature Language="C#" Value="public virtual void ItemSelected (UIKit.UICollectionView collectionView, Foundation.NSIndexPath indexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void ItemSelected(class UIKit.UICollectionView collectionView, class Foundation.NSIndexPath indexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("collectionView:didSelectItemAtIndexPath:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="collectionView" Type="UIKit.UICollectionView" />
+        <Parameter Name="indexPath" Type="Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="collectionView">The collection view that originated the request.</param>
+        <param name="indexPath">To be added.</param>
+        <summary>Indicates that the item at the specified indexPath has been selected.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ItemUnhighlighted">
+      <MemberSignature Language="C#" Value="public virtual void ItemUnhighlighted (UIKit.UICollectionView collectionView, Foundation.NSIndexPath indexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void ItemUnhighlighted(class UIKit.UICollectionView collectionView, class Foundation.NSIndexPath indexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("collectionView:didUnhighlightItemAtIndexPath:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="collectionView" Type="UIKit.UICollectionView" />
+        <Parameter Name="indexPath" Type="Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="collectionView">The collection view that originated the request.</param>
+        <param name="indexPath">To be added.</param>
+        <summary>Indicates that the item at the specified indexPath has been unhighlighted.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="MoveItem">
+      <MemberSignature Language="C#" Value="public virtual void MoveItem (UIKit.UICollectionView collectionView, Foundation.NSIndexPath sourceIndexPath, Foundation.NSIndexPath destinationIndexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void MoveItem(class UIKit.UICollectionView collectionView, class Foundation.NSIndexPath sourceIndexPath, class Foundation.NSIndexPath destinationIndexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("collectionView:moveItemAtIndexPath:toIndexPath:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="collectionView" Type="UIKit.UICollectionView" />
+        <Parameter Name="sourceIndexPath" Type="Foundation.NSIndexPath" />
+        <Parameter Name="destinationIndexPath" Type="Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="collectionView">The collection view that originated the request.</param>
+        <param name="sourceIndexPath">To be added.</param>
+        <param name="destinationIndexPath">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="NumberOfSections">
+      <MemberSignature Language="C#" Value="public virtual nint NumberOfSections (UIKit.UICollectionView collectionView);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance valuetype System.nint NumberOfSections(class UIKit.UICollectionView collectionView) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("numberOfSectionsInCollectionView:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.nint</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="collectionView" Type="UIKit.UICollectionView" />
+      </Parameters>
+      <Docs>
+        <param name="collectionView">The collection view that originated the request.</param>
+        <summary>Returns the number of sections in the collectionView.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PerformAction">
+      <MemberSignature Language="C#" Value="public virtual void PerformAction (UIKit.UICollectionView collectionView, ObjCRuntime.Selector action, Foundation.NSIndexPath indexPath, Foundation.NSObject sender);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void PerformAction(class UIKit.UICollectionView collectionView, class ObjCRuntime.Selector action, class Foundation.NSIndexPath indexPath, class Foundation.NSObject sender) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("collectionView:performAction:forItemAtIndexPath:withSender:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="collectionView" Type="UIKit.UICollectionView" />
+        <Parameter Name="action" Type="ObjCRuntime.Selector" />
+        <Parameter Name="indexPath" Type="Foundation.NSIndexPath" />
+        <Parameter Name="sender" Type="Foundation.NSObject" />
+      </Parameters>
+      <Docs>
+        <param name="collectionView">The collection view that originated the request.</param>
+        <param name="action">To be added.</param>
+        <param name="indexPath">To be added.</param>
+        <param name="sender">To be added.</param>
+        <summary>Performs the specified action.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ScrollAnimationEnded">
+      <MemberSignature Language="C#" Value="public virtual void ScrollAnimationEnded (UIKit.UIScrollView scrollView);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void ScrollAnimationEnded(class UIKit.UIScrollView scrollView) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("scrollViewDidEndScrollingAnimation:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="scrollView" Type="UIKit.UIScrollView" />
+      </Parameters>
+      <Docs>
+        <param name="scrollView">To be added.</param>
+        <summary>Indicates that all animations relating to a scrolling event have ended.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Scrolled">
+      <MemberSignature Language="C#" Value="public virtual void Scrolled (UIKit.UIScrollView scrollView);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Scrolled(class UIKit.UIScrollView scrollView) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("scrollViewDidScroll:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="scrollView" Type="UIKit.UIScrollView" />
+      </Parameters>
+      <Docs>
+        <param name="scrollView">To be added.</param>
+        <summary>Indicates that scrolling has occurred.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ScrolledToTop">
+      <MemberSignature Language="C#" Value="public virtual void ScrolledToTop (UIKit.UIScrollView scrollView);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void ScrolledToTop(class UIKit.UIScrollView scrollView) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("scrollViewDidScrollToTop:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="scrollView" Type="UIKit.UIScrollView" />
+      </Parameters>
+      <Docs>
+        <param name="scrollView">To be added.</param>
+        <summary>Indicates that scrolling has reached the beginning of the scrollView.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ShouldDeselectItem">
+      <MemberSignature Language="C#" Value="public virtual bool ShouldDeselectItem (UIKit.UICollectionView collectionView, Foundation.NSIndexPath indexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool ShouldDeselectItem(class UIKit.UICollectionView collectionView, class Foundation.NSIndexPath indexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("collectionView:shouldDeselectItemAtIndexPath:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="collectionView" Type="UIKit.UICollectionView" />
+        <Parameter Name="indexPath" Type="Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="collectionView">The collection view that originated the request.</param>
+        <param name="indexPath">To be added.</param>
+        <summary>Whether the item at the specified indexPath should be deselected.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ShouldHighlightItem">
+      <MemberSignature Language="C#" Value="public virtual bool ShouldHighlightItem (UIKit.UICollectionView collectionView, Foundation.NSIndexPath indexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool ShouldHighlightItem(class UIKit.UICollectionView collectionView, class Foundation.NSIndexPath indexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("collectionView:shouldHighlightItemAtIndexPath:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="collectionView" Type="UIKit.UICollectionView" />
+        <Parameter Name="indexPath" Type="Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="collectionView">The collection view that originated the request.</param>
+        <param name="indexPath">To be added.</param>
+        <summary>Whether the item at the specified indexPath should be highlighted.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ShouldScrollToTop">
+      <MemberSignature Language="C#" Value="public virtual bool ShouldScrollToTop (UIKit.UIScrollView scrollView);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool ShouldScrollToTop(class UIKit.UIScrollView scrollView) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("scrollViewShouldScrollToTop:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="scrollView" Type="UIKit.UIScrollView" />
+      </Parameters>
+      <Docs>
+        <param name="scrollView">To be added.</param>
+        <summary>Whether the specified scrollView should be allowed to scroll to its beginning.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ShouldSelectItem">
+      <MemberSignature Language="C#" Value="public virtual bool ShouldSelectItem (UIKit.UICollectionView collectionView, Foundation.NSIndexPath indexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool ShouldSelectItem(class UIKit.UICollectionView collectionView, class Foundation.NSIndexPath indexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("collectionView:shouldSelectItemAtIndexPath:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="collectionView" Type="UIKit.UICollectionView" />
+        <Parameter Name="indexPath" Type="Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="collectionView">The collection view that originated the request.</param>
+        <param name="indexPath">To be added.</param>
+        <summary>Whether the item at the specified indexPath should be selected.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ShouldShowMenu">
+      <MemberSignature Language="C#" Value="public virtual bool ShouldShowMenu (UIKit.UICollectionView collectionView, Foundation.NSIndexPath indexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool ShouldShowMenu(class UIKit.UICollectionView collectionView, class Foundation.NSIndexPath indexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("collectionView:shouldShowMenuForItemAtIndexPath:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="collectionView" Type="UIKit.UICollectionView" />
+        <Parameter Name="indexPath" Type="Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="collectionView">The collection view that originated the request.</param>
+        <param name="indexPath">To be added.</param>
+        <summary>Whether the item at the specified indexPath should show an action menu.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ShouldSpringLoadItem">
+      <MemberSignature Language="C#" Value="public virtual bool ShouldSpringLoadItem (UIKit.UICollectionView collectionView, Foundation.NSIndexPath indexPath, UIKit.IUISpringLoadedInteractionContext context);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool ShouldSpringLoadItem(class UIKit.UICollectionView collectionView, class Foundation.NSIndexPath indexPath, class UIKit.IUISpringLoadedInteractionContext context) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("collectionView:shouldSpringLoadItemAtIndexPath:withContext:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="collectionView" Type="UIKit.UICollectionView" />
+        <Parameter Name="indexPath" Type="Foundation.NSIndexPath" />
+        <Parameter Name="context" Type="UIKit.IUISpringLoadedInteractionContext" />
+      </Parameters>
+      <Docs>
+        <param name="collectionView">The collection view that originated the request.</param>
+        <param name="indexPath">The index path to the item.</param>
+        <param name="context">The spring-loaded interaction context.</param>
+        <summary>Method that is called to indicate whether the identified item should springload in the specified context.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ShouldUpdateFocus">
+      <MemberSignature Language="C#" Value="public virtual bool ShouldUpdateFocus (UIKit.UICollectionView collectionView, UIKit.UICollectionViewFocusUpdateContext context);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool ShouldUpdateFocus(class UIKit.UICollectionView collectionView, class UIKit.UICollectionViewFocusUpdateContext context) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("collectionView:shouldUpdateFocusInContext:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="collectionView" Type="UIKit.UICollectionView" />
+        <Parameter Name="context" Type="UIKit.UICollectionViewFocusUpdateContext" />
+      </Parameters>
+      <Docs>
+        <param name="collectionView">The collection view that originated the request.</param>
+        <param name="context">To be added.</param>
+        <summary>Called prior to a cell in the <paramref name="collectionView" /> either losing or receiving focus. If either focus environment returns <see langword="false" />, the focus update is canceled.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SupplementaryViewDisplayingEnded">
+      <MemberSignature Language="C#" Value="public virtual void SupplementaryViewDisplayingEnded (UIKit.UICollectionView collectionView, UIKit.UICollectionReusableView view, Foundation.NSString elementKind, Foundation.NSIndexPath indexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SupplementaryViewDisplayingEnded(class UIKit.UICollectionView collectionView, class UIKit.UICollectionReusableView view, class Foundation.NSString elementKind, class Foundation.NSIndexPath indexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("collectionView:didEndDisplayingSupplementaryView:forElementOfKind:atIndexPath:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="collectionView" Type="UIKit.UICollectionView" />
+        <Parameter Name="view" Type="UIKit.UICollectionReusableView" />
+        <Parameter Name="elementKind" Type="Foundation.NSString" />
+        <Parameter Name="indexPath" Type="Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="collectionView">The collection view that originated the request.</param>
+        <param name="view">To be added.</param>
+        <param name="elementKind">To be added.</param>
+        <param name="indexPath">To be added.</param>
+        <summary>Indicates that the supplementary view has finished displaying.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TransitionLayout">
+      <MemberSignature Language="C#" Value="public virtual UIKit.UICollectionViewTransitionLayout TransitionLayout (UIKit.UICollectionView collectionView, UIKit.UICollectionViewLayout fromLayout, UIKit.UICollectionViewLayout toLayout);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class UIKit.UICollectionViewTransitionLayout TransitionLayout(class UIKit.UICollectionView collectionView, class UIKit.UICollectionViewLayout fromLayout, class UIKit.UICollectionViewLayout toLayout) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("collectionView:transitionLayoutForOldLayout:newLayout:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UICollectionViewTransitionLayout</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="collectionView" Type="UIKit.UICollectionView" />
+        <Parameter Name="fromLayout" Type="UIKit.UICollectionViewLayout" />
+        <Parameter Name="toLayout" Type="UIKit.UICollectionViewLayout" />
+      </Parameters>
+      <Docs>
+        <param name="collectionView">The collection view that originated the request.</param>
+        <param name="fromLayout">To be added.</param>
+        <param name="toLayout">To be added.</param>
+        <summary>The UICollectionViewTransitionLayout used to move between the specified UICollectionViewLayouts.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ViewForZoomingInScrollView">
+      <MemberSignature Language="C#" Value="public virtual UIKit.UIView ViewForZoomingInScrollView (UIKit.UIScrollView scrollView);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class UIKit.UIView ViewForZoomingInScrollView(class UIKit.UIScrollView scrollView) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("viewForZoomingInScrollView:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UIView</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="scrollView" Type="UIKit.UIScrollView" />
+      </Parameters>
+      <Docs>
+        <param name="scrollView">To be added.</param>
+        <summary>The UIView to scale when zooming occurs in the specified scrollView.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WillDisplayCell">
+      <MemberSignature Language="C#" Value="public virtual void WillDisplayCell (UIKit.UICollectionView collectionView, UIKit.UICollectionViewCell cell, Foundation.NSIndexPath indexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void WillDisplayCell(class UIKit.UICollectionView collectionView, class UIKit.UICollectionViewCell cell, class Foundation.NSIndexPath indexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("collectionView:willDisplayCell:forItemAtIndexPath:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="collectionView" Type="UIKit.UICollectionView" />
+        <Parameter Name="cell" Type="UIKit.UICollectionViewCell" />
+        <Parameter Name="indexPath" Type="Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="collectionView">The collection view that originated the request.</param>
+        <param name="cell">To be added.</param>
+        <param name="indexPath">To be added.</param>
+        <summary>The <paramref name="cell" /> is about to be displayed.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WillDisplaySupplementaryView">
+      <MemberSignature Language="C#" Value="public virtual void WillDisplaySupplementaryView (UIKit.UICollectionView collectionView, UIKit.UICollectionReusableView view, string elementKind, Foundation.NSIndexPath indexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void WillDisplaySupplementaryView(class UIKit.UICollectionView collectionView, class UIKit.UICollectionReusableView view, string elementKind, class Foundation.NSIndexPath indexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("collectionView:willDisplaySupplementaryView:forElementKind:atIndexPath:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="collectionView" Type="UIKit.UICollectionView" />
+        <Parameter Name="view" Type="UIKit.UICollectionReusableView" />
+        <Parameter Name="elementKind" Type="System.String" />
+        <Parameter Name="indexPath" Type="Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="collectionView">The collection view that originated the request.</param>
+        <param name="view">To be added.</param>
+        <param name="elementKind">To be added.</param>
+        <param name="indexPath">To be added.</param>
+        <summary>The supplementary <paramref name="view" /> is about to be displayed.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WillEndDragging">
+      <MemberSignature Language="C#" Value="public virtual void WillEndDragging (UIKit.UIScrollView scrollView, CoreGraphics.CGPoint velocity, ref CoreGraphics.CGPoint targetContentOffset);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void WillEndDragging(class UIKit.UIScrollView scrollView, valuetype CoreGraphics.CGPoint velocity, valuetype CoreGraphics.CGPoint targetContentOffset) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("scrollViewWillEndDragging:withVelocity:targetContentOffset:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 5, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="scrollView" Type="UIKit.UIScrollView" />
+        <Parameter Name="velocity" Type="CoreGraphics.CGPoint" />
+        <Parameter Name="targetContentOffset" Type="CoreGraphics.CGPoint&amp;" RefType="ref" />
+      </Parameters>
+      <Docs>
+        <param name="scrollView">To be added.</param>
+        <param name="velocity">To be added.</param>
+        <param name="targetContentOffset">To be added.</param>
+        <summary>Indicates that dragging is about to end.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ZoomingEnded">
+      <MemberSignature Language="C#" Value="public virtual void ZoomingEnded (UIKit.UIScrollView scrollView, UIKit.UIView withView, nfloat atScale);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void ZoomingEnded(class UIKit.UIScrollView scrollView, class UIKit.UIView withView, valuetype System.nfloat atScale) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("scrollViewDidEndZooming:withView:atScale:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="scrollView" Type="UIKit.UIScrollView" />
+        <Parameter Name="withView" Type="UIKit.UIView" />
+        <Parameter Name="atScale" Type="System.nfloat" />
+      </Parameters>
+      <Docs>
+        <param name="scrollView">To be added.</param>
+        <param name="withView">To be added.</param>
+        <param name="atScale">To be added.</param>
+        <summary>Indicates that zooming has ended.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ZoomingStarted">
+      <MemberSignature Language="C#" Value="public virtual void ZoomingStarted (UIKit.UIScrollView scrollView, UIKit.UIView view);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void ZoomingStarted(class UIKit.UIScrollView scrollView, class UIKit.UIView view) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("scrollViewWillBeginZooming:withView:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 3, 2, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="scrollView" Type="UIKit.UIScrollView" />
+        <Parameter Name="view" Type="UIKit.UIView" />
+      </Parameters>
+      <Docs>
+        <param name="scrollView">To be added.</param>
+        <param name="view">To be added.</param>
+        <summary>Indicates that zooming has begun.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

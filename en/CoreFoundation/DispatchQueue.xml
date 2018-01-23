@@ -1,0 +1,579 @@
+<Type Name="DispatchQueue" FullName="CoreFoundation.DispatchQueue">
+  <TypeSignature Language="C#" Value="public sealed class DispatchQueue : CoreFoundation.DispatchObject" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit DispatchQueue extends CoreFoundation.DispatchObject" />
+  <AssemblyInfo>
+    <AssemblyName>Xamarin.iOS</AssemblyName>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>CoreFoundation.DispatchObject</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>Provides a task queue that can perform tasks either synchronously or asynchronously.</summary>
+    <remarks>
+      <para>
+	Queues are the fundamental mechanism for scheduling blocks for
+	execution within the Apple Grand Central Dispatch framework.
+      </para>
+      <para> All blocks submitted to dispatch queues are dequeued in
+	FIFO order.  By default, queues created with the default
+	constructor wait for the previously dequeued block to complete
+	before dequeuing the next block. This FIFO completion behavior
+	is sometimes simply described as a "serial queue."  Queues are
+	not bound to any specific thread of execution and blocks
+	submitted to independent queues may execute concurrently.
+	Queues, like all dispatch objects, are reference counted and
+	newly created queues have a reference count of one.
+      </para>
+      <para>
+
+	Concurrent dispatch queues are created by passing <see langword="true" /> as the value for the concurrent parameter on
+	the constructor.  Concurrent queues may invoke blocks
+	concurrently (similarly to the global concurrent queues, but
+	potentially with more overhead), and support barrier blocks
+	submitted with the dispatch barrier API, which e.g. enables
+	the implementation of efficient reader-writer schemes.
+
+      </para>
+      <para>
+
+	The optional label argument is used to describe the purpose of
+	the queue and is useful during debugging and performance
+	analysis. By convention, clients should pass a reverse DNS
+	style label.  If a label is provided, it is copied. If a label
+	is not provided, then Label property returns an empty C
+	string.  For example:
+
+      </para>
+      <example>
+        <code lang="C#"><![CDATA[
+	  var my_queue = new DispatchQueue ("com.example.subsystem.taskXYZ");
+	]]></code>
+      </example>
+      <para>
+
+	Queues may be temporarily suspended and resumed with the
+	functions <see cref="M:CoreFoundation.DispatchQueue.Suspend()" />
+	and <see cref="M:CoreFoundation.DispatchQueue.Resume()" />
+	respectively. Suspension is checked prior to block execution
+	and is not preemptive.
+
+      </para>
+      <para>
+	Dispatch queue is <see cref="T:System.Threading.SynchronizationContext" /> aware and unless there is
+	custom synchronization context set for the thread it will install its own synchronization context to
+	ensure any context dispatch ends up on same dispatch queue.
+      </para>
+      <format type="text/html">
+        <h2>Dispatch Barrier API</h2>
+      </format>
+      <para>
+	The dispatch barrier API is a mechanism for submitting barrier blocks to a
+	dispatch queue, analogous to the <see cref="M:CoreFoundation.DispatchQueue.DispatchAsync" />/<see cref="M:CoreFoundation.DispatchQueue.DispatchSync" />
+	methods.
+	It enables the implementation of efficient reader/writer schemes.
+	Barrier blocks only behave specially when submitted to
+	concurrent queues ; on such a queue, a barrier block
+	will not run until all blocks submitted to the queue earlier have completed,
+	and any blocks submitted to the queue after a barrier block will not run
+	until the barrier block has completed.
+	When submitted to a a global queue or to a non-concurrent queue, barrier blocks behave identically to
+	blocks submitted with the <see cref="M:CoreFoundation.DispatchQueue.DispatchAsync" />/<see cref="M:CoreFoundation.DispatchQueue.DispatchSync" /> methods.
+      </para>
+    </remarks>
+    <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=9fa28988-64fe-4365-b2b7-95542daf4f9b">avcaptureframes</related>
+    <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=8c3c89cd-ce96-4d5e-9ba6-a85eab94faaa">CoreTelephonyDemo</related>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public DispatchQueue (IntPtr handle);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int handle) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="handle" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="handle">Handle to an unmanaged dispatch queue.</param>
+        <summary>Surfaces an unmanaged DispatchQueue as a managed object.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public DispatchQueue (string label);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string label) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="label" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="label">Name for the dispatch queue, as a convention, use reverse-style DNS names for your queue name.</param>
+        <summary>Creates a named dispatch queue that serializes all
+	submitted blocks.</summary>
+        <remarks>
+          <para>
+	    Creates a dispatching queue that executes code blocks
+	    serially.   
+	  </para>
+          <para>
+	    If you want to create a dispatch queue that can execute
+	    the submitted code concurrently, use the constructor that
+	    takes a boolean "concurrent" argument. 
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public DispatchQueue (string label, bool concurrent);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string label, bool concurrent) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="label" Type="System.String" />
+        <Parameter Name="concurrent" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="label">Name for the dispatch queue, as a convention, use reverse-style DNS names for your queue name.</param>
+        <param name="concurrent">If set, the dispatch queue can invoke the submitted blocks concurrently.</param>
+        <summary>Creates a named dispatch queue that can optionally
+	execute any submitted code concurrently.</summary>
+        <remarks>
+          <para>
+	    If the <paramref name="concurrent" /> is set to <see langword="false" /> this is equivalent to calling the
+	    constructor tht takes a single string argument.   That is,
+	    it will execute all submitted code blocks serially, one
+	    after another.
+	  </para>
+          <para>
+	    If the value is <see langword="true" /> then the queue can
+	    execute the code blocks concurrently.   In this mode, you
+	    can use the <see cref="M:CoreFoundation.DispatchBarrierAsync" />
+	    method to submit a code block that will wait for all
+	    pending concurrent blocks to complete execution, then it
+	    will execute the code block to completion.   During the
+	    time that the barrier executes, any other code blocks
+	    submitted are queued, and will be scheduled to run
+	    (possibly concurrently) after the barrier method completes.
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Context">
+      <MemberSignature Language="C#" Value="public IntPtr Context { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int Context" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>User defined context information attachech to a DispatchQueue.</summary>
+        <value>
+        </value>
+        <remarks>You can use the Context property on a DispatchQueue to store state that your application might want to associate with it.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CurrentQueue">
+      <MemberSignature Language="C#" Value="public static CoreFoundation.DispatchQueue CurrentQueue { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class CoreFoundation.DispatchQueue CurrentQueue" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.MacOSX, 10, 9, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreFoundation.DispatchQueue</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Returns the current dispatch queue.</summary>
+        <value>The current dispatch queue if invoked from code that
+        was queued into a DispatchQueue, otherwise it returns the same
+        queue as <see cref="P:CoreFoundation.DispatchQueue.MainQueue" />.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CurrentQueueLabel">
+      <MemberSignature Language="C#" Value="public static string CurrentQueueLabel { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property string CurrentQueueLabel" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Label for the current queue.</summary>
+        <value>
+        </value>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DefaultGlobalQueue">
+      <MemberSignature Language="C#" Value="public static CoreFoundation.DispatchQueue DefaultGlobalQueue { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class CoreFoundation.DispatchQueue DefaultGlobalQueue" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>CoreFoundation.DispatchQueue</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Returns the default global queue, which is one of the built-in queues at the default priority.</summary>
+        <value>
+        </value>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DispatchAfter">
+      <MemberSignature Language="C#" Value="public void DispatchAfter (CoreFoundation.DispatchTime when, Action action);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void DispatchAfter(valuetype CoreFoundation.DispatchTime when, class System.Action action) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="when" Type="CoreFoundation.DispatchTime" />
+        <Parameter Name="action" Type="System.Action" />
+      </Parameters>
+      <Docs>
+        <param name="when">Time at which the code block will be executed.</param>
+        <param name="action">Code block to execute at some time in the
+	future.</param>
+        <summary>Executes this time on or after the specified time.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DispatchAsync">
+      <MemberSignature Language="C#" Value="public void DispatchAsync (Action action);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void DispatchAsync(class System.Action action) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="action" Type="System.Action" />
+      </Parameters>
+      <Docs>
+        <param name="action">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DispatchBarrierAsync">
+      <MemberSignature Language="C#" Value="public void DispatchBarrierAsync (Action action);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void DispatchBarrierAsync(class System.Action action) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="action" Type="System.Action" />
+      </Parameters>
+      <Docs>
+        <param name="action">Code block to submit as a barrier.</param>
+        <summary>Submits a barrier block for asynchronous execution on a dispatch queue</summary>
+        <remarks>
+          <para>
+	    Submits a block to a dispatch queue like <see cref="M:CoreFoundation.DispatchQueue.DispatchAsync" />
+	    does and marks that block as a barrier.  
+	  </para>
+          <para>
+	    This is only relevant for concurrent queues.
+	  </para>
+          <para>
+	    The  submitted code block will wait for all
+	    pending concurrent blocks to complete execution, then it
+	    will execute the code block to completion.   During the
+	    time that the barrier executes, any other code blocks
+	    submitted are queued, and will be scheduled to run
+	    (possibly concurrently) after the barrier method completes.
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DispatchSync">
+      <MemberSignature Language="C#" Value="public void DispatchSync (Action action);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void DispatchSync(class System.Action action) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="action" Type="System.Action" />
+      </Parameters>
+      <Docs>
+        <param name="action">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Equals">
+      <MemberSignature Language="C#" Value="public override bool Equals (object other);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance bool Equals(object other) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="other" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="other">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetGlobalQueue">
+      <MemberSignature Language="C#" Value="public static CoreFoundation.DispatchQueue GetGlobalQueue (CoreFoundation.DispatchQueuePriority priority);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class CoreFoundation.DispatchQueue GetGlobalQueue(valuetype CoreFoundation.DispatchQueuePriority priority) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>CoreFoundation.DispatchQueue</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="priority" Type="CoreFoundation.DispatchQueuePriority" />
+      </Parameters>
+      <Docs>
+        <param name="priority">Determines the priority of the queue to be returned.</param>
+        <summary>Returns one of the global dispatch queues based on the requested priority.</summary>
+        <returns>The queue priority.</returns>
+        <remarks>
+          <para>
+	    Unlike the main queue or queues allocated with the named
+	    DispatchQueue constructor, the global concurrent queues
+	    schedule blocks as soon as threads become available
+	    (non-FIFO completion order). The global concurrent queues
+	    represent three priority bands: DispatchQueuePriority.High, DispatchQueuePriority.Default and DispatchQueuePriority.Low.
+	  </para>
+          <para>
+	    Tasks submitted to the high priority global queue will be invoked before those submitted to the
+	    default or low priority global queues. Blocks submitted to the low priority global queue will only be
+	    invoked if no blocks are pending on the default or high priority queues.
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetHashCode">
+      <MemberSignature Language="C#" Value="public override int GetHashCode ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance int32 GetHashCode() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Label">
+      <MemberSignature Language="C#" Value="public string Label { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Label" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Returns the label for this DispatchQueue.</summary>
+        <value>
+        </value>
+        <remarks>This is the same name that was provided when the queue was constructed</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="MainQueue">
+      <MemberSignature Language="C#" Value="public static CoreFoundation.DispatchQueue MainQueue { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class CoreFoundation.DispatchQueue MainQueue" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>CoreFoundation.DispatchQueue</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Returns the main global queue.</summary>
+        <value>
+        </value>
+        <remarks>
+
+	  The dispatch framework provides a default serial queue for
+	  the application to use.  If you are using this on Xamarin.Mac Framework
+	  without using AppKit, you must invoke the MainIteration
+	  method to run the main dispatch queue.
+
+	</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="op_Equality">
+      <MemberSignature Language="C#" Value="public static bool op_Equality (CoreFoundation.DispatchQueue left, CoreFoundation.DispatchQueue right);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig specialname bool op_Equality(class CoreFoundation.DispatchQueue left, class CoreFoundation.DispatchQueue right) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="left" Type="CoreFoundation.DispatchQueue" />
+        <Parameter Name="right" Type="CoreFoundation.DispatchQueue" />
+      </Parameters>
+      <Docs>
+        <param name="left">To be added.</param>
+        <param name="right">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="op_Inequality">
+      <MemberSignature Language="C#" Value="public static bool op_Inequality (CoreFoundation.DispatchQueue left, CoreFoundation.DispatchQueue right);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig specialname bool op_Inequality(class CoreFoundation.DispatchQueue left, class CoreFoundation.DispatchQueue right) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="left" Type="CoreFoundation.DispatchQueue" />
+        <Parameter Name="right" Type="CoreFoundation.DispatchQueue" />
+      </Parameters>
+      <Docs>
+        <param name="left">To be added.</param>
+        <param name="right">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Resume">
+      <MemberSignature Language="C#" Value="public void Resume ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Resume() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Resumes execution of the queue.</summary>
+        <remarks>Resume and Suspend calls should be always balanced.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Submit">
+      <MemberSignature Language="C#" Value="public void Submit (Action&lt;int&gt; action, long times);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Submit(class System.Action`1&lt;int32&gt; action, int64 times) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="action" Type="System.Action&lt;System.Int32&gt;" />
+        <Parameter Name="times" Type="System.Int64" />
+      </Parameters>
+      <Docs>
+        <param name="action">To be added.</param>
+        <param name="times">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Suspend">
+      <MemberSignature Language="C#" Value="public void Suspend ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Suspend() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Suspends the execution of the queue.</summary>
+        <remarks>Suspend and Resume calls should be always balanced.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

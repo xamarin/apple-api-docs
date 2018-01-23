@@ -1,0 +1,72 @@
+﻿<Namespace Name="Vision">
+  <Docs>
+    <summary>The Vision namespace provides high-level image-recognition and registration facilities.</summary>
+    <remarks>
+      <para>The Vision namespace, introduced in iOS 11, provides a common interface for high-level image recognition, segmentation, and machine-learned tasks.</para>
+      <para>The Vision namespace provides a number of built-in image processing functions: </para>
+      <list type="table">
+        <listheader>
+          <term>Task</term>
+          <description>Request types</description>
+        </listheader>
+        <item>
+          <term>Face detection and geometry</term>
+          <description>
+            <see cref="T:Vision.VNDetectFaceRectanglesRequest" />, <see cref="T:Vision.VNDetectFaceLandmarksRequest" /></description>
+        </item>
+        <item>
+          <term>Barcode recognition</term>
+          <description>
+            <see cref="T:Vision.VNDetectBarcodesRequest" />
+          </description>
+        </item>
+        <item>
+          <term>Image registration</term>
+          <description>
+            <see cref="T:Vision.VNTranslationalImageRegistrationRequest" />, <see cref="T:Vision.VNHomographicImageRegistrationRequest" /></description>
+        </item>
+        <item>
+          <term>Text detection</term>
+          <description>
+            <see cref="T:Vision.VNDetectTextRectanglesRequest" />
+          </description>
+        </item>
+        <item>
+          <term>Horizon detection and straightening</term>
+          <description>
+            <see cref="T:Vision.VNDetectHorizonRequest" />
+          </description>
+        </item>
+        <item>
+          <term>Object detection and tracking</term>
+          <description>
+            <see cref="T:Vision.VNDetectRectanglesRequest" />, <see cref="T:Vision.VNTrackRectanglesRequest" />, <see cref="T:Vision.VNTrackObjectRequest" /></description>
+        </item>
+      </list>
+      <para>In addition to the built-in functions, Vision supports flexible image-based queries to <see cref="N:CoreML" /><see cref="T:CoreML.MLModel" /> 
+        objects. In contrast with the precise input requirements of CoreML, implementers of <see cref="T:Vision.IVNTargetedImageRequest" /> can accept a variety 
+        of image formats: <see cref="T:CoreImage.CIImage" />, <see cref="T:CoreGraphics.CGImage" />, and <see cref="T:CoreVideo.CVPixelBuffer" /> objects. The system scaled and converts the image to the input format required by the <see cref="T:CoreML.MLModel" />.</para>
+      <para>In all cases, Vision requests and an image are passed to a <see cref="T:Vision.VNImageRequestHandler" />, whose <see cref="M:VNImageRequestHandler.Perform" /> method executes a callback, passing one or more <see cref="T:Vision.VNObservation" /> objects of a request-appropriate type. For example:</para>
+      <example>
+        <code lang="C#"><![CDATA[
+var rectangleRequest = new VNDetectRectanglesRequest(HandleRectangles);
+var handler = new VNImageRequestHandler(img, orientation, new VNImageOptions());
+DispatchQueue.DefaultGlobalQueue.DispatchAsync(()=>{
+    NSError error;
+    handler.Perform(new VNRequest[] {rectangleRequest}, out error);
+    if (error != null)
+    {
+       ErrorOccurred(error); 
+    }
+});
+
+void HandleRectangles(VNRequest request, NSError error){
+	VNRectangleObservation[] observations = request.GetResults<VNRectangleObservation>();
+  // ... etc ...
+    ]]></code>
+      </example>
+    </remarks>
+    <related type="sample" href="https://github.com/xamarin/ios-samples/blob/master/ios11/VisionFaces" />
+    <related type="sample" href="https://github.com/xamarin/ios-samples/blob/master/ios11/VisionRectangles" />
+  </Docs>
+</Namespace>

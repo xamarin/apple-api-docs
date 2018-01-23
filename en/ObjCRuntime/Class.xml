@@ -1,0 +1,293 @@
+<Type Name="Class" FullName="ObjCRuntime.Class">
+  <TypeSignature Language="C#" Value="public class Class : ObjCRuntime.INativeObject" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit Class extends System.Object implements class ObjCRuntime.INativeObject" />
+  <AssemblyInfo>
+    <AssemblyName>Xamarin.iOS</AssemblyName>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>ObjCRuntime.INativeObject</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Docs>
+    <summary>Managed representation for an Objective-C class.</summary>
+    <remarks>
+      <para>
+
+	You can use the <see cref="M:ObjCRuntime.Class.GetHandle" /> family of
+	methods to turn either types-by-name or .NET types that
+	subclass NSObject into a Class instance.  
+
+      </para>
+      <example>
+        <code lang="C#"><![CDATA[
+// 
+// If you know that the type subclasses NSObject, 
+// you can just call new Class (Type):
+//
+
+Class GetClassForType (Type type)
+{
+	return new Class (type);
+}
+]]></code>
+      </example>
+      <para>
+
+	  The following example shows how you can use the native
+	  handle to check whether the type subclasses NSObject, and
+	  thus whether obtaining an Objective-C class from a Type instance is valid:
+
+	</para>
+      <example>
+        <code lang="C#"><![CDATA[
+//
+// Using low-level handles, allows for error checking in case the 
+// type does not subclass NSObject:
+//
+Class GetClassForType (Type type)
+{
+    Type typeToLookup = typeof (type);
+    IntPtr myClassHandle = Class.GetHandle (typeToLookup);
+    if (myClassHandle != IntPtr.Zero)
+        return new Class (myClassHandle);
+    else
+        return null;
+}
+]]></code>
+      </example>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Class (IntPtr handle);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int handle) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="handle" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="handle">The pointer to the unmanaged Objective-C Class object.</param>
+        <summary>Creates an instance from an unmanaged handle.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Class (string name);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string name) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="name">The name of the Objective-C class.</param>
+        <summary>Creates a class from a name.</summary>
+        <remarks>MonoTouch will look up the class in the Objective-C space and return the instance or throw an ArgumentException if the class does not exist, or the library was not linked in.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Class (Type type);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Type type) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="type" Type="System.Type" />
+      </Parameters>
+      <Docs>
+        <param name="type">A C# type.</param>
+        <summary>Creates a class from the specified Type.</summary>
+        <remarks>This will trigger the class regstration with the MonoTouch runtime.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetHandle">
+      <MemberSignature Language="C#" Value="public static IntPtr GetHandle (string name);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig native int GetHandle(string name) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="name">The name of the class to lookup.</param>
+        <summary>Returns the unmanaged handle to the Objective-C Class.</summary>
+        <returns>The unmanaged handle for the specified Objective-C class.</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="GetHandle">
+      <MemberSignature Language="C#" Value="public static IntPtr GetHandle (Type type);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig native int GetHandle(class System.Type type) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="type" Type="System.Type" />
+      </Parameters>
+      <Docs>
+        <param name="type">Type for an NSObject-derived class</param>
+        <summary>Gets the Objective-C handle to the given type.</summary>
+        <returns>The Objective-C handle to the object.</returns>
+        <remarks>
+          <para>
+	    This method looks up the Objective-C handle for the specified type, or registers the specified type with the Objective-C runtime if it was not previously registered.
+	  </para>
+          <para>
+
+	    The class must be derived from NSObject.   If the class is flagged with the [Register] attribute, the name specified in this Register attribute is the name that will be used for looking up or register the class.
+
+	  </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetHandleIntrinsic">
+      <MemberSignature Language="C#" Value="public static IntPtr GetHandleIntrinsic (string name);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig native int GetHandleIntrinsic(string name) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="name">Type for an NSObject-derived class</param>
+        <summary>Gets the Objective-C handle to the given type.</summary>
+        <returns>The Objective-C handle to the object.</returns>
+        <remarks>
+          <para>
+      This method looks up the Objective-C handle for the specified type. This method is special-cased by the AOT compiler to become an inlined, static reference to the type. This is significantly faster that calling <see cref="M:ObjCRuntime.Selector.GetHandle (System.String)" />, but it also means that the class must exist in the executable (or in a framework the executable is linked with).
+    </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Handle">
+      <MemberSignature Language="C#" Value="public IntPtr Handle { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int Handle" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Handle (pointer) to the unmanaged object representation.</summary>
+        <value>A pointer</value>
+        <remarks>This IntPtr is a handle to the underlying unmanaged representation for this object.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Lookup">
+      <MemberSignature Language="C#" Value="public static Type Lookup (ObjCRuntime.Class class);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Type Lookup(class ObjCRuntime.Class class) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Type</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="class" Type="ObjCRuntime.Class" />
+      </Parameters>
+      <Docs>
+        <param name="class">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Name">
+      <MemberSignature Language="C#" Value="public string Name { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Name" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The Objective-C name for this class.</summary>
+        <value />
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="SuperClass">
+      <MemberSignature Language="C#" Value="public IntPtr SuperClass { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int SuperClass" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The Objective-C handle to the super class for this class.</summary>
+        <value />
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="ThrowOnInitFailure">
+      <MemberSignature Language="C#" Value="public static bool ThrowOnInitFailure;" />
+      <MemberSignature Language="ILAsm" Value=".field public static bool ThrowOnInitFailure" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Determines whether MonoTouch will check in the NSObject constructor if the corresponding native object was successfully created (the default value is true).</summary>
+        <remarks>
+          <para>
+      Traditionally MonoTouch has allowed managed objects to be
+      created without a native peer. The behavior has however been
+      inconsistent between types, and in the case of types from
+      third-party libraries it would result in instances that would,
+      if used, most likely crash the process with a stack overflow.
+    </para>
+          <para>
+      With this check the behavior will be consistent among all types.
+    </para>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

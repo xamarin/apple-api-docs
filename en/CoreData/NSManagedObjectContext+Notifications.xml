@@ -1,0 +1,352 @@
+<Type Name="NSManagedObjectContext+Notifications" FullName="CoreData.NSManagedObjectContext+Notifications">
+  <TypeSignature Language="C#" Value="public static class NSManagedObjectContext.Notifications" />
+  <TypeSignature Language="ILAsm" Value=".class nested public auto ansi abstract sealed beforefieldinit NSManagedObjectContext/Notifications extends System.Object" />
+  <AssemblyInfo>
+    <AssemblyName>Xamarin.iOS</AssemblyName>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>
+      <para>Notification posted by the <see cref="T:CoreData.NSManagedObjectContext" /> class.</para>
+    </summary>
+    <remarks>
+      <para>This is a static class which contains various helper methods that allow developers to observe events posted in the iOS notification hub (<see cref="T:Foundation.NSNotificationCenter" />).</para>
+      <para>The methods defined in this class post events invoke the provided method or lambda with a <see cref="T:Foundation.NSNotificationEventArgs" /> parameter which contains strongly typed properties for the notification arguments.</para>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName="ObserveDidSave">
+      <MemberSignature Language="C#" Value="public static Foundation.NSObject ObserveDidSave (EventHandler&lt;CoreData.NSManagedObjectChangeEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSObject ObserveDidSave(class System.EventHandler`1&lt;class CoreData.NSManagedObjectChangeEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="handler" Type="System.EventHandler&lt;CoreData.NSManagedObjectChangeEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="handler">Method to invoke when the notification is posted.</param>
+        <summary>Registers a method to be notified when the NSManagedObjectContextDidSaveNotification notification is posted.</summary>
+        <returns>
+          <para>The returned NSObject represents the registered notification.   Either call Dispose on the object to stop receiving notifications, or pass it to <see cref="M:Foundation.NSNotificationCenter.RemoveObserver" /></para>
+        </returns>
+        <remarks>
+          <para>The following example shows how developers can use this method in their code:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = NSManagedObjectContext.Notifications.ObserveDidSave ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("InsertedObjects", args.InsertedObjects);
+    Console.WriteLine ("UpdatedObjects", args.UpdatedObjects);
+    Console.WriteLine ("DeletedObjects", args.DeletedObjects);
+    Console.WriteLine ("RefreshedObjects", args.RefreshedObjects);
+    Console.WriteLine ("InvalidatedObjects", args.InvalidatedObjects);
+    Console.WriteLine ("InvalidatedAllObjects", args.InvalidatedAllObjects);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+//Method style
+//
+NSObject notification;
+void Callback (object sender, CoreData.NSManagedObjectChangeEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("InsertedObjects", args.InsertedObjects);
+    Console.WriteLine ("UpdatedObjects", args.UpdatedObjects);
+    Console.WriteLine ("DeletedObjects", args.DeletedObjects);
+    Console.WriteLine ("RefreshedObjects", args.RefreshedObjects);
+    Console.WriteLine ("InvalidatedObjects", args.InvalidatedObjects);
+    Console.WriteLine ("InvalidatedAllObjects", args.InvalidatedAllObjects);
+}
+
+void Setup ()
+{
+    notification = NSManagedObjectContext.Notifications.ObserveDidSave (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ObserveDidSave">
+      <MemberSignature Language="C#" Value="public static Foundation.NSObject ObserveDidSave (Foundation.NSObject objectToObserve, EventHandler&lt;CoreData.NSManagedObjectChangeEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSObject ObserveDidSave(class Foundation.NSObject objectToObserve, class System.EventHandler`1&lt;class CoreData.NSManagedObjectChangeEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="objectToObserve" Type="Foundation.NSObject" />
+        <Parameter Name="handler" Type="System.EventHandler&lt;CoreData.NSManagedObjectChangeEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="objectToObserve">The object to observe.</param>
+        <param name="handler">Method to invoke when the notification is posted.</param>
+        <summary>Strongly typed notification for the <see cref="P:CoreData.NSManagedObjectContext.DidSaveNotification" /> constant.</summary>
+        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="M:Foundation.NSNotificationCenter.RemoveObserver" /></returns>
+        <remarks>
+          <para id="tool-remark">This method can be used to subscribe for <see cref="P:CoreData.NSManagedObjectContext.DidSaveNotification" /> notifications.</para>
+          <example>
+            <code lang="C#"><![CDATA[
+// Listen to all notifications posted for any object
+var token = NSManagedObjectContext.Notifications.ObserveDidSave ((notification) => {
+	Console.WriteLine ("Observed DidSaveNotification!");
+};
+
+// Listen to all notifications posted for a single object
+var token = NSManagedObjectContext.Notifications.ObserveDidSave (objectToObserve, (notification) => {
+	Console.WriteLine ($"Observed DidSaveNotification for {nameof (objectToObserve)}!");
+};
+
+// Stop listening for notifications
+token.Dispose ();
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ObserveObjectsDidChange">
+      <MemberSignature Language="C#" Value="public static Foundation.NSObject ObserveObjectsDidChange (EventHandler&lt;CoreData.NSManagedObjectChangeEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSObject ObserveObjectsDidChange(class System.EventHandler`1&lt;class CoreData.NSManagedObjectChangeEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="handler" Type="System.EventHandler&lt;CoreData.NSManagedObjectChangeEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="handler">Method to invoke when the notification is posted.</param>
+        <summary>Registers a method to be notified when the NSManagedObjectContextObjectsDidChangeNotification notification is posted.</summary>
+        <returns>
+          <para>The returned NSObject represents the registered notification.   Either call Dispose on the object to stop receiving notifications, or pass it to <see cref="M:Foundation.NSNotificationCenter.RemoveObserver" /></para>
+        </returns>
+        <remarks>
+          <para>The following example shows how developers can use this method in their code:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = NSManagedObjectContext.Notifications.ObserveObjectsDidChange ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("InsertedObjects", args.InsertedObjects);
+    Console.WriteLine ("UpdatedObjects", args.UpdatedObjects);
+    Console.WriteLine ("DeletedObjects", args.DeletedObjects);
+    Console.WriteLine ("RefreshedObjects", args.RefreshedObjects);
+    Console.WriteLine ("InvalidatedObjects", args.InvalidatedObjects);
+    Console.WriteLine ("InvalidatedAllObjects", args.InvalidatedAllObjects);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+//Method style
+//
+NSObject notification;
+void Callback (object sender, CoreData.NSManagedObjectChangeEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("InsertedObjects", args.InsertedObjects);
+    Console.WriteLine ("UpdatedObjects", args.UpdatedObjects);
+    Console.WriteLine ("DeletedObjects", args.DeletedObjects);
+    Console.WriteLine ("RefreshedObjects", args.RefreshedObjects);
+    Console.WriteLine ("InvalidatedObjects", args.InvalidatedObjects);
+    Console.WriteLine ("InvalidatedAllObjects", args.InvalidatedAllObjects);
+}
+
+void Setup ()
+{
+    notification = NSManagedObjectContext.Notifications.ObserveObjectsDidChange (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ObserveObjectsDidChange">
+      <MemberSignature Language="C#" Value="public static Foundation.NSObject ObserveObjectsDidChange (Foundation.NSObject objectToObserve, EventHandler&lt;CoreData.NSManagedObjectChangeEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSObject ObserveObjectsDidChange(class Foundation.NSObject objectToObserve, class System.EventHandler`1&lt;class CoreData.NSManagedObjectChangeEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="objectToObserve" Type="Foundation.NSObject" />
+        <Parameter Name="handler" Type="System.EventHandler&lt;CoreData.NSManagedObjectChangeEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="objectToObserve">The object to observe.</param>
+        <param name="handler">Method to invoke when the notification is posted.</param>
+        <summary>Strongly typed notification for the <see cref="P:CoreData.NSManagedObjectContext.ObjectsDidChangeNotification" /> constant.</summary>
+        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="M:Foundation.NSNotificationCenter.RemoveObserver" /></returns>
+        <remarks>
+          <para id="tool-remark">This method can be used to subscribe for <see cref="P:CoreData.NSManagedObjectContext.ObjectsDidChangeNotification" /> notifications.</para>
+          <example>
+            <code lang="C#"><![CDATA[
+// Listen to all notifications posted for any object
+var token = NSManagedObjectContext.Notifications.ObserveObjectsDidChange ((notification) => {
+	Console.WriteLine ("Observed ObjectsDidChangeNotification!");
+};
+
+// Listen to all notifications posted for a single object
+var token = NSManagedObjectContext.Notifications.ObserveObjectsDidChange (objectToObserve, (notification) => {
+	Console.WriteLine ($"Observed ObjectsDidChangeNotification for {nameof (objectToObserve)}!");
+};
+
+// Stop listening for notifications
+token.Dispose ();
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ObserveWillSave">
+      <MemberSignature Language="C#" Value="public static Foundation.NSObject ObserveWillSave (EventHandler&lt;Foundation.NSNotificationEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSObject ObserveWillSave(class System.EventHandler`1&lt;class Foundation.NSNotificationEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="handler" Type="System.EventHandler&lt;Foundation.NSNotificationEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="handler">Method to invoke when the notification is posted.</param>
+        <summary>Strongly typed notification for the <see cref="P:CoreData.NSManagedObjectContext.WillSaveNotification" /> constant.</summary>
+        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="M:Foundation.NSNotificationCenter.RemoveObserver" /></returns>
+        <remarks>
+          <para>The following example shows how you can use this method in your code</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = NSManagedObjectContext.Notifications.ObserveWillSave ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+//Method style
+//
+NSObject notification;
+void Callback (object sender, Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = NSManagedObjectContext.Notifications.ObserveWillSave (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ObserveWillSave">
+      <MemberSignature Language="C#" Value="public static Foundation.NSObject ObserveWillSave (Foundation.NSObject objectToObserve, EventHandler&lt;Foundation.NSNotificationEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSObject ObserveWillSave(class Foundation.NSObject objectToObserve, class System.EventHandler`1&lt;class Foundation.NSNotificationEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="objectToObserve" Type="Foundation.NSObject" />
+        <Parameter Name="handler" Type="System.EventHandler&lt;Foundation.NSNotificationEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="objectToObserve">The object to observe.</param>
+        <param name="handler">Method to invoke when the notification is posted.</param>
+        <summary>Strongly typed notification for the <see cref="P:CoreData.NSManagedObjectContext.WillSaveNotification" /> constant.</summary>
+        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="M:Foundation.NSNotificationCenter.RemoveObserver" /></returns>
+        <remarks>
+          <para id="tool-remark">This method can be used to subscribe for <see cref="P:CoreData.NSManagedObjectContext.WillSaveNotification" /> notifications.</para>
+          <example>
+            <code lang="C#"><![CDATA[
+// Listen to all notifications posted for any object
+var token = NSManagedObjectContext.Notifications.ObserveWillSave ((notification) => {
+	Console.WriteLine ("Observed WillSaveNotification!");
+};
+
+// Listen to all notifications posted for a single object
+var token = NSManagedObjectContext.Notifications.ObserveWillSave (objectToObserve, (notification) => {
+	Console.WriteLine ($"Observed WillSaveNotification for {nameof (objectToObserve)}!");
+};
+
+// Stop listening for notifications
+token.Dispose ();
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

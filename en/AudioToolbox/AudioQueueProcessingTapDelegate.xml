@@ -1,0 +1,67 @@
+<Type Name="AudioQueueProcessingTapDelegate" FullName="AudioToolbox.AudioQueueProcessingTapDelegate">
+  <TypeSignature Language="C#" Value="public delegate uint AudioQueueProcessingTapDelegate(AudioQueueProcessingTap audioQueueTap, uint numberOfFrames, ref AudioTimeStamp timeStamp, ref AudioQueueProcessingTapFlags flags, AudioBuffers data);" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed AudioQueueProcessingTapDelegate extends System.MulticastDelegate" />
+  <AssemblyInfo>
+    <AssemblyName>Xamarin.iOS</AssemblyName>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Delegate</BaseTypeName>
+  </Base>
+  <Parameters>
+    <Parameter Name="audioQueueTap" Type="AudioToolbox.AudioQueueProcessingTap" />
+    <Parameter Name="numberOfFrames" Type="System.UInt32" />
+    <Parameter Name="timeStamp" Type="AudioToolbox.AudioTimeStamp&amp;" RefType="ref" />
+    <Parameter Name="flags" Type="AudioToolbox.AudioQueueProcessingTapFlags&amp;" RefType="ref" />
+    <Parameter Name="data" Type="AudioToolbox.AudioBuffers" />
+  </Parameters>
+  <ReturnValue>
+    <ReturnType>System.UInt32</ReturnType>
+  </ReturnValue>
+  <Docs>
+    <param name="audioQueueTap">Context for the callback, provides access to resources that the Tap can use and parameters of the Tap configuration.</param>
+    <param name="numberOfFrames">Number of frames that the method should render.</param>
+    <param name="timeStamp">For input queues, return the timestamp, for output queues, the current timestamp.</param>
+    <param name="flags">On entry, the flags describe the kind of tap being performed (PreEffect, PostEffect or Siphon).   It might also contain the value StartOfStream to indicate that a reset to the beginning is requested.   On output it should have updated the StartOfStream and EndOfStream flags.</param>
+    <param name="data">Siphoning taps can inspect the contents of the individual AudioBuffers in place but must not make changes to it. Other taps should allocate and fill the buffers as needed.</param>
+    <summary>Signature for AudioQueue's Tap callback handlers.</summary>
+    <returns>Number of frames provided in data.</returns>
+    <remarks>
+      <para> 
+
+	Call GetSourceAudio until the desired number of audio
+	frames required by the tap to work is received.  
+
+      </para>
+      <para>
+	If the taps are unable to fullfill the requested number of
+	frames requested, the AudioQueue will fill the gap with silence.    
+      </para>
+      <para>
+
+	On entry, the flags might contain a StartOfStream request as
+	well as information about what kind of tap this is (running
+	before an effect, after an effect or just a Siphon).  Your
+	callback can modify the data buffers for non-Siphon cases.
+	For Siphon, it should merely examine, but not alter the
+	contents.
+
+      </para>
+      <para>
+
+	On exit for non-Siphon cases, the flags should be updated with
+	StartOfStream and EndOfStream flags depending on the return
+	values from <see cref="T:AudioToolbox.AudioQueueProcessingTap" />'s
+	GetSourceAudio method.
+
+      </para>
+      <para>
+
+	For non-siphon cases, the tap should allocate the contents of
+	the AudioBuffer contents and ensure that they remain valid
+	until the next time the Tap callback is invoked.
+
+      </para>
+    </remarks>
+  </Docs>
+</Type>

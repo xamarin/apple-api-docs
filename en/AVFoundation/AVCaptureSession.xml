@@ -1,0 +1,1909 @@
+<Type Name="AVCaptureSession" FullName="AVFoundation.AVCaptureSession">
+  <TypeSignature Language="C#" Value="public class AVCaptureSession : Foundation.NSObject" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit AVCaptureSession extends Foundation.NSObject" />
+  <AssemblyInfo>
+    <AssemblyName>Xamarin.iOS</AssemblyName>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>Foundation.NSObject</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Attributes>
+    <Attribute>
+      <AttributeName>Foundation.Register("AVCaptureSession", true)</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 4, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>Coordinates a recording session.</summary>
+    <remarks>
+      <para>
+	The AVCaptureSession object coordinates the recording of video
+	or audio input and passing the recorded information to one or
+	more output objects.  As the iOS line has advanced, different devices have gained multiple capture devices (in particular, gained multiple cameras). Application developers can use <see cref="M:AVFoundation.AVCaptureDevice.DefaultDeviceWithMediaType" /> or <see cref="M:AVFoundation.AVCaptureDevice.DevicesWithMediaType" />, passing in the constants defined in <see cref="T:AVFoundation.AVMediaType" />.
+      </para>
+      <para>
+        Configuring capture consists of setting the <see cref="P:AVFoundation.AVCaptureSession.Inputs" /> and <see cref="P:AVFoundation.AVCaptureSession.Outputs" /> properties of the <see cref="T:AVFoundation.AVCaptureSession" />. Notice that multiple <see cref="T:AVFoundation.AVCaptureInput" />s and <see cref="T:AVFoundation.AVCaptureOutput" />s are possible. For instance, to capture both audio and video, one would use two capture inputs:</para>
+      <example>
+        <code lang="C#"><![CDATA[
+var session = new AVCaptureSession();
+
+var camera = AVCaptureDevice.DefaultDeviceWithMediaType(AVMediaType.Video);
+var mic = AVCaptureDevice.DefaultDeviceWithMediaType(AVMediaType.Audio);
+if(camera == null || mic == null){
+    throw new Exception("Can't find devices");
+}
+
+var cameraInput = AVCaptureDeviceInput.FromDevice (camera);
+//info.plist _must_ contain NSMicrophoneUsageDescription key
+var micInput = AVCaptureDeviceInput.FromDevice (mic);
+
+if(session.CanAddInput(cameraInput)){
+    session.AddInput(cameraInput);
+}
+if(session.CanAddInput(micInput)){
+   session.AddInput(micInput);
+}
+          ]]></code>
+      </example>
+      <para>Note that permission to access the microphone (and in some regions, the camera) must be given by the user, requiring the developer to add the <c>NSMicrophoneUsageDescription</c> to the application's info.plist file.</para>
+      <para>Video can be captured directly to file with <see cref="T:AVFoundation.AVCaptureMovieFileOutput" />. However, this class has no display-able data and cannot be used simultaneously with <see cref="T:AVFoundation.AVCaptureVideoDataOutput" />. Instead, application developers can use it in combination with a <see cref="T:AVFoundation.AVCaptureVideoPreviewLayer" />, as shown in the following example:</para>
+      <example>
+        <code lang="C#"><![CDATA[
+var layer = new AVCaptureVideoPreviewLayer (session);
+layer.VideoGravity = AVLayerVideoGravity.ResizeAspectFill;
+
+var cameraView = new UIView ();
+cameraView.Layer.AddSublayer (layer);
+
+var filePath = Path.Combine (Path.GetTempPath (), "temporary.mov");
+var fileUrl = NSUrl.FromFilename (filePath);
+
+var movieFileOutput = new AVCaptureMovieFileOutput ();
+var recordingDelegate = new MyRecordingDelegate ();
+session.AddOutput (movieFileOutput);
+
+movieFileOutput.StartRecordingToOutputFile (fileUrl, recordingDelegate);
+          ]]></code>
+      </example>
+      <para>Application developers should note that the function <see cref="M:AVFoundation.AVCaptureMovieFileOutput.StopRecording" /> is asynchronous; developers should wait until the <see cref="M:AVFoundation.AVCaptureFileOutputRecordingDelegate.FinishedRecording" /> delegate method before manipulating the file (for instance, before saving it to the Photos album with <see cref="M:UIKit.UIVideo.SaveToPhotosAlbum" /> or <see cref="M:AssetsLibrary.ALAssetsLibrary.WriteVideoToSavedPhotosAlbumAsync" />).</para>
+      <example>
+        <code lang="C#"><![CDATA[
+public class MyRecordingDelegate : AVCaptureFileOutputRecordingDelegate
+{
+    public override void FinishedRecording (AVCaptureFileOutput captureOutput, NSUrl outputFileUrl, NSObject [] connections, NSError error)
+    {
+        if (UIVideo.IsCompatibleWithSavedPhotosAlbum (outputFileUrl.Path))
+        {
+            var library = new ALAssetsLibrary ();
+            library.WriteVideoToSavedPhotosAlbum (outputFileUrl, (path, e2) =>
+            {
+                if (e2 != null)
+                {
+                    new UIAlertView ("Error", e2.ToString (), null, "OK", null).Show ();
+                }
+                else
+                {
+                    new UIAlertView ("Saved", "Saved to Photos", null, "OK", null).Show ();
+                    File.Delete (outputFileUrl.Path);
+                }
+            });
+        }
+        else
+        {
+            new UIAlertView ("Incompatible", "Incompatible", null, "OK", null).Show ();
+        }
+
+    }
+}          ]]></code>
+      </example>
+      <para>
+
+	Application developers can configure one or more output ports for the
+	captured data, and these can be still frames, video frames
+	with timing information, audio samples, quicktime movie files, or can be rendered directly to a CoreAnimation layer.
+
+      </para>
+      <para>
+
+	Once the input and output components of
+	the session are set, the actual processing is begun by calling the
+	<see cref="M:AVFoundation.AVCaptureSession.StartRunning()" />
+	method.
+
+      </para>
+      <example>
+        <code lang="C#"><![CDATA[
+
+void SetupCapture ()
+	/ configure the capture session for low resolution, change this if your code
+	// can cope with more data or volume
+	session = new AVCaptureSession () {
+	        SessionPreset = AVCaptureSession.PresetMedium
+	};
+	
+	// create a device input and attach it to the session
+	var captureDevice = AVCaptureDevice.DefaultDeviceWithMediaType (AVMediaType.Video);
+	var input = AVCaptureDeviceInput.FromDevice (captureDevice);
+	if (input == null){
+	        Console.WriteLine ("No video input device");
+	        return false;
+	}
+	session.AddInput (input);
+	
+	// create a VideoDataOutput and add it to the sesion
+	var output = new AVCaptureVideoDataOutput () {
+	        VideoSettings = new AVVideoSettings (CVPixelFormatType.CV32BGRA),
+	
+	        // If you want to cap the frame rate at a given speed, in this sample: 15 frames per second
+	        MinFrameDuration = new CMTime (1, 15)
+	};
+	
+	// configure the output
+	queue = new MonoTouch.CoreFoundation.DispatchQueue ("myQueue");
+	outputRecorder = new OutputRecorder ();
+	output.SetSampleBufferDelegateAndQueue (outputRecorder, queue);
+	session.AddOutput (output);
+	
+	session.StartRunning ();
+}
+
+public class OutputRecorder : AVCaptureVideoDataOutputSampleBufferDelegate {
+        public override void DidOutputSampleBuffer (AVCaptureOutput captureOutput, CMSampleBuffer sampleBuffer, AVCaptureConnection connection)
+        {
+                try {
+                        var image = ImageFromSampleBuffer (sampleBuffer);
+
+                        // Do something with the image, we just stuff it in our main view.
+                        AppDelegate.ImageView.BeginInvokeOnMainThread (delegate {
+                                AppDelegate.ImageView.Image = image;
+                        });
+
+                        //
+                        // Although this looks innocent "Oh, he is just optimizing this case away"
+                        // this is incredibly important to call on this callback, because the AVFoundation
+                        // has a fixed number of buffers and if it runs out of free buffers, it will stop
+                        // delivering frames.
+                        //
+                        sampleBuffer.Dispose ();
+                } catch (Exception e){
+                        Console.WriteLine (e);
+                }
+        }
+
+        UIImage ImageFromSampleBuffer (CMSampleBuffer sampleBuffer)
+        {
+                // Get the CoreVideo image
+                using (var pixelBuffer = sampleBuffer.GetImageBuffer () as CVPixelBuffer){
+                        // Lock the base address
+                        pixelBuffer.Lock (0);
+                        // Get the number of bytes per row for the pixel buffer
+                        var baseAddress = pixelBuffer.BaseAddress;
+                        int bytesPerRow = pixelBuffer.BytesPerRow;
+                        int width = pixelBuffer.Width;
+                        int height = pixelBuffer.Height;
+                        var flags = CGBitmapFlags.PremultipliedFirst | CGBitmapFlags.ByteOrder32Little;
+                        // Create a CGImage on the RGB colorspace from the configured parameter above
+                        using (var cs = CGColorSpace.CreateDeviceRGB ())
+                        using (var context = new CGBitmapContext (baseAddress,width, height, 8, bytesPerRow, cs, (CGImageAlphaInfo) flags))
+                        using (var cgImage = context.ToImage ()){
+                                pixelBuffer.Unlock (0);
+                                return UIImage.FromImage (cgImage);
+                        }
+                }
+        }
+}
+
+	]]></code>
+      </example>
+    </remarks>
+    <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=9fa28988-64fe-4365-b2b7-95542daf4f9b">avcaptureframes</related>
+    <related type="PlatformDocAPI" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVCaptureSession_Class/index.html">Apple documentation for <c>AVCaptureSession</c></related>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public AVCaptureSession ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("init")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters />
+      <Docs>
+        <summary>Default constructor that initializes a new instance of this class with no parameters.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected AVCaptureSession (Foundation.NSObjectFlag t);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor(class Foundation.NSObjectFlag t) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="t" Type="Foundation.NSObjectFlag" />
+      </Parameters>
+      <Docs>
+        <param name="t">Unused sentinel value, pass NSObjectFlag.Empty.</param>
+        <summary>Constructor to call on derived classes to skip initialization and merely allocate the object.</summary>
+        <remarks>
+          <para>This constructor should be called by derived classes when they completely construct the object in managed code and merely want the runtime to allocate and initialize the NSObject.   This is required to implement the two-step initialization process that Objective-C uses, the first step is to perform the object allocation, the second step is to initialize the object.   When developers invoke the constructor that takes the NSObjectFlag.Empty they take advantage of a direct path that goes all the way up to NSObject to merely allocate the object's memory and bind the Objective-C and C# objects together.    The actual initialization of the object is up to the developer.</para>
+          <para>This constructor is typically used by the binding generator to allocate the object, but prevent the actual initialization to take place.   Once the allocation has taken place, the constructor has to initialize the object.   With constructors generated by the binding generator this means that it manually invokes one of the "init" methods to initialize the object.</para>
+          <para>It is the developer's responsibility to completely initialize the object if they chain up using the NSObjectFlag.Empty path.</para>
+          <para>In general, if the developer's constructor invokes the NSObjectFlag.Empty base implementation, then it should be calling an Objective-C init method.   If this is not the case, developers should instead chain to the proper constructor in their class. </para>
+          <para>The argument value is ignored and merely ensures that the only code that is executed is the construction phase is the basic NSObject allocation and runtime type registration.  Typically the chaining would look like this:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// The NSObjectFlag merely allocates the object and registers the
+// C# class with the Objective-C runtime if necessary, but no actual
+// initXxx method is invoked, that is done later in the constructor
+//
+// This is taken from Xamarin's source code:
+//
+[Export ("initWithFrame:")]
+public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
+{
+// Invoke the init method now.
+	var initWithFrame = new Selector ("initWithFrame:").Handle;
+	if (IsDirectBinding)
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+	else
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected AVCaptureSession (IntPtr handle);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig specialname rtspecialname instance void .ctor(native int handle) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="handle" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="handle">Pointer (handle) to the unmanaged object.</param>
+        <summary>A constructor used when creating managed representations of unmanaged objects;  Called by the runtime.</summary>
+        <remarks>
+          <para>This constructor is invoked by the runtime infrastructure (<see cref="M:ObjCRuntime.Runtime.GetNSObject(System.IntPtr)" />) to create a new managed representation for a pointer to an unmanaged Objective-C object.    Developers should not invoke this method directly, instead they should call the GetNSObject method as it will prevent two instances of a managed object to point to the same native object.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AddConnection">
+      <MemberSignature Language="C#" Value="public virtual void AddConnection (AVFoundation.AVCaptureConnection connection);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void AddConnection(class AVFoundation.AVCaptureConnection connection) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("addConnection:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="connection" Type="AVFoundation.AVCaptureConnection" />
+      </Parameters>
+      <Docs>
+        <param name="connection">To be added.</param>
+        <summary>Adds the specified capture <paramref name="connection" />.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AddInput">
+      <MemberSignature Language="C#" Value="public virtual void AddInput (AVFoundation.AVCaptureInput input);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void AddInput(class AVFoundation.AVCaptureInput input) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("addInput:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="input" Type="AVFoundation.AVCaptureInput" />
+      </Parameters>
+      <Docs>
+        <param name="input">The AVCaptureInput to add to the session</param>
+        <summary>Adds an input to the Capture Session</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AddInputWithNoConnections">
+      <MemberSignature Language="C#" Value="public virtual void AddInputWithNoConnections (AVFoundation.AVCaptureInput input);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void AddInputWithNoConnections(class AVFoundation.AVCaptureInput input) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("addInputWithNoConnections:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="input" Type="AVFoundation.AVCaptureInput" />
+      </Parameters>
+      <Docs>
+        <param name="input">To be added.</param>
+        <summary>Adds the specified <paramref name="input" /> without forming any new connections.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AddOutput">
+      <MemberSignature Language="C#" Value="public virtual void AddOutput (AVFoundation.AVCaptureOutput output);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void AddOutput(class AVFoundation.AVCaptureOutput output) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("addOutput:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="output" Type="AVFoundation.AVCaptureOutput" />
+      </Parameters>
+      <Docs>
+        <param name="output">The <see cref="T:AVFoundation.AVCaptureOutput" /> to be added.</param>
+        <summary>Adds an output to the capture session.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AddOutputWithNoConnections">
+      <MemberSignature Language="C#" Value="public virtual void AddOutputWithNoConnections (AVFoundation.AVCaptureOutput output);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void AddOutputWithNoConnections(class AVFoundation.AVCaptureOutput output) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("addOutputWithNoConnections:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="output" Type="AVFoundation.AVCaptureOutput" />
+      </Parameters>
+      <Docs>
+        <param name="output">To be added.</param>
+        <summary>Adds the specified <paramref name="output" /> without forming any new connections.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AutomaticallyConfiguresApplicationAudioSession">
+      <MemberSignature Language="C#" Value="public virtual bool AutomaticallyConfiguresApplicationAudioSession { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool AutomaticallyConfiguresApplicationAudioSession" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("automaticallyConfiguresApplicationAudioSession")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setAutomaticallyConfiguresApplicationAudioSession:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Whether the <see cref="T:AVFoundation.AVCaptureSession" /> uses the app's shared audio session.</summary>
+        <value>The default value in iOS 7 and later is <see langword="true" />.</value>
+        <remarks>
+          <para>If this value is <see langword="true" />, simultaneous audio playback and capture is possible.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AutomaticallyConfiguresCaptureDeviceForWideColor">
+      <MemberSignature Language="C#" Value="public virtual bool AutomaticallyConfiguresCaptureDeviceForWideColor { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool AutomaticallyConfiguresCaptureDeviceForWideColor" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("automaticallyConfiguresCaptureDeviceForWideColor")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setAutomaticallyConfiguresCaptureDeviceForWideColor:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets or sets a Boolean value that controls whether or not the session should automatically use wide color if it is available.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginConfiguration">
+      <MemberSignature Language="C#" Value="public virtual void BeginConfiguration ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void BeginConfiguration() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("beginConfiguration")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Initiates a transaction to change the configuration of the Capture Session.</summary>
+        <remarks>
+          <para>This method and <see cref="M:AVFoundation.AVCaptureSession.CommitConfiguration" /> must be used if the application developer wishes to change the configuration of a running session. For instance, to swap between front and back cameras, code such as the following can be used:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+AVCaptureMovieFileOutput movieFileOutput;
+
+AVCaptureDevice CurrentCamera { get; set; }
+AVCaptureDevice BackCamera { get; set; }
+AVCaptureDevice FrontCamera { get; set; }
+AVCaptureDevice Mic { get; set; }
+
+bool HasBackCamera { get { return BackCamera != null; } }
+bool HasFrontCamera { get { return FrontCamera != null; } }
+bool HasMic { get { return Mic != null; } }
+
+void SetDeviceProperties()
+{
+	//Set up the devices
+	foreach(var device in AVCaptureDevice.DevicesWithMediaType(AVMediaType.Video))
+	{
+		if(device.Position == AVCaptureDevicePosition.Back)
+		{
+			BackCamera = device;
+		}
+		else
+		{
+			FrontCamera = device;
+		}
+	}
+	Mic = AVCaptureDevice.DefaultDeviceWithMediaType(AVMediaType.Audio);
+}
+
+protected void StopRecording()
+{
+	if(movieFileOutput != null && movieFileOutput.Recording)
+	{
+		movieFileOutput.StopRecording();
+	}
+	RecordingFinished(this, new EventArgs());
+}
+
+public bool SwapCameras()
+{
+	StopRecording();
+	if(HasBackCamera && HasFrontCamera)
+	{
+		var nextCamera = CurrentCamera == BackCamera ? FrontCamera : BackCamera;
+		NSError error = null;
+		var newInput = new AVCaptureDeviceInput(nextCamera, out error);
+		if(error != null)
+		{
+			throw new Exception(error.ToString());
+		}
+		session.BeginConfiguration();
+		//Remove current video input
+		foreach(AVCaptureDeviceInput input in session.Inputs)
+		{
+			if(input.Device.HasMediaType(AVMediaType.Video))
+			{
+				session.RemoveInput(input);
+			}
+		}
+		if(session.CanAddInput(newInput))
+		{
+			session.AddInput(newInput);
+		}
+		session.CommitConfiguration();
+		CurrentCamera = nextCamera;
+		CameraConfigured(this, new TArgs<AVCaptureDevice>(CurrentCamera));
+	}
+	return CurrentCamera == FrontCamera;
+}
+          ]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CanAddConnection">
+      <MemberSignature Language="C#" Value="public virtual bool CanAddConnection (AVFoundation.AVCaptureConnection connection);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool CanAddConnection(class AVFoundation.AVCaptureConnection connection) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("canAddConnection:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="connection" Type="AVFoundation.AVCaptureConnection" />
+      </Parameters>
+      <Docs>
+        <param name="connection">To be added.</param>
+        <summary>Returns <see langword="true" /> if the specified <paramref name="connection" /> can be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CanAddInput">
+      <MemberSignature Language="C#" Value="public virtual bool CanAddInput (AVFoundation.AVCaptureInput input);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool CanAddInput(class AVFoundation.AVCaptureInput input) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("canAddInput:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="input" Type="AVFoundation.AVCaptureInput" />
+      </Parameters>
+      <Docs>
+        <param name="input">To be added.</param>
+        <summary>Returns whether the given input can be added to the session.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CanAddOutput">
+      <MemberSignature Language="C#" Value="public virtual bool CanAddOutput (AVFoundation.AVCaptureOutput output);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool CanAddOutput(class AVFoundation.AVCaptureOutput output) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("canAddOutput:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="output" Type="AVFoundation.AVCaptureOutput" />
+      </Parameters>
+      <Docs>
+        <param name="output">To be added.</param>
+        <summary>Returns whether the given input can be added to the session.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CanSetSessionPreset">
+      <MemberSignature Language="C#" Value="public virtual bool CanSetSessionPreset (Foundation.NSString preset);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool CanSetSessionPreset(class Foundation.NSString preset) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("canSetSessionPreset:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="preset" Type="Foundation.NSString" />
+      </Parameters>
+      <Docs>
+        <param name="preset">One of the <c>AVCaptureSession.Preset*</c> constants.</param>
+        <summary>Whether the session supports a particular set of predefined capture settings.</summary>
+        <returns>To be added.</returns>
+        <remarks>
+          <para>The <paramref name="preset" /> must be one of the <c>AVCaptureSession.Preset*</c> values.</para>
+        </remarks>
+        <altmember cref="P:AVFoundation.AVCaptureSession.Preset1920x1080" />
+        <altmember cref="P:AVFoundation.AVCaptureSession.Preset1280x720" />
+        <altmember cref="P:AVFoundation.AVCaptureSession.Preset355x288" />
+        <altmember cref="P:AVFoundation.AVCaptureSession.Preset640x480" />
+        <altmember cref="P:AVFoundation.AVCaptureSession.PresetHigh" />
+        <altmember cref="P:AVFoundation.AVCaptureSession.PresetiFrame1280x720" />
+        <altmember cref="P:AVFoundation.AVCaptureSession.PresetiFrame960x540" />
+        <altmember cref="P:AVFoundation.AVCaptureSession.PresetInputPriority" />
+        <altmember cref="P:AVFoundation.AVCaptureSession.PresetLow" />
+        <altmember cref="P:AVFoundation.AVCaptureSession.PresetMedium" />
+        <altmember cref="P:AVFoundation.AVCaptureSession.PresetPhoto" />
+      </Docs>
+    </Member>
+    <Member MemberName="ClassHandle">
+      <MemberSignature Language="C#" Value="public override IntPtr ClassHandle { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int ClassHandle" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The handle for this class.</summary>
+        <value>The pointer to the Objective-C class.</value>
+        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CommitConfiguration">
+      <MemberSignature Language="C#" Value="public virtual void CommitConfiguration ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void CommitConfiguration() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("commitConfiguration")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Applies atomically all the configuration changes that were made to the Capture Session since <see cref="M:AVFoundation.AVCaptureSession.BeginConfiguration" />.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DidStartRunningNotification">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString DidStartRunningNotification { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString DidStartRunningNotification" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Advice("Use AVCaptureSession.Notifications.ObserveDidStartRunning helper method instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVCaptureSessionDidStartRunningNotification", "AVFoundation")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Notification constant for DidStartRunning</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:AVFoundation.AVCaptureSession+Notifications" />.<see cref="M:AVFoundation.AVCaptureSession+Notifications.ObserveDidStartRunningNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = AVCaptureSession.Notifications.ObserveDidStartRunning ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = AVCaptureSession.Notifications.ObserveDidStartRunning (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+          <para>The following example shows how to use the notification with the DefaultCenter API:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        AVCaptureSession.DidStartRunningNotification, (notification) => {Console.WriteLine ("Received the notification AVCaptureSession", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification AVCaptureSession", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (AVCaptureSession.DidStartRunningNotification, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DidStopRunningNotification">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString DidStopRunningNotification { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString DidStopRunningNotification" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Advice("Use AVCaptureSession.Notifications.ObserveDidStopRunning helper method instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVCaptureSessionDidStopRunningNotification", "AVFoundation")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Notification constant for DidStopRunning</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:AVFoundation.AVCaptureSession+Notifications" />.<see cref="M:AVFoundation.AVCaptureSession+Notifications.ObserveDidStopRunningNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = AVCaptureSession.Notifications.ObserveDidStopRunning ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = AVCaptureSession.Notifications.ObserveDidStopRunning (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+          <para>The following example shows how to use the notification with the DefaultCenter API:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        AVCaptureSession.DidStopRunningNotification, (notification) => {Console.WriteLine ("Received the notification AVCaptureSession", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification AVCaptureSession", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (AVCaptureSession.DidStopRunningNotification, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ErrorKey">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString ErrorKey { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString ErrorKey" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVCaptureSessionErrorKey", "AVFoundation")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVCaptureSessionErrorKey</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Inputs">
+      <MemberSignature Language="C#" Value="public virtual AVFoundation.AVCaptureInput[] Inputs { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class AVFoundation.AVCaptureInput[] Inputs" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("inputs")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>AVFoundation.AVCaptureInput[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Inputs to the capture session.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Interrupted">
+      <MemberSignature Language="C#" Value="public virtual bool Interrupted { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool Interrupted" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("isInterrupted")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Whether the session has been interrupted.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InterruptionEndedNotification">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString InterruptionEndedNotification { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString InterruptionEndedNotification" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Advice("Use AVCaptureSession.Notifications.ObserveInterruptionEnded helper method instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVCaptureSessionInterruptionEndedNotification", "AVFoundation")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Notification constant for InterruptionEnded</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:AVFoundation.AVCaptureSession+Notifications" />.<see cref="M:AVFoundation.AVCaptureSession+Notifications.ObserveInterruptionEndedNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = AVCaptureSession.Notifications.ObserveInterruptionEnded ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = AVCaptureSession.Notifications.ObserveInterruptionEnded (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+          <para>The following example shows how to use the notification with the DefaultCenter API:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        AVCaptureSession.InterruptionEndedNotification, (notification) => {Console.WriteLine ("Received the notification AVCaptureSession", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification AVCaptureSession", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (AVCaptureSession.InterruptionEndedNotification, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InterruptionReasonKey">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString InterruptionReasonKey { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString InterruptionReasonKey" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVCaptureSessionInterruptionReasonKey", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets a key that accesses the reason that a capture session was interrupted.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InterruptionSystemPressureStateKey">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString InterruptionSystemPressureStateKey { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString InterruptionSystemPressureStateKey" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVCaptureSessionInterruptionSystemPressureStateKey", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 1, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.MacOSX, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 1, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.MacOSX, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="MasterClock">
+      <MemberSignature Language="C#" Value="public virtual CoreMedia.CMClock MasterClock { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class CoreMedia.CMClock MasterClock" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("masterClock")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>CoreMedia.CMClock</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>A read-only clock that provides a timebase for synchronizing timestamps from multiple input devices.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Outputs">
+      <MemberSignature Language="C#" Value="public virtual AVFoundation.AVCaptureOutput[] Outputs { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class AVFoundation.AVCaptureOutput[] Outputs" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("outputs")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>AVFoundation.AVCaptureOutput[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Outputs for the capture session.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Preset1280x720">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString Preset1280x720 { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString Preset1280x720" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVCaptureSessionPreset1280x720", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 4, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 4, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVCaptureSessionPreset1280x720</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Preset1920x1080">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString Preset1920x1080 { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString Preset1920x1080" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVCaptureSessionPreset1920x1080", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 5, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 5, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVCaptureSessionPreset1920x1080</summary>
+        <value>
+        </value>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Preset352x288">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString Preset352x288 { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString Preset352x288" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVCaptureSessionPreset352x288", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 5, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 5, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVCaptureSessionPreset352x288</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Preset3840x2160">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString Preset3840x2160 { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString Preset3840x2160" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVCaptureSessionPreset3840x2160", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVCaptureSessionPreset3840x2160.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Preset640x480">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString Preset640x480 { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString Preset640x480" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVCaptureSessionPreset640x480", "AVFoundation")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVCaptureSessionPreset640x480</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PresetHigh">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString PresetHigh { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString PresetHigh" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVCaptureSessionPresetHigh", "AVFoundation")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVCaptureSessionPresetHigh</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PresetiFrame1280x720">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString PresetiFrame1280x720 { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString PresetiFrame1280x720" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVCaptureSessionPresetiFrame1280x720", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 5, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 5, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVCaptureSessionPresetiFrame1280x720</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PresetiFrame960x540">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString PresetiFrame960x540 { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString PresetiFrame960x540" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVCaptureSessionPresetiFrame960x540", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 5, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 5, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVCaptureSessionPresetiFrame960x540</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PresetInputPriority">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString PresetInputPriority { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString PresetInputPriority" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVCaptureSessionPresetInputPriority", "AVFoundation")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVCaptureSessionPresetInputPriority</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PresetLow">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString PresetLow { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString PresetLow" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVCaptureSessionPresetLow", "AVFoundation")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVCaptureSessionPresetLow</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PresetMedium">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString PresetMedium { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString PresetMedium" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVCaptureSessionPresetMedium", "AVFoundation")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVCaptureSessionPresetMedium</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PresetPhoto">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString PresetPhoto { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString PresetPhoto" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVCaptureSessionPresetPhoto", "AVFoundation")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Represents the value associated with the constant AVCaptureSessionPresetPhoto</summary>
+        <value>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RemoveConnection">
+      <MemberSignature Language="C#" Value="public virtual void RemoveConnection (AVFoundation.AVCaptureConnection connection);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void RemoveConnection(class AVFoundation.AVCaptureConnection connection) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("removeConnection:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="connection" Type="AVFoundation.AVCaptureConnection" />
+      </Parameters>
+      <Docs>
+        <param name="connection">To be added.</param>
+        <summary>Removes the specified <paramref name="connection" />.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RemoveInput">
+      <MemberSignature Language="C#" Value="public virtual void RemoveInput (AVFoundation.AVCaptureInput input);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void RemoveInput(class AVFoundation.AVCaptureInput input) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("removeInput:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="input" Type="AVFoundation.AVCaptureInput" />
+      </Parameters>
+      <Docs>
+        <param name="input">To be added.</param>
+        <summary>Removes the specified input source.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RemoveOutput">
+      <MemberSignature Language="C#" Value="public virtual void RemoveOutput (AVFoundation.AVCaptureOutput output);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void RemoveOutput(class AVFoundation.AVCaptureOutput output) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("removeOutput:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="output" Type="AVFoundation.AVCaptureOutput" />
+      </Parameters>
+      <Docs>
+        <param name="output">To be added.</param>
+        <summary>Removes the specified output.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Running">
+      <MemberSignature Language="C#" Value="public virtual bool Running { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool Running" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("isRunning")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Whether the capture session is currently running.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RuntimeErrorNotification">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString RuntimeErrorNotification { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString RuntimeErrorNotification" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Advice("Use AVCaptureSession.Notifications.ObserveRuntimeError helper method instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVCaptureSessionRuntimeErrorNotification", "AVFoundation")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Notification constant for RuntimeError</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:AVFoundation.AVCaptureSession+Notifications" />.<see cref="M:AVFoundation.AVCaptureSession+Notifications.ObserveRuntimeErrorNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = AVCaptureSession.Notifications.ObserveRuntimeError ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("Error", args.Error);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, AVFoundation.AVCaptureSessionRuntimeErrorEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("Error", args.Error);
+}
+
+void Setup ()
+{
+    notification = AVCaptureSession.Notifications.ObserveRuntimeError (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+          <para>The following example shows how to use the notification with the DefaultCenter API:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        AVCaptureSession.RuntimeErrorNotification, (notification) => {Console.WriteLine ("Received the notification AVCaptureSession", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification AVCaptureSession", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (AVCaptureSession.RuntimeErrorNotification, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SessionPreset">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSString SessionPreset { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Foundation.NSString SessionPreset" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("sessionPreset", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setSessionPreset:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The session preset.</summary>
+        <value>To be added.</value>
+        <remarks>
+          <para>The value must be one of the <c>AVCaptureSession.Preset*</c> values.</para>
+        </remarks>
+        <altmember cref="P:AVFoundation.AVCaptureSession.Preset1920x1080" />
+        <altmember cref="P:AVFoundation.AVCaptureSession.Preset1280x720" />
+        <altmember cref="P:AVFoundation.AVCaptureSession.Preset355x288" />
+        <altmember cref="P:AVFoundation.AVCaptureSession.Preset640x480" />
+        <altmember cref="P:AVFoundation.AVCaptureSession.PresetHigh" />
+        <altmember cref="P:AVFoundation.AVCaptureSession.PresetiFrame1280x720" />
+        <altmember cref="P:AVFoundation.AVCaptureSession.PresetiFrame960x540" />
+        <altmember cref="P:AVFoundation.AVCaptureSession.PresetInputPriority" />
+        <altmember cref="P:AVFoundation.AVCaptureSession.PresetLow" />
+        <altmember cref="P:AVFoundation.AVCaptureSession.PresetMedium" />
+        <altmember cref="P:AVFoundation.AVCaptureSession.PresetPhoto" />
+      </Docs>
+    </Member>
+    <Member MemberName="StartRunning">
+      <MemberSignature Language="C#" Value="public virtual void StartRunning ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void StartRunning() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("startRunning")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Starts the flow of inputs and outputs.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="StopRunning">
+      <MemberSignature Language="C#" Value="public virtual void StopRunning ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void StopRunning() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("stopRunning")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Asynchronously stops the flow of inputs and outputs.</summary>
+        <remarks>
+          <para>Application developers should note that the function <see cref="M:AVFoundation.AVCaptureMovieFileOutput.StopRecording" /> is asynchronous; developers should wait until the <see cref="M:AVFoundation.AVCaptureFileOutputRecordingDelegate.FinishedRecording" /> delegate method before manipulating the file (for instance, before saving it to the Photos album with <see cref="M:UIKit.UIVide.SaveToPhotosAlbum" /> or <see cref="M:AssetsLibrary.ALAssetsLibrary.WriteVideoToSavedPhotosAlbumAsync" />).</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="UsesApplicationAudioSession">
+      <MemberSignature Language="C#" Value="public virtual bool UsesApplicationAudioSession { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool UsesApplicationAudioSession" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("usesApplicationAudioSession")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setUsesApplicationAudioSession:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Whether the session should use the application's shared audio session.</summary>
+        <value>The default value in iOS 7 and later is <see langword="true" />.</value>
+        <remarks>
+          <para>If <see langword="false" />, the capture session will create a separate private <see cref="T:AVFoundation.AVAudioSession" /> for recording, which may create interruptions if the app is doing simultaneous audio playback.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WasInterruptedNotification">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString WasInterruptedNotification { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString WasInterruptedNotification" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Advice("Use AVCaptureSession.Notifications.ObserveWasInterrupted helper method instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>Foundation.Field("AVCaptureSessionWasInterruptedNotification", "AVFoundation")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Notification constant for WasInterrupted</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:AVFoundation.AVCaptureSession+Notifications" />.<see cref="M:AVFoundation.AVCaptureSession+Notifications.ObserveWasInterruptedNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = AVCaptureSession.Notifications.ObserveWasInterrupted ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = AVCaptureSession.Notifications.ObserveWasInterrupted (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+          <para>The following example shows how to use the notification with the DefaultCenter API:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        AVCaptureSession.WasInterruptedNotification, (notification) => {Console.WriteLine ("Received the notification AVCaptureSession", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification AVCaptureSession", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (AVCaptureSession.WasInterruptedNotification, Callback);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

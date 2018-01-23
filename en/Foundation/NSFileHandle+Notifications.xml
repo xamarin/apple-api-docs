@@ -1,0 +1,443 @@
+<Type Name="NSFileHandle+Notifications" FullName="Foundation.NSFileHandle+Notifications">
+  <TypeSignature Language="C#" Value="public static class NSFileHandle.Notifications" />
+  <TypeSignature Language="ILAsm" Value=".class nested public auto ansi abstract sealed beforefieldinit NSFileHandle/Notifications extends System.Object" />
+  <AssemblyInfo>
+    <AssemblyName>Xamarin.iOS</AssemblyName>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>
+      <para>Notification posted by the <see cref="T:Foundation.NSFileHandle" /> class.</para>
+    </summary>
+    <remarks>
+      <para>This is a static class which contains various helper methods that allow developers to observe events posted in the iOS notification hub (<see cref="T:Foundation.NSNotificationCenter" />).</para>
+      <para>The methods defined in this class post events invoke the provided method or lambda with a <see cref="T:Foundation.NSNotificationEventArgs" /> parameter which contains strongly typed properties for the notification arguments.</para>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName="ObserveConnectionAccepted">
+      <MemberSignature Language="C#" Value="public static Foundation.NSObject ObserveConnectionAccepted (EventHandler&lt;Foundation.NSFileHandleConnectionAcceptedEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSObject ObserveConnectionAccepted(class System.EventHandler`1&lt;class Foundation.NSFileHandleConnectionAcceptedEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="handler" Type="System.EventHandler&lt;Foundation.NSFileHandleConnectionAcceptedEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="handler">Method to invoke when the notification is posted.</param>
+        <summary>Registers a method to be notified when the NSFileHandleConnectionAcceptedNotification notification is posted.</summary>
+        <returns>
+          <para>The returned NSObject represents the registered notification.   Either call Dispose on the object to stop receiving notifications, or pass it to <see cref="M:Foundation.NSNotificationCenter.RemoveObserver" /></para>
+        </returns>
+        <remarks>
+          <para>The following example shows how developers can use this method in their code:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = NSFileHandle.Notifications.ObserveConnectionAccepted ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("NearSocketConnection", args.NearSocketConnection);
+    Console.WriteLine ("UnixErrorCode", args.UnixErrorCode);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+//Method style
+//
+NSObject notification;
+void Callback (object sender, Foundation.NSFileHandleConnectionAcceptedEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("NearSocketConnection", args.NearSocketConnection);
+    Console.WriteLine ("UnixErrorCode", args.UnixErrorCode);
+}
+
+void Setup ()
+{
+    notification = NSFileHandle.Notifications.ObserveConnectionAccepted (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ObserveConnectionAccepted">
+      <MemberSignature Language="C#" Value="public static Foundation.NSObject ObserveConnectionAccepted (Foundation.NSObject objectToObserve, EventHandler&lt;Foundation.NSFileHandleConnectionAcceptedEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSObject ObserveConnectionAccepted(class Foundation.NSObject objectToObserve, class System.EventHandler`1&lt;class Foundation.NSFileHandleConnectionAcceptedEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="objectToObserve" Type="Foundation.NSObject" />
+        <Parameter Name="handler" Type="System.EventHandler&lt;Foundation.NSFileHandleConnectionAcceptedEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="objectToObserve">The object to observe.</param>
+        <param name="handler">Method to invoke when the notification is posted.</param>
+        <summary>Strongly typed notification for the <see cref="P:Foundation.NSFileHandle.ConnectionAcceptedNotification" /> constant.</summary>
+        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="M:Foundation.NSNotificationCenter.RemoveObserver" /></returns>
+        <remarks>
+          <para id="tool-remark">This method can be used to subscribe for <see cref="P:Foundation.NSFileHandle.ConnectionAcceptedNotification" /> notifications.</para>
+          <example>
+            <code lang="C#"><![CDATA[
+// Listen to all notifications posted for any object
+var token = NSFileHandle.Notifications.ObserveConnectionAccepted ((notification) => {
+	Console.WriteLine ("Observed ConnectionAcceptedNotification!");
+};
+
+// Listen to all notifications posted for a single object
+var token = NSFileHandle.Notifications.ObserveConnectionAccepted (objectToObserve, (notification) => {
+	Console.WriteLine ($"Observed ConnectionAcceptedNotification for {nameof (objectToObserve)}!");
+};
+
+// Stop listening for notifications
+token.Dispose ();
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ObserveDataAvailable">
+      <MemberSignature Language="C#" Value="public static Foundation.NSObject ObserveDataAvailable (EventHandler&lt;Foundation.NSNotificationEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSObject ObserveDataAvailable(class System.EventHandler`1&lt;class Foundation.NSNotificationEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="handler" Type="System.EventHandler&lt;Foundation.NSNotificationEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="handler">Method to invoke when the notification is posted.</param>
+        <summary>Strongly typed notification for the <see cref="P:Foundation.NSFileHandle.DataAvailableNotification" /> constant.</summary>
+        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="M:Foundation.NSNotificationCenter.RemoveObserver" /></returns>
+        <remarks>
+          <para>The following example shows how you can use this method in your code</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = NSFileHandle.Notifications.ObserveDataAvailable ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+//Method style
+//
+NSObject notification;
+void Callback (object sender, Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = NSFileHandle.Notifications.ObserveDataAvailable (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ObserveDataAvailable">
+      <MemberSignature Language="C#" Value="public static Foundation.NSObject ObserveDataAvailable (Foundation.NSObject objectToObserve, EventHandler&lt;Foundation.NSNotificationEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSObject ObserveDataAvailable(class Foundation.NSObject objectToObserve, class System.EventHandler`1&lt;class Foundation.NSNotificationEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="objectToObserve" Type="Foundation.NSObject" />
+        <Parameter Name="handler" Type="System.EventHandler&lt;Foundation.NSNotificationEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="objectToObserve">The object to observe.</param>
+        <param name="handler">Method to invoke when the notification is posted.</param>
+        <summary>Strongly typed notification for the <see cref="P:Foundation.NSFileHandle.DataAvailableNotification" /> constant.</summary>
+        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="M:Foundation.NSNotificationCenter.RemoveObserver" /></returns>
+        <remarks>
+          <para id="tool-remark">This method can be used to subscribe for <see cref="P:Foundation.NSFileHandle.DataAvailableNotification" /> notifications.</para>
+          <example>
+            <code lang="C#"><![CDATA[
+// Listen to all notifications posted for any object
+var token = NSFileHandle.Notifications.ObserveDataAvailable ((notification) => {
+	Console.WriteLine ("Observed DataAvailableNotification!");
+};
+
+// Listen to all notifications posted for a single object
+var token = NSFileHandle.Notifications.ObserveDataAvailable (objectToObserve, (notification) => {
+	Console.WriteLine ($"Observed DataAvailableNotification for {nameof (objectToObserve)}!");
+};
+
+// Stop listening for notifications
+token.Dispose ();
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ObserveReadCompletion">
+      <MemberSignature Language="C#" Value="public static Foundation.NSObject ObserveReadCompletion (EventHandler&lt;Foundation.NSFileHandleReadEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSObject ObserveReadCompletion(class System.EventHandler`1&lt;class Foundation.NSFileHandleReadEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="handler" Type="System.EventHandler&lt;Foundation.NSFileHandleReadEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="handler">Method to invoke when the notification is posted.</param>
+        <summary>Registers a method to be notified when the NSFileHandleReadCompletionNotification notification is posted.</summary>
+        <returns>
+          <para>The returned NSObject represents the registered notification.   Either call Dispose on the object to stop receiving notifications, or pass it to <see cref="M:Foundation.NSNotificationCenter.RemoveObserver" /></para>
+        </returns>
+        <remarks>
+          <para>The following example shows how developers can use this method in their code:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = NSFileHandle.Notifications.ObserveReadCompletion ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("AvailableData", args.AvailableData);
+    Console.WriteLine ("UnixErrorCode", args.UnixErrorCode);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+//Method style
+//
+NSObject notification;
+void Callback (object sender, Foundation.NSFileHandleReadEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("AvailableData", args.AvailableData);
+    Console.WriteLine ("UnixErrorCode", args.UnixErrorCode);
+}
+
+void Setup ()
+{
+    notification = NSFileHandle.Notifications.ObserveReadCompletion (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ObserveReadCompletion">
+      <MemberSignature Language="C#" Value="public static Foundation.NSObject ObserveReadCompletion (Foundation.NSObject objectToObserve, EventHandler&lt;Foundation.NSFileHandleReadEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSObject ObserveReadCompletion(class Foundation.NSObject objectToObserve, class System.EventHandler`1&lt;class Foundation.NSFileHandleReadEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="objectToObserve" Type="Foundation.NSObject" />
+        <Parameter Name="handler" Type="System.EventHandler&lt;Foundation.NSFileHandleReadEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="objectToObserve">The object to observe.</param>
+        <param name="handler">Method to invoke when the notification is posted.</param>
+        <summary>Strongly typed notification for the <see cref="P:Foundation.NSFileHandle.ReadCompletionNotification" /> constant.</summary>
+        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="M:Foundation.NSNotificationCenter.RemoveObserver" /></returns>
+        <remarks>
+          <para id="tool-remark">This method can be used to subscribe for <see cref="P:Foundation.NSFileHandle.ReadCompletionNotification" /> notifications.</para>
+          <example>
+            <code lang="C#"><![CDATA[
+// Listen to all notifications posted for any object
+var token = NSFileHandle.Notifications.ObserveReadCompletion ((notification) => {
+	Console.WriteLine ("Observed ReadCompletionNotification!");
+};
+
+// Listen to all notifications posted for a single object
+var token = NSFileHandle.Notifications.ObserveReadCompletion (objectToObserve, (notification) => {
+	Console.WriteLine ($"Observed ReadCompletionNotification for {nameof (objectToObserve)}!");
+};
+
+// Stop listening for notifications
+token.Dispose ();
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ObserveReadToEndOfFileCompletion">
+      <MemberSignature Language="C#" Value="public static Foundation.NSObject ObserveReadToEndOfFileCompletion (EventHandler&lt;Foundation.NSFileHandleReadEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSObject ObserveReadToEndOfFileCompletion(class System.EventHandler`1&lt;class Foundation.NSFileHandleReadEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="handler" Type="System.EventHandler&lt;Foundation.NSFileHandleReadEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="handler">Method to invoke when the notification is posted.</param>
+        <summary>Registers a method to be notified when the NSFileHandleReadToEndOfFileCompletionNotification notification is posted.</summary>
+        <returns>
+          <para>The returned NSObject represents the registered notification.   Either call Dispose on the object to stop receiving notifications, or pass it to <see cref="M:Foundation.NSNotificationCenter.RemoveObserver" /></para>
+        </returns>
+        <remarks>
+          <para>The following example shows how developers can use this method in their code:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = NSFileHandle.Notifications.ObserveReadToEndOfFileCompletion ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("AvailableData", args.AvailableData);
+    Console.WriteLine ("UnixErrorCode", args.UnixErrorCode);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+//Method style
+//
+NSObject notification;
+void Callback (object sender, Foundation.NSFileHandleReadEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("AvailableData", args.AvailableData);
+    Console.WriteLine ("UnixErrorCode", args.UnixErrorCode);
+}
+
+void Setup ()
+{
+    notification = NSFileHandle.Notifications.ObserveReadToEndOfFileCompletion (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ObserveReadToEndOfFileCompletion">
+      <MemberSignature Language="C#" Value="public static Foundation.NSObject ObserveReadToEndOfFileCompletion (Foundation.NSObject objectToObserve, EventHandler&lt;Foundation.NSFileHandleReadEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSObject ObserveReadToEndOfFileCompletion(class Foundation.NSObject objectToObserve, class System.EventHandler`1&lt;class Foundation.NSFileHandleReadEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="objectToObserve" Type="Foundation.NSObject" />
+        <Parameter Name="handler" Type="System.EventHandler&lt;Foundation.NSFileHandleReadEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="objectToObserve">The object to observe.</param>
+        <param name="handler">Method to invoke when the notification is posted.</param>
+        <summary>Strongly typed notification for the <see cref="P:Foundation.NSFileHandle.ReadToEndOfFileCompletionNotification" /> constant.</summary>
+        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="M:Foundation.NSNotificationCenter.RemoveObserver" /></returns>
+        <remarks>
+          <para id="tool-remark">This method can be used to subscribe for <see cref="P:Foundation.NSFileHandle.ReadToEndOfFileCompletionNotification" /> notifications.</para>
+          <example>
+            <code lang="C#"><![CDATA[
+// Listen to all notifications posted for any object
+var token = NSFileHandle.Notifications.ObserveReadToEndOfFileCompletion ((notification) => {
+	Console.WriteLine ("Observed ReadToEndOfFileCompletionNotification!");
+};
+
+// Listen to all notifications posted for a single object
+var token = NSFileHandle.Notifications.ObserveReadToEndOfFileCompletion (objectToObserve, (notification) => {
+	Console.WriteLine ($"Observed ReadToEndOfFileCompletionNotification for {nameof (objectToObserve)}!");
+};
+
+// Stop listening for notifications
+token.Dispose ();
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

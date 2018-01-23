@@ -1,0 +1,237 @@
+<Type Name="UIPasteboard+Notifications" FullName="UIKit.UIPasteboard+Notifications">
+  <TypeSignature Language="C#" Value="public static class UIPasteboard.Notifications" />
+  <TypeSignature Language="ILAsm" Value=".class nested public auto ansi abstract sealed beforefieldinit UIPasteboard/Notifications extends System.Object" />
+  <AssemblyInfo>
+    <AssemblyName>Xamarin.iOS</AssemblyName>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>
+      <para>Notification posted by the <see cref="T:UIKit.UIPasteboard" /> class.</para>
+    </summary>
+    <remarks>
+      <para>This is a static class which contains various helper methods that allow developers to observe events posted in the iOS notification hub (<see cref="T:Foundation.NSNotificationCenter" />).</para>
+      <para>The methods defined in this class post events invoke the provided method or lambda with a <see cref="T:Foundation.NSNotificationEventArgs" /> parameter which contains strongly typed properties for the notification arguments.</para>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName="ObserveChanged">
+      <MemberSignature Language="C#" Value="public static Foundation.NSObject ObserveChanged (EventHandler&lt;UIKit.UIPasteboardChangeEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSObject ObserveChanged(class System.EventHandler`1&lt;class UIKit.UIPasteboardChangeEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="handler" Type="System.EventHandler&lt;UIKit.UIPasteboardChangeEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="handler">Method to invoke when the notification is posted.</param>
+        <summary>Registers a method to be notified when the UIPasteboardChangedNotification notification is posted.</summary>
+        <returns>
+          <para>The returned NSObject represents the registered notification.   Either call Dispose on the object to stop receiving notifications, or pass it to <see cref="M:Foundation.NSNotificationCenter.RemoveObserver" /></para>
+        </returns>
+        <remarks>
+          <para>The following example shows how developers can use this method in their code:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = UIPasteboard.Notifications.ObserveChanged ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("TypesAdded", args.TypesAdded);
+    Console.WriteLine ("TypesRemoved", args.TypesRemoved);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+//Method style
+//
+NSObject notification;
+void Callback (object sender, UIKit.UIPasteboardChangeEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("TypesAdded", args.TypesAdded);
+    Console.WriteLine ("TypesRemoved", args.TypesRemoved);
+}
+
+void Setup ()
+{
+    notification = UIPasteboard.Notifications.ObserveChanged (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ObserveChanged">
+      <MemberSignature Language="C#" Value="public static Foundation.NSObject ObserveChanged (Foundation.NSObject objectToObserve, EventHandler&lt;UIKit.UIPasteboardChangeEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSObject ObserveChanged(class Foundation.NSObject objectToObserve, class System.EventHandler`1&lt;class UIKit.UIPasteboardChangeEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="objectToObserve" Type="Foundation.NSObject" />
+        <Parameter Name="handler" Type="System.EventHandler&lt;UIKit.UIPasteboardChangeEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="objectToObserve">The object to observe.</param>
+        <param name="handler">Method to invoke when the notification is posted.</param>
+        <summary>Strongly typed notification for the <see cref="P:UIKit.UIPasteboard.ChangedNotification" /> constant.</summary>
+        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="M:Foundation.NSNotificationCenter.RemoveObserver" /></returns>
+        <remarks>
+          <para id="tool-remark">This method can be used to subscribe for <see cref="P:UIKit.UIPasteboard.ChangedNotification" /> notifications.</para>
+          <example>
+            <code lang="C#"><![CDATA[
+// Listen to all notifications posted for any object
+var token = UIPasteboard.Notifications.ObserveChanged ((notification) => {
+	Console.WriteLine ("Observed ChangedNotification!");
+};
+
+// Listen to all notifications posted for a single object
+var token = UIPasteboard.Notifications.ObserveChanged (objectToObserve, (notification) => {
+	Console.WriteLine ($"Observed ChangedNotification for {nameof (objectToObserve)}!");
+};
+
+// Stop listening for notifications
+token.Dispose ();
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ObserveRemoved">
+      <MemberSignature Language="C#" Value="public static Foundation.NSObject ObserveRemoved (EventHandler&lt;UIKit.UIPasteboardChangeEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSObject ObserveRemoved(class System.EventHandler`1&lt;class UIKit.UIPasteboardChangeEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="handler" Type="System.EventHandler&lt;UIKit.UIPasteboardChangeEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="handler">Method to invoke when the notification is posted.</param>
+        <summary>Registers a method to be notified when the UIPasteboardRemovedNotification notification is posted.</summary>
+        <returns>
+          <para>The returned NSObject represents the registered notification.   Either call Dispose on the object to stop receiving notifications, or pass it to <see cref="M:Foundation.NSNotificationCenter.RemoveObserver" /></para>
+        </returns>
+        <remarks>
+          <para>The following example shows how developers can use this method in their code:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = UIPasteboard.Notifications.ObserveRemoved ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("TypesAdded", args.TypesAdded);
+    Console.WriteLine ("TypesRemoved", args.TypesRemoved);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+//Method style
+//
+NSObject notification;
+void Callback (object sender, UIKit.UIPasteboardChangeEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+
+    Console.WriteLine ("TypesAdded", args.TypesAdded);
+    Console.WriteLine ("TypesRemoved", args.TypesRemoved);
+}
+
+void Setup ()
+{
+    notification = UIPasteboard.Notifications.ObserveRemoved (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ObserveRemoved">
+      <MemberSignature Language="C#" Value="public static Foundation.NSObject ObserveRemoved (Foundation.NSObject objectToObserve, EventHandler&lt;UIKit.UIPasteboardChangeEventArgs&gt; handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSObject ObserveRemoved(class Foundation.NSObject objectToObserve, class System.EventHandler`1&lt;class UIKit.UIPasteboardChangeEventArgs&gt; handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="objectToObserve" Type="Foundation.NSObject" />
+        <Parameter Name="handler" Type="System.EventHandler&lt;UIKit.UIPasteboardChangeEventArgs&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="objectToObserve">The object to observe.</param>
+        <param name="handler">Method to invoke when the notification is posted.</param>
+        <summary>Strongly typed notification for the <see cref="P:UIKit.UIPasteboard.RemovedNotification" /> constant.</summary>
+        <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref="M:Foundation.NSNotificationCenter.RemoveObserver" /></returns>
+        <remarks>
+          <para id="tool-remark">This method can be used to subscribe for <see cref="P:UIKit.UIPasteboard.RemovedNotification" /> notifications.</para>
+          <example>
+            <code lang="C#"><![CDATA[
+// Listen to all notifications posted for any object
+var token = UIPasteboard.Notifications.ObserveRemoved ((notification) => {
+	Console.WriteLine ("Observed RemovedNotification!");
+};
+
+// Listen to all notifications posted for a single object
+var token = UIPasteboard.Notifications.ObserveRemoved (objectToObserve, (notification) => {
+	Console.WriteLine ($"Observed RemovedNotification for {nameof (objectToObserve)}!");
+};
+
+// Stop listening for notifications
+token.Dispose ();
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

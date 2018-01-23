@@ -1,0 +1,1632 @@
+<Type Name="NSUrlSession" FullName="Foundation.NSUrlSession">
+  <TypeSignature Language="C#" Value="public class NSUrlSession : Foundation.NSObject" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit NSUrlSession extends Foundation.NSObject" />
+  <AssemblyInfo>
+    <AssemblyName>Xamarin.iOS</AssemblyName>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>Foundation.NSObject</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Attributes>
+    <Attribute>
+      <AttributeName>Foundation.Register("NSURLSession", true)</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 9, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>Coordinates a set of data-transfer tasks, including large background tasks.</summary>
+    <remarks>
+      <para>In iOS 7 and later, <see cref="T:Foundation.NSUrlSession" /> and related classes are the preferred way to transfer larger files to and from the Web.</para>
+      <para>
+        <see cref="T:Foundation.NSUrlSession" /> downloads can work when the application is in the background.</para>
+      <para>Unlike regular tasks, background transfers are not constrained to 10 minutes, and instead will run until the transfer completes. Because background transfers are not bound by an arbitrary time limit, they can be used to upload or download large files, auto-update content in the background, and more.</para>
+      <para>The following example shows a download request, capable of asynchronously downloading a large file:</para>
+      <example>
+        <code lang="C#"><![CDATA[
+var config = NSUrlSessionConfiguration.BackgroundSessionConfiguration(Guid.NewGuid().ToString());
+var session = NSUrlSession.FromConfiguration(config, new SimpleSessionDelegate(), new NSOperationQueue());
+var downloadTask = session.CreateDownloadTask(NSUrlRequest.FromUrl(url));
+//Begin download, asynchronously
+downloadTask.Resume();
+ ... 
+class SimpleSessionDelegate : NSUrlSessionDownloadDelegate
+{
+  public override void DidFinishDownloading(NSUrlSession session, NSUrlSessionDownloadTask downloadTask, NSUrl location)
+	{
+		var file = File.OpenRead(location.Path);
+     ...
+	}
+}
+       ]]></code>
+      </example>
+    </remarks>
+    <altmember cref="T:Foundation.NSUrlSessionTask" />
+    <altmember cref="T:Foundation.NSUrlRequest" />
+    <altmember cref="T:Foundation.NSUrlSessionConfiguration" />
+    <altmember cref="T:Foundation.NSUrlSessionDelegate" />
+    <related type="PlatformDocAPI" href="https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSURLSession_class/index.html">Apple documentation for <c>NSURLSession</c></related>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected NSUrlSession (Foundation.NSObjectFlag t);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor(class Foundation.NSObjectFlag t) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="t" Type="Foundation.NSObjectFlag" />
+      </Parameters>
+      <Docs>
+        <param name="t">Unused sentinel value, pass NSObjectFlag.Empty.</param>
+        <summary>Constructor to call on derived classes to skip initialization and merely allocate the object.</summary>
+        <remarks>
+          <para>This constructor should be called by derived classes when they completely construct the object in managed code and merely want the runtime to allocate and initialize the NSObject.   This is required to implement the two-step initialization process that Objective-C uses, the first step is to perform the object allocation, the second step is to initialize the object.   When developers invoke the constructor that takes the NSObjectFlag.Empty they take advantage of a direct path that goes all the way up to NSObject to merely allocate the object's memory and bind the Objective-C and C# objects together.    The actual initialization of the object is up to the developer.</para>
+          <para>This constructor is typically used by the binding generator to allocate the object, but prevent the actual initialization to take place.   Once the allocation has taken place, the constructor has to initialize the object.   With constructors generated by the binding generator this means that it manually invokes one of the "init" methods to initialize the object.</para>
+          <para>It is the developer's responsibility to completely initialize the object if they chain up using the NSObjectFlag.Empty path.</para>
+          <para>In general, if the developer's constructor invokes the NSObjectFlag.Empty base implementation, then it should be calling an Objective-C init method.   If this is not the case, developers should instead chain to the proper constructor in their class. </para>
+          <para>The argument value is ignored and merely ensures that the only code that is executed is the construction phase is the basic NSObject allocation and runtime type registration.  Typically the chaining would look like this:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// The NSObjectFlag merely allocates the object and registers the
+// C# class with the Objective-C runtime if necessary, but no actual
+// initXxx method is invoked, that is done later in the constructor
+//
+// This is taken from Xamarin's source code:
+//
+[Export ("initWithFrame:")]
+public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
+{
+// Invoke the init method now.
+	var initWithFrame = new Selector ("initWithFrame:").Handle;
+	if (IsDirectBinding)
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+	else
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected NSUrlSession (IntPtr handle);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig specialname rtspecialname instance void .ctor(native int handle) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="handle" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="handle">Pointer (handle) to the unmanaged object.</param>
+        <summary>A constructor used when creating managed representations of unmanaged objects;  Called by the runtime.</summary>
+        <remarks>
+          <para>This constructor is invoked by the runtime infrastructure (<see cref="M:ObjCRuntime.Runtime.GetNSObject(System.IntPtr)" />) to create a new managed representation for a pointer to an unmanaged Objective-C object.    Developers should not invoke this method directly, instead they should call the GetNSObject method as it will prevent two instances of a managed object to point to the same native object.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ClassHandle">
+      <MemberSignature Language="C#" Value="public override IntPtr ClassHandle { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int ClassHandle" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The handle for this class.</summary>
+        <value>The pointer to the Objective-C class.</value>
+        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Configuration">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSUrlSessionConfiguration Configuration { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Foundation.NSUrlSessionConfiguration Configuration" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("configuration", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSUrlSessionConfiguration</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The configuration object for this session.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateBidirectionalStream">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSUrlSessionStreamTask CreateBidirectionalStream (Foundation.NSNetService service);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Foundation.NSUrlSessionStreamTask CreateBidirectionalStream(class Foundation.NSNetService service) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("streamTaskWithNetService:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSUrlSessionStreamTask</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="service" Type="Foundation.NSNetService" />
+      </Parameters>
+      <Docs>
+        <param name="service">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateBidirectionalStream">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSUrlSessionStreamTask CreateBidirectionalStream (string hostname, nint port);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Foundation.NSUrlSessionStreamTask CreateBidirectionalStream(string hostname, valuetype System.nint port) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("streamTaskWithHostName:port:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSUrlSessionStreamTask</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="hostname" Type="System.String" />
+        <Parameter Name="port" Type="System.nint" />
+      </Parameters>
+      <Docs>
+        <param name="hostname">To be added.</param>
+        <param name="port">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateDataTask">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSUrlSessionDataTask CreateDataTask (Foundation.NSUrl url);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Foundation.NSUrlSessionDataTask CreateDataTask(class Foundation.NSUrl url) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("dataTaskWithURL:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSUrlSessionDataTask</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="url" Type="Foundation.NSUrl" />
+      </Parameters>
+      <Docs>
+        <param name="url">To be added.</param>
+        <summary>Creates an HTTP request based on the specified url.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateDataTask">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSUrlSessionDataTask CreateDataTask (Foundation.NSUrlRequest request);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Foundation.NSUrlSessionDataTask CreateDataTask(class Foundation.NSUrlRequest request) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("dataTaskWithRequest:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSUrlSessionDataTask</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="request" Type="Foundation.NSUrlRequest" />
+      </Parameters>
+      <Docs>
+        <param name="request">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateDataTask">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSUrlSessionDataTask CreateDataTask (Foundation.NSUrl url, Foundation.NSUrlSessionResponse completionHandler);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Foundation.NSUrlSessionDataTask CreateDataTask(class Foundation.NSUrl url, class Foundation.NSUrlSessionResponse completionHandler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("dataTaskWithURL:completionHandler:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSUrlSessionDataTask</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="url" Type="Foundation.NSUrl" />
+        <Parameter Name="completionHandler" Type="Foundation.NSUrlSessionResponse">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDNSUrlSessionResponse))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="url">To be added.</param>
+        <param name="completionHandler">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateDataTask">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSUrlSessionDataTask CreateDataTask (Foundation.NSUrlRequest request, Foundation.NSUrlSessionResponse completionHandler);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Foundation.NSUrlSessionDataTask CreateDataTask(class Foundation.NSUrlRequest request, class Foundation.NSUrlSessionResponse completionHandler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("dataTaskWithRequest:completionHandler:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSUrlSessionDataTask</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="request" Type="Foundation.NSUrlRequest" />
+        <Parameter Name="completionHandler" Type="Foundation.NSUrlSessionResponse">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDNSUrlSessionResponse))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="request">To be added.</param>
+        <param name="completionHandler">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateDataTaskAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;Foundation.NSUrlSessionDataTaskRequest&gt; CreateDataTaskAsync (Foundation.NSUrl url);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;class Foundation.NSUrlSessionDataTaskRequest&gt; CreateDataTaskAsync(class Foundation.NSUrl url) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;Foundation.NSUrlSessionDataTaskRequest&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="url" Type="Foundation.NSUrl" />
+      </Parameters>
+      <Docs>
+        <param name="url">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>
+          <para>A task that represents the asynchronous CreateDataTask operation.   The value of the TResult parameter is of type <c>Action&lt;Foundation.NSUrlSessionDataTaskRequest&gt;</c>.</para>
+        </returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="CreateDataTaskAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;Foundation.NSUrlSessionDataTaskRequest&gt; CreateDataTaskAsync (Foundation.NSUrlRequest request);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;class Foundation.NSUrlSessionDataTaskRequest&gt; CreateDataTaskAsync(class Foundation.NSUrlRequest request) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;Foundation.NSUrlSessionDataTaskRequest&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="request" Type="Foundation.NSUrlRequest" />
+      </Parameters>
+      <Docs>
+        <param name="request">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>
+          <para>A task that represents the asynchronous CreateDataTask operation.   The value of the TResult parameter is of type <c>Action&lt;Foundation.NSUrlSessionDataTaskRequest&gt;</c>.</para>
+        </returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="CreateDataTaskAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;Foundation.NSUrlSessionDataTaskRequest&gt; CreateDataTaskAsync (Foundation.NSUrl url, out Foundation.NSUrlSessionDataTask result);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;class Foundation.NSUrlSessionDataTaskRequest&gt; CreateDataTaskAsync(class Foundation.NSUrl url, class Foundation.NSUrlSessionDataTask result) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;Foundation.NSUrlSessionDataTaskRequest&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="url" Type="Foundation.NSUrl" />
+        <Parameter Name="result" Type="Foundation.NSUrlSessionDataTask&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="url">To be added.</param>
+        <param name="result">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateDataTaskAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;Foundation.NSUrlSessionDataTaskRequest&gt; CreateDataTaskAsync (Foundation.NSUrlRequest request, out Foundation.NSUrlSessionDataTask result);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;class Foundation.NSUrlSessionDataTaskRequest&gt; CreateDataTaskAsync(class Foundation.NSUrlRequest request, class Foundation.NSUrlSessionDataTask result) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;Foundation.NSUrlSessionDataTaskRequest&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="request" Type="Foundation.NSUrlRequest" />
+        <Parameter Name="result" Type="Foundation.NSUrlSessionDataTask&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="request">To be added.</param>
+        <param name="result">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateDownloadTask">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSUrlSessionDownloadTask CreateDownloadTask (Foundation.NSData resumeData);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Foundation.NSUrlSessionDownloadTask CreateDownloadTask(class Foundation.NSData resumeData) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("downloadTaskWithResumeData:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSUrlSessionDownloadTask</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="resumeData" Type="Foundation.NSData" />
+      </Parameters>
+      <Docs>
+        <param name="resumeData">To be added.</param>
+        <summary>Creates a download task for a previously canceled or failed download.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateDownloadTask">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSUrlSessionDownloadTask CreateDownloadTask (Foundation.NSUrl url);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Foundation.NSUrlSessionDownloadTask CreateDownloadTask(class Foundation.NSUrl url) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("downloadTaskWithURL:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSUrlSessionDownloadTask</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="url" Type="Foundation.NSUrl" />
+      </Parameters>
+      <Docs>
+        <param name="url">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateDownloadTask">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSUrlSessionDownloadTask CreateDownloadTask (Foundation.NSUrlRequest request);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Foundation.NSUrlSessionDownloadTask CreateDownloadTask(class Foundation.NSUrlRequest request) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("downloadTaskWithRequest:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSUrlSessionDownloadTask</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="request" Type="Foundation.NSUrlRequest" />
+      </Parameters>
+      <Docs>
+        <param name="request">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateDownloadTask">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSUrlSessionDownloadTask CreateDownloadTask (Foundation.NSUrl url, Foundation.NSUrlDownloadSessionResponse completionHandler);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Foundation.NSUrlSessionDownloadTask CreateDownloadTask(class Foundation.NSUrl url, class Foundation.NSUrlDownloadSessionResponse completionHandler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("downloadTaskWithURL:completionHandler:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSUrlSessionDownloadTask</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="url" Type="Foundation.NSUrl" />
+        <Parameter Name="completionHandler" Type="Foundation.NSUrlDownloadSessionResponse">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDNSUrlDownloadSessionResponse))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="url">To be added.</param>
+        <param name="completionHandler">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateDownloadTask">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSUrlSessionDownloadTask CreateDownloadTask (Foundation.NSUrlRequest request, Foundation.NSUrlDownloadSessionResponse completionHandler);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Foundation.NSUrlSessionDownloadTask CreateDownloadTask(class Foundation.NSUrlRequest request, class Foundation.NSUrlDownloadSessionResponse completionHandler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("downloadTaskWithRequest:completionHandler:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSUrlSessionDownloadTask</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="request" Type="Foundation.NSUrlRequest" />
+        <Parameter Name="completionHandler" Type="Foundation.NSUrlDownloadSessionResponse">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDNSUrlDownloadSessionResponse))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="request">To be added.</param>
+        <param name="completionHandler">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateDownloadTaskAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;Foundation.NSUrlSessionDownloadTaskRequest&gt; CreateDownloadTaskAsync (Foundation.NSUrl url);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;class Foundation.NSUrlSessionDownloadTaskRequest&gt; CreateDownloadTaskAsync(class Foundation.NSUrl url) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;Foundation.NSUrlSessionDownloadTaskRequest&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="url" Type="Foundation.NSUrl" />
+      </Parameters>
+      <Docs>
+        <param name="url">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>
+          <para>A task that represents the asynchronous CreateDownloadTask operation.</para>
+        </returns>
+        <remarks>
+          <para>
+The downloaded content is stored in a temporary file, whose path is stored in the returned NSUrlSessionDownloadTaskRequest instance. Since this is a temporary file, it will be deleted once the NSUrlSessionDownloadTaskRequest instance is garbage collected (or disposed).
+        </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateDownloadTaskAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;Foundation.NSUrlSessionDownloadTaskRequest&gt; CreateDownloadTaskAsync (Foundation.NSUrlRequest request);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;class Foundation.NSUrlSessionDownloadTaskRequest&gt; CreateDownloadTaskAsync(class Foundation.NSUrlRequest request) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;Foundation.NSUrlSessionDownloadTaskRequest&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="request" Type="Foundation.NSUrlRequest" />
+      </Parameters>
+      <Docs>
+        <param name="request">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>
+          <para>A task that represents the asynchronous CreateDownloadTask operation.</para>
+        </returns>
+        <remarks>
+          <para>
+The downloaded content is stored in a temporary file, whose path is stored in the returned NSUrlSessionDownloadTaskRequest instance. Since this is a temporary file, it will be deleted once the NSUrlSessionDownloadTaskRequest instance is garbage collected (or disposed).
+        </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateDownloadTaskAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;Foundation.NSUrlSessionDownloadTaskRequest&gt; CreateDownloadTaskAsync (Foundation.NSUrl url, out Foundation.NSUrlSessionDownloadTask result);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;class Foundation.NSUrlSessionDownloadTaskRequest&gt; CreateDownloadTaskAsync(class Foundation.NSUrl url, class Foundation.NSUrlSessionDownloadTask result) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;Foundation.NSUrlSessionDownloadTaskRequest&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="url" Type="Foundation.NSUrl" />
+        <Parameter Name="result" Type="Foundation.NSUrlSessionDownloadTask&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="url">The url that specifies the resource to download.</param>
+        <param name="result">Upon return contains the NSUrlSessionDownloadTask for that was created.</param>
+        <summary>Downloads a url resource asynchronously to a temporary file.</summary>
+        <returns>
+          <para>A task that represents the asynchronous CreateDownloadTask operation.</para>
+        </returns>
+        <remarks>
+The downloaded content is stored in a temporary file, whose path is stored in the returned NSUrlSessionDownloadTaskRequest instance. Since this is a temporary file, it will be deleted once the NSUrlSessionDownloadTaskRequest instance is garbage collected (or disposed).
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateDownloadTaskAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;Foundation.NSUrlSessionDownloadTaskRequest&gt; CreateDownloadTaskAsync (Foundation.NSUrlRequest request, out Foundation.NSUrlSessionDownloadTask result);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;class Foundation.NSUrlSessionDownloadTaskRequest&gt; CreateDownloadTaskAsync(class Foundation.NSUrlRequest request, class Foundation.NSUrlSessionDownloadTask result) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;Foundation.NSUrlSessionDownloadTaskRequest&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="request" Type="Foundation.NSUrlRequest" />
+        <Parameter Name="result" Type="Foundation.NSUrlSessionDownloadTask&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="request">A url request that specifies the resource to download.</param>
+        <param name="result">Upon return contains the NSUrlSessionDownloadTask for that was created.</param>
+        <summary>Downloads a url resource asynchronously to a temporary file.</summary>
+        <returns>
+          <para>A task that represents the asynchronous CreateDownloadTask operation.</para>
+        </returns>
+        <remarks>
+          <para>
+The downloaded content is stored in a temporary file, whose path is stored in the returned NSUrlSessionDownloadTaskRequest instance. Since this is a temporary file, it will be deleted once the NSUrlSessionDownloadTaskRequest instance is garbage collected (or disposed).
+          </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateDownloadTaskFromResumeData">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSUrlSessionDownloadTask CreateDownloadTaskFromResumeData (Foundation.NSData resumeData, Foundation.NSUrlDownloadSessionResponse completionHandler);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Foundation.NSUrlSessionDownloadTask CreateDownloadTaskFromResumeData(class Foundation.NSData resumeData, class Foundation.NSUrlDownloadSessionResponse completionHandler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("downloadTaskWithResumeData:completionHandler:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSUrlSessionDownloadTask</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="resumeData" Type="Foundation.NSData" />
+        <Parameter Name="completionHandler" Type="Foundation.NSUrlDownloadSessionResponse">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDNSUrlDownloadSessionResponse))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="resumeData">To be added.</param>
+        <param name="completionHandler">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>To be added.</summary>
+        <returns>
+          <para>A task that represents the asynchronous CreateDownloadTask operation.</para>
+        </returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateDownloadTaskFromResumeDataAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;Foundation.NSUrlSessionDownloadTaskRequest&gt; CreateDownloadTaskFromResumeDataAsync (Foundation.NSData resumeData);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;class Foundation.NSUrlSessionDownloadTaskRequest&gt; CreateDownloadTaskFromResumeDataAsync(class Foundation.NSData resumeData) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;Foundation.NSUrlSessionDownloadTaskRequest&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="resumeData" Type="Foundation.NSData" />
+      </Parameters>
+      <Docs>
+        <param name="resumeData">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>
+          <para>A task that represents the asynchronous CreateDownloadTaskFromResumeData operation.   The value of the TResult parameter is of type <c>Action&lt;Foundation.NSUrlSessionDownloadTaskRequest&gt;</c>.</para>
+        </returns>
+        <remarks>
+          <para>
+The downloaded content is stored in a temporary file, whose path is stored in the returned NSUrlSessionDownloadTaskRequest instance. Since this is a temporary file, it will be deleted once the NSUrlSessionDownloadTaskRequest instance is garbage collected (or disposed).
+          </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateDownloadTaskFromResumeDataAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;Foundation.NSUrlSessionDownloadTaskRequest&gt; CreateDownloadTaskFromResumeDataAsync (Foundation.NSData resumeData, out Foundation.NSUrlSessionDownloadTask result);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;class Foundation.NSUrlSessionDownloadTaskRequest&gt; CreateDownloadTaskFromResumeDataAsync(class Foundation.NSData resumeData, class Foundation.NSUrlSessionDownloadTask result) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;Foundation.NSUrlSessionDownloadTaskRequest&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="resumeData" Type="Foundation.NSData" />
+        <Parameter Name="result" Type="Foundation.NSUrlSessionDownloadTask&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="resumeData">To be added.</param>
+        <param name="result">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateUploadTask">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSUrlSessionUploadTask CreateUploadTask (Foundation.NSUrlRequest request);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Foundation.NSUrlSessionUploadTask CreateUploadTask(class Foundation.NSUrlRequest request) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("uploadTaskWithStreamedRequest:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSUrlSessionUploadTask</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="request" Type="Foundation.NSUrlRequest" />
+      </Parameters>
+      <Docs>
+        <param name="request">To be added.</param>
+        <summary>Creates an upload task.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateUploadTask">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSUrlSessionUploadTask CreateUploadTask (Foundation.NSUrlRequest request, Foundation.NSData bodyData);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Foundation.NSUrlSessionUploadTask CreateUploadTask(class Foundation.NSUrlRequest request, class Foundation.NSData bodyData) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("uploadTaskWithRequest:fromData:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSUrlSessionUploadTask</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="request" Type="Foundation.NSUrlRequest" />
+        <Parameter Name="bodyData" Type="Foundation.NSData" />
+      </Parameters>
+      <Docs>
+        <param name="request">To be added.</param>
+        <param name="bodyData">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateUploadTask">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSUrlSessionUploadTask CreateUploadTask (Foundation.NSUrlRequest request, Foundation.NSUrl fileURL);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Foundation.NSUrlSessionUploadTask CreateUploadTask(class Foundation.NSUrlRequest request, class Foundation.NSUrl fileURL) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("uploadTaskWithRequest:fromFile:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSUrlSessionUploadTask</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="request" Type="Foundation.NSUrlRequest" />
+        <Parameter Name="fileURL" Type="Foundation.NSUrl" />
+      </Parameters>
+      <Docs>
+        <param name="request">To be added.</param>
+        <param name="fileURL">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateUploadTask">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSUrlSessionUploadTask CreateUploadTask (Foundation.NSUrlRequest request, Foundation.NSData bodyData, Foundation.NSUrlSessionResponse completionHandler);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Foundation.NSUrlSessionUploadTask CreateUploadTask(class Foundation.NSUrlRequest request, class Foundation.NSData bodyData, class Foundation.NSUrlSessionResponse completionHandler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("uploadTaskWithRequest:fromData:completionHandler:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSUrlSessionUploadTask</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="request" Type="Foundation.NSUrlRequest" />
+        <Parameter Name="bodyData" Type="Foundation.NSData" />
+        <Parameter Name="completionHandler" Type="Foundation.NSUrlSessionResponse">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDNSUrlSessionResponse))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="request">To be added.</param>
+        <param name="bodyData">To be added.</param>
+        <param name="completionHandler">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateUploadTask">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSUrlSessionUploadTask CreateUploadTask (Foundation.NSUrlRequest request, Foundation.NSUrl fileURL, Foundation.NSUrlSessionResponse completionHandler);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Foundation.NSUrlSessionUploadTask CreateUploadTask(class Foundation.NSUrlRequest request, class Foundation.NSUrl fileURL, class Foundation.NSUrlSessionResponse completionHandler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("uploadTaskWithRequest:fromFile:completionHandler:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSUrlSessionUploadTask</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="request" Type="Foundation.NSUrlRequest" />
+        <Parameter Name="fileURL" Type="Foundation.NSUrl" />
+        <Parameter Name="completionHandler" Type="Foundation.NSUrlSessionResponse">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDNSUrlSessionResponse))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="request">To be added.</param>
+        <param name="fileURL">To be added.</param>
+        <param name="completionHandler">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateUploadTaskAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;Foundation.NSUrlSessionDataTaskRequest&gt; CreateUploadTaskAsync (Foundation.NSUrlRequest request, Foundation.NSData bodyData);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;class Foundation.NSUrlSessionDataTaskRequest&gt; CreateUploadTaskAsync(class Foundation.NSUrlRequest request, class Foundation.NSData bodyData) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;Foundation.NSUrlSessionDataTaskRequest&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="request" Type="Foundation.NSUrlRequest" />
+        <Parameter Name="bodyData" Type="Foundation.NSData" />
+      </Parameters>
+      <Docs>
+        <param name="request">To be added.</param>
+        <param name="bodyData">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>
+          <para>A task that represents the asynchronous CreateUploadTask operation.   The value of the TResult parameter is of type <c>Action&lt;Foundation.NSUrlSessionDataTaskRequest&gt;</c>.</para>
+        </returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="CreateUploadTaskAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;Foundation.NSUrlSessionDataTaskRequest&gt; CreateUploadTaskAsync (Foundation.NSUrlRequest request, Foundation.NSUrl fileURL);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;class Foundation.NSUrlSessionDataTaskRequest&gt; CreateUploadTaskAsync(class Foundation.NSUrlRequest request, class Foundation.NSUrl fileURL) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;Foundation.NSUrlSessionDataTaskRequest&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="request" Type="Foundation.NSUrlRequest" />
+        <Parameter Name="fileURL" Type="Foundation.NSUrl" />
+      </Parameters>
+      <Docs>
+        <param name="request">To be added.</param>
+        <param name="fileURL">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>
+          <para>A task that represents the asynchronous CreateUploadTask operation.   The value of the TResult parameter is of type <c>Action&lt;Foundation.NSUrlSessionDataTaskRequest&gt;</c>.</para>
+        </returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="CreateUploadTaskAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;Foundation.NSUrlSessionDataTaskRequest&gt; CreateUploadTaskAsync (Foundation.NSUrlRequest request, Foundation.NSData bodyData, out Foundation.NSUrlSessionUploadTask result);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;class Foundation.NSUrlSessionDataTaskRequest&gt; CreateUploadTaskAsync(class Foundation.NSUrlRequest request, class Foundation.NSData bodyData, class Foundation.NSUrlSessionUploadTask result) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;Foundation.NSUrlSessionDataTaskRequest&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="request" Type="Foundation.NSUrlRequest" />
+        <Parameter Name="bodyData" Type="Foundation.NSData" />
+        <Parameter Name="result" Type="Foundation.NSUrlSessionUploadTask&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="request">To be added.</param>
+        <param name="bodyData">To be added.</param>
+        <param name="result">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateUploadTaskAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;Foundation.NSUrlSessionDataTaskRequest&gt; CreateUploadTaskAsync (Foundation.NSUrlRequest request, Foundation.NSUrl fileURL, out Foundation.NSUrlSessionUploadTask result);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;class Foundation.NSUrlSessionDataTaskRequest&gt; CreateUploadTaskAsync(class Foundation.NSUrlRequest request, class Foundation.NSUrl fileURL, class Foundation.NSUrlSessionUploadTask result) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;Foundation.NSUrlSessionDataTaskRequest&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="request" Type="Foundation.NSUrlRequest" />
+        <Parameter Name="fileURL" Type="Foundation.NSUrl" />
+        <Parameter Name="result" Type="Foundation.NSUrlSessionUploadTask&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="request">To be added.</param>
+        <param name="fileURL">To be added.</param>
+        <param name="result">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Delegate">
+      <MemberSignature Language="C#" Value="public Foundation.INSUrlSessionDelegate Delegate { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Foundation.INSUrlSessionDelegate Delegate" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.INSUrlSessionDelegate</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>An instance of the <see cref="Foundation.NSUrlSessionDelegate" /> model class which acts as the class delegate.</summary>
+        <value>
+          <para>The instance of the <see cref="Foundation.NSUrlSessionDelegate" /> model class</para>
+          <para tool="nullallowed">This value can be <see langword="null" />.</para>
+        </value>
+        <remarks>
+          <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+          <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+          <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DelegateQueue">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSOperationQueue DelegateQueue { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Foundation.NSOperationQueue DelegateQueue" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("delegateQueue", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSOperationQueue</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The operation queue used when this was created. Read-only.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FinishTasksAndInvalidate">
+      <MemberSignature Language="C#" Value="public virtual void FinishTasksAndInvalidate ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void FinishTasksAndInvalidate() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("finishTasksAndInvalidate")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Invalidates the object after allowing any outstanding tasks to finish.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Flush">
+      <MemberSignature Language="C#" Value="public virtual void Flush (Action completionHandler);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Flush(class System.Action completionHandler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("flushWithCompletionHandler:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="completionHandler" Type="System.Action">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDAction))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="completionHandler">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FlushAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task FlushAsync ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task FlushAsync() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Flushes download data to disk and ensures future requests occur on a new socket.</summary>
+        <returns>A task that represents the asynchronous Flush operation</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="FromConfiguration">
+      <MemberSignature Language="C#" Value="public static Foundation.NSUrlSession FromConfiguration (Foundation.NSUrlSessionConfiguration configuration);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSUrlSession FromConfiguration(class Foundation.NSUrlSessionConfiguration configuration) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("sessionWithConfiguration:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSUrlSession</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="configuration" Type="Foundation.NSUrlSessionConfiguration" />
+      </Parameters>
+      <Docs>
+        <param name="configuration">To be added.</param>
+        <summary>Factory method to create an NSUrlSession from the specified configuration.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromConfiguration">
+      <MemberSignature Language="C#" Value="public static Foundation.NSUrlSession FromConfiguration (Foundation.NSUrlSessionConfiguration configuration, Foundation.INSUrlSessionDelegate sessionDelegate, Foundation.NSOperationQueue delegateQueue);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSUrlSession FromConfiguration(class Foundation.NSUrlSessionConfiguration configuration, class Foundation.INSUrlSessionDelegate sessionDelegate, class Foundation.NSOperationQueue delegateQueue) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Foundation.NSUrlSession</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="configuration" Type="Foundation.NSUrlSessionConfiguration" />
+        <Parameter Name="sessionDelegate" Type="Foundation.INSUrlSessionDelegate" />
+        <Parameter Name="delegateQueue" Type="Foundation.NSOperationQueue" />
+      </Parameters>
+      <Docs>
+        <param name="configuration">To be added.</param>
+        <param name="sessionDelegate">To be added.</param>
+        <param name="delegateQueue">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromConfiguration">
+      <MemberSignature Language="C#" Value="public static Foundation.NSUrlSession FromConfiguration (Foundation.NSUrlSessionConfiguration configuration, Foundation.NSUrlSessionDelegate sessionDelegate, Foundation.NSOperationQueue delegateQueue);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSUrlSession FromConfiguration(class Foundation.NSUrlSessionConfiguration configuration, class Foundation.NSUrlSessionDelegate sessionDelegate, class Foundation.NSOperationQueue delegateQueue) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.Obsolete("Use the overload with a 'INSUrlSessionDelegate' parameter.", false)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSUrlSession</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="configuration" Type="Foundation.NSUrlSessionConfiguration" />
+        <Parameter Name="sessionDelegate" Type="Foundation.NSUrlSessionDelegate" />
+        <Parameter Name="delegateQueue" Type="Foundation.NSOperationQueue" />
+      </Parameters>
+      <Docs>
+        <param name="configuration">To be added.</param>
+        <param name="sessionDelegate">To be added.</param>
+        <param name="delegateQueue">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FromWeakConfiguration">
+      <MemberSignature Language="C#" Value="public static Foundation.NSUrlSession FromWeakConfiguration (Foundation.NSUrlSessionConfiguration configuration, Foundation.NSObject weakDelegate, Foundation.NSOperationQueue delegateQueue);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class Foundation.NSUrlSession FromWeakConfiguration(class Foundation.NSUrlSessionConfiguration configuration, class Foundation.NSObject weakDelegate, class Foundation.NSOperationQueue delegateQueue) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("sessionWithConfiguration:delegate:delegateQueue:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSUrlSession</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="configuration" Type="Foundation.NSUrlSessionConfiguration" />
+        <Parameter Name="weakDelegate" Type="Foundation.NSObject" />
+        <Parameter Name="delegateQueue" Type="Foundation.NSOperationQueue" />
+      </Parameters>
+      <Docs>
+        <param name="configuration">To be added.</param>
+        <param name="weakDelegate">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="delegateQueue">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetAllTasks">
+      <MemberSignature Language="C#" Value="public virtual void GetAllTasks (Foundation.NSUrlSessionAllPendingTasks completionHandler);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void GetAllTasks(class Foundation.NSUrlSessionAllPendingTasks completionHandler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("getAllTasksWithCompletionHandler:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="completionHandler" Type="Foundation.NSUrlSessionAllPendingTasks">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDNSUrlSessionAllPendingTasks))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="completionHandler">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetAllTasksAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;Foundation.NSUrlSessionTask[]&gt; GetAllTasksAsync ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;class Foundation.NSUrlSessionTask[]&gt; GetAllTasksAsync() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;Foundation.NSUrlSessionTask[]&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>
+          <para>A task that represents the asynchronous GetAllTasks operation.   The value of the TResult parameter is an array of MonoTouch.Foundation.NSUrlSessionTask.  The base class for data-transfer tasks created by a .</para>
+        </returns>
+        <remarks>
+          <para copied="true">The GetAllTasksAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+          <para copied="true">To be added.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetTasks">
+      <MemberSignature Language="C#" Value="public virtual void GetTasks (Foundation.NSUrlSessionPendingTasks completionHandler);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void GetTasks(class Foundation.NSUrlSessionPendingTasks completionHandler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("getTasksWithCompletionHandler:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.Obsolete("Use GetTasks2 instead. This method may throw spurious InvalidCastExceptions, in particular for backgrounded tasks.", false)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="completionHandler" Type="Foundation.NSUrlSessionPendingTasks">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDNSUrlSessionPendingTasks))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="completionHandler">Method to invoke when the information about the tasks is ready.</param>
+        <summary>Requests the groups of pending tasks (data, upload and downloads).</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetTasks2">
+      <MemberSignature Language="C#" Value="public void GetTasks2 (Foundation.NSUrlSessionPendingTasks2 completionHandler);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void GetTasks2(class Foundation.NSUrlSessionPendingTasks2 completionHandler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="completionHandler" Type="Foundation.NSUrlSessionPendingTasks2">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDNSUrlSessionPendingTasks2))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="completionHandler">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetTasks2Async">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;Foundation.NSUrlSessionActiveTasks2&gt; GetTasks2Async ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class Foundation.NSUrlSessionActiveTasks2&gt; GetTasks2Async() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;Foundation.NSUrlSessionActiveTasks2&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Requests the groups of pending tasks (data, upload and downloads).</summary>
+        <returns>
+          <para>A task that represents the asynchronous GetTasks2 operation.   The value of the TResult parameter is of type <c>Action&lt;Foundation.NSUrlSessionActiveTasks2&gt;</c>.</para>
+        </returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="GetTasksAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;Foundation.NSUrlSessionActiveTasks&gt; GetTasksAsync ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;class Foundation.NSUrlSessionActiveTasks&gt; GetTasksAsync() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.Obsolete("Use GetTasks2 instead. This method may throw spurious InvalidCastExceptions, in particular for backgrounded tasks.", false)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;Foundation.NSUrlSessionActiveTasks&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Requests the groups of pending tasks (data, upload and downloads).</summary>
+        <returns>
+          <para>A task that represents the asynchronous GetTasks operation.   The value of the TResult parameter is of type <c>Action&lt;Foundation.NSUrlSessionActiveTasks&gt;</c>.</para>
+        </returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="InvalidateAndCancel">
+      <MemberSignature Language="C#" Value="public virtual void InvalidateAndCancel ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void InvalidateAndCancel() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("invalidateAndCancel")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Cancels all outstanding tasks and invalidates the session object.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Reset">
+      <MemberSignature Language="C#" Value="public virtual void Reset (Action completionHandler);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Reset(class System.Action completionHandler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("resetWithCompletionHandler:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="completionHandler" Type="System.Action">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDAction))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="completionHandler">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ResetAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task ResetAsync ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task ResetAsync() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Performs a full resets of the url session.</summary>
+        <returns>A task that represents the asynchronous Reset operation</returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="SessionDescription">
+      <MemberSignature Language="C#" Value="public virtual string SessionDescription { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string SessionDescription" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("sessionDescription", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setSessionDescription:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>A human-readable description for the session.</summary>
+        <value>
+          <para>(More documentation for this node is coming)</para>
+          <para tool="nullallowed">This value can be <see langword="null" />.</para>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SharedSession">
+      <MemberSignature Language="C#" Value="public static Foundation.NSUrlSession SharedSession { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSUrlSession SharedSession" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("sharedSession", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSUrlSession</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The shared singleton object.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WeakDelegate">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSObject WeakDelegate { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Foundation.NSObject WeakDelegate" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("delegate", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>An object that can respond to the delegate protocol for this type</summary>
+        <value>
+          <para>The instance that will respond to events and data requests.</para>
+          <para tool="nullallowed">This value can be <see langword="null" />.</para>
+        </value>
+        <remarks>
+          <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+          <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+          <para>   Methods must be decorated with the [Export ("selectorName")] attribute to respond to each method from the protocol.   Alternatively use the Delegate method which is strongly typed and does not require the [Export] attributes on methods.</para>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

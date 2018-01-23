@@ -1,0 +1,608 @@
+<Type Name="GKRuleSystem" FullName="GameplayKit.GKRuleSystem">
+  <TypeSignature Language="C#" Value="public class GKRuleSystem : Foundation.NSObject" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit GKRuleSystem extends Foundation.NSObject" />
+  <AssemblyInfo>
+    <AssemblyName>Xamarin.iOS</AssemblyName>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>Foundation.NSObject</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Attributes>
+    <Attribute>
+      <AttributeName>Foundation.Register("GKRuleSystem", true)</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.Arch64, null)</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>Maintains a collection of <see cref="T:GameplayKit.GKRule" /> objects, activating them as appropriate.</summary>
+    <remarks>
+      <para>The <see cref="T:GameplayKit.GKRuleSystem" /> class allows developers to build expert systems. Both classical and fuzzy-logic systems are supported.</para>
+      <para>At any time, a <see cref="T:GameplayKit.GKRule" /> is either in the <see cref="P:GameplayKit.GKRuleSystem.Agenda" /> collection of rules to be evaluated or the <see cref="P:GameplayKit.GKRuleSystem.Executed" /> collection. The <see cref="M:GameplayKit.GKRuleSystem.Reset" /> method moves all rules back to the <see cref="P:GameplayKit.GKRuleSystem.Agenda" /> collection. </para>
+      <para>The method <see cref="M:GameplayKit.GKRuleSystem.Evaluate" /> evaluates the predicates of every rule in the <see cref="P:GameplayKit.GKRuleSystem.Agenda" />, according to their <see cref="P:GameplayKit.GKRule.Salience" /> and, secondarily, the order in which they were added to the <see cref="T:GameplayKit.GKRuleSystem" />. Rules whose predicate evaluates to <see langword="true" /> have their action function executed and are placed in the <see cref="P:GameplayKit.GKRuleSystem.Executed" /> collection.</para>
+      <para>The following demonstrates the "FizzBuzz" challenge: If a number is evenly divisible by 3, output "fizz". If evenly divisible by 5, output "buzz". Otherwise, output the number itself. Note that this code properly sets the <c>output</c> to "buzzfizz" on an input of 15, since both the <c>fizzRule</c> and <c>buzzRule</c> evaluate to <see langword="true" />.</para>
+      <example>
+        <code lang="C#"><![CDATA[
+var clearRule = GKRule.FromPredicate ((rules) => reset, rules => {
+	output = "";
+	reset = false;
+});
+clearRule.Salience = 1;
+
+var fizzRule = GKRule.FromPredicate (mod (3), rules => {
+	output += "fizz";
+});
+fizzRule.Salience = 2;
+var buzzRule = GKRule.FromPredicate (mod (5), rules => { 
+	output += "buzz";
+});
+buzzRule.Salience = 2;
+
+var outputRule = GKRule.FromPredicate (rules => true, rules => {
+	System.Console.WriteLine (output == "" ? input.ToString () : output);
+	reset = true;
+});
+outputRule.Salience = 3;
+
+var rs = new GKRuleSystem ();
+rs.AddRules (new [] {
+	clearRule,
+	fizzRule,
+	buzzRule,
+	outputRule
+});
+
+for (input = 1; input < 16; input++) {
+	rs.Evaluate ();
+	rs.Reset ();
+}
+          
+          ]]></code>
+      </example>
+    </remarks>
+    <related type="PlatformDocAPI" href="https://developer.apple.com/library/ios/documentation/GameplayKit/Reference/GKRuleSystem_Class/index.html">Apple documentation for <c>GKRuleSystem</c></related>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public GKRuleSystem ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("init")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters />
+      <Docs>
+        <summary>Default constructor, initializes a new instance of this class.</summary>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected GKRuleSystem (Foundation.NSObjectFlag t);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor(class Foundation.NSObjectFlag t) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="t" Type="Foundation.NSObjectFlag" />
+      </Parameters>
+      <Docs>
+        <param name="t">Unused sentinel value, pass NSObjectFlag.Empty.</param>
+        <summary>Constructor to call on derived classes to skip initialization and merely allocate the object.</summary>
+        <remarks>
+          <para>This constructor should be called by derived classes when they completely construct the object in managed code and merely want the runtime to allocate and initialize the NSObject.   This is required to implement the two-step initialization process that Objective-C uses, the first step is to perform the object allocation, the second step is to initialize the object.   When developers invoke the constructor that takes the NSObjectFlag.Empty they take advantage of a direct path that goes all the way up to NSObject to merely allocate the object's memory and bind the Objective-C and C# objects together.    The actual initialization of the object is up to the developer.</para>
+          <para>This constructor is typically used by the binding generator to allocate the object, but prevent the actual initialization to take place.   Once the allocation has taken place, the constructor has to initialize the object.   With constructors generated by the binding generator this means that it manually invokes one of the "init" methods to initialize the object.</para>
+          <para>It is the developer's responsibility to completely initialize the object if they chain up using the NSObjectFlag.Empty path.</para>
+          <para>In general, if the developer's constructor invokes the NSObjectFlag.Empty base implementation, then it should be calling an Objective-C init method.   If this is not the case, developers should instead chain to the proper constructor in their class. </para>
+          <para>The argument value is ignored and merely ensures that the only code that is executed is the construction phase is the basic NSObject allocation and runtime type registration.  Typically the chaining would look like this:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// The NSObjectFlag merely allocates the object and registers the
+// C# class with the Objective-C runtime if necessary, but no actual
+// initXxx method is invoked, that is done later in the constructor
+//
+// This is taken from Xamarin's source code:
+//
+[Export ("initWithFrame:")]
+public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
+{
+// Invoke the init method now.
+	var initWithFrame = new Selector ("initWithFrame:").Handle;
+	if (IsDirectBinding)
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+	else
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected GKRuleSystem (IntPtr handle);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig specialname rtspecialname instance void .ctor(native int handle) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="handle" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="handle">Pointer (handle) to the unmanaged object.</param>
+        <summary>A constructor used when creating managed representations of unmanaged objects;  Called by the runtime.</summary>
+        <remarks>
+          <para>This constructor is invoked by the runtime infrastructure (<see cref="M:ObjCRuntime.Runtime.GetNSObject(System.IntPtr)" />) to create a new managed representation for a pointer to an unmanaged Objective-C object.    Developers should not invoke this method directly, instead they should call the GetNSObject method as it will prevent two instances of a managed object to point to the same native object.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AddRule">
+      <MemberSignature Language="C#" Value="public virtual void AddRule (GameplayKit.GKRule rule);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void AddRule(class GameplayKit.GKRule rule) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("addRule:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rule" Type="GameplayKit.GKRule" />
+      </Parameters>
+      <Docs>
+        <param name="rule">To be added.</param>
+        <summary>Adds <paramref name="rule" /> to the system, placing it in the <see cref="P:GameplayKit.GKRuleSystem.Agenda" />.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AddRules">
+      <MemberSignature Language="C#" Value="public virtual void AddRules (GameplayKit.GKRule[] rules);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void AddRules(class GameplayKit.GKRule[] rules) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("addRulesFromArray:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rules" Type="GameplayKit.GKRule[]" />
+      </Parameters>
+      <Docs>
+        <param name="rules">To be added.</param>
+        <summary>Adds <paramref name="rules" /> to the system, placing them in the <see cref="P:GameplayKit.GKRuleSystem.Agenda" />.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Agenda">
+      <MemberSignature Language="C#" Value="public virtual GameplayKit.GKRule[] Agenda { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class GameplayKit.GKRule[] Agenda" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("agenda", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>GameplayKit.GKRule[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The collection of <see cref="T:GameplayKit.GKRule" /> objects whose predicates have not yet evaluated to <see langword="true" />.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AssertFact">
+      <MemberSignature Language="C#" Value="public virtual void AssertFact (Foundation.NSObject fact);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void AssertFact(class Foundation.NSObject fact) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("assertFact:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="fact" Type="Foundation.NSObject" />
+      </Parameters>
+      <Docs>
+        <param name="fact">To be added.</param>
+        <summary>Adds the <paramref name="fact" /> to the system's knowledge-base, with a grade of 1.0.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AssertFact">
+      <MemberSignature Language="C#" Value="public virtual void AssertFact (Foundation.NSObject fact, float grade);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void AssertFact(class Foundation.NSObject fact, float32 grade) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("assertFact:grade:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="fact" Type="Foundation.NSObject" />
+        <Parameter Name="grade" Type="System.Single" />
+      </Parameters>
+      <Docs>
+        <param name="fact">To be added.</param>
+        <param name="grade">The amount by which to change the truth grade of the <paramref name="fact" />.</param>
+        <summary>Adds the <paramref name="fact" /> to the system's knowledge-base, increasing it's truth-value by <paramref name="grade" />.</summary>
+        <remarks>
+          <para>If the truth grade of a fact goes to 0.0 or below, it is removed from the <see cref="P:GameplayKit.GKRuleSystem.Facts" /> collection.</para>
+          <para>Note that this process adds <paramref name="grade" /> to the internally-stored grade of the <paramref name="fact" />. To set an absolute value, developers must first call <see cref="M:GameplayKit.GKRuleSystem.RetractFact(NSObject)" /> to erase the current internal belief in the fact.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ClassHandle">
+      <MemberSignature Language="C#" Value="public override IntPtr ClassHandle { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int ClassHandle" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The handle for this class.</summary>
+        <value>The pointer to the Objective-C class.</value>
+        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Evaluate">
+      <MemberSignature Language="C#" Value="public virtual void Evaluate ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Evaluate() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("evaluate")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Evaluates the predicates in the <see cref="P:GameplayKit.GKRuleSystem.Agenda" /> and executes actions of those evaluating to <see langword="true" />.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Executed">
+      <MemberSignature Language="C#" Value="public virtual GameplayKit.GKRule[] Executed { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class GameplayKit.GKRule[] Executed" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("executed", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>GameplayKit.GKRule[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Rules in the system that have been evaluated as <see langword="true" /> and had their actions executed.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Facts">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSObject[] Facts { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Foundation.NSObject[] Facts" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("facts", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>An arbitrary set of objects about which the <see cref="T:GameplayKit.GKRuleSystem" /> maintains a truth grade in the range [0,1].</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetGrade">
+      <MemberSignature Language="C#" Value="public virtual float GetGrade (Foundation.NSObject fact);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance float32 GetGrade(class Foundation.NSObject fact) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("gradeForFact:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Single</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="fact" Type="Foundation.NSObject" />
+      </Parameters>
+      <Docs>
+        <param name="fact">To be added.</param>
+        <summary>Retrieves the truth grade for the <paramref name="fact" />.</summary>
+        <returns>A value in the range [0,1], in which 0 represents certainty that the fact is false and 1.0 represents certainty that it is true.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetMaximumGrade">
+      <MemberSignature Language="C#" Value="public virtual float GetMaximumGrade (Foundation.NSObject[] facts);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance float32 GetMaximumGrade(class Foundation.NSObject[] facts) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("maximumGradeForFacts:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Single</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="facts" Type="Foundation.NSObject[]" />
+      </Parameters>
+      <Docs>
+        <param name="facts">To be added.</param>
+        <summary>Retrieves the maximum truth grade among the <paramref name="facts" />. (Fuzzy OR)</summary>
+        <returns>To be added.</returns>
+        <remarks>
+          <para>In fuzzy logic, the confidence in a conclusion is equal to the confidence in one of the precedent facts. In a fuzzy OR, the confidence in the conclusion is the maximum value of its precedent facts. In a fuzzy AND, the confidence is the minimum.For instance, a car’s desirability might be caused by it being great fun to drive OR having great gas mileage. If a car had a 0.4 grade for <c>funToDrive</c> but <c>greatMileage</c> of 0.8, the <c>carDesirability</c> would be set to 0.8 — the maximum of its precedents. <c>funToDrive</c>, in turn, might require power AND handling. So a car with <c>plentyOfHorsepower</c> of 1.0 but <c>goodHandling</c> of 0.4 would end up with a <c>funToDrive</c> grade of 0.4 — the minimum of its precedents.</para>
+          <para>
+            <img href="GKRuleSystemFuzzyOperators.png" />
+          </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetMinimumGrade">
+      <MemberSignature Language="C#" Value="public virtual float GetMinimumGrade (Foundation.NSObject[] facts);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance float32 GetMinimumGrade(class Foundation.NSObject[] facts) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("minimumGradeForFacts:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Single</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="facts" Type="Foundation.NSObject[]" />
+      </Parameters>
+      <Docs>
+        <param name="facts">To be added.</param>
+        <summary>Retrieves the minimum truth grade among the <paramref name="facts" />. (Fuzzy AND)</summary>
+        <returns>To be added.</returns>
+        <remarks>
+          <para>In fuzzy logic, the confidence in a conclusion is equal to the confidence in one of the precedent facts. In a fuzzy OR, the confidence in the conclusion is the maximum value of its precedent facts. In a fuzzy AND, the confidence is the minimum.For instance, a car’s desirability might be caused by it being great fun to drive OR having great gas mileage. If a car had a 0.4 grade for <c>funToDrive</c> but <c>greatMileage</c> of 0.8, the <c>carDesirability</c> would be set to 0.8 — the maximum of its precedents. <c>funToDrive</c>, in turn, might require power AND handling. So a car with <c>plentyOfHorsepower</c> of 1.0 but <c>goodHandling</c> of 0.4 would end up with a <c>funToDrive</c> grade of 0.4 — the minimum of its precedents.</para>
+          <para>
+            <img href="GKRuleSystemFuzzyOperators.png" />
+          </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RemoveAllRules">
+      <MemberSignature Language="C#" Value="public virtual void RemoveAllRules ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void RemoveAllRules() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("removeAllRules")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Removes all the <see cref="T:GameplayKit.GKRule" /> objects in the <see cref="T:GameplayKit.GKRuleSystem" />.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Reset">
+      <MemberSignature Language="C#" Value="public virtual void Reset ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Reset() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("reset")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Moves all <see cref="T:GameplayKit.GKRule" /> objects from the <see cref="P:GameplayKit.GKRuleSystem.Executed" /> collection to the <see cref="P:GameplayKit.GKRuleSystem.Agenda" />.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RetractFact">
+      <MemberSignature Language="C#" Value="public virtual void RetractFact (Foundation.NSObject fact);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void RetractFact(class Foundation.NSObject fact) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("retractFact:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="fact" Type="Foundation.NSObject" />
+      </Parameters>
+      <Docs>
+        <param name="fact">To be added.</param>
+        <summary>Removes the <paramref name="fact" /> from the <see cref="P:GameplayKit.GKRuleSystem.Facts" /> collection.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RetractFact">
+      <MemberSignature Language="C#" Value="public virtual void RetractFact (Foundation.NSObject fact, float grade);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void RetractFact(class Foundation.NSObject fact, float32 grade) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("retractFact:grade:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="fact" Type="Foundation.NSObject" />
+        <Parameter Name="grade" Type="System.Single" />
+      </Parameters>
+      <Docs>
+        <param name="fact">To be added.</param>
+        <param name="grade">To be added.</param>
+        <summary>Subtracts <paramref name="grade" /> from the internal confidence in <paramref name="fact" />. If the internal confidence drops to 0.0, the <paramref name="fact" /> is removed.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Rules">
+      <MemberSignature Language="C#" Value="public virtual GameplayKit.GKRule[] Rules { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class GameplayKit.GKRule[] Rules" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("rules", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>GameplayKit.GKRule[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>All of the rules in the system, whether in <see cref="P:GameplayKit.GKRuleSystem.Agenda" /> or <see cref="P:GameplayKit.GKRuleSystem.Executed" />.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="State">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSMutableDictionary State { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Foundation.NSMutableDictionary State" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("state", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSMutableDictionary</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>A mutable dictionary intended to hold the state information upon which the <see cref="P:GameplayKit.GKRuleSystem.Rules" /> operate.</summary>
+        <value>To be added.</value>
+        <remarks>
+          <para>If the underlying <see cref="T:Foundation.NSMutableDictionary" /> is manipulated outside of the action of a constituent <see cref="T:GameplayKit.GKRule" />, deveopers must call <see cref="M:GameplayKit.GKRuleSystem.Reset" /> and <see cref="M:GameplayKit.GKRuleSystem.Evaluate" /> for the modified data to be acted upon.</para>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

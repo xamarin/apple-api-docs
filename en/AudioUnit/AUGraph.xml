@@ -1,0 +1,735 @@
+<Type Name="AUGraph" FullName="AudioUnit.AUGraph">
+  <TypeSignature Language="C#" Value="public class AUGraph : IDisposable, ObjCRuntime.INativeObject" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit AUGraph extends System.Object implements class ObjCRuntime.INativeObject, class System.IDisposable" />
+  <AssemblyInfo>
+    <AssemblyName>Xamarin.iOS</AssemblyName>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>ObjCRuntime.INativeObject</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>System.IDisposable</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Docs>
+    <summary>An audio processing graph.</summary>
+    <remarks>
+      <example>
+        <code lang="C#"><![CDATA[
+void createAUGraph ()
+{
+        AUGraphError result = 0;
+        int samplerNode, ioNode;
+
+        var sampler = new AudioComponentDescription () {
+                ComponentManufacturer = AudioComponentManufacturerType.Apple,
+		ComponentType = AudioComponentType.MusicDevice,
+		ComponentSubType = (int)AudioTypeMusicDevice.Sampler;
+        };
+
+        processingGraph = new AUGraph ();
+        samplerNode = processingGraph.AddNode (sampler);
+
+	var output = new AudioComponentDescription () {
+                ComponentManufacturer = AudioComponentManufacturerType.Apple,
+		ComponentType = AudioComponentType.Output;
+		ComponentSubType = (int)AudioTypeOutput.Remote;
+	};
+        ioNode = processingGraph.AddNode (output);
+
+        processingGraph.Open ();
+
+        result = processingGraph.ConnnectNodeInput (samplerNode, 0, ioNode, 0);
+        if (result != AUGraphError.OK)
+                throw new Exception ("Unable to open the audio processing graph.  Error code: " + result);
+        samplerUnit = processingGraph.GetNodeInfo (samplerNode);
+        ioUnit = processingGraph.GetNodeInfo (ioNode);
+}
+
+	]]></code>
+      </example>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public AUGraph ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary>Creates a new AudioUnit graph.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AddNode">
+      <MemberSignature Language="C#" Value="public int AddNode (AudioUnit.AudioComponentDescription description);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32 AddNode(valuetype AudioUnit.AudioComponentDescription description) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="description" Type="AudioUnit.AudioComponentDescription" />
+      </Parameters>
+      <Docs>
+        <param name="description">Description for the node that you want to add.</param>
+        <summary>Adds a node matching the description to the graph.</summary>
+        <returns>
+        </returns>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AddRenderNotify">
+      <MemberSignature Language="C#" Value="public AudioUnit.AudioUnitStatus AddRenderNotify (AudioUnit.RenderDelegate callback);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype AudioUnit.AudioUnitStatus AddRenderNotify(class AudioUnit.RenderDelegate callback) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>AudioUnit.AudioUnitStatus</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="callback" Type="AudioUnit.RenderDelegate" />
+      </Parameters>
+      <Docs>
+        <param name="callback">Method to call every time the audio graph renders.</param>
+        <summary>Registers a method to be invoked every time the audio graph renders.</summary>
+        <returns>Status code.</returns>
+        <remarks>Use RemoveRenderNotify to remove the notification.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ClearConnections">
+      <MemberSignature Language="C#" Value="public AudioUnit.AUGraphError ClearConnections ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype AudioUnit.AUGraphError ClearConnections() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>AudioUnit.AUGraphError</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ConnnectNodeInput">
+      <MemberSignature Language="C#" Value="public AudioUnit.AUGraphError ConnnectNodeInput (int sourceNode, uint sourceOutputNumber, int destNode, uint destInputNumber);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype AudioUnit.AUGraphError ConnnectNodeInput(int32 sourceNode, unsigned int32 sourceOutputNumber, int32 destNode, unsigned int32 destInputNumber) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>AudioUnit.AUGraphError</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sourceNode" Type="System.Int32" />
+        <Parameter Name="sourceOutputNumber" Type="System.UInt32" />
+        <Parameter Name="destNode" Type="System.Int32" />
+        <Parameter Name="destInputNumber" Type="System.UInt32" />
+      </Parameters>
+      <Docs>
+        <param name="sourceNode">To be added.</param>
+        <param name="sourceOutputNumber">To be added.</param>
+        <param name="destNode">To be added.</param>
+        <param name="destInputNumber">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Create">
+      <MemberSignature Language="C#" Value="public static AudioUnit.AUGraph Create (out int errorCode);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class AudioUnit.AUGraph Create(int32 errorCode) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>AudioUnit.AUGraph</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="errorCode" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="errorCode">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DisconnectNodeInput">
+      <MemberSignature Language="C#" Value="public AudioUnit.AUGraphError DisconnectNodeInput (int destNode, uint destInputNumber);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype AudioUnit.AUGraphError DisconnectNodeInput(int32 destNode, unsigned int32 destInputNumber) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>AudioUnit.AUGraphError</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="destNode" Type="System.Int32" />
+        <Parameter Name="destInputNumber" Type="System.UInt32" />
+      </Parameters>
+      <Docs>
+        <param name="destNode">To be added.</param>
+        <param name="destInputNumber">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Dispose">
+      <MemberSignature Language="C#" Value="public void Dispose ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Dispose() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Releases the resources used by the AUGraph object.</summary>
+        <remarks>
+          <para>The Dispose method releases the resources used by the AUGraph class.</para>
+          <para>Calling the Dispose method when the application is finished using the AUGraph ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.  For more information on releasing resources see ``Cleaning up Unmananaged Resources'' at http://msdn.microsoft.com/en-us/library/498928w2.aspx</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Dispose">
+      <MemberSignature Language="C#" Value="protected virtual void Dispose (bool disposing);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void Dispose(bool disposing) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="disposing" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="disposing">
+          <para>If set to <see langword="true" />, the method is invoked directly and will dispose manage and unmanaged resources;   If set to <see langword="false" /> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</para>
+        </param>
+        <summary>Releases the resources used by the AUGraph object.</summary>
+        <remarks>
+          <para>This Dispose method releases the resources used by the AUGraph class.</para>
+          <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposing <paramref name="disposing" /> is set to <see langword="true" /> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false" />. </para>
+          <para>Calling the Dispose method when the application is finished using the AUGraph ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.</para>
+          <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at http://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Finalize">
+      <MemberSignature Language="C#" Value="~AUGraph ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Finalize() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Finalizer for the AUGraph object</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetCPULoad">
+      <MemberSignature Language="C#" Value="public AudioUnit.AUGraphError GetCPULoad (out float averageCPULoad);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype AudioUnit.AUGraphError GetCPULoad(float32 averageCPULoad) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>AudioUnit.AUGraphError</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="averageCPULoad" Type="System.Single&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="averageCPULoad">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetMaxCPULoad">
+      <MemberSignature Language="C#" Value="public AudioUnit.AUGraphError GetMaxCPULoad (out float maxCPULoad);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype AudioUnit.AUGraphError GetMaxCPULoad(float32 maxCPULoad) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>AudioUnit.AUGraphError</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="maxCPULoad" Type="System.Single&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="maxCPULoad">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetNode">
+      <MemberSignature Language="C#" Value="public AudioUnit.AUGraphError GetNode (uint index, out int node);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype AudioUnit.AUGraphError GetNode(unsigned int32 index, int32 node) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>AudioUnit.AUGraphError</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="index" Type="System.UInt32" />
+        <Parameter Name="node" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="index">To be added.</param>
+        <param name="node">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetNodeCount">
+      <MemberSignature Language="C#" Value="public AudioUnit.AUGraphError GetNodeCount (out int count);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype AudioUnit.AUGraphError GetNodeCount(int32 count) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>AudioUnit.AUGraphError</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="count" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="count">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetNodeInfo">
+      <MemberSignature Language="C#" Value="public AudioUnit.AudioUnit GetNodeInfo (int node);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class AudioUnit.AudioUnit GetNodeInfo(int32 node) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>AudioUnit.AudioUnit</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="node" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="node">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetNodeInfo">
+      <MemberSignature Language="C#" Value="public AudioUnit.AudioUnit GetNodeInfo (int node, out AudioUnit.AUGraphError error);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class AudioUnit.AudioUnit GetNodeInfo(int32 node, valuetype AudioUnit.AUGraphError error) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>AudioUnit.AudioUnit</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="node" Type="System.Int32" />
+        <Parameter Name="error" Type="AudioUnit.AUGraphError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="node">To be added.</param>
+        <param name="error">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetNodeInfo">
+      <MemberSignature Language="C#" Value="public AudioUnit.AudioUnit GetNodeInfo (int node, out AudioUnit.AudioComponentDescription cd, out AudioUnit.AUGraphError error);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class AudioUnit.AudioUnit GetNodeInfo(int32 node, valuetype AudioUnit.AudioComponentDescription cd, valuetype AudioUnit.AUGraphError error) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>AudioUnit.AudioUnit</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="node" Type="System.Int32" />
+        <Parameter Name="cd" Type="AudioUnit.AudioComponentDescription&amp;" RefType="out" />
+        <Parameter Name="error" Type="AudioUnit.AUGraphError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="node">To be added.</param>
+        <param name="cd">To be added.</param>
+        <param name="error">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetNumberOfInteractions">
+      <MemberSignature Language="C#" Value="public AudioUnit.AUGraphError GetNumberOfInteractions (out uint interactionsCount);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype AudioUnit.AUGraphError GetNumberOfInteractions(unsigned int32 interactionsCount) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>AudioUnit.AUGraphError</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="interactionsCount" Type="System.UInt32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="interactionsCount">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetNumberOfInteractions">
+      <MemberSignature Language="C#" Value="public AudioUnit.AUGraphError GetNumberOfInteractions (int node, out uint interactionsCount);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype AudioUnit.AUGraphError GetNumberOfInteractions(int32 node, unsigned int32 interactionsCount) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>AudioUnit.AUGraphError</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="node" Type="System.Int32" />
+        <Parameter Name="interactionsCount" Type="System.UInt32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="node">To be added.</param>
+        <param name="interactionsCount">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Handle">
+      <MemberSignature Language="C#" Value="public IntPtr Handle { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int Handle" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Handle (pointer) to the unmanaged object representation.</summary>
+        <value>A pointer</value>
+        <remarks>This IntPtr is a handle to the underlying unmanaged representation for this object.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Initialize">
+      <MemberSignature Language="C#" Value="public AudioUnit.AUGraphError Initialize ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype AudioUnit.AUGraphError Initialize() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>AudioUnit.AUGraphError</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsInitialized">
+      <MemberSignature Language="C#" Value="public bool IsInitialized { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsInitialized" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsOpen">
+      <MemberSignature Language="C#" Value="public bool IsOpen { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsOpen" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsRunning">
+      <MemberSignature Language="C#" Value="public bool IsRunning { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsRunning" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LogAllNodes">
+      <MemberSignature Language="C#" Value="public void LogAllNodes ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void LogAllNodes() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Open">
+      <MemberSignature Language="C#" Value="public void Open ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Open() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RemoveNode">
+      <MemberSignature Language="C#" Value="public AudioUnit.AUGraphError RemoveNode (int node);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype AudioUnit.AUGraphError RemoveNode(int32 node) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>AudioUnit.AUGraphError</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="node" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="node">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RemoveRenderNotify">
+      <MemberSignature Language="C#" Value="public AudioUnit.AudioUnitStatus RemoveRenderNotify (AudioUnit.RenderDelegate callback);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype AudioUnit.AudioUnitStatus RemoveRenderNotify(class AudioUnit.RenderDelegate callback) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>AudioUnit.AudioUnitStatus</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="callback" Type="AudioUnit.RenderDelegate" />
+      </Parameters>
+      <Docs>
+        <param name="callback">callbackk to be removed.</param>
+        <summary>Removes a previously registered callback from being called every time the audio graph is rendered.</summary>
+        <returns>
+        </returns>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetNodeInputCallback">
+      <MemberSignature Language="C#" Value="public AudioUnit.AUGraphError SetNodeInputCallback (int destNode, uint destInputNumber, AudioUnit.RenderDelegate renderDelegate);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype AudioUnit.AUGraphError SetNodeInputCallback(int32 destNode, unsigned int32 destInputNumber, class AudioUnit.RenderDelegate renderDelegate) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>AudioUnit.AUGraphError</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="destNode" Type="System.Int32" />
+        <Parameter Name="destInputNumber" Type="System.UInt32" />
+        <Parameter Name="renderDelegate" Type="AudioUnit.RenderDelegate" />
+      </Parameters>
+      <Docs>
+        <param name="destNode">To be added.</param>
+        <param name="destInputNumber">To be added.</param>
+        <param name="renderDelegate">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Start">
+      <MemberSignature Language="C#" Value="public AudioUnit.AUGraphError Start ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype AudioUnit.AUGraphError Start() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>AudioUnit.AUGraphError</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Starts the audio graph.</summary>
+        <returns>
+        </returns>
+        <remarks>Starts processing the audio graph from the root node.   The graph must be initialized before starting</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Stop">
+      <MemberSignature Language="C#" Value="public AudioUnit.AUGraphError Stop ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype AudioUnit.AUGraphError Stop() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>AudioUnit.AUGraphError</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TryOpen">
+      <MemberSignature Language="C#" Value="public int TryOpen ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32 TryOpen() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Update">
+      <MemberSignature Language="C#" Value="public bool Update ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool Update() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Updates the state of the AudioUnit graph.</summary>
+        <returns>
+        </returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

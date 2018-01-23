@@ -1,0 +1,2132 @@
+<Type Name="UIDocument" FullName="UIKit.UIDocument">
+  <TypeSignature Language="C#" Value="public class UIDocument : Foundation.NSObject, Foundation.INSFilePresenter, Foundation.INSProgressReporting, IDisposable" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit UIDocument extends Foundation.NSObject implements class Foundation.INSFilePresenter, class Foundation.INSProgressReporting, class ObjCRuntime.INativeObject, class System.IDisposable" />
+  <AssemblyInfo>
+    <AssemblyName>Xamarin.iOS</AssemblyName>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>Foundation.NSObject</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>Foundation.INSFilePresenter</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>Foundation.INSProgressReporting</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>System.IDisposable</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Attributes>
+    <Attribute>
+      <AttributeName>Foundation.Register("UIDocument", true)</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 5, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>Abstract base class providing local and cloud-based management of Model data.</summary>
+    <remarks>
+      <para>Application developers can subclass <see cref="T:UIKit.UIDocument" /> to create objects that are "Model-Controllers" and relate to Model (domain) objects analogously to how <see cref="T:UIKit.UIViewController" /> relate to <see cref="T:UIKit.UIView" />s. iOS provides a number of functions, including background asynchronous reading and writing of application data, automatic and safe data-saving, storage that is automatically coordinated between the application sandbox and cloud services, etc.</para>
+      <block subset="none" type="inheritors">
+        <para>At a minimum, application developers need to implement <see cref="M:UIKit.UIDocument.ContentsForType" /> (for storage) and <see cref="M:UIKit.UIDocument.LoadFromContents" /> (for retrieval). Additionally, application developers need to manage the lifecyle of the <see cref="T:UIKit.UIDocument" /> and this requires the application developer to set the preferred storage location, create a file URL, and discover, open, and close the file. Application developers should also track changes and resolve conflicts between document versions.</para>
+      </block>
+      <para tool="threads">The members of this class can be used from a background thread.</para>
+    </remarks>
+    <related type="article" href="https://github.com/conceptdev/taskcloud">TaskCloud</related>
+    <altmember cref="T:UIKit.UIManagedDocument" />
+    <related type="PlatformDocAPI" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIDocument_Class/index.html">Apple documentation for <c>UIDocument</c></related>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected UIDocument (Foundation.NSObjectFlag t);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor(class Foundation.NSObjectFlag t) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="t" Type="Foundation.NSObjectFlag" />
+      </Parameters>
+      <Docs>
+        <param name="t">Unused sentinel value, pass NSObjectFlag.Empty.</param>
+        <summary>Constructor to call on derived classes to skip initialization and merely allocate the object.</summary>
+        <remarks>
+          <para>This constructor should be called by derived classes when they completely construct the object in managed code and merely want the runtime to allocate and initialize the NSObject.   This is required to implement the two-step initialization process that Objective-C uses, the first step is to perform the object allocation, the second step is to initialize the object.   When developers invoke the constructor that takes the NSObjectFlag.Empty they take advantage of a direct path that goes all the way up to NSObject to merely allocate the object's memory and bind the Objective-C and C# objects together.    The actual initialization of the object is up to the developer.</para>
+          <para>This constructor is typically used by the binding generator to allocate the object, but prevent the actual initialization to take place.   Once the allocation has taken place, the constructor has to initialize the object.   With constructors generated by the binding generator this means that it manually invokes one of the "init" methods to initialize the object.</para>
+          <para>It is the developer's responsibility to completely initialize the object if they chain up using the NSObjectFlag.Empty path.</para>
+          <para>In general, if the developer's constructor invokes the NSObjectFlag.Empty base implementation, then it should be calling an Objective-C init method.   If this is not the case, developers should instead chain to the proper constructor in their class. </para>
+          <para>The argument value is ignored and merely ensures that the only code that is executed is the construction phase is the basic NSObject allocation and runtime type registration.  Typically the chaining would look like this:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// The NSObjectFlag merely allocates the object and registers the
+// C# class with the Objective-C runtime if necessary, but no actual
+// initXxx method is invoked, that is done later in the constructor
+//
+// This is taken from Xamarin's source code:
+//
+[Export ("initWithFrame:")]
+public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
+{
+// Invoke the init method now.
+	var initWithFrame = new Selector ("initWithFrame:").Handle;
+	if (IsDirectBinding)
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+	else
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+}
+]]></code>
+          </example>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public UIDocument (Foundation.NSUrl url);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class Foundation.NSUrl url) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("initWithFileURL:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.DesignatedInitializer</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="url" Type="Foundation.NSUrl" />
+      </Parameters>
+      <Docs>
+        <param name="url">URL that indicates the location of a document file.</param>
+        <summary>Constructor</summary>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected UIDocument (IntPtr handle);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig specialname rtspecialname instance void .ctor(native int handle) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="handle" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="handle">Pointer (handle) to the unmanaged object.</param>
+        <summary>A constructor used when creating managed representations of unmanaged objects;  Called by the runtime.</summary>
+        <remarks>
+          <para>This constructor is invoked by the runtime infrastructure (<see cref="M:ObjCRuntime.Runtime.GetNSObject(System.IntPtr)" />) to create a new managed representation for a pointer to an unmanaged Objective-C object.    Developers should not invoke this method directly, instead they should call the GetNSObject method as it will prevent two instances of a managed object to point to the same native object.</para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AccommodatePresentedItemDeletion">
+      <MemberSignature Language="C#" Value="public virtual void AccommodatePresentedItemDeletion (Action&lt;Foundation.NSError&gt; completionHandler);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void AccommodatePresentedItemDeletion(class System.Action`1&lt;class Foundation.NSError&gt; completionHandler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("accommodatePresentedItemDeletionWithCompletionHandler:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="completionHandler" Type="System.Action&lt;Foundation.NSError&gt;">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDActionArity1V0))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="completionHandler">A code action that is executed when a save operation comes to a conclusion.</param>
+        <summary>Accomodates the presented subitem deletion.</summary>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AccommodatePresentedSubitemDeletion">
+      <MemberSignature Language="C#" Value="public virtual void AccommodatePresentedSubitemDeletion (Foundation.NSUrl url, Action&lt;Foundation.NSError&gt; completionHandler);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void AccommodatePresentedSubitemDeletion(class Foundation.NSUrl url, class System.Action`1&lt;class Foundation.NSError&gt; completionHandler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("accommodatePresentedSubitemDeletionAtURL:completionHandler:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="url" Type="Foundation.NSUrl" />
+        <Parameter Name="completionHandler" Type="System.Action&lt;Foundation.NSError&gt;">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDActionArity1V0))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="url">URL that indicates the location of a document file.</param>
+        <param name="completionHandler">A code action that is executed when a save operation comes to a conclusion.</param>
+        <summary>Accomodates the presented subitem deletion.</summary>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AutoSave">
+      <MemberSignature Language="C#" Value="public virtual void AutoSave (UIKit.UIOperationHandler completionHandler);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void AutoSave(class UIKit.UIOperationHandler completionHandler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("autosaveWithCompletionHandler:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="completionHandler" Type="UIKit.UIOperationHandler">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDUIOperationHandler))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="completionHandler">
+          <para>A code action that is executed when a save operation comes to a conclusion.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>Called by the system immediately prior to automatic saving of UIDocuments with unsaved changes.</summary>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AutoSaveAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;bool&gt; AutoSaveAsync ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;bool&gt; AutoSaveAsync() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Boolean&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Called by the system immediately prior to automatic saving of UIDocuments with unsaved changes.</summary>
+        <returns>
+          <para>A task that represents the asynchronous AutoSave operation. The value of the TResult parameter is a <see cref="UIKit.UIOperationHandler" />.</para>
+        </returns>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ChangeCountTokenForSaveOperation">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSObject ChangeCountTokenForSaveOperation (UIKit.UIDocumentSaveOperation saveOperation);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Foundation.NSObject ChangeCountTokenForSaveOperation(valuetype UIKit.UIDocumentSaveOperation saveOperation) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("changeCountTokenForSaveOperation:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="saveOperation" Type="UIKit.UIDocumentSaveOperation" />
+      </Parameters>
+      <Docs>
+        <param name="saveOperation">This represents a constant indicating if a document file is being written for the first time or being overwritten.</param>
+        <summary>When overridden, returns an object encapsulating document changes. Used with UpdateChangeCount and Save.</summary>
+        <returns>NSObject</returns>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ClassHandle">
+      <MemberSignature Language="C#" Value="public override IntPtr ClassHandle { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int ClassHandle" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The handle for this class.</summary>
+        <value>The pointer to the Objective-C class.</value>
+        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.This can be used from a background thread.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Close">
+      <MemberSignature Language="C#" Value="public virtual void Close (UIKit.UIOperationHandler completionHandler);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Close(class UIKit.UIOperationHandler completionHandler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("closeWithCompletionHandler:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="completionHandler" Type="UIKit.UIOperationHandler">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDUIOperationHandler))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="completionHandler">
+          <para>
+          </para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>Asynchronously closes the document after saving any changes.</summary>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CloseAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;bool&gt; CloseAsync ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;bool&gt; CloseAsync() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Boolean&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Asynchronously closes the document after saving any changes.</summary>
+        <returns>
+          <para>A task that represents the asynchronous Close operation. The value of the TResult parameter is a <see cref="UIKit.UIOperationHandler" />.</para>
+        </returns>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ContentsForType">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSObject ContentsForType (string typeName, out Foundation.NSError outError);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Foundation.NSObject ContentsForType(string typeName, class Foundation.NSError outError) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("contentsForType:error:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="typeName" Type="System.String" />
+        <Parameter Name="outError" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="typeName">The name of the type.</param>
+        <param name="outError">Object that encapsulates error information.</param>
+        <summary>Application developers should override this method to return the document data to be saved.</summary>
+        <returns>NSObject </returns>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DisableEditing">
+      <MemberSignature Language="C#" Value="public virtual void DisableEditing ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void DisableEditing() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("disableEditing")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>When overridden, allows app developers to disable editing when it is unsafe to make changes to this UIDocument.</summary>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DocumentState">
+      <MemberSignature Language="C#" Value="public virtual UIKit.UIDocumentState DocumentState { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype UIKit.UIDocumentState DocumentState" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("documentState")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UIDocumentState</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The current UIDocumentState of this UIDocument. Read-only.</summary>
+        <value>Gets the document state.</value>
+        <remarks>
+          <para>(More documentation for this node is coming)</para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EnableEditing">
+      <MemberSignature Language="C#" Value="public virtual void EnableEditing ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void EnableEditing() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("enableEditing")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>When overridden, allows app developers to re-enable editing when it is safe to make changes to this UIDocument.</summary>
+        <remarks>
+          <para>(More documentation for this node is coming)</para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FileModificationDate">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSDate FileModificationDate { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Foundation.NSDate FileModificationDate" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("fileModificationDate", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setFileModificationDate:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSDate</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The date and time at which the document file was last modified.</summary>
+        <value>Gets the date.</value>
+        <remarks>
+          <para>(More documentation for this node is coming)</para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FileType">
+      <MemberSignature Language="C#" Value="public virtual string FileType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string FileType" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("fileType", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The Uniform Type Identifier for this UIDocument. Read-only.</summary>
+        <value>string representing a file type</value>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FileUrl">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSUrl FileUrl { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Foundation.NSUrl FileUrl" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("fileURL")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSUrl</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The file URL from which this UIDocument was initialized. Read-only.</summary>
+        <value>Gets the file URL.</value>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FinishedHandlingError">
+      <MemberSignature Language="C#" Value="public virtual void FinishedHandlingError (Foundation.NSError error, bool recovered);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void FinishedHandlingError(class Foundation.NSError error, bool recovered) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("finishedHandlingError:recovered:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="error" Type="Foundation.NSError" />
+        <Parameter Name="recovered" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="error">Object that encapsulates error information.</param>
+        <param name="recovered">Boolean indicating whether error was handled.</param>
+        <summary>Application developers should call this function when they have finished handling an error.</summary>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetFileAttributesToWrite">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSDictionary GetFileAttributesToWrite (Foundation.NSUrl forUrl, UIKit.UIDocumentSaveOperation saveOperation, out Foundation.NSError outError);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class Foundation.NSDictionary GetFileAttributesToWrite(class Foundation.NSUrl forUrl, valuetype UIKit.UIDocumentSaveOperation saveOperation, class Foundation.NSError outError) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("fileAttributesToWriteToURL:forSaveOperation:error:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSDictionary</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="forUrl" Type="Foundation.NSUrl" />
+        <Parameter Name="saveOperation" Type="UIKit.UIDocumentSaveOperation" />
+        <Parameter Name="outError" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="forUrl">URL that indicates the location of a document file.</param>
+        <param name="saveOperation">This represents a constant indicating if a document file is being written for the first time or being overwritten.</param>
+        <param name="outError">Error return value.</param>
+        <summary>A dictionary of file attributes to associate with this UIDocument when writing or updating it.</summary>
+        <returns>NSDictionary of file attributes.</returns>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetFileNameExtension">
+      <MemberSignature Language="C#" Value="public virtual string GetFileNameExtension (string typeName, UIKit.UIDocumentSaveOperation saveOperation);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance string GetFileNameExtension(string typeName, valuetype UIKit.UIDocumentSaveOperation saveOperation) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("fileNameExtensionForType:saveOperation:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="typeName" Type="System.String" />
+        <Parameter Name="saveOperation" Type="UIKit.UIDocumentSaveOperation" />
+      </Parameters>
+      <Docs>
+        <param name="typeName">
+          <para>String representing a type.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="saveOperation">This represents a constant indicating if a document file is being written for the first time or being overwritten.</param>
+        <summary>The file extension to append to the file URL of this UIDocument when writing it.</summary>
+        <returns>A string representing a type.</returns>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="HandleError">
+      <MemberSignature Language="C#" Value="public virtual void HandleError (Foundation.NSError error, bool userInteractionPermitted);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void HandleError(class Foundation.NSError error, bool userInteractionPermitted) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("handleError:userInteractionPermitted:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="error" Type="Foundation.NSError" />
+        <Parameter Name="userInteractionPermitted" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="error">Object that encapsulates error information.</param>
+        <param name="userInteractionPermitted">Handles errors that appear when performing read, write or revert actions on a document.</param>
+        <summary>Called when an error occurs during reading, saving, or reverting this UIDocument.</summary>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="HasUnsavedChanges">
+      <MemberSignature Language="C#" Value="public virtual bool HasUnsavedChanges { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool HasUnsavedChanges" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("hasUnsavedChanges")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Whether this UIDocument has any unsaved changes.</summary>
+        <value>Gets the changes.</value>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LoadFromContents">
+      <MemberSignature Language="C#" Value="public virtual bool LoadFromContents (Foundation.NSObject contents, string typeName, out Foundation.NSError outError);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool LoadFromContents(class Foundation.NSObject contents, string typeName, class Foundation.NSError outError) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("loadFromContents:ofType:error:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="contents" Type="Foundation.NSObject" />
+        <Parameter Name="typeName" Type="System.String" />
+        <Parameter Name="outError" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="contents">For flat files, you will receive an NSData, for file packages you will receive an NSFileWrapper instance.</param>
+        <param name="typeName">An UTI representing the type of the loaded file (see <see cref="T:MobileCoreServices.UTType" /> for a list of known UTI types).<para tool="nullallowed">This parameter can be <see langword="null" />.</para></param>
+        <param name="outError">Error return value.</param>
+        <summary>App developers should override this method to load document data into their domain objects.</summary>
+        <returns>True if the document was successfully loaded, false otherwise (and the details of the error will be on <paramref name="outError" />.</returns>
+        <remarks>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LocalizedName">
+      <MemberSignature Language="C#" Value="public virtual string LocalizedName { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string LocalizedName" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("localizedName", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The localized name of this UIDocument. Read-only.</summary>
+        <value>Gets the name.</value>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Open">
+      <MemberSignature Language="C#" Value="public virtual void Open (UIKit.UIOperationHandler completionHandler);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Open(class UIKit.UIOperationHandler completionHandler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("openWithCompletionHandler:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="completionHandler" Type="UIKit.UIOperationHandler">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDUIOperationHandler))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="completionHandler">
+          <para>
+          </para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>Asynchronously opens a document.</summary>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OpenAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;bool&gt; OpenAsync ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;bool&gt; OpenAsync() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Boolean&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Asynchronously opens a document.</summary>
+        <returns>
+          <para>A task that represents the asynchronous Open operation. The value of the TResult parameter is a <see cref="UIKit.UIOperationHandler" />.</para>
+        </returns>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PerformAsynchronousFileAccess">
+      <MemberSignature Language="C#" Value="public virtual void PerformAsynchronousFileAccess (Action action);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void PerformAsynchronousFileAccess(class System.Action action) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("performAsynchronousFileAccessUsingBlock:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="action" Type="System.Action">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDAction))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="action">The access action to be implemented.</param>
+        <summary>Performs an asynchronous file access action.</summary>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PerformAsynchronousFileAccessAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task PerformAsynchronousFileAccessAsync ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task PerformAsynchronousFileAccessAsync() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Schedules a read or write operation on a background thread.</summary>
+        <returns>A task that represents the asynchronous PerformAsynchronousFileAccess operation</returns>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PesentedItemOperationQueue">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSOperationQueue PesentedItemOperationQueue { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Foundation.NSOperationQueue PesentedItemOperationQueue" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("presentedItemOperationQueue", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSOperationQueue</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets an operation queue.</summary>
+        <value>
+        </value>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PresentedItemChanged">
+      <MemberSignature Language="C#" Value="public virtual void PresentedItemChanged ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void PresentedItemChanged() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("presentedItemDidChange")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Changed NSFileVersion of item.</summary>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PresentedItemChangedUbiquityAttributes">
+      <MemberSignature Language="C#" Value="public virtual void PresentedItemChangedUbiquityAttributes (Foundation.NSSet&lt;Foundation.NSString&gt; attributes);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void PresentedItemChangedUbiquityAttributes(class Foundation.NSSet`1&lt;class Foundation.NSString&gt; attributes) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("presentedItemDidChangeUbiquityAttributes:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 13, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="attributes" Type="Foundation.NSSet&lt;Foundation.NSString&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="attributes">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>
+          <para>(More documentation for this node is coming)</para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PresentedItemGainedVersion">
+      <MemberSignature Language="C#" Value="public virtual void PresentedItemGainedVersion (Foundation.NSFileVersion version);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void PresentedItemGainedVersion(class Foundation.NSFileVersion version) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("presentedItemDidGainVersion:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="version" Type="Foundation.NSFileVersion" />
+      </Parameters>
+      <Docs>
+        <param name="version">Gained version of item.</param>
+        <summary>Presents gained NSFileVersion of item.</summary>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PresentedItemLostVersion">
+      <MemberSignature Language="C#" Value="public virtual void PresentedItemLostVersion (Foundation.NSFileVersion version);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void PresentedItemLostVersion(class Foundation.NSFileVersion version) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("presentedItemDidLoseVersion:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="version" Type="Foundation.NSFileVersion" />
+      </Parameters>
+      <Docs>
+        <param name="version">lost NSFileVersion of item.</param>
+        <summary>Presents lost version of item.</summary>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PresentedItemMoved">
+      <MemberSignature Language="C#" Value="public virtual void PresentedItemMoved (Foundation.NSUrl newURL);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void PresentedItemMoved(class Foundation.NSUrl newURL) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("presentedItemDidMoveToURL:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="newURL" Type="Foundation.NSUrl" />
+      </Parameters>
+      <Docs>
+        <param name="newURL">target URL.</param>
+        <summary>Defines subitem move between URLs.</summary>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PresentedItemObservedUbiquityAttributes">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSSet&lt;Foundation.NSString&gt; PresentedItemObservedUbiquityAttributes { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Foundation.NSSet`1&lt;class Foundation.NSString&gt; PresentedItemObservedUbiquityAttributes" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 13, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("observedPresentedItemUbiquityAttributes", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 13, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSSet&lt;Foundation.NSString&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>
+          <para>(More documentation for this node is coming)</para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PresentedItemResolveConflictVersion">
+      <MemberSignature Language="C#" Value="public virtual void PresentedItemResolveConflictVersion (Foundation.NSFileVersion version);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void PresentedItemResolveConflictVersion(class Foundation.NSFileVersion version) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("presentedItemDidResolveConflictVersion:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="version" Type="Foundation.NSFileVersion" />
+      </Parameters>
+      <Docs>
+        <param name="version">conflict NSFileVersion.</param>
+        <summary>Resolves conflict version of item.</summary>
+        <remarks>
+          <para>(More documentation for this node is coming)</para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PresentedItemURL">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSUrl PresentedItemURL { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Foundation.NSUrl PresentedItemURL" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("presentedItemURL", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSUrl</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets URL of presented item.</summary>
+        <value>
+        </value>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PresentedSubitemAppeared">
+      <MemberSignature Language="C#" Value="public virtual void PresentedSubitemAppeared (Foundation.NSUrl atUrl);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void PresentedSubitemAppeared(class Foundation.NSUrl atUrl) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("presentedSubitemDidAppearAtURL:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="atUrl" Type="Foundation.NSUrl" />
+      </Parameters>
+      <Docs>
+        <param name="atUrl">URL that indicates the appearance location of a document file.</param>
+        <summary>Sets appearance URL.</summary>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PresentedSubitemChanged">
+      <MemberSignature Language="C#" Value="public virtual void PresentedSubitemChanged (Foundation.NSUrl url);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void PresentedSubitemChanged(class Foundation.NSUrl url) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("presentedSubitemDidChangeAtURL:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="url" Type="Foundation.NSUrl" />
+      </Parameters>
+      <Docs>
+        <param name="url">URL that indicates the location of a document file.</param>
+        <summary>Changed NSFileVersion of subitem.</summary>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PresentedSubitemGainedVersion">
+      <MemberSignature Language="C#" Value="public virtual void PresentedSubitemGainedVersion (Foundation.NSUrl url, Foundation.NSFileVersion version);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void PresentedSubitemGainedVersion(class Foundation.NSUrl url, class Foundation.NSFileVersion version) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("presentedSubitemAtURL:didGainVersion:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="url" Type="Foundation.NSUrl" />
+        <Parameter Name="version" Type="Foundation.NSFileVersion" />
+      </Parameters>
+      <Docs>
+        <param name="url">URL that indicates the location of a document file.</param>
+        <param name="version">Gained NSFileVersion.</param>
+        <summary>Presents gained version of subitem.</summary>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PresentedSubitemLostVersion">
+      <MemberSignature Language="C#" Value="public virtual void PresentedSubitemLostVersion (Foundation.NSUrl url, Foundation.NSFileVersion version);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void PresentedSubitemLostVersion(class Foundation.NSUrl url, class Foundation.NSFileVersion version) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("presentedSubitemAtURL:didLoseVersion:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="url" Type="Foundation.NSUrl" />
+        <Parameter Name="version" Type="Foundation.NSFileVersion" />
+      </Parameters>
+      <Docs>
+        <param name="url">URL that indicates the location of a document file.</param>
+        <param name="version">lost NSFileVersion of subitem.</param>
+        <summary>Presents lost version of file.</summary>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PresentedSubitemMoved">
+      <MemberSignature Language="C#" Value="public virtual void PresentedSubitemMoved (Foundation.NSUrl oldURL, Foundation.NSUrl newURL);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void PresentedSubitemMoved(class Foundation.NSUrl oldURL, class Foundation.NSUrl newURL) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("presentedSubitemAtURL:didMoveToURL:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="oldURL" Type="Foundation.NSUrl" />
+        <Parameter Name="newURL" Type="Foundation.NSUrl" />
+      </Parameters>
+      <Docs>
+        <param name="oldURL">Prior URL address.</param>
+        <param name="newURL">Subsequent URL address.</param>
+        <summary>Defines subitem move between URLs.</summary>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PresentedSubitemResolvedConflictVersion">
+      <MemberSignature Language="C#" Value="public virtual void PresentedSubitemResolvedConflictVersion (Foundation.NSUrl url, Foundation.NSFileVersion version);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void PresentedSubitemResolvedConflictVersion(class Foundation.NSUrl url, class Foundation.NSFileVersion version) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("presentedSubitemAtURL:didResolveConflictVersion:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="url" Type="Foundation.NSUrl" />
+        <Parameter Name="version" Type="Foundation.NSFileVersion" />
+      </Parameters>
+      <Docs>
+        <param name="url">URL that indicates the location of a document file.</param>
+        <param name="version">conflict NSFileVersion.</param>
+        <summary>Resolves conflict version of subitem.</summary>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Progress">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSProgress Progress { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Foundation.NSProgress Progress" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("progress")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSProgress</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>A <see cref="T:Foundation.NSProgress" /> object that reports on the current operation of this document.</summary>
+        <value>To be added.</value>
+        <remarks>
+          <para>(More documentation for this node is coming)</para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Read">
+      <MemberSignature Language="C#" Value="public virtual bool Read (Foundation.NSUrl fromUrl, out Foundation.NSError outError);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool Read(class Foundation.NSUrl fromUrl, class Foundation.NSError outError) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("readFromURL:error:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="fromUrl" Type="Foundation.NSUrl" />
+        <Parameter Name="outError" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="fromUrl">Source URL address.</param>
+        <param name="outError">When overridden, and you cannot write document data, this method return by  an NSError object encapsulating all reasons that this is not possible.</param>
+        <summary>Reads the document data from the specified location into the application sandbox.</summary>
+        <returns>Boolean indicating whether read or not.</returns>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RelinquishPresentedItemToReader">
+      <MemberSignature Language="C#" Value="public virtual void RelinquishPresentedItemToReader (Foundation.NSFilePresenterReacquirer readerAction);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void RelinquishPresentedItemToReader(class Foundation.NSFilePresenterReacquirer readerAction) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("relinquishPresentedItemToReader:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="readerAction" Type="Foundation.NSFilePresenterReacquirer">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDNSFilePresenterReacquirer))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="readerAction">To be added.</param>
+        <summary>Another request has been made for read access the presented item. (App developers overriding this method must run the <paramref name="readerAction" /> action after releasing the resource.)</summary>
+        <remarks>
+          <para>App developers can supply an action to <paramref name="readerAction" /> that notify the relinquishing process when the requesting object is finished with the resource. Setting this action to <see langword="null" /> causes the relinquishing app to not reacquire the resource after the requester is finished.</para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RelinquishPresentedItemToWriter">
+      <MemberSignature Language="C#" Value="public virtual void RelinquishPresentedItemToWriter (Foundation.NSFilePresenterReacquirer writerAction);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void RelinquishPresentedItemToWriter(class Foundation.NSFilePresenterReacquirer writerAction) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("relinquishPresentedItemToWriter:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="writerAction" Type="Foundation.NSFilePresenterReacquirer">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDNSFilePresenterReacquirer))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="writerAction">To be added.</param>
+        <summary>Another request has been made for write access the presented item. (App developers overriding this method must run the <paramref name="writerAction" /> action after releasing the resource.)</summary>
+        <remarks>
+          <para>App developers can supply an action to <paramref name="wruterAction" /> that notify the relinquishing process when the requesting object is finished with the resource. Setting this action to <see langword="null" /> causes the relinquishing app to not reacquire the resource after the requester is finished. In any case, failing to run <paramref name="wruterAction" /> at the end of the override can stop thread execution.</para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RestoreUserActivityState">
+      <MemberSignature Language="C#" Value="public virtual void RestoreUserActivityState (Foundation.NSUserActivity userActivity);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void RestoreUserActivityState(class Foundation.NSUserActivity userActivity) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("restoreUserActivityState:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="userActivity" Type="Foundation.NSUserActivity" />
+      </Parameters>
+      <Docs>
+        <param name="userActivity">An action object that encapsulates a user activity.</param>
+        <summary>Restores the state of the user activity.</summary>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RevertToContentsOfUrl">
+      <MemberSignature Language="C#" Value="public virtual void RevertToContentsOfUrl (Foundation.NSUrl url, UIKit.UIOperationHandler completionHandler);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void RevertToContentsOfUrl(class Foundation.NSUrl url, class UIKit.UIOperationHandler completionHandler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("revertToContentsOfURL:completionHandler:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="url" Type="Foundation.NSUrl" />
+        <Parameter Name="completionHandler" Type="UIKit.UIOperationHandler">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDUIOperationHandler))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="url">URL address that indicates the location of a document file.</param>
+        <param name="completionHandler">
+          <para>A code action that is executed when a save operation comes to a conclusion.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>Reverts the UIDocument to the most recent document data stored on-disk.</summary>
+        <remarks>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RevertToContentsOfUrlAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;bool&gt; RevertToContentsOfUrlAsync (Foundation.NSUrl url);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;bool&gt; RevertToContentsOfUrlAsync(class Foundation.NSUrl url) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Boolean&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="url" Type="Foundation.NSUrl" />
+      </Parameters>
+      <Docs>
+        <param name="url">URL address that indicates the location of a document file.</param>
+        <summary>Reverts the UIDocument to the most recent document data stored on-disk.</summary>
+        <returns>
+          <para>A task that represents the asynchronous RevertToContentsOfUrl operation.   The value of the TResult parameter is a <see cref="UIKit.UIOperationHandler" />.</para>
+        </returns>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+          <para copied="true">The RevertToContentsOfUrlAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+          <para tool="threads" copied="true">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Save">
+      <MemberSignature Language="C#" Value="public virtual void Save (Foundation.NSUrl url, UIKit.UIDocumentSaveOperation saveOperation, UIKit.UIOperationHandler completionHandler);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Save(class Foundation.NSUrl url, valuetype UIKit.UIDocumentSaveOperation saveOperation, class UIKit.UIOperationHandler completionHandler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("saveToURL:forSaveOperation:completionHandler:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="url" Type="Foundation.NSUrl" />
+        <Parameter Name="saveOperation" Type="UIKit.UIDocumentSaveOperation" />
+        <Parameter Name="completionHandler" Type="UIKit.UIOperationHandler">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDUIOperationHandler))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="url">URL that indicates the location of a document file.</param>
+        <param name="saveOperation">This represents a constant indicating if a document file is being written for the first time or being overwritten.</param>
+        <param name="completionHandler">
+          <para>A code action that is executed when a save operation comes to a conclusion.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>Saves the document data to the specified location in the application sandbox.</summary>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SaveAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;bool&gt; SaveAsync (Foundation.NSUrl url, UIKit.UIDocumentSaveOperation saveOperation);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;bool&gt; SaveAsync(class Foundation.NSUrl url, valuetype UIKit.UIDocumentSaveOperation saveOperation) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Boolean&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="url" Type="Foundation.NSUrl" />
+        <Parameter Name="saveOperation" Type="UIKit.UIDocumentSaveOperation" />
+      </Parameters>
+      <Docs>
+        <param name="url">URL that indicates the location of a document file.</param>
+        <param name="saveOperation">This represents a constant indicating if a document file is being written for the first time or being overwritten.</param>
+        <summary>Saves the document data to the specified location in the application sandbox.</summary>
+        <returns>
+          <para>A task that represents the asynchronous Save operation.   The value of the TResult parameter is a <see cref="UIKit.UIOperationHandler" />.</para>
+        </returns>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SavePresentedItemChanges">
+      <MemberSignature Language="C#" Value="public virtual void SavePresentedItemChanges (Action&lt;Foundation.NSError&gt; completionHandler);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SavePresentedItemChanges(class System.Action`1&lt;class Foundation.NSError&gt; completionHandler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("savePresentedItemChangesWithCompletionHandler:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="completionHandler" Type="System.Action&lt;Foundation.NSError&gt;">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDActionArity1V0))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="completionHandler">A code action that is executed when a save operation comes to a conclusion.</param>
+        <summary>Saves changes to the presented item.</summary>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SavingFileType">
+      <MemberSignature Language="C#" Value="public virtual string SavingFileType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string SavingFileType" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("savingFileType")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The file type used for saving this UIDocument.</summary>
+        <value>Gets the file type.</value>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="StateChangedNotification">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString StateChangedNotification { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString StateChangedNotification" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Advice("Use UIDocument.Notifications.ObserveStateChanged helper method instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>Foundation.Field("UIDocumentStateChangedNotification", "UIKit")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Notification constant for StateChanged</summary>
+        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
+        <remarks>
+          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
+          <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:UIKit.UIDocument+Notifications" />.<see cref="M:UIKit.UIDocument+Notifications.ObserveStateChangedNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// Lambda style
+//
+
+// listening
+notification = UIDocument.Notifications.ObserveStateChanged ((sender, args) => {
+    /* Access strongly typed args */
+    Console.WriteLine ("Notification: {0}", args.Notification);
+});
+
+// To stop listening:
+notification.Dispose ();
+
+//
+// Method style
+//
+NSObject notification;
+void Callback (object sender, Foundation.NSNotificationEventArgs args)
+{
+    // Access strongly typed args
+    Console.WriteLine ("Notification: {0}", args.Notification);
+}
+
+void Setup ()
+{
+    notification = UIDocument.Notifications.ObserveStateChanged (Callback);
+}
+
+void Teardown ()
+{
+    notification.Dispose ();
+}]]></code>
+          </example>
+          <para>The following example shows how to use the notification with the DefaultCenter API:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+// Lambda style
+NSNotificationCenter.DefaultCenter.AddObserver (
+        UIDocument.StateChangedNotification, (notification) => {Console.WriteLine ("Received the notification UIDocument", notification); }
+
+
+// Method style
+void Callback (NSNotification notification)
+{
+    Console.WriteLine ("Received a notification UIDocument", notification);
+}
+
+void Setup ()
+{
+    NSNotificationCenter.DefaultCenter.AddObserver (UIDocument.StateChangedNotification, Callback);
+}
+]]></code>
+          </example>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="UndoManager">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSUndoManager UndoManager { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Foundation.NSUndoManager UndoManager" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("undoManager", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setUndoManager:", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSUndoManager</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The NSUndoManager for this UIDocument.</summary>
+        <value>Gets and sets the UndoManager.</value>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="UpdateChangeCount">
+      <MemberSignature Language="C#" Value="public virtual void UpdateChangeCount (UIKit.UIDocumentChangeKind change);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void UpdateChangeCount(valuetype UIKit.UIDocumentChangeKind change) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("updateChangeCount:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="change" Type="UIKit.UIDocumentChangeKind" />
+      </Parameters>
+      <Docs>
+        <param name="change">Change to be updated.</param>
+        <summary>Updates the change counter by indicating the kind of change.</summary>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="UpdateChangeCount">
+      <MemberSignature Language="C#" Value="public virtual void UpdateChangeCount (Foundation.NSObject changeCountToken, UIKit.UIDocumentSaveOperation saveOperation);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void UpdateChangeCount(class Foundation.NSObject changeCountToken, valuetype UIKit.UIDocumentSaveOperation saveOperation) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("updateChangeCountWithToken:forSaveOperation:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="changeCountToken" Type="Foundation.NSObject" />
+        <Parameter Name="saveOperation" Type="UIKit.UIDocumentSaveOperation" />
+      </Parameters>
+      <Docs>
+        <param name="changeCountToken">Token to be overridden.</param>
+        <param name="saveOperation">This represents a constant indicating if a document file is being written for the first time or being overwritten.</param>
+        <summary>When overridden, can customize the change count with reference to the specified <paramref name="changeCountToken" />.</summary>
+        <remarks>
+          <para>(More documentation for this node is coming)</para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="UpdateUserActivityState">
+      <MemberSignature Language="C#" Value="public virtual void UpdateUserActivityState (Foundation.NSUserActivity userActivity);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void UpdateUserActivityState(class Foundation.NSUserActivity userActivity) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("updateUserActivityState:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="userActivity" Type="Foundation.NSUserActivity" />
+      </Parameters>
+      <Docs>
+        <param name="userActivity">Specified activity.</param>
+        <summary>Updates the activity's state.</summary>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="UserActivity">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSUserActivity UserActivity { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Foundation.NSUserActivity UserActivity" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("userActivity", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setUserActivity:", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSUserActivity</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Object that encapsulates user activity information.</summary>
+        <value>Gets and sets an activity.</value>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="UserActivityDocumentUrlKey">
+      <MemberSignature Language="C#" Value="public static Foundation.NSString UserActivityDocumentUrlKey { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSString UserActivityDocumentUrlKey" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Field("NSUserActivityDocumentURLKey", "UIKit")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSString</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Gets the key that specifies the document's URL in the <see cref="P:UIKit.UIDocument.UserActivity" /> property.</summary>
+        <value>To be added.</value>
+        <remarks>
+          <para>(More documentation for this node is coming)</para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="UserInteractionNoLongerPermittedForError">
+      <MemberSignature Language="C#" Value="public virtual void UserInteractionNoLongerPermittedForError (Foundation.NSError error);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void UserInteractionNoLongerPermittedForError(class Foundation.NSError error) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("userInteractionNoLongerPermittedForError:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="error" Type="Foundation.NSError" />
+      </Parameters>
+      <Docs>
+        <param name="error">Object that encapsulates error information.</param>
+        <summary>Indicates that it is no longer safe to proceed without handling the error.</summary>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WriteContents">
+      <MemberSignature Language="C#" Value="public virtual bool WriteContents (Foundation.NSObject contents, Foundation.NSDictionary additionalFileAttributes, Foundation.NSUrl url, UIKit.UIDocumentSaveOperation saveOperation, out Foundation.NSError outError);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool WriteContents(class Foundation.NSObject contents, class Foundation.NSDictionary additionalFileAttributes, class Foundation.NSUrl url, valuetype UIKit.UIDocumentSaveOperation saveOperation, class Foundation.NSError outError) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("writeContents:andAttributes:safelyToURL:forSaveOperation:error:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="contents" Type="Foundation.NSObject" />
+        <Parameter Name="additionalFileAttributes" Type="Foundation.NSDictionary" />
+        <Parameter Name="url" Type="Foundation.NSUrl" />
+        <Parameter Name="saveOperation" Type="UIKit.UIDocumentSaveOperation" />
+        <Parameter Name="outError" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="contents">Document data that is written to the disk. If a flat file, the data is  encapsulated by an NSData object, and if a package, by an NSFileWrapper object.</param>
+        <param name="additionalFileAttributes">
+          <para>Glossary of NSFileManager file attributes that are assigned to the document file. </para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="url">URL address that indicates the location of a document file.</param>
+        <param name="saveOperation">This represents a constant indicating if a document file is being written for the first time or being overwritten.</param>
+        <param name="outError">When overridden, and you cannot write document data, this method return by  an NSError object encapsulating all reasons that this is not possible.</param>
+        <summary>Writes and ensures that the document data is written properly to the specified location in the application sandbox.</summary>
+        <returns>YES if successful, otherwise NO.</returns>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WriteContents">
+      <MemberSignature Language="C#" Value="public virtual bool WriteContents (Foundation.NSObject contents, Foundation.NSUrl toUrl, UIKit.UIDocumentSaveOperation saveOperation, Foundation.NSUrl originalContentsURL, out Foundation.NSError outError);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool WriteContents(class Foundation.NSObject contents, class Foundation.NSUrl toUrl, valuetype UIKit.UIDocumentSaveOperation saveOperation, class Foundation.NSUrl originalContentsURL, class Foundation.NSError outError) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("writeContents:toURL:forSaveOperation:originalContentsURL:error:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="contents" Type="Foundation.NSObject" />
+        <Parameter Name="toUrl" Type="Foundation.NSUrl" />
+        <Parameter Name="saveOperation" Type="UIKit.UIDocumentSaveOperation" />
+        <Parameter Name="originalContentsURL" Type="Foundation.NSUrl" />
+        <Parameter Name="outError" Type="Foundation.NSError&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="contents">Document data that is written to the disk. If a flat file, the data is  encapsulated by an NSData object, and if a package, by an NSFileWrapper object.</param>
+        <param name="toUrl">URL that indicates the location of a document file.</param>
+        <param name="saveOperation">This represents a constant indicating if a document file is being written for the first time or being overwritten.</param>
+        <param name="originalContentsURL">
+          <para>URL that specifies the prior location of the document file when it does not return null.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="outError">When overridden, and you cannot write document data, this method return by  an NSError object encapsulating all reasons that this is not possible.</param>
+        <summary>Writes and ensures that the document data is written properly to the specified location in the application sandbox.</summary>
+        <returns>YES if successful, otherwise NO.</returns>
+        <remarks>
+          <para>
+          </para>
+          <para tool="threads">This can be used from a background thread.</para>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

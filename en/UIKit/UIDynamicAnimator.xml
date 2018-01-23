@@ -1,0 +1,792 @@
+<Type Name="UIDynamicAnimator" FullName="UIKit.UIDynamicAnimator">
+  <TypeSignature Language="C#" Value="public class UIDynamicAnimator : Foundation.NSObject, System.Collections.Generic.IEnumerable&lt;UIKit.UIDynamicBehavior&gt;" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit UIDynamicAnimator extends Foundation.NSObject implements class System.Collections.Generic.IEnumerable`1&lt;class UIKit.UIDynamicBehavior&gt;, class System.Collections.IEnumerable" />
+  <AssemblyInfo>
+    <AssemblyName>Xamarin.iOS</AssemblyName>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>Foundation.NSObject</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>System.Collections.Generic.IEnumerable&lt;UIKit.UIDynamicBehavior&gt;</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Attributes>
+    <Attribute>
+      <AttributeName>Foundation.Register("UIDynamicAnimator", true)</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>Coordinates the UIKit Dynamics of a set of <see cref="T:UIKit.IUIDynamicItem" />s and <see cref="T:UIKit.UIDynamicBehavior" />s.</summary>
+    <remarks>
+      <para>
+
+	The dynamic animator is responsible for coordinating physics
+	simulations attached to a UIView.  These physics simulations
+	are implemented as subclasses of the <see cref="T:UIKit.UIDynamicBehavior" /> class, and
+	include various predefined simulations for gravity, collision
+	detection, attaching, snapping, forces and controling item
+	properties.
+
+      </para>
+      <para>
+        <see cref="T:UIKit.UIDynamicAnimator" /> It provides the overall context for managing the physics
+	simulation attached to a UIView. Additionally, it defines the
+	coordinate system for the dynamics and wraps the underlying
+	animation engine. Finally, it keeps track of the <see cref="T:UIKit.UIDynamicBehavior" />s and <see cref="T:UIKit.IUIDynamicItems" /> that define the
+	particular behaviors and items for which dynamics are desired.
+	</para>
+      <para>
+	Adding behaviors to a dynamic animator will cause the behavior
+	to run as part of the physics simulation that UIKit runs.  To
+	stop a behavior from running (and be part of the simulation),
+	you must remove the behavior from the dynamic animator (use
+	<see cref="M:UIKit.UIDynamicAnimator.RemoveBehavior" /> or <see cref="M:UIKit.UIDynamicAnimator.RemoveAllBehaviors" />.
+      </para>
+      <para>It is the application developer's responsibility to create a configuration that can be solved by the physics-like behavior of UI Dynamics.</para>
+      <para>The following example shows how you can add a couple of behaviors to an animator:</para>
+      <example>
+        <code lang="C#"><![CDATA[
+public override void ViewDidLoad ()
+{
+	base.ViewDidLoad ();
+
+	// Create a dynamic animator for the specified UIView
+	// in this case, the property "View" of UIViewController
+	//
+	animator = new UIDynamicAnimator (View);
+	
+	// Creates two dynamic behaviors
+
+	// Create a gravity behavior that operates on the `square' UIView
+	var gravityBehavior = new UIGravityBehavior (square);
+
+	// Create a collision behavior that operates on the same `square' UIVew
+	var collisionBehavior = new UICollisionBehavior (square) {
+		TranslatesReferenceBoundsIntoBoundary = true
+	};
+
+	// Detect collision, hook up to the events raised by that behavior
+	collisionBehavior.BeganBoundaryContact += BeganContact;
+	collisionBehavior.EndedBoundaryContact += EndedContact;
+
+	// Add the two behaviors to the dynamic animator
+	animator.AddBehaviors (gravityBehavior, collisionBehavior);
+
+	// The simulation will start running
+}
+]]></code>
+      </example>
+      <para>
+	These are the predefined behaviors that extend the <see cref="T:UIKit.UIDynamicBehavior" /> class:
+	<see cref="T:UIKit.UIAttachmentBehavior" />,
+	<see cref="T:UIKit.UICollisionBehavior" />,
+	<see cref="T:UIKit.UIDynamicItemBehavior" />,
+	<see cref="T:UIKit.UIGravityBehavior" />,
+	<see cref="T:UIKit.UIPushBehavior" /> and
+	<see cref="T:UIKit.UISnapBehavior" />.
+      </para>
+    </remarks>
+    <related type="PlatformDocAPI" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIDynamicAnimator_Class/index.html">Apple documentation for <c>UIDynamicAnimator</c></related>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public UIDynamicAnimator ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("init")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters />
+      <Docs>
+        <summary>Default constructor, initializes a new instance of this class.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected UIDynamicAnimator (Foundation.NSObjectFlag t);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor(class Foundation.NSObjectFlag t) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="t" Type="Foundation.NSObjectFlag" />
+      </Parameters>
+      <Docs>
+        <param name="t">Unused sentinel value, pass NSObjectFlag.Empty.</param>
+        <summary>Constructor to call on derived classes to skip initialization and merely allocate the object.</summary>
+        <remarks>
+          <para>This constructor should be called by derived classes when they completely construct the object in managed code and merely want the runtime to allocate and initialize the NSObject.   This is required to implement the two-step initialization process that Objective-C uses, the first step is to perform the object allocation, the second step is to initialize the object.   When developers invoke the constructor that takes the NSObjectFlag.Empty they take advantage of a direct path that goes all the way up to NSObject to merely allocate the object's memory and bind the Objective-C and C# objects together.    The actual initialization of the object is up to the developer.</para>
+          <para>This constructor is typically used by the binding generator to allocate the object, but prevent the actual initialization to take place.   Once the allocation has taken place, the constructor has to initialize the object.   With constructors generated by the binding generator this means that it manually invokes one of the "init" methods to initialize the object.</para>
+          <para>It is the developer's responsibility to completely initialize the object if they chain up using the NSObjectFlag.Empty path.</para>
+          <para>In general, if the developer's constructor invokes the NSObjectFlag.Empty base implementation, then it should be calling an Objective-C init method.   If this is not the case, developers should instead chain to the proper constructor in their class. </para>
+          <para>The argument value is ignored and merely ensures that the only code that is executed is the construction phase is the basic NSObject allocation and runtime type registration.  Typically the chaining would look like this:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// The NSObjectFlag merely allocates the object and registers the
+// C# class with the Objective-C runtime if necessary, but no actual
+// initXxx method is invoked, that is done later in the constructor
+//
+// This is taken from Xamarin's source code:
+//
+[Export ("initWithFrame:")]
+public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
+{
+// Invoke the init method now.
+	var initWithFrame = new Selector ("initWithFrame:").Handle;
+	if (IsDirectBinding)
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+	else
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected UIDynamicAnimator (IntPtr handle);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig specialname rtspecialname instance void .ctor(native int handle) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="handle" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="handle">Pointer (handle) to the unmanaged object.</param>
+        <summary>A constructor used when creating managed representations of unmanaged objects;  Called by the runtime.</summary>
+        <remarks>
+          <para>This constructor is invoked by the runtime infrastructure (<see cref="M:ObjCRuntime.Runtime.GetNSObject(System.IntPtr)" />) to create a new managed representation for a pointer to an unmanaged Objective-C object.    Developers should not invoke this method directly, instead they should call the GetNSObject method as it will prevent two instances of a managed object to point to the same native object.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public UIDynamicAnimator (UIKit.UICollectionViewLayout layout);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class UIKit.UICollectionViewLayout layout) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("initWithCollectionViewLayout:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="layout" Type="UIKit.UICollectionViewLayout" />
+      </Parameters>
+      <Docs>
+        <param name="layout">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public UIDynamicAnimator (UIKit.UIView referenceView);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class UIKit.UIView referenceView) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("initWithReferenceView:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.DesignatedInitializer</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="referenceView" Type="UIKit.UIView" />
+      </Parameters>
+      <Docs>
+        <param name="referenceView">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Add">
+      <MemberSignature Language="C#" Value="public void Add (UIKit.UIDynamicBehavior behavior);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Add(class UIKit.UIDynamicBehavior behavior) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="behavior" Type="UIKit.UIDynamicBehavior" />
+      </Parameters>
+      <Docs>
+        <param name="behavior">To be added.</param>
+        <summary>Adds the specified behavior.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AddBehavior">
+      <MemberSignature Language="C#" Value="public virtual void AddBehavior (UIKit.UIDynamicBehavior behavior);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void AddBehavior(class UIKit.UIDynamicBehavior behavior) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("addBehavior:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="behavior" Type="UIKit.UIDynamicBehavior" />
+      </Parameters>
+      <Docs>
+        <param name="behavior">
+          <para>Behavior to add to the animator.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>Adds the specified behavior to the animator.</summary>
+        <remarks>
+          <para>The following example shows how you can add a simple behavior to an animator:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+// 
+// Add gravity to the "simpleView" subview, this will make it fall
+//
+public override void ViewDidLoad ()
+{
+	base.ViewDidLoad ();
+	animator = new UIDynamicAnimator (View);
+
+	animator.AddBehavior (new UIGravityBehavior (simpleView));
+}
+	    ]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AddBehaviors">
+      <MemberSignature Language="C#" Value="public void AddBehaviors (UIKit.UIDynamicBehavior[] behaviors);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void AddBehaviors(class UIKit.UIDynamicBehavior[] behaviors) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="behaviors" Type="UIKit.UIDynamicBehavior[]">
+          <Attributes>
+            <Attribute>
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="behaviors">Behaviors that you want to add to the animator</param>
+        <summary>Adds the array of specified behaviors.</summary>
+        <remarks>
+          <para>The following example shows how you can add a couple of behaviors to an animator:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+public override void ViewDidLoad ()
+{
+	base.ViewDidLoad ();
+
+	var gravityBehavior = new UIGravityBehavior (square);
+	var collisionBehavior = new UICollisionBehavior (square) {
+		TranslatesReferenceBoundsIntoBoundary = true
+	};
+	collisionBehavior.BeganBoundaryContact += BeganContact;
+	collisionBehavior.EndedBoundaryContact += EndedContact;
+
+	animator = new UIDynamicAnimator (View);
+
+	// Add the two behaviors at once
+	animator.AddBehaviors (gravityBehavior, collisionBehavior);
+}
+	    ]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Behaviors">
+      <MemberSignature Language="C#" Value="public virtual UIKit.UIDynamicBehavior[] Behaviors { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class UIKit.UIDynamicBehavior[] Behaviors" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("behaviors", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UIDynamicBehavior[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Array containing the current list of behaviors running on this UIDynamicAnimator.</summary>
+        <value>
+        </value>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ClassHandle">
+      <MemberSignature Language="C#" Value="public override IntPtr ClassHandle { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int ClassHandle" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The handle for this class.</summary>
+        <value>The pointer to the Objective-C class.</value>
+        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Delegate">
+      <MemberSignature Language="C#" Value="public UIKit.IUIDynamicAnimatorDelegate Delegate { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class UIKit.IUIDynamicAnimatorDelegate Delegate" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>UIKit.IUIDynamicAnimatorDelegate</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>An instance of the <see cref="UIKit.UIDynamicAnimatorDelegate" /> model class which acts as the class delegate.</summary>
+        <value>
+          <para>The instance of the <see cref="UIKit.UIDynamicAnimatorDelegate" /> model class</para>
+          <para tool="nullallowed">This value can be <see langword="null" />.</para>
+        </value>
+        <remarks>
+          <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+          <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+          <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Dispose">
+      <MemberSignature Language="C#" Value="protected override void Dispose (bool disposing);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Dispose(bool disposing) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="disposing" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="disposing">
+          <para>If set to <see langword="true" />, the method is invoked directly and will dispose manage and unmanaged resources;   If set to <see langword="false" /> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</para>
+        </param>
+        <summary>Releases the resources used by the UIDynamicAnimator object.</summary>
+        <remarks>
+          <para>This Dispose method releases the resources used by the UIDynamicAnimator class.</para>
+          <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposing <paramref name="disposing" /> is set to <see langword="true" /> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false" />. </para>
+          <para>Calling the Dispose method when the application is finished using the UIDynamicAnimator ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.</para>
+          <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at http://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ElapsedTime">
+      <MemberSignature Language="C#" Value="public virtual double ElapsedTime { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float64 ElapsedTime" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("elapsedTime")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Double</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The time interval since the UIDynamicAnimator began running.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetDynamicItems">
+      <MemberSignature Language="C#" Value="public virtual UIKit.IUIDynamicItem[] GetDynamicItems (CoreGraphics.CGRect rect);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class UIKit.IUIDynamicItem[] GetDynamicItems(valuetype CoreGraphics.CGRect rect) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("itemsInRect:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.IUIDynamicItem[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rect" Type="CoreGraphics.CGRect" />
+      </Parameters>
+      <Docs>
+        <param name="rect">To be added.</param>
+        <summary>The dynamic items that intersect the specified RectangleF.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetLayoutAttributesForCell">
+      <MemberSignature Language="C#" Value="public virtual UIKit.UICollectionViewLayoutAttributes GetLayoutAttributesForCell (Foundation.NSIndexPath cellIndexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class UIKit.UICollectionViewLayoutAttributes GetLayoutAttributesForCell(class Foundation.NSIndexPath cellIndexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("layoutAttributesForCellAtIndexPath:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UICollectionViewLayoutAttributes</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="cellIndexPath" Type="Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="cellIndexPath">To be added.</param>
+        <summary>The layout attributes for a UICollectionView cell.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetLayoutAttributesForDecorationView">
+      <MemberSignature Language="C#" Value="public virtual UIKit.UICollectionViewLayoutAttributes GetLayoutAttributesForDecorationView (Foundation.NSString viewKind, Foundation.NSIndexPath viewIndexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class UIKit.UICollectionViewLayoutAttributes GetLayoutAttributesForDecorationView(class Foundation.NSString viewKind, class Foundation.NSIndexPath viewIndexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("layoutAttributesForDecorationViewOfKind:atIndexPath:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UICollectionViewLayoutAttributes</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="viewKind" Type="Foundation.NSString" />
+        <Parameter Name="viewIndexPath" Type="Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="viewKind">To be added.</param>
+        <param name="viewIndexPath">To be added.</param>
+        <summary>The layout attributes for a UICollectionView decoration view.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetLayoutAttributesForSupplementaryView">
+      <MemberSignature Language="C#" Value="public virtual UIKit.UICollectionViewLayoutAttributes GetLayoutAttributesForSupplementaryView (Foundation.NSString viewKind, Foundation.NSIndexPath viewIndexPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class UIKit.UICollectionViewLayoutAttributes GetLayoutAttributesForSupplementaryView(class Foundation.NSString viewKind, class Foundation.NSIndexPath viewIndexPath) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("layoutAttributesForSupplementaryViewOfKind:atIndexPath:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UICollectionViewLayoutAttributes</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="viewKind" Type="Foundation.NSString" />
+        <Parameter Name="viewIndexPath" Type="Foundation.NSIndexPath" />
+      </Parameters>
+      <Docs>
+        <param name="viewKind">To be added.</param>
+        <param name="viewIndexPath">To be added.</param>
+        <summary>The layout attributes for a UICollectioNView supplementary view.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ReferenceView">
+      <MemberSignature Language="C#" Value="public virtual UIKit.UIView ReferenceView { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class UIKit.UIView ReferenceView" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("referenceView")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UIView</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The UIView that the UIDynamicAnimator was initialized with. Read-only.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RemoveAllBehaviors">
+      <MemberSignature Language="C#" Value="public virtual void RemoveAllBehaviors ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void RemoveAllBehaviors() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("removeAllBehaviors")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Removes all of the behaviors attached to this animator.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RemoveBehavior">
+      <MemberSignature Language="C#" Value="public virtual void RemoveBehavior (UIKit.UIDynamicBehavior behavior);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void RemoveBehavior(class UIKit.UIDynamicBehavior behavior) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("removeBehavior:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="behavior" Type="UIKit.UIDynamicBehavior" />
+      </Parameters>
+      <Docs>
+        <param name="behavior">
+          <para>Behavior to be removed from the animator.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>Removes the specified behavior from the animator.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RemoveBehaviors">
+      <MemberSignature Language="C#" Value="public void RemoveBehaviors (UIKit.UIDynamicBehavior[] behaviors);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void RemoveBehaviors(class UIKit.UIDynamicBehavior[] behaviors) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="behaviors" Type="UIKit.UIDynamicBehavior[]">
+          <Attributes>
+            <Attribute>
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="behaviors">Array of behaviors to be removed from the animator.</param>
+        <summary>Removes the listed behaviors from the animator.</summary>
+        <remarks>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Running">
+      <MemberSignature Language="C#" Value="public virtual bool Running { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool Running" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("isRunning")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Whether the UIDynamicAnimator is running. Read-only.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="System.Collections.Generic.IEnumerable&lt;UIKit.UIDynamicBehavior&gt;.GetEnumerator">
+      <MemberSignature Language="C#" Value="System.Collections.Generic.IEnumerator&lt;UIKit.UIDynamicBehavior&gt; IEnumerable&lt;UIDynamicBehavior&gt;.GetEnumerator ();" />
+      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance class System.Collections.Generic.IEnumerator`1&lt;class UIKit.UIDynamicBehavior&gt; System.Collections.Generic.IEnumerable&lt;UIKit.UIDynamicBehavior&gt;.GetEnumerator() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Collections.Generic.IEnumerator&lt;UIKit.UIDynamicBehavior&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Returns an enumerator that iterates over the dynamic behaviors in the animator.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="System.Collections.IEnumerable.GetEnumerator">
+      <MemberSignature Language="C#" Value="System.Collections.IEnumerator IEnumerable.GetEnumerator ();" />
+      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance class System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Collections.IEnumerator</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>Retrieves the behaviors via an enumerator.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="UpdateItemUsingCurrentState">
+      <MemberSignature Language="C#" Value="public virtual void UpdateItemUsingCurrentState (UIKit.IUIDynamicItem uiDynamicItem);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void UpdateItemUsingCurrentState(class UIKit.IUIDynamicItem uiDynamicItem) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("updateItemUsingCurrentState:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="uiDynamicItem" Type="UIKit.IUIDynamicItem" />
+      </Parameters>
+      <Docs>
+        <param name="uiDynamicItem">To be added.</param>
+        <summary>Reads the current state of a dynamic item, replacing the UIDynamicAnimator's internal representation of that item's state.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WeakDelegate">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSObject WeakDelegate { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Foundation.NSObject WeakDelegate" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("delegate", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setDelegate:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>An object that can respond to the delegate protocol for this type</summary>
+        <value>
+          <para>The instance that will respond to events and data requests.</para>
+          <para tool="nullallowed">This value can be <see langword="null" />.</para>
+        </value>
+        <remarks>
+          <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+          <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+          <para>   Methods must be decorated with the [Export ("selectorName")] attribute to respond to each method from the protocol.   Alternatively use the Delegate method which is strongly typed and does not require the [Export] attributes on methods.</para>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

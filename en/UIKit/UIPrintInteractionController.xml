@@ -1,0 +1,1247 @@
+<Type Name="UIPrintInteractionController" FullName="UIKit.UIPrintInteractionController">
+  <TypeSignature Language="C#" Value="public class UIPrintInteractionController : Foundation.NSObject" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit UIPrintInteractionController extends Foundation.NSObject" />
+  <AssemblyInfo>
+    <AssemblyName>Xamarin.iOS</AssemblyName>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>Foundation.NSObject</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Attributes>
+    <Attribute>
+      <AttributeName>Foundation.Register("UIPrintInteractionController", true)</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 4, 2, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>Main driver for the printing process on iOS.</summary>
+    <remarks>
+      <para>
+
+	The UIPrintInteractionController provides access to the
+	printing framework on iOS.  To print on iOS, you configure the
+	<see cref="P:UIKit.UIPrintInteractionController.SharedPrintController" /> 
+	singleton by specifying your print task, optionally hook up to
+	events and then you invoke the <see cref="P:UIKit.UIPrintInteractionController.Present(bool,UIKit.UIPrintINteractionCompletionHandler)" />
+	method to allow the user to select a printer and to print.
+
+    </para>
+      <para> This class offers a number of mechanisms for printing, you
+      can print using one of these configuration, based on your needs
+      </para>
+      <list type="bullet">
+        <item>
+          <term>
+            <para>Ready to print PDF file.  You can print it by
+	  assigning to the <see cref="P:UIKit.UIPrintInteractionController.PrintingItem" />
+	  property the NSUrl pointing to the file or the NSData that
+	  contains the PDF in memory.</para>
+          </term>
+        </item>
+        <item>
+          <term>
+            <para>Ready to print image.  You can print it by assigning
+	  to the <see cref="P:UIKit.UIPrintInteractionController.PrintingItem" />
+	  property the UIImage or a photo ALAsset (the ALAsset with an
+	  AssetType of ALAssetType.Photo).
+	  </para>
+          </term>
+        </item>
+        <item>
+          <term>
+            <para>Ready to print collection of images and PDF files.  You can print it by assigning
+	  the mix of elements to the  <see cref="P:UIKit.UIPrintInteractionController.PrintingItems" />
+	  property an array of objects containing NSUrl, UIImage, NSData or ALAsset values.   
+	  </para>
+          </term>
+        </item>
+        <item>
+          <term>
+            <para> To layout information using using one of the built-in
+	    print formatters you would assign your print formatter to
+	    the <see cref="P:UIKit.UIPrintInteractionController.PrintFormatter" />
+	    property.  The built-in print formatters include the <see cref="T:UIKit.UISimpleTextPrintFormatter" />
+	    which can be used for simple rending text across multiple
+	    pages and has control for font, color, alignment and line
+	    breaking modes; For more advanced text printing you can
+	    use the <see cref="T:UIKit.UIMarkupTextPrintFormatter" />; For
+	    printing UIViews, you use the <see cref="T:UIKit.UIViewPrintFormatter" /> which has
+	    a bulit-in ability to print the contents of a UIWebView,
+	    UITextView and MKMapView objects.
+	  </para>
+          </term>
+        </item>
+        <item>
+          <term>
+            <para> For more advanced uses, where you might want to
+	    control the actual rendering of the page, you must
+	    implement a subclass of <see cref="T:UIKit.UIPrintPageRenderer" /> and assign
+	    the instance of your renderer to the <see cref="P:UIKit.UIPrintInteractionController.PrintPageRenderer" />
+	    property.</para>
+          </term>
+        </item>
+      </list>
+      <example>
+        <code lang="C#"><![CDATA[
+	//
+	// Print a PDF file, simple API
+	//
+        NSUrl url = NSUrl.FromFilename ("SomeFile.pdf");           
+	var printInfo = UIPrintInfo.PrintInfo;
+
+        printInfo.OutputType = UIPrintInfoOutputType.General;
+        printInfo.JobName = "Test: PDF Print";
+
+        var printer = UIPrintInteractionController.SharedPrintController;
+
+        printer.PrintInfo = printInfo;
+        printer.PrintingItem = url;
+        printer.ShowsPageRange = true;
+
+        printer.Present (true, (handler, completed, err) =&gt; {
+            if (!completed &amp; err != null){
+                Console.WriteLine ("error");
+            }
+        });
+]]></code>
+      </example>
+    </remarks>
+    <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=b2bbd86e-13c6-4c6a-aa16-4096acf51e4d">print</related>
+    <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=a96da854-7c59-4e25-9fb5-78be262620dd">RecipesAndPrinting</related>
+    <related type="PlatformDocAPI" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIPrintInteractionController_Class/index.html">Apple documentation for <c>UIPrintInteractionController</c></related>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected UIPrintInteractionController (Foundation.NSObjectFlag t);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor(class Foundation.NSObjectFlag t) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="t" Type="Foundation.NSObjectFlag" />
+      </Parameters>
+      <Docs>
+        <param name="t">Unused sentinel value, pass NSObjectFlag.Empty.</param>
+        <summary>Constructor to call on derived classes to skip initialization and merely allocate the object.</summary>
+        <remarks>
+          <para>This constructor should be called by derived classes when they completely construct the object in managed code and merely want the runtime to allocate and initialize the NSObject.   This is required to implement the two-step initialization process that Objective-C uses, the first step is to perform the object allocation, the second step is to initialize the object.   When developers invoke the constructor that takes the NSObjectFlag.Empty they take advantage of a direct path that goes all the way up to NSObject to merely allocate the object's memory and bind the Objective-C and C# objects together.    The actual initialization of the object is up to the developer.</para>
+          <para>This constructor is typically used by the binding generator to allocate the object, but prevent the actual initialization to take place.   Once the allocation has taken place, the constructor has to initialize the object.   With constructors generated by the binding generator this means that it manually invokes one of the "init" methods to initialize the object.</para>
+          <para>It is the developer's responsibility to completely initialize the object if they chain up using the NSObjectFlag.Empty path.</para>
+          <para>In general, if the developer's constructor invokes the NSObjectFlag.Empty base implementation, then it should be calling an Objective-C init method.   If this is not the case, developers should instead chain to the proper constructor in their class. </para>
+          <para>The argument value is ignored and merely ensures that the only code that is executed is the construction phase is the basic NSObject allocation and runtime type registration.  Typically the chaining would look like this:</para>
+          <example>
+            <code lang="C#"><![CDATA[
+//
+// The NSObjectFlag merely allocates the object and registers the
+// C# class with the Objective-C runtime if necessary, but no actual
+// initXxx method is invoked, that is done later in the constructor
+//
+// This is taken from Xamarin's source code:
+//
+[Export ("initWithFrame:")]
+public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
+{
+// Invoke the init method now.
+	var initWithFrame = new Selector ("initWithFrame:").Handle;
+	if (IsDirectBinding)
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+	else
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+}
+]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected UIPrintInteractionController (IntPtr handle);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig specialname rtspecialname instance void .ctor(native int handle) cil managed" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="handle" Type="System.IntPtr" />
+      </Parameters>
+      <Docs>
+        <param name="handle">Pointer (handle) to the unmanaged object.</param>
+        <summary>A constructor used when creating managed representations of unmanaged objects;  Called by the runtime.</summary>
+        <remarks>
+          <para>This constructor is invoked by the runtime infrastructure (<see cref="M:ObjCRuntime.Runtime.GetNSObject(System.IntPtr)" />) to create a new managed representation for a pointer to an unmanaged Objective-C object.    Developers should not invoke this method directly, instead they should call the GetNSObject method as it will prevent two instances of a managed object to point to the same native object.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CanPrint">
+      <MemberSignature Language="C#" Value="public static bool CanPrint (Foundation.NSData data);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig bool CanPrint(class Foundation.NSData data) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("canPrintData:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="data" Type="Foundation.NSData" />
+      </Parameters>
+      <Docs>
+        <param name="data">Data to probe.</param>
+        <summary>Determines if the data stored in the NSData can be printed.</summary>
+        <returns>Returns <see langword="true" /> if UIKit can print, otherwise returns <see langword="false" />.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CanPrint">
+      <MemberSignature Language="C#" Value="public static bool CanPrint (Foundation.NSUrl url);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig bool CanPrint(class Foundation.NSUrl url) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("canPrintURL:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="url" Type="Foundation.NSUrl" />
+      </Parameters>
+      <Docs>
+        <param name="url">Represents a URL. The file referenced by the URL needs to contain PDF data or an image in a format that is supported by the Image I/O framework.</param>
+        <summary>Whether printing is available.</summary>
+        <returns>Returns <see langword="true" /> if UIKit can print, otherwise returns <see langword="false" />.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ChooseCutterBehavior">
+      <MemberSignature Language="C#" Value="public UIKit.UIPrintInteractionCutterBehavior ChooseCutterBehavior { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class UIKit.UIPrintInteractionCutterBehavior ChooseCutterBehavior" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>UIKit.UIPrintInteractionCutterBehavior</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Delegate invoked by the object to get a value.</summary>
+        <value>To be added.</value>
+        <remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ChoosePaper">
+      <MemberSignature Language="C#" Value="public UIKit.UIPrintInteractionPaperList ChoosePaper { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class UIKit.UIPrintInteractionPaperList ChoosePaper" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>UIKit.UIPrintInteractionPaperList</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Delegate invoked by the object to get a value.</summary>
+        <value>To be added.</value>
+        <remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ClassHandle">
+      <MemberSignature Language="C#" Value="public override IntPtr ClassHandle { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int ClassHandle" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The handle for this class.</summary>
+        <value>The pointer to the Objective-C class.</value>
+        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CutLengthForPaper">
+      <MemberSignature Language="C#" Value="public Func&lt;UIKit.UIPrintInteractionController,UIKit.UIPrintPaper,nfloat&gt; CutLengthForPaper { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Func`3&lt;class UIKit.UIPrintInteractionController, class UIKit.UIPrintPaper, valuetype System.nfloat&gt; CutLengthForPaper" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Func&lt;UIKit.UIPrintInteractionController,UIKit.UIPrintPaper,System.nfloat&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Delegate invoked by the object to get a value.</summary>
+        <value>To be added.</value>
+        <remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Delegate">
+      <MemberSignature Language="C#" Value="public UIKit.IUIPrintInteractionControllerDelegate Delegate { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class UIKit.IUIPrintInteractionControllerDelegate Delegate" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>UIKit.IUIPrintInteractionControllerDelegate</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>An instance of the <see cref="UIKit.UIPrintInteractionControllerDelegate" /> model class which acts as the class delegate.</summary>
+        <value>
+          <para>The instance of the <see cref="UIKit.UIPrintInteractionControllerDelegate" /> model class</para>
+          <para tool="nullallowed">This value can be <see langword="null" />.</para>
+        </value>
+        <remarks>
+          <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+          <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+          <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DidDismissPrinterOptions">
+      <MemberSignature Language="C#" Value="public event EventHandler DidDismissPrinterOptions;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler DidDismissPrinterOptions" />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Event raised by the object.</summary>
+        <remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DidFinishJob">
+      <MemberSignature Language="C#" Value="public event EventHandler DidFinishJob;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler DidFinishJob" />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Event raised by the object.</summary>
+        <remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DidPresentPrinterOptions">
+      <MemberSignature Language="C#" Value="public event EventHandler DidPresentPrinterOptions;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler DidPresentPrinterOptions" />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Event raised by the object.</summary>
+        <remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Dismiss">
+      <MemberSignature Language="C#" Value="public virtual void Dismiss (bool animated);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Dismiss(bool animated) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("dismissAnimated:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="animated" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="animated">
+          <see langword="true" /> to animate the dismissal, otherwise <see langword="false" />.</param>
+        <summary>Dismisses the printing-options sheet or popover.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Dispose">
+      <MemberSignature Language="C#" Value="protected override void Dispose (bool disposing);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Dispose(bool disposing) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="disposing" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="disposing">
+          <para>If set to <see langword="true" />, the method is invoked directly and will dispose manage and unmanaged resources;   If set to <see langword="false" /> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</para>
+        </param>
+        <summary>Releases the resources used by the UIPrintInteractionController object.</summary>
+        <remarks>
+          <para>This Dispose method releases the resources used by the UIPrintInteractionController class.</para>
+          <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposing <paramref name="disposing" /> is set to <see langword="true" /> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false" />. </para>
+          <para>Calling the Dispose method when the application is finished using the UIPrintInteractionController ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.</para>
+          <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at http://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetViewController">
+      <MemberSignature Language="C#" Value="public UIKit.UIPrintInteraction GetViewController { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class UIKit.UIPrintInteraction GetViewController" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>UIKit.UIPrintInteraction</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Delegate invoked by the object to get a value.</summary>
+        <value>An instance of the UIPrintInteractionController class or <see langword="null" /> if the object cannot be created.</value>
+        <remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Present">
+      <MemberSignature Language="C#" Value="public virtual bool Present (bool animated, UIKit.UIPrintInteractionCompletionHandler completion);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool Present(bool animated, class UIKit.UIPrintInteractionCompletionHandler completion) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("presentAnimated:completionHandler:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="animated" Type="System.Boolean" />
+        <Parameter Name="completion" Type="UIKit.UIPrintInteractionCompletionHandler">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDUIPrintInteractionCompletionHandler))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="animated">
+          <see langword="true" /> to animate the sheet display, <see langword="false" /> to display immediately.</param>
+        <param name="completion">Implemented to handle the conclusion of the specified print job and to handle errors that are encountered in printing.</param>
+        <summary>Presents an iPhone printing user interface.</summary>
+        <returns>A sheet that can be animated to implement a slide from the bottom of the screen upwards.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PresentAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;UIKit.UIPrintInteractionResult&gt; PresentAsync (bool animated);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;class UIKit.UIPrintInteractionResult&gt; PresentAsync(bool animated) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;UIKit.UIPrintInteractionResult&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="animated" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="animated"> to animate the sheet display,  to display immediately.</param>
+        <summary>Presents an iPhone printing user interface.</summary>
+        <returns>
+          <para>A task that represents the asynchronous Present operation.   The value of the TResult parameter is of type <c>Action&lt;UIKit.UIPrintInteractionResult&gt;</c>.</para>
+        </returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="PresentAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;UIKit.UIPrintInteractionResult&gt; PresentAsync (bool animated, out bool result);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;class UIKit.UIPrintInteractionResult&gt; PresentAsync(bool animated, bool result) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;UIKit.UIPrintInteractionResult&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="animated" Type="System.Boolean" />
+        <Parameter Name="result" Type="System.Boolean&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="animated">
+          <see langword="true" /> to animate the sheet display, <see langword="false" /> to display immediately.</param>
+        <param name="result">The result of the present operation.</param>
+        <summary>Presents an iPhone printing user interface asynchronously.</summary>
+        <returns>
+          <para>A task that represents the asynchronous Present operation.   The value of the TResult parameter is of type <see cref="T:UIKit.UIPrintInteractionResult" />.</para>
+        </returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PresentFromBarButtonItem">
+      <MemberSignature Language="C#" Value="public virtual bool PresentFromBarButtonItem (UIKit.UIBarButtonItem item, bool animated, UIKit.UIPrintInteractionCompletionHandler completion);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool PresentFromBarButtonItem(class UIKit.UIBarButtonItem item, bool animated, class UIKit.UIPrintInteractionCompletionHandler completion) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("presentFromBarButtonItem:animated:completionHandler:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="item" Type="UIKit.UIBarButtonItem" />
+        <Parameter Name="animated" Type="System.Boolean" />
+        <Parameter Name="completion" Type="UIKit.UIPrintInteractionCompletionHandler">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDUIPrintInteractionCompletionHandler))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="item">The bar button item that you need to tap for printing.</param>
+        <param name="animated">Set <see langword="true" /> to animate the printing popover view from the specified item, or <see langword="false" /> to display immediately.</param>
+        <param name="completion">Implement this to handle the conclusion of a print job and to handle any errors encountered in printing.</param>
+        <summary>Presents an iPad printing user interface in a popover view that can be animated from a soecified bar-button item.</summary>
+        <returns>When  printing options are already displayed, the printing-options popover view is hidden. You need to call the method again to display the options.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PresentFromBarButtonItemAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;UIKit.UIPrintInteractionResult&gt; PresentFromBarButtonItemAsync (UIKit.UIBarButtonItem item, bool animated);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;class UIKit.UIPrintInteractionResult&gt; PresentFromBarButtonItemAsync(class UIKit.UIBarButtonItem item, bool animated) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;UIKit.UIPrintInteractionResult&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="item" Type="UIKit.UIBarButtonItem" />
+        <Parameter Name="animated" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="item">The bar button item that you need to tap for printing.</param>
+        <param name="animated">Set  to animate the printing popover view from the specified item, or  to display immediately.</param>
+        <summary>Presents an iPad printing user interface in a popover view that can be animated from a soecified bar-button item.</summary>
+        <returns>
+          <para>A task that represents the asynchronous PresentFromBarButtonItem operation.   The value of the TResult parameter is of type <c>Action&lt;UIKit.UIPrintInteractionResult&gt;</c>.</para>
+        </returns>
+        <remarks />
+      </Docs>
+    </Member>
+    <Member MemberName="PresentFromBarButtonItemAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;UIKit.UIPrintInteractionResult&gt; PresentFromBarButtonItemAsync (UIKit.UIBarButtonItem item, bool animated, out bool result);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;class UIKit.UIPrintInteractionResult&gt; PresentFromBarButtonItemAsync(class UIKit.UIBarButtonItem item, bool animated, bool result) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;UIKit.UIPrintInteractionResult&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="item" Type="UIKit.UIBarButtonItem" />
+        <Parameter Name="animated" Type="System.Boolean" />
+        <Parameter Name="result" Type="System.Boolean&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="item">The bar button item that the user has tapped for printing.</param>
+        <param name="animated">
+          <see langword="true" /> to animate the printing popover view from the specified item, <see langword="false" /> to display immediately.</param>
+        <param name="result">The result of the present operation.</param>
+        <summary>Asynchronously presents the iPad printing user interface in a popover view that can be animated from a bar-button item.</summary>
+        <returns>
+          <para>A task that represents the asynchronous PresentFromBarButtonItem operation.   The value of the TResult parameter is of type <c>Action&lt;UIKit.UIPrintInteractionResult&gt;</c>.</para>
+        </returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PresentFromRectInView">
+      <MemberSignature Language="C#" Value="public virtual bool PresentFromRectInView (CoreGraphics.CGRect rect, UIKit.UIView view, bool animated, UIKit.UIPrintInteractionCompletionHandler completion);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool PresentFromRectInView(valuetype CoreGraphics.CGRect rect, class UIKit.UIView view, bool animated, class UIKit.UIPrintInteractionCompletionHandler completion) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("presentFromRect:inView:animated:completionHandler:")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rect" Type="CoreGraphics.CGRect" />
+        <Parameter Name="view" Type="UIKit.UIView" />
+        <Parameter Name="animated" Type="System.Boolean" />
+        <Parameter Name="completion" Type="UIKit.UIPrintInteractionCompletionHandler">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDUIPrintInteractionCompletionHandler))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="rect">A rectangle that defines an area from which a printing popover view is animated.</param>
+        <param name="view">The view that provides the coordinate system for the specified rect.</param>
+        <param name="animated">
+          <see langword="true" /> to animate the printing popover view from the specified item, <see langword="false" /> to display immediately.</param>
+        <param name="completion">Implemented to handle the conclusion of the print job.</param>
+        <summary>Presents an iPad printing user interface in a particular popover view that can be animated from any specified area in a view.</summary>
+        <returns>When  printing options are already displayed, the printing-options popover view is hidden. You need to call the method again to display the options.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PresentFromRectInViewAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;UIKit.UIPrintInteractionResult&gt; PresentFromRectInViewAsync (CoreGraphics.CGRect rect, UIKit.UIView view, bool animated);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;class UIKit.UIPrintInteractionResult&gt; PresentFromRectInViewAsync(valuetype CoreGraphics.CGRect rect, class UIKit.UIView view, bool animated) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;UIKit.UIPrintInteractionResult&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rect" Type="CoreGraphics.CGRect" />
+        <Parameter Name="view" Type="UIKit.UIView" />
+        <Parameter Name="animated" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="rect">To be added.</param>
+        <param name="view">To be added.</param>
+        <param name="animated">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PresentFromRectInViewAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;UIKit.UIPrintInteractionResult&gt; PresentFromRectInViewAsync (CoreGraphics.CGRect rect, UIKit.UIView view, bool animated, out bool result);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;class UIKit.UIPrintInteractionResult&gt; PresentFromRectInViewAsync(valuetype CoreGraphics.CGRect rect, class UIKit.UIView view, bool animated, bool result) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;UIKit.UIPrintInteractionResult&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rect" Type="CoreGraphics.CGRect" />
+        <Parameter Name="view" Type="UIKit.UIView" />
+        <Parameter Name="animated" Type="System.Boolean" />
+        <Parameter Name="result" Type="System.Boolean&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="rect">A rectangle that defines an area from which a printing popover view is animated.</param>
+        <param name="view">The view that provides the coordinate system for the specified rect.</param>
+        <param name="animated">
+          <see langword="true" /> to animate the printing popover view from the specified item, <see langword="false" /> to display immediately.</param>
+        <param name="result">The result of the present operation.</param>
+        <summary>Asynchronously presents the iPad printing user interface in a popover view that can be animated from any area in a view.</summary>
+        <returns>When  printing options are already displayed, the printing-options popover view is hidden. You need to call the method again to display the options.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PrintableUTIs">
+      <MemberSignature Language="C#" Value="public static Foundation.NSSet PrintableUTIs { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class Foundation.NSSet PrintableUTIs" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("printableUTIs")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSSet</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Uniform Type Identifiers for the types of data that UIKit can print.</summary>
+        <value>Returns a set object that contains UTI strings that identify data types that UIKit is able to print natively.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PrintFormatter">
+      <MemberSignature Language="C#" Value="public virtual UIKit.UIPrintFormatter PrintFormatter { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class UIKit.UIPrintFormatter PrintFormatter" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("printFormatter", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setPrintFormatter:", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UIPrintFormatter</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The UIPrintFormatter that will lay out of the content of pages based on the kind of content.</summary>
+        <value>The content of pages based on the defined content.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PrintInfo">
+      <MemberSignature Language="C#" Value="public virtual UIKit.UIPrintInfo PrintInfo { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class UIKit.UIPrintInfo PrintInfo" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("printInfo", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setPrintInfo:", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UIPrintInfo</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Information about the print job.</summary>
+        <value>An instance of the UIPrintInfo class or <see langword="null" /> if the object could not be created.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PrintingAvailable">
+      <MemberSignature Language="C#" Value="public static bool PrintingAvailable { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property bool PrintingAvailable" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("isPrintingAvailable")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Whether printing is available.</summary>
+        <value>
+          <see langword="true" />  if the device supports printing, otherwise <see langword="false" /> . The application can show or hide any print button based upon this value.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PrintingItem">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSObject PrintingItem { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Foundation.NSObject PrintingItem" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("printingItem", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setPrintingItem:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>A ready-to-print object.</summary>
+        <value> Released at the end of the print job. Default is <see langword="null" /></value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PrintingItems">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSObject[] PrintingItems { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Foundation.NSObject[] PrintingItems" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("printingItems", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setPrintingItems:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>An array of ready-to-print objects.</summary>
+        <value>Released at the end of the print job. Default is <see langword="null" /></value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PrintPageRenderer">
+      <MemberSignature Language="C#" Value="public virtual UIKit.UIPrintPageRenderer PrintPageRenderer { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class UIKit.UIPrintPageRenderer PrintPageRenderer" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("printPageRenderer", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setPrintPageRenderer:", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UIPrintPageRenderer</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>If set, use the specified instance of UIPrintPageRenderer for printing.</summary>
+        <value>
+        </value>
+        <remarks>
+          <para>
+	    You must
+	    implement a subclass of <see cref="T:UIKit.UIPrintPageRenderer" /> and assign
+	    the instance of your renderer to the <see cref="P:UIKit.UIPrintInteractionController.PrintPageRenderer" />
+	    property.
+	  </para>
+          <example>
+            <code lang="C#"><![CDATA[
+	// Get a reference to the singleton iOS printing concierge
+	UIPrintInteractionController printController = UIPrintInteractionController.SharedPrintController;
+	
+	// Instruct the printing concierge to use our custom UIPrintPageRenderer subclass when printing this job
+	printController.PrintPageRenderer = new MyPrintPageRenderer (myData);
+	
+	// Ask for a print job object and configure its settings to tailor the print request
+	UIPrintInfo info = UIPrintInfo.PrintInfo;
+	
+	// B&W or color, normal quality output for mixed text, graphics, and images
+	info.OutputType = UIPrintInfoOutputType.General;
+	
+	// Select the job named this in the printer queue to cancel our print request.
+	info.JobName = "Recipes";
+	
+	// Instruct the printing concierge to use our custom print job settings.
+	printController.PrintInfo = info;
+	
+	// Present the standard iOS Print Panel that allows you to pick the target Printer, number of pages, double-sided, etc.
+	printController.Present (true, PrintingCompleted);
+
+	]]></code>
+          </example>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PrintPaper">
+      <MemberSignature Language="C#" Value="public virtual UIKit.UIPrintPaper PrintPaper { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class UIKit.UIPrintPaper PrintPaper" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("printPaper")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UIPrintPaper</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Holds the paper size and printing area for the print job. Read-only.</summary>
+        <value>Released at the end of the print job. Read-only.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PrintToPrinter">
+      <MemberSignature Language="C#" Value="public virtual bool PrintToPrinter (UIKit.UIPrinter printer, UIKit.UIPrintInteractionCompletionHandler completion);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool PrintToPrinter(class UIKit.UIPrinter printer, class UIKit.UIPrintInteractionCompletionHandler completion) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Export("printToPrinter:completionHandler:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="printer" Type="UIKit.UIPrinter" />
+        <Parameter Name="completion" Type="UIKit.UIPrintInteractionCompletionHandler">
+          <Attributes>
+            <Attribute>
+              <AttributeName>ObjCRuntime.BlockProxy(typeof(ObjCRuntime.Trampolines/NIDUIPrintInteractionCompletionHandler))</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="printer">Specified printer.</param>
+        <param name="completion">Implemented to handle the conclusion of a print job and to handle any errors encountered in printing.</param>
+        <summary>Prints directly to a specified printer.</summary>
+        <returns>
+          <see langword="true" />  if printing was successful or <see langword="false" />  if there was a problem</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PrintToPrinterAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;UIKit.UIPrintInteractionCompletionResult&gt; PrintToPrinterAsync (UIKit.UIPrinter printer);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;class UIKit.UIPrintInteractionCompletionResult&gt; PrintToPrinterAsync(class UIKit.UIPrinter printer) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;UIKit.UIPrintInteractionCompletionResult&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="printer" Type="UIKit.UIPrinter" />
+      </Parameters>
+      <Docs>
+        <param name="printer">Specified printer.</param>
+        <summary>Prints directly to a specified printer.</summary>
+        <returns>
+          <para>A task that represents the asynchronous PrintToPrinter operation.   The value of the TResult parameter is of type <c>Action&lt;UIKit.UIPrintInteractionCompletionResult&gt;</c>.</para>
+        </returns>
+        <remarks>
+          <para copied="true">The PrintToPrinterAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+          <para copied="true">To be added.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PrintToPrinterAsync">
+      <MemberSignature Language="C#" Value="public virtual System.Threading.Tasks.Task&lt;UIKit.UIPrintInteractionCompletionResult&gt; PrintToPrinterAsync (UIKit.UIPrinter printer, out bool result);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Threading.Tasks.Task`1&lt;class UIKit.UIPrintInteractionCompletionResult&gt; PrintToPrinterAsync(class UIKit.UIPrinter printer, bool result) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;UIKit.UIPrintInteractionCompletionResult&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="printer" Type="UIKit.UIPrinter" />
+        <Parameter Name="result" Type="System.Boolean&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="printer">Specified printer.</param>
+        <param name="result">Whether the operation succeeded or failed.</param>
+        <summary>Asynchronously prints directly to a specified printer, returning a task that provides the result.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SharedPrintController">
+      <MemberSignature Language="C#" Value="public static UIKit.UIPrintInteractionController SharedPrintController { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class UIKit.UIPrintInteractionController SharedPrintController" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("sharedPrintController")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>UIKit.UIPrintInteractionController</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>The shared print-interaction controller object.</summary>
+        <value>A singleton instance of the UIPrintInteractionController class or set to <see langword="null" /> if the specified object could not be created.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ShowsNumberOfCopies">
+      <MemberSignature Language="C#" Value="public virtual bool ShowsNumberOfCopies { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool ShowsNumberOfCopies" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("showsNumberOfCopies")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setShowsNumberOfCopies:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Whether the printing options includes the number of copies to be printed.</summary>
+        <value>Default value is <see langword="true" /></value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ShowsPageRange">
+      <MemberSignature Language="C#" Value="public virtual bool ShowsPageRange { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool ShowsPageRange" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, "Page range is now always shown.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("showsPageRange")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, "Page range is now always shown.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setShowsPageRange:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, "Page range is now always shown.")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Whether the printing options includes a page-range control.</summary>
+        <value>Default value is <see langword="false" />.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ShowsPaperSelectionForLoadedPapers">
+      <MemberSignature Language="C#" Value="public virtual bool ShowsPaperSelectionForLoadedPapers { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool ShowsPaperSelectionForLoadedPapers" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("showsPaperSelectionForLoadedPapers")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setShowsPaperSelectionForLoadedPapers:")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Boolean set for enabling the paper selection menu.</summary>
+        <value>Default value is <see langword="false" />.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WeakDelegate">
+      <MemberSignature Language="C#" Value="public virtual Foundation.NSObject WeakDelegate { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Foundation.NSObject WeakDelegate" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: Foundation.Export("delegate", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: Foundation.Export("setDelegate:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Foundation.NSObject</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>An object that can respond to the delegate protocol for this type</summary>
+        <value>
+          <para>The instance that will respond to events and data requests.</para>
+          <para tool="nullallowed">This value can be <see langword="null" />.</para>
+        </value>
+        <remarks>
+          <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
+          <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
+          <para>   Methods must be decorated with the [Export ("selectorName")] attribute to respond to each method from the protocol.   Alternatively use the Delegate method which is strongly typed and does not require the [Export] attributes on methods.</para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WillDismissPrinterOptions">
+      <MemberSignature Language="C#" Value="public event EventHandler WillDismissPrinterOptions;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler WillDismissPrinterOptions" />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Event raised by the object.</summary>
+        <remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WillPresentPrinterOptions">
+      <MemberSignature Language="C#" Value="public event EventHandler WillPresentPrinterOptions;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler WillPresentPrinterOptions" />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Event raised by the object.</summary>
+        <remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WillStartJob">
+      <MemberSignature Language="C#" Value="public event EventHandler WillStartJob;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler WillStartJob" />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Event raised by the object.</summary>
+        <remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>
