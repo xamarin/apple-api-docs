@@ -41,3 +41,12 @@ there. Macdoc is under the samples directory.
 
 
 This repository is also submoduled by XamarinVS to fetch the baseline docs from where MSXML docs are generated and later merged with iOS docs on the user's machine.
+
+Viewing history?
+---------------- 
+
+On January 22, 2018, commits 542f219f and ce6f06729 renamed the directories from, e.g., `en/MonoTouch.UIKit` to `en/UIKit`. In almost all cases `git log {type.xml}` will track back only to these commits. To track past those commits, use:
+
+    git log --follow --find-copies-harder --find-renames=40 {type.xml}
+    
+Lowering the `find-renames` threshold to around 40 seems to work   in almost all cases. You can try lower thresholds, although at some point you could presumably start triggering incorrect matches. 
