@@ -59,7 +59,7 @@
 // C# class with the Objective-C runtime if necessary, but no actual
 // initXxx method is invoked, that is done later in the constructor
 //
-// This is taken from Xamarin's source code:
+// This is taken from Xamarin.iOS's source code:
 //
 [Export ("initWithFrame:")]
 public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
@@ -67,9 +67,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 // Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
 	if (IsDirectBinding)
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
 	else
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
 }
 ]]></code>
           </example>
@@ -162,7 +162,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <summary>The handle for this class.</summary>
         <value>The pointer to the Objective-C class.</value>
-        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+        <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
     <Member MemberName="FireDate">
@@ -175,7 +175,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("fireDate", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>get: Foundation.Export("fireDate")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -197,7 +197,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("recurrence", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>get: Foundation.Export("recurrence")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -219,7 +219,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("recurrenceCalendar", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>get: Foundation.Export("recurrenceCalendar")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -241,7 +241,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("timeZone", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>get: Foundation.Export("timeZone")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -316,7 +316,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="fireDate">To be added.</param>
-        <summary>Updates the fire date by using  and runs  after it has finished.</summary>
+        <summary>Updates the fire date by using <paramref name="fireDate" /> and runs <paramref name="completion" /> after it has finished.</summary>
         <returns>A task that represents the asynchronous UpdateFireDate operation</returns>
         <remarks />
       </Docs>
@@ -386,8 +386,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="recurrence" Type="Foundation.NSDateComponents" />
       </Parameters>
       <Docs>
-        <param name="recurrence">To be added. This parameter can be <see langwor="null" />.</param>
-        <summary>Updates the recurrence by using  and runs  after it has finished.</summary>
+        <param name="recurrence">To be added.This parameter can be .</param>
+        <summary>Updates the recurrence by using <paramref name="recurrence" /> and runs <paramref name="completion" /> after it has finished.</summary>
         <returns>A task that represents the asynchronous UpdateRecurrence operation</returns>
         <remarks>
           <para copied="true">The UpdateRecurrenceAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
@@ -460,8 +460,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="timeZone" Type="Foundation.NSTimeZone" />
       </Parameters>
       <Docs>
-        <param name="timeZone">To be added. This parameter can be <see langwor="null" />.</param>
-        <summary>Updates the time zone by using  and runs  after it has finished.</summary>
+        <param name="timeZone">To be added.This parameter can be .</param>
+        <summary>Updates the time zone by using <paramref name="timeZone" /> and runs <paramref name="completion" /> after it has finished.</summary>
         <returns>A task that represents the asynchronous UpdateTimeZone operation</returns>
         <remarks />
       </Docs>

@@ -81,7 +81,7 @@
 // C# class with the Objective-C runtime if necessary, but no actual
 // initXxx method is invoked, that is done later in the constructor
 //
-// This is taken from Xamarin's source code:
+// This is taken from Xamarin.iOS's source code:
 //
 [Export ("initWithFrame:")]
 public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
@@ -89,9 +89,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 // Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
 	if (IsDirectBinding)
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
 	else
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
 }
 ]]></code>
           </example>
@@ -185,7 +185,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <summary>Accepts an invitation to a match and then passes a new match object to <paramref name="completionHandler" />, along with an error object that is <see langword="null" /> if no error occurred.</summary>
         <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous AcceptInvite operation.  The value of the TResult parameter is of type <c>Action&lt;GameKit.GKTurnBasedMatch,Foundation.NSError&gt;</c>.</para>
+          <para class="improve-task-t-return-type-description">A task that represents the asynchronous AcceptInvite operation.  The value of the TResult parameter is of type System.Action&lt;GameKit.GKTurnBasedMatch,Foundation.NSError&gt;.</para>
         </returns>
         <remarks />
       </Docs>
@@ -206,7 +206,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("activeExchanges", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+          <AttributeName>get: Foundation.Export("activeExchanges")</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -238,7 +238,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <summary>The handle for this class.</summary>
         <value>The pointer to the Objective-C class.</value>
-        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+        <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CompletedExchanges">
@@ -257,7 +257,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("completedExchanges", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+          <AttributeName>get: Foundation.Export("completedExchanges")</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -307,7 +307,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("currentParticipant", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+          <AttributeName>get: Foundation.Export("currentParticipant")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -382,7 +382,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <summary>Declines an invitation to a match and then passes a new match object to <paramref name="completionHandler" />, along with an error object that is <see langword="null" /> if no error occurred.</summary>
         <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous DeclineInvite operation.  The value of the TResult parameter is of type <c>Action&lt;GameKit.GKTurnBasedMatch,Foundation.NSError&gt;</c>.</para>
+          <para class="improve-task-t-return-type-description">A task that represents the asynchronous DeclineInvite operation.  The value of the TResult parameter is of type System.Action&lt;GameKit.GKTurnBasedMatch,Foundation.NSError&gt;.</para>
         </returns>
         <remarks />
       </Docs>
@@ -450,7 +450,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="matchData">To be added.</param>
-        <param name="onCompletion">To be added.</param>
+        <param name="onCompletion">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
         <summary>Ends the match with the end state <paramref name="matchData" /> and passes an error object that is <see langword="null" /> if no error occurred to <paramref name="completionHandler" />.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -523,7 +526,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="matchData">To be added.</param>
-        <summary>Ends the match with the specified end state, scores, and achievements, and passes an error object that is  if no error occurred to .</summary>
+        <summary>Ends the match with the specified end state, scores, and achievements, and passes an error object that is <see langword="null" /> if no error occurred to <paramref name="completionHandler" />.</summary>
         <returns>A task that represents the asynchronous EndMatchInTurn operation</returns>
         <remarks />
       </Docs>
@@ -635,7 +638,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="nextParticipants">To be added.</param>
         <param name="timeoutSeconds">To be added.</param>
         <param name="matchData">To be added.</param>
-        <summary>Ends the turn and passes an error object that is  if no error occurred to .</summary>
+        <summary>Ends the turn and passes an error object that is <see langword="null" /> if no error occurred to <paramref name="completionHandler" />.</summary>
         <returns>A task that represents the asynchronous EndTurn operation</returns>
         <remarks />
       </Docs>
@@ -679,7 +682,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="nextParticipant">To be added.</param>
         <param name="matchData">To be added.</param>
-        <param name="noCompletion">To be added.</param>
+        <param name="noCompletion">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
         <summary>Developers should not use this deprecated method. Developers should use 'EndTurn' instead.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -713,7 +719,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="nextParticipant">To be added.</param>
         <param name="matchData">To be added.</param>
-        <summary>Deprecated.</summary>
+        <summary>Developers should not use this deprecated method. Developers should use 'EndTurn' instead.</summary>
         <returns>A task that represents the asynchronous EndTurnWithNextParticipant operation</returns>
         <remarks />
       </Docs>
@@ -768,7 +774,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("exchanges", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+          <AttributeName>get: Foundation.Export("exchanges")</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -869,9 +875,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="request">To be added.</param>
-        <summary>Searches for and returns a match to join, and passes the match (which is  if an error occurs) and an error object (whic is null if there is no error) to .</summary>
+        <summary>Searches for and returns a match to join, and passes the match (which is <see langword="null" /> if an error occurs) and an error object (whic is null if there is no error) to <paramref name="onCompletion" />.</summary>
         <returns>
-          <para>A task that represents the asynchronous FindMatch operation.   The value of the TResult parameter is a <see cref="GameKit.GKTurnBasedMatchRequest" />.</para>
+          <para>A task that represents the asynchronous FindMatch operation.   The value of the TResult parameter is a GameKit.GKTurnBasedMatchRequest.</para>
         </returns>
         <remarks />
       </Docs>
@@ -942,9 +948,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="matchId">To be added.</param>
-        <summary>Loads the match that is identified by  and passes the match (which is  if an error occurs) and an error object (whic is null if there is no error) to .</summary>
+        <summary>Loads the match that is identified by <paramref name="matchId" /> and passes the match (which is <see langword="null" /> if an error occurs) and an error object (whic is null if there is no error) to <paramref name="onCompletion" />.</summary>
         <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous LoadMatch operation.  The value of the TResult parameter is of type <c>Action&lt;GameKit.GKTurnBasedMatch,Foundation.NSError&gt;</c>.</para>
+          <para class="improve-task-t-return-type-description">A task that represents the asynchronous LoadMatch operation.  The value of the TResult parameter is of type System.Action&lt;GameKit.GKTurnBasedMatch,Foundation.NSError&gt;.</para>
         </returns>
         <remarks />
       </Docs>
@@ -998,7 +1004,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <summary>Loads the match data and passes it, along with an error object, to <paramref name="onCompletion" />.</summary>
         <returns>
-          <para>A task that represents the asynchronous LoadMatchData operation.   The value of the TResult parameter is a <see cref="GameKit.GKTurnBasedMatchData" />.</para>
+          <para>A task that represents the asynchronous LoadMatchData operation.   The value of the TResult parameter is a GameKit.GKTurnBasedMatchData.</para>
         </returns>
         <remarks />
       </Docs>
@@ -1052,7 +1058,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <summary>Loads all the matches for the current player and passes them, along with an error object, to <paramref name="onCompletion" />..</summary>
         <returns>
-          <para>A task that represents the asynchronous LoadMatches operation.   The value of the TResult parameter is a <see cref="GameKit.GKTurnBasedMatchesRequest" />.</para>
+          <para>A task that represents the asynchronous LoadMatches operation.   The value of the TResult parameter is a GameKit.GKTurnBasedMatchesRequest.</para>
         </returns>
         <remarks />
       </Docs>
@@ -1067,7 +1073,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("matchData", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+          <AttributeName>get: Foundation.Export("matchData")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1145,10 +1151,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("message", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>get: Foundation.Export("message")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setMessage:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>set: Foundation.Export("setMessage:")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1239,7 +1245,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="matchOutcome">To be added.</param>
         <param name="nextParticipant">To be added.</param>
         <param name="matchData">To be added.</param>
-        <param name="onCompletion">To be added.</param>
+        <param name="onCompletion">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
         <summary>Deprecated.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -1358,7 +1367,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="nextParticipants">To be added.</param>
         <param name="timeoutSeconds">To be added.</param>
         <param name="matchData">To be added.</param>
-        <summary>Resigns the current player from the match and runs .</summary>
+        <summary>Resigns the current player from the match and runs <paramref name="completionHandler" />.</summary>
         <returns>A task that represents the asynchronous ParticipantQuitInTurn operation</returns>
         <remarks />
       </Docs>
@@ -1391,7 +1400,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="matchOutcome">To be added.</param>
-        <param name="onCompletion">To be added.</param>
+        <param name="onCompletion">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
         <summary>Resigns the player from the match out of turn and runs <paramref name="onCompletion" />.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -1412,7 +1424,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="matchOutcome">To be added.</param>
-        <summary>Resigns the player from the match out of turn and runs .</summary>
+        <summary>Resigns the player from the match out of turn and runs <paramref name="onCompletion" />.</summary>
         <returns>A task that represents the asynchronous ParticipantQuitOutOfTurn operation</returns>
         <remarks />
       </Docs>
@@ -1427,7 +1439,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("participants", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+          <AttributeName>get: Foundation.Export("participants")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1502,7 +1514,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <summary>Creates a new match with the same list of participants as the current match, and runs <paramref name="completionHanler" />.</summary>
         <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous Rematch operation.  The value of the TResult parameter is of type <c>Action&lt;GameKit.GKTurnBasedMatch,Foundation.NSError&gt;</c>.</para>
+          <para class="improve-task-t-return-type-description">A task that represents the asynchronous Rematch operation.  The value of the TResult parameter is of type System.Action&lt;GameKit.GKTurnBasedMatch,Foundation.NSError&gt;.</para>
         </returns>
         <remarks />
       </Docs>
@@ -1622,7 +1634,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="matchData">To be added.</param>
-        <summary>Saves the current turn, does not advance to the next player, and runs .</summary>
+        <summary>Saves the current turn, does not advance to the next player, and runs <paramref name="oncCompletion" />.</summary>
         <returns>A task that represents the asynchronous SaveCurrentTurn operation</returns>
         <remarks />
       </Docs>
@@ -1697,7 +1709,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="matchData">To be added.</param>
         <param name="exchanges">To be added.</param>
-        <summary>Saves merged match data without advancing play, and runs  when finished.</summary>
+        <summary>Saves merged match data without advancing play, and runs <paramref name="completionHandler" /> when finished.</summary>
         <returns>A task that represents the asynchronous SaveMergedMatchData operation</returns>
         <remarks />
       </Docs>
@@ -1784,9 +1796,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="localizableMessage">To be added.</param>
         <param name="arguments">To be added.</param>
         <param name="timeout">To be added.</param>
-        <summary>Sends exchange requests to the players who are listed in .</summary>
+        <summary>Sends exchange requests to the players who are listed in <paramref name="participants" />.</summary>
         <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous SendExchange operation.  The value of the TResult parameter is of type <c>Action&lt;GameKit.GKTurnBasedExchange,Foundation.NSError&gt;</c>.</para>
+          <para class="improve-task-t-return-type-description">A task that represents the asynchronous SendExchange operation.  The value of the TResult parameter is of type System.Action&lt;GameKit.GKTurnBasedExchange,Foundation.NSError&gt;.</para>
         </returns>
         <remarks />
       </Docs>
@@ -1865,7 +1877,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="participants">To be added.</param>
         <param name="localizableMessage">To be added.</param>
         <param name="arguments">To be added.</param>
-        <summary>Sends a reminder to the players who are listed in .</summary>
+        <summary>Sends a reminder to the players who are listed in <paramref name="participants" />.</summary>
         <returns>A task that represents the asynchronous SendReminder operation</returns>
         <remarks>
           <para copied="true">The SendReminderAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>

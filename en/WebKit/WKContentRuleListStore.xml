@@ -79,7 +79,7 @@
 // C# class with the Objective-C runtime if necessary, but no actual
 // initXxx method is invoked, that is done later in the constructor
 //
-// This is taken from Xamarin's source code:
+// This is taken from Xamarin.iOS's source code:
 //
 [Export ("initWithFrame:")]
 public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
@@ -87,9 +87,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 // Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
 	if (IsDirectBinding)
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
 	else
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
 }
 ]]></code>
           </example>
@@ -134,7 +134,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <summary>The handle for this class.</summary>
         <value>The pointer to the Objective-C class.</value>
-        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+        <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CompileContentRuleList">
@@ -190,9 +190,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="identifier">The identifier for the newly compiled list.</param>
         <param name="encodedContentRuleList">JSON source to compile.</param>
-        <summary>Compiles the provided list of rules, adds the list to the store with the specified , and runs a handler that receives the content list and any error that is encountered.</summary>
+        <summary>Compiles the provided list of rules, adds the list to the store with the specified <paramref name="identifier" />, and runs a handler that receives the content list and any error that is encountered.</summary>
         <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous CompileContentRuleList operation.  The value of the TResult parameter is of type <c>Action&lt;WebKit.WKContentRuleList,Foundation.NSError&gt;</c>.</para>
+          <para class="improve-task-t-return-type-description">A task that represents the asynchronous CompileContentRuleList operation.  The value of the TResult parameter is of type System.Action&lt;WebKit.WKContentRuleList,Foundation.NSError&gt;.</para>
         </returns>
         <remarks />
       </Docs>
@@ -291,7 +291,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <summary>Retrieves the list of identifiers for available content rule lists and passes them to the provided <paramref name="callback" />.</summary>
         <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous GetAvailableContentRuleListIdentifiers operation.  The value of the TResult parameter is of type System.String[].</para>
+          <para class="improve-task-t-return-type-description">A task that represents the asynchronous GetAvailableContentRuleListIdentifiers operation.  The value of the TResult parameter is of type System.Action&lt;System.String[]&gt;.</para>
         </returns>
         <remarks>
           <para copied="true">The GetAvailableContentRuleListIdentifiersAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
@@ -348,9 +348,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="identifier">The identifer for the rule list to look up.</param>
-        <summary>Passes the content rule list that is specified by the provided  to the specified .</summary>
+        <summary>Passes the content rule list that is specified by the provided <paramref name="identifier" /> to the specified <paramref name="completionHandler" />.</summary>
         <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous LookUpContentRuleList operation.  The value of the TResult parameter is of type <c>Action&lt;WebKit.WKContentRuleList,Foundation.NSError&gt;</c>.</para>
+          <para class="improve-task-t-return-type-description">A task that represents the asynchronous LookUpContentRuleList operation.  The value of the TResult parameter is of type System.Action&lt;WebKit.WKContentRuleList,Foundation.NSError&gt;.</para>
         </returns>
         <remarks />
       </Docs>
@@ -404,7 +404,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="identifier">The identifier for the list to remove.</param>
-        <summary>Removes the content rule list that is specified by the provided  and passes it to the specified .</summary>
+        <summary>Removes the content rule list that is specified by the provided <paramref name="identifier" /> and passes it to the specified <paramref name="completionHandler" />.</summary>
         <returns>A task that represents the asynchronous RemoveContentRuleList operation</returns>
         <remarks />
       </Docs>
