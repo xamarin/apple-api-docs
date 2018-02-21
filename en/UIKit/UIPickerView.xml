@@ -149,7 +149,7 @@
 // C# class with the Objective-C runtime if necessary, but no actual
 // initXxx method is invoked, that is done later in the constructor
 //
-// This is taken from Xamarin.iOS's source code:
+// This is taken from Xamarin's source code:
 //
 [Export ("initWithFrame:")]
 public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
@@ -157,9 +157,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 // Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
 	if (IsDirectBinding)
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
 	else
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
 }
 ]]></code>
           </example>
@@ -262,7 +262,7 @@ mySliders.TintColor = UIColor.Red;
       <Docs>
         <summary>The handle for this class.</summary>
         <value>The pointer to the Objective-C class.</value>
-        <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
     <Member MemberName="DataSource">
@@ -275,10 +275,10 @@ mySliders.TintColor = UIColor.Red;
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("dataSource")</AttributeName>
+          <AttributeName>get: Foundation.Export("dataSource", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setDataSource:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setDataSource:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -305,9 +305,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>UIKit.IUIPickerViewDelegate</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>An instance of the UIKit.IUIPickerViewDelegate model class which acts as the class delegate.</summary>
+        <summary>An instance of the <see cref="UIKit.UIPickerViewDelegate" /> model class which acts as the class delegate.</summary>
         <value>
-          <para>The instance of the UIKit.IUIPickerViewDelegate model class</para>
+          <para>The instance of the <see cref="UIKit.UIPickerViewDelegate" /> model class</para>
           <para tool="nullallowed">This value can be <see langword="null" />.</para>
         </value>
         <remarks>
@@ -452,26 +452,11 @@ myTheme.TintColor = UIColor.Red;
         <Parameter Name="traits" Type="UIKit.UITraitCollection" />
       </Parameters>
       <Docs>
-        <typeparam name="T">The type for which the UIAppearance proxy must be returned.  This is a subclass of UIPickerView.</typeparam>
-        <param name="traits">Trait collection to match.</param>
-        <summary>
-          <para>Obtains the appearance proxy <see cref="T:UIKit.UIPickerView.UIPickerViewAppearance" /> for the subclass of UIPickerView.</para>
-        </summary>
-        <returns>
-          <para>appearance proxy object for the specified type.</para>
-        </returns>
-        <remarks>
-          <para>The returned object represents the UIAppearance proxy where developers can set appearance properties for instances of UIPickerView.</para>
-          <para>Unlike the <see cref="P:UIKit.UIPickerView.Appearance" /> property, or the <see cref="M:UIKit.UIPickerViewAppearanceWhenContainedIn" /> method which only work on instances of this particular class, the proxies returned by GetAppearance can be used to change the style of subclasses.</para>
-          <para>The following example shows how the GetAppearance method works</para>
-          <example>
-            <code lang="C#"><![CDATA[
-var myTheme = UIPickerView.GetAppearance<MyUIPickerViewSubclass> (myTraits, );
-myTheme.TintColor = UIColor.Red;
-]]></code>
-          </example>
-          <para>For more information, see the documentation for the <see cref="T:UIKit.UIAppearance" /> class.</para>
-        </remarks>
+        <typeparam name="T">To be added.</typeparam>
+        <param name="traits">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetAppearance&lt;T&gt;">
@@ -837,10 +822,10 @@ myTheme.TintColor = UIColor.Red;
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("delegate")</AttributeName>
+          <AttributeName>get: Foundation.Export("delegate", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setDelegate:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setDelegate:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>

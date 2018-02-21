@@ -65,7 +65,7 @@
 // C# class with the Objective-C runtime if necessary, but no actual
 // initXxx method is invoked, that is done later in the constructor
 //
-// This is taken from Xamarin.iOS's source code:
+// This is taken from Xamarin's source code:
 //
 [Export ("initWithFrame:")]
 public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
@@ -73,9 +73,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 // Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
 	if (IsDirectBinding)
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
 	else
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
 }
 ]]></code>
           </example>
@@ -116,7 +116,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("accessories")</AttributeName>
+          <AttributeName>get: Foundation.Export("accessories", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -138,7 +138,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("actionSets")</AttributeName>
+          <AttributeName>get: Foundation.Export("actionSets", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -213,7 +213,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="accessory">To be added.</param>
-        <summary>Adds <paramref name="accessory" /> to the home and runs <paramref name="completion" /> after it has been added.</summary>
+        <summary>Adds  to the home and runs  after it has been added.</summary>
         <returns>A task that represents the asynchronous AddAccessory operation</returns>
         <remarks />
       </Docs>
@@ -281,9 +281,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="actionSetName">To be added.</param>
-        <summary>Adds an action set named <paramref name="actionSetName" /> to the home and runs <paramref name="completion" /> after it has been added.</summary>
+        <summary>Adds an action set named  to the home and runs  after it has been added.</summary>
         <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous AddActionSet operation.  The value of the TResult parameter is of type System.Action&lt;HomeKit.HMActionSet,Foundation.NSError&gt;.</para>
+          <para class="improve-task-t-return-type-description">A task that represents the asynchronous AddActionSet operation.  The value of the TResult parameter is of type <c>Action&lt;HomeKit.HMActionSet,Foundation.NSError&gt;</c>.</para>
         </returns>
         <remarks />
       </Docs>
@@ -420,9 +420,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="roomName">To be added.</param>
-        <summary>Adds a room named <paramref name="roomName" /> to the home and runs <paramref name="completion" /> after it has been added.</summary>
+        <summary>Adds a room named  to the home and runs  after it has been added.</summary>
         <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous AddRoom operation.  The value of the TResult parameter is of type System.Action&lt;HomeKit.HMRoom,Foundation.NSError&gt;.</para>
+          <para class="improve-task-t-return-type-description">A task that represents the asynchronous AddRoom operation.  The value of the TResult parameter is of type <c>Action&lt;HomeKit.HMRoom,Foundation.NSError&gt;</c>.</para>
         </returns>
         <remarks />
       </Docs>
@@ -490,9 +490,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="serviceGroupName">To be added.</param>
-        <summary>Adds a service group named <paramref name="serviceGroupName" /> to the home and runs <paramref name="completion" /> after it has been added.</summary>
+        <summary>Adds a service group named  to the home and runs  after it has been added.</summary>
         <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous AddServiceGroup operation.  The value of the TResult parameter is of type System.Action&lt;HomeKit.HMServiceGroup,Foundation.NSError&gt;.</para>
+          <para class="improve-task-t-return-type-description">A task that represents the asynchronous AddServiceGroup operation.  The value of the TResult parameter is of type <c>Action&lt;HomeKit.HMServiceGroup,Foundation.NSError&gt;</c>.</para>
         </returns>
         <remarks />
       </Docs>
@@ -560,7 +560,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="trigger">To be added.</param>
-        <summary>Adds <paramref name="trigger" /> to the home and runs <paramref name="completion" /> after it has been added.</summary>
+        <summary>Adds  to the home and runs  after it has been added.</summary>
         <returns>A task that represents the asynchronous AddTrigger operation</returns>
         <remarks />
       </Docs>
@@ -635,9 +635,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Developers should not use this deprecated method. </summary>
+        <summary>Adds a user with the ID <paramref name="userID" /> to the home and runs <paramref name="completionHandler" /> after it has been added.</summary>
         <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous AddUser operation.  The value of the TResult parameter is of type System.Action&lt;HomeKit.HMUser,Foundation.NSError&gt;.</para>
+          <para class="improve-task-t-return-type-description">A task that represents the asynchronous AddUser operation.  The value of the TResult parameter is of type <c>Action&lt;HomeKit.HMUser,Foundation.NSError&gt;</c>.</para>
         </returns>
         <remarks />
       </Docs>
@@ -705,9 +705,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="zoneName">To be added.</param>
-        <summary>Adds a none that is named <paramref name="zoneName" /> to the home and runs <paramref name="completionHandler" /> after it has been added.</summary>
+        <summary>Adds a none that is named  to the home and runs  after it has been added.</summary>
         <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous AddZone operation.  The value of the TResult parameter is of type System.Action&lt;HomeKit.HMZone,Foundation.NSError&gt;.</para>
+          <para class="improve-task-t-return-type-description">A task that represents the asynchronous AddZone operation.  The value of the TResult parameter is of type <c>Action&lt;HomeKit.HMZone,Foundation.NSError&gt;</c>.</para>
         </returns>
         <remarks />
       </Docs>
@@ -779,7 +779,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="accessory">To be added.</param>
         <param name="room">To be added.</param>
-        <summary>Assigns <paramref name="accessory" /> to <paramref name="room" /> and runs <paramref name="completion" /> afer it has been assigned.</summary>
+        <summary>Assigns  to  and runs  afer it has been assigned.</summary>
         <returns>A task that represents the asynchronous AssignAccessory operation</returns>
         <remarks />
       </Docs>
@@ -798,7 +798,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <summary>The handle for this class.</summary>
         <value>The pointer to the Objective-C class.</value>
-        <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CurrentUser">
@@ -814,7 +814,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("currentUser")</AttributeName>
+          <AttributeName>get: Foundation.Export("currentUser", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -841,9 +841,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>HomeKit.IHMHomeDelegate</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>An instance of the HomeKit.IHMHomeDelegate model class which acts as the class delegate.</summary>
+        <summary>An instance of the <see cref="HomeKit.HMHomeDelegate" /> model class which acts as the class delegate.</summary>
         <value>
-          <para>The instance of the HomeKit.IHMHomeDelegate model class</para>
+          <para>The instance of the <see cref="HomeKit.HMHomeDelegate" /> model class</para>
           <para tool="nullallowed">This value can be <see langword="null" />.</para>
         </value>
         <remarks>
@@ -1425,7 +1425,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="actionSet">To be added.</param>
-        <summary>Runs the specified <paramref name="actionSet" /> and runs <paramref name="completion" /> afer it has finished.</summary>
+        <summary>Runs the specified  and runs  afer it has finished.</summary>
         <returns>A task that represents the asynchronous ExecuteActionSet operation</returns>
         <remarks />
       </Docs>
@@ -1779,7 +1779,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="accessory">To be added.</param>
-        <summary>Removes <paramref name="accessory" /> from the home and runs <paramref name="completion" /> afer it has finished.</summary>
+        <summary>Removes  from the home and runs  afer it has finished.</summary>
         <returns>A task that represents the asynchronous RemoveAccessory operation</returns>
         <remarks />
       </Docs>
@@ -1847,7 +1847,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="actionSet">To be added.</param>
-        <summary>Removes <paramref name="actionSet" /> from the home and runs <paramref name="completion" /> after it has finished.</summary>
+        <summary>Removes  from the home and runs  after it has finished.</summary>
         <returns>A task that represents the asynchronous RemoveActionSet operation</returns>
         <remarks />
       </Docs>
@@ -1915,7 +1915,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="room">To be added.</param>
-        <summary>Removes <paramref name="room" /> from the home and runs <paramref name="completion" /> after it has finished..</summary>
+        <summary>Removes  from the home and runs  after it has finished..</summary>
         <returns>A task that represents the asynchronous RemoveRoom operation</returns>
         <remarks />
       </Docs>
@@ -1983,7 +1983,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="group">To be added.</param>
-        <summary>Removes <paramref name="group" /> from the home and runs <paramref name="completion" /> after it has finished.</summary>
+        <summary>Removes  from the home and runs  after it has finished.</summary>
         <returns>A task that represents the asynchronous RemoveServiceGroup operation</returns>
         <remarks />
       </Docs>
@@ -2051,7 +2051,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="trigger">To be added.</param>
-        <summary>Removes <paramref name="trigger" /> from the home and runs <paramref name="completion" /> after it has finished.</summary>
+        <summary>Removes  from the home and runs  after it has finished.</summary>
         <returns>A task that represents the asynchronous RemoveTrigger operation</returns>
         <remarks />
       </Docs>
@@ -2131,7 +2131,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="user">To be added.</param>
-        <summary>Removes the user who is specified by <paramref name="userID" /> from the home and runs <paramref name="completion" /> after it has finished.</summary>
+        <summary>Removes the user who is specified by  from the home and runs  after it has finished.</summary>
         <returns>A task that represents the asynchronous RemoveUser operation</returns>
         <remarks />
       </Docs>
@@ -2199,7 +2199,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="zone">To be added.</param>
-        <summary>Removes <paramref name="zone" /> from the home and runs <paramref name="completion" /> after it has finished.</summary>
+        <summary>Removes  from the home and runs  after it has finished.</summary>
         <returns>A task that represents the asynchronous RemoveZone operation</returns>
         <remarks />
       </Docs>
@@ -2214,7 +2214,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("rooms")</AttributeName>
+          <AttributeName>get: Foundation.Export("rooms", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -2236,7 +2236,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("serviceGroups")</AttributeName>
+          <AttributeName>get: Foundation.Export("serviceGroups", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -2258,7 +2258,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("triggers")</AttributeName>
+          <AttributeName>get: Foundation.Export("triggers", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -2333,7 +2333,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="accessory">To be added.</param>
-        <summary>Unblocks <paramref name="accessory" /> from the home and runs <paramref name="completion" /> after it has finished.</summary>
+        <summary>Unblocks  from the home and runs  after it has finished.</summary>
         <returns>A task that represents the asynchronous UnblockAccessory operation</returns>
         <remarks />
       </Docs>
@@ -2351,7 +2351,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("uniqueIdentifier")</AttributeName>
+          <AttributeName>get: Foundation.Export("uniqueIdentifier", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -2429,7 +2429,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="name">To be added.</param>
-        <summary>Changes the home name to <paramref name="name" /> and runs <paramref name="completion" /> after it has finished..</summary>
+        <summary>Changes the home name to  and runs  after it has finished..</summary>
         <returns>A task that represents the asynchronous UpdateName operation</returns>
         <remarks />
       </Docs>
@@ -2513,10 +2513,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("delegate")</AttributeName>
+          <AttributeName>get: Foundation.Export("delegate", ObjCRuntime.ArgumentSemantic.Weak)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setDelegate:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setDelegate:", ObjCRuntime.ArgumentSemantic.Weak)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -2545,7 +2545,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("zones")</AttributeName>
+          <AttributeName>get: Foundation.Export("zones", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>

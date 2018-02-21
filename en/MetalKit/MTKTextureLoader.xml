@@ -58,7 +58,7 @@
 // C# class with the Objective-C runtime if necessary, but no actual
 // initXxx method is invoked, that is done later in the constructor
 //
-// This is taken from Xamarin.iOS's source code:
+// This is taken from Xamarin's source code:
 //
 [Export ("initWithFrame:")]
 public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
@@ -66,9 +66,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 // Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
 	if (IsDirectBinding)
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
 	else
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
 }
 ]]></code>
           </example>
@@ -135,7 +135,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <summary>The handle for this class.</summary>
         <value>The pointer to the Objective-C class.</value>
-        <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Device">
@@ -347,14 +347,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="name">To be added.</param>
         <param name="scaleFactor">To be added.</param>
-        <param name="bundle">
-          <para>To be added.</para>
-          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
-        </param>
-        <param name="options">
-          <para>To be added.</para>
-          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
-        </param>
+        <param name="bundle">To be added.</param>
+        <param name="options">To be added.</param>
         <param name="error">To be added.</param>
         <summary>To be added.</summary>
         <returns>To be added.</returns>
@@ -398,14 +392,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="name">To be added.</param>
         <param name="scaleFactor">To be added.</param>
-        <param name="bundle">
-          <para>To be added.</para>
-          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
-        </param>
-        <param name="options">
-          <para>To be added.</para>
-          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
-        </param>
+        <param name="bundle">To be added.</param>
+        <param name="options">To be added.</param>
         <param name="completionHandler">To be added.</param>
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
@@ -514,11 +502,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="options" Type="Foundation.NSDictionary" />
       </Parameters>
       <Docs>
-        <param name="name">To be added.</param>
-        <param name="scaleFactor">To be added.</param>
-        <param name="bundle">To be added.</param>
-        <param name="options">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="name">The asset catalog name of the image.</param>
+        <param name="scaleFactor">The scale factor to use.</param>
+        <param name="bundle">The bundle that contains the image data. This parameter can be <see langwor="null" />.</param>
+        <param name="options">Options for loading the texture data. This parameter can be <see langwor="null" />.</param>
+        <summary>Creates a new Metal texture with the specified  and options..</summary>
         <returns>
           <para>A task that represents the asynchronous FromName operation.   The value of the TResult parameter is a System.nfloat.</para>
         </returns>
@@ -597,14 +585,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="names">To be added.</param>
         <param name="scaleFactor">To be added.</param>
-        <param name="bundle">
-          <para>To be added.</para>
-          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
-        </param>
-        <param name="options">
-          <para>To be added.</para>
-          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
-        </param>
+        <param name="bundle">To be added.</param>
+        <param name="options">To be added.</param>
         <param name="completionHandler">To be added.</param>
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
@@ -677,11 +659,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="options" Type="Foundation.NSDictionary" />
       </Parameters>
       <Docs>
-        <param name="names">To be added.</param>
-        <param name="scaleFactor">To be added.</param>
-        <param name="bundle">To be added.</param>
-        <param name="options">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="names">An array of asset catalog names for images to load.</param>
+        <param name="scaleFactor">The scale factor to use.</param>
+        <param name="bundle">The bundle that contains the image data. This parameter can be <see langwor="null" />.</param>
+        <param name="options">Options for loading the texture data. This parameter can be <see langwor="null" />.</param>
+        <summary>Creates an array of new Metal texture with the specified  and options.</summary>
         <returns>
           <para>A task that represents the asynchronous FromNames operation.   The value of the TResult parameter is a System.nfloat.</para>
         </returns>
@@ -900,9 +882,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="texture">The texture to load.</param>
-        <param name="options">Options for loading the texture data.
-          This parameter can be .</param>
-        <summary>Creates a new Metal texture from the specified <paramref name="texture" />.</summary>
+        <param name="options">Options for loading the texture data. This parameter can be <see langwor="null" />.</param>
+        <summary>Creates a new Metal texture from the specified .</summary>
         <returns>
           <para>A task that represents the asynchronous FromTexture operation.   The value of the TResult parameter is a <see cref="MetalKit.MTKTextureLoaderCallback" />.</para>
         </returns>
@@ -1198,9 +1179,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="urls">The locations of the image data to load.</param>
-        <param name="options">Options for loading the texture data.
-          This parameter can be .</param>
-        <summary>Creates an array of new Metal textures from the resources at the specified <paramref name="urls" />.</summary>
+        <param name="options">Options for loading the texture data. This parameter can be <see langwor="null" />.</param>
+        <summary>Creates an array of new Metal textures from the resources at the specified .</summary>
         <returns>
           <para>A task that represents the asynchronous FromUrls operation.   The value of the TResult parameter is a <see cref="MetalKit.MTKTextureLoaderArrayCallback" />.</para>
         </returns>

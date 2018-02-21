@@ -90,7 +90,7 @@
 // C# class with the Objective-C runtime if necessary, but no actual
 // initXxx method is invoked, that is done later in the constructor
 //
-// This is taken from Xamarin.iOS's source code:
+// This is taken from Xamarin's source code:
 //
 [Export ("initWithFrame:")]
 public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
@@ -98,9 +98,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 // Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
 	if (IsDirectBinding)
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
 	else
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
 }
 ]]></code>
           </example>
@@ -298,7 +298,7 @@ mySliders.TintColor = UIColor.Red;
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("backForwardList")</AttributeName>
+          <AttributeName>get: Foundation.Export("backForwardList", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -398,7 +398,7 @@ mySliders.TintColor = UIColor.Red;
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.Arch64, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("certificateChain")</AttributeName>
+          <AttributeName>get: Foundation.Export("certificateChain", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'ServerTrust' property.")</AttributeName>
@@ -436,7 +436,7 @@ mySliders.TintColor = UIColor.Red;
       <Docs>
         <summary>The handle for this class.</summary>
         <value>The pointer to the Objective-C class.</value>
-        <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Configuration">
@@ -449,7 +449,7 @@ mySliders.TintColor = UIColor.Red;
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("configuration")</AttributeName>
+          <AttributeName>get: Foundation.Export("configuration", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1353,7 +1353,7 @@ myTheme.TintColor = UIColor.Red;
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("scrollView")</AttributeName>
+          <AttributeName>get: Foundation.Export("scrollView", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1492,8 +1492,11 @@ myTheme.TintColor = UIColor.Red;
         <Parameter Name="snapshotConfiguration" Type="WebKit.WKSnapshotConfiguration" />
       </Parameters>
       <Docs>
-        <param name="snapshotConfiguration">The snapshot configuration to use.This parameter can be .</param>
-        <summary>Takes a snapshot of the current viewport and runs a handler that takes the resulting image and any error encountered.</summary>
+        <param name="snapshotConfiguration">
+          <para>The snapshot configuration to use.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <summary>Takes a snapshot of the current viewport and returns a task that takes the resulting image and any error encountered.</summary>
         <returns>
           <para>A task that receives the resulting image, or <see langword="null" /> if an error occurred</para>
         </returns>
@@ -1558,7 +1561,7 @@ myTheme.TintColor = UIColor.Red;
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("URL")</AttributeName>
+          <AttributeName>get: Foundation.Export("URL", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1582,10 +1585,10 @@ myTheme.TintColor = UIColor.Red;
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("navigationDelegate")</AttributeName>
+          <AttributeName>get: Foundation.Export("navigationDelegate", ObjCRuntime.ArgumentSemantic.Weak)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setNavigationDelegate:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setNavigationDelegate:", ObjCRuntime.ArgumentSemantic.Weak)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1613,10 +1616,10 @@ myTheme.TintColor = UIColor.Red;
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("UIDelegate")</AttributeName>
+          <AttributeName>get: Foundation.Export("UIDelegate", ObjCRuntime.ArgumentSemantic.Weak)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setUIDelegate:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setUIDelegate:", ObjCRuntime.ArgumentSemantic.Weak)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>

@@ -81,7 +81,7 @@
 // C# class with the Objective-C runtime if necessary, but no actual
 // initXxx method is invoked, that is done later in the constructor
 //
-// This is taken from Xamarin.iOS's source code:
+// This is taken from Xamarin's source code:
 //
 [Export ("initWithFrame:")]
 public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
@@ -89,9 +89,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 // Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
 	if (IsDirectBinding)
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
 	else
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
 }
 ]]></code>
           </example>
@@ -152,10 +152,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="toMatch">To be added.</param>
         <param name="matchRequest">To be added.</param>
-        <param name="completionHandler">
-          <para>To be added.</para>
-          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
-        </param>
+        <param name="completionHandler">To be added.</param>
         <summary>Adds the players in the match request to the match.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -290,7 +287,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <summary>The handle for this class.</summary>
         <value>The pointer to the Objective-C class.</value>
-        <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
     <Member MemberName="FindMatch">
@@ -347,7 +344,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="request">To be added.</param>
         <summary>Finds players for a peer-to-peer match.</summary>
         <returns>
-          <para>A task that represents the asynchronous FindMatch operation.   The value of the TResult parameter is a GameKit.GKNotificationMatch.</para>
+          <para>A task that represents the asynchronous FindMatch operation.   The value of the TResult parameter is a <see cref="GameKit.GKNotificationMatch" />.</para>
         </returns>
         <remarks />
       </Docs>
@@ -426,7 +423,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="request">To be added.</param>
         <summary>To be added.</summary>
         <returns>
-          <para>A task that represents the asynchronous FindPlayers operation.   The value of the TResult parameter is a GameKit.GKFriendsHandler.</para>
+          <para>A task that represents the asynchronous FindPlayers operation.   The value of the TResult parameter is a <see cref="GameKit.GKFriendsHandler" />.</para>
         </returns>
         <remarks />
       </Docs>
@@ -499,7 +496,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="request">To be added.</param>
         <summary>Finds players for a hosted match request.</summary>
         <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous FindPlayersForHostedRequest operation.  The value of the TResult parameter is of type System.Action&lt;GameKit.GKPlayer[],Foundation.NSError&gt;.</para>
+          <para class="improve-task-t-return-type-description">A task that represents the asynchronous FindPlayersForHostedRequest operation.  The value of the TResult parameter is of type <c>Action&lt;GameKit.GKPlayer[],Foundation.NSError&gt;</c>.</para>
         </returns>
         <remarks>
           <para copied="true">The FindPlayersForHostedRequestAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
@@ -551,13 +548,13 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("inviteHandler")</AttributeName>
+          <AttributeName>get: Foundation.Export("inviteHandler", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setInviteHandler:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setInviteHandler:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
@@ -649,7 +646,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="invite">To be added.</param>
         <summary>Creates a match for the specified invitation.</summary>
         <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous Match operation.  The value of the TResult parameter is of type System.Action&lt;GameKit.GKMatch,Foundation.NSError&gt;.</para>
+          <para class="improve-task-t-return-type-description">A task that represents the asynchronous Match operation.  The value of the TResult parameter is of type <c>Action&lt;GameKit.GKMatch,Foundation.NSError&gt;</c>.</para>
         </returns>
         <remarks />
       </Docs>
@@ -701,11 +698,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Queries for activity in all player groups.</summary>
-        <returns>
-          <para>A task that represents the asynchronous QueryActivity operation.   The value of the TResult parameter is a GameKit.GKQueryHandler.</para>
-        </returns>
-        <remarks />
+        <summary>Asynchronously queries for activity in all player groups.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="QueryPlayerGroupActivity">
@@ -735,10 +730,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="playerGroup">To be added.</param>
-        <param name="completionHandler">
-          <para>To be added.</para>
-          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
-        </param>
+        <param name="completionHandler">To be added.</param>
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -759,9 +751,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="playerGroup">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Queries for activity in the specified player group.</summary>
         <returns>
-          <para>A task that represents the asynchronous QueryPlayerGroupActivity operation.   The value of the TResult parameter is a GameKit.GKQueryHandler.</para>
+          <para>A task that represents the asynchronous QueryPlayerGroupActivity operation.   The value of the TResult parameter is a System.nint.</para>
         </returns>
         <remarks />
       </Docs>

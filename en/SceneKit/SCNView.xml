@@ -128,7 +128,7 @@
 // C# class with the Objective-C runtime if necessary, but no actual
 // initXxx method is invoked, that is done later in the constructor
 //
-// This is taken from Xamarin.iOS's source code:
+// This is taken from Xamarin's source code:
 //
 [Export ("initWithFrame:")]
 public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
@@ -136,9 +136,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 // Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
 	if (IsDirectBinding)
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
 	else
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
 }
 ]]></code>
           </example>
@@ -187,10 +187,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="frame">To be added.</param>
-        <param name="options">
-          <para>To be added.</para>
-          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
-        </param>
+        <param name="options">To be added.</param>
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -444,7 +441,7 @@ mySliders.TintColor = UIColor.Red;
           <AttributeName>System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("audioListener")</AttributeName>
+          <AttributeName>get: Foundation.Export("audioListener", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -453,7 +450,7 @@ mySliders.TintColor = UIColor.Red;
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.Arch64, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setAudioListener:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setAudioListener:", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -565,7 +562,7 @@ mySliders.TintColor = UIColor.Red;
       <Docs>
         <summary>The handle for this class.</summary>
         <value>The pointer to the Objective-C class.</value>
-        <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ColorPixelFormat">
@@ -735,7 +732,7 @@ mySliders.TintColor = UIColor.Red;
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("debugOptions")</AttributeName>
+          <AttributeName>get: Foundation.Export("debugOptions", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -744,7 +741,7 @@ mySliders.TintColor = UIColor.Red;
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setDebugOptions:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setDebugOptions:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -925,10 +922,10 @@ mySliders.TintColor = UIColor.Red;
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("eaglContext")</AttributeName>
+          <AttributeName>get: Foundation.Export("eaglContext", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setEaglContext:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setEaglContext:", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1357,13 +1354,13 @@ myTheme.TintColor = UIColor.Red;
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("overlaySKScene")</AttributeName>
+          <AttributeName>get: Foundation.Export("overlaySKScene", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setOverlaySKScene:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setOverlaySKScene:", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -1487,10 +1484,10 @@ myTheme.TintColor = UIColor.Red;
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("pointOfView")</AttributeName>
+          <AttributeName>get: Foundation.Export("pointOfView", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setPointOfView:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setPointOfView:", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1901,13 +1898,13 @@ myTheme.TintColor = UIColor.Red;
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("scene")</AttributeName>
+          <AttributeName>get: Foundation.Export("scene", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setScene:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setScene:", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -2120,7 +2117,7 @@ myTheme.TintColor = UIColor.Red;
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("technique")</AttributeName>
+          <AttributeName>get: Foundation.Export("technique", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -2129,7 +2126,7 @@ myTheme.TintColor = UIColor.Red;
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setTechnique:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setTechnique:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -2204,10 +2201,10 @@ myTheme.TintColor = UIColor.Red;
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("delegate")</AttributeName>
+          <AttributeName>get: Foundation.Export("delegate", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setDelegate:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setDelegate:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>

@@ -150,7 +150,7 @@
 // C# class with the Objective-C runtime if necessary, but no actual
 // initXxx method is invoked, that is done later in the constructor
 //
-// This is taken from Xamarin.iOS's source code:
+// This is taken from Xamarin's source code:
 //
 [Export ("initWithFrame:")]
 public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
@@ -158,9 +158,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 // Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
 	if (IsDirectBinding)
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
 	else
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
 }
 ]]></code>
           </example>
@@ -291,7 +291,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <summary>The handle for this class.</summary>
         <value>The pointer to the Objective-C class.</value>
-        <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CutLengthForPaper">
@@ -323,9 +323,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>UIKit.IUIPrintInteractionControllerDelegate</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>An instance of the UIKit.IUIPrintInteractionControllerDelegate model class which acts as the class delegate.</summary>
+        <summary>An instance of the <see cref="UIKit.UIPrintInteractionControllerDelegate" /> model class which acts as the class delegate.</summary>
         <value>
-          <para>The instance of the UIKit.IUIPrintInteractionControllerDelegate model class</para>
+          <para>The instance of the <see cref="UIKit.UIPrintInteractionControllerDelegate" /> model class</para>
           <para tool="nullallowed">This value can be <see langword="null" />.</para>
         </value>
         <remarks>
@@ -681,14 +681,12 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="animated" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="rect">A rectangle that defines an area from which a printing popover view is animated.</param>
-        <param name="view">The view that provides the coordinate system for the specified rect.</param>
-        <param name="animated"> to animate the printing popover view from the specified item,  to display immediately.</param>
-        <summary>Presents an iPad printing user interface in a particular popover view that can be animated from any specified area in a view.</summary>
-        <returns>
-          <para>A task that represents the asynchronous PresentFromRectInView operation.   The value of the TResult parameter is of type UIKit.UIPrintInteractionResult.  The return values of the asynch methods , , and .</para>
-        </returns>
-        <remarks />
+        <param name="rect">To be added.</param>
+        <param name="view">To be added.</param>
+        <param name="animated">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="PresentFromRectInViewAsync">
@@ -751,10 +749,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("printFormatter")</AttributeName>
+          <AttributeName>get: Foundation.Export("printFormatter", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setPrintFormatter:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setPrintFormatter:", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -776,10 +774,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("printInfo")</AttributeName>
+          <AttributeName>get: Foundation.Export("printInfo", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setPrintInfo:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setPrintInfo:", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -824,10 +822,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("printingItem")</AttributeName>
+          <AttributeName>get: Foundation.Export("printingItem", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setPrintingItem:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setPrintingItem:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -849,10 +847,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("printingItems")</AttributeName>
+          <AttributeName>get: Foundation.Export("printingItems", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setPrintingItems:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setPrintingItems:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -874,10 +872,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("printPageRenderer")</AttributeName>
+          <AttributeName>get: Foundation.Export("printPageRenderer", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setPrintPageRenderer:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setPrintPageRenderer:", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1175,10 +1173,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("delegate")</AttributeName>
+          <AttributeName>get: Foundation.Export("delegate", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setDelegate:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setDelegate:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>

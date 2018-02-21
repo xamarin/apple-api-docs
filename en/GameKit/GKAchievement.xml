@@ -123,7 +123,7 @@
 // C# class with the Objective-C runtime if necessary, but no actual
 // initXxx method is invoked, that is done later in the constructor
 //
-// This is taken from Xamarin.iOS's source code:
+// This is taken from Xamarin's source code:
 //
 [Export ("initWithFrame:")]
 public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
@@ -131,9 +131,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 // Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
 	if (IsDirectBinding)
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
 	else
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
 }
 ]]></code>
           </example>
@@ -343,12 +343,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="message">An editable message to display to the other players. May be <see langword="null" />.<para tool="nullallowed">This parameter can be <see langword="null" />.</para></param>
+        <param name="message">An editable message to display to the other players. May be <see langword="null" />.</param>
         <param name="players">The players to challenge.</param>
-        <param name="completionHandler">
-          <para>To be added.</para>
-          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
-        </param>
+        <param name="completionHandler">To be added.</param>
         <summary>Provides a view controller that can be used to send a challenge, with a message, to other players.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
@@ -378,11 +375,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="players" Type="GameKit.GKPlayer[]" />
       </Parameters>
       <Docs>
-        <param name="message">An editable message to display to the other players. May be .</param>
+        <param name="message">An editable message to display to the other players. May be <see langword="null" />.</param>
         <param name="players">The players to challenge.</param>
         <summary>Provides a view controller that can be used to send a challenge, with a message, to other players.</summary>
         <returns>
-          <para>A task that represents the asynchronous ChallengeComposeController operation.   The value of the TResult parameter is of type GameKit.GKChallengeComposeResult.  Holds the return values from the asynchronous method .</para>
+          <para>A task that represents the asynchronous ChallengeComposeController operation.   The value of the TResult parameter is of type <c>Action&lt;GameKit.GKChallengeComposeResult&gt;</c>.</para>
         </returns>
         <remarks />
       </Docs>
@@ -434,7 +431,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <summary>The handle for this class.</summary>
         <value>The pointer to the Objective-C class.</value>
-        <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Completed">
@@ -544,10 +541,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("identifier")</AttributeName>
+          <AttributeName>get: Foundation.Export("identifier", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setIdentifier:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setIdentifier:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -623,7 +620,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("lastReportedDate")</AttributeName>
+          <AttributeName>get: Foundation.Export("lastReportedDate", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: Foundation.NotImplemented</AttributeName>
@@ -687,7 +684,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <summary>Loads the achievement progress and then passes it to <paramref name="completionHandler" />, along with an error object that is <see langword="null" /> if no error occurred..</summary>
         <returns>
-          <para>A task that represents the asynchronous LoadAchievements operation.   The value of the TResult parameter is a GameKit.GKCompletionHandler.</para>
+          <para>A task that represents the asynchronous LoadAchievements operation.   The value of the TResult parameter is a <see cref="GameKit.GKCompletionHandler" />.</para>
         </returns>
         <remarks />
       </Docs>
@@ -733,7 +730,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("player")</AttributeName>
+          <AttributeName>get: Foundation.Export("player", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -773,7 +770,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("playerID")</AttributeName>
+          <AttributeName>get: Foundation.Export("playerID", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'Player' instead.")</AttributeName>
@@ -832,10 +829,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="completionHandler">
-          <para>To be added.</para>
-          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
-        </param>
+        <param name="completionHandler">To be added.</param>
         <summary>Deprecated.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -867,7 +861,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Deprecated.</summary>
+        <summary>Deprecatedl. Posts this achievement to GameCenter.</summary>
         <returns>A task that represents the asynchronous ReportAchievement operation</returns>
         <remarks />
       </Docs>
@@ -906,10 +900,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="achievements">To be added.</param>
-        <param name="completionHandler">
-          <para>To be added.</para>
-          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
-        </param>
+        <param name="completionHandler">To be added.</param>
         <summary>Reports the provided achievements to Game Center and then calls <paramref name="completionHandler" /> with an error object that is <see langword="null" /> if no error occurred.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -990,7 +981,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="achievements">Achievements to report to Game Center.</param>
-        <summary>Reports the provided achievements and matching challenges to Game Center and then calls <paramref name="completionHandler" /> with an error object that is <see langword="null" /> if no error occurred..</summary>
+        <summary>Reports the provided achievements and matching challenges to Game Center and then calls  with an error object that is  if no error occurred..</summary>
         <returns>A task that represents the asynchronous ReportAchievements operation</returns>
         <remarks />
       </Docs>
@@ -1055,10 +1046,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="completionHandler">
-          <para>To be added.</para>
-          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
-        </param>
+        <param name="completionHandler">To be added.</param>
         <summary>Resets all achievements for the local player and then calls <paramref name="completionHandler" /> with an error object that is <see langword="null" /> if no error occurred.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -1173,10 +1161,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="playerIDs" Type="System.String[]" />
       </Parameters>
       <Docs>
-        <param name="playerIDs">To be added.This parameter can be .</param>
+        <param name="playerIDs">To be added. This parameter can be <see langwor="null" />.</param>
         <summary>Deprecated.</summary>
         <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous SelectChallengeablePlayerIDs operation.  The value of the TResult parameter is of type System.Action&lt;System.String[],Foundation.NSError&gt;.</para>
+          <para class="improve-task-t-return-type-description">A task that represents the asynchronous SelectChallengeablePlayerIDs operation.  The value of the TResult parameter is of type System.String[],Foundation.NSError.</para>
         </returns>
         <remarks />
       </Docs>
@@ -1253,9 +1241,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="players">To be added.</param>
-        <summary>Returns the players who can earn the achievement, and then passes them to <paramref name="completionHandler" />, along with an error object that is <see langword="null" /> if no error occurred..</summary>
+        <summary>Returns the players who can earn the achievement, and then passes them to , along with an error object that is  if no error occurred..</summary>
         <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous SelectChallengeablePlayers operation.  The value of the TResult parameter is of type System.Action&lt;GameKit.GKPlayer[],Foundation.NSError&gt;.</para>
+          <para class="improve-task-t-return-type-description">A task that represents the asynchronous SelectChallengeablePlayers operation.  The value of the TResult parameter is of type <c>Action&lt;GameKit.GKPlayer[],Foundation.NSError&gt;</c>.</para>
         </returns>
         <remarks>
           <para copied="true">The SelectChallengeablePlayersAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>

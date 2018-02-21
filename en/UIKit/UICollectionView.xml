@@ -410,7 +410,7 @@ public class SimpleCollectionViewController : UICollectionViewController
 // C# class with the Objective-C runtime if necessary, but no actual
 // initXxx method is invoked, that is done later in the constructor
 //
-// This is taken from Xamarin.iOS's source code:
+// This is taken from Xamarin's source code:
 //
 [Export ("initWithFrame:")]
 public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
@@ -418,9 +418,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 // Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
 	if (IsDirectBinding)
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
 	else
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
 }
 ]]></code>
           </example>
@@ -596,10 +596,10 @@ mySliders.TintColor = UIColor.Red;
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("backgroundView")</AttributeName>
+          <AttributeName>get: Foundation.Export("backgroundView", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setBackgroundView:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setBackgroundView:", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -733,7 +733,7 @@ mySliders.TintColor = UIColor.Red;
       <Docs>
         <summary>The handle for this class.</summary>
         <value>The pointer to the Objective-C class.</value>
-        <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CollectionViewLayout">
@@ -746,10 +746,10 @@ mySliders.TintColor = UIColor.Red;
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("collectionViewLayout")</AttributeName>
+          <AttributeName>get: Foundation.Export("collectionViewLayout", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setCollectionViewLayout:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setCollectionViewLayout:", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -796,9 +796,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>UIKit.IUICollectionViewDelegate</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>An instance of the UIKit.IUICollectionViewDelegate model class which acts as the class delegate.</summary>
+        <summary>An instance of the <see cref="UIKit.UICollectionViewDelegate" /> model class which acts as the class delegate.</summary>
         <value>
-          <para>The instance of the UIKit.IUICollectionViewDelegate model class</para>
+          <para>The instance of the <see cref="UIKit.UICollectionViewDelegate" /> model class</para>
           <para tool="nullallowed">This value can be <see langword="null" />.</para>
         </value>
         <remarks>
@@ -1096,7 +1096,7 @@ mySliders.TintColor = UIColor.Red;
           <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("dragDelegate")</AttributeName>
+          <AttributeName>get: Foundation.Export("dragDelegate", ObjCRuntime.ArgumentSemantic.Weak)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -1108,7 +1108,7 @@ mySliders.TintColor = UIColor.Red;
           <AttributeName>get: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setDragDelegate:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setDragDelegate:", ObjCRuntime.ArgumentSemantic.Weak)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -1203,7 +1203,7 @@ mySliders.TintColor = UIColor.Red;
           <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("dropDelegate")</AttributeName>
+          <AttributeName>get: Foundation.Export("dropDelegate", ObjCRuntime.ArgumentSemantic.Weak)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -1215,7 +1215,7 @@ mySliders.TintColor = UIColor.Red;
           <AttributeName>get: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setDropDelegate:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setDropDelegate:", ObjCRuntime.ArgumentSemantic.Weak)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -2221,12 +2221,12 @@ myTheme.TintColor = UIColor.Red;
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="updates">An  delegate specifying the updates to apply.</param>
-        <summary>Applies and simultaneously animates multiple manipulations of the <see cref="T:UIKit.UICollectionView" />.</summary>
+        <param name="updates">A delegate specifying the updates to apply.</param>
+        <summary>Asynchronously applies and simultaneously animates multiple manipulations of the <see cref="T:UIKit.UICollectionView" />, returning a task that tells whether the operation succeeded.</summary>
         <returns>
           <para>A task that represents the asynchronous PerformBatchUpdates operation.   The value of the TResult parameter is a <see cref="UIKit.UICompletionHandler" />.</para>
         </returns>
-        <remarks />
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="PerformUsingPresentationValues">
@@ -2282,7 +2282,7 @@ myTheme.TintColor = UIColor.Red;
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("prefetchDataSource")</AttributeName>
+          <AttributeName>get: Foundation.Export("prefetchDataSource", ObjCRuntime.ArgumentSemantic.Weak)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -2291,7 +2291,7 @@ myTheme.TintColor = UIColor.Red;
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setPrefetchDataSource:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setPrefetchDataSource:", ObjCRuntime.ArgumentSemantic.Weak)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -2868,7 +2868,7 @@ public class AnimalCell : UICollectionViewCell
           <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("reorderingCadence")</AttributeName>
+          <AttributeName>get: Foundation.Export("reorderingCadence", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -2880,7 +2880,7 @@ public class AnimalCell : UICollectionViewCell
           <AttributeName>get: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setReorderingCadence:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setReorderingCadence:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -3056,7 +3056,7 @@ public class AnimalCell : UICollectionViewCell
       <Docs>
         <param name="layout">The new .</param>
         <param name="animated"> if the transition to the new layout should be animated.</param>
-        <summary>Sets the layout used by this <see cref="T:UIKit.UICollectionView" />.</summary>
+        <summary>Sets the layout used by this .</summary>
         <returns>
           <para>A task that represents the asynchronous SetCollectionViewLayout operation.   The value of the TResult parameter is a <see cref="UIKit.UICompletionHandler" />.</para>
         </returns>
@@ -3272,10 +3272,10 @@ public class AnimalCell : UICollectionViewCell
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("dataSource")</AttributeName>
+          <AttributeName>get: Foundation.Export("dataSource", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setDataSource:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setDataSource:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -3300,10 +3300,10 @@ public class AnimalCell : UICollectionViewCell
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("delegate")</AttributeName>
+          <AttributeName>get: Foundation.Export("delegate", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setDelegate:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setDelegate:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>

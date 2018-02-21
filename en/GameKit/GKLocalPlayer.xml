@@ -172,7 +172,7 @@ if (UIDevice.CurrentDevice.CheckSystemVersion (6, 0)) {
 // C# class with the Objective-C runtime if necessary, but no actual
 // initXxx method is invoked, that is done later in the constructor
 //
-// This is taken from Xamarin.iOS's source code:
+// This is taken from Xamarin's source code:
 //
 [Export ("initWithFrame:")]
 public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
@@ -180,9 +180,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 // Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
 	if (IsDirectBinding)
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
 	else
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
 }
 ]]></code>
           </example>
@@ -251,10 +251,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="handler">
-          <para>To be added.</para>
-          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
-        </param>
+        <param name="handler">To be added.</param>
         <summary>Developers should not use this deprecated method. Set the 'AuthenticationHandler' instead.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -286,7 +283,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Developers should not use this deprecated method. Set the 'AuthenticationHandler' instead.</summary>
+        <summary>Deprecated. Authenticates the local player and passes <see langword="null" /> to <paramref name="handler" /> on success, or an error on failure.</summary>
         <returns>A task that represents the asynchronous Authenticate operation</returns>
         <remarks />
       </Docs>
@@ -333,13 +330,13 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("authenticateHandler")</AttributeName>
+          <AttributeName>get: Foundation.Export("authenticateHandler", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setAuthenticateHandler:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setAuthenticateHandler:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -474,7 +471,7 @@ void Setup ()
       <Docs>
         <summary>The handle for this class.</summary>
         <value>The pointer to the Objective-C class.</value>
-        <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
     <Member MemberName="DeleteSavedGames">
@@ -593,7 +590,7 @@ void Setup ()
           <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("friends")</AttributeName>
+          <AttributeName>get: Foundation.Export("friends", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'LoadFriendPlayers' instead and collect the friends from the invoked callback.")</AttributeName>
@@ -681,7 +678,7 @@ void Setup ()
       <Docs>
         <summary>Creates and returns a signature for authenticating the local player on a third-party server. See remarks</summary>
         <returns>
-          <para>A task that represents the asynchronous GenerateIdentityVerificationSignature operation.   The value of the TResult parameter is of type GameKit.GKIdentityVerificationSignatureResult.  Holds the return values from the asynchronous method </para>
+          <para>A task that represents the asynchronous GenerateIdentityVerificationSignature operation.   The value of the TResult parameter is of type <c>Action&lt;GameKit.GKIdentityVerificationSignatureResult&gt;</c>.</para>
         </returns>
         <remarks />
       </Docs>
@@ -789,7 +786,7 @@ void Setup ()
       <Docs>
         <summary>Loads the local player's default leaderboard category ID, and passes it to <paramref name="completionHandler" />, along with an error object that is <see langword="null" /> if no error occurred.</summary>
         <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous LoadDefaultLeaderboardCategoryID operation.  The value of the TResult parameter is of type System.Action&lt;System.String,Foundation.NSError&gt;.</para>
+          <para class="improve-task-t-return-type-description">A task that represents the asynchronous LoadDefaultLeaderboardCategoryID operation.  The value of the TResult parameter is of type System.String,Foundation.NSError.</para>
         </returns>
         <remarks />
       </Docs>
@@ -857,7 +854,7 @@ void Setup ()
       <Docs>
         <summary>Loads the local player's default leaderboard identifier, and passes it to <paramref name="completionHandler" />, along with an error object that is <see langword="null" /> if no error occurred.</summary>
         <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous LoadDefaultLeaderboardIdentifier operation.  The value of the TResult parameter is of type System.Action&lt;System.String,Foundation.NSError&gt;.</para>
+          <para class="improve-task-t-return-type-description">A task that represents the asynchronous LoadDefaultLeaderboardIdentifier operation.  The value of the TResult parameter is of type System.String,Foundation.NSError.</para>
         </returns>
         <remarks />
       </Docs>
@@ -925,7 +922,7 @@ void Setup ()
       <Docs>
         <summary>Loads an array of the local player's friends' identifiers and passes it to <paramref name="completionHandler" />, along with an error object that is <see langword="null" /> if no error occurred.</summary>
         <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous LoadFriendPlayers operation.  The value of the TResult parameter is of type System.Action&lt;GameKit.GKPlayer[],Foundation.NSError&gt;.</para>
+          <para class="improve-task-t-return-type-description">A task that represents the asynchronous LoadFriendPlayers operation.  The value of the TResult parameter is of type <c>Action&lt;GameKit.GKPlayer[],Foundation.NSError&gt;</c>.</para>
         </returns>
         <remarks>
           <para copied="true">The LoadFriendPlayersAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
@@ -1008,7 +1005,7 @@ void Setup ()
       <Docs>
         <summary>Deprecated. Loads an array of the local player's friends' identifiers and passes it to <paramref name="handler" />, along with an error object that is <see langword="null" /> if no error occurred.</summary>
         <returns>
-          <para>A task that represents the asynchronous LoadFriends operation.   The value of the TResult parameter is a GameKit.GKFriendsHandler.</para>
+          <para>A task that represents the asynchronous LoadFriends operation.   The value of the TResult parameter is a <see cref="GameKit.GKFriendsHandler" />.</para>
         </returns>
         <remarks />
       </Docs>
@@ -1076,7 +1073,7 @@ void Setup ()
       <Docs>
         <summary>Loads the recent players.</summary>
         <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous LoadRecentPlayers operation.  The value of the TResult parameter is of type System.Action&lt;GameKit.GKPlayer[],Foundation.NSError&gt;.</para>
+          <para class="improve-task-t-return-type-description">A task that represents the asynchronous LoadRecentPlayers operation.  The value of the TResult parameter is of type <c>Action&lt;GameKit.GKPlayer[],Foundation.NSError&gt;</c>.</para>
         </returns>
         <remarks />
       </Docs>
@@ -1326,8 +1323,8 @@ void Setup ()
         <Parameter Name="categoryID" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="categoryID">To be added.This parameter can be .</param>
-        <summary>Deprecated. Sets the local player's default leaderboard category ID, and passes it to <paramref name="completionHandler" />, along with an error object that is <see langword="null" /> if no error occurred.</summary>
+        <param name="categoryID">To be added. This parameter can be <see langwor="null" />.</param>
+        <summary>Deprecated. Sets the local player's default leaderboard category ID, and passes it to , along with an error object that is  if no error occurred.</summary>
         <returns>A task that represents the asynchronous SetDefaultLeaderboardCategoryID operation</returns>
         <remarks />
       </Docs>
@@ -1398,7 +1395,7 @@ void Setup ()
       </Parameters>
       <Docs>
         <param name="leaderboardIdentifier">To be added.</param>
-        <summary>Sets the local player's default leaderboard identifier, and passes it to <paramref name="completionHandler" />, along with an error object that is <see langword="null" /> if no error occurred..</summary>
+        <summary>Sets the local player's default leaderboard identifier, and passes it to , along with an error object that is  if no error occurred..</summary>
         <returns>A task that represents the asynchronous SetDefaultLeaderboardIdentifier operation</returns>
         <remarks />
       </Docs>

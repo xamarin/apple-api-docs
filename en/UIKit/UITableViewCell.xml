@@ -224,7 +224,7 @@
 // C# class with the Objective-C runtime if necessary, but no actual
 // initXxx method is invoked, that is done later in the constructor
 //
-// This is taken from Xamarin.iOS's source code:
+// This is taken from Xamarin's source code:
 //
 [Export ("initWithFrame:")]
 public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
@@ -232,9 +232,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 // Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
 	if (IsDirectBinding)
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
 	else
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
 }
 ]]></code>
           </example>
@@ -360,10 +360,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("accessoryView")</AttributeName>
+          <AttributeName>get: Foundation.Export("accessoryView", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setAccessoryView:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setAccessoryView:", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -451,10 +451,10 @@ mySliders.TintColor = UIColor.Red;
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("backgroundView")</AttributeName>
+          <AttributeName>get: Foundation.Export("backgroundView", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setBackgroundView:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setBackgroundView:", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -483,7 +483,7 @@ mySliders.TintColor = UIColor.Red;
       <Docs>
         <summary>The handle for this class.</summary>
         <value>The pointer to the Objective-C class.</value>
-        <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ContentView">
@@ -496,7 +496,7 @@ mySliders.TintColor = UIColor.Red;
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("contentView")</AttributeName>
+          <AttributeName>get: Foundation.Export("contentView", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -519,7 +519,7 @@ mySliders.TintColor = UIColor.Red;
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("detailTextLabel")</AttributeName>
+          <AttributeName>get: Foundation.Export("detailTextLabel", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -664,10 +664,10 @@ mySliders.TintColor = UIColor.Red;
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("editingAccessoryView")</AttributeName>
+          <AttributeName>get: Foundation.Export("editingAccessoryView", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setEditingAccessoryView:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setEditingAccessoryView:", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -758,13 +758,13 @@ mySliders.TintColor = UIColor.Red;
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("focusStyle")</AttributeName>
+          <AttributeName>get: Foundation.Export("focusStyle", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setFocusStyle:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setFocusStyle:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -934,27 +934,12 @@ myTheme.TintColor = UIColor.Red;
         </Parameter>
       </Parameters>
       <Docs>
-        <typeparam name="T">The type for which the UIAppearance proxy must be returned.  This is a subclass of UITableViewCell.</typeparam>
-        <param name="traits">Trait collection to match.</param>
-        <param name="containers">List of types that the developer wishes to have as the containers to apply this particular appearance.</param>
-        <summary>
-          <para>Obtains the appearance proxy <see cref="T:UIKit.UITableViewCell.UITableViewCellAppearance" /> for the subclass of UITableViewCell that has the specified trait collection when the view is hosted in the specified hierarchy.</para>
-        </summary>
-        <returns>
-          <para>appearance proxy object for the specified type.</para>
-        </returns>
-        <remarks>
-          <para>The returned object represents the UIAppearance proxy where developers can set appearance properties for instances of UITableViewCell that has the specified trait collection when the view is hosted in the specified hierarchy when those instances are contained in the hierarchy specified by the <paramref name="containers" /> parameter.</para>
-          <para>Unlike the <see cref="P:UIKit.UITableViewCell.Appearance" /> property, or the <see cref="M:UIKit.UITableViewCellAppearanceWhenContainedIn" /> method which only work on instances of this particular class, the proxies returned by GetAppearance can be used to change the style of subclasses.</para>
-          <para>The following example shows how the GetAppearance method works</para>
-          <example>
-            <code lang="C#"><![CDATA[
-var myTheme = UITableViewCell.GetAppearance<MyUITableViewCellSubclass> (myTraits, typeof (UINavigationBar), typeof (UIPopoverController));
-myTheme.TintColor = UIColor.Red;
-]]></code>
-          </example>
-          <para>For more information, see the documentation for the <see cref="T:UIKit.UIAppearance" /> class.</para>
-        </remarks>
+        <typeparam name="T">To be added.</typeparam>
+        <param name="traits">To be added.</param>
+        <param name="containers">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Highlighted">
@@ -996,7 +981,7 @@ myTheme.TintColor = UIColor.Red;
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("imageView")</AttributeName>
+          <AttributeName>get: Foundation.Export("imageView", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1073,13 +1058,13 @@ myTheme.TintColor = UIColor.Red;
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 5, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("multipleSelectionBackgroundView")</AttributeName>
+          <AttributeName>get: Foundation.Export("multipleSelectionBackgroundView", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 5, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setMultipleSelectionBackgroundView:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setMultipleSelectionBackgroundView:", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 5, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -1134,7 +1119,7 @@ myTheme.TintColor = UIColor.Red;
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("reuseIdentifier")</AttributeName>
+          <AttributeName>get: Foundation.Export("reuseIdentifier", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1187,10 +1172,10 @@ myTheme.TintColor = UIColor.Red;
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("selectedBackgroundView")</AttributeName>
+          <AttributeName>get: Foundation.Export("selectedBackgroundView", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setSelectedBackgroundView:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setSelectedBackgroundView:", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1674,7 +1659,7 @@ myTheme.TintColor = UIColor.Red;
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("textLabel")</AttributeName>
+          <AttributeName>get: Foundation.Export("textLabel", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>

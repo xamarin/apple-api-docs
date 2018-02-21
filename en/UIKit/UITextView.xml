@@ -241,7 +241,7 @@ public class MyView : UIView
 // C# class with the Objective-C runtime if necessary, but no actual
 // initXxx method is invoked, that is done later in the constructor
 //
-// This is taken from Xamarin.iOS's source code:
+// This is taken from Xamarin's source code:
 //
 [Export ("initWithFrame:")]
 public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
@@ -249,9 +249,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 // Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
 	if (IsDirectBinding)
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
 	else
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
 }
 ]]></code>
           </example>
@@ -502,13 +502,13 @@ mySliders.TintColor = UIColor.Red;
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("attributedText")</AttributeName>
+          <AttributeName>get: Foundation.Export("attributedText", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setAttributedText:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setAttributedText:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -725,7 +725,7 @@ mySliders.TintColor = UIColor.Red;
       <Docs>
         <summary>The handle for this class.</summary>
         <value>The pointer to the Objective-C class.</value>
-        <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ClearsOnInsertion">
@@ -895,9 +895,9 @@ void Setup ()
         <ReturnType>UIKit.IUITextViewDelegate</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>An instance of the UIKit.IUITextViewDelegate model class which acts as the class delegate.</summary>
+        <summary>An instance of the <see cref="UIKit.UITextViewDelegate" /> model class which acts as the class delegate.</summary>
         <value>
-          <para>The instance of the UIKit.IUITextViewDelegate model class</para>
+          <para>The instance of the <see cref="UIKit.UITextViewDelegate" /> model class</para>
           <para tool="nullallowed">This value can be <see langword="null" />.</para>
         </value>
         <remarks>
@@ -1187,10 +1187,10 @@ void Setup ()
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("font")</AttributeName>
+          <AttributeName>get: Foundation.Export("font", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setFont:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setFont:", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1324,26 +1324,11 @@ myTheme.TintColor = UIColor.Red;
         <Parameter Name="traits" Type="UIKit.UITraitCollection" />
       </Parameters>
       <Docs>
-        <typeparam name="T">The type for which the UIAppearance proxy must be returned.  This is a subclass of UITextView.</typeparam>
-        <param name="traits">Trait collection to match.</param>
-        <summary>
-          <para>Obtains the appearance proxy <see cref="T:UIKit.UITextView.UITextViewAppearance" /> for the subclass of UITextView.</para>
-        </summary>
-        <returns>
-          <para>appearance proxy object for the specified type.</para>
-        </returns>
-        <remarks>
-          <para>The returned object represents the UIAppearance proxy where developers can set appearance properties for instances of UITextView.</para>
-          <para>Unlike the <see cref="P:UIKit.UITextView.Appearance" /> property, or the <see cref="M:UIKit.UITextViewAppearanceWhenContainedIn" /> method which only work on instances of this particular class, the proxies returned by GetAppearance can be used to change the style of subclasses.</para>
-          <para>The following example shows how the GetAppearance method works</para>
-          <example>
-            <code lang="C#"><![CDATA[
-var myTheme = UITextView.GetAppearance<MyUITextViewSubclass> (myTraits, );
-myTheme.TintColor = UIColor.Red;
-]]></code>
-          </example>
-          <para>For more information, see the documentation for the <see cref="T:UIKit.UIAppearance" /> class.</para>
-        </remarks>
+        <typeparam name="T">To be added.</typeparam>
+        <param name="traits">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetAppearance&lt;T&gt;">
@@ -1909,13 +1894,13 @@ myTheme.TintColor = UIColor.Red;
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 3, 2, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("inputAccessoryView")</AttributeName>
+          <AttributeName>get: Foundation.Export("inputAccessoryView", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 3, 2, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setInputAccessoryView:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setInputAccessoryView:", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 3, 2, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -1962,13 +1947,13 @@ myTheme.TintColor = UIColor.Red;
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 3, 2, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("inputView")</AttributeName>
+          <AttributeName>get: Foundation.Export("inputView", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 3, 2, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setInputView:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setInputView:", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 3, 2, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -2134,7 +2119,7 @@ myTheme.TintColor = UIColor.Red;
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("layoutManager")</AttributeName>
+          <AttributeName>get: Foundation.Export("layoutManager", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -2183,10 +2168,10 @@ myTheme.TintColor = UIColor.Red;
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("markedTextStyle")</AttributeName>
+          <AttributeName>get: Foundation.Export("markedTextStyle", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setMarkedTextStyle:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setMarkedTextStyle:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -2251,10 +2236,10 @@ myTheme.TintColor = UIColor.Red;
           <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("pasteConfiguration")</AttributeName>
+          <AttributeName>get: Foundation.Export("pasteConfiguration", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setPasteConfiguration:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setPasteConfiguration:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -2285,10 +2270,10 @@ myTheme.TintColor = UIColor.Red;
           <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("pasteDelegate")</AttributeName>
+          <AttributeName>get: Foundation.Export("pasteDelegate", ObjCRuntime.ArgumentSemantic.Weak)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setPasteDelegate:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setPasteDelegate:", ObjCRuntime.ArgumentSemantic.Weak)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -2531,10 +2516,10 @@ myTheme.TintColor = UIColor.Red;
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("selectedTextRange")</AttributeName>
+          <AttributeName>get: Foundation.Export("selectedTextRange", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setSelectedTextRange:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setSelectedTextRange:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -2791,7 +2776,7 @@ myTheme.TintColor = UIColor.Red;
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("smartDashesType")</AttributeName>
+          <AttributeName>get: Foundation.Export("smartDashesType", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -2800,7 +2785,7 @@ myTheme.TintColor = UIColor.Red;
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setSmartDashesType:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setSmartDashesType:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -2834,7 +2819,7 @@ myTheme.TintColor = UIColor.Red;
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("smartInsertDeleteType")</AttributeName>
+          <AttributeName>get: Foundation.Export("smartInsertDeleteType", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -2843,7 +2828,7 @@ myTheme.TintColor = UIColor.Red;
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setSmartInsertDeleteType:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setSmartInsertDeleteType:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -2877,7 +2862,7 @@ myTheme.TintColor = UIColor.Red;
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("smartQuotesType")</AttributeName>
+          <AttributeName>get: Foundation.Export("smartQuotesType", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -2886,7 +2871,7 @@ myTheme.TintColor = UIColor.Red;
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setSmartQuotesType:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setSmartQuotesType:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -2966,10 +2951,10 @@ myTheme.TintColor = UIColor.Red;
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("text")</AttributeName>
+          <AttributeName>get: Foundation.Export("text", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setText:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setText:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -3074,10 +3059,10 @@ myTheme.TintColor = UIColor.Red;
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("textColor")</AttributeName>
+          <AttributeName>get: Foundation.Export("textColor", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setTextColor:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setTextColor:", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -3150,7 +3135,7 @@ myTheme.TintColor = UIColor.Red;
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("textContainer")</AttributeName>
+          <AttributeName>get: Foundation.Export("textContainer", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -3178,13 +3163,13 @@ myTheme.TintColor = UIColor.Red;
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("textContainerInset")</AttributeName>
+          <AttributeName>get: Foundation.Export("textContainerInset", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setTextContainerInset:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setTextContainerInset:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -3544,10 +3529,10 @@ void Setup ()
           <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("textDragDelegate")</AttributeName>
+          <AttributeName>get: Foundation.Export("textDragDelegate", ObjCRuntime.ArgumentSemantic.Weak)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setTextDragDelegate:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setTextDragDelegate:", ObjCRuntime.ArgumentSemantic.Weak)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -3609,10 +3594,10 @@ void Setup ()
           <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("textDragOptions")</AttributeName>
+          <AttributeName>get: Foundation.Export("textDragOptions", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setTextDragOptions:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setTextDragOptions:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -3674,10 +3659,10 @@ void Setup ()
           <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("textDropDelegate")</AttributeName>
+          <AttributeName>get: Foundation.Export("textDropDelegate", ObjCRuntime.ArgumentSemantic.Weak)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setTextDropDelegate:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setTextDropDelegate:", ObjCRuntime.ArgumentSemantic.Weak)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -3815,7 +3800,7 @@ void Setup ()
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("textStorage")</AttributeName>
+          <AttributeName>get: Foundation.Export("textStorage", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -3860,13 +3845,13 @@ void Setup ()
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("typingAttributes")</AttributeName>
+          <AttributeName>get: Foundation.Export("typingAttributes", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setTypingAttributes:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setTypingAttributes:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -3953,10 +3938,10 @@ void Setup ()
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("delegate")</AttributeName>
+          <AttributeName>get: Foundation.Export("delegate", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setDelegate:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setDelegate:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -3985,10 +3970,10 @@ void Setup ()
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("inputDelegate")</AttributeName>
+          <AttributeName>get: Foundation.Export("inputDelegate", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setInputDelegate:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setInputDelegate:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -4013,13 +3998,13 @@ void Setup ()
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("linkTextAttributes")</AttributeName>
+          <AttributeName>get: Foundation.Export("linkTextAttributes", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setLinkTextAttributes:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setLinkTextAttributes:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
