@@ -292,7 +292,7 @@ locationManager.StartRangingBeacons(beaconRegion)
 // C# class with the Objective-C runtime if necessary, but no actual
 // initXxx method is invoked, that is done later in the constructor
 //
-// This is taken from Xamarin.iOS's source code:
+// This is taken from Xamarin's source code:
 //
 [Export ("initWithFrame:")]
 public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
@@ -300,9 +300,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 // Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
 	if (IsDirectBinding)
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
 	else
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
 }
 ]]></code>
           </example>
@@ -352,7 +352,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("activityType")</AttributeName>
+          <AttributeName>get: Foundation.Export("activityType", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.WatchOS, 4, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -364,7 +364,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>get: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setActivityType:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setActivityType:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.WatchOS, 4, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -512,7 +512,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <summary>The handle for this class.</summary>
         <value>The pointer to the Objective-C class.</value>
-        <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
     <Member MemberName="DeferredLocationUpdatesAvailable">
@@ -589,9 +589,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>CoreLocation.ICLLocationManagerDelegate</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>An instance of the CoreLocation.ICLLocationManagerDelegate model class which acts as the class delegate.</summary>
+        <summary>An instance of the <see cref="CoreLocation.CLLocationManagerDelegate" /> model class which acts as the class delegate.</summary>
         <value>
-          <para>The instance of the CoreLocation.ICLLocationManagerDelegate model class</para>
+          <para>The instance of the <see cref="CoreLocation.CLLocationManagerDelegate" /> model class</para>
           <para tool="nullallowed">This value can be <see langword="null" />.</para>
         </value>
         <remarks>
@@ -841,7 +841,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("heading")</AttributeName>
+          <AttributeName>get: Foundation.Export("heading", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 4, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -972,7 +972,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("headingOrientation")</AttributeName>
+          <AttributeName>get: Foundation.Export("headingOrientation", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 4, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -984,7 +984,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>get: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setHeadingOrientation:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setHeadingOrientation:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 4, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -1143,7 +1143,7 @@ var isAvail = CLLocationManager.IsMonitoringAvailable(typeof(CLCircularRegion));
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("location")</AttributeName>
+          <AttributeName>get: Foundation.Export("location", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1329,7 +1329,7 @@ var isAvail = CLLocationManager.IsMonitoringAvailable(typeof(CLCircularRegion));
           <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("monitoredRegions")</AttributeName>
+          <AttributeName>get: Foundation.Export("monitoredRegions", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 4, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -1526,7 +1526,7 @@ var isAvail = CLLocationManager.IsMonitoringAvailable(typeof(CLCircularRegion));
           <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("rangedRegions")</AttributeName>
+          <AttributeName>get: Foundation.Export("rangedRegions", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -2472,10 +2472,10 @@ var isAvail = CLLocationManager.IsMonitoringAvailable(typeof(CLCircularRegion));
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("delegate")</AttributeName>
+          <AttributeName>get: Foundation.Export("delegate", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setDelegate:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setDelegate:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>

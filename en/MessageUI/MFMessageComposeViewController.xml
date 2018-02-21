@@ -117,7 +117,7 @@
 // C# class with the Objective-C runtime if necessary, but no actual
 // initXxx method is invoked, that is done later in the constructor
 //
-// This is taken from Xamarin.iOS's source code:
+// This is taken from Xamarin's source code:
 //
 [Export ("initWithFrame:")]
 public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
@@ -125,9 +125,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 // Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
 	if (IsDirectBinding)
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
 	else
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
 }
 ]]></code>
           </example>
@@ -355,10 +355,10 @@ mySliders.TintColor = UIColor.Red;
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("body")</AttributeName>
+          <AttributeName>get: Foundation.Export("body", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setBody:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setBody:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -462,7 +462,7 @@ mySliders.TintColor = UIColor.Red;
       <Docs>
         <summary>The handle for this class.</summary>
         <value>The pointer to the Objective-C class.</value>
-        <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
     <Member MemberName="DisableUserAttachments">
@@ -784,13 +784,13 @@ myTheme.TintColor = UIColor.Red;
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("message")</AttributeName>
+          <AttributeName>get: Foundation.Export("message", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setMessage:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setMessage:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -838,10 +838,10 @@ myTheme.TintColor = UIColor.Red;
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("recipients")</AttributeName>
+          <AttributeName>get: Foundation.Export("recipients", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setRecipients:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setRecipients:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -866,13 +866,13 @@ myTheme.TintColor = UIColor.Red;
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("subject")</AttributeName>
+          <AttributeName>get: Foundation.Export("subject", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setSubject:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setSubject:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -917,7 +917,7 @@ myTheme.TintColor = UIColor.Red;
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:MessageUI.MFMessageComposeViewController+Notifications" />.<see cref="M:MessageUI.MFMessageComposeViewController+Notifications.ObserveTextMessageAvailabilityDidChangeNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:MessageUIfind . -neComposeViewController+Notifications" />.<see cref="M:MessageUIfind . -neComposeViewController+Notifications.ObserveTextMessageAvailabilityDidChangeNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="C#"><![CDATA[
@@ -1020,10 +1020,10 @@ void Setup ()
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("messageComposeDelegate")</AttributeName>
+          <AttributeName>get: Foundation.Export("messageComposeDelegate", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setMessageComposeDelegate:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setMessageComposeDelegate:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>

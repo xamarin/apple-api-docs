@@ -123,7 +123,7 @@ player.Play();
 // C# class with the Objective-C runtime if necessary, but no actual
 // initXxx method is invoked, that is done later in the constructor
 //
-// This is taken from Xamarin.iOS's source code:
+// This is taken from Xamarin's source code:
 //
 [Export ("initWithFrame:")]
 public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
@@ -131,9 +131,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 // Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
 	if (IsDirectBinding)
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
 	else
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
 }
 ]]></code>
           </example>
@@ -241,10 +241,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="times">
           <see cref="T:Foundation.NSValue" /> objects that must be created from <see cref="T:CoreMotion.CMTime" /> objects.</param>
-        <param name="queue">
-          <para>To be added.</para>
-          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
-        </param>
+        <param name="queue">To be added.</param>
         <param name="handler">The <see cref="T:System.Action" /> the system calls when playback reaches the specified times.</param>
         <summary>The system calls the <paramref name="handler" /> when playback reaches the <see cref="T:CoreMedia.CMTime" /> objects in <paramref name="times" />.</summary>
         <returns>An opague <see cref="T:Foundation.NSObject" /> that must be passed to <see cref="M:AVFoundation.AVPlayer.RemoveTimeObserver" />.</returns>
@@ -282,10 +279,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="interval">To be added.</param>
-        <param name="queue">
-          <para>To be added.</para>
-          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
-        </param>
+        <param name="queue">To be added.</param>
         <param name="handler">To be added.</param>
         <summary>Invokes <paramref name="handler" /> every <paramref name="interval" /> seconds, as well as on playback start, stop, and jump.</summary>
         <returns>An opaque object that must be passed as the <c>observer</c> argument to <see cref="M:AVFoundation.AVPlayer.RemoveTimeObserver" /> .</returns>
@@ -601,30 +595,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>Foundation.NSString</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Notification constant for AvailableHdrModesDidChange</summary>
-        <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
-        <remarks>
-          <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification, also developers can use the strongly typed notification <see cref="M:AVFoundation.AVPlayer+Notifications.ObserveAvailableHdrModesDidChange" /> instead.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <example>
-            <code lang="C#"><![CDATA[
-// Lambda style
-NSNotificationCenter.DefaultCenter.AddObserver (
-        AVPlayer.AvailableHdrModesDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification AVPlayer", notification); }
-
-
-// Method style
-void Callback (NSNotification notification)
-{
-    Console.WriteLine ("Received a notification AVPlayer", notification);
-}
-
-void Setup ()
-{
-    NSNotificationCenter.DefaultCenter.AddObserver (AVPlayer.AvailableHdrModesDidChangeNotification, Callback);
-}
-]]></code>
-          </example>
-        </remarks>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CancelPendingPrerolls">
@@ -666,7 +639,7 @@ void Setup ()
       <Docs>
         <summary>The handle for this class.</summary>
         <value>The pointer to the Objective-C class.</value>
-        <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ClosedCaptionDisplayEnabled">
@@ -1557,7 +1530,7 @@ void Setup ()
       </Parameters>
       <Docs>
         <param name="date">Target data to seek to</param>
-        <summary>Seeks to a specific time in the playback stream and invokes the <paramref name="onComplete" /> handler.</summary>
+        <summary>Seeks to a specific time in the playback stream and invokes the  handler.</summary>
         <returns>
           <para>A task that represents the asynchronous Seek operation.   The value of the TResult parameter is a <see cref="AVFoundation.AVCompletion" />.</para>
         </returns>
@@ -1982,7 +1955,7 @@ void Setup ()
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("externalPlaybackVideoGravity")</AttributeName>
+          <AttributeName>get: Foundation.Export("externalPlaybackVideoGravity", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 9, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -1991,7 +1964,7 @@ void Setup ()
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setExternalPlaybackVideoGravity:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setExternalPlaybackVideoGravity:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 9, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>

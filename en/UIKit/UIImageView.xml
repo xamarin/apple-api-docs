@@ -151,7 +151,7 @@
 // C# class with the Objective-C runtime if necessary, but no actual
 // initXxx method is invoked, that is done later in the constructor
 //
-// This is taken from Xamarin.iOS's source code:
+// This is taken from Xamarin's source code:
 //
 [Export ("initWithFrame:")]
 public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
@@ -159,9 +159,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 // Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
 	if (IsDirectBinding)
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
 	else
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
 }
 ]]></code>
           </example>
@@ -314,10 +314,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("animationImages")</AttributeName>
+          <AttributeName>get: Foundation.Export("animationImages", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setAnimationImages:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setAnimationImages:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -431,7 +431,7 @@ mySliders.TintColor = UIColor.Red;
       <Docs>
         <summary>The handle for this class.</summary>
         <value>The pointer to the Objective-C class.</value>
-        <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetAppearance">
@@ -649,10 +649,10 @@ myTheme.TintColor = UIColor.Red;
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("highlightedAnimationImages")</AttributeName>
+          <AttributeName>get: Foundation.Export("highlightedAnimationImages", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setHighlightedAnimationImages:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setHighlightedAnimationImages:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -677,10 +677,10 @@ myTheme.TintColor = UIColor.Red;
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("highlightedImage")</AttributeName>
+          <AttributeName>get: Foundation.Export("highlightedImage", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setHighlightedImage:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setHighlightedImage:", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -706,10 +706,10 @@ myTheme.TintColor = UIColor.Red;
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("image")</AttributeName>
+          <AttributeName>get: Foundation.Export("image", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setImage:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setImage:", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>

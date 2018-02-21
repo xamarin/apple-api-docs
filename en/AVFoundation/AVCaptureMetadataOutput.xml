@@ -84,7 +84,7 @@
 // C# class with the Objective-C runtime if necessary, but no actual
 // initXxx method is invoked, that is done later in the constructor
 //
-// This is taken from Xamarin.iOS's source code:
+// This is taken from Xamarin's source code:
 //
 [Export ("initWithFrame:")]
 public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
@@ -92,9 +92,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 // Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
 	if (IsDirectBinding)
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
 	else
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
 }
 ]]></code>
           </example>
@@ -178,7 +178,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <summary>The handle for this class.</summary>
         <value>The pointer to the Objective-C class.</value>
-        <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Delegate">
@@ -198,8 +198,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>AVFoundation.IAVCaptureMetadataOutputObjectsDelegate</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>An instance of the AVFoundation.IAVCaptureMetadataOutputObjectsDelegate model class which acts as the class delegate.</summary>
-        <value>The instance of the AVFoundation.IAVCaptureMetadataOutputObjectsDelegate model class</value>
+        <summary>An instance of the <see cref="AVFoundation.AVCaptureMetadataOutputObjectsDelegate" /> model class which acts as the class delegate.</summary>
+        <value>The instance of the MonoTouch.AVFoundation.AVCaptureMetadataOutputObjectsDelegate model class</value>
         <remarks>
           <para>The delegate instance assigned to this object will be used to handle events or provide data on demand to this class.</para>
           <para>When setting the Delegate or WeakDelegate values events will be delivered to the specified instance instead of being delivered to the C#-style events</para>
@@ -240,13 +240,13 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("rectOfInterest")</AttributeName>
+          <AttributeName>get: Foundation.Export("rectOfInterest", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setRectOfInterest:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setRectOfInterest:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -287,14 +287,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="objectsCallbackQueue" Type="CoreFoundation.DispatchQueue" />
       </Parameters>
       <Docs>
-        <param name="objectsDelegate">
-          <para>To be added.</para>
-          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
-        </param>
-        <param name="objectsCallbackQueue">
-          <para>To be added.</para>
-          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
-        </param>
+        <param name="objectsDelegate">To be added.</param>
+        <param name="objectsCallbackQueue">To be added.</param>
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -331,10 +325,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("metadataObjectTypes")</AttributeName>
+          <AttributeName>get: Foundation.Export("metadataObjectTypes", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setMetadataObjectTypes:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setMetadataObjectTypes:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -342,10 +336,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Docs>
         <summary>To be added.</summary>
-        <value>
-          <para>(More documentation for this node is coming)</para>
-          <para tool="nullallowed">This value can be <see langword="null" />.</para>
-        </value>
+        <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>

@@ -178,7 +178,7 @@ protected void HandleBtnActionSheetWithOtherButtonsTouchUpInside (object sender,
 // C# class with the Objective-C runtime if necessary, but no actual
 // initXxx method is invoked, that is done later in the constructor
 //
-// This is taken from Xamarin.iOS's source code:
+// This is taken from Xamarin's source code:
 //
 [Export ("initWithFrame:")]
 public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
@@ -186,9 +186,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 // Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
 	if (IsDirectBinding)
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
 	else
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
 }
 ]]></code>
           </example>
@@ -563,7 +563,7 @@ mySliders.TintColor = UIColor.Red;
       <Docs>
         <summary>The handle for this class.</summary>
         <value>The pointer to the Objective-C class.</value>
-        <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Clicked">
@@ -594,9 +594,9 @@ mySliders.TintColor = UIColor.Red;
         <ReturnType>UIKit.IUIActionSheetDelegate</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>An instance of the UIKit.IUIActionSheetDelegate model class which acts as the class delegate.</summary>
+        <summary>An instance of the <see cref="UIKit.UIActionSheetDelegate" /> model class which acts as the class delegate.</summary>
         <value>
-          <para>The instance of the UIKit.IUIActionSheetDelegate model class</para>
+          <para>The instance of the <see cref="UIKit.UIActionSheetDelegate" /> model class</para>
           <para tool="nullallowed">This value can be <see langword="null" />.</para>
         </value>
         <remarks>
@@ -1116,10 +1116,10 @@ myTheme.TintColor = UIColor.Red;
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("title")</AttributeName>
+          <AttributeName>get: Foundation.Export("title", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setTitle:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setTitle:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1166,10 +1166,10 @@ myTheme.TintColor = UIColor.Red;
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("delegate")</AttributeName>
+          <AttributeName>get: Foundation.Export("delegate", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setDelegate:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setDelegate:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>

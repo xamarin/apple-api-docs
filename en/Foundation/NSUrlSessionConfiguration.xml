@@ -66,7 +66,7 @@
 // C# class with the Objective-C runtime if necessary, but no actual
 // initXxx method is invoked, that is done later in the constructor
 //
-// This is taken from Xamarin.iOS's source code:
+// This is taken from Xamarin's source code:
 //
 [Export ("initWithFrame:")]
 public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
@@ -74,9 +74,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 // Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
 	if (IsDirectBinding)
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
 	else
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
 }
 ]]></code>
           </example>
@@ -178,7 +178,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <summary>The handle for this class.</summary>
         <value>The pointer to the Objective-C class.</value>
-        <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ConnectionProxyDictionary">
@@ -191,10 +191,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("connectionProxyDictionary")</AttributeName>
+          <AttributeName>get: Foundation.Export("connectionProxyDictionary", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setConnectionProxyDictionary:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setConnectionProxyDictionary:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -274,7 +274,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("defaultSessionConfiguration")</AttributeName>
+          <AttributeName>get: Foundation.Export("defaultSessionConfiguration", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -321,7 +321,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("ephemeralSessionConfiguration")</AttributeName>
+          <AttributeName>get: Foundation.Export("ephemeralSessionConfiguration", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -343,10 +343,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("HTTPAdditionalHeaders")</AttributeName>
+          <AttributeName>get: Foundation.Export("HTTPAdditionalHeaders", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setHTTPAdditionalHeaders:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setHTTPAdditionalHeaders:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -396,10 +396,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("HTTPCookieStorage")</AttributeName>
+          <AttributeName>get: Foundation.Export("HTTPCookieStorage", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setHTTPCookieStorage:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setHTTPCookieStorage:", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -499,7 +499,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("identifier")</AttributeName>
+          <AttributeName>get: Foundation.Export("identifier", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -536,7 +536,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.MacOSX, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("multipathServiceType")</AttributeName>
+          <AttributeName>get: Foundation.Export("multipathServiceType", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -551,7 +551,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>get: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.MacOSX, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setMultipathServiceType:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setMultipathServiceType:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -849,10 +849,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("URLCache")</AttributeName>
+          <AttributeName>get: Foundation.Export("URLCache", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setURLCache:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setURLCache:", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -877,10 +877,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("URLCredentialStorage")</AttributeName>
+          <AttributeName>get: Foundation.Export("URLCredentialStorage", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setURLCredentialStorage:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setURLCredentialStorage:", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -966,10 +966,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("protocolClasses")</AttributeName>
+          <AttributeName>get: Foundation.Export("protocolClasses", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setProtocolClasses:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setProtocolClasses:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>

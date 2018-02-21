@@ -103,7 +103,7 @@
 // C# class with the Objective-C runtime if necessary, but no actual
 // initXxx method is invoked, that is done later in the constructor
 //
-// This is taken from Xamarin.iOS's source code:
+// This is taken from Xamarin's source code:
 //
 [Export ("initWithFrame:")]
 public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
@@ -111,9 +111,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 // Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
 	if (IsDirectBinding)
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
 	else
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
 }
 ]]></code>
           </example>
@@ -292,7 +292,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <summary>The handle for this class.</summary>
         <value>The pointer to the Objective-C class.</value>
-        <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Copy">
@@ -369,13 +369,13 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("notificationInfo")</AttributeName>
+          <AttributeName>get: Foundation.Export("notificationInfo", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setNotificationInfo:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setNotificationInfo:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -406,7 +406,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.None, "Use 'CKQuerySubscription'.")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("predicate")</AttributeName>
+          <AttributeName>get: Foundation.Export("predicate", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'CKQuerySubscription'.")</AttributeName>
@@ -496,7 +496,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.None, "Use 'CKQuerySubscriptionOptions'.")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("subscriptionOptions")</AttributeName>
+          <AttributeName>get: Foundation.Export("subscriptionOptions", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'CKQuerySubscriptionOptions'.")</AttributeName>
@@ -524,7 +524,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("subscriptionType")</AttributeName>
+          <AttributeName>get: Foundation.Export("subscriptionType", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -552,7 +552,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.None, "Use 'CKRecordZoneSubscription'.")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("zoneID")</AttributeName>
+          <AttributeName>get: Foundation.Export("zoneID", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'CKRecordZoneSubscription'.")</AttributeName>
@@ -561,7 +561,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>get: ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.None, "Use 'CKRecordZoneSubscription'.")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setZoneID:")</AttributeName>
+          <AttributeName>set: Foundation.Export("setZoneID:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'CKRecordZoneSubscription'.")</AttributeName>

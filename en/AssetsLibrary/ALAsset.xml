@@ -82,7 +82,7 @@
 // C# class with the Objective-C runtime if necessary, but no actual
 // initXxx method is invoked, that is done later in the constructor
 //
-// This is taken from Xamarin.iOS's source code:
+// This is taken from Xamarin's source code:
 //
 [Export ("initWithFrame:")]
 public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
@@ -90,9 +90,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 // Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
 	if (IsDirectBinding)
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
 	else
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
 }
 ]]></code>
           </example>
@@ -220,7 +220,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <summary>The handle for this class.</summary>
         <value>The pointer to the Objective-C class.</value>
-        <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Date">
@@ -446,10 +446,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="imageData">To be added.</param>
         <param name="metadata">To be added.</param>
-        <param name="completionBlock">
-          <para>To be added.</para>
-          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
-        </param>
+        <param name="completionBlock">To be added.</param>
         <summary>Changes the data to <paramref name="imageData" /> and the metadata to <paramref name="metadata" />. On success, executes <paramref name="completionBlock" />.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -475,9 +472,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="metadata" Type="Foundation.NSDictionary" />
       </Parameters>
       <Docs>
-        <param name="imageData">To be added.</param>
-        <param name="metadata">To be added.</param>
-        <summary>Changes the data to <paramref name="imageData" /> and the metadata to <paramref name="metadata" />. On success, executes <paramref name="completionBlock" />.</summary>
+        <param name="imageData">The data to be used for the modified version.</param>
+        <param name="metadata">Metadata to be saved with the modified image.</param>
+        <summary>Changes the data to  and the metadata to . On success, executes .</summary>
         <returns>
           <para>A task that represents the asynchronous SetImageData operation.   The value of the TResult parameter is a <see cref="AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate" />.</para>
           <para>Application developers should check the <see cref="P:AssetsLibrary.ALAsset.Editable" /> property priot to using this method.</para>
@@ -516,10 +513,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="videoPathURL">To be added.</param>
-        <param name="completionBlock">
-          <para>To be added.</para>
-          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
-        </param>
+        <param name="completionBlock">To be added.</param>
         <summary>Modifies the <see cref="T:AssetsLibrary.ALAsset" /> to refer to the <paramref name="videoPathURL" />.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -544,15 +538,14 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="videoPathURL" Type="Foundation.NSUrl" />
       </Parameters>
       <Docs>
-        <param name="videoPathURL">To be added.</param>
-        <summary>Modifies the <see cref="T:AssetsLibrary.ALAsset" /> to refer to the <paramref name="videoPathURL" />.</summary>
+        <param name="videoPathURL">A URL specifying the locaiton of the modified videofile.</param>
+        <summary>Modifies the  to refer to the .</summary>
         <returns>
           <para>A task that represents the asynchronous SetVideoAtPath operation.   The value of the TResult parameter is a <see cref="AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate" />.</para>
         </returns>
         <remarks>
           <para>Application developers should check the <see cref="P:AssetsLibrary.ALAsset.Editable" /> property prior to calling this method.</para>
           <para copied="true">The SetVideoAtPathAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
-          <para copied="true">To be added.</para>
         </remarks>
       </Docs>
     </Member>
@@ -674,10 +667,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="imageData">To be added.</param>
         <param name="metadata">To be added.</param>
-        <param name="completionBlock">
-          <para>To be added.</para>
-          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
-        </param>
+        <param name="completionBlock">To be added.</param>
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -705,7 +695,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="imageData">To be added.</param>
         <param name="metadata">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Modifies and writes an image asset to the user's Photos directory.</summary>
         <returns>
           <para>A task that represents the asynchronous WriteModifiedImageToSavedToPhotosAlbum operation.   The value of the TResult parameter is a <see cref="AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate" />.</para>
           <para>Application developers should check the <see cref="P:AssetsLibrary.ALAsset.Editable" /> property prior to calling htis method.</para>
@@ -744,10 +734,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="videoPathURL">To be added.</param>
-        <param name="completionBlock">
-          <para>To be added.</para>
-          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
-        </param>
+        <param name="completionBlock">To be added.</param>
         <summary>To be added.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -772,8 +759,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="videoPathURL" Type="Foundation.NSUrl" />
       </Parameters>
       <Docs>
-        <param name="videoPathURL">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="videoPathURL">URL to store the video at.</param>
+        <summary>Writes the video to the specified path.</summary>
         <returns>
           <para>A task that represents the asynchronous WriteModifiedVideoToSavedPhotosAlbum operation.   The value of the TResult parameter is a <see cref="AssetsLibrary.ALAssetsLibraryWriteCompletionDelegate" />.</para>
         </returns>

@@ -90,7 +90,7 @@
 // C# class with the Objective-C runtime if necessary, but no actual
 // initXxx method is invoked, that is done later in the constructor
 //
-// This is taken from Xamarin.iOS's source code:
+// This is taken from Xamarin's source code:
 //
 [Export ("initWithFrame:")]
 public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
@@ -98,9 +98,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 // Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
 	if (IsDirectBinding)
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
 	else
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
 }
 ]]></code>
           </example>
@@ -147,10 +147,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <summary>The handle for this class.</summary>
         <value>The pointer to the Objective-C class.</value>
-        <remarks>
-          <para>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</para>
-          <para tool="threads">This can be used from a background thread.</para>
-        </remarks>
+        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.This can be used from a background thread.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CreateDirectory">
@@ -217,10 +214,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="directoryName">The directory name.</param>
         <param name="parentItemIdentifier">The parent directory's persistent identifier.</param>
-        <summary>When implemented by the developer, creates a new directory in the specified location and runs a handler when the operation is complete.</summary>
-        <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous CreateDirectory operation.  The value of the TResult parameter is of type System.Action&lt;FileProvider.INSFileProviderItem,Foundation.NSError&gt;.</para>
-        </returns>
+        <summary>When implemented by the developer, asynchronously creates a new directory in the specified location, returnin a task that contains the resulting file provider item for the new directory.</summary>
+        <returns>To be added.</returns>
         <remarks>
           <para>(More documentation for this node is coming)</para>
           <para tool="threads">This can be used from a background thread.</para>
@@ -287,8 +282,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="itemIdentifier">The persistent identifier for the item.</param>
-        <summary>When implemented by the developer, deletes the identified item and runs a handler when the operation is complete.</summary>
-        <returns>A task that represents the asynchronous DeleteItem operation</returns>
+        <summary>When implemented by the developer, asynchronously deletes the identified item, returning a task that represents the operation.</summary>
+        <returns>To be added.</returns>
         <remarks>
           <para>(More documentation for this node is coming)</para>
           <para tool="threads">This can be used from a background thread.</para>
@@ -350,10 +345,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Docs>
         <summary>When implemented by the developer, gets the domain that this file provider manages.</summary>
-        <value>
-          <para>(More documentation for this node is coming)</para>
-          <para tool="nullallowed">This value can be <see langword="null" />.</para>
-        </value>
+        <value>To be added.</value>
         <remarks>
           <para>(More documentation for this node is coming)</para>
           <para tool="threads">This can be used from a background thread.</para>
@@ -441,14 +433,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="itemIdentifiers">The persistent identifiers for the items.</param>
         <param name="size">The size, in pixels, of the thumbnails.</param>
         <param name="perThumbnailCompletionHandler">A handler to run for each thumbnail.</param>
-        <summary>When implemented by the developer, fetches thumbnails for the specified item identifiers, runs the specified <paramref name="perThumbnailCompletionHandler" /> for each thumbnail, and runs <paramref name="completionHandler" /> when the entire operation is complete</summary>
-        <returns>A task that represents the asynchronous FetchThumbnails operation</returns>
+        <summary>When implemented by the developer, asynchronously fetches thumbnails for the specified item identifiers, runs the specified <paramref name="perThumbnailCompletionHandler" /> for each thumbnail, returning a task that represents the operation.</summary>
+        <returns>To be added.</returns>
         <remarks>
           <para>(More documentation for this node is coming)</para>
           <para tool="threads">This can be used from a background thread.</para>
-          <para copied="true">The FetchThumbnailsAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
-          <para copied="true">(More documentation for this node is coming)</para>
-          <para tool="threads" copied="true">This can be used from a background thread.</para>
         </remarks>
       </Docs>
     </Member>
@@ -749,10 +738,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="fileUrl">The URL for the file.</param>
         <param name="parentItemIdentifier">The parent directory's persistent identifier.</param>
-        <summary>When implemented by the developer, imports the resource at the specified <paramref name="fileURL" /> into the directory that is identified by <paramref name="parentItemIdentifier" />.</summary>
-        <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous ImportDocument operation.  The value of the TResult parameter is of type System.Action&lt;FileProvider.INSFileProviderItem,Foundation.NSError&gt;.</para>
-        </returns>
+        <summary>When implemented by the developer, asynchronously imports the resource at the specified <paramref name="fileURL" /> into the directory that is identified by <paramref name="parentItemIdentifier" />, returning a task that contains the file provider for the imported item.</summary>
+        <returns>To be added.</returns>
         <remarks>
           <para>(More documentation for this node is coming)</para>
           <para tool="threads">This can be used from a background thread.</para>
@@ -946,10 +933,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="itemIdentifier">The persistent identifier for the item.</param>
         <param name="itemName">The new name for the item.</param>
-        <summary>When implemented by the developer, changes the name of the identified item.</summary>
-        <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous RenameItem operation.  The value of the TResult parameter is of type System.Action&lt;FileProvider.INSFileProviderItem,Foundation.NSError&gt;.</para>
-        </returns>
+        <summary>When implemented by the developer, asynchronously changes the name of the identified item, returning a task that contains a file provider for the renamed item.</summary>
+        <returns>To be added.</returns>
         <remarks>
           <para>(More documentation for this node is coming)</para>
           <para tool="threads">This can be used from a background thread.</para>
@@ -990,10 +975,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="itemIdentifier">The persistent identifier for the item.</param>
         <param name="parentItemIdentifier">The parent directory's persistent identifier.</param>
-        <param name="newName">
-          <para>The new name for the item.</para>
-          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
-        </param>
+        <param name="newName">The new name for the item.</param>
         <param name="completionHandler">A handler to run after the operation completes.</param>
         <summary>When implemented by the developer, moves the identified item to a new name under a new parent.</summary>
         <remarks>
@@ -1027,10 +1009,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="itemIdentifier">The persistent identifier for the item.</param>
         <param name="parentItemIdentifier">The parent directory's persistent identifier.</param>
         <param name="newName">The new name for the item.</param>
-        <summary>When implemented by the developer, moves the identified item to a new name under a new parent.</summary>
-        <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous ReparentItem operation.  The value of the TResult parameter is of type System.Action&lt;FileProvider.INSFileProviderItem,Foundation.NSError&gt;.</para>
-        </returns>
+        <summary>When implemented by the developer, asynchronously moves the identified item to a new name under a new parent, returning a task that contains a file provider for the reparented item.</summary>
+        <returns>To be added.</returns>
         <remarks>
           <para>(More documentation for this node is coming)</para>
           <para tool="threads">This can be used from a background thread.</para>
@@ -1068,10 +1048,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="favoriteRank">
-          <para>The new favorite rank for the item.</para>
-          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
-        </param>
+        <param name="favoriteRank">The new favorite rank for the item.</param>
         <param name="itemIdentifier">The persistent identifier for the item.</param>
         <param name="completionHandler">A handler to run after the operation completes.</param>
         <summary>When implemented by the developer, sets the favorite rank of the identified directory.</summary>
@@ -1104,10 +1081,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="favoriteRank">The new favorite rank for the item.</param>
         <param name="itemIdentifier">The persistent identifier for the item.</param>
-        <summary>When implemented by the developer, sets the favorite rank of the identified directory.</summary>
-        <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous SetFavoriteRank operation.  The value of the TResult parameter is of type System.Action&lt;FileProvider.INSFileProviderItem,Foundation.NSError&gt;.</para>
-        </returns>
+        <summary>When implemented by the developer, asynchronously sets the favorite rank of the identified item, returning a task that contains the file provider for the favorited directory.</summary>
+        <returns>To be added.</returns>
         <remarks>
           <para>(More documentation for this node is coming)</para>
           <para tool="threads">This can be used from a background thread.</para>
@@ -1145,10 +1120,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="lastUsedDate">
-          <para>The new last used date value for the item.</para>
-          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
-        </param>
+        <param name="lastUsedDate">The new last used date value for the item.</param>
         <param name="itemIdentifier">The persistent identifier for the item.</param>
         <param name="completionHandler">A handler to run after the operation completes.</param>
         <summary>When implemented by the developer, sets the last used date for the identified item.</summary>
@@ -1181,10 +1153,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="lastUsedDate">The new last used date value for the item.</param>
         <param name="itemIdentifier">The persistent identifier for the item.</param>
-        <summary>When implemented by the developer, sets the last used date for the identified item.</summary>
-        <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous SetLastUsedDate operation.  The value of the TResult parameter is of type System.Action&lt;FileProvider.INSFileProviderItem,Foundation.NSError&gt;.</para>
-        </returns>
+        <summary>When implemented by the developer, asynchronously sets the last used date for the identified item, returning a task that contains a file provider for the item.</summary>
+        <returns>To be added.</returns>
         <remarks>
           <para>(More documentation for this node is coming)</para>
           <para tool="threads">This can be used from a background thread.</para>
@@ -1222,10 +1192,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="tagData">
-          <para>The new tag data for the item.</para>
-          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
-        </param>
+        <param name="tagData">The new tag data for the item.</param>
         <param name="itemIdentifier">The persistent identifier for the item.</param>
         <param name="completionHandler">A handler to run after the operation completes.</param>
         <summary>When implemented by the developer, sets the tag data on an item.</summary>
@@ -1258,10 +1225,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="tagData">The new tag data for the item.</param>
         <param name="itemIdentifier">The persistent identifier for the item.</param>
-        <summary>When implemented by the developer, sets the tag data on an item.</summary>
-        <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous SetTagData operation.  The value of the TResult parameter is of type System.Action&lt;FileProvider.INSFileProviderItem,Foundation.NSError&gt;.</para>
-        </returns>
+        <summary>When implemented by the developer, asynchronously sets the tag data on an item, returning a task that contains a file provider for the newly tagged item.</summary>
+        <returns>To be added.</returns>
         <remarks>
           <para>(More documentation for this node is coming)</para>
           <para tool="threads">This can be used from a background thread.</para>
@@ -1327,6 +1292,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <returns>A task that represents the asynchronous StartProvidingItemAtUrl operation</returns>
         <remarks>
           <para tool="threads">This can be used from a background thread.</para>
+          <para copied="true">The StartProvidingItemAtUrlAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+          <para copied="true">You have to override this method. Do not call super in an implementation.</para>
+          <para tool="threads" copied="true">This can be used from a background thread.</para>
         </remarks>
       </Docs>
     </Member>
@@ -1418,10 +1386,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="itemIdentifier">The persistent identifier for the item.</param>
-        <summary>When implemented by the developer, moves the identified item into the trash.</summary>
-        <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous TrashItem operation.  The value of the TResult parameter is of type System.Action&lt;FileProvider.INSFileProviderItem,Foundation.NSError&gt;.</para>
-        </returns>
+        <summary>When implemented by the developer, asynchronously moves the identified item into the trash, returning a task that contains a file provider for the newly deleted item.</summary>
+        <returns>To be added.</returns>
         <remarks>
           <para>(More documentation for this node is coming)</para>
           <para tool="threads">This can be used from a background thread.</para>
@@ -1460,10 +1426,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="itemIdentifier">The persistent identifier for the item.</param>
-        <param name="parentItemIdentifier">
-          <para>The parent directory's persistent identifier.</para>
-          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
-        </param>
+        <param name="parentItemIdentifier">The parent directory's persistent identifier.</param>
         <param name="completionHandler">A handler to run after the operation completes.</param>
         <summary>When implemented by the developer, restores the identified item from the trash.</summary>
         <remarks>
@@ -1495,10 +1458,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="itemIdentifier">The persistent identifier for the item.</param>
         <param name="parentItemIdentifier">The parent directory's persistent identifier.</param>
-        <summary>When implemented by the developer, restores the identified item from the trash.</summary>
-        <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous UntrashItem operation.  The value of the TResult parameter is of type System.Action&lt;FileProvider.INSFileProviderItem,Foundation.NSError&gt;.</para>
-        </returns>
+        <summary>When implemented by the developer, asynchronously restores the identified item from the trash, returning a task that contains a file provider for the newly restored item.</summary>
+        <returns>To be added.</returns>
         <remarks>
           <para>(More documentation for this node is coming)</para>
           <para tool="threads">This can be used from a background thread.</para>

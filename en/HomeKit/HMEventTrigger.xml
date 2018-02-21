@@ -58,7 +58,7 @@
 // C# class with the Objective-C runtime if necessary, but no actual
 // initXxx method is invoked, that is done later in the constructor
 //
-// This is taken from Xamarin.iOS's source code:
+// This is taken from Xamarin's source code:
 //
 [Export ("initWithFrame:")]
 public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
@@ -66,9 +66,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 // Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
 	if (IsDirectBinding)
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
 	else
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
 }
 ]]></code>
           </example>
@@ -251,7 +251,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="event">The event to add.</param>
-        <summary>Developers should not use this deprecated method. Developers should use 'UpdateEvents' instead.</summary>
+        <summary>Attempts to add <paramref name="event" /> to <see cref="P:HomeKit.HMEventTrigger.HMEvents" />, and returns a task that represents the operation.</summary>
         <returns>A task that represents the asynchronous AddEvent operation</returns>
         <remarks />
       </Docs>
@@ -270,7 +270,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <summary>The handle for this class.</summary>
         <value>The pointer to the Objective-C class.</value>
-        <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CreatePredicateForEvaluatingTrigger">
@@ -647,7 +647,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("endEvents")</AttributeName>
+          <AttributeName>get: Foundation.Export("endEvents", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.WatchOS, 4, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -678,7 +678,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("events")</AttributeName>
+          <AttributeName>get: Foundation.Export("events", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -740,7 +740,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("predicate")</AttributeName>
+          <AttributeName>get: Foundation.Export("predicate", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -774,7 +774,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("recurrences")</AttributeName>
+          <AttributeName>get: Foundation.Export("recurrences", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.WatchOS, 4, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -867,7 +867,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="event">The event to remove.</param>
-        <summary>Attempts to remove <paramref name="event" /> from <see cref="P:HomeKit.HMEventTrigger.Events" /> and calls the <paramref name="completion" /> handler afterwards.</summary>
+        <summary>Attempts to remove <paramref name="event" /> from <see cref="P:HomeKit.HMEventTrigger.Events" />, and returns a taks that represents the result.</summary>
         <returns>A task that represents the asynchronous RemoveEvent operation</returns>
         <remarks />
       </Docs>
@@ -891,7 +891,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("triggerActivationState")</AttributeName>
+          <AttributeName>get: Foundation.Export("triggerActivationState", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.WatchOS, 4, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -1170,7 +1170,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="predicate">The predicate to update. May be <see langword="null" />.<para tool="nullallowed">This parameter can be <see langword="null" />.</para></param>
+        <param name="predicate">The predicate to update. May be <see langword="null" />.</param>
         <param name="completion">A handler to run when the operation completes.</param>
         <summary>Attempts to modify the <see cref="P:HomeKit.HMEventTrigger.Predicate" /> and calls the <paramref name="completion" /> handler afterwards.</summary>
         <remarks>To be added.</remarks>
@@ -1199,8 +1199,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="predicate" Type="Foundation.NSPredicate" />
       </Parameters>
       <Docs>
-        <param name="predicate">The predicate to update. May be .</param>
-        <summary>Attempts to modify the <see cref="P:HomeKit.HMEventTrigger.Predicate" /> and calls the <paramref name="completion" /> handler afterwards.</summary>
+        <param name="predicate">To be added. This parameter can be <see langwor="null" />.</param>
+        <summary>Attempts to modify the <see cref="P:HomeKit.HMEventTrigger.Predicate" />, and returns a task that represents the operation.</summary>
         <returns>A task that represents the asynchronous UpdatePredicate operation</returns>
         <remarks />
       </Docs>
@@ -1276,7 +1276,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="recurrences" Type="Foundation.NSDateComponents[]" />
       </Parameters>
       <Docs>
-        <param name="recurrences">To be added.This parameter can be .</param>
+        <param name="recurrences">To be added. This parameter can be <see langwor="null" />.</param>
         <summary>To be added.</summary>
         <returns>A task that represents the asynchronous UpdateRecurrences operation</returns>
         <remarks />
