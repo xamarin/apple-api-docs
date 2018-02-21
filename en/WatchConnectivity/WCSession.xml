@@ -55,7 +55,7 @@
 // C# class with the Objective-C runtime if necessary, but no actual
 // initXxx method is invoked, that is done later in the constructor
 //
-// This is taken from Xamarin's source code:
+// This is taken from Xamarin.iOS's source code:
 //
 [Export ("initWithFrame:")]
 public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
@@ -63,9 +63,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 // Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
 	if (IsDirectBinding)
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
 	else
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
 }
 ]]></code>
           </example>
@@ -163,7 +163,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("applicationContext", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>get: Foundation.Export("applicationContext")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -189,7 +189,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <summary>The handle for this class.</summary>
         <value>The pointer to the Objective-C class.</value>
-        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+        <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ComplicationEnabled">
@@ -246,19 +246,19 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("delegate", ObjCRuntime.ArgumentSemantic.Weak)</AttributeName>
+          <AttributeName>get: Foundation.Export("delegate")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setDelegate:", ObjCRuntime.ArgumentSemantic.Weak)</AttributeName>
+          <AttributeName>set: Foundation.Export("setDelegate:")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
         <ReturnType>WatchConnectivity.IWCSessionDelegate</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>An instance of the <see cref="WatchConnectivity.IWCSessionDelegate" /> model class which acts as the class delegate.</summary>
+        <summary>An instance of the WatchConnectivity.IWCSessionDelegate model class which acts as the class delegate.</summary>
         <value>
-          <para>The instance of the <see cref="WatchConnectivity.IWCSessionDelegate" /> model class</para>
+          <para>The instance of the WatchConnectivity.IWCSessionDelegate model class</para>
           <para tool="nullallowed">This value can be <see langword="null" />.</para>
         </value>
         <remarks>
@@ -383,7 +383,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("outstandingFileTransfers", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>get: Foundation.Export("outstandingFileTransfers")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -405,7 +405,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("outstandingUserInfoTransfers", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>get: Foundation.Export("outstandingUserInfoTransfers")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -471,7 +471,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("receivedApplicationContext", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>get: Foundation.Export("receivedApplicationContext")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -599,8 +599,14 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="message">To be added.</param>
-        <param name="replyHandler">To be added.</param>
-        <param name="errorHandler">To be added.</param>
+        <param name="replyHandler">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="errorHandler">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
         <summary>Sends the message to the active paired device.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -653,7 +659,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="file">To be added.</param>
-        <param name="metadata">To be added.</param>
+        <param name="metadata">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
         <summary>Sends the file and metadata to the device.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>

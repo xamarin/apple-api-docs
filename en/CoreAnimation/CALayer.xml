@@ -356,7 +356,7 @@ public class MyLayer : CALayer {
 // C# class with the Objective-C runtime if necessary, but no actual
 // initXxx method is invoked, that is done later in the constructor
 //
-// This is taken from Xamarin's source code:
+// This is taken from Xamarin.iOS's source code:
 //
 [Export ("initWithFrame:")]
 public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
@@ -364,9 +364,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 // Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
 	if (IsDirectBinding)
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
 	else
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
 }
 ]]></code>
           </example>
@@ -433,10 +433,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("actions", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>get: Foundation.Export("actions")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setActions:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>set: Foundation.Export("setActions:")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -786,10 +786,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("backgroundFilters", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>get: Foundation.Export("backgroundFilters")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setBackgroundFilters:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>set: Foundation.Export("setBackgroundFilters:")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -918,7 +918,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <summary>The handle for this class.</summary>
         <value>The pointer to the Objective-C class.</value>
-        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+        <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Clone">
@@ -951,10 +951,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("compositingFilter", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+          <AttributeName>get: Foundation.Export("compositingFilter")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setCompositingFilter:", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+          <AttributeName>set: Foundation.Export("setCompositingFilter:")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1009,10 +1009,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("contents", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+          <AttributeName>get: Foundation.Export("contents")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setContents:", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+          <AttributeName>set: Foundation.Export("setContents:")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1114,10 +1114,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("contentsGravity", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>get: Foundation.Export("contentsGravity")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setContentsGravity:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>set: Foundation.Export("setContentsGravity:")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1200,7 +1200,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="point">To be added.</param>
-        <param name="layer">To be added.</param>
+        <param name="layer">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
         <summary>To be added.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
@@ -1227,7 +1230,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="point">To be added.</param>
-        <param name="layer">To be added.</param>
+        <param name="layer">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
         <summary>To be added.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
@@ -1254,7 +1260,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="rect">To be added.</param>
-        <param name="layer">To be added.</param>
+        <param name="layer">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
         <summary>To be added.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
@@ -1281,7 +1290,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="rect">To be added.</param>
-        <param name="layer">To be added.</param>
+        <param name="layer">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
         <summary>To be added.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
@@ -1464,9 +1476,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <ReturnType>CoreAnimation.ICALayerDelegate</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>An instance of the <see cref="CoreAnimation.CALayerDelegate" /> model class which acts as the class delegate.</summary>
+        <summary>An instance of the CoreAnimation.ICALayerDelegate model class which acts as the class delegate.</summary>
         <value>
-          <para>The instance of the <see cref="CoreAnimation.CALayerDelegate" /> model class</para>
+          <para>The instance of the CoreAnimation.ICALayerDelegate model class</para>
           <para tool="nullallowed">This value can be <see langword="null" />.</para>
         </value>
         <remarks>
@@ -1747,10 +1759,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("fillMode", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>get: Foundation.Export("fillMode")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setFillMode:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>set: Foundation.Export("setFillMode:")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1818,10 +1830,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("filters", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>get: Foundation.Export("filters")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setFilters:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>set: Foundation.Export("setFilters:")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -2397,10 +2409,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("magnificationFilter", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>get: Foundation.Export("magnificationFilter")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setMagnificationFilter:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>set: Foundation.Export("setMagnificationFilter:")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -2422,10 +2434,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("mask", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+          <AttributeName>get: Foundation.Export("mask")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setMask:", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+          <AttributeName>set: Foundation.Export("setMask:")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -2462,7 +2474,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("maskedCorners", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+          <AttributeName>get: Foundation.Export("maskedCorners")</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -2477,7 +2489,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>get: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setMaskedCorners:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+          <AttributeName>set: Foundation.Export("setMaskedCorners:")</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.TvOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -2536,10 +2548,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("minificationFilter", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>get: Foundation.Export("minificationFilter")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setMinificationFilter:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>set: Foundation.Export("setMinificationFilter:")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -2608,10 +2620,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("name", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>get: Foundation.Export("name")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setName:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>set: Foundation.Export("setName:")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -3475,10 +3487,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("style", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>get: Foundation.Export("style")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setStyle:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>set: Foundation.Export("setStyle:")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -3503,10 +3515,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("sublayers", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>get: Foundation.Export("sublayers")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setSublayers:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>set: Foundation.Export("setSublayers:")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -3673,10 +3685,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("delegate", ObjCRuntime.ArgumentSemantic.Weak)</AttributeName>
+          <AttributeName>get: Foundation.Export("delegate")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setDelegate:", ObjCRuntime.ArgumentSemantic.Weak)</AttributeName>
+          <AttributeName>set: Foundation.Export("setDelegate:")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>

@@ -77,7 +77,7 @@
 // C# class with the Objective-C runtime if necessary, but no actual
 // initXxx method is invoked, that is done later in the constructor
 //
-// This is taken from Xamarin's source code:
+// This is taken from Xamarin.iOS's source code:
 //
 [Export ("initWithFrame:")]
 public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
@@ -85,9 +85,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 // Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
 	if (IsDirectBinding)
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
 	else
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
 }
 ]]></code>
           </example>
@@ -132,7 +132,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <summary>The handle for this class.</summary>
         <value>The pointer to the Objective-C class.</value>
-        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+        <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
     <Member MemberName="InsertAttachment">
@@ -193,8 +193,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="url">Must be a file URL.</param>
-        <param name="filename">To be added. This parameter can be <see langwor="null" />.</param>
-        <summary>Inserts the media in the file , describing it in the message as . The system calls  after the attachment attempt is made.</summary>
+        <param name="filename">To be added.This parameter can be .</param>
+        <summary>Inserts the media in the file <paramref name="url" />, describing it in the message as <paramref name="filename" />. The system calls <paramref name="completionHandler" /> after the attachment attempt is made.</summary>
         <returns>A task that represents the asynchronous InsertAttachment operation</returns>
         <remarks />
       </Docs>
@@ -251,7 +251,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="message">To be added.</param>
-        <summary>Adds the  to the conversation and then calls the .</summary>
+        <summary>Adds the <paramref name="message" /> to the conversation and then calls the <paramref name="completionHandler" />.</summary>
         <returns>A task that represents the asynchronous InsertMessage operation</returns>
         <remarks />
       </Docs>
@@ -308,7 +308,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="sticker">To be added.</param>
-        <summary>Adds the  to the conversation and then calls the .</summary>
+        <summary>Adds the <paramref name="sticker" /> to the conversation and then calls the <paramref name="completionHandler" />.</summary>
         <returns>A task that represents the asynchronous InsertSticker operation</returns>
         <remarks />
       </Docs>
@@ -365,7 +365,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="text">To be added.</param>
-        <summary>Adds the  to the conversation and then calls the .</summary>
+        <summary>Adds the <paramref name="text" /> to the conversation and then calls the <paramref name="completionHandler" />.</summary>
         <returns>A task that represents the asynchronous InsertText operation</returns>
         <remarks />
       </Docs>
@@ -509,7 +509,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="url">To be added.</param>
-        <param name="filename">To be added. This parameter can be <see langwor="null" />.</param>
+        <param name="filename">To be added.This parameter can be .</param>
         <summary>To be added.</summary>
         <returns>A task that represents the asynchronous SendAttachment operation</returns>
         <remarks>
