@@ -167,7 +167,7 @@
 // C# class with the Objective-C runtime if necessary, but no actual
 // initXxx method is invoked, that is done later in the constructor
 //
-// This is taken from Xamarin's source code:
+// This is taken from Xamarin.iOS's source code:
 //
 [Export ("initWithFrame:")]
 public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
@@ -175,9 +175,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 // Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
 	if (IsDirectBinding)
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
 	else
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
 }
 ]]></code>
           </example>
@@ -671,7 +671,10 @@ void Setup ()
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="backgroundTimeExpired">Action that runs when background time expires.</param>
+        <param name="backgroundTimeExpired">
+          <para>Action that runs when background time expires.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
         <summary>Indicates the inception of a new long-running background task.</summary>
         <returns>An id that, when passed to <see cref="M:UIKit.UIApplication.EndBackgroundTask" />, indicates that background processing has ended.</returns>
         <remarks>
@@ -1009,7 +1012,7 @@ Task.Factory.StartNew( () => {
       <Docs>
         <summary>The handle for this class.</summary>
         <value>The pointer to the Objective-C class.</value>
-        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+        <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ClearKeepAliveTimeout">
@@ -1097,7 +1100,7 @@ Task.Factory.StartNew( () => {
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIKit.UIKit.UIApplication+Notifications" />.<see cref="M:UIKit.UIKit.UIApplication+Notifications.ObserveContentSizeCategoryChangedNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIKit.UIApplication+Notifications" />.<see cref="M:UIKit.UIApplication+Notifications.ObserveContentSizeCategoryChangedNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="C#"><![CDATA[
@@ -1213,9 +1216,9 @@ void Setup ()
         <ReturnType>UIKit.IUIApplicationDelegate</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>An instance of the <see cref="UIKit.UIApplicationDelegate" /> model class which acts as the class delegate.</summary>
+        <summary>An instance of the UIKit.IUIApplicationDelegate model class which acts as the class delegate.</summary>
         <value>
-          <para>The instance of the <see cref="UIKit.UIApplicationDelegate" /> model class</para>
+          <para>The instance of the UIKit.IUIApplicationDelegate model class</para>
           <para tool="nullallowed">This value can be <see langword="null" />.</para>
         </value>
         <remarks>
@@ -1339,7 +1342,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIKit.UIKit.UIApplication+Notifications" />.<see cref="M:UIKit.UIKit.UIApplication+Notifications.ObserveDidChangeStatusBarFrameNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIKit.UIApplication+Notifications" />.<see cref="M:UIKit.UIApplication+Notifications.ObserveDidChangeStatusBarFrameNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="C#"><![CDATA[
@@ -1433,7 +1436,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIKit.UIKit.UIApplication+Notifications" />.<see cref="M:UIKit.UIKit.UIApplication+Notifications.ObserveDidChangeStatusBarOrientationNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIKit.UIApplication+Notifications" />.<see cref="M:UIKit.UIApplication+Notifications.ObserveDidChangeStatusBarOrientationNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="C#"><![CDATA[
@@ -1611,7 +1614,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIKit.UIKit.UIApplication+Notifications" />.<see cref="M:UIKit.UIKit.UIApplication+Notifications.ObserveDidFinishLaunchingNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIKit.UIApplication+Notifications" />.<see cref="M:UIKit.UIApplication+Notifications.ObserveDidFinishLaunchingNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="C#"><![CDATA[
@@ -3338,7 +3341,7 @@ void Setup ()
           <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("scheduledLocalNotifications", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>get: Foundation.Export("scheduledLocalNotifications")</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'UNUserNotificationCenter.GetPendingNotificationRequests' instead.")</AttributeName>
@@ -3350,7 +3353,7 @@ void Setup ()
           <AttributeName>get: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setScheduledLocalNotifications:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>set: Foundation.Export("setScheduledLocalNotifications:")</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'UNUserNotificationCenter.GetPendingNotificationRequests' instead.")</AttributeName>
@@ -3548,8 +3551,8 @@ void Setup ()
         <Parameter Name="alternateIconName" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="alternateIconName">The name of the new alternate icon. This parameter can be <see langwor="null" />.</param>
-        <summary>Changes the alternate icon.</summary>
+        <param name="alternateIconName">The name of the new alternate icon. This parameter can be .This parameter can be .</param>
+        <summary>Sets the name of the alternate icon.</summary>
         <returns>A task that represents the asynchronous SetAlternateIconName operation</returns>
         <remarks>
           <para copied="true">The SetAlternateIconNameAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
@@ -3594,7 +3597,10 @@ void Setup ()
       </Parameters>
       <Docs>
         <param name="timeout">Maximum interval (in seconds) at which the app should be awakened to check its VoIP connection.</param>
-        <param name="handler">Action that performs all tasks needed to maintain the VoIP network connection.</param>
+        <param name="handler">
+          <para>Action that performs all tasks needed to maintain the VoIP network connection.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
         <summary>In older iOS versions, this configures a periodic handler for VoIP apps.</summary>
         <returns>
           <see langword="true" /> if installed, <see langword="false" /> if not.</returns>
@@ -3858,7 +3864,7 @@ void Setup ()
           <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("shortcutItems", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>get: Foundation.Export("shortcutItems")</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -3867,7 +3873,7 @@ void Setup ()
           <AttributeName>get: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setShortcutItems:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>set: Foundation.Export("setShortcutItems:")</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -4592,10 +4598,10 @@ void Setup ()
           <AttributeName>ObjCRuntime.ThreadSafe</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("delegate", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+          <AttributeName>get: Foundation.Export("delegate")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setDelegate:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+          <AttributeName>set: Foundation.Export("setDelegate:")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -4645,7 +4651,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIKit.UIKit.UIApplication+Notifications" />.<see cref="M:UIKit.UIKit.UIApplication+Notifications.ObserveWillChangeStatusBarFrameNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIKit.UIApplication+Notifications" />.<see cref="M:UIKit.UIApplication+Notifications.ObserveWillChangeStatusBarFrameNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="C#"><![CDATA[
@@ -4739,7 +4745,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIKit.UIKit.UIApplication+Notifications" />.<see cref="M:UIKit.UIKit.UIApplication+Notifications.ObserveWillChangeStatusBarOrientationNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIKit.UIApplication+Notifications" />.<see cref="M:UIKit.UIApplication+Notifications.ObserveWillChangeStatusBarOrientationNotification" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="C#"><![CDATA[

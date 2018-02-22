@@ -83,7 +83,7 @@
 // C# class with the Objective-C runtime if necessary, but no actual
 // initXxx method is invoked, that is done later in the constructor
 //
-// This is taken from Xamarin's source code:
+// This is taken from Xamarin.iOS's source code:
 //
 [Export ("initWithFrame:")]
 public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
@@ -91,9 +91,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 // Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
 	if (IsDirectBinding)
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
 	else
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
 }
 ]]></code>
           </example>
@@ -206,7 +206,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <summary>The handle for this class.</summary>
         <value>The pointer to the Objective-C class.</value>
-        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+        <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
     <Member MemberName="DefaultSearchableIndex">
@@ -337,8 +337,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="identifiers" Type="System.String[]" />
       </Parameters>
       <Docs>
-        <param name="identifiers">The identifiers for the items to delete.</param>
-        <summary>Removes the identified items and runs  when finished.</summary>
+        <param name="identifiers">To be added.</param>
+        <summary>Removes the identified items and runs <paramref name="completionHandler" /> when finished.</summary>
         <returns>A task that represents the asynchronous Delete operation</returns>
         <remarks />
       </Docs>
@@ -372,7 +372,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="domainIdentifiers">The domain identifier for the items to delete.</param>
         <param name="completionHandler">Handler that is called after the index change is journaled. may be <see langword="null" />.
-        </param>
+        <para tool="nullallowed">This parameter can be <see langword="null" />.</para></param>
         <summary>Removes all items from the specified domains and runs <paramref name="completionHandler" /> after the index change is journaled.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -392,8 +392,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="domainIdentifiers" Type="System.String[]" />
       </Parameters>
       <Docs>
-        <param name="domainIdentifiers">To be added.</param>
-        <summary>Removes all items from the specified domains and runs  when finished.</summary>
+        <param name="domainIdentifiers">The domain identifier for the items to delete.</param>
+        <summary>Removes all items from the specified domains and runs <paramref name="completionHandler" /> after the index change is journaled.</summary>
         <returns>A task that represents the asynchronous DeleteWithDomain operation</returns>
         <remarks />
       </Docs>
@@ -477,7 +477,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="items">The items to index.</param>
-        <summary>Indexes the specified searchable items and returns a task that represents the indexing operation.</summary>
+        <summary>Indexes the specified searchable items and runs <paramref name="completionHandler" /> when finished.</summary>
         <returns>A task that represents the asynchronous Index operation</returns>
         <remarks />
       </Docs>
@@ -492,10 +492,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("indexDelegate", ObjCRuntime.ArgumentSemantic.Weak)</AttributeName>
+          <AttributeName>get: Foundation.Export("indexDelegate")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setIndexDelegate:", ObjCRuntime.ArgumentSemantic.Weak)</AttributeName>
+          <AttributeName>set: Foundation.Export("setIndexDelegate:")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>

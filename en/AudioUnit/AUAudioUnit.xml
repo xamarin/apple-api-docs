@@ -58,7 +58,7 @@
 // C# class with the Objective-C runtime if necessary, but no actual
 // initXxx method is invoked, that is done later in the constructor
 //
-// This is taken from Xamarin's source code:
+// This is taken from Xamarin.iOS's source code:
 //
 [Export ("initWithFrame:")]
 public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
@@ -66,9 +66,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 // Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
 	if (IsDirectBinding)
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
 	else
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
 }
 ]]></code>
           </example>
@@ -118,7 +118,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="componentDescription">To be added.</param>
-        <param name="outError">To be added.</param>
+        <param name="outError">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
         <summary>Creates a new <see cref="T:AudioUnit.AUAudioUnit" /> with the specified values.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -147,7 +150,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="componentDescription">To be added.</param>
         <param name="options">To be added.</param>
-        <param name="outError">To be added.</param>
+        <param name="outError">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
         <summary>Creates a new <see cref="T:AudioUnit.AUAudioUnit" /> with the specified values.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -376,7 +382,7 @@ void Setup ()
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("channelCapabilities", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>get: Foundation.Export("channelCapabilities")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -460,7 +466,7 @@ void Setup ()
       <Docs>
         <summary>The handle for this class.</summary>
         <value>The pointer to the Objective-C class.</value>
-        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+        <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Component">
@@ -592,10 +598,10 @@ void Setup ()
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("currentPreset", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+          <AttributeName>get: Foundation.Export("currentPreset")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setCurrentPreset:", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+          <AttributeName>set: Foundation.Export("setCurrentPreset:")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -642,7 +648,7 @@ void Setup ()
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("factoryPresets", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>get: Foundation.Export("factoryPresets")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -710,9 +716,11 @@ void Setup ()
       <Docs>
         <param name="componentDescription">To be added.</param>
         <param name="options">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>Asynchronously creates a <see cref="T:AudioUnit.AUAudioUnit" />.</summary>
+        <returns>
+          <para class="improve-task-t-return-type-description">A task that represents the asynchronous FromComponentDescription operation.  The value of the TResult parameter is of type System.Action&lt;AudioUnit.AUAudioUnit,Foundation.NSError&gt;.</para>
+        </returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="FullState">
@@ -725,10 +733,10 @@ void Setup ()
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("fullState", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>get: Foundation.Export("fullState")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setFullState:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>set: Foundation.Export("setFullState:")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -753,10 +761,10 @@ void Setup ()
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("fullStateForDocument", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>get: Foundation.Export("fullStateForDocument")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setFullStateForDocument:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>set: Foundation.Export("setFullStateForDocument:")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -996,7 +1004,7 @@ void Setup ()
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("MIDIOutputEventBlock", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>get: Foundation.Export("MIDIOutputEventBlock")</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.WatchOS, 4, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -1011,7 +1019,7 @@ void Setup ()
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setMIDIOutputEventBlock:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>set: Foundation.Export("setMIDIOutputEventBlock:")</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.WatchOS, 4, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -1060,7 +1068,7 @@ void Setup ()
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 11, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("MIDIOutputNames", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>get: Foundation.Export("MIDIOutputNames")</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.WatchOS, 4, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -1315,10 +1323,10 @@ void Setup ()
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("renderQuality", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+          <AttributeName>get: Foundation.Export("renderQuality")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setRenderQuality:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+          <AttributeName>set: Foundation.Export("setRenderQuality:")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1406,7 +1414,7 @@ void Setup ()
       <Docs>
         <summary>Requests the view controller for the audio unit and runs <paramref name="completionHandler" /> when finished.</summary>
         <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous RequestViewController operation.  The value of the TResult parameter is of type <c>Action&lt;UIKit.UIViewController&gt;</c>.</para>
+          <para class="improve-task-t-return-type-description">A task that represents the asynchronous RequestViewController operation.  The value of the TResult parameter is of type System.Action&lt;UIKit.UIViewController&gt;.</para>
         </returns>
         <remarks>
           <para copied="true">The RequestViewControllerAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
@@ -1663,10 +1671,10 @@ void Setup ()
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("transportStateBlock", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>get: Foundation.Export("transportStateBlock")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setTransportStateBlock:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>set: Foundation.Export("setTransportStateBlock:")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
