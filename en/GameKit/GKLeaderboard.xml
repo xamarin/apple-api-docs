@@ -84,7 +84,7 @@
 // C# class with the Objective-C runtime if necessary, but no actual
 // initXxx method is invoked, that is done later in the constructor
 //
-// This is taken from Xamarin's source code:
+// This is taken from Xamarin.iOS's source code:
 //
 [Export ("initWithFrame:")]
 public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
@@ -92,9 +92,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 // Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
 	if (IsDirectBinding)
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
 	else
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
 }
 ]]></code>
           </example>
@@ -209,7 +209,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("category", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>get: Foundation.Export("category")</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'Identifier' instead.")</AttributeName>
@@ -224,7 +224,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>get: ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.TvOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setCategory:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>set: Foundation.Export("setCategory:")</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'Identifier' instead.")</AttributeName>
@@ -265,7 +265,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <summary>The handle for this class.</summary>
         <value>The pointer to the Objective-C class.</value>
-        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+        <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GroupIdentifier">
@@ -281,7 +281,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("groupIdentifier", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+          <AttributeName>get: Foundation.Export("groupIdentifier")</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -318,7 +318,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("identifier", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>get: Foundation.Export("identifier")</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -327,7 +327,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setIdentifier:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>set: Foundation.Export("setIdentifier:")</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -451,7 +451,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <summary>Deprecated.</summary>
         <returns>
-          <para>A task that represents the asynchronous LoadCategories operation.   The value of the TResult parameter is of type <c>Action&lt;GameKit.GKCategoryResult&gt;</c>.</para>
+          <para>A task that represents the asynchronous LoadCategories operation.   The value of the TResult parameter is of type GameKit.GKCategoryResult.  Category and title results from the asynchronous  method.</para>
         </returns>
         <remarks />
       </Docs>
@@ -531,7 +531,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <summary>Loads the leaderboard image and then passes it to <paramref name="completionHandler" />, along with an error object that is <see langword="null" /> if no error occurred.</summary>
         <returns>
-          <para>A task that represents the asynchronous LoadImage operation.   The value of the TResult parameter is a <see cref="GameKit.GKImageLoadedHandler" />.</para>
+          <para>A task that represents the asynchronous LoadImage operation.   The value of the TResult parameter is a GameKit.GKImageLoadedHandler.</para>
         </returns>
         <remarks>
           <para copied="true">The LoadImageAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
@@ -603,7 +603,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <summary>Retrieves the list of leaderboards that have been configured for your application.</summary>
         <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous LoadLeaderboards operation.  The value of the TResult parameter is of type <c>Action&lt;GameKit.GKLeaderboard[],Foundation.NSError&gt;</c>.</para>
+          <para class="improve-task-t-return-type-description">A task that represents the asynchronous LoadLeaderboards operation.  The value of the TResult parameter is of type System.Action&lt;GameKit.GKLeaderboard[],Foundation.NSError&gt;.</para>
         </returns>
         <remarks />
       </Docs>
@@ -657,7 +657,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <summary>Loads scores from the Game Center and then passes them to <paramref name="completionHandler" />, along with an error object that is <see langword="null" /> if no error occurred.</summary>
         <returns>
-          <para>A task that represents the asynchronous LoadScores operation.   The value of the TResult parameter is a <see cref="GameKit.GKScoresLoadedHandler" />.</para>
+          <para>A task that represents the asynchronous LoadScores operation.   The value of the TResult parameter is a GameKit.GKScoresLoadedHandler.</para>
         </returns>
         <remarks />
       </Docs>
@@ -672,7 +672,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("localPlayerScore", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+          <AttributeName>get: Foundation.Export("localPlayerScore")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -694,7 +694,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("maxRange", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+          <AttributeName>get: Foundation.Export("maxRange")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -716,10 +716,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("playerScope", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+          <AttributeName>get: Foundation.Export("playerScope")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setPlayerScope:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+          <AttributeName>set: Foundation.Export("setPlayerScope:")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -741,10 +741,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("range", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+          <AttributeName>get: Foundation.Export("range")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setRange:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+          <AttributeName>set: Foundation.Export("setRange:")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -766,7 +766,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("scores", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+          <AttributeName>get: Foundation.Export("scores")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -820,8 +820,14 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="leaderboardIdentifier">To be added.</param>
-        <param name="notificationHandler">To be added.</param>
+        <param name="leaderboardIdentifier">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
+        <param name="notificationHandler">
+          <para>To be added.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
         <summary>Deprecated.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -858,7 +864,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="leaderboardIdentifier" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="leaderboardIdentifier">To be added. This parameter can be <see langwor="null" />.</param>
+        <param name="leaderboardIdentifier">To be added.</param>
         <summary>Deprecated.</summary>
         <returns>A task that represents the asynchronous SetDefaultLeaderboard operation</returns>
         <remarks />
@@ -874,10 +880,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("timeScope", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+          <AttributeName>get: Foundation.Export("timeScope")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setTimeScope:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+          <AttributeName>set: Foundation.Export("setTimeScope:")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -899,7 +905,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("title", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>get: Foundation.Export("title")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>

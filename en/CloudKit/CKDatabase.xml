@@ -61,7 +61,7 @@
 // C# class with the Objective-C runtime if necessary, but no actual
 // initXxx method is invoked, that is done later in the constructor
 //
-// This is taken from Xamarin's source code:
+// This is taken from Xamarin.iOS's source code:
 //
 [Export ("initWithFrame:")]
 public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
@@ -69,9 +69,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 // Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
 	if (IsDirectBinding)
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
 	else
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
 }
 ]]></code>
           </example>
@@ -141,7 +141,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <summary>The handle for this class.</summary>
         <value>The pointer to the Objective-C class.</value>
-        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+        <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
     <Member MemberName="DatabaseScope">
@@ -163,7 +163,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.Arch64, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("databaseScope", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+          <AttributeName>get: Foundation.Export("databaseScope")</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -233,9 +233,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="recordId">To be added.</param>
-        <summary>Deletes the record with the .</summary>
+        <summary>Deletes the record with the <paramref name="recordId" />.</summary>
         <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous DeleteRecord operation.  The value of the TResult parameter is of type <c>Action&lt;CloudKit.CKRecordID,Foundation.NSError&gt;</c>.</para>
+          <para class="improve-task-t-return-type-description">A task that represents the asynchronous DeleteRecord operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKRecordID,Foundation.NSError&gt;.</para>
         </returns>
         <remarks />
       </Docs>
@@ -289,9 +289,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="zoneId">To be added.</param>
-        <summary>Deletes the zone at the specified .</summary>
+        <summary>Deletes the zone at the specified <paramref name="zoneId" />.</summary>
         <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous DeleteRecordZone operation.  The value of the TResult parameter is of type <c>Action&lt;CloudKit.CKRecordZoneID,Foundation.NSError&gt;</c>.</para>
+          <para class="improve-task-t-return-type-description">A task that represents the asynchronous DeleteRecordZone operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKRecordZoneID,Foundation.NSError&gt;.</para>
         </returns>
         <remarks />
       </Docs>
@@ -353,9 +353,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="subscriptionID">To be added.</param>
-        <summary>Deletes the  with the specified .</summary>
+        <summary>Deletes the <see cref="T:CloudKit.CKSubscription" /> with the specified <paramref name="subscriptionID" />.</summary>
         <returns>
-          <para>A task that represents the asynchronous DeleteSubscription operation.   The value of the TResult parameter is a <see cref="CloudKit.CKDatabaseDeleteSubscriptionHandler" />.</para>
+          <para>A task that represents the asynchronous DeleteSubscription operation.   The value of the TResult parameter is a CloudKit.CKDatabaseDeleteSubscriptionHandler.</para>
         </returns>
         <remarks>
           <para copied="true">The DeleteSubscriptionAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
@@ -409,7 +409,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <summary>Retrieves all record zones, with low priority.</summary>
         <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous FetchAllRecordZones operation.  The value of the TResult parameter is of type <c>Action&lt;CloudKit.CKRecordZone[],Foundation.NSError&gt;</c>.</para>
+          <para class="improve-task-t-return-type-description">A task that represents the asynchronous FetchAllRecordZones operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKRecordZone[],Foundation.NSError&gt;.</para>
         </returns>
         <remarks />
       </Docs>
@@ -468,7 +468,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <summary>Retrieves all the <see cref="T:CloudKit.CKSubscription" /> objects from the database.</summary>
         <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous FetchAllSubscriptions operation.  The value of the TResult parameter is of type <c>Action&lt;CloudKit.CKSubscription[],Foundation.NSError&gt;</c>.</para>
+          <para class="improve-task-t-return-type-description">A task that represents the asynchronous FetchAllSubscriptions operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKSubscription[],Foundation.NSError&gt;.</para>
         </returns>
         <remarks />
       </Docs>
@@ -522,9 +522,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="recordId">To be added.</param>
-        <summary>Fetches the  with the specified .</summary>
+        <summary>Fetches the <see cref="T:CloudKit.CKRecord" /> with the specified <paramref name="recordId" />.</summary>
         <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous FetchRecord operation.  The value of the TResult parameter is of type <c>Action&lt;CloudKit.CKRecord,Foundation.NSError&gt;</c>.</para>
+          <para class="improve-task-t-return-type-description">A task that represents the asynchronous FetchRecord operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKRecord,Foundation.NSError&gt;.</para>
         </returns>
         <remarks />
       </Docs>
@@ -578,9 +578,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="zoneId">To be added.</param>
-        <summary>Fetches the  with the specified .</summary>
+        <summary>Fetches the <see cref="T:CKRecordZone" /> with the specified <paramref name="zoneId" />.</summary>
         <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous FetchRecordZone operation.  The value of the TResult parameter is of type <c>Action&lt;CloudKit.CKRecordZone,Foundation.NSError&gt;</c>.</para>
+          <para class="improve-task-t-return-type-description">A task that represents the asynchronous FetchRecordZone operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKRecordZone,Foundation.NSError&gt;.</para>
         </returns>
         <remarks />
       </Docs>
@@ -642,9 +642,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="subscriptionId">To be added.</param>
-        <summary>Fetches the  with the specified .</summary>
+        <summary>Fetches the <see cref="T:CKSubscription" /> with the specified <paramref name="subscriptionId" />.</summary>
         <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous FetchSubscription operation.  The value of the TResult parameter is of type <c>Action&lt;CloudKit.CKSubscription,Foundation.NSError&gt;</c>.</para>
+          <para class="improve-task-t-return-type-description">A task that represents the asynchronous FetchSubscription operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKSubscription,Foundation.NSError&gt;.</para>
         </returns>
         <remarks />
       </Docs>
@@ -704,10 +704,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="query">To be added.</param>
-        <param name="zoneId">To be added. This parameter can be <see langwor="null" />.</param>
-        <summary>Executes the  on the zone identified by .</summary>
+        <param name="zoneId">To be added.This parameter can be .</param>
+        <summary>Executes the <paramref name="query" /> on the zone identified by <paramref name="zoneId" />.</summary>
         <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous PerformQuery operation.  The value of the TResult parameter is of type <c>Action&lt;CloudKit.CKRecord[],Foundation.NSError&gt;</c>.</para>
+          <para class="improve-task-t-return-type-description">A task that represents the asynchronous PerformQuery operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKRecord[],Foundation.NSError&gt;.</para>
         </returns>
         <remarks />
       </Docs>
@@ -761,9 +761,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="record">To be added.</param>
-        <summary>Saves the specified .</summary>
+        <summary>Saves the specified <see cref="T:CloudKit.CKRecord" />.</summary>
         <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous SaveRecord operation.  The value of the TResult parameter is of type <c>Action&lt;CloudKit.CKRecord,Foundation.NSError&gt;</c>.</para>
+          <para class="improve-task-t-return-type-description">A task that represents the asynchronous SaveRecord operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKRecord,Foundation.NSError&gt;.</para>
         </returns>
         <remarks />
       </Docs>
@@ -817,9 +817,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="zone">To be added.</param>
-        <summary>Saves the specified  to the current database.</summary>
+        <summary>Saves the specified <paramref name="zone" /> to the current database.</summary>
         <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous SaveRecordZone operation.  The value of the TResult parameter is of type <c>Action&lt;CloudKit.CKRecordZone,Foundation.NSError&gt;</c>.</para>
+          <para class="improve-task-t-return-type-description">A task that represents the asynchronous SaveRecordZone operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKRecordZone,Foundation.NSError&gt;.</para>
         </returns>
         <remarks />
       </Docs>
@@ -881,9 +881,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Parameters>
       <Docs>
         <param name="subscription">To be added.</param>
-        <summary>Saves the specified  to the current database.</summary>
+        <summary>Saves the specified <paramref name="subscription" /> to the current database.</summary>
         <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous SaveSubscription operation.  The value of the TResult parameter is of type <c>Action&lt;CloudKit.CKSubscription,Foundation.NSError&gt;</c>.</para>
+          <para class="improve-task-t-return-type-description">A task that represents the asynchronous SaveSubscription operation.  The value of the TResult parameter is of type System.Action&lt;CloudKit.CKSubscription,Foundation.NSError&gt;.</para>
         </returns>
         <remarks />
       </Docs>

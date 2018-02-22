@@ -113,7 +113,7 @@
 // C# class with the Objective-C runtime if necessary, but no actual
 // initXxx method is invoked, that is done later in the constructor
 //
-// This is taken from Xamarin's source code:
+// This is taken from Xamarin.iOS's source code:
 //
 [Export ("initWithFrame:")]
 public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
@@ -121,9 +121,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 // Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
 	if (IsDirectBinding)
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
 	else
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
 }
 ]]></code>
           </example>
@@ -164,7 +164,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("accounts", ObjCRuntime.ArgumentSemantic.Weak)</AttributeName>
+          <AttributeName>get: Foundation.Export("accounts")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -274,7 +274,7 @@ void Setup ()
       <Docs>
         <summary>The handle for this class.</summary>
         <value>The pointer to the Objective-C class.</value>
-        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+        <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Dispose">
@@ -465,9 +465,9 @@ void Setup ()
       </Parameters>
       <Docs>
         <param name="account">The account to remove.</param>
-        <summary>Removes the specified  from the account store, and runs a completion handler after the operation is complete.</summary>
+        <summary>Removes the specified <paramref name="account" /> from the account store, and runs a completion handler after the operation is complete.</summary>
         <returns>
-          <para>A task that represents the asynchronous RemoveAccount operation.   The value of the TResult parameter is a <see cref="Accounts.ACAccountStoreRemoveCompletionHandler" />.</para>
+          <para>A task that represents the asynchronous RemoveAccount operation.   The value of the TResult parameter is a Accounts.ACAccountStoreRemoveCompletionHandler.</para>
         </returns>
         <remarks>
           <para copied="true">The RemoveAccountAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
@@ -535,7 +535,7 @@ void Setup ()
         <param name="account">The account whose credentials require renewing.</param>
         <summary>Attempts to renew credentials if they have become invalid.</summary>
         <returns>
-          <para class="improve-task-t-return-type-description">A task that represents the asynchronous RenewCredentials operation.  The value of the TResult parameter is of type <c>Action&lt;Accounts.ACAccountCredentialRenewResult,Foundation.NSError&gt;</c>.</para>
+          <para class="improve-task-t-return-type-description">A task that represents the asynchronous RenewCredentials operation.  The value of the TResult parameter is of type System.Action&lt;Accounts.ACAccountCredentialRenewResult,Foundation.NSError&gt;.</para>
         </returns>
         <remarks />
       </Docs>
@@ -685,10 +685,12 @@ objStore.RequestAccess(objStore.FindAccountType(ACAccountType.Facebook), options
         <Parameter Name="accountType" Type="Accounts.ACAccountType" />
       </Parameters>
       <Docs>
-        <param name="accountType">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="accountType">The type of account for which access is being requested.</param>
+        <summary>Requests access to a type of social account.</summary>
+        <returns>
+          <para>A task that represents the asynchronous RequestAccess operation.   The value of the TResult parameter is a Accounts.ACRequestCompletionHandler.</para>
+        </returns>
+        <remarks />
       </Docs>
     </Member>
     <Member MemberName="RequestAccessAsync">
@@ -796,10 +798,12 @@ objStore.RequestAccess(objStore.FindAccountType(ACAccountType.Facebook), options
         <Parameter Name="account" Type="Accounts.ACAccount" />
       </Parameters>
       <Docs>
-        <param name="account">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="account">The account to be saved.</param>
+        <summary>Attempts to save an <see cref="T:MonoToch.Accounts.ACAccount" /> to the Accounts database.</summary>
+        <returns>
+          <para>A task that represents the asynchronous SaveAccount operation.   The value of the TResult parameter is a Accounts.ACAccountStoreSaveCompletionHandler.</para>
+        </returns>
+        <remarks />
       </Docs>
     </Member>
   </Members>

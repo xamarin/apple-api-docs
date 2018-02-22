@@ -123,7 +123,7 @@
 // C# class with the Objective-C runtime if necessary, but no actual
 // initXxx method is invoked, that is done later in the constructor
 //
-// This is taken from Xamarin's source code:
+// This is taken from Xamarin.iOS's source code:
 //
 [Export ("initWithFrame:")]
 public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
@@ -131,9 +131,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
 // Invoke the init method now.
 	var initWithFrame = new Selector ("initWithFrame:").Handle;
 	if (IsDirectBinding)
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_RectangleF (this.Handle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
 	else
-		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_RectangleF (this.SuperHandle, initWithFrame, frame);
+		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
 }
 ]]></code>
           </example>
@@ -323,7 +323,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <summary>The handle for this class.</summary>
         <value>The pointer to the Objective-C class.</value>
-        <remarks>Each Xamarin class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
+        <remarks>Each Xamarin.iOS class mirrors an unmanaged Objective-C class.   This value contains the pointer to the Objective-C class, it is similar to calling objc_getClass with the object name.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Copy">
@@ -365,13 +365,13 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("dataDetectorTypes", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+          <AttributeName>get: Foundation.Export("dataDetectorTypes")</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setDataDetectorTypes:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+          <AttributeName>set: Foundation.Export("setDataDetectorTypes:")</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -598,7 +598,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.Arch64, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("mediaTypesRequiringUserActionForPlayback", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+          <AttributeName>get: Foundation.Export("mediaTypesRequiringUserActionForPlayback")</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -607,7 +607,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 12, ObjCRuntime.PlatformArchitecture.Arch64, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setMediaTypesRequiringUserActionForPlayback:", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+          <AttributeName>set: Foundation.Export("setMediaTypesRequiringUserActionForPlayback:")</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 10, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -635,10 +635,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("preferences", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+          <AttributeName>get: Foundation.Export("preferences")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setPreferences:", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+          <AttributeName>set: Foundation.Export("setPreferences:")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -660,10 +660,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("processPool", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+          <AttributeName>get: Foundation.Export("processPool")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setProcessPool:", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+          <AttributeName>set: Foundation.Export("setProcessPool:")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -770,7 +770,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="urlScheme" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="urlSchemeHandler">The handler to set.</param>
+        <param name="urlSchemeHandler">
+          <para>The handler to set.</para>
+          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+        </param>
         <param name="urlScheme">The URL scheme for which to set a handler.</param>
         <summary>Sets the handler for the specified URL scheme.</summary>
         <remarks>To be added.</remarks>
@@ -811,10 +814,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>get: Foundation.Export("userContentController", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+          <AttributeName>get: Foundation.Export("userContentController")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setUserContentController:", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+          <AttributeName>set: Foundation.Export("setUserContentController:")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -842,7 +845,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("websiteDataStore", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+          <AttributeName>get: Foundation.Export("websiteDataStore")</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
@@ -851,7 +854,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 11, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>set: Foundation.Export("setWebsiteDataStore:", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+          <AttributeName>set: Foundation.Export("setWebsiteDataStore:")</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
