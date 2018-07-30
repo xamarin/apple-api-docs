@@ -1,4 +1,4 @@
-﻿<Type Name="NSNotificationCenter" FullName="Foundation.NSNotificationCenter">
+<Type Name="NSNotificationCenter" FullName="Foundation.NSNotificationCenter">
   <TypeSignature Language="C#" Value="public class NSNotificationCenter : Foundation.NSObject" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit NSNotificationCenter extends Foundation.NSObject" />
   <AssemblyInfo>
@@ -57,7 +57,7 @@
       <para>
 
 	Notifications are usually NSString fields that are hosted in
-	some class, for example the Objetive-C
+	some class, for example the Objective-C
 	UITextViewTextDidChangeNotification is found in the class
 	UITextView as the <see cref="P:UIKit.UITextView.TextDidChangeNotification" />.
 	For convenience there are overloads that take C# strings.
@@ -123,6 +123,42 @@ void Teardown ()
 }
 ]]></code>
       </example>
+      <para>
+        Similarly, if your object implements <see cref='T:System.IDisposable' /> (including any object derived from <see cref='T:Foundation.NSObject' />)
+        you MUST call <see cref='M:Foundation.NSNotificationCenter.RemoveObserver' /> or <c>notificationToken.Dispose()</c> in your <c>Dispose</c> function: 
+      </para>
+      <example>
+    <code lang="C#"><![CDATA[
+class MyClass : NSObject
+{
+      private NSObject notificationToken; 
+
+      MyClass()
+      { 
+         notificationToken = NSNotificationCenter.DefaultCenter.AddObserver(notificationName, NotificationHandler);
+      }
+
+      void NotificationHandler(NSNotification notification)
+      {
+         // ... etc ...
+      }
+
+      private bool disposed = false;
+      override protected void Dispose(bool disposing)
+      {
+         if (!disposed)
+         {
+               if (disposing)
+               {
+                  notificationToken.Dispose();
+               }
+               disposed = true;
+               base.Dispose();
+         }
+      }
+}
+    ]]></code>
+</example>
     </remarks>
     <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=67b46eb2-81d9-477f-a448-18e68db1227b">AppPrefs</related>
     <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=23a2571b-45eb-4889-bb67-d88937cb68c1">monocatalog</related>
