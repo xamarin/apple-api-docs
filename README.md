@@ -1,8 +1,25 @@
-Monotouch API docs
+Xamarin Apple API docs
 ==========
 
-This repository contains the source of the MonoTouch API documentation
-to be edited.
+This repository contains the source of the Xamarin API documentation for native functions in Apple operating systems:
+
+* iOS 
+* MacOS
+* TvOS
+* WatchOS
+
+Style guidelines
+----------
+
+All Xamarin Apple API docs are written in the [indicative mood](http://grammarist.com/grammar/english-moods/). For instance, instead of saying "You call this function to foo the bar," the docs should be "The developer calls this function to foo the bar." The agents we refer to are typically "the developer," "the method" (or "the object"), "the framework," and "the system" (meaning the underlying operating system or hardware services). The indicative mood often takes a little time to get used to, but it helps avoid ambiguity about responsibilities and cuts down on the temptation to use passive voice. 
+
+API docs are divided between `summary` and `remarks` elements. Summaries are displayed in IntelliSense and should be quite short (perhaps around 140 characters, certainly fewer than 250). If there is a numeric value with an underlying unit-of-measure, include the unit in the summary (e.g., "The angle, in radians," or "the distance, in meters"). Summaries may contain tags, but should not wrap their content in another tag:
+
+* Right: `<summary>Foos the <param name="bar"/>.</summary>` 
+* Wrong: `<summary><para>Foos the <param name="bar"/>.</para></summary>`
+
+
+
 
 Scripts included in the repository
 ----------
