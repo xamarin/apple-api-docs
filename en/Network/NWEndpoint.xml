@@ -15,8 +15,22 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>An endpoint represents a remote connection to connect to.</summary>
-    <remarks>To be added.</remarks>
+    <summary>Endpoints represent a remote resource either a specific host and port or a service exposed via Bonjour (a zero-configuration network service discovery system)</summary>
+    <remarks>
+      <para>You can create two kinds of <see cref="T:Network.NWEndpoint" /> objects, endpoints that represent a specific host and port, or Bonjour endpoints.   These endpoints are provided to the <see cref="T:Network.NWConnection" /> class to specify where to connect to.</para>
+      <para></para>
+      <para>To create a host/port endpoint, use the <see cref="M:Network.NWEndpoint.Create" /> method.   This method takes a string that can either be a hostname that needs to be resolved, a human readable IPV4 address or human readable IPV6 address.  Examples:</para>
+      <para></para>
+      <code lang="C#"><![CDATA[var localHttpServer = NWEndpoint.Create ("127.0.0.1", "80");
+var anotherLocalHttpSerer = NWEndpoint.Create ("localhost", "http"); ]]></code>
+      <para></para>
+      <para></para>
+      <para>It is also possible to connect to Bonjour services (Apple’s zero-configuration system).   Bonjour services can be discovered dynamically in the current network and do not need to hardcode a port.   To create a Bonjour endpoint, call the <see cref="M:Network.NWEndpoint.CreateBonjourService" /> method and provide the service name, service type and service domain.</para>
+      <para></para>
+      <code lang="C#"><![CDATA[var echoServer = NWEndpoint.CreateBonjourService ("hello", "_sample._tdp", "local");]]></code>
+      <para></para>
+      <para></para>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -125,6 +139,7 @@
         <summary>Creates an endpoint for the given hostname and port</summary>
         <returns>The endpoint, or null if there is an error in the parameters.</returns>
         <remarks>
+          <para />
           <para></para>
         </remarks>
       </Docs>
@@ -146,11 +161,14 @@
       </Parameters>
       <Docs>
         <param name="name">Bonjour service name, for example “myFaxServer"</param>
-        <param name="serviceType">Bonjour service type, for example “_http._tcp"</param>
+        <param name="serviceType">Bonjour service type, for example “_example._tcp"</param>
         <param name="domain">Bonjour service domain, for example “local"</param>
         <summary>Creates an endpoint for a Bonjour Service.</summary>
         <returns>Returns an endpoint describing the Bonjour service to connect to, or null if there is a problem with one of the parameters.</returns>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <para>To learn more about the values for the properties here, consult Apple’s Bonjour Overview: <see cref="https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/NetServices/Introduction.html#//apple_ref/doc/uid/TP40002445-SW1" /></para>
+          <para></para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Hostname">
