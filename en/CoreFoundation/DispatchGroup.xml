@@ -1,4 +1,4 @@
-﻿<Type Name="DispatchGroup" FullName="CoreFoundation.DispatchGroup">
+<Type Name="DispatchGroup" FullName="CoreFoundation.DispatchGroup">
   <TypeSignature Language="C#" Value="public class DispatchGroup : CoreFoundation.DispatchObject" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit DispatchGroup extends CoreFoundation.DispatchObject" />
   <AssemblyInfo>
@@ -48,10 +48,10 @@
         <Parameter Name="action" Type="System.Action" />
       </Parameters>
       <Docs>
-        <param name="queue">To be added.</param>
-        <param name="action">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="queue">The dispatch queue to which the block will be submitted for asynchronous invocation.</param>
+        <param name="action">The action to invoke asynchronously.</param>
+        <summary>Submits a block to a dispatch queue and associates the block with the given dispatch group.</summary>
+        <remarks>Submits a block to a dispatch queue and associates the block with the given dispatch group. The dispatch group may be used to wait for the completion of the blocks it references.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Enter">
@@ -104,10 +104,16 @@
         <Parameter Name="action" Type="System.Action" />
       </Parameters>
       <Docs>
-        <param name="queue">To be added.</param>
-        <param name="action">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="queue">The dispatch queue to which the block will be submitted for asynchronous invocation.</param>
+        <param name="action">The action to invoke when the group completes.</param>
+        <summary>Schedule a block to be submitted to a queue when all the blocks associated with a group have completed.</summary>
+        <remarks>
+          <para>This function schedules a notification block to be submitted to the specified queue once all blocks associated with the dispatch group have completed.</para>
+          <para></para>
+          <para>If no blocks are associated with the dispatch group (i.e. the group is empty) then the notification block will be submitted immediately.</para>
+          <para></para>
+          <para>The group will be empty at the time the notification block is submitted to the target queue. </para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Wait">
@@ -127,8 +133,17 @@
       <Docs>
         <param name="timeout">A DispatchTime that represents the number of nanoseconds to wait.</param>
         <summary>Waits synchronously for all blocks in the group to complete or the specified timeout has elapsed.</summary>
-        <returns>true if all code blockes finished before timeout otherwise false.</returns>
-        <remarks>The caller of this method blocks until all blocks in the group complete or a time-out occurs.</remarks>
+        <returns>
+          <see langword="true" /> if all code blockes finished before timeout otherwise <see langword="false" />.</returns>
+        <remarks>
+          <para>This function waits for the completion of the blocks associated with the given dispatch group, and returns after all blocks have completed or when the specified timeout has elapsed.</para>
+          <para />
+          <para>This function will return immediately if there are no blocks associated with the dispatch group (i.e. the group is empty).</para>
+          <para />
+          <para>The result of calling this function from multiple threads simultaneously with the same dispatch group is undefined.</para>
+          <para />
+          <para>After the successful return of this function, the dispatch group is empty.</para>
+        </remarks>
       </Docs>
     </Member>
   </Members>
