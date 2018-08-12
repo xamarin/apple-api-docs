@@ -18,11 +18,39 @@
     <summary>Represents a bidirectional network connection.</summary>
     <remarks>
       <para>The NWConnection represents a network connection that can be used to send and receive data.  </para>
-      <para>The <see cref="T:Network.NWConnection" /> constructor can be used to create an outgoing connection to a remote endpoint.   </para>
+      <para>The <see cref="T:Network.NWConnection" /> constructor can be used to create an outgoing connection to a remote endpoint.</para>
+      <para>NWConnection objects are created with an <see cref="T:Network.NWEndpoint" /> to connect to, and take a set of <see cref="T:Network.NWParameters" /> that hold the connection information, this is how you configure whether the connection should be done over TCP (stream of data) or UDP (datagrams), whether the connection should use Transport Layer Security (TLS) or not, and the optional configuration for your TLS connection that you might need.</para>
+      <para>Once the object is created, configure the queue on which the callback should be invoked calling <see cref="M:Network.NWConnection.SetQueue" /> method, provide a state change handler with the <see cref="M:Network.NWConnection.SetStateChangeHandler" /> which will contain the bulk of your connecion management and then start the connection process by calling <see cref="M:Network.NWConnection.Start." />    </para>
       <para></para>
-      <para>You first need to create an endpoint which describes where you want this connetion to connect to, like this:</para>
       <para></para>
-      <para>TODO</para>
+      <code lang="C#"><![CDATA[var endpoint = new NWEndpoint ("www.microsoft.com”, "https");
+var parameters = NWParameters.CreateSecureTcp ();
+var connection = new NWConnection (endpoint, parameters);
+connection.SetQueue (DispatchQueue.MainQueue);
+connection.SetStateChangeHandler ((state, error) => {
+        var remote = connection.Endpoint;
+        var errno = (SslStatus)(error != null ? error.ErrorCode : 0);
+        switch (state){
+        case NWConnectionState.Waiting:
+                warn ($"Connect to {remote.Hostname} port {remote.Port}");
+                break;
+        case NWConnectionState.Failed:
+                warn ($"Connect to {remote.Hostname} port {remote.Port} failed, error {errno}");
+                break;
+        case NWConnectionState.Ready:
+                if (verbose)
+                        warn ($"Connect to {remote.Hostname} port {remote.Port} succeeded");
+                break;
+        case NWConnectionState.Cancelled:
+                // Release reference
+                connection = null;
+                break;
+                
+        }
+});
+connection.Start ();]]></code>
+      <para></para>
+      <para>Once the connection is on the <see cref="E:Network.NWConnectionState.Ready" /> state, you can start sending and receiving data.</para>
     </remarks>
   </Docs>
   <Members>
@@ -224,9 +252,11 @@
         <ReturnType>Network.NWParameters</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>The parameters for this connection.</summary>
+        <value>The current parameters, or <see langword="null" /> on failure.</value>
+        <remarks>
+          <para />
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Receive">
@@ -565,9 +595,11 @@
         <Parameter Name="queue" Type="CoreFoundation.DispatchQueue" />
       </Parameters>
       <Docs>
-        <param name="queue">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="queue">The queue to use, like DispatchQueue.MainQueue for example.</param>
+        <summary>Configures the dispatch queue to use to invoke the handler passed to <see cref="M:Network.NWConnection.SetStateChangeHandler" />.</summary>
+        <remarks>
+          <para />
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SetStateChangeHandler">
@@ -589,9 +621,18 @@
         <Parameter Name="stateHandler" Type="System.Action&lt;Network.NWConnectionState,Network.NWError&gt;" />
       </Parameters>
       <Docs>
-        <param name="stateHandler">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="stateHandler">The provided delegate will receive updates on the connection state, and in case of an error, provided an OS-level error code that can be looked up, like <see cref="T:Security.SslStatus" />.   If the provided value is <see langword="null" />, then the state change handler is removed.</param>
+        <summary>Configures the state change handler for the connection responsible for monitoring the connection state, and when ready to start the data flow.</summary>
+        <remarks>
+          <para>You must configure the dispatch queue where the callback will be invoked using the <see cref="M:Network.NWConnection.SetQueue" /> method before you call the <see cref="M:Network.NWConnection.Start" /> method.</para>
+          <para />
+          <para>The following diagram illustrates the state transitions for your connection:</para>
+          <para>
+            <img href="NWConnectionState.png" />
+          </para>
+          <para />
+          <para>You can read the <see cref="T:Network.NWConnectionState" /> documentation for more information on each state.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Start">
@@ -606,8 +647,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Starts the process of establishing a connection.</summary>
+        <remarks>Before you can call this method, make sure that you configured both the <see cref="M:Network.NWConnection.SetStateChangeHandler" /> to receive the status updates on the connection status, as well as the <see cref="M:Network.NWConnection.SetQueue" /> method to configure the Dispatch Queue on which the state change handler will be invoked.</remarks>
       </Docs>
     </Member>
   </Members>
