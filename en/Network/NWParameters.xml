@@ -17,7 +17,40 @@
   <Docs>
     <summary>Manages the parameters for a connection.   Use one of the Create factory methods to create a configured instance of <see cref="T:Network.NWParameters" />.</summary>
     <remarks>
-      <para>The param</para>
+      <para>You should create the parameters using one of the factory methods.   </para>
+      <para>You can pick between creating connections using the TCP protocol for sendings reliable, ordered streams of data or UDP for sending datagrams that do not need any ordering guarantees.  Additionally, you can create raw connections, or secured connections with Transport Layer Security (TLS).  </para>
+      <para>To create raw, unsecured connections use one of:</para>
+      <para></para>
+      <list type="bullet">
+        <item>
+          <term>
+            <see cref="M:Network.NWParameters.CreateTcp" /> - for TCP based connections</term>
+        </item>
+        <item>
+          <term>
+            <see cref="M:Network.NWParameters.CreateUdp" /> - for UDP based connections</term>
+        </item>
+      </list>
+      <para>The specific parameters of the TCP or UDP connection can be further configured by providing a callback to the methods that will configure the protocol <see cref="T:Network.NWProtocolOptions." /></para>
+      <para></para>
+      <para>To create TLS secured connections, use one of:</para>
+      <para></para>
+      <list type="bullet">
+        <item>
+          <term>
+            <see cref="M:Network.NWParameters.CreateSecureTcp" /> - for TCP based connections</term>
+        </item>
+        <item>
+          <term>
+            <see cref="M:Network.NWParameters.CreateSecureUdp" /> - for UDP based connections</term>
+        </item>
+      </list>
+      <para>Both methods allow for the TLS settings to be customized by passing a callback to the methods that will configure the TLS <see cref="T:Network.NWProtocolOptions" />.</para>
+      <para>Once you have created a set of <see cref="T:Network.NWParameters" />, you can further customize the parameters of the connection by setting various properties on it and then using the result in an <see cref="T:Network.NWConnection" /> or an <see cref="T:Network.NWListener" />.</para>
+      <para></para>
+      <para></para>
+      <para></para>
+      <para></para>
       <para></para>
     </remarks>
   </Docs>
@@ -65,8 +98,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Clears the list of prohibited interfaces that were added with <see cref="M:Network.NWParameters.ProhibitedInterface" />.</summary>
+        <remarks>
+          <para></para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ClearProhibitedInterfaceTypes">
@@ -81,8 +116,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Clears the list of prohibited interfaces that were added with <see cref="M:Network.NWParameters.ProhibitedInterfaceTypes" />.</summary>
+        <remarks>
+          <para />
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Clone">
@@ -122,10 +159,13 @@
         <Parameter Name="configureTcp" Type="System.Action&lt;Network.NWProtocolOptions&gt;" />
       </Parameters>
       <Docs>
-        <param name="configureTls">To be added.</param>
-        <param name="configureTcp">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="configureTls">
+          <see langword="null" /> if you want to use the default TLS configuration options.   Otherwise a callback that can customize the <see cref="T:Network.NWProtocolOptions" />.</param>
+        <param name="configureTcp">null if you want to use the default TCP configuration options.   Otherwise a callback that can customize the <see cref="T:Network.NWProtocolOptions" />.</param>
+        <summary>Creates a <see cref="T:Network.NWParameters" /> suitable for secured TCP (stream) communications using TLS.  You can optionally configure the TLS and TCP options by specifying the <paramref name="configureTls" /> or <paramref name="configureTcp" /> parameters.</summary>
+        <returns>
+          <para />
+        </returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -149,9 +189,10 @@
         <Parameter Name="configureUdp" Type="System.Action&lt;Network.NWProtocolOptions&gt;" />
       </Parameters>
       <Docs>
-        <param name="configureTls">To be added.</param>
-        <param name="configureUdp">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="configureTls">
+          <see langword="null" /> if you want to use the default TLS configuration options.   Otherwise a callback that can customize the <see cref="T:Network.NWProtocolOptions" />.</param>
+        <param name="configureUdp">null if you want to use the default UDP configuration options.   Otherwise a callback that can customize the <see cref="T:Network.NWProtocolOptions" />.</param>
+        <summary>Creates a <see cref="T:Network.NWParameters" /> suitable for secured UCP (datagram) communications using TLS.  You can optionally configure the TLS and UDP options by specifying the <paramref name="configureTls" /> or <paramref name="configureUdp" /> parameters.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -175,9 +216,11 @@
         <Parameter Name="configureTcp" Type="System.Action&lt;Network.NWProtocolOptions&gt;" />
       </Parameters>
       <Docs>
-        <param name="configureTcp">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="configureTcp">null if you want to use the default TCP configuration options.   Otherwise a callback that can customize the <see cref="T:Network.NWProtocolOptions" />.</param>
+        <summary>Creates a <see cref="T:Network.NWParameters" /> suitable for TCP (stream) communications using TLS.  You can optionally configure the TCP options by specifying the <paramref name="configureTcp" /> parameter.</summary>
+        <returns>
+          <para />
+        </returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -200,8 +243,8 @@
         <Parameter Name="configureUdp" Type="System.Action&lt;Network.NWProtocolOptions&gt;" />
       </Parameters>
       <Docs>
-        <param name="configureUdp">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="configureUdp">null if you want to use the default UDP configuration options.   Otherwise a callback that can customize the <see cref="T:Network.NWProtocolOptions" />.</param>
+        <summary>Creates a <see cref="T:Network.NWParameters" /> suitable for UDP (datagram) communications, you can optionally configure UDP options by specifying the <paramref name="configureUdp" /> parameter.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -233,9 +276,9 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Controls Fast-Open behavior on the connection, can happen with any protocol.   Defaults to false.</summary>
+        <value>The current setting for fast-open, it defaults to <see langword="false" />.</value>
+        <remarks>If this setting is set to true, the sender must send the first block of data using the <see cref="T:Network.NWConnection.SendIdempotent" /> method - this is necessary as the same content might be send repeatedly over different channels.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Interface">
@@ -273,8 +316,8 @@
         <Parameter Name="iterationCallback" Type="System.Func&lt;Network.NWInterface,System.Boolean&gt;" />
       </Parameters>
       <Docs>
-        <param name="iterationCallback">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="iterationCallback">Callback that is invoked with each prohibited interface.   Return <see langword="true" /> to keep the enumeration going, or <see langword="false" /> to stop the enumeration process.</param>
+        <summary>Used to enumerate over all the prohibited interfaces</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -297,9 +340,11 @@
         <Parameter Name="callback" Type="System.Func&lt;Network.NWInterfaceType,System.Boolean&gt;" />
       </Parameters>
       <Docs>
-        <param name="callback">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="callback">Callback that is invoked with each prohibited interface.   Return <see langword="true" /> to keep the enumeration going, or <see langword="false" /> to stop the enumeration process.</param>
+        <summary>Used to enumerate over all the prohibited interface types.</summary>
+        <remarks>
+          <para />
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="LocalEndpoint">
@@ -313,8 +358,8 @@
         <ReturnType>Network.NWEndpoint</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>The local endpoint for the connection.   When setting, the value in <see cref="T:Network.NWConnection" /> will be used as the outgoing port, for <see cref="T:Network.NWListener" /> it will be used as the listening endpont.</summary>
+        <value>The local end point currently set on the connection, or <see langword="null" /> if not set.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -345,9 +390,11 @@
         <ReturnType>Network.NWMultiPathService</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Controls how the connection should handle multiple paths.   It defaults to disabled.</summary>
+        <value>The current setting for how mulit-path services are handled.</value>
+        <remarks>
+          <para />
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="PreferNoProxy">
@@ -396,9 +443,9 @@
         <Parameter Name="iface" Type="Network.NWInterface" />
       </Parameters>
       <Docs>
-        <param name="iface">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="iface">Network interface to prohibit.</param>
+        <summary>Prohibits the specified interface from being used for this connection.</summary>
+        <remarks>The connection will not use the specific network interface.   To undo the change, you need to clear all the prohibited interfaced by calling <see cref="M:Network.NWParameters.ClearProhibitedInterfaces" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ProhibitInterfaceType">
@@ -415,9 +462,9 @@
         <Parameter Name="ifaceType" Type="Network.NWInterfaceType" />
       </Parameters>
       <Docs>
-        <param name="ifaceType">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="ifaceType">Network interface type to prohibit.</param>
+        <summary>Prohibits the specified interface type from being used for this connection.</summary>
+        <remarks>The connection will not use the specific network interface type. To undo the change, you need to clear all the prohibited interfaced by calling <see cref="M:Network.NWParameters.ClearProhibitedInterfaceTypes" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ProtocolStack">
