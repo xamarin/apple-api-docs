@@ -19,12 +19,20 @@
     <ReturnType>System.Void</ReturnType>
   </ReturnValue>
   <Docs>
-    <param name="data">To be added.</param>
-    <param name="dataSize">To be added.</param>
-    <param name="context">To be added.</param>
-    <param name="isComplete">To be added.</param>
-    <param name="error">To be added.</param>
-    <summary>To be added.</summary>
-    <remarks>To be added.</remarks>
+    <param name="data">Pointer to the received data or <see cref="F:System.IntPtr.Zero" /> if the receive context is complete and this is the final invocation used to deliver the completed event or if there was a connection error.    There are scenarios where the data will be set (non-Zero) but the error will be set, indicating that some data was received, before the error was triggerred.</param>
+    <param name="dataSize">The size of the block of data read, it is generally the minimum amount of data requested, but can be less when the connection terminates and the remote end does not send as much data as expected.</param>
+    <param name="context">
+      <para>Context indicating the state of the connection and the metadata for the data being received.</para>
+      <para></para>
+      <para>For TCP connections, the context is kept for the duration of the connection and the the <see cref="P:Network.NWContentContext.IsFinal" /> property will be set to <see langword="true" />, indicating that the other end closed the connection.</para>
+      <para></para>
+      <para>For UDP connections, the context represents the information about the packet that was received.</para>
+    </param>
+    <param name="isComplete">This flag is set to <see langword="true" /> when the connection has completed and there is no more data to read.</param>
+    <param name="error">This value will be <see langword="null" /> if there are no errors, or will contain the error that was raised during the receive operation.</param>
+    <summary>Signature for receiving data from <see cref="T:Network.NWConnection" />’s <see cref="M:Network.NWConnection.Receive" /> or <see cref="M:Network.NWConnection.ReceiveMessage" /> method.</summary>
+    <remarks>
+      <para></para>
+    </remarks>
   </Docs>
 </Type>

@@ -67,9 +67,11 @@ connection.Start ();]]></code>
       </Parameters>
       <Docs>
         <param name="endpoint">The endpoint describes where you want this connection to connect to.</param>
-        <param name="parameters">To be added.</param>
+        <param name="parameters">The connection parameters control how the connection will behave.</param>
         <summary>Creates an outgoing connection to the specified endpoint using the provided parameters.</summary>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <para />
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -104,9 +106,11 @@ connection.Start ();]]></code>
         <Parameter Name="method" Type="System.Action" />
       </Parameters>
       <Docs>
-        <param name="method">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="method">The provided method should perform various Send or Receive operations.</param>
+        <summary>Attempt to batch several Send and Receive operations in the provided method, when the method completes, <see cref="T:Network.NWConnection" /> will attempt to batch the operations together.</summary>
+        <remarks>
+          <para />
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Cancel">
@@ -121,8 +125,13 @@ connection.Start ();]]></code>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Asynchronously cancels the connection - this performs a graceful termination of the connection</summary>
+        <remarks>
+          <para>Request that the connection be canceled - the state handler defined by <see cref="M:Network.NWConnection.SetStateChangeHandler" /> will receive a <see cref="F:Network.NWConnectionState.Cancelled" /> message.</para>
+          <para></para>
+          <para>Since this is asynchronously delivered, you should not release any resources associated with the connection until the above message is delivered, as some operations might still be in flight.    Any pending <see cref="M:Network.NWConnection.Send" /> or <see cref="M:Network.NWConnection.Receive" /> operations might return errors.</para>
+          <para>This will use the equivalent of Unix’s shutown(2) system call which will perform a graceful TCP termination, by sending a SIN packet and performing the 4-way finalization process.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CancelCurrentEndpoint">
@@ -201,8 +210,13 @@ connection.Start ();]]></code>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Asynchronously cancels the connection - there is no attempt to gracefully terminate the connection</summary>
+        <remarks>
+          <para>Unlike the <see cref="M:Network.NWConnection.Cancel" /> method.   There is no attempt to gracefully terminate the connection, so in TCP’s case, this will use the equivalent of the Unix close(2) call on socket which in turn will send an RST packet and perform a 2-step termination.</para>
+          <para>Request that the connection be canceled - the state handler defined by <see cref="M:Network.NWConnection.SetStateChangeHandler" /> will receive a <see cref="F:Network.NWConnectionState.Cancelled" /> message.</para>
+          <para></para>
+          <para>Since this is asynchronously delivered, you should not release any resources associated with the connection until the above message is delivered, as some operations might still be in flight.    Any pending <see cref="M:Network.NWConnection.Send" /> or <see cref="M:Network.NWConnection.Receive" /> operations might return errors.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetProtocolMetadata">
@@ -280,11 +294,15 @@ connection.Start ();]]></code>
         <Parameter Name="callback" Type="Network.NWConnectionReceiveCompletion" />
       </Parameters>
       <Docs>
-        <param name="minimumIncompleteLength">To be added.</param>
-        <param name="maximumLength">To be added.</param>
-        <param name="callback">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="minimumIncompleteLength">The minimum amount of bytes to retrieve from the connection before the callback is invoked.   If the connection terminates before this minimum is reached, the callback will be invoked with the number of available bytes fetched.</param>
+        <param name="maximumLength">Maximum amount of bytes to retrieve from the connection.   You can use UInt32.MaxValue to indicate that it should fetch as many bytes as possible.</param>
+        <param name="callback">Method that is invoked when either the minimum amount of bytes is retrieved from the connection or with the amount of bytes read at the time the connection was terminated.   </param>
+        <summary>Requests that data be received on the connection and delivered to the provided callnback as a pointer and length, this can be called before the connection is ready.</summary>
+        <remarks>
+          <para>This version of the <see cref="M:Network.NWConnection.Receive" /> methods delivers the data in the form of an <see cref="T:System.IntPtr" /> with a size parameter.    Alternatively, you can use the <see cref="M:Network.NWConnection.ReceiveData" /> method that delivers a <see cref="T:Foundation.DispatchData" /> parameters if you want to operate on that data type instead.</para>
+          <para></para>
+          <para>This only retrieves the specified amount of data, if you want to continue reading data, you should call this method again.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ReceiveData">
@@ -308,11 +326,15 @@ connection.Start ();]]></code>
         <Parameter Name="callback" Type="Network.NWConnectionReceiveDispatchDataCompletion" />
       </Parameters>
       <Docs>
-        <param name="minimumIncompleteLength">To be added.</param>
-        <param name="maximumLength">To be added.</param>
-        <param name="callback">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="minimumIncompleteLength">The minimum amount of bytes to retrieve from the connection before the callback is invoked.   If the connection terminates before this minimum is reached, the callback will be invoked with the number of available bytes fetched.</param>
+        <param name="maximumLength">Maximum amount of bytes to retrieve from the connection.   You can use UInt32.MaxValue to indicate that it should fetch as many bytes as possible.</param>
+        <param name="callback">Method that is invoked when either the minimum amount of bytes is retrieved from the connection or with the amount of bytes read at the time the connection was terminated. </param>
+        <summary>Requests that data be received on the connection and delivered to the provided callnback as a pointer and length, this can be called before the connection is ready.</summary>
+        <remarks>
+          <para>This version of the <see cref="M:Network.NWConnection.Receive" /> methods delivers the data in the form of a <see cref="T:Foundation.DispatchData" /> structure.    Alternatively, you can use the <see cref="M:Network.NWConnection.Receive" /> method that delivers a  parameters if you want to receive a  <see cref="T:System.IntPtr" /> block with a size.</para>
+          <para></para>
+          <para>This only retrieves the specified amount of data, if you want to continue reading data, you should call this method again.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ReceiveMessage">
@@ -334,9 +356,13 @@ connection.Start ();]]></code>
         <Parameter Name="callback" Type="Network.NWConnectionReceiveCompletion" />
       </Parameters>
       <Docs>
-        <param name="callback">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="callback">Method that is invoked when the message is received</param>
+        <summary>Requests that a single atomic message be received on the connection and delivered to the provided callnback as a pointer and length, this can be called before the connection is ready.</summary>
+        <remarks>
+          <para>This version of the <see cref="M:Network.NWConnection.ReceiveMessage" /> method delivers the data in the form of an <see cref="T:System.IntPtr" /> with a size parameter.    Alternatively, you can use the <see cref="M:Network.NWConnection.ReceiveMessageData" /> method that delivers a <see cref="T:Foundation.DispatchData" /> parameter if you want to operate on that data type instead.</para>
+          <para></para>
+          <para>This only retrieves the specified amount of data, if you want to continue reading data, you should call this method again.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ReceiveMessageData">
@@ -358,9 +384,13 @@ connection.Start ();]]></code>
         <Parameter Name="callback" Type="Network.NWConnectionReceiveDispatchDataCompletion" />
       </Parameters>
       <Docs>
-        <param name="callback">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="callback">Method that is invoked when the message is received</param>
+        <summary>Requests that a single atomic message be received on the connection and delivered to the provided callnback as a pointer and length, this can be called before the connection is ready.</summary>
+        <remarks>
+          <para>This version of the <see cref="M:Network.NWConnection.ReceiveMessageData" /> method delivers the data in the form of a <see cref="T:Foundation.DispatchData" /> structure.    Alternatively, you can use the <see cref="M:Network.NWConnection.ReceiveMessage" /> method that delivers an  <see cref="T:System.IntPtr" /> block with a size.</para>
+          <para></para>
+          <para>This only retrieves the specified amount of data, if you want to continue reading data, you should call this method again.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Restart">
@@ -375,8 +405,11 @@ connection.Start ();]]></code>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Requests that a connection in the <see cref="F:Network.NWConnectionState.Waiting" /> state retry establishing the network connection.   </summary>
+        <remarks>
+          <para>While connections automatically will retry the connection as needed, this forces the connection attempt to be retried.</para>
+          <para>This is ignored for connections that are not on the waiting state.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Send">
@@ -401,12 +434,39 @@ connection.Start ();]]></code>
         <Parameter Name="callback" Type="System.Action&lt;Network.NWError&gt;" />
       </Parameters>
       <Docs>
-        <param name="buffer">To be added.</param>
-        <param name="context">To be added.</param>
-        <param name="isComplete">To be added.</param>
-        <param name="callback">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="buffer">Buffer to send</param>
+        <param name="context">
+          <para>Provides additional information to the networking stack on how to send the data based on flags in the context, or the <see cref="T:Network.NWProtocolMetadata" /> associated to the <see cref="P:Network.NWContentContext" />’s metadata.</para>
+          <para></para>
+          <para>There are some special contexts that you can use for sending information:</para>
+          <para></para>
+          <list type="bullet">
+            <item>
+              <term>
+                <see cref="P:Network.NWContentContext.DefaultStream" /> - use this to send data on a stream (TCP connections) and only set <paramref name="isComplete" /> to <see langword="true" /> for the last message that you send.</term>
+            </item>
+            <item>
+              <term>
+                <see cref="P:Network.NWContentContext.FinalMessage" /> - use this context to perform a graceful close, alternatively, for TCP connections you can set <paramref name="isComplete" /> to true, which will have the same effect.</term>
+            </item>
+            <item>
+              <term>
+                <see cref="P:Network.NWContentContext.DefaultMessage" /> - Pass this parameter to send datagrams over UDP, and make sure you set <paramref name="isComplete" /> is always set to <see langword="true" />.   </term>
+            </item>
+          </list>
+          <para>The use of the context allows some messages to be reordered based on <see cref="P:Network.NWContentContext.RelativePriority" />, <see cref="P:Network.NWContentContext.ExpirationMilliseconds" /> and <see cref="P:Network.NWContentContext.Antecedent" />.</para>
+          <para></para>
+          <para></para>
+        </param>
+        <param name="isComplete">Indicates that the connection is complete.   For TCP this means that no more data is available in the stream, for UDP this only indicates that the datagram is complete, but more data can be send over the connection.</param>
+        <param name="callback">Method to be invoked when the information has been queued for sending.   The error parameter will be <see langword="null" /> if the operation succeeded, otherwise it will contain the details of the error.</param>
+        <summary>Queues <see cref="T:CoreFoundation.DispatchData" /> to be sent on the connection.</summary>
+        <remarks>
+          <para>This method can be invoked before the connection has been established and the data will be queued for delivery.</para>
+          <para></para>
+          <para>All invocations to Send will be queued and processed when the Network framework is ready to deliver them to the remote endpoint.</para>
+          <para></para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Send">
@@ -426,12 +486,36 @@ connection.Start ();]]></code>
         <Parameter Name="callback" Type="System.Action&lt;Network.NWError&gt;" />
       </Parameters>
       <Docs>
-        <param name="buffer">To be added.</param>
-        <param name="context">To be added.</param>
-        <param name="isComplete">To be added.</param>
-        <param name="callback">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="buffer">Buffer holding the data to be sent.</param>
+        <param name="context">
+          <para>Provides additional information to the networking stack on how to send the data based on flags in the context, or the <see cref="T:Network.NWProtocolMetadata" /> associated to the <see cref="P:Network.NWContentContext" />’s metadata.</para>
+          <para></para>
+          <para>There are some special contexts that you can use for sending information:</para>
+          <para></para>
+          <list type="bullet">
+            <item>
+              <term>
+                <see cref="P:Network.NWContentContext.DefaultStream" /> - use this to send data on a stream (TCP connections) and only set <paramref name="isComplete" /> to <see langword="true" /> for the last message that you send.</term>
+            </item>
+            <item>
+              <term>
+                <see cref="P:Network.NWContentContext.FinalMessage" /> - use this context to perform a graceful close, alternatively, for TCP connections you can set <paramref name="isComplete" /> to true, which will have the same effect.</term>
+            </item>
+            <item>
+              <term>
+                <see cref="P:Network.NWContentContext.DefaultMessage" /> - Pass this parameter to send datagrams over UDP, and make sure you set <paramref name="isComplete" /> is always set to <see langword="true" />.   </term>
+            </item>
+          </list>
+          <para>The use of the context allows some messages to be reordered based on <see cref="P:Network.NWContentContext.RelativePriority" />, <see cref="P:Network.NWContentContext.ExpirationMilliseconds" /> and <see cref="P:Network.NWContentContext.Antecedent" />.</para>
+        </param>
+        <param name="isComplete">Indicates that the connection is complete.   For TCP this means that no more data is available in the stream, for UDP this only indicates that the datagram is complete, but more data can be send over the connection.</param>
+        <param name="callback">Method to be invoked when the information has been queued for sending.   The error parameter will be <see langword="null" /> if the operation succeeded, otherwise it will contain the details of the error.</param>
+        <summary>Queues byte array to be sent on the connection.</summary>
+        <remarks>
+          <para>This method can be invoked before the connection has been established and the data will be queued for delivery.</para>
+          <para></para>
+          <para>All invocations to Send will be queued and processed when the Network framework is ready to deliver them to the remote endpoint.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Send">
@@ -453,14 +537,38 @@ connection.Start ();]]></code>
         <Parameter Name="callback" Type="System.Action&lt;Network.NWError&gt;" />
       </Parameters>
       <Docs>
-        <param name="buffer">To be added.</param>
-        <param name="start">To be added.</param>
-        <param name="length">To be added.</param>
-        <param name="context">To be added.</param>
-        <param name="isComplete">To be added.</param>
-        <param name="callback">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="buffer">Buffer holding the data to be sent.</param>
+        <param name="start">Starting offset inside the buffer to send</param>
+        <param name="length">Number of bytes to send from the buffer.</param>
+        <param name="context">
+          <para>Provides additional information to the networking stack on how to send the data based on flags in the context, or the <see cref="T:Network.NWProtocolMetadata" /> associated to the <see cref="P:Network.NWContentContext" />’s metadata.</para>
+          <para></para>
+          <para>There are some special contexts that you can use for sending information:</para>
+          <para></para>
+          <list type="bullet">
+            <item>
+              <term>
+                <see cref="P:Network.NWContentContext.DefaultStream" /> - use this to send data on a stream (TCP connections) and only set <paramref name="isComplete" /> to <see langword="true" /> for the last message that you send.</term>
+            </item>
+            <item>
+              <term>
+                <see cref="P:Network.NWContentContext.FinalMessage" /> - use this context to perform a graceful close, alternatively, for TCP connections you can set <paramref name="isComplete" /> to true, which will have the same effect.</term>
+            </item>
+            <item>
+              <term>
+                <see cref="P:Network.NWContentContext.DefaultMessage" /> - Pass this parameter to send datagrams over UDP, and make sure you set <paramref name="isComplete" /> is always set to <see langword="true" />.   </term>
+            </item>
+          </list>
+          <para>The use of the context allows some messages to be reordered based on <see cref="P:Network.NWContentContext.RelativePriority" />, <see cref="P:Network.NWContentContext.ExpirationMilliseconds" /> and <see cref="P:Network.NWContentContext.Antecedent" />.</para>
+        </param>
+        <param name="isComplete">Indicates that the connection is complete.   For TCP this means that no more data is available in the stream, for UDP this only indicates that the datagram is complete, but more data can be send over the connection.</param>
+        <param name="callback">Method to be invoked when the information has been queued for sending.   The error parameter will be <see langword="null" /> if the operation succeeded, otherwise it will contain the details of the error.</param>
+        <summary>Queues a range of a byte array to be sent on the connection.</summary>
+        <remarks>
+          <para>This method can be invoked before the connection has been established and the data will be queued for delivery.</para>
+          <para></para>
+          <para>All invocations to Send will be queued and processed when the Network framework is ready to deliver them to the remote endpoint.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SendIdempotent">
@@ -625,12 +733,12 @@ connection.Start ();]]></code>
         <summary>Configures the state change handler for the connection responsible for monitoring the connection state, and when ready to start the data flow.</summary>
         <remarks>
           <para>You must configure the dispatch queue where the callback will be invoked using the <see cref="M:Network.NWConnection.SetQueue" /> method before you call the <see cref="M:Network.NWConnection.Start" /> method.</para>
-          <para />
+          <para></para>
           <para>The following diagram illustrates the state transitions for your connection:</para>
           <para>
             <img href="NWConnectionState.png" />
           </para>
-          <para />
+          <para></para>
           <para>You can read the <see cref="T:Network.NWConnectionState" /> documentation for more information on each state.</para>
         </remarks>
       </Docs>
