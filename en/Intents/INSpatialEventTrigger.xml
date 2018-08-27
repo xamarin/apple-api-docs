@@ -63,9 +63,13 @@
         <Parameter Name="coder" Type="Foundation.NSCoder" />
       </Parameters>
       <Docs>
-        <param name="coder">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="coder">The unarchiver object.</param>
+        <summary>A constructor that initializes the object from the data stored in the unarchiver object.</summary>
+        <remarks>
+          <para>This constructor is provided to allow the class to be initialized from an unarchiver (for example, during NIB deserialization).   This is part of the <see cref="T:Foundation.NSCoding" />  protocol.</para>
+          <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="T:Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
+          <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -216,10 +220,10 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="zone" Type="Foundation.NSZone" />
       </Parameters>
       <Docs>
-        <param name="zone">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="zone">Zone to use to allocate this object, or null to use the default zone.</param>
+        <summary>Performs a copy of the underlying Objective-C object.</summary>
+        <returns>This method performs a copy of the underlying Objective-C object state and returns a new instance of it.  It does not actually try to replicate any managed state.</returns>
+        <remarks>Implementation of the INSCopyable interface.</remarks>
       </Docs>
     </Member>
     <Member MemberName="EncodeTo">
@@ -244,9 +248,19 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Parameter Name="encoder" Type="Foundation.NSCoder" />
       </Parameters>
       <Docs>
-        <param name="encoder">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="encoder">The encoder object where the state of the object will be stored</param>
+        <summary>Encodes the state of the object on the provided encoder</summary>
+        <remarks>
+          <para>This method is part of the <see cref="T:Foundation.NSCoding" /> protocol and is used by applications to preserve the state of the object into an archive.</para>
+          <para>Users will typically create a <see cref="T:Foundation.NSKeyedArchiver" /> and then invoke the <see cref="M:Foundation.NSKeyedArchiver.ArchiveRootObjectToFile" /> which will call into this method</para>
+          <para>If developers want to allow their object to be archived, they should override this method and store their state in using the provided <paramref name="encoder" /> parameter.   In addition, developers should also implement a constructor that takes an NSCoder argument and is exported with [Export ("initWithCoder:")]</para>
+          <example>
+            <code lang="C#"><![CDATA[public void override EncodeTo (NSCoder coder){
+    coder.Encode (1, key: "version");
+    coder.Encode (userName, key: "userName");
+    coder.Encode (hostName, key: "hostName");]]></code>
+          </example>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Event">
@@ -262,7 +276,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("event", ObjCRuntime.ArgumentSemantic.UnsafeUnretained)</AttributeName>
+          <AttributeName>get: Foundation.Export("event")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -287,7 +301,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: Foundation.Export("placemark", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+          <AttributeName>get: Foundation.Export("placemark")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
