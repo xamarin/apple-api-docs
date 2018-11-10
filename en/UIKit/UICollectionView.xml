@@ -148,11 +148,11 @@
             <term>Component view instances are reused and have their values re-assigned. Application developers must be cautious about assumptions made about references to such values, which will change as the application user scrolls.</term>
           </item>
           <item>
-            <term>The application developer must write the functions that (re-)assign these values: <see cref="M:UIKit.UICollectionViewDataSource.GetCell" /> and, if supplementary views are desired, <see cref="M:UIKit.UICollectionViewDataSource.GetViewForSupplementaryElement" />.</term>
+            <term>The application developer must write the functions that (re-)assign these values: <see cref="M:UIKit.UICollectionViewDataSource.GetCell(UIKit.UICollectionView,Foundation.NSIndexPath)" /> and, if supplementary views are desired, <see cref="M:UIKit.UICollectionViewDataSource.GetViewForSupplementaryElement(UIKit.UICollectionView,Foundation.NSString,Foundation.NSIndexPath)" />.</term>
           </item>
         </list>
       </para>
-      <para>The following code, from the "Introduction to Collection Views" sample, shows how component view types are registered and reassigned. Each component role type has an <see cref="T:Foundation.NSString" /> identifier (for instance, the type <c>AnimalCell</c>, which is used for the cell role, has the identifier "AnimalCell", the others are not shown). The methods <see cref="M:UIKit.UICollectionView.RegisterClassForCell" /> and <see cref="M:UIKit.UICollectionView.RegisterClassForSupplementaryView" /> register the classes for the cell and supplementary view roles, while the method <see cref="M:UIKit.UICollectionViewLayout.RegisterClassForDecorationView" /> registers the decoration view with the  <see cref="T:UIKit.UICollectionViewLayout" /> that is the <see cref="T:UIKit.UICollectionView" />'s' <see cref="P:UIKit.UICollectionView.CollectionViewLayout" /> property.</para>
+      <para>The following code, from the "Introduction to Collection Views" sample, shows how component view types are registered and reassigned. Each component role type has an <see cref="T:Foundation.NSString" /> identifier (for instance, the type <c>AnimalCell</c>, which is used for the cell role, has the identifier "AnimalCell", the others are not shown). The methods <see cref="M:UIKit.UICollectionView.RegisterClassForCell" /> and <see cref="M:UIKit.UICollectionView.RegisterClassForSupplementaryView" /> register the classes for the cell and supplementary view roles, while the method <see cref="M:UIKit.UICollectionViewLayout.RegisterClassForDecorationView(System.Type,Foundation.NSString)" /> registers the decoration view with the  <see cref="T:UIKit.UICollectionViewLayout" /> that is the <see cref="T:UIKit.UICollectionView" />'s' <see cref="P:UIKit.UICollectionView.CollectionViewLayout" /> property.</para>
       <para>
 	It is very important that you provide a constructor that takes a RectangleF argument in any subclasses that you register with UICollectionView.   This is required because the classes are actually allocated by the Objective-C runtime, and you must initialize them.   The following example shows the expected constructor that you should provide:
       </para>
@@ -165,8 +165,8 @@ public class AnimalCell : UICollectionViewCell
 }
 ]]></code>
       </example>
-      <para>The overridden methods <see cref="M:UIKit.UICollectionViewDataSource.GetCell" /> and <see cref="M:UIKit.UICollectionViewSource.GetViewForSupplementaryElement" /> show the re-assignment code. The <see cref="T:Foundation.NSIndexPath" /> that is passed as the <c>indexPath</c> argument contains the <see cref="P:Foundation.NSIndexPath.Section" /> and <see cref="P:Foundation.NSIndexPath.Item" /> integers that allow the application developer to locate a specific data item and appropriately assign the cell's relevant visual elements. (Application developers familiar with <see cref="T:UIKit.UITableView" /> will note that <see cref="P:Foundation.NSIndexPath.Item" /> and <see cref="P:Foundation.NSIndexPath.Row" /> are the same value.)</para>
-      <para>Since these methods, particularly the <see cref="M:UIKit.UICollectionViewDataSource.GetCell" /> method, are called many times during scrolling, the application developer should avoid unnecessary processing during these calls.</para>
+      <para>The overridden methods <see cref="M:UIKit.UICollectionViewDataSource.GetCell(UIKit.UICollectionView,Foundation.NSIndexPath)" /> and <see cref="M:UIKit.UICollectionViewSource.GetViewForSupplementaryElement(UIKit.UICollectionView,Foundation.NSString,Foundation.NSIndexPath)" /> show the re-assignment code. The <see cref="T:Foundation.NSIndexPath" /> that is passed as the <c>indexPath</c> argument contains the <see cref="P:Foundation.NSIndexPath.Section" /> and <see cref="P:Foundation.NSIndexPath.Item" /> integers that allow the application developer to locate a specific data item and appropriately assign the cell's relevant visual elements. (Application developers familiar with <see cref="T:UIKit.UITableView" /> will note that <see cref="P:Foundation.NSIndexPath.Item" /> and <see cref="P:Foundation.NSIndexPath.Row" /> are the same value.)</para>
+      <para>Since these methods, particularly the <see cref="M:UIKit.UICollectionViewDataSource.GetCell(UIKit.UICollectionView,Foundation.NSIndexPath)" /> method, are called many times during scrolling, the application developer should avoid unnecessary processing during these calls.</para>
       <example>
         <code lang="C#"><![CDATA[
 public class AnimalCell : UICollectionViewCell
@@ -244,10 +244,10 @@ public class SimpleCollectionViewController : UICollectionViewController
           <item>
             <term>Decoration View</term>
             <description>
-              <see cref="M:UIKit.UICollectionViewLayout.RegisterClassForDecorationView" />
+              <see cref="M:UIKit.UICollectionViewLayout.RegisterClassForDecorationView(System.Type,Foundation.NSString)" />
             </description>
             <description>
-              <see cref="M:UIKit.UICollectionViewLayout.RegisterNibForDecorationView" />
+              <see cref="M:UIKit.UICollectionViewLayout.RegisterNibForDecorationView(UIKit.UINib,Foundation.NSString)" />
             </description>
           </item>
         </list>
@@ -277,14 +277,14 @@ public class SimpleCollectionViewController : UICollectionViewController
         <item>
           <term>Finger down in cell</term>
           <description>
-            <see cref="M:UIKit.UICollectionViewDelegate.ShouldHighlightItem" /> is called. If it returns <see langword="false" />, processing stops. 
+            <see cref="M:UIKit.UICollectionViewDelegate.ShouldHighlightItem(UIKit.UICollectionView,Foundation.NSIndexPath)" /> is called. If it returns <see langword="false" />, processing stops. 
           </description>
           <description />
         </item>
         <item>
           <term />
           <description>
-            <see cref="M:UIKit.UICollectionViewDelegate.ItemHighlighted" /> is called.
+            <see cref="M:UIKit.UICollectionViewDelegate.ItemHighlighted(UIKit.UICollectionView,Foundation.NSIndexPath)" /> is called.
           </description>
           <description>
             <c>Highlighted == <see langword="true" />; Selected == <see langword="false" /></c>
@@ -293,14 +293,14 @@ public class SimpleCollectionViewController : UICollectionViewController
         <item>
           <term>Finger up</term>
           <description>
-            <see cref="M:UIKit.UICollectionViewDelegate.ShouldSelectItem" /> is called. If it returns <see langword="false" />, processing stops.
+            <see cref="M:UIKit.UICollectionViewDelegate.ShouldSelectItem(UIKit.UICollectionView,Foundation.NSIndexPath)" /> is called. If it returns <see langword="false" />, processing stops.
           </description>
           <description />
         </item>
         <item>
           <term />
           <description>
-            <see cref="M:UIKit.UICollectionViewDelegate.ItemSelected" /> is called. <see cref="M:UIKit.UICollectionViewDelegate.ItemUnhighlighted" /> is called.
+            <see cref="M:UIKit.UICollectionViewDelegate.ItemSelected(UIKit.UICollectionView,Foundation.NSIndexPath)" /> is called. <see cref="M:UIKit.UICollectionViewDelegate.ItemUnhighlighted(UIKit.UICollectionView,Foundation.NSIndexPath)" /> is called.
             
           </description>
           <description>
@@ -328,14 +328,14 @@ public class SimpleCollectionViewController : UICollectionViewController
         <item>
           <term>Finger taps cell (Deselect gesture)</term>
           <description>
-            <see cref="M:UIKit.UICollectionViewDelegate.ShouldDeselectItem" /> is called. If it returns <see langword="false" />, processing stops. 
+            <see cref="M:UIKit.UICollectionViewDelegate.ShouldDeselectItem(UIKit.UICollectionView,Foundation.NSIndexPath)" /> is called. If it returns <see langword="false" />, processing stops. 
           </description>
           <description />
         </item>
         <item>
           <term />
           <description>
-            <see cref="M:UIKit.UICollectionViewDelegate.ItemDeselected" /> is called.
+            <see cref="M:UIKit.UICollectionViewDelegate.ItemDeselected(UIKit.UICollectionView,Foundation.NSIndexPath)" /> is called.
           </description>
           <description>
             <c>Highlighted == <see langword="false" />; Selected == <see langword="false" /></c>
@@ -936,7 +936,7 @@ mySliders.TintColor = UIColor.Red;
         <summary>Deletes one or more items from the <see cref="T:UIKit.UICollectionView" />.</summary>
         <remarks>
           <para>After deletion, the <see cref="T:UIKit.UICollectionView" /> will animate the layout as needed.</para>
-          <para>If the application developer wishes to coordinate several updates without individual animations, they can use the <see cref="M:UIKit.UICollectionView.PerformBatchUpdates" /> method.</para>
+          <para>If the application developer wishes to coordinate several updates without individual animations, they can use the <see cref="M:UIKit.UICollectionView.PerformBatchUpdates(System.Action,UIKit.UICompletionHandler)" /> method.</para>
         </remarks>
       </Docs>
     </Member>
@@ -969,7 +969,7 @@ mySliders.TintColor = UIColor.Red;
         <summary>Deletes one or more sections from the <see cref="T:UIKit.UICollectionView" />.</summary>
         <remarks>
           <para>After deletion, the <see cref="T:UIKit.UICollectionView" /> will animate the layout as needed.</para>
-          <para>If the application developer wishes to coordinate several updates without individual animations, they can use the <see cref="M:UIKit.UICollectionView.PerformBatchUpdates" /> method.</para>
+          <para>If the application developer wishes to coordinate several updates without individual animations, they can use the <see cref="M:UIKit.UICollectionView.PerformBatchUpdates(System.Action,UIKit.UICompletionHandler)" /> method.</para>
         </remarks>
       </Docs>
     </Member>
@@ -1179,7 +1179,7 @@ mySliders.TintColor = UIColor.Red;
         <param name="indexPath">A <see cref="T:Foundation.NSIndexPath" /> specifying the index of the item to be deselected.</param>
         <param name="animated">Specifies whether the deselection should be animated.</param>
         <summary>Deselects the <see cref="T:UIKit.UICollectionViewCell" /> at the specified <see cref="T:Foundation.NSIndexPath" />.</summary>
-        <remarks>This method does not trigger calls to <see cref="M:UIKit.UICollectionViewDelegate.ItemDeselected" /> or <see cref="M:UIKit.UICollectionViewDelegate.ItemUnhighlighted" />.</remarks>
+        <remarks>This method does not trigger calls to <see cref="M:UIKit.UICollectionViewDelegate.ItemDeselected(UIKit.UICollectionView,Foundation.NSIndexPath)" /> or <see cref="M:UIKit.UICollectionViewDelegate.ItemUnhighlighted(UIKit.UICollectionView,Foundation.NSIndexPath)" />.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Dispose">
@@ -1437,7 +1437,7 @@ mySliders.TintColor = UIColor.Red;
         <summary>Encodes the state of the object on the provided encoder</summary>
         <remarks>
           <para>This method is part of the <see cref="T:Foundation.NSCoding" /> protocol and is used by applications to preserve the state of the object into an archive.</para>
-          <para>Users will typically create a <see cref="T:Foundation.NSKeyedArchiver" /> and then invoke the <see cref="M:Foundation.NSKeyedArchiver.ArchiveRootObjectToFile" /> which will call into this method</para>
+          <para>Users will typically create a <see cref="T:Foundation.NSKeyedArchiver" /> and then invoke the <see cref="M:Foundation.NSKeyedArchiver.ArchiveRootObjectToFile(Foundation.NSObject,System.String)" /> which will call into this method</para>
           <para>If developers want to allow their object to be archived, they should override this method and store their state in using the provided <paramref name="encoder" /> parameter.   In addition, developers should also implement a constructor that takes an NSCoder argument and is exported with [Export ("initWithCoder:")]</para>
           <example>
             <code lang="C#"><![CDATA[public void override EncodeTo (NSCoder coder){
@@ -2308,7 +2308,7 @@ myTheme.TintColor = UIColor.Red;
         <summary>Creates new cells in the <see cref="T:UIKit.UICollectionView" />, animating as necessary.</summary>
         <remarks>
           <para>Calling this method will trigger a request for layout information from the <see cref="P:UIKit.UICollectionView.CollectionViewLayout" />. If the result includes visible elements, those elements will be populated via the <see cref="P:UIKit.UICollectionView.DataSource" /> and animated onto the screen.</para>
-          <para>If this method is called within the <see cref="T:Foundation.NSAction" /> delegate passed to the <see cref="M:UIKit.UICollectionView.PerformBatchUpdates" /> method, the animation will occur simultaneously with those of other manipulations of the <see cref="T:UIKit.UICollectionView" />.</para>
+          <para>If this method is called within the <see cref="T:Foundation.NSAction" /> delegate passed to the <see cref="M:UIKit.UICollectionView.PerformBatchUpdates(System.Action,UIKit.UICompletionHandler)" /> method, the animation will occur simultaneously with those of other manipulations of the <see cref="T:UIKit.UICollectionView" />.</para>
         </remarks>
       </Docs>
     </Member>
@@ -2374,7 +2374,7 @@ myTheme.TintColor = UIColor.Red;
         <param name="newIndexPath">The new location of the item.</param>
         <summary>Moves an element from one location to another within the <see cref="T:UIKit.UICollectionView" />, animating as necssary.</summary>
         <remarks>
-          <para>If this method is called within the <see cref="T:Foundation.NSAction" /> delegate passed to the <see cref="M:UIKit.UICollectionView.PerformBatchUpdates" /> method, the animation will occur simultaneously with those of other manipulations of the <see cref="T:UIKit.UICollectionView" />.</para>
+          <para>If this method is called within the <see cref="T:Foundation.NSAction" /> delegate passed to the <see cref="M:UIKit.UICollectionView.PerformBatchUpdates(System.Action,UIKit.UICompletionHandler)" /> method, the animation will occur simultaneously with those of other manipulations of the <see cref="T:UIKit.UICollectionView" />.</para>
         </remarks>
       </Docs>
     </Member>
@@ -2408,7 +2408,7 @@ myTheme.TintColor = UIColor.Red;
         <param name="newSection">The new index of thesection.</param>
         <summary>Moves a section from one location to another within the <see cref="T:UIKit.UICollectionView" />, animating as necessary.</summary>
         <remarks>
-          <para>If this method is called within the <see cref="T:Foundation.NSAction" /> delegate passed to the <see cref="M:UIKit.UICollectionView.PerformBatchUpdates" /> method, the animation will occur simultaneously with those of other manipulations of the <see cref="T:UIKit.UICollectionView" />.</para>
+          <para>If this method is called within the <see cref="T:Foundation.NSAction" /> delegate passed to the <see cref="M:UIKit.UICollectionView.PerformBatchUpdates(System.Action,UIKit.UICompletionHandler)" /> method, the animation will occur simultaneously with those of other manipulations of the <see cref="T:UIKit.UICollectionView" />.</para>
         </remarks>
       </Docs>
     </Member>
@@ -3137,7 +3137,7 @@ public class AnimalCell : UICollectionViewCell
         <summary>Reloads all of the data for the <see cref="T:UIKit.UICollectionView" />.</summary>
         <remarks>
           <para>Calling this method will cause the <see cref="T:UIKit.UICollectionView" /> to discard any visible items and then redisplay them.</para>
-          <para>Data manipulation methods such as <see cref="M:UIKit.UICollectionView.InsertItems" /> or <see cref="M:UIKit.UICollectionView.DeleteItems" /> automatically update the <see cref="T:UIKit.UICollectionView" />'s data and do not require this potentially-expensive method to be called.
+          <para>Data manipulation methods such as <see cref="M:UIKit.UICollectionView.InsertItems(Foundation.NSIndexPath[])" /> or <see cref="M:UIKit.UICollectionView.DeleteItems(Foundation.NSIndexPath[])" /> automatically update the <see cref="T:UIKit.UICollectionView" />'s data and do not require this potentially-expensive method to be called.
           </para>
         </remarks>
         <altmember cref="M:UIKit.UICollectionView.ReloadItems" />
@@ -3383,7 +3383,7 @@ public class AnimalCell : UICollectionViewCell
         <summary>Selects a <see cref="T:UIKit.UICollectionViewCell" /> and optionally scrolls to make it visible.</summary>
         <remarks>
           <para>This method does nothing if <see cref="P:UIKit.UICollectionView.AllowsSelection" /> is <see langword="false" />. This method deselects the currently selected element if <see cref="P:UIKit.UICollectionView.AllowsMultipleSelection" /> is <see langword="false" />.</para>
-          <para>This method does not trigger calls to any selection-related delegate methods (e.g., <see cref="M:UIKit.UICollectionViewDelegate.ItemSelected" /> or <see cref="M:UIKit.UICollectionViewDelegate.ItemDeselected" />).</para>
+          <para>This method does not trigger calls to any selection-related delegate methods (e.g., <see cref="M:UIKit.UICollectionViewDelegate.ItemSelected(UIKit.UICollectionView,Foundation.NSIndexPath)" /> or <see cref="M:UIKit.UICollectionViewDelegate.ItemDeselected(UIKit.UICollectionView,Foundation.NSIndexPath)" />).</para>
         </remarks>
       </Docs>
     </Member>

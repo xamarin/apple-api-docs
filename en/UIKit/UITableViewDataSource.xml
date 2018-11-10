@@ -37,8 +37,8 @@
     <remarks>
       <para>Implementing <see cref="T:UIKit.UITableView" /> often requires subclasses of both <see cref="T:UIKit.UITableViewDataSource" /> and <see cref="T:UIKit.UITableViewDelegate" /> to provide data and behavior for the table view. Xamarin.iOS provides a single class - <see cref="T:UIKit.UITableViewSource" /> - so that only one class needs to be implemented.</para>
       <para>The <see cref="T:UIKit.UITableViewDataSource" /> class methods provide a table view with all the information it requires to display its data - such as informing it of the number of sections and rows, and what cell view to use for each row.</para>
-      <para>The universally-important function of <see cref="T:UIKit.UITableViewDataSource" /> is to provide individual <see cref="T:UIKit.UITableViewCell" />s in response to calls to <see cref="M:UIKit.UITableViewDataSource.GetCell" />. That call takes as arguments the <see cref="T:UIKit.UITableView" /> in question and an <see cref="T:Foundation.NSIndexPath" />. That <see cref="T:Foundation.NSIndexPath" /> is based, in turn, on calls to <see cref="M:UIKit.UITableViewDataSource.NumberOfSections" /> and <see cref="M:UIKit.UITableViewDataSource.RowsInSection" />, so the application developer must, at a minimum, override these three functions. (The <see cref="T:UIKit.UITableView" /> additionally calls <see cref="M:UIKit.UITableViewDelegate.GetHeightForRow" /> and other layout-related methods for header and footer views and the application developer must override these as appropriate.)</para>
-      <para>Static tables may return references to pre-allocated <see cref="T:UIKit.UITableViewCell" />s from calls to <see cref="M:UIKit.UITableViewDataSource.GetCell" />. Dynamic tables should use the <see cref="T:UIKit.UITableView" />'s built-in cell reuse cache by calling <see cref="M:UIKit.UITableView.DequeueReusableCell" />. In iOS 6 and later, application developers should use <see cref="M:UIKit.UITableView.RegisterClassForCellReuse" /> or <see cref="M:UIKit.UITableView.RegisterNibForCellReuse" /> during initialization, in which case <see cref="M:UIKit.UITableView.DequeueReusableCell" /> will instantiate new <see cref="T:UIKit.UITableViewCell" />s as necessary. If application developers are targeting earlier iOS versions, their override of <see cref="M:UIKit.UITableViewDataSource.GetCell" /> must check for an <see langword="null" /> return from <see cref="M:UIKit.UITableView.DequeueReusableCell" /> and instantiate a <see cref="T:UIKit.UITableViewCell" /> as necessary. </para>
+      <para>The universally-important function of <see cref="T:UIKit.UITableViewDataSource" /> is to provide individual <see cref="T:UIKit.UITableViewCell" />s in response to calls to <see cref="M:UIKit.UITableViewDataSource.GetCell(UIKit.UITableView,Foundation.NSIndexPath)" />. That call takes as arguments the <see cref="T:UIKit.UITableView" /> in question and an <see cref="T:Foundation.NSIndexPath" />. That <see cref="T:Foundation.NSIndexPath" /> is based, in turn, on calls to <see cref="M:UIKit.UITableViewDataSource.NumberOfSections(UIKit.UITableView)" /> and <see cref="M:UIKit.UITableViewDataSource.RowsInSection(UIKit.UITableView,System.nint)" />, so the application developer must, at a minimum, override these three functions. (The <see cref="T:UIKit.UITableView" /> additionally calls <see cref="M:UIKit.UITableViewDelegate.GetHeightForRow(UIKit.UITableView,Foundation.NSIndexPath)" /> and other layout-related methods for header and footer views and the application developer must override these as appropriate.)</para>
+      <para>Static tables may return references to pre-allocated <see cref="T:UIKit.UITableViewCell" />s from calls to <see cref="M:UIKit.UITableViewDataSource.GetCell(UIKit.UITableView,Foundation.NSIndexPath)" />. Dynamic tables should use the <see cref="T:UIKit.UITableView" />'s built-in cell reuse cache by calling <see cref="M:UIKit.UITableView.DequeueReusableCell" />. In iOS 6 and later, application developers should use <see cref="M:UIKit.UITableView.RegisterClassForCellReuse" /> or <see cref="M:UIKit.UITableView.RegisterNibForCellReuse" /> during initialization, in which case <see cref="M:UIKit.UITableView.DequeueReusableCell" /> will instantiate new <see cref="T:UIKit.UITableViewCell" />s as necessary. If application developers are targeting earlier iOS versions, their override of <see cref="M:UIKit.UITableViewDataSource.GetCell(UIKit.UITableView,Foundation.NSIndexPath)" /> must check for an <see langword="null" /> return from <see cref="M:UIKit.UITableView.DequeueReusableCell" /> and instantiate a <see cref="T:UIKit.UITableViewCell" /> as necessary. </para>
     </remarks>
     <altmember cref="T:UIKit.UITableView" />
     <altmember cref="T:UIKit.UITableViewSource" />
@@ -71,7 +71,8 @@
       <Parameters />
       <Docs>
         <summary>Default constructor that initializes a new instance of this class with no parameters.</summary>
-        <remarks></remarks>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -374,7 +375,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="tableView">Table view displaying the sections.</param>
         <summary>Returns the number of sections that are required to display the data.</summary>
         <returns>Number of sections required to display the data. The default is 1 (a table must have at least one section).</returns>
-        <remarks></remarks>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="RowsInSection">
@@ -410,7 +412,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <param name="section">Index of the section containing the rows.</param>
         <summary>Called by the table view to find out how many rows are to be rendered in the section specified by <paramref name="section" />.</summary>
         <returns>Number of rows in the section at index <paramref name="section" />.</returns>
-        <remarks></remarks>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SectionFor">
@@ -445,11 +448,11 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       <Docs>
         <param name="tableView">Table view containing the section.</param>
         <param name="title">The title that's displayed in the table view's index.</param>
-        <param name="atIndex">The index of the title in the array returned from the <see cref="M:UIKit.UITableViewSource.SectionIndexTitles" />.</param>
+        <param name="atIndex">The index of the title in the array returned from the <see cref="M:UIKit.UITableViewSource.SectionIndexTitles(UIKit.UITableView)" />.</param>
         <summary>Returns the index of the section with the given <paramref name="tableView" /> and <paramref name="atIndex" />.</summary>
         <returns>The index of the section in the table view.</returns>
         <remarks>
-          <para>This method is only required for table views that have an index: they must have the <see cref="F:UIKit.UITableViewStyle.Plain" /> style and implement the <see cref="M:UIKit.UITableViewSource.SectionIndexTitles" /> property.</para>
+          <para>This method is only required for table views that have an index: they must have the <see cref="F:UIKit.UITableViewStyle.Plain" /> style and implement the <see cref="M:UIKit.UITableViewSource.SectionIndexTitles(UIKit.UITableView)" /> property.</para>
           <para>The index for a table view may contain fewer items than the number of actual sections in the table. This method is passed the text and index of an item in the index, and should return the position of the corresponding section. </para>
         </remarks>
       </Docs>
@@ -522,7 +525,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <summary>Called to populate the footer for the specified section.</summary>
         <returns>Text to display in the section footer, or <see langword="null" /> if no title is required.</returns>
         <remarks>
-          <para>Table views use a fixed style for the section footer. To customize the appearance of the footer, return a custom view from <see cref="M:UIKit.UITableViewSource.GetViewForFooter(UIKit.UITableView,System.Int32)" /> instead of implementing this method.</para>
+          <para>Table views use a fixed style for the section footer. To customize the appearance of the footer, return a custom view from <see cref="M:UIKit.UITableViewSource.GetViewForFooter(UIKit.UITableView,System.nint)" /> instead of implementing this method.</para>
         </remarks>
       </Docs>
     </Member>
@@ -557,7 +560,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <summary>Called to populate the header for the specified section.</summary>
         <returns>Text to display in the section header, or <see langword="null" /> if no title is required.</returns>
         <remarks>
-          <para>Table views use a fixed style for the section header. To customize the appearance of the header, return a custom view from <see cref="M:UIKit.UITableViewSource.GetViewForHeader(UIKit.UITableView,System.Int32)" /> instead of implementing this method.</para>
+          <para>Table views use a fixed style for the section header. To customize the appearance of the header, return a custom view from <see cref="M:UIKit.UITableViewSource.GetViewForHeader(UIKit.UITableView,System.nint)" /> instead of implementing this method.</para>
         </remarks>
       </Docs>
     </Member>

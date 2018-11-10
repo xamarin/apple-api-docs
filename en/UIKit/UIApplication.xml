@@ -46,7 +46,7 @@
         contains methods relating to background processing, such as
         <see cref="M:UIKit.UIApplication.EnsureUIThread" />,
         <see cref="M:UIKit.UIApplication.BeginBackgroundTask" />,
-        and <see cref="M:UIKit.UIApplication.EndBackgroundTask" />.
+        and <see cref="M:UIKit.UIApplication.EndBackgroundTask(System.nint)" />.
         </para>
       <format type="text/html">
         <h2>Background Fetch</h2>
@@ -65,14 +65,14 @@
 
 	To use this, applications need to have the "fetch" background
 	operation requested on their requested Entitlements as well as
-	calling the <see cref="M:UIKit.UIApplication.SetMinimumBackgroundFetchInterval" />
+	calling the <see cref="M:UIKit.UIApplication.SetMinimumBackgroundFetchInterval(System.Double)" />
 	method with the desired wake up interval at launch.   
 
       </para>
       <para>
 
 	When the operating system determines that the application
-	should be resumed to download data, the <see cref="M:UIKit.UIApplicationDelegate.PerformFetch" />
+	should be resumed to download data, the <see cref="M:UIKit.UIApplicationDelegate.PerformFetch(UIKit.UIApplication,System.Action`1)" />
 	method will be invoked.  This method should perform any
 	downloads and then notify the operating system of the result
 	of the operation.
@@ -134,7 +134,8 @@
       <Parameters />
       <Docs>
         <summary>Default constructor that initializes a new instance of this class with no parameters.</summary>
-        <remarks></remarks>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -294,7 +295,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </ReturnValue>
       <Docs>
         <summary>Numeric value to display as the application badge number.</summary>
-        <value></value>
+        <value>
+        </value>
         <remarks>
           <para>
           When this value is zero, no badge is displayed.  When this
@@ -302,7 +304,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           badge on the application's icon by the operating system.
         </para>
           <para />
-          <para>Starting with iOS 8.0, your application needs to register for user notifications to be able to set the application icon badge number.   You do this by calling the <see cref="M:UIKit.UIApplication.RegisterUserNotificationSettings" />.</para>
+          <para>Starting with iOS 8.0, your application needs to register for user notifications to be able to set the application icon badge number.   You do this by calling the <see cref="M:UIKit.UIApplication.RegisterUserNotificationSettings(UIKit.UIUserNotificationSettings)" />.</para>
         </remarks>
       </Docs>
     </Member>
@@ -431,7 +433,8 @@ the application would have to register for a background process.
       </ReturnValue>
       <Docs>
         <summary>Represents the value associated with the constant UIApplicationBackgroundFetchIntervalMinimum</summary>
-        <value></value>
+        <value>
+        </value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -467,7 +470,8 @@ the application would have to register for a background process.
       </ReturnValue>
       <Docs>
         <summary>Represents the value associated with the constant UIApplicationBackgroundFetchIntervalNever</summary>
-        <value></value>
+        <value>
+        </value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -659,9 +663,11 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>The number of seconds that the application has left to run in the background.</summary>
-        <value></value>
+        <value>
+        </value>
         <remarks>
-          <para></para>
+          <para>
+          </para>
           <para tool="threads">This can be used from a background thread.</para>
         </remarks>
       </Docs>
@@ -711,14 +717,14 @@ void Setup ()
           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
         </param>
         <summary>Indicates the inception of a new long-running background task.</summary>
-        <returns>An id that, when passed to <see cref="M:UIKit.UIApplication.EndBackgroundTask" />, indicates that background processing has ended.</returns>
+        <returns>An id that, when passed to <see cref="M:UIKit.UIApplication.EndBackgroundTask(System.nint)" />, indicates that background processing has ended.</returns>
         <remarks>
-          <para>This method, with <see cref="M:UIKit.UIApplication.EndBackgroundTask" />, bookends code that should be allowed to continue running in the background when another app is in the foreground. The returned <see langword="int" /> should be passed to <see cref="M:UIKit.UIApplication.EndBackgroundTask" /> at the appropriate time. </para>
+          <para>This method, with <see cref="M:UIKit.UIApplication.EndBackgroundTask(System.nint)" />, bookends code that should be allowed to continue running in the background when another app is in the foreground. The returned <see langword="int" /> should be passed to <see cref="M:UIKit.UIApplication.EndBackgroundTask(System.nint)" /> at the appropriate time. </para>
           <para>This method does not cause the app to enter a background state or launch asynchronous code, despite its name. Rather, it requests that the system make background processing available.</para>
           <para>This method may be called multiple times and may be called from background threads. Background processing will continue either until the allowed background time (generally 3 or 10 minutes total) expires or until <see cref="M:UIKit.UIApplication.EndBackgroundtask" /> has been called for all started tasks.</para>
           <para>The <paramref name="expirationHandler" /> is only called if allowed background time is close to expiring (3-4 seconds).</para>
           <para>
-            <see cref="M:UIKit.UIApplication.EndBackgroundTask" /> must be called within the expiration handler, as well as in the normal course of execution.</para>
+            <see cref="M:UIKit.UIApplication.EndBackgroundTask(System.nint)" /> must be called within the expiration handler, as well as in the normal course of execution.</para>
           <example>
             <code lang="C#"><![CDATA[
 Task.Factory.StartNew( () => {
@@ -788,14 +794,14 @@ Task.Factory.StartNew( () => {
         <param name="taskName">A name for the task (useful for debugging).</param>
         <param name="expirationHandler">Called shortly before the allowed background time for the app expires.</param>
         <summary>Requests that the app be allowed to process in the background.</summary>
-        <returns>An id that, when passed to <see cref="M:UIKit.UIApplication.EndBackgroundTask" />, indicates that background processing has ended.</returns>
+        <returns>An id that, when passed to <see cref="M:UIKit.UIApplication.EndBackgroundTask(System.nint)" />, indicates that background processing has ended.</returns>
         <remarks>
-          <para>This method, with <see cref="M:UIKit.UIApplication.EndBackgroundTask" />, bookends code that should be allowed to continue running in the background when another app is in the foreground. The returned <see langword="int" /> should be passed to <see cref="M:UIKit.UIApplication.EndBackgroundTask" /> at the appropriate time. </para>
+          <para>This method, with <see cref="M:UIKit.UIApplication.EndBackgroundTask(System.nint)" />, bookends code that should be allowed to continue running in the background when another app is in the foreground. The returned <see langword="int" /> should be passed to <see cref="M:UIKit.UIApplication.EndBackgroundTask(System.nint)" /> at the appropriate time. </para>
           <para>This method does not cause the app to enter a background state or launch asynchronous code, despite its name. Rather, it requests that the system make background processing available.</para>
           <para>This method may be called multiple times and may be called from background threads. Background processing will continue either until the allowed background time (generally 3 or 10 minutes total) expires or until <see cref="M:UIKit.UIApplication.EndBackgroundtask" /> has been called for all started tasks.</para>
           <para>The <paramref name="expirationHandler" /> is only called if allowed background time is close to expiring (3-4 seconds).</para>
           <para>
-            <see cref="M:UIKit.UIApplication.EndBackgroundTask" /> must be called within the expiration handler, as well as in the normal course of execution.</para>
+            <see cref="M:UIKit.UIApplication.EndBackgroundTask(System.nint)" /> must be called within the expiration handler, as well as in the normal course of execution.</para>
           <example>
             <code lang="C#"><![CDATA[
 Task.Factory.StartNew( () => {
@@ -850,7 +856,7 @@ Task.Factory.StartNew( () => {
             
           </para>
           <para>
-            To resume receiving touch events, call the <see cref="M:UIKit.UIApplication.EndIgnoringInteractionEvents()" />.
+            To resume receiving touch events, call the <see cref="M:UIKit.UIApplication.EndIgnoringInteractionEvents" />.
           </para>
           <para>This method is not available in Extensions.</para>
         </remarks>
@@ -2005,7 +2011,7 @@ void Setup ()
         <summary>Resumes receiving touch events for the application.</summary>
         <remarks>
           <para>
-          This should be called if you previously disabled receiving events by calling the <see cref="M:UIKit.UIApplication.BeginIgnoringInteractionEvents()" />.</para>
+          This should be called if you previously disabled receiving events by calling the <see cref="M:UIKit.UIApplication.BeginIgnoringInteractionEvents" />.</para>
           <para>This method is unavailable to Extensions.</para>
         </remarks>
       </Docs>
@@ -2196,7 +2202,8 @@ void Setup ()
         <summary>Whether the receiver is ignoring touch events.</summary>
         <value>
           <see langword="true" /> if there have been more calls to <see cref="M:UIKit.UIApplication.BeginIgnoringInteractionEvents" /> than calls to <see cref="M:UIKit.UIApplication.EndIgnoringInteractionEvents" />.</value>
-        <remarks></remarks>
+        <remarks>
+        </remarks>
         <altmember cref="M:UIKit.UIApplication.BeginIgnoringInteractionEvents" />
         <altmember cref="M:UIKit.UIApplication.EndIgnoringInteractionEvents" />
       </Docs>
@@ -2257,7 +2264,8 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>Returns the application's key window - the window that is currently displayed and receives user input </summary>
-        <value></value>
+        <value>
+        </value>
         <remarks>
           
           The key window is the currently visible window that is also
@@ -2321,7 +2329,8 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>Represents the value associated with the constant UIApplicationLaunchOptionsBluetoothCentralsKey</summary>
-        <value></value>
+        <value>
+        </value>
         <remarks>
           <para>This key is used with the <see cref="T:Foundation.NSDictionary" /> passed to <see cref="M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)" /></para>
         </remarks>
@@ -2353,7 +2362,8 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>Represents the value associated with the constant UIApplicationLaunchOptionsBluetoothPeripheralsKey</summary>
-        <value></value>
+        <value>
+        </value>
         <remarks>
           <para>This key is used with the <see cref="T:Foundation.NSDictionary" /> passed to <see cref="M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)" /></para>
         </remarks>
@@ -2658,7 +2668,8 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>Represents the value associated with the constant UIApplicationLaunchOptionsUserActivityDictionaryKey</summary>
-        <value></value>
+        <value>
+        </value>
         <remarks>
           <para>This key is used with the <see cref="T:Foundation.NSDictionary" /> passed to <see cref="M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)" /></para>
         </remarks>
@@ -2690,7 +2701,8 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>Represents the value associated with the constant UIApplicationLaunchOptionsUserActivityTypeKey</summary>
-        <value></value>
+        <value>
+        </value>
         <remarks>
           <para>This key is used with the <see cref="T:Foundation.NSDictionary" /> passed to <see cref="M:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)" /></para>
         </remarks>
@@ -2838,7 +2850,8 @@ public class MyAppDelegate : UIApplicationDelegate
       </ReturnValue>
       <Docs>
         <summary>Represents the value associated with the constant UIMinimumKeepAliveTimeout</summary>
-        <value></value>
+        <value>
+        </value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -2912,7 +2925,8 @@ public class MyAppDelegate : UIApplicationDelegate
       </ReturnValue>
       <Docs>
         <summary>Represents the value associated with the constant UIApplicationOpenSettingsURLString</summary>
-        <value></value>
+        <value>
+        </value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -3187,7 +3201,7 @@ public class MyAppDelegate : UIApplicationDelegate
         <value>
           <see langword="true" /> if data protection is enabled and the device is locked. Otherwise, <see langword="false" />.</value>
         <remarks>
-          <para>If this method returns <see langword="false" />, the application will not be allowed to read or write files whose <see cref="P:NSFoundation.NSFileManager.FileProtectionKey" /> is <see cref="P:NSFoundation.NSFileManager.FileProtectionComplete" /> or <see cref="P:NSFoundation.NSFileManager.FileProtectionCompleteUnlessOpen" />.</para>
+          <para>If this method returns <see langword="false" />, the application will not be allowed to read or write files whose <see cref="P:Foundation.NSFileManager.FileProtectionKey" /> is <see cref="P:Foundation.NSFileManager.FileProtectionComplete" /> or <see cref="P:Foundation.NSFileManager.FileProtectionCompleteUnlessOpen" />.</para>
         </remarks>
         <altmember cref="P:UIKit.UIApplication.ProtectedDataDidBecomeAvailable" />
       </Docs>
@@ -3470,7 +3484,7 @@ void Setup ()
         <param name="restorationIdentifier">Restoration identifier used for the object.</param>
         <summary>Registers the <paramref name="uistateRestoringObject" /> as eligible for state restoration.</summary>
         <remarks>
-          <para>Calling this method allows the object to be saved and restored but does not automatically trigger preservation/restoration. Application developers must write the object at the appropriate time, for instance <see cref="M:UIKit.UIViewController.EncodeRestorableState" />. </para>
+          <para>Calling this method allows the object to be saved and restored but does not automatically trigger preservation/restoration. Application developers must write the object at the appropriate time, for instance <see cref="M:UIKit.UIViewController.EncodeRestorableState(Foundation.NSCoder)" />. </para>
         </remarks>
       </Docs>
     </Member>
@@ -3569,7 +3583,7 @@ void Setup ()
         <summary>An array of <see cref="T:UIKit.UILocalNotification" />s that are currently scheduled.</summary>
         <value>An array of <see cref="T:UIKit.UILocalNotification" /> objects.</value>
         <remarks>
-          <para>If application developers set this property, the local notifications are replaced via a series of calls to <see cref="M:UIKit.UIApplication.CancelLocalNotification" /> and <see cref="M:UIKit.UIApplication.ScheduleLocalNotification" />.</para>
+          <para>If application developers set this property, the local notifications are replaced via a series of calls to <see cref="M:UIKit.UIApplication.CancelLocalNotification(UIKit.UILocalNotification)" /> and <see cref="M:UIKit.UIApplication.ScheduleLocalNotification(UIKit.UILocalNotification)" />.</para>
         </remarks>
       </Docs>
     </Member>
@@ -3866,7 +3880,7 @@ void Setup ()
 
 	    This method can be used to enable or disable background
 	    fetching.  When this is enabled, the operating system will
-	    call the application's delegate <see cref="M:UIKit.UIApplicationDelegate.PerformFetch" />
+	    call the application's delegate <see cref="M:UIKit.UIApplicationDelegate.PerformFetch(UIKit.UIApplication,System.Action`1)" />
 	    method at the discretion of the operating system to allow
 	    the application to download and request data from a
 	    server.
@@ -4150,8 +4164,8 @@ void Setup ()
           <para tool="nullallowed">This value can be <see langword="null" />.</para>
         </value>
         <remarks>
-          <para>Application developers can define Quick Action shortcuts either in their application code (dynamically) or in the <c>Info.plist</c> file in the application bundle (statically). Statically defined Quick Action shortcut items are only available as an argument to the HandleShortcutItem method when the shortcut is selected by the user; they are not available in the <see cref="P:UIApplication.ShortcutItems" /> property. Only dynamically created shortcut items appear in <see cref="P:UIApplication.ShortcutItems" />.</para>
-          <para>Statically defined shortcut items are preferentially displayed by iOS 9. That is, iOS displays as many statically defined shortcut as are allowed by the system first, and only then displays dynamically created quick action shortcuts up to the remainder of the system limit. The list of dynamically created shortcut items is displayed above the statically defined items, starting from the 0th position in <see cref="P:UIApplication.ShortcutItems" />, and stacking successive entries above previous ones.</para>
+          <para>Application developers can define Quick Action shortcuts either in their application code (dynamically) or in the <c>Info.plist</c> file in the application bundle (statically). Statically defined Quick Action shortcut items are only available as an argument to the HandleShortcutItem method when the shortcut is selected by the user; they are not available in the <see cref="P:UIKit.UIApplication.ShortcutItems" /> property. Only dynamically created shortcut items appear in <see cref="P:UIKit.UIApplication.ShortcutItems" />.</para>
+          <para>Statically defined shortcut items are preferentially displayed by iOS 9. That is, iOS displays as many statically defined shortcut as are allowed by the system first, and only then displays dynamically created quick action shortcuts up to the remainder of the system limit. The list of dynamically created shortcut items is displayed above the statically defined items, starting from the 0th position in <see cref="P:UIKit.UIApplication.ShortcutItems" />, and stacking successive entries above previous ones.</para>
           <para>This list persists across application invocations.</para>
           <para>The following example, when added to the <c>Info.plist</c> file, statically creates a force touch Quick Action shortcut:</para>
           <code><![CDATA[
@@ -4171,7 +4185,7 @@ void Setup ()
     </dict>
 </array>
 ]]></code>
-          <para>The Quick Action shortcut defined above will not be available in <see cref="P:UIApplication.ShortcutItems" />. If the developer places the code below into their <see cref="M:UIKit.UIApplicationDelegate.FinishedLaunching" /> method, then the dynamically defined shortcut item will be available after the first time the application is launched:</para>
+          <para>The Quick Action shortcut defined above will not be available in <see cref="P:UIKit.UIApplication.ShortcutItems" />. If the developer places the code below into their <see cref="M:UIKit.UIApplicationDelegate.FinishedLaunching" /> method, then the dynamically defined shortcut item will be available after the first time the application is launched:</para>
           <code><![CDATA[
 application.ShortcutItems = new UIMutableApplicationShortcutItem[] {
     new UIMutableApplicationShortcutItem ("DynamicItem", "Send") {
@@ -4297,7 +4311,8 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>Represents the value associated with the constant UIApplicationStateRestorationBundleVersionKey</summary>
-        <value></value>
+        <value>
+        </value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -4327,7 +4342,8 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>Represents the value associated with the constant UIApplicationStateRestorationSystemVersionKey</summary>
-        <value></value>
+        <value>
+        </value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -4357,7 +4373,8 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>Represents the value associated with the constant UIApplicationStateRestorationTimestampKey</summary>
-        <value></value>
+        <value>
+        </value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -4387,7 +4404,8 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>Represents the value associated with the constant UIApplicationStateRestorationUserInterfaceIdiomKey</summary>
-        <value></value>
+        <value>
+        </value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -4450,7 +4468,8 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>Represents the value associated with the constant UIApplicationStatusBarFrameUserInfoKey</summary>
-        <value></value>
+        <value>
+        </value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -4592,7 +4611,8 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>Represents the value associated with the constant UIApplicationStatusBarOrientationUserInfoKey</summary>
-        <value></value>
+        <value>
+        </value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -4743,7 +4763,8 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>Represents the value associated with the constant UITrackingRunLoopMode</summary>
-        <value></value>
+        <value>
+        </value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -5409,7 +5430,8 @@ void Setup ()
       </ReturnValue>
       <Docs>
         <summary>All of the application windows.</summary>
-        <value></value>
+        <value>
+        </value>
         <remarks>
           Invoking this property will return a list of all the windows created by this application.
         </remarks>

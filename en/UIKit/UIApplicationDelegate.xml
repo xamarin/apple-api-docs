@@ -72,16 +72,16 @@ public partial class AppDelegate : UIApplicationDelegate
       <para>Applications have four major modes:</para>
       <list type="bullet">
         <item>
-          <term>Launching, involving the methods <see cref="M:UIKit.UIApplicationDelegate.WillFinishLaunching" />, <see cref="M:UIKit.UIApplicationDelegate.FinishedLaunching" />, and perhaps <see cref="M:UIKit.UIApplication.OpenURL" /> (if the application was launched or foregrounded with <see cref="M:UIKit.UIApplication.OpenURL" />).</term>
+          <term>Launching, involving the methods <see cref="M:UIKit.UIApplicationDelegate.WillFinishLaunching(UIKit.UIApplication,Foundation.NSDictionary)" />, <see cref="M:UIKit.UIApplicationDelegate.FinishedLaunching" />, and perhaps <see cref="M:UIKit.UIApplication.OpenURL" /> (if the application was launched or foregrounded with <see cref="M:UIKit.UIApplication.OpenURL" />).</term>
         </item>
         <item>
-          <term>Foreground processing, book-ended by the methods <see cref="M:UIKit.UIApplicationDelegate.OnActivated" /> and <see cref="M:UIKit.UIApplicationDelegate.OnResignActivation" />.</term>
+          <term>Foreground processing, book-ended by the methods <see cref="M:UIKit.UIApplicationDelegate.OnActivated(UIKit.UIApplication)" /> and <see cref="M:UIKit.UIApplicationDelegate.OnResignActivation(UIKit.UIApplication)" />.</term>
         </item>
         <item>
-          <term>Background processing or suspension, which begins with a call to <see cref="M:UIKit.UIApplicationDelegate.DidEnterBackground" /> and ends when the application returns to the foreground after executing <see cref="M:UIKit.UIApplicationDelegate.WillEnterForeground" /> or when the application is about to terminate.</term>
+          <term>Background processing or suspension, which begins with a call to <see cref="M:UIKit.UIApplicationDelegate.DidEnterBackground(UIKit.UIApplication)" /> and ends when the application returns to the foreground after executing <see cref="M:UIKit.UIApplicationDelegate.WillEnterForeground(UIKit.UIApplication)" /> or when the application is about to terminate.</term>
         </item>
         <item>
-          <term>Terminating, which is preceded by a call to <see cref="M:UIKit.UIApplicationDelegate.WillTerminate" />.</term>
+          <term>Terminating, which is preceded by a call to <see cref="M:UIKit.UIApplicationDelegate.WillTerminate(UIKit.UIApplication)" />.</term>
         </item>
       </list>
       <para>As mentioned previously, the most commonly overridden method is <see cref="M:UIKit.UIApplicationDelegate.FinishedLaunching" />, which is the standard place to initialize the application's <see cref="T:UIKit.UIWindow" /> and that window's <see cref="P:UIKit.UIWindow.RootViewController" />.</para>
@@ -369,7 +369,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <returns>
           <see langword="true" /> if the app handled the user activity.</returns>
         <remarks>
-          <para>The system calls this method if the application has registered its ability to handle the <paramref name="userActivity" /> and <see cref="M:UIKit.UIApplicationDelegate.WillContinueUserActivity" /> has returned <see langword="true" />.</para>
+          <para>The system calls this method if the application has registered its ability to handle the <paramref name="userActivity" /> and <see cref="M:UIKit.UIApplicationDelegate.WillContinueUserActivity(UIKit.UIApplication,System.String)" /> has returned <see langword="true" />.</para>
           <para>An application indicates interest in a particular <paramref name="userActivityType" /> by adding the value to it's <c>info.plist</c> as a <see cref="T:System.String" /> value in an array called <c>NSUserActivityType</c>. By convention, the activity type begins with a domain-reversed string identifying the developer:</para>
           <example>
             <code lang="xml"><![CDATA[
@@ -1576,8 +1576,8 @@ public partial class AppDelegate : UIApplicationDelegate
           <see langword="true" /> if the application succcessfully handled the <paramref name="url" />.</returns>
         <remarks>
           <para>When overridden, the application should open the <paramref name="url" /> and return a boolean indicating whether the retrieval was successful.</para>
-          <para>If the origin of the request was another application, the methods <see cref="M:UIKit.UIApplicationDelegate.WillFinishLaunching" /> and <see cref="M:UIKit.UIApplicationDelegate.FinishedLaunching" /> will be called prior to this method and can be used to prevent this method from being called.</para>
-          <para>If the <paramref name="url" /> originated in a <see cref="T:UIKit.UIDocumentInteractionController" />, the <paramref name="annotation" /> may contain additional information specified by the <paramref name="sourceApplication" />. Files sent via <see cref="T:UIKit.UIDocumentInteractionController" /> will be in the application's <c>Documents/Inbox</c> directory. Applications do not have write access to this directory, so if the file needs to be modified, it must be moved to a write-enabled directory. If the file is protected and the user locks the device, it will be inaccessible. (see <see cref="M:UIKit.UIApplicationDelegate.ProtectedDataDidBecomeAvailable" /> and <see cref="P:UIKit.UIApplication.ProtectedDataAvailable" />).</para>
+          <para>If the origin of the request was another application, the methods <see cref="M:UIKit.UIApplicationDelegate.WillFinishLaunching(UIKit.UIApplication,Foundation.NSDictionary)" /> and <see cref="M:UIKit.UIApplicationDelegate.FinishedLaunching" /> will be called prior to this method and can be used to prevent this method from being called.</para>
+          <para>If the <paramref name="url" /> originated in a <see cref="T:UIKit.UIDocumentInteractionController" />, the <paramref name="annotation" /> may contain additional information specified by the <paramref name="sourceApplication" />. Files sent via <see cref="T:UIKit.UIDocumentInteractionController" /> will be in the application's <c>Documents/Inbox</c> directory. Applications do not have write access to this directory, so if the file needs to be modified, it must be moved to a write-enabled directory. If the file is protected and the user locks the device, it will be inaccessible. (see <see cref="M:UIKit.UIApplicationDelegate.ProtectedDataDidBecomeAvailable(UIKit.UIApplication)" /> and <see cref="P:UIKit.UIApplication.ProtectedDataAvailable" />).</para>
           <para>Applications that wish to be activated using <see cref="M:UIKit.UIApplicationDelegate.OpenURL" /> must set the <c>CFBundleURLTypes</c> in their <c>Info.plist</c> file, as a child of the <c><![CDATA[<plist><dict>]]></c> element. The following example shows how a viewer to handle the URL scheme <c>foo://host:port/path?query</c> might be declared:</para>
           <example>
             <code lang="XML"><![CDATA[
@@ -1641,7 +1641,7 @@ public partial class AppDelegate : UIApplicationDelegate
         <param name="application">To be added.</param>
         <param name="shortcutItem">To be added.</param>
         <param name="completionHandler">To be added.</param>
-        <summary>Called by the system when the user initiates a Home screen quick action, unless the interaction was handled in <see cref="M:UIKit.UIApplicationDelegate.WillFinishLaunching" /> or <see cref="M:UIKit.UIApplicationDelegate.DidFinishLaunching" />.</summary>
+        <summary>Called by the system when the user initiates a Home screen quick action, unless the interaction was handled in <see cref="M:UIKit.UIApplicationDelegate.WillFinishLaunching(UIKit.UIApplication,Foundation.NSDictionary)" /> or <see cref="M:UIKit.UIApplicationDelegate.DidFinishLaunching" />.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -1692,7 +1692,7 @@ public partial class AppDelegate : UIApplicationDelegate
 	    This method is part of iOS 7.0 new background fetch
 	    support.  This method is invoked if your Entitlements list
 	    the "fetch" background operation and after you have
-	    enabled fetching by calling the <see cref="M:UIKit.UIApplication.SetMinimumBackgroundFetchInterval" />
+	    enabled fetching by calling the <see cref="M:UIKit.UIApplication.SetMinimumBackgroundFetchInterval(System.Double)" />
 	    method.
 
 	  </para>
@@ -2023,7 +2023,7 @@ public partial class AppDelegate : UIApplicationDelegate
         <param name="application">To be added.</param>
         <summary>The system calls this method when the developer's app should ask the user for access to HealthKit data.</summary>
         <remarks>
-          <para>When overriding this method, developers should call <see cref="M:HealthKit.HKHealthStore.HandleAuthorizationForExtension" />.</para>
+          <para>When overriding this method, developers should call <see cref="M:HealthKit.HKHealthStore.HandleAuthorizationForExtension(System.Action`2)" />.</para>
         </remarks>
       </Docs>
     </Member>
@@ -2061,7 +2061,7 @@ public partial class AppDelegate : UIApplicationDelegate
         <summary>Whether the application should restore saved state information.</summary>
         <returns>To be added.</returns>
         <remarks>
-          <para>Both this method and <see cref="M:UIKit.UIApplicationDelegate.ShouldSaveApplicationState" /> must return <see langword="true" /> for state preservation and restoration to occur. These methods are convenient for testing aspects of the state preservation process. </para>
+          <para>Both this method and <see cref="M:UIKit.UIApplicationDelegate.ShouldSaveApplicationState(UIKit.UIApplication,Foundation.NSCoder)" /> must return <see langword="true" /> for state preservation and restoration to occur. These methods are convenient for testing aspects of the state preservation process. </para>
         </remarks>
       </Docs>
     </Member>
@@ -2099,7 +2099,7 @@ public partial class AppDelegate : UIApplicationDelegate
         <summary>Whether the application should save application state information.</summary>
         <returns>To be added.</returns>
         <remarks>
-          <para>Both this method and <see cref="M:UIKit.UIApplicationDelegate.ShouldRestoreApplicationState" /> must return <see langword="true" /> for state preservation and restoration to occur. These methods are convenient for testing aspects of the state preservation process. </para>
+          <para>Both this method and <see cref="M:UIKit.UIApplicationDelegate.ShouldRestoreApplicationState(UIKit.UIApplication,Foundation.NSCoder)" /> must return <see langword="true" /> for state preservation and restoration to occur. These methods are convenient for testing aspects of the state preservation process. </para>
         </remarks>
       </Docs>
     </Member>
@@ -2295,7 +2295,7 @@ public partial class AppDelegate : UIApplicationDelegate
 </array>              
               ]]></code>
           </example>
-          <para>A client app initiates a Handoff-related user activity by calling, for instance, <see cref="M:WatchKit.WKInterfaceController.UpdateUserActivity" /> with a matching <paramref name="userActivityType" />. This <see cref="M:UIKit.UIApplicationDelegate.WillContinueUserActivity" /> method begins the Handoff-related re-entry to the app.</para>
+          <para>A client app initiates a Handoff-related user activity by calling, for instance, <see cref="M:WatchKit.WKInterfaceController.UpdateUserActivity(System.String,Foundation.NSDictionary,Foundation.NSUrl)" /> with a matching <paramref name="userActivityType" />. This <see cref="M:UIKit.UIApplicationDelegate.WillContinueUserActivity(UIKit.UIApplication,System.String)" /> method begins the Handoff-related re-entry to the app.</para>
           <para>App devs should override this method to return a <see cref="T:System.Boolean" /> indicating whether or not the app is capable of completing the user activity. If this method returns <see langword="true" />, the system will shortly call the method <see cref="M:UIKit.UIApplication.ContinueUserActivity" />.  </para>
         </remarks>
       </Docs>
@@ -2363,7 +2363,7 @@ public partial class AppDelegate : UIApplicationDelegate
         <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
         <summary>Called prior to the application returning from a backgrounded state.</summary>
         <remarks>
-          <para>Immediately after this call, the application will call <see cref="M:MonoTouchUIKit.UIApplicationDelegate.OnActivated" />.</para>
+          <para>Immediately after this call, the application will call <see cref="M:UIKit.UIApplicationDelegate.OnActivated(UIKit.UIApplication)" />.</para>
         </remarks>
         <altmember cref="M:UIKit.UIApplicationDelegate.DidEnterBackground" />
       </Docs>
@@ -2577,7 +2577,7 @@ public partial class AppDelegate : UIApplicationDelegate
         <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
         <summary>Called if the application is being terminated due to memory constraints or directly by the user.</summary>
         <remarks>
-          <para>iOS applications are expected to be long-lived, with many transitions between activated and non-activated states (see <see cref="M:UIKit.UIApplicationDelegate.OnActivated" />, <see cref="M:UIKit.UIApplicationDelegate.OnResignActivation" />) and are typically only terminated by user command or, rarely, due to memory exhaustion (see <see cref="M:UIKit.UIApplicationDelegate.ReceiveMemoryWarning" />).</para>
+          <para>iOS applications are expected to be long-lived, with many transitions between activated and non-activated states (see <see cref="M:UIKit.UIApplicationDelegate.OnActivated(UIKit.UIApplication)" />, <see cref="M:UIKit.UIApplicationDelegate.OnResignActivation(UIKit.UIApplication)" />) and are typically only terminated by user command or, rarely, due to memory exhaustion (see <see cref="M:UIKit.UIApplicationDelegate.ReceiveMemoryWarning(UIKit.UIApplication)" />).</para>
           <para>
             <img href="xamarin-media/UIKit/_images/UIApplicationDelegate.Lifecycle.png" />
           </para>
