@@ -19,7 +19,7 @@ var success = await hks.RequestAuthorizationToShareAsync (new NSSet (new [] { te
         
           ]]></code>
       </example>
-      <para>The result of the <see cref="T:HealthKit.HKHealthStore.RequestAuthorizationtoShareAsync" /> method indicates only that the user interacted with the permissions dialog, it does not indicate whether the user allowed any data sharing. For that, applications can use the <see cref="M:HealthKit.HKHealthStore.GetAuthorizationStatus" /> method:</para>
+      <para>The result of the <see cref="T:HealthKit.HKHealthStore.RequestAuthorizationtoShareAsync" /> method indicates only that the user interacted with the permissions dialog, it does not indicate whether the user allowed any data sharing. For that, applications can use the <see cref="M:HealthKit.HKHealthStore.GetAuthorizationStatus*" /> method:</para>
       <example>
         <code lang="C#"><![CDATA[
 var access = healthKitStore.GetAuthorizationStatus (HKObjectType.GetQuantityType (HKQuantityTypeIdentifierKey.HeartRate));
@@ -30,12 +30,12 @@ if (access.HasFlag (HKAuthorizationStatus.SharingAuthorized)) {
       <format type="text/html">
         <h2>Creating and storing data</h2>
       </format>
-      <para>Once permissions have been granted, creating and storing data involves creating an <see cref="T:HealthKit.HKSample" /> of a particular <see cref="T:HealthKit.HKSampleType" /> and then calling <see cref="M:HealthKit.HKHealthStore.SaveObject" /> or <see cref="M:HealthKit.HKHealthStore.SaveObjectAsync" />. </para>
+      <para>Once permissions have been granted, creating and storing data involves creating an <see cref="T:HealthKit.HKSample" /> of a particular <see cref="T:HealthKit.HKSampleType" /> and then calling <see cref="M:HealthKit.HKHealthStore.SaveObject*" /> or <see cref="M:HealthKit.HKHealthStore.SaveObjectAsync*" />. </para>
       <format type="text/html">
         <h2>Exception-handling differences between async and non-async methods</h2>
       </format>
-      <para>Apple's philosophy regarding attempts to store or read non-permitted information is that such attempts should not cause runtime exceptions. Rather, methods such as <see cref="M:HealthKit.HKHealthStore.RequestAuthorizationToShare" /> and <see cref="M:HealthKit.HKStore.SaveObject" /> are defined with completion callback handlers that are passed a non-null <see cref="T:Foundation.NSError" /> argument in the case of an error. Application developers using such methods should take special care to check for success, as it is highly likely that users will be cautious about access to their health data.</para>
-      <para>In contrast, Xamarin's asynchronous versions of such methods (such as <see cref="M:HealthKit.HKHealthStore.RequestAutorizationToShareAsync" /> and <see cref="M:HealthKit.HKHealthStore.SaveObjectAsync" />) will throw an <see cref="T:Foundation.NSErrorException" /> on failure or if the method is not allowed by the end user.</para>
+      <para>Apple's philosophy regarding attempts to store or read non-permitted information is that such attempts should not cause runtime exceptions. Rather, methods such as <see cref="M:HealthKit.HKHealthStore.RequestAuthorizationToShare*" /> and <see cref="M:HealthKit.HKStore.SaveObject*" /> are defined with completion callback handlers that are passed a non-null <see cref="T:Foundation.NSError" /> argument in the case of an error. Application developers using such methods should take special care to check for success, as it is highly likely that users will be cautious about access to their health data.</para>
+      <para>In contrast, Xamarin's asynchronous versions of such methods (such as <see cref="M:HealthKit.HKHealthStore.RequestAutorizationToShareAsync*" /> and <see cref="M:HealthKit.HKHealthStore.SaveObjectAsync*" />) will throw an <see cref="T:Foundation.NSErrorException" /> on failure or if the method is not allowed by the end user.</para>
       <example>
         <code lang="C#"><![CDATA[
 //Apple's philosophy: no exception
