@@ -44,8 +44,8 @@
       <para> 
 	The <see cref="T:UIKit.UIApplication" /> class
         contains methods relating to background processing, such as
-        <see cref="M:UIKit.UIApplication.EnsureUIThread*" />,
-        <see cref="M:UIKit.UIApplication.BeginBackgroundTask*" />,
+        <see cref="M:UIKit.UIApplication.EnsureUIThread" />,
+        <see cref="M:UIKit.UIApplication.BeginBackgroundTask(System.String,System.Action)" />,
         and <see cref="M:UIKit.UIApplication.EndBackgroundTask(System.nint)" />.
         </para>
       <format type="text/html">
@@ -96,7 +96,7 @@
 	Starting with iOS 7, applications can request that they be
 	woken up when a remote notification is received.  When this
 	feature is enabled, the operating system will resume the
-	application and invoke the <see cref="T:UIKit.UIApplicationDelegate.DidReceiveRemotNotification" />
+	application and invoke the <see cref="M:UIKit.UIApplicationDelegate_Extensions.DidReceiveRemoteNotification(UIKit.IUIApplicationDelegate,UIKit.UIApplication,Foundation.NSDictionary,System.Action{UIKit.UIBackgroundFetchResult})" />
 	overload that takes a completion handler parameter and let it
 	run.
 
@@ -721,7 +721,7 @@ void Setup ()
         <remarks>
           <para>This method, with <see cref="M:UIKit.UIApplication.EndBackgroundTask(System.nint)" />, bookends code that should be allowed to continue running in the background when another app is in the foreground. The returned <see langword="int" /> should be passed to <see cref="M:UIKit.UIApplication.EndBackgroundTask(System.nint)" /> at the appropriate time. </para>
           <para>This method does not cause the app to enter a background state or launch asynchronous code, despite its name. Rather, it requests that the system make background processing available.</para>
-          <para>This method may be called multiple times and may be called from background threads. Background processing will continue either until the allowed background time (generally 3 or 10 minutes total) expires or until <see cref="M:UIKit.UIApplication.EndBackgroundtask*" /> has been called for all started tasks.</para>
+          <para>This method may be called multiple times and may be called from background threads. Background processing will continue either until the allowed background time (generally 3 or 10 minutes total) expires or until <see cref="M:UIKit.UIApplication.EndBackgroundTask(System.nint)" /> has been called for all started tasks.</para>
           <para>The <paramref name="expirationHandler" /> is only called if allowed background time is close to expiring (3-4 seconds).</para>
           <para>
             <see cref="M:UIKit.UIApplication.EndBackgroundTask(System.nint)" /> must be called within the expiration handler, as well as in the normal course of execution.</para>
@@ -798,7 +798,7 @@ Task.Factory.StartNew( () => {
         <remarks>
           <para>This method, with <see cref="M:UIKit.UIApplication.EndBackgroundTask(System.nint)" />, bookends code that should be allowed to continue running in the background when another app is in the foreground. The returned <see langword="int" /> should be passed to <see cref="M:UIKit.UIApplication.EndBackgroundTask(System.nint)" /> at the appropriate time. </para>
           <para>This method does not cause the app to enter a background state or launch asynchronous code, despite its name. Rather, it requests that the system make background processing available.</para>
-          <para>This method may be called multiple times and may be called from background threads. Background processing will continue either until the allowed background time (generally 3 or 10 minutes total) expires or until <see cref="M:UIKit.UIApplication.EndBackgroundtask*" /> has been called for all started tasks.</para>
+          <para>This method may be called multiple times and may be called from background threads. Background processing will continue either until the allowed background time (generally 3 or 10 minutes total) expires or until <see cref="M:UIKit.UIApplication.EndBackgroundTask(System.nint)" /> has been called for all started tasks.</para>
           <para>The <paramref name="expirationHandler" /> is only called if allowed background time is close to expiring (3-4 seconds).</para>
           <para>
             <see cref="M:UIKit.UIApplication.EndBackgroundTask(System.nint)" /> must be called within the expiration handler, as well as in the normal course of execution.</para>
@@ -856,7 +856,7 @@ Task.Factory.StartNew( () => {
             
           </para>
           <para>
-            To resume receiving touch events, call the <see cref="M:UIKit.UIApplication.EndIgnoringInteractionEvents*" />.
+            To resume receiving touch events, call the <see cref="M:UIKit.UIApplication.EndIgnoringInteractionEvents" />.
           </para>
           <para>This method is not available in Extensions.</para>
         </remarks>
@@ -1186,7 +1186,7 @@ Task.Factory.StartNew( () => {
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIKit.UIApplication+Notifications" />.<see cref="M:UIKit.UIApplication+Notifications.ObserveContentSizeCategoryChangedNotification*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIKit.UIApplication.Notifications" />.<see cref="M:UIKit.UIApplication+Notifications.ObserveContentSizeCategoryChangedNotification*" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="C#"><![CDATA[
@@ -1441,7 +1441,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIKit.UIApplication+Notifications" />.<see cref="M:UIKit.UIApplication+Notifications.ObserveDidChangeStatusBarFrameNotification*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIKit.UIApplication.Notifications" />.<see cref="M:UIKit.UIApplication+Notifications.ObserveDidChangeStatusBarFrameNotification*" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="C#"><![CDATA[
@@ -1537,7 +1537,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIKit.UIApplication+Notifications" />.<see cref="M:UIKit.UIApplication+Notifications.ObserveDidChangeStatusBarOrientationNotification*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIKit.UIApplication.Notifications" />.<see cref="M:UIKit.UIApplication+Notifications.ObserveDidChangeStatusBarOrientationNotification*" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="C#"><![CDATA[
@@ -1713,7 +1713,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIKit.UIApplication+Notifications" />.<see cref="M:UIKit.UIApplication+Notifications.ObserveDidFinishLaunchingNotification*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIKit.UIApplication.Notifications" />.<see cref="M:UIKit.UIApplication+Notifications.ObserveDidFinishLaunchingNotification*" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="C#"><![CDATA[
@@ -1977,10 +1977,10 @@ void Setup ()
         <Parameter Name="taskId" Type="System.nint" />
       </Parameters>
       <Docs>
-        <param name="taskId">The value returned by the matching <see cref="M:UIKit.UIApplication.BeginBackgroundTask*" /> method.</param>
+        <param name="taskId">The value returned by the matching <see cref="M:UIKit.UIApplication.BeginBackgroundTask(System.String,System.Action)" /> method.</param>
         <summary>Indicates to the system that background processing has ended for the <paramref name="taskId" />.</summary>
         <remarks>
-          <para>This method, with <see cref="M:UIKit.UIApplication.BeginBackgroundTask*" />, bookends code that should be allowed to run in the background. It does not affect the actual state of any threads. (See <see cref="M:UIKit.UIApplication.BeginBackgroundTask*" /> for discussion.)</para>
+          <para>This method, with <see cref="M:UIKit.UIApplication.BeginBackgroundTask(System.String,System.Action)" />, bookends code that should be allowed to run in the background. It does not affect the actual state of any threads. (See <see cref="M:UIKit.UIApplication.BeginBackgroundTask(System.String,System.Action)" /> for discussion.)</para>
           <para tool="threads">This can be used from a background thread.</para>
         </remarks>
       </Docs>
@@ -2011,7 +2011,7 @@ void Setup ()
         <summary>Resumes receiving touch events for the application.</summary>
         <remarks>
           <para>
-          This should be called if you previously disabled receiving events by calling the <see cref="M:UIKit.UIApplication.BeginIgnoringInteractionEvents*" />.</para>
+          This should be called if you previously disabled receiving events by calling the <see cref="M:UIKit.UIApplication.BeginIgnoringInteractionEvents" />.</para>
           <para>This method is unavailable to Extensions.</para>
         </remarks>
       </Docs>
@@ -2106,8 +2106,8 @@ void Setup ()
       <Docs>
         <summary>Indicates that the application is restoring state asynchronously.</summary>
         <remarks>
-          <para>State restoration occurs on the main thread. Application developers who wish to do state restoration asynchronously should call this method and pair it with calls to <see cref="M:UIKit.UIApplication.CompleteStateRestoration*" /> to indicate to the system that state restoration is occurring asynchronously.</para>
-          <para>If this method is called and the application crashes before the matching <see cref="M:UIKit.UIApplication.CompleteStateRestoration*" /> is called, all retained state will be discarded on next startup. This behavior prevents the crash from re-occurring.</para>
+          <para>State restoration occurs on the main thread. Application developers who wish to do state restoration asynchronously should call this method and pair it with calls to <see cref="M:UIKit.UIApplication.CompleteStateRestoration" /> to indicate to the system that state restoration is occurring asynchronously.</para>
+          <para>If this method is called and the application crashes before the matching <see cref="M:UIKit.UIApplication.CompleteStateRestoration" /> is called, all retained state will be discarded on next startup. This behavior prevents the crash from re-occurring.</para>
         </remarks>
       </Docs>
     </Member>
@@ -2201,7 +2201,7 @@ void Setup ()
       <Docs>
         <summary>Whether the receiver is ignoring touch events.</summary>
         <value>
-          <see langword="true" /> if there have been more calls to <see cref="M:UIKit.UIApplication.BeginIgnoringInteractionEvents*" /> than calls to <see cref="M:UIKit.UIApplication.EndIgnoringInteractionEvents*" />.</value>
+          <see langword="true" /> if there have been more calls to <see cref="M:UIKit.UIApplication.BeginIgnoringInteractionEvents" /> than calls to <see cref="M:UIKit.UIApplication.EndIgnoringInteractionEvents" />.</value>
         <remarks>
         </remarks>
         <altmember cref="M:UIKit.UIApplication.BeginIgnoringInteractionEvents" />
@@ -2271,7 +2271,7 @@ void Setup ()
           The key window is the currently visible window that is also
           the one that receives user input.  The key window in turn
           will route input events to the <see cref="T:UIKit.UIViewController" /> that is defined
-          in set in the  <see cref="P:UIKit.UIWindows.RootViewController" /> property.
+          in set in the  <see cref="P:UIKit.UIWindow.RootViewController" /> property.
         </remarks>
       </Docs>
     </Member>
@@ -4185,7 +4185,7 @@ void Setup ()
     </dict>
 </array>
 ]]></code>
-          <para>The Quick Action shortcut defined above will not be available in <see cref="P:UIKit.UIApplication.ShortcutItems" />. If the developer places the code below into their <see cref="M:UIKit.UIApplicationDelegate.FinishedLaunching*" /> method, then the dynamically defined shortcut item will be available after the first time the application is launched:</para>
+          <para>The Quick Action shortcut defined above will not be available in <see cref="P:UIKit.UIApplication.ShortcutItems" />. If the developer places the code below into their <see cref="M:UIKit.UIApplicationDelegate_Extensions.FinishedLaunching(UIKit.IUIApplicationDelegate,UIKit.UIApplication,Foundation.NSDictionary)" /> method, then the dynamically defined shortcut item will be available after the first time the application is launched:</para>
           <code><![CDATA[
 application.ShortcutItems = new UIMutableApplicationShortcutItem[] {
     new UIMutableApplicationShortcutItem ("DynamicItem", "Send") {
@@ -4989,7 +4989,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIKit.UIApplication+Notifications" />.<see cref="M:UIKit.UIApplication+Notifications.ObserveWillChangeStatusBarFrameNotification*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIKit.UIApplication.Notifications" />.<see cref="M:UIKit.UIApplication+Notifications.ObserveWillChangeStatusBarFrameNotification*" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="C#"><![CDATA[
@@ -5085,7 +5085,7 @@ void Setup ()
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
-          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIKit.UIApplication+Notifications" />.<see cref="M:UIKit.UIApplication+Notifications.ObserveWillChangeStatusBarOrientationNotification*" /> method which offers strongly typed access to the parameters of the notification.</para>
+          <para id="tool-remark">To subscribe to this notification, developers can use the convenience <see cref="T:UIKit.UIApplication.Notifications" />.<see cref="M:UIKit.UIApplication+Notifications.ObserveWillChangeStatusBarOrientationNotification*" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
             <code lang="C#"><![CDATA[

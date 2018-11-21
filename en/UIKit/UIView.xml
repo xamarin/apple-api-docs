@@ -118,7 +118,7 @@
       <para>
         To cause the UIView to respond to user input by updating its
         display, developers should call the
-        <see cref="M:UIKit.UIView.SetNeedsDisplay*" /> or
+        <see cref="M:UIKit.UIView.SetNeedsDisplayInRect(CoreGraphics.CGRect)" /> or
         <see cref="M:UIKit.UIView.SetNeedsDisplayInRect(CoreGraphics.CGRect)" /> which will queue a call to the developer's
         <see cref="M:UIKit.UIView.Draw(CoreGraphics.CGRect)" /> method
         where the developer has implemented logic to re-render the control with the new state.
@@ -127,7 +127,7 @@
         Event delivery can be turned off either by setting the
         <see cref="P:UIKit.UIView.UserInteractionEnabled" /> to false or you can
         disable them temporarily at the application level by calling
-        <see cref="M:UIKit.UIApplication.BeginIgnoringInteractionEvents*" />.  In
+        <see cref="M:UIKit.UIApplication.BeginIgnoringInteractionEvents" />.  In
         both cases, events destined for the view are dropped and are not
         delivered to the views.
       </para>
@@ -297,7 +297,7 @@ var myView = new UIView (new RectangleF (0, 0, 100, 100));
          The developer should configure the
         <see cref="P:UIKit.UIView.AutoresizingMask" /> property, which determines how the
         view will be resized when
-        <see cref="M:UIKit.UIView.SetNeedsLayout*" /> is invoked or when the geometry of the
+        <see cref="M:UIKit.UIView.SetNeedsLayout" /> is invoked or when the geometry of the
         view container changes (for example, in response to a device
         rotation).
       </para>
@@ -371,8 +371,8 @@ var myView = new UIView (new RectangleF (0, 0, 100, 100));
       <format type="text/html">
         <h2>Animation</h2>
       </format>
-      <para>Apple recommends that app developers use the <see cref="T:UIKit.UIViewPropwertyAnimator" /> class to implement animations on their <see cref="T:UIKit.UIView" /> objects. Apple also discourages, but has not deprecated, any other animation APIs on the <see cref="T:UIKit.UIView" /> class. Additionally, developers can implement implicit animations for some or all properties by creating a custom views that has a custom <see cref="P:UIKit.UIView.Layer" /> property that provides animation actions for animation keys.</para>
-      <para>Developers can animate changes in the geometry or appearance of a UIView by creating a new <see cref="T:UIKit.UIViewPropertyAnimator" />, configuring it, and calling its <see cref="M:UIKit.UIViewPropertyAnimator.StartAnimation*" /> method. Developers can update the animations (for example, to cancel it) by calling the <see cref="M:UIKit.UIViewPropertyAnimator.AddAnimations*" /> method while the animation is in progress. The <format type="text/html"><a href="https://developer.xamarin.com/recipes/ios/animation/coreanimation/animate_a_uiview_using_uikit/">Animate a UIView using UIKit</a></format> recipe shows how to create an cancel an animation by using the <see cref="T:UIKit.UIViewPropertyAnimator" /> class.</para>
+      <para>Apple recommends that app developers use the <see cref="T:UIKit.UIViewPropertyAnimator" /> class to implement animations on their <see cref="T:UIKit.UIView" /> objects. Apple also discourages, but has not deprecated, any other animation APIs on the <see cref="T:UIKit.UIView" /> class. Additionally, developers can implement implicit animations for some or all properties by creating a custom views that has a custom <see cref="P:UIKit.UIView.Layer" /> property that provides animation actions for animation keys.</para>
+      <para>Developers can animate changes in the geometry or appearance of a UIView by creating a new <see cref="T:UIKit.UIViewPropertyAnimator" />, configuring it, and calling its <see cref="M:UIKit.UIViewPropertyAnimator.StartAnimation(System.Double)" /> method. Developers can update the animations (for example, to cancel it) by calling the <see cref="M:UIKit.UIViewPropertyAnimator.AddAnimations(System.Action,System.nfloat)" /> method while the animation is in progress. The <format type="text/html"><a href="https://developer.xamarin.com/recipes/ios/animation/coreanimation/animate_a_uiview_using_uikit/">Animate a UIView using UIKit</a></format> recipe shows how to create an cancel an animation by using the <see cref="T:UIKit.UIViewPropertyAnimator" /> class.</para>
       <para>
         Alternatively, developers can create animations by calling the
         <see cref="M:UIKit.UIView.BeginAnimations(string)" /> method, configuring the animation, making the
@@ -684,7 +684,7 @@ public override void Draw (RectangleF rect)
       <para>
         The developer should not call <see cref="M:UIKit.UIView.Draw(CoreGraphics.CGRect)" /> directly. iOS calls it
         during run loop processing. iOS first calls it the first time through the run loop, and then whenever the view
-        has been marked as needing display with a call to <see cref="M:UIKit.UIView.SetNeedsDisplay*" /> or
+        has been marked as needing display with a call to <see cref="M:UIKit.UIView.SetNeedsDisplayInRect(CoreGraphics.CGRect)" /> or
         <see cref="M:UIKit.UIView.SetNeedsDisplayInRect(CoreGraphics.CGRect)" />.
       </para>
       <para>
@@ -764,7 +764,7 @@ class MyView : UIView {
       </para>
       <para>
         For views that change their state in response to some API calls,
-        developers should call the <see cref="M:UIKit.UIView.SetNeedsLayout*" />, instead of laying out the view themselves. The layout event will then be processed
+        developers should call the <see cref="M:UIKit.UIView.SetNeedsLayout" />, instead of laying out the view themselves. The layout event will then be processed
         the next time the main loop runs.  By using this approach, develoers can
         coalesce multiple changes to the layout in a single pass.
       </para>
@@ -780,12 +780,12 @@ class MyView : UIView {
       </para>
       <para>
         Developers can override the <see cref="M:UIKit.UIView.WillMoveToWindow(UIKit.UIWindow)" />
-        and the <see cref="M:UIKit.UIView.MovedToWindow*" /> to
+        and the <see cref="M:UIKit.UIView.MovedToWindow" /> to
         track when views are moved from one <see cref="T:UIKit.UIWindow" /> to another.
       </para>
       <para>
         Developers can override the <see cref="M:UIKit.UIView.WillMoveToSuperview(UIKit.UIView)" />
-        and the <see cref="M:UIKit.UIView.MovedToSuperview*" /> to
+        and the <see cref="M:UIKit.UIView.MovedToSuperview" /> to
         track when views are added or removed from a superview.
       </para>
       <format type="text/html">
@@ -1042,7 +1042,7 @@ public class BlueLayer : CALayer
           <term>
             <see cref="M:UIKit.UIView.SetNeedsFocusUpdate*" />
           </term>
-          <description>When this is the active focus environment, requests a focus update, which can potentially change the <see cref="P:UIKit.UIView.PreferredFocusView" />. (See also <see cref="M:UIKit.UIView.UpdateFocusIfNeeded*" />.)</description>
+          <description>When this is the active focus environment, requests a focus update, which can potentially change the <see cref="P:UIKit.UIViewController.PreferredFocusedView" />. (See also <see cref="M:UIKit.UIViewController.UpdateFocusIfNeeded" />.)</description>
         </item>
         <item>
           <term>
@@ -1052,12 +1052,12 @@ public class BlueLayer : CALayer
         </item>
         <item>
           <term>
-            <see cref="M:UIKit.UIView.UpdateFocusIfNeeded*" />
+            <see cref="M:UIKit.UIViewController.UpdateFocusIfNeeded" />
           </term>
           <description>If any focus environment has a pending update, this method forces an immediate focus update. Unlike <see cref="M:UIKit.UIView.SetNeedsFocusUpdate*" />, this method may be called by any <see cref="T:UIKit.UIView" />, whether it currently contains focus or not.</description>
         </item>
       </list>
-      <para>In addition to <see cref="P:UIKit.UIView.CanBeFocused" /> returning <see langword="true" />, for a <see cref="T:UIKit.UIView" /> to be focused, it must have a <see cref="P:UIKit.UIView.Hidden" /> value of <see langword="false" />, a <see cref="P:UIKit.UIView.UserInteractionEnabled" /> value of <see langword="true" />, a <see cref="P:UIKit.UIView.Alpha" /> value greater than 0, and it must not be obscured by another <see cref="T:UIKit.UIView" />. </para>
+      <para>In addition to <see cref="P:UIKit.UIView.CanBecomeFocused" /> returning <see langword="true" />, for a <see cref="T:UIKit.UIView" /> to be focused, it must have a <see cref="P:UIKit.UIView.Hidden" /> value of <see langword="false" />, a <see cref="P:UIKit.UIView.UserInteractionEnabled" /> value of <see langword="true" />, a <see cref="P:UIKit.UIView.Alpha" /> value greater than 0, and it must not be obscured by another <see cref="T:UIKit.UIView" />. </para>
     </remarks>
     <related type="recipe" href="http://docs.xamarin.com/ios/Recipes/Animation/CoreAnimation/Animate_a_UIView_using_UIKit">Animate a UIView using UIKit</related>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIView_Class/index.html">Apple documentation for <c>UIView</c></related>
@@ -2349,7 +2349,7 @@ var animationSucceeded = await UIView.AnimateKeyframesAsync(
         <remarks>
           <para>
             <see cref="M:UIKit.UIView.AddSubview(UIKit.UIView)" /> appends the <paramref name="view" /> to the end of <c>this</c> <see cref="T:UIKit.UIView" />'s <see cref="P:UIKit.UIView.Subviews" />. The methods <see cref="M:UIKit.UIView.InsertSubview(UIKit.UIView,System.nint)" />, <see cref="M:UIKit.UIView.InsertSubviewBelow(UIKit.UIView,UIKit.UIView)" />, and <see cref="M:UIKit.UIView.InsertSubviewAbove(UIKit.UIView,UIKit.UIView)" /> can be used to control the order.</para>
-          <para>To remove a <see cref="T:UIKit.UIView" /> from <see cref="P:UIKit.UIView.Subviews" />, call <see cref="M:UIKit.UIView.RemoveFromSuperview*" /> on the child <see cref="T:UIKit.UIView" />.</para>
+          <para>To remove a <see cref="T:UIKit.UIView" /> from <see cref="P:UIKit.UIView.Subviews" />, call <see cref="M:UIKit.UIView.RemoveFromSuperview" /> on the child <see cref="T:UIKit.UIView" />.</para>
           <para>Since <see cref="T:UIKit.UIView" />s can only have direct ancestor, this will overwrite the existing <see cref="P:UIKit.UIView.Superview" /> of the <paramref name="view" />.</para>
           <para>A number of methods are called when a subview is added or removed:</para>
           <list type="bullet">
@@ -2375,16 +2375,16 @@ var animationSucceeded = await UIView.AnimateKeyframesAsync(
             </item>
             <item>
               <term>
-                <see cref="M:UIKit.UIView.MovedToSuperview*" />
+                <see cref="M:UIKit.UIView.MovedToSuperview" />
               </term>
             </item>
             <item>
               <term>
-                <see cref="M:UIKit.UIView.MovedToWindow*" />
+                <see cref="M:UIKit.UIView.MovedToWindow" />
               </term>
             </item>
           </list>
-          <para>The following diagram shows the sequence of calls resulting from a call to <see cref="M:UIKit.UIView.AddSubview(UIKit.UIView)" />. Note that the calls to <see cref="M:UIKit.UIView.WillMoveToWindow(UIKit.UIWindow)" /> and <see cref="M:UIKit.UIView.MovedToWindow*" /> occur shortly after <see cref="M:UIKit.UIView.AddSubview(UIKit.UIView)" /> has completed.</para>
+          <para>The following diagram shows the sequence of calls resulting from a call to <see cref="M:UIKit.UIView.AddSubview(UIKit.UIView)" />. Note that the calls to <see cref="M:UIKit.UIView.WillMoveToWindow(UIKit.UIWindow)" /> and <see cref="M:UIKit.UIView.MovedToWindow" /> occur shortly after <see cref="M:UIKit.UIView.AddSubview(UIKit.UIView)" /> has completed.</para>
           <para>
             <img href="xamarin-media/UIKit/_images/UIView.AddSubviewSequence.png" />
           </para>
@@ -3595,7 +3595,7 @@ protected void DeviceRotated (NSNotification notification)
         <summary>Indicates the beginning of an animation block.</summary>
         <remarks>
           <para>Application developers should prefer to use the more compact syntax of the <see cref="M:UIKit.UIView.Animate*" /> method.</para>
-          <para>Older versions of iOS used a matched set of <see cref="M:UIKit.UIView.BeginAnimations*" /> and <see cref="M:UIKit.UIView.CommitAnimations*" /> to specify an animation block. The following code, taken from the "Animate a UIView using UIKit" recipe, shows the technique:</para>
+          <para>Older versions of iOS used a matched set of <see cref="M:UIKit.UIView.BeginAnimations(System.String,System.IntPtr)" /> and <see cref="M:UIKit.UIView.CommitAnimations*" /> to specify an animation block. The following code, taken from the "Animate a UIView using UIKit" recipe, shows the technique:</para>
           <example>
             <code lang="C#"><![CDATA[
 UIView.BeginAnimations ("slideAnimation");
@@ -4295,7 +4295,7 @@ void Setup ()
         <summary>Indicates the end of an animation block.</summary>
         <remarks>
           <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
-          <para>Older versions of iOS used a matched set of <see cref="M:UIKit.UIView.BeginAnimations*" /> and <see cref="M:UIKit.UIView.CommitAnimations*" /> to specify an animation block. The following code, taken from the "Animate a UIView using UIKit" recipe, shows the technique:</para>
+          <para>Older versions of iOS used a matched set of <see cref="M:UIKit.UIView.BeginAnimations(System.String,System.IntPtr)" /> and <see cref="M:UIKit.UIView.CommitAnimations*" /> to specify an animation block. The following code, taken from the "Animate a UIView using UIKit" recipe, shows the technique:</para>
           <example>
             <code lang="C#"><![CDATA[
   UIView.BeginAnimations ("slideAnimation");
@@ -5243,7 +5243,7 @@ void Setup ()
             The <see cref="M:UIKit.UIView.Draw(CoreGraphics.CGRect)" /> method should never be called directly. It is called by iOS
             during run loop processing. The first time through the run loop, it
             is called. After that, it will be called on demand whenever the view
-            has been marked as needing display by calling <see cref="M:UIKit.UIView.SetNeedsDisplay*" /> or
+            has been marked as needing display by calling <see cref="M:UIKit.UIView.SetNeedsDisplayInRect(CoreGraphics.CGRect)" /> or
             <see cref="M:UIKit.UIView.SetNeedsDisplayInRect(CoreGraphics.CGRect)" />.
           </para>
           <para>
@@ -6136,7 +6136,7 @@ view.AddSubview(flowerView);
         </returns>
         <remarks>
           <para>Setting any appearance properties on the returned object will affect the appearance of all classes and subclasses of the type parameter.</para>
-          <para>Unlike the <see cref="P:UIKit.UIView.Appearance" /> property, or the <see cref="M:UIKit.UIViewAppearanceWhenContainedIn*" /> method which only work on instances of this particular class, the proxies returned by GetAppearance can be used to change the style of subclasses.</para>
+          <para>Unlike the <see cref="P:UIKit.UIView.Appearance" /> property, or the <see cref="M:UIKit.UIWebView.AppearanceWhenContainedIn(System.Type[])" /> method which only work on instances of this particular class, the proxies returned by GetAppearance can be used to change the style of subclasses.</para>
           <para>The following example shows how the GetAppearance method works</para>
           <example>
             <code lang="C#"><![CDATA[
@@ -6180,7 +6180,7 @@ myTheme.TintColor = UIColor.Red;
         </returns>
         <remarks>
           <para>The returned object represents the UIAppearance proxy where developers can set appearance properties for instances of UIView.</para>
-          <para>Unlike the <see cref="P:UIKit.UIView.Appearance" /> property, or the <see cref="M:UIKit.UIViewAppearanceWhenContainedIn*" /> method which only work on instances of this particular class, the proxies returned by GetAppearance can be used to change the style of subclasses.</para>
+          <para>Unlike the <see cref="P:UIKit.UIView.Appearance" /> property, or the <see cref="M:UIKit.UIWebView.AppearanceWhenContainedIn(System.Type[])" /> method which only work on instances of this particular class, the proxies returned by GetAppearance can be used to change the style of subclasses.</para>
           <para>The following example shows how the GetAppearance method works</para>
           <example>
             <code lang="C#"><![CDATA[
@@ -6232,7 +6232,7 @@ myTheme.TintColor = UIColor.Red;
         </returns>
         <remarks>
           <para>The returned object represents the UIAppearance proxy where developers can set appearance properties for instances of UIView that has the specified trait collection when the view is hosted in the specified hierarchy when those instances are contained in the hierarchy specified by the <paramref name="containers" /> parameter.</para>
-          <para>Unlike the <see cref="P:UIKit.UIView.Appearance" /> property, or the <see cref="M:UIKit.UIViewAppearanceWhenContainedIn*" /> method which only work on instances of this particular class, the proxies returned by GetAppearance can be used to change the style of subclasses.</para>
+          <para>Unlike the <see cref="P:UIKit.UIView.Appearance" /> property, or the <see cref="M:UIKit.UIWebView.AppearanceWhenContainedIn(System.Type[])" /> method which only work on instances of this particular class, the proxies returned by GetAppearance can be used to change the style of subclasses.</para>
           <para>The following example shows how the GetAppearance method works</para>
           <example>
             <code lang="C#"><![CDATA[
@@ -6281,7 +6281,7 @@ myTheme.TintColor = UIColor.Red;
             The returned array may contain <see cref="T:UIKit.NSLayoutConstraint" />s that do not explicitly reference <c>this</c> <see cref="T:UIKit.UIView" /> but which nonetheless affect the <see cref="P:UIKit.UIView.Frame" />. For instance, if <c>this</c> is pinned to <c>anotherView</c> and <c>anotherView</c> is pinned to it's <see cref="P:UIKit.UIView.Superview" />, the method may return both constraints. 
           </para>
           <para>This method is a debugging oriented helper method and is not guaranteed to return the complete set (or any) <see cref="T:UIKit.NSLayoutConstraint" />s. </para>
-          <para>If this method is called directly from within <see cref="M:UIKit.UIViewController.ViewDidLoad*" />, it will generally return an empty array. If it is invoked as shown in the following example, it appears to be more likely to provide a comprehensive answer.</para>
+          <para>If this method is called directly from within <see cref="M:UIKit.UIViewController.ViewDidLoad" />, it will generally return an empty array. If it is invoked as shown in the following example, it appears to be more likely to provide a comprehensive answer.</para>
           <example>
             <code lang="C#"><![CDATA[
 mainView.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|-[blue]-|", 0, new NSDictionary(), viewsDictionary));
@@ -9551,7 +9551,7 @@ void Setup ()
         <summary>Allows the app developer to create a custom animation delegate.</summary>
         <remarks>
           <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="T:UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
-          <para>This method, with <see cref="M:UIKit.UIView.SetAnimationWillStartSelector(ObjCRuntime.Selector)" /> and <see cref="M:UIKit.UIView.SetAnimationDidStopSelector(ObjCRuntime.Selector)" /> allows the application developer to register a custom delegate object for animations created using the now-discouraged <see cref="M:UIKit.UIView.BeginAnimations*" /> / <see cref="M:UIKit.UIView.CommitAnimations*" /> method, rather than the preferred block-based animations.</para>
+          <para>This method, with <see cref="M:UIKit.UIView.SetAnimationWillStartSelector(ObjCRuntime.Selector)" /> and <see cref="M:UIKit.UIView.SetAnimationDidStopSelector(ObjCRuntime.Selector)" /> allows the application developer to register a custom delegate object for animations created using the now-discouraged <see cref="M:UIKit.UIView.BeginAnimations(System.String,System.IntPtr)" /> / <see cref="M:UIKit.UIView.CommitAnimations*" /> method, rather than the preferred block-based animations.</para>
         </remarks>
       </Docs>
     </Member>
@@ -9937,7 +9937,7 @@ void Setup ()
             method to be invoked.
           </para>
           <para>
-            Alternatively you can use the <see cref="M:UIKit.UIView.SetNeedsDisplay*" />
+            Alternatively you can use the <see cref="M:UIKit.UIView.SetNeedsDisplayInRect(CoreGraphics.CGRect)" />
             method if you want to repaint the entire view.
           </para>
         </remarks>
@@ -9975,7 +9975,7 @@ void Setup ()
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>When <c>this</c> is the active focus environment, requests a focus update, which can potentially change the <see cref="P:UIKit.UIView.PreferredFocusedView" />. (See also <see cref="M:UIKit.UIView.UpdateFocusIfNeeded*" />.)</summary>
+        <summary>When <c>this</c> is the active focus environment, requests a focus update, which can potentially change the <see cref="P:UIKit.UIView.PreferredFocusedView" />. (See also <see cref="M:UIKit.UIViewController.UpdateFocusIfNeeded" />.)</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -10246,7 +10246,7 @@ void Setup ()
       <Docs>
         <summary>Moves and resizes the <see cref="T:UIKit.UIView" /> so that it tightly encloses its <see cref="P:UIKit.UIView.Subviews" /></summary>
         <remarks>
-          <para>Calling this method resizes the <see cref="T:UIKit.UIView" /> so that it just encloses its subviews. Some <see cref="T:UIKit.UIView" /> that do not have their <see cref="P:UIKit.UIView.Superview" /> property set resize themselves to the screen bounds, so application developers should generally make sure that they have assembled an appropriate view hierarchy before calling <see cref="M:UIKit.UIView.SizeToFit*" />.</para>
+          <para>Calling this method resizes the <see cref="T:UIKit.UIView" /> so that it just encloses its subviews. Some <see cref="T:UIKit.UIView" /> that do not have their <see cref="P:UIKit.UIView.Superview" /> property set resize themselves to the screen bounds, so application developers should generally make sure that they have assembled an appropriate view hierarchy before calling <see cref="M:UIKit.UIView.SizeToFit" />.</para>
           <para>Application developers should not override this method. Instead, application developers should override <see cref="M:UIKit.UIView.SizeThatFits(CoreGraphics.CGSize)" />, which this method will call.</para>
         </remarks>
         <altmember cref="M:UIKit.UIView.SizeThatFits" />
@@ -10647,7 +10647,7 @@ void Setup ()
         <value>The default value is an empty array.</value>
         <remarks>
           <para>
-            This property defines the view hierarchy of a <see cref="T:UIKit.UIView" />. The complete view hierarchy includes the <see cref="T:UIKit.UIView" />'s <see cref="P:UIKit.UIView.Superview" /> and the descendent <see cref="T:UIKit.UIView" />s that are <see cref="P:UIKit.UIView.Subview" />s of <see cref="P:UIKit.UIView.Subview" />s, but the methods for manipulating the hierarchy are focused on manipulating subviews (e.g., <see cref="M:UIKit.UIView.AddSubview(UIKit.UIView)" />, <see cref="M:UIKit.UIView.InsertSubview(UIKit.UIView,System.nint)" />, etc.).
+            This property defines the view hierarchy of a <see cref="T:UIKit.UIView" />. The complete view hierarchy includes the <see cref="T:UIKit.UIView" />'s <see cref="P:UIKit.UIView.Superview" /> and the descendent <see cref="T:UIKit.UIView" />s that are <see cref="P:UIKit.UIView.Subviews" />s of <see cref="P:UIKit.UIView.Subviews" />s, but the methods for manipulating the hierarchy are focused on manipulating subviews (e.g., <see cref="M:UIKit.UIView.AddSubview(UIKit.UIView)" />, <see cref="M:UIKit.UIView.InsertSubview(UIKit.UIView,System.nint)" />, etc.).
           </para>
           <para>The position of a <see cref="T:UIKit.UIView" /> in the <see cref="P:UIKit.UIView.Subviews" /> array determines that <see cref="T:UIKit.UIView" />'s z-order among the subviews. The <see cref="T:UIKit.UIView" /> at index 0 is the rear-most view. <see cref="T:UIKit.UIView" />s can be initialized in a desired z-order by using <see cref="M:UIKit.UIView.InsertSubviewAbove(UIKit.UIView,UIKit.UIView)" /> and <see cref="M:UIKit.UIView.InsertSubviewBelow(UIKit.UIView,UIKit.UIView)" />. <see cref="T:UIKit.UIView" />s can be brought forward or sent backward in z-order by using <see cref="M:UIKit.UIView.ExchangeSubview(System.nint,System.nint)" />.</para>
           <para>Application developers should not manipulate or modify <see cref="P:UIKit.UIView.Subviews" /> of framework-supplied <see cref="T:UIKit.UIView" />s, as they may change without notice in system updates.</para>
@@ -11021,7 +11021,7 @@ void Setup ()
         </value>
         <remarks>
           <para>Starting in iOS 7, application developers should use <see cref="P:UIKit.UIView.TintColor" /> to indicate interaction elements within their UI. <see cref="P:UIKit.UIView.TintColor " /> is hierarchical; that is, setting the <see cref="P:UIKit.UIView.TintColor" /> on a top-level <see cref="T:UIKit.UIView" /> will carry through to child views until the <see cref="P:UIKit.UIView.TintColor" /> is overridden.</para>
-          <para>When a <see cref="T:UIKit.UIActionSheet" /> is displayed, visible <see cref="T:UIKit.UIView" />s will have their tint grayed out (desaturated), indicating to the application user that they must interact with the <see cref="T:UIKit.UIActionSheet" />. Application developers who wish to customize the desaturation of their <see cref="T:UIKit.UIView" />s should override the <see cref="M:UIKit.UIView.TintColorDidChange*" /> method.</para>
+          <para>When a <see cref="T:UIKit.UIActionSheet" /> is displayed, visible <see cref="T:UIKit.UIView" />s will have their tint grayed out (desaturated), indicating to the application user that they must interact with the <see cref="T:UIKit.UIActionSheet" />. Application developers who wish to customize the desaturation of their <see cref="T:UIKit.UIView" />s should override the <see cref="M:UIKit.UIView.TintColorDidChange" /> method.</para>
           <para id="tool-remark">This member participates in the <see cref="T:UIKit.UIAppearance" /> styling system.  See the <see cref="P:UIKit.UIView.Appearance" /> property and the <see cref="M:UIKit.UIView.AppearanceWhenContainedIn(System.Type[])" /> method.</para>
         </remarks>
       </Docs>
@@ -12061,7 +12061,7 @@ yellowView.Transform = CGAffineTransform.MakeRotation((float)(Math.PI / 10));
         <summary>Represents the value associated with the constant UILayoutFittingCompressedSize</summary>
         <value>
         </value>
-        <remarks>Indicates that <see cref="M:UIKit.UIView.SystemLayoutSizeFittingSize*" /> should calculate the smallest possible size.</remarks>
+        <remarks>Indicates that <see cref="M:UIKit.UIView.SystemLayoutSizeFittingSize(CoreGraphics.CGSize,System.Single,System.Single)" /> should calculate the smallest possible size.</remarks>
         <altmember cref="M:UIKit.UIView.SystemLayoutSizeFittingSize" />
       </Docs>
     </Member>
@@ -12093,7 +12093,7 @@ yellowView.Transform = CGAffineTransform.MakeRotation((float)(Math.PI / 10));
         <summary>Represents the value associated with the constant UILayoutFittingExpandedSize</summary>
         <value>
         </value>
-        <remarks>Indicates that <see cref="M:UIKit.UIView.SystemLayoutSizeFittingSize*" /> should calculate the largest possible size.</remarks>
+        <remarks>Indicates that <see cref="M:UIKit.UIView.SystemLayoutSizeFittingSize(CoreGraphics.CGSize,System.Single,System.Single)" /> should calculate the largest possible size.</remarks>
         <altmember cref="M:UIKit.UIView.SystemLayoutSizeFittingSize" />
       </Docs>
     </Member>
@@ -12166,7 +12166,7 @@ yellowView.Transform = CGAffineTransform.MakeRotation((float)(Math.PI / 10));
         <remarks>
           <para>Application developers may override this method in order to create and update custom constraints for use with Auto Layout.</para>
           <para>The Auto Layout system calls this method prior to layout. The <see cref="T:UIKit.UIView" />'s properties will be in a stable state when this method is called and application developers should be able to establish valid constraints.</para>
-          <para>Application developers may add or remove constraints in this method. If they do so, they must call <see cref="M:UIKit.UIView.SetNeedsUpdateConstraints*" /> to notify the Auto Layout system that further updating is required.</para>
+          <para>Application developers may add or remove constraints in this method. If they do so, they must call <see cref="M:UIKit.UIView.SetNeedsUpdateConstraints" /> to notify the Auto Layout system that further updating is required.</para>
           <para>Application developers must not invalidate existing <see cref="T:UIKit.NSLayoutConstraint" />s during this method. Applications developers must not perform drawing actions or invoke layout recalculation during this method.</para>
           <para>Application developers must call <c>base.UpdateConstraints()</c> in their implementations of this method.</para>
         </remarks>
