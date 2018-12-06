@@ -1,0 +1,117 @@
+<Type Name="DispatchIO" FullName="CoreFoundation.DispatchIO">
+  <TypeSignature Language="C#" Value="public class DispatchIO : CoreFoundation.DispatchObject" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit DispatchIO extends CoreFoundation.DispatchObject" />
+  <AssemblyInfo>
+    <AssemblyName>Xamarin.iOS</AssemblyName>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>CoreFoundation.DispatchObject</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>Reading and writing of data using Dispatch Queues.</summary>
+    <remarks>
+      <para>
+      </para>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName="Read">
+      <MemberSignature Language="C#" Value="public static void Read (int fd, nuint size, CoreFoundation.DispatchQueue dispatchQueue, CoreFoundation.DispatchIOHandler handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void Read(int32 fd, valuetype System.nuint size, class CoreFoundation.DispatchQueue dispatchQueue, class CoreFoundation.DispatchIOHandler handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="fd" Type="System.Int32" />
+        <Parameter Name="size" Type="System.nuint" />
+        <Parameter Name="dispatchQueue" Type="CoreFoundation.DispatchQueue" />
+        <Parameter Name="handler" Type="CoreFoundation.DispatchIOHandler" />
+      </Parameters>
+      <Docs>
+        <param name="fd">The file descriptor to read the data from, it can be any Unix file desciptor, like files, sockets or pipes.</param>
+        <param name="size">The length of data to read from the file descriptor, or nint.MaxValue to indicate that all of the data currently available from the file descriptor should be read.</param>
+        <param name="dispatchQueue">The dispatch queue on which the data will be delivered to.    For example, you can use <see cref="P:CoreFoundation.DispatchQueue.MainQueue" /> for the main queue.</param>
+        <param name="handler">The handler to invoke when the data is available.</param>
+        <summary>Queues a read operation on a file descriptor and invokes the provided callback when the data becomes avialable.</summary>
+        <remarks>
+          <para>Schedule a read operation for asynchronous execution on the specified file descriptor. The specified handler is enqueued with the data read from the file descriptor when the operation has completed or an error occurs.</para>
+          <para>
+          </para>
+          <para>The data object passed to the handler will be automatically released by the system when the handler returns. It is the responsibility of the application to retain, concatenate or copy the data object if it is needed after the handler returns.</para>
+          <para>
+          </para>
+          <para>The data object passed to the handler will only contain as much data as is  currently available from the file descriptor (up to the specified length).</para>
+          <para>
+          </para>
+          <para>If an unrecoverable error occurs on the file descriptor, the handler will be enqueued with the appropriate error code along with a data object of any data that could be read successfully.</para>
+          <para>
+          </para>
+          <para>An invocation of the handler with an error code of zero and an empty data object indicates that EOF was reached.</para>
+          <para>
+          </para>
+          <para>The system takes control of the file descriptor until the handler is enqueued, and during this time file descriptor flags such as O_NONBLOCK will be modified by the system on behalf of the application. It is an error for the application to modify a file descriptor directly while it is under the control of the system, but it may create additional dispatch I/O convenience operations or dispatch I/O channels associated with that file descriptor.</para>
+          <para>
+          </para>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Write">
+      <MemberSignature Language="C#" Value="public static void Write (int fd, CoreFoundation.DispatchData dispatchData, CoreFoundation.DispatchQueue dispatchQueue, CoreFoundation.DispatchIOHandler handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void Write(int32 fd, class CoreFoundation.DispatchData dispatchData, class CoreFoundation.DispatchQueue dispatchQueue, class CoreFoundation.DispatchIOHandler handler) cil managed" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="fd" Type="System.Int32" />
+        <Parameter Name="dispatchData" Type="CoreFoundation.DispatchData" />
+        <Parameter Name="dispatchQueue" Type="CoreFoundation.DispatchQueue" />
+        <Parameter Name="handler" Type="CoreFoundation.DispatchIOHandler" />
+      </Parameters>
+      <Docs>
+        <param name="fd">The file descriptor to which to write the data.</param>
+        <param name="dispatchData">The data object to write to the file descriptor.</param>
+        <param name="dispatchQueue">
+          <para>The dispatch queue on which the data will be delivered to.    For example, you can use <see cref="P:CoreFoundation.DispatchQueue.MainQueue" /> for the main queue.</para>
+          <para>
+          </para>
+        </param>
+        <param name="handler">The handler to enqueue when the data has been written.   The handler will receive a DispatchData that represents the data that could be written, or null if all the data was written, and an status code, zero for success, otherwise an error number.</param>
+        <summary>Queues the writing of the provided dispatchData onto the specified file descriptor and invokes callback upon completion.</summary>
+        <remarks>
+          <para>Schedule a write operation for asynchronous execution on the specified file descriptor. The specified handler is enqueued when the operation has completed or an error occurs.</para>
+          <para>
+          </para>
+          <para>If an unrecoverable error occurs on the file descriptor, the handler will be enqueued with the appropriate error code along with the data that could not be successfully written.</para>
+          <para>
+          </para>
+          <para>An invocation of the handler with an error code of zero indicates that the  data was fully written to the channel.</para>
+          <para>
+          </para>
+          <para>The system takes control of the file descriptor until the handler is enqueued, and during this time file descriptor flags such as O_NONBLOCK will be modified by the system on behalf of the application. It is an error for the application to modify a file descriptor directly while it is under the control of the system, but it may create additional dispatch I/O convenience operations or dispatch I/O channels associated with that file descriptor.</para>
+          <para>
+          </para>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>
