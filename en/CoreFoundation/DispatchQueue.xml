@@ -1,6 +1,8 @@
 <Type Name="DispatchQueue" FullName="CoreFoundation.DispatchQueue">
   <TypeSignature Language="C#" Value="public sealed class DispatchQueue : CoreFoundation.DispatchObject" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit DispatchQueue extends CoreFoundation.DispatchObject" />
+  <TypeSignature Language="DocId" Value="T:CoreFoundation.DispatchQueue" />
+  <TypeSignature Language="F#" Value="type DispatchQueue = class&#xA;    inherit DispatchObject" />
   <AssemblyInfo>
     <AssemblyName>Xamarin.iOS</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -54,14 +56,14 @@
       <para>
 
 	Queues may be temporarily suspended and resumed with the
-	functions <see cref="M:CoreFoundation.DispatchQueue.Suspend()" />
-	and <see cref="M:CoreFoundation.DispatchQueue.Resume()" />
+	functions <see cref="M:CoreFoundation.DispatchQueue.Suspend" />
+	and <see cref="M:CoreFoundation.DispatchQueue.Resume" />
 	respectively. Suspension is checked prior to block execution
 	and is not preemptive.
 
       </para>
       <para>
-	Dispatch queue is <see cref="T:System.Threading.SynchronizationContext" /> aware and unless there is
+	Dispatch queue is <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Threading%20Synchronization%20Context&amp;scope=Xamarin" title="T:System.Threading.SynchronizationContext">T:System.Threading.SynchronizationContext</a></format> aware and unless there is
 	custom synchronization context set for the thread it will install its own synchronization context to
 	ensure any context dispatch ends up on same dispatch queue.
       </para>
@@ -70,7 +72,7 @@
       </format>
       <para>
 	The dispatch barrier API is a mechanism for submitting barrier blocks to a
-	dispatch queue, analogous to the <see cref="M:CoreFoundation.DispatchQueue.DispatchAsync" />/<see cref="M:CoreFoundation.DispatchQueue.DispatchSync" />
+	dispatch queue, analogous to the <see cref="M:CoreFoundation.DispatchQueue.DispatchAsync(System.Action)" />/<see cref="M:CoreFoundation.DispatchQueue.DispatchSync(System.Action)" />
 	methods.
 	It enables the implementation of efficient reader/writer schemes.
 	Barrier blocks only behave specially when submitted to
@@ -79,16 +81,18 @@
 	and any blocks submitted to the queue after a barrier block will not run
 	until the barrier block has completed.
 	When submitted to a a global queue or to a non-concurrent queue, barrier blocks behave identically to
-	blocks submitted with the <see cref="M:CoreFoundation.DispatchQueue.DispatchAsync" />/<see cref="M:CoreFoundation.DispatchQueue.DispatchSync" /> methods.
+	blocks submitted with the <see cref="M:CoreFoundation.DispatchQueue.DispatchAsync(System.Action)" />/<see cref="M:CoreFoundation.DispatchQueue.DispatchSync(System.Action)" /> methods.
       </para>
     </remarks>
-    <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=9fa28988-64fe-4365-b2b7-95542daf4f9b">avcaptureframes</related>
-    <related type="sample" href="http://samples.xamarin.com/Samples/ByGuid?guid=8c3c89cd-ce96-4d5e-9ba6-a85eab94faaa">CoreTelephonyDemo</related>
+    <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/AVCaptureFrames/">avcaptureframes</related>
+    <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/CoreTelephonyDemo/">CoreTelephonyDemo</related>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public DispatchQueue (IntPtr handle);" />
       <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int handle) cil managed" />
+      <MemberSignature Language="DocId" Value="M:CoreFoundation.DispatchQueue.#ctor(System.IntPtr)" />
+      <MemberSignature Language="F#" Value="new CoreFoundation.DispatchQueue : nativeint -&gt; CoreFoundation.DispatchQueue" Usage="new CoreFoundation.DispatchQueue handle" />
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -100,12 +104,15 @@
       <Docs>
         <param name="handle">Handle to an unmanaged dispatch queue.</param>
         <summary>Surfaces an unmanaged DispatchQueue as a managed object.</summary>
-        <remarks></remarks>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public DispatchQueue (string label);" />
       <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string label) cil managed" />
+      <MemberSignature Language="DocId" Value="M:CoreFoundation.DispatchQueue.#ctor(System.String)" />
+      <MemberSignature Language="F#" Value="new CoreFoundation.DispatchQueue : string -&gt; CoreFoundation.DispatchQueue" Usage="new CoreFoundation.DispatchQueue label" />
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -134,6 +141,8 @@
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public DispatchQueue (string label, bool concurrent);" />
       <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string label, bool concurrent) cil managed" />
+      <MemberSignature Language="DocId" Value="M:CoreFoundation.DispatchQueue.#ctor(System.String,System.Boolean)" />
+      <MemberSignature Language="F#" Value="new CoreFoundation.DispatchQueue : string * bool -&gt; CoreFoundation.DispatchQueue" Usage="new CoreFoundation.DispatchQueue (label, concurrent)" />
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -158,7 +167,7 @@
           <para>
 	    If the value is <see langword="true" /> then the queue can
 	    execute the code blocks concurrently.   In this mode, you
-	    can use the <see cref="M:CoreFoundation.DispatchBarrierAsync" />
+	    can use the <see cref="M:CoreFoundation.DispatchQueue.DispatchBarrierAsync(System.Action)" />
 	    method to submit a code block that will wait for all
 	    pending concurrent blocks to complete execution, then it
 	    will execute the code block to completion.   During the
@@ -172,6 +181,8 @@
     <Member MemberName="Context">
       <MemberSignature Language="C#" Value="public IntPtr Context { get; set; }" />
       <MemberSignature Language="ILAsm" Value=".property instance native int Context" />
+      <MemberSignature Language="DocId" Value="P:CoreFoundation.DispatchQueue.Context" />
+      <MemberSignature Language="F#" Value="member this.Context : nativeint with get, set" Usage="CoreFoundation.DispatchQueue.Context" />
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -182,23 +193,26 @@
       </ReturnValue>
       <Docs>
         <summary>User defined context information attachech to a DispatchQueue.</summary>
-        <value></value>
+        <value>
+        </value>
         <remarks>You can use the Context property on a DispatchQueue to store state that your application might want to associate with it.</remarks>
       </Docs>
     </Member>
     <Member MemberName="CurrentQueue">
       <MemberSignature Language="C#" Value="public static CoreFoundation.DispatchQueue CurrentQueue { get; }" />
       <MemberSignature Language="ILAsm" Value=".property class CoreFoundation.DispatchQueue CurrentQueue" />
+      <MemberSignature Language="DocId" Value="P:CoreFoundation.DispatchQueue.CurrentQueue" />
+      <MemberSignature Language="F#" Value="member this.CurrentQueue : CoreFoundation.DispatchQueue" Usage="CoreFoundation.DispatchQueue.CurrentQueue" />
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 6, 0, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.MacOSX, 10, 9, ObjCRuntime.PlatformArchitecture.None, null)</AttributeName>
         </Attribute>
       </Attributes>
@@ -216,6 +230,8 @@
     <Member MemberName="CurrentQueueLabel">
       <MemberSignature Language="C#" Value="public static string CurrentQueueLabel { get; }" />
       <MemberSignature Language="ILAsm" Value=".property string CurrentQueueLabel" />
+      <MemberSignature Language="DocId" Value="P:CoreFoundation.DispatchQueue.CurrentQueueLabel" />
+      <MemberSignature Language="F#" Value="member this.CurrentQueueLabel : string" Usage="CoreFoundation.DispatchQueue.CurrentQueueLabel" />
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -226,13 +242,17 @@
       </ReturnValue>
       <Docs>
         <summary>Label for the current queue.</summary>
-        <value></value>
-        <remarks></remarks>
+        <value>
+        </value>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="DefaultGlobalQueue">
       <MemberSignature Language="C#" Value="public static CoreFoundation.DispatchQueue DefaultGlobalQueue { get; }" />
       <MemberSignature Language="ILAsm" Value=".property class CoreFoundation.DispatchQueue DefaultGlobalQueue" />
+      <MemberSignature Language="DocId" Value="P:CoreFoundation.DispatchQueue.DefaultGlobalQueue" />
+      <MemberSignature Language="F#" Value="member this.DefaultGlobalQueue : CoreFoundation.DispatchQueue" Usage="CoreFoundation.DispatchQueue.DefaultGlobalQueue" />
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -243,13 +263,17 @@
       </ReturnValue>
       <Docs>
         <summary>Returns the default global queue, which is one of the built-in queues at the default priority.</summary>
-        <value></value>
-        <remarks></remarks>
+        <value>
+        </value>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="DispatchAfter">
       <MemberSignature Language="C#" Value="public void DispatchAfter (CoreFoundation.DispatchTime when, Action action);" />
       <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void DispatchAfter(valuetype CoreFoundation.DispatchTime when, class System.Action action) cil managed" />
+      <MemberSignature Language="DocId" Value="M:CoreFoundation.DispatchQueue.DispatchAfter(CoreFoundation.DispatchTime,System.Action)" />
+      <MemberSignature Language="F#" Value="member this.DispatchAfter : CoreFoundation.DispatchTime * Action -&gt; unit" Usage="dispatchQueue.DispatchAfter (when, action)" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -273,6 +297,8 @@
     <Member MemberName="DispatchAsync">
       <MemberSignature Language="C#" Value="public void DispatchAsync (Action action);" />
       <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void DispatchAsync(class System.Action action) cil managed" />
+      <MemberSignature Language="DocId" Value="M:CoreFoundation.DispatchQueue.DispatchAsync(System.Action)" />
+      <MemberSignature Language="F#" Value="member this.DispatchAsync : Action -&gt; unit" Usage="dispatchQueue.DispatchAsync action" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -293,6 +319,8 @@
     <Member MemberName="DispatchBarrierAsync">
       <MemberSignature Language="C#" Value="public void DispatchBarrierAsync (Action action);" />
       <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void DispatchBarrierAsync(class System.Action action) cil managed" />
+      <MemberSignature Language="DocId" Value="M:CoreFoundation.DispatchQueue.DispatchBarrierAsync(System.Action)" />
+      <MemberSignature Language="F#" Value="member this.DispatchBarrierAsync : Action -&gt; unit" Usage="dispatchQueue.DispatchBarrierAsync action" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -309,7 +337,7 @@
         <summary>Submits a barrier block for asynchronous execution on a dispatch queue</summary>
         <remarks>
           <para>
-	    Submits a block to a dispatch queue like <see cref="M:CoreFoundation.DispatchQueue.DispatchAsync" />
+	    Submits a block to a dispatch queue like <see cref="M:CoreFoundation.DispatchQueue.DispatchAsync(System.Action)" />
 	    does and marks that block as a barrier.  
 	  </para>
           <para>
@@ -329,6 +357,8 @@
     <Member MemberName="DispatchSync">
       <MemberSignature Language="C#" Value="public void DispatchSync (Action action);" />
       <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void DispatchSync(class System.Action action) cil managed" />
+      <MemberSignature Language="DocId" Value="M:CoreFoundation.DispatchQueue.DispatchSync(System.Action)" />
+      <MemberSignature Language="F#" Value="member this.DispatchSync : Action -&gt; unit" Usage="dispatchQueue.DispatchSync action" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -349,6 +379,8 @@
     <Member MemberName="Equals">
       <MemberSignature Language="C#" Value="public override bool Equals (object other);" />
       <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance bool Equals(object other) cil managed" />
+      <MemberSignature Language="DocId" Value="M:CoreFoundation.DispatchQueue.Equals(System.Object)" />
+      <MemberSignature Language="F#" Value="override this.Equals : obj -&gt; bool" Usage="dispatchQueue.Equals other" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -370,6 +402,8 @@
     <Member MemberName="GetGlobalQueue">
       <MemberSignature Language="C#" Value="public static CoreFoundation.DispatchQueue GetGlobalQueue (CoreFoundation.DispatchQueuePriority priority);" />
       <MemberSignature Language="ILAsm" Value=".method public static hidebysig class CoreFoundation.DispatchQueue GetGlobalQueue(valuetype CoreFoundation.DispatchQueuePriority priority) cil managed" />
+      <MemberSignature Language="DocId" Value="M:CoreFoundation.DispatchQueue.GetGlobalQueue(CoreFoundation.DispatchQueuePriority)" />
+      <MemberSignature Language="F#" Value="static member GetGlobalQueue : CoreFoundation.DispatchQueuePriority -&gt; CoreFoundation.DispatchQueue" Usage="CoreFoundation.DispatchQueue.GetGlobalQueue priority" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -404,6 +438,8 @@
     <Member MemberName="GetHashCode">
       <MemberSignature Language="C#" Value="public override int GetHashCode ();" />
       <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance int32 GetHashCode() cil managed" />
+      <MemberSignature Language="DocId" Value="M:CoreFoundation.DispatchQueue.GetHashCode" />
+      <MemberSignature Language="F#" Value="override this.GetHashCode : unit -&gt; int" Usage="dispatchQueue.GetHashCode " />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -422,6 +458,8 @@
     <Member MemberName="Label">
       <MemberSignature Language="C#" Value="public string Label { get; }" />
       <MemberSignature Language="ILAsm" Value=".property instance string Label" />
+      <MemberSignature Language="DocId" Value="P:CoreFoundation.DispatchQueue.Label" />
+      <MemberSignature Language="F#" Value="member this.Label : string" Usage="CoreFoundation.DispatchQueue.Label" />
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -432,13 +470,16 @@
       </ReturnValue>
       <Docs>
         <summary>Returns the label for this DispatchQueue.</summary>
-        <value></value>
+        <value>
+        </value>
         <remarks>This is the same name that was provided when the queue was constructed</remarks>
       </Docs>
     </Member>
     <Member MemberName="MainQueue">
       <MemberSignature Language="C#" Value="public static CoreFoundation.DispatchQueue MainQueue { get; }" />
       <MemberSignature Language="ILAsm" Value=".property class CoreFoundation.DispatchQueue MainQueue" />
+      <MemberSignature Language="DocId" Value="P:CoreFoundation.DispatchQueue.MainQueue" />
+      <MemberSignature Language="F#" Value="member this.MainQueue : CoreFoundation.DispatchQueue" Usage="CoreFoundation.DispatchQueue.MainQueue" />
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -449,7 +490,8 @@
       </ReturnValue>
       <Docs>
         <summary>Returns the main global queue.</summary>
-        <value></value>
+        <value>
+        </value>
         <remarks>
 
 	  The dispatch framework provides a default serial queue for
@@ -461,8 +503,10 @@
       </Docs>
     </Member>
     <Member MemberName="op_Equality">
-      <MemberSignature Language="C#" Value="public static bool op_Equality (CoreFoundation.DispatchQueue left, CoreFoundation.DispatchQueue right);" />
+      <MemberSignature Language="C#" Value="public static bool operator == (CoreFoundation.DispatchQueue left, CoreFoundation.DispatchQueue right);" />
       <MemberSignature Language="ILAsm" Value=".method public static hidebysig specialname bool op_Equality(class CoreFoundation.DispatchQueue left, class CoreFoundation.DispatchQueue right) cil managed" />
+      <MemberSignature Language="DocId" Value="M:CoreFoundation.DispatchQueue.op_Equality(CoreFoundation.DispatchQueue,CoreFoundation.DispatchQueue)" />
+      <MemberSignature Language="F#" Value="static member ( = ) : CoreFoundation.DispatchQueue * CoreFoundation.DispatchQueue -&gt; bool" Usage="left = right" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -484,8 +528,10 @@
       </Docs>
     </Member>
     <Member MemberName="op_Inequality">
-      <MemberSignature Language="C#" Value="public static bool op_Inequality (CoreFoundation.DispatchQueue left, CoreFoundation.DispatchQueue right);" />
+      <MemberSignature Language="C#" Value="public static bool operator != (CoreFoundation.DispatchQueue left, CoreFoundation.DispatchQueue right);" />
       <MemberSignature Language="ILAsm" Value=".method public static hidebysig specialname bool op_Inequality(class CoreFoundation.DispatchQueue left, class CoreFoundation.DispatchQueue right) cil managed" />
+      <MemberSignature Language="DocId" Value="M:CoreFoundation.DispatchQueue.op_Inequality(CoreFoundation.DispatchQueue,CoreFoundation.DispatchQueue)" />
+      <MemberSignature Language="F#" Value="static member op_Inequality : CoreFoundation.DispatchQueue * CoreFoundation.DispatchQueue -&gt; bool" Usage="CoreFoundation.DispatchQueue.op_Inequality (left, right)" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -509,6 +555,8 @@
     <Member MemberName="Resume">
       <MemberSignature Language="C#" Value="public void Resume ();" />
       <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Resume() cil managed" />
+      <MemberSignature Language="DocId" Value="M:CoreFoundation.DispatchQueue.Resume" />
+      <MemberSignature Language="F#" Value="member this.Resume : unit -&gt; unit" Usage="dispatchQueue.Resume " />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -526,6 +574,8 @@
     <Member MemberName="Submit">
       <MemberSignature Language="C#" Value="public void Submit (Action&lt;int&gt; action, long times);" />
       <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Submit(class System.Action`1&lt;int32&gt; action, int64 times) cil managed" />
+      <MemberSignature Language="DocId" Value="M:CoreFoundation.DispatchQueue.Submit(System.Action{System.Int32},System.Int64)" />
+      <MemberSignature Language="F#" Value="member this.Submit : Action&lt;int&gt; * int64 -&gt; unit" Usage="dispatchQueue.Submit (action, times)" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -548,6 +598,8 @@
     <Member MemberName="Suspend">
       <MemberSignature Language="C#" Value="public void Suspend ();" />
       <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Suspend() cil managed" />
+      <MemberSignature Language="DocId" Value="M:CoreFoundation.DispatchQueue.Suspend" />
+      <MemberSignature Language="F#" Value="member this.Suspend : unit -&gt; unit" Usage="dispatchQueue.Suspend " />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>

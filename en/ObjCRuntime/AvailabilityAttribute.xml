@@ -1,6 +1,8 @@
 <Type Name="AvailabilityAttribute" FullName="ObjCRuntime.AvailabilityAttribute">
   <TypeSignature Language="C#" Value="public class AvailabilityAttribute : Attribute" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit AvailabilityAttribute extends System.Attribute" />
+  <TypeSignature Language="DocId" Value="T:ObjCRuntime.AvailabilityAttribute" />
+  <TypeSignature Language="F#" Value="type AvailabilityAttribute = class&#xA;    inherit Attribute" />
   <AssemblyInfo>
     <AssemblyName>Xamarin.iOS</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -10,27 +12,29 @@
   </Base>
   <Interfaces />
   <Attributes>
-    <Attribute>
+    <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
       <AttributeName>System.AttributeUsage(System.AttributeTargets.All, AllowMultiple=true)</AttributeName>
     </Attribute>
-    <Attribute>
+    <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
       <AttributeName>System.Obsolete("Use [Introduced|Deprecated|Obsoleted|Unavailable] attributes with PlatformName.")</AttributeName>
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Describes the availability of a member or type in iOS or MacOS.</summary>
+    <summary>Describes the availability of a member or type in iOS or macOS.</summary>
     <remarks>
-      <para>This attribute is used to annotate when a type or member of a type was introduced, deprecated, obsolete or is unavailable.    Thisis done on a per-platform basis (currently Mac OS X and iOS).</para>
+      <para>This attribute is used to annotate when a type or member of a type was introduced, deprecated, obsolete or is unavailable. This is done on a per-platform basis (currently macOS and iOS).</para>
       <para>The information is only accurate for active versions of the operating systems, the information is removed as soon as operating systems are deprecated or no longer supported by Apple.</para>
       <para>It is the managed equivalent of Clang's availability
 	__attribute__, which is the underlying mechanism that Apple uses
 	to perform these annotations.</para>
+      <para>This attribute is obsolete, it's superceded by <see cref="T:ObjCRuntime.IntroducedAttribute" />, <see cref="T:ObjCRuntime.DeprecatedAttribute" />, <see cref="T:ObjCRuntime.ObsoletedAttribute" /> and <see cref="T:ObjCRuntime.UnavailableAttribute" /> (which support tvOS and watchOS as well).</para>
     </remarks>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public AvailabilityAttribute ();" />
       <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:ObjCRuntime.AvailabilityAttribute.#ctor" />
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -45,6 +49,8 @@
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public AvailabilityAttribute (ObjCRuntime.Platform introduced, ObjCRuntime.Platform deprecated = ObjCRuntime.Platform.None, ObjCRuntime.Platform obsoleted = ObjCRuntime.Platform.None, ObjCRuntime.Platform unavailable = ObjCRuntime.Platform.None);" />
       <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(valuetype ObjCRuntime.Platform introduced, valuetype ObjCRuntime.Platform deprecated, valuetype ObjCRuntime.Platform obsoleted, valuetype ObjCRuntime.Platform unavailable) cil managed" />
+      <MemberSignature Language="DocId" Value="M:ObjCRuntime.AvailabilityAttribute.#ctor(ObjCRuntime.Platform,ObjCRuntime.Platform,ObjCRuntime.Platform,ObjCRuntime.Platform)" />
+      <MemberSignature Language="F#" Value="new ObjCRuntime.AvailabilityAttribute : ObjCRuntime.Platform * ObjCRuntime.Platform * ObjCRuntime.Platform * ObjCRuntime.Platform -&gt; ObjCRuntime.AvailabilityAttribute" Usage="new ObjCRuntime.AvailabilityAttribute (introduced, deprecated, obsoleted, unavailable)" />
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -60,25 +66,25 @@
         <param name="introduced">The first version in which an API was introduced for a given platform.</param>
         <param name="deprecated">The first version in which the API was deprecated for a given platform; this means users should begin avoiding the API and migrating to a more suitable one, but it still technically works on the platform, but there is no guarantee for how long it will continue to work.</param>
         <param name="obsoleted">The first version in which the API was obsoleted (removed) from a given platform; this means the API no longer exists and cannot be used at all - a crash at runtime will occur if used on Xamarin. Native code referencing obsolete API will fail to compile (the attribute is enforced by Clang).</param>
-        <param name="unavailable">The API has never existed in a given platform (e.g. available in iOS but not in Mac); this property is not versioned (can only be Platform.{None,Mac,iOS}) and applies to the entire lifetime (up to present) of a platform. "Unavailable" may be replaced in future versions by an "Introduced."</param>
+        <param name="unavailable">The API has never existed in a given platform (e.g. available in iOS but not in macOS); this property is not versioned (can only be Platform.{None,Mac,iOS}) and applies to the entire lifetime (up to present) of a platform. "Unavailable" may be replaced in future versions by an "Introduced."</param>
         <summary>Defines the availability range of a particular API.</summary>
         <remarks>
           <para>
 
 	    The entire availability of an API can be expressed either
 	    with a single Availability attribute or with
-	    multiple. It's entirely style. To demonstrate this, Since,
-	    Lion, and MountainLion are now actually subclasses of
-	    Availability. This is because we do not want to break API,
+	    multiple attributes. It's entirely style. To demonstrate this, the Since,
+	    Lion, and MountainLion attributes are now actually subclasses of the Availability
+	    attribute. This is because we do not want to break API,
 	    but also often the more terse attributes are simply nicer
 	    to use.
 	  </para>
           <para>
-	    In addition to the <see cref="T:ObjCRuntime.Platform" />
-	    AvailabilityAttribute types, there's also <see cref="T:ObjCRuntime.PlatformHelper" /> which
-	    contains a number of useful utilities for working with the
-	    Platform enumeration.
-	  </para>
+      In addition to the <see cref="T:ObjCRuntime.Platform" />
+      AvailabilityAttribute types, there's also <see cref="T:ObjCRuntime.PlatformHelper" /> which
+      contains a number of useful utilities for working with the
+      Platform enumeration.
+    </para>
           <example>
             <code lang="C#"><![CDATA[
 // 
@@ -109,6 +115,8 @@
     <Member MemberName="AlwaysAvailable">
       <MemberSignature Language="C#" Value="public bool AlwaysAvailable { get; }" />
       <MemberSignature Language="ILAsm" Value=".property instance bool AlwaysAvailable" />
+      <MemberSignature Language="DocId" Value="P:ObjCRuntime.AvailabilityAttribute.AlwaysAvailable" />
+      <MemberSignature Language="F#" Value="member this.AlwaysAvailable : bool" Usage="ObjCRuntime.AvailabilityAttribute.AlwaysAvailable" />
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -118,14 +126,16 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Indicates that the member or type can be assumed to always be available (on both OSX and iOS, as well as every version that is currently supported).</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Indicates that the member or type can be assumed to always be available (on both macOS and iOS, as well as every version that is currently supported).</summary>
+        <value>If the API is always available.</value>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Deprecated">
       <MemberSignature Language="C#" Value="public ObjCRuntime.Platform Deprecated { get; set; }" />
       <MemberSignature Language="ILAsm" Value=".property instance valuetype ObjCRuntime.Platform Deprecated" />
+      <MemberSignature Language="DocId" Value="P:ObjCRuntime.AvailabilityAttribute.Deprecated" />
+      <MemberSignature Language="F#" Value="member this.Deprecated : ObjCRuntime.Platform with get, set" Usage="ObjCRuntime.AvailabilityAttribute.Deprecated" />
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -135,7 +145,7 @@
         <ReturnType>ObjCRuntime.Platform</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>the first version in which the API was deprecated for a given platform; this means users should begin avoiding the API and migrating to a more suitable one, but it still technically works on the platform, but there is no guarantee for how long it will continue to work.</summary>
+        <summary>The first version in which the API was deprecated for a given platform; this means users should begin avoiding the API and migrating to a more suitable one, but it still technically works on the platform, but there is no guarantee for how long it will continue to work.</summary>
         <value></value>
         <remarks></remarks>
       </Docs>
@@ -143,6 +153,8 @@
     <Member MemberName="DeprecatedArchitecture">
       <MemberSignature Language="C#" Value="public ObjCRuntime.Platform DeprecatedArchitecture { get; }" />
       <MemberSignature Language="ILAsm" Value=".property instance valuetype ObjCRuntime.Platform DeprecatedArchitecture" />
+      <MemberSignature Language="DocId" Value="P:ObjCRuntime.AvailabilityAttribute.DeprecatedArchitecture" />
+      <MemberSignature Language="F#" Value="member this.DeprecatedArchitecture : ObjCRuntime.Platform" Usage="ObjCRuntime.AvailabilityAttribute.DeprecatedArchitecture" />
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -153,13 +165,15 @@
       </ReturnValue>
       <Docs>
         <summary>Indicates the platforms on which the member or type has been deprecated.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <value>The platform on which the member or type has been deprecated.</value>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="DeprecatedVersion">
       <MemberSignature Language="C#" Value="public ObjCRuntime.Platform DeprecatedVersion { get; }" />
       <MemberSignature Language="ILAsm" Value=".property instance valuetype ObjCRuntime.Platform DeprecatedVersion" />
+      <MemberSignature Language="DocId" Value="P:ObjCRuntime.AvailabilityAttribute.DeprecatedVersion" />
+      <MemberSignature Language="F#" Value="member this.DeprecatedVersion : ObjCRuntime.Platform" Usage="ObjCRuntime.AvailabilityAttribute.DeprecatedVersion" />
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -169,14 +183,16 @@
         <ReturnType>ObjCRuntime.Platform</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Indicatess the platforms on which the member or type has been deprecated.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Indicates the platforms on which the member or type has been deprecated.</summary>
+        <value>The platform on which the member or type has been deprecated.</value>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Get">
       <MemberSignature Language="C#" Value="public static ObjCRuntime.AvailabilityAttribute Get (System.Reflection.MemberInfo member);" />
       <MemberSignature Language="ILAsm" Value=".method public static hidebysig class ObjCRuntime.AvailabilityAttribute Get(class System.Reflection.MemberInfo member) cil managed" />
+      <MemberSignature Language="DocId" Value="M:ObjCRuntime.AvailabilityAttribute.Get(System.Reflection.MemberInfo)" />
+      <MemberSignature Language="F#" Value="static member Get : System.Reflection.MemberInfo -&gt; ObjCRuntime.AvailabilityAttribute" Usage="ObjCRuntime.AvailabilityAttribute.Get member" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -189,15 +205,17 @@
         <Parameter Name="member" Type="System.Reflection.MemberInfo" />
       </Parameters>
       <Docs>
-        <param name="member">To be added.</param>
+        <param name="member">The member to search for the Availability attribute.</param>
         <summary>Convenience method to fetch the <see cref="T:ObjCRuntime.AvailabilityAttribute" /> from a MemberInfo.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <returns>Any Availability attributes declared on the member.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Introduced">
       <MemberSignature Language="C#" Value="public ObjCRuntime.Platform Introduced { get; set; }" />
       <MemberSignature Language="ILAsm" Value=".property instance valuetype ObjCRuntime.Platform Introduced" />
+      <MemberSignature Language="DocId" Value="P:ObjCRuntime.AvailabilityAttribute.Introduced" />
+      <MemberSignature Language="F#" Value="member this.Introduced : ObjCRuntime.Platform with get, set" Usage="ObjCRuntime.AvailabilityAttribute.Introduced" />
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -208,13 +226,15 @@
       </ReturnValue>
       <Docs>
         <summary>The first version in which an API was introduced for a given platform.</summary>
-        <value></value>
+        <value>The first version in which an API was introduced for a given platform.</value>
         <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="IntroducedArchitecture">
       <MemberSignature Language="C#" Value="public ObjCRuntime.Platform IntroducedArchitecture { get; }" />
       <MemberSignature Language="ILAsm" Value=".property instance valuetype ObjCRuntime.Platform IntroducedArchitecture" />
+      <MemberSignature Language="DocId" Value="P:ObjCRuntime.AvailabilityAttribute.IntroducedArchitecture" />
+      <MemberSignature Language="F#" Value="member this.IntroducedArchitecture : ObjCRuntime.Platform" Usage="ObjCRuntime.AvailabilityAttribute.IntroducedArchitecture" />
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -225,13 +245,15 @@
       </ReturnValue>
       <Docs>
         <summary>The architectures on which the introduced version applies to.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <value>The architectures on which the introduced version applies to.</value>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="IntroducedVersion">
       <MemberSignature Language="C#" Value="public ObjCRuntime.Platform IntroducedVersion { get; }" />
       <MemberSignature Language="ILAsm" Value=".property instance valuetype ObjCRuntime.Platform IntroducedVersion" />
+      <MemberSignature Language="DocId" Value="P:ObjCRuntime.AvailabilityAttribute.IntroducedVersion" />
+      <MemberSignature Language="F#" Value="member this.IntroducedVersion : ObjCRuntime.Platform" Usage="ObjCRuntime.AvailabilityAttribute.IntroducedVersion" />
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -241,14 +263,16 @@
         <ReturnType>ObjCRuntime.Platform</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Intidcates the versions on which the feature was introduced.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Indicates the versions on API the feature was introduced.</summary>
+        <value>The version on which the API was introduced.</value>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Merge">
       <MemberSignature Language="C#" Value="public static ObjCRuntime.AvailabilityAttribute Merge (System.Collections.Generic.IEnumerable&lt;object&gt; attrs);" />
       <MemberSignature Language="ILAsm" Value=".method public static hidebysig class ObjCRuntime.AvailabilityAttribute Merge(class System.Collections.Generic.IEnumerable`1&lt;object&gt; attrs) cil managed" />
+      <MemberSignature Language="DocId" Value="M:ObjCRuntime.AvailabilityAttribute.Merge(System.Collections.Generic.IEnumerable{System.Object})" />
+      <MemberSignature Language="F#" Value="static member Merge : seq&lt;obj&gt; -&gt; ObjCRuntime.AvailabilityAttribute" Usage="ObjCRuntime.AvailabilityAttribute.Merge attrs" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -261,15 +285,17 @@
         <Parameter Name="attrs" Type="System.Collections.Generic.IEnumerable&lt;System.Object&gt;" />
       </Parameters>
       <Docs>
-        <param name="attrs">To be added.</param>
+        <param name="attrs">The availability attributes to be merged.</param>
         <summary>Returns an availability attribute that is made up of the merged Introduced, Obsoleted, Deprecated and Unavailable properties (including a concatenated version of the message attribute).</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <returns>An availability attribute that is made up of the merged Introduced, Obsoleted, Deprecated and Unavailable properties (including a concatenated version of the message attribute).</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Message">
       <MemberSignature Language="C#" Value="public string Message { get; set; }" />
       <MemberSignature Language="ILAsm" Value=".property instance string Message" />
+      <MemberSignature Language="DocId" Value="P:ObjCRuntime.AvailabilityAttribute.Message" />
+      <MemberSignature Language="F#" Value="member this.Message : string with get, set" Usage="ObjCRuntime.AvailabilityAttribute.Message" />
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -279,14 +305,16 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The message describing the limitations.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>The message describing any limitations.</summary>
+        <value>The message describing any limitations.</value>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Obsoleted">
       <MemberSignature Language="C#" Value="public ObjCRuntime.Platform Obsoleted { get; set; }" />
       <MemberSignature Language="ILAsm" Value=".property instance valuetype ObjCRuntime.Platform Obsoleted" />
+      <MemberSignature Language="DocId" Value="P:ObjCRuntime.AvailabilityAttribute.Obsoleted" />
+      <MemberSignature Language="F#" Value="member this.Obsoleted : ObjCRuntime.Platform with get, set" Usage="ObjCRuntime.AvailabilityAttribute.Obsoleted" />
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -296,14 +324,16 @@
         <ReturnType>ObjCRuntime.Platform</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>the first version in which the API was obsoleted (removed) from a given platform</summary>
-        <value></value>
-        <remarks>this means the API no longer exists and cannot be used at all - a crash at runtime will occur if used on Xamarin. Native code referencing obsolete API will fail to compile (the attribute is enforced by Clang).</remarks>
+        <summary>The first version in which the API was obsoleted from a given platform</summary>
+        <value>The first version in which the API was obsoleted from a given platform</value>
+        <remarks>This means the API no longer exists and cannot be used at all - a crash at runtime will occur if used on Xamarin. Native code referencing obsolete API will fail to compile (the attribute is enforced by Clang).</remarks>
       </Docs>
     </Member>
     <Member MemberName="ObsoletedArchitecture">
       <MemberSignature Language="C#" Value="public ObjCRuntime.Platform ObsoletedArchitecture { get; }" />
       <MemberSignature Language="ILAsm" Value=".property instance valuetype ObjCRuntime.Platform ObsoletedArchitecture" />
+      <MemberSignature Language="DocId" Value="P:ObjCRuntime.AvailabilityAttribute.ObsoletedArchitecture" />
+      <MemberSignature Language="F#" Value="member this.ObsoletedArchitecture : ObjCRuntime.Platform" Usage="ObjCRuntime.AvailabilityAttribute.ObsoletedArchitecture" />
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -313,14 +343,16 @@
         <ReturnType>ObjCRuntime.Platform</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>The architectures on which the obsoleted version applies to.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>The architectures the obsoleted version applies to.</summary>
+        <value>The architectures the obsoleted version applies to.</value>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="ObsoletedVersion">
       <MemberSignature Language="C#" Value="public ObjCRuntime.Platform ObsoletedVersion { get; }" />
       <MemberSignature Language="ILAsm" Value=".property instance valuetype ObjCRuntime.Platform ObsoletedVersion" />
+      <MemberSignature Language="DocId" Value="P:ObjCRuntime.AvailabilityAttribute.ObsoletedVersion" />
+      <MemberSignature Language="F#" Value="member this.ObsoletedVersion : ObjCRuntime.Platform" Usage="ObjCRuntime.AvailabilityAttribute.ObsoletedVersion" />
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -330,14 +362,16 @@
         <ReturnType>ObjCRuntime.Platform</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Indicates the versions on which the feature was obsoleted.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Indicates the version in which the API was obsoleted.</summary>
+        <value>The version in which the API was obsoleted.</value>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="ToString">
       <MemberSignature Language="C#" Value="public override string ToString ();" />
       <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance string ToString() cil managed" />
+      <MemberSignature Language="DocId" Value="M:ObjCRuntime.AvailabilityAttribute.ToString" />
+      <MemberSignature Language="F#" Value="override this.ToString : unit -&gt; string" Usage="availabilityAttribute.ToString " />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -349,13 +383,15 @@
       <Parameters />
       <Docs>
         <summary>Returns a human readable version of the availability attribute.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <returns>A human readable version of the availability attribute.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Unavailable">
       <MemberSignature Language="C#" Value="public ObjCRuntime.Platform Unavailable { get; set; }" />
       <MemberSignature Language="ILAsm" Value=".property instance valuetype ObjCRuntime.Platform Unavailable" />
+      <MemberSignature Language="DocId" Value="P:ObjCRuntime.AvailabilityAttribute.Unavailable" />
+      <MemberSignature Language="F#" Value="member this.Unavailable : ObjCRuntime.Platform with get, set" Usage="ObjCRuntime.AvailabilityAttribute.Unavailable" />
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -365,11 +401,11 @@
         <ReturnType>ObjCRuntime.Platform</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>the API has never existed in a given platform.</summary>
+        <summary>The API does currently not exist on a given platform.</summary>
         <value></value>
         <remarks>
 	  The API has never existed in a given platform
-	  (e.g. available in iOS but not in Mac); this property is not
+	  (e.g. available in iOS but not in macOS); this property is not
 	  versioned (can only be Platform.{None,Mac,iOS}) and applies
 	  to the entire lifetime (up to present) of a
 	  platform. "Unavailable" may be replaced in future versions

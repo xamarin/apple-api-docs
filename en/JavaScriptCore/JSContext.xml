@@ -1,6 +1,8 @@
 <Type Name="JSContext" FullName="JavaScriptCore.JSContext">
   <TypeSignature Language="C#" Value="public class JSContext : Foundation.NSObject" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit JSContext extends Foundation.NSObject" />
+  <TypeSignature Language="DocId" Value="T:JavaScriptCore.JSContext" />
+  <TypeSignature Language="F#" Value="type JSContext = class&#xA;    inherit NSObject" />
   <AssemblyInfo>
     <AssemblyName>Xamarin.iOS</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -10,22 +12,22 @@
   </Base>
   <Interfaces />
   <Attributes>
-    <Attribute>
+    <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
       <AttributeName>Foundation.Register("JSContext", true)</AttributeName>
     </Attribute>
-    <Attribute>
+    <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
       <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 9, ObjCRuntime.PlatformArchitecture.Arch64, null)</AttributeName>
     </Attribute>
-    <Attribute>
+    <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
       <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
     </Attribute>
   </Attributes>
   <Docs>
     <summary>Encapsulates a JavaScript engine.</summary>
     <remarks>
-      <para>The <see cref="T:JavaScriptCore.JSContext" /> is the central object of the <c>JavaScriptCore</c> namespace. The <see cref="T:JavaScriptCore.JSContext" /> maintains a JavaScript environment (manipulated by the <see cref="P:JavaScriptCore.JSContext.Item" /> property) and evaluates scripts with the <see cref="M:JavaScriptCore.JSContext.EvaluateScript" /> method.</para>
+      <para>The <see cref="T:JavaScriptCore.JSContext" /> is the central object of the <c>JavaScriptCore</c> namespace. The <see cref="T:JavaScriptCore.JSContext" /> maintains a JavaScript environment (manipulated by the <see cref="P:JavaScriptCore.JSContext.Item(Foundation.NSObject)" /> property) and evaluates scripts with the <see cref="M:JavaScriptCore.JSContext.EvaluateScript(System.String,Foundation.NSUrl)" /> method.</para>
       <para>Application developers will often want to assign a delegate to the <see cref="P:JavaScriptCore.JSContext.ExceptionHandler" /> property to gain access, in their Xamarin.iOS code, of exceptions raised in the JavaScript realm.</para>
-      <para>The following example shows the basic use of <see cref="T:JavaScriptCore.JSContext" />. The context is instantiated and a simple exception handler is assigned. One of the <see cref="M:JavaScriptCore.JSValue.From" /> method overloads is used to assign values to the JavaScript variables <c>arg1</c> and <c>arg2</c>. The <see cref="M:JavaScriptCore.JSContext.EvaluateScript" /> method evaluates the JavaScript and returns the result, which is converted back into a .NET object with the <see cref="M:JavaScriptCore.JSResult.ToInt32" /> method. </para>
+      <para>The following example shows the basic use of <see cref="T:JavaScriptCore.JSContext" />. The context is instantiated and a simple exception handler is assigned. One of the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Java%20Script%20Core%20JSValue%20From&amp;scope=Xamarin" title="M:JavaScriptCore.JSValue.From*">M:JavaScriptCore.JSValue.From*</a></format> method overloads is used to assign values to the JavaScript variables <c>arg1</c> and <c>arg2</c>. The <see cref="M:JavaScriptCore.JSContext.EvaluateScript(System.String,Foundation.NSUrl)" /> method evaluates the JavaScript and returns the result, which is converted back into a .NET object with the <see cref="M:JavaScriptCore.JSValue.ToInt32" /> method. </para>
       <example>
         <code lang="C#"><![CDATA[
 jsContext = new JSContext();
@@ -52,7 +54,7 @@ var four = jsContext[(NSString)"sum"].ToInt32();
       <format type="text/html">
         <h3>Calling C# code from JavaScript</h3>
       </format>
-      <para>Developers can extend the <see cref="T:JavascriptCore.IJSExport" /> interface to define methods that can be called from JavaScript. Developers must mark that interface with the <see cref="T:Foundation.ProtocolAttribute" /> attribute and must mark JavaScript-callable methods with the <see cref="T:Foundation.ExportAttribute" /> attribute. They must also add <c>--registrar:static</c> to the arguments used by <c>mtouch</c> during the build. For example:</para>
+      <para>Developers can extend the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:JavascriptCore.IJSExport&amp;scope=Xamarin" title="T:JavascriptCore.IJSExport">T:JavascriptCore.IJSExport</a></format> interface to define methods that can be called from JavaScript. Developers must mark that interface with the <see cref="T:Foundation.ProtocolAttribute" /> attribute and must mark JavaScript-callable methods with the <see cref="T:Foundation.ExportAttribute" /> attribute. They must also add <c>--registrar:static</c> to the arguments used by <c>mtouch</c> during the build. For example:</para>
       <example>
         <code lang="C#"><![CDATA[
 [Protocol ()]
@@ -98,7 +100,7 @@ webView.LoadRequest(NSUrlRequest.FromUrl(new NSUrl("MyHtmlFile.html", false)));
       </example>
       <para>The above C# code:
         <list type="bullet"><item><term>Creates a <see cref="T:UIKit.UIWebView" /> which will be displayed to the end user;</term></item><item><term>Gets the <see cref="T:JavaScriptCore.JSContext" /> of the <see cref="T:UIKit.UIWebView" /> object's main frame;</term></item><item><term>Adds an exception handler so that JavaScript trouble will be visible to the Xamarin project;</term></item><item><term>Instantiates a new <c>MyJSExporter</c> object that, as described above, implements the <c>IMyJSVisibleProtocol</c>;</term></item><item><term>Adds that object to the <see cref="T:JavaScriptCore.JSContext" /> with the name <c>myCSharpObject</c>;</term></item><item><term>Loads an HTML file (see below)</term></item></list></para>
-      <para>Finally, the HTML file that is loaded into the <see cref="T:UIKIt.UIWebView" /> and into whose <see cref="T:JavaScriptCore.JSContext" /> the <c>MyJSExporter</c> object has been placed can access the object from within JavaScript:</para>
+      <para>Finally, the HTML file that is loaded into the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:UIKIt.UIWebView&amp;scope=Xamarin" title="T:UIKIt.UIWebView">T:UIKIt.UIWebView</a></format> and into whose <see cref="T:JavaScriptCore.JSContext" /> the <c>MyJSExporter</c> object has been placed can access the object from within JavaScript:</para>
       <example>
         <code lang="HTML"><![CDATA[
 <html>
@@ -128,7 +130,7 @@ webView.LoadRequest(NSUrlRequest.FromUrl(new NSUrl("MyHtmlFile.html", false)));
       </example>
       <para>In order to export a C# object so that it is visible to JavaScript, the developer must add the <c>--registrar:static</c> argument to the arguments used by <c>mtouch</c>. In Xamarin Studio, this is done in the Project Options dialog, in the Build Options / iOS Build pane:</para>
       <para>
-        <img href="JSContext.StaticRegistrar.png" />
+        <img href="xamarin-media/JavaScriptCore/_images/JSContext.StaticRegistrar.png" />
       </para>
       <para>Another technique for calling C# code from Xamarin.iOS is to use REST, as shown in the  following: </para>
       <para>In the JavaScript code, use <c>XMLHttpRequest</c> and standard JSON techniques to post and parse a query to a REST service running on the local device:</para>
@@ -159,7 +161,7 @@ webView.LoadRequest(NSUrlRequest.FromUrl(new NSUrl("MyHtmlFile.html", false)));
 </html>
         ]]></code>
       </example>
-      <para>In the application, use <see cref="T:System.Net.HttpListener" /> to listen and respond to that request: </para>
+      <para>In the application, use <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=System%20Net%20Http%20Listener&amp;scope=Xamarin" title="T:System.Net.HttpListener">T:System.Net.HttpListener</a></format> to listen and respond to that request: </para>
       <example>
         <code lang="C#"><![CDATA[
 //Wire up listener
@@ -191,44 +193,48 @@ void Callback(IAsyncResult result)
       </example>
       <para>Finally, a third technique is to poll the <see cref="T:JavaScriptCore.JSContext" /> for a flag set by a JavaScript calculation.</para>
     </remarks>
-    <related type="PlatformDocAPI" href="https://developer.apple.com/reference/JavaScriptCore/JSContext">Apple documentation for <c>JSContext</c></related>
+    <related type="externalDocumentation" href="https://developer.apple.com/reference/JavaScriptCore/JSContext">Apple documentation for <c>JSContext</c></related>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public JSContext ();" />
       <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:JavaScriptCore.JSContext.#ctor" />
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>Foundation.Export("init")</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
       <Parameters />
       <Docs>
         <summary>Default constructor, initializes a new instance of this class.</summary>
-        <remarks></remarks>
+        <remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="protected JSContext (Foundation.NSObjectFlag t);" />
       <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor(class Foundation.NSObjectFlag t) cil managed" />
+      <MemberSignature Language="DocId" Value="M:JavaScriptCore.JSContext.#ctor(Foundation.NSObjectFlag)" />
+      <MemberSignature Language="F#" Value="new JavaScriptCore.JSContext : Foundation.NSObjectFlag -&gt; JavaScriptCore.JSContext" Usage="new JavaScriptCore.JSContext t" />
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
         </Attribute>
       </Attributes>
@@ -271,16 +277,18 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
     <Member MemberName=".ctor">
       <MemberSignature Language="C#" Value="public JSContext (JavaScriptCore.JSVirtualMachine virtualMachine);" />
       <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class JavaScriptCore.JSVirtualMachine virtualMachine) cil managed" />
+      <MemberSignature Language="DocId" Value="M:JavaScriptCore.JSContext.#ctor(JavaScriptCore.JSVirtualMachine)" />
+      <MemberSignature Language="F#" Value="new JavaScriptCore.JSContext : JavaScriptCore.JSVirtualMachine -&gt; JavaScriptCore.JSContext" Usage="new JavaScriptCore.JSContext virtualMachine" />
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>Foundation.Export("initWithVirtualMachine:")</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -294,18 +302,20 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
       </Docs>
     </Member>
     <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected JSContext (IntPtr handle);" />
+      <MemberSignature Language="C#" Value="protected internal JSContext (IntPtr handle);" />
       <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig specialname rtspecialname instance void .ctor(native int handle) cil managed" />
+      <MemberSignature Language="DocId" Value="M:JavaScriptCore.JSContext.#ctor(System.IntPtr)" />
+      <MemberSignature Language="F#" Value="new JavaScriptCore.JSContext : nativeint -&gt; JavaScriptCore.JSContext" Usage="new JavaScriptCore.JSContext handle" />
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
         </Attribute>
       </Attributes>
@@ -323,6 +333,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
     <Member MemberName="ClassHandle">
       <MemberSignature Language="C#" Value="public override IntPtr ClassHandle { get; }" />
       <MemberSignature Language="ILAsm" Value=".property instance native int ClassHandle" />
+      <MemberSignature Language="DocId" Value="P:JavaScriptCore.JSContext.ClassHandle" />
+      <MemberSignature Language="F#" Value="member this.ClassHandle : nativeint" Usage="JavaScriptCore.JSContext.ClassHandle" />
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -340,16 +352,18 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
     <Member MemberName="CurrentArguments">
       <MemberSignature Language="C#" Value="public static JavaScriptCore.JSValue[] CurrentArguments { get; }" />
       <MemberSignature Language="ILAsm" Value=".property class JavaScriptCore.JSValue[] CurrentArguments" />
+      <MemberSignature Language="DocId" Value="P:JavaScriptCore.JSContext.CurrentArguments" />
+      <MemberSignature Language="F#" Value="member this.CurrentArguments : JavaScriptCore.JSValue[]" Usage="JavaScriptCore.JSContext.CurrentArguments" />
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>get: Foundation.Export("currentArguments")</AttributeName>
         </Attribute>
       </Attributes>
@@ -365,28 +379,30 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
     <Member MemberName="CurrentCallee">
       <MemberSignature Language="C#" Value="public static JavaScriptCore.JSValue CurrentCallee { get; }" />
       <MemberSignature Language="ILAsm" Value=".property class JavaScriptCore.JSValue CurrentCallee" />
+      <MemberSignature Language="DocId" Value="P:JavaScriptCore.JSContext.CurrentCallee" />
+      <MemberSignature Language="F#" Value="member this.CurrentCallee : JavaScriptCore.JSValue" Usage="JavaScriptCore.JSContext.CurrentCallee" />
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>get: Foundation.Export("currentCallee")</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
@@ -402,16 +418,18 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
     <Member MemberName="CurrentContext">
       <MemberSignature Language="C#" Value="public static JavaScriptCore.JSContext CurrentContext { get; }" />
       <MemberSignature Language="ILAsm" Value=".property class JavaScriptCore.JSContext CurrentContext" />
+      <MemberSignature Language="DocId" Value="P:JavaScriptCore.JSContext.CurrentContext" />
+      <MemberSignature Language="F#" Value="member this.CurrentContext : JavaScriptCore.JSContext" Usage="JavaScriptCore.JSContext.CurrentContext" />
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>get: Foundation.Export("currentContext")</AttributeName>
         </Attribute>
       </Attributes>
@@ -427,16 +445,18 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
     <Member MemberName="CurrentThis">
       <MemberSignature Language="C#" Value="public static JavaScriptCore.JSValue CurrentThis { get; }" />
       <MemberSignature Language="ILAsm" Value=".property class JavaScriptCore.JSValue CurrentThis" />
+      <MemberSignature Language="DocId" Value="P:JavaScriptCore.JSContext.CurrentThis" />
+      <MemberSignature Language="F#" Value="member this.CurrentThis : JavaScriptCore.JSValue" Usage="JavaScriptCore.JSContext.CurrentThis" />
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>get: Foundation.Export("currentThis")</AttributeName>
         </Attribute>
       </Attributes>
@@ -452,16 +472,18 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
     <Member MemberName="EvaluateScript">
       <MemberSignature Language="C#" Value="public virtual JavaScriptCore.JSValue EvaluateScript (string script);" />
       <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class JavaScriptCore.JSValue EvaluateScript(string script) cil managed" />
+      <MemberSignature Language="DocId" Value="M:JavaScriptCore.JSContext.EvaluateScript(System.String)" />
+      <MemberSignature Language="F#" Value="abstract member EvaluateScript : string -&gt; JavaScriptCore.JSValue&#xA;override this.EvaluateScript : string -&gt; JavaScriptCore.JSValue" Usage="jSContext.EvaluateScript script" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>Foundation.Export("evaluateScript:")</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -481,22 +503,24 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
     <Member MemberName="EvaluateScript">
       <MemberSignature Language="C#" Value="public virtual JavaScriptCore.JSValue EvaluateScript (string script, Foundation.NSUrl sourceUrl);" />
       <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class JavaScriptCore.JSValue EvaluateScript(string script, class Foundation.NSUrl sourceUrl) cil managed" />
+      <MemberSignature Language="DocId" Value="M:JavaScriptCore.JSContext.EvaluateScript(System.String,Foundation.NSUrl)" />
+      <MemberSignature Language="F#" Value="abstract member EvaluateScript : string * Foundation.NSUrl -&gt; JavaScriptCore.JSValue&#xA;override this.EvaluateScript : string * Foundation.NSUrl -&gt; JavaScriptCore.JSValue" Usage="jSContext.EvaluateScript (script, sourceUrl)" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>Foundation.Export("evaluateScript:withSourceURL:")</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
@@ -518,20 +542,28 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
     <Member MemberName="Exception">
       <MemberSignature Language="C#" Value="public virtual JavaScriptCore.JSValue Exception { get; set; }" />
       <MemberSignature Language="ILAsm" Value=".property instance class JavaScriptCore.JSValue Exception" />
+      <MemberSignature Language="DocId" Value="P:JavaScriptCore.JSContext.Exception" />
+      <MemberSignature Language="F#" Value="member this.Exception : JavaScriptCore.JSValue with get, set" Usage="JavaScriptCore.JSContext.Exception" />
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="">
           <AttributeName>get: Foundation.Export("exception")</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="">
           <AttributeName>set: Foundation.Export("setException:")</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+          <AttributeName>get: Foundation.Export("exception", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+          <AttributeName>set: Foundation.Export("setException:", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -549,20 +581,28 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
     <Member MemberName="ExceptionHandler">
       <MemberSignature Language="C#" Value="public virtual JavaScriptCore.JSContextExceptionHandler ExceptionHandler { get; set; }" />
       <MemberSignature Language="ILAsm" Value=".property instance class JavaScriptCore.JSContextExceptionHandler ExceptionHandler" />
+      <MemberSignature Language="DocId" Value="P:JavaScriptCore.JSContext.ExceptionHandler" />
+      <MemberSignature Language="F#" Value="member this.ExceptionHandler : JavaScriptCore.JSContextExceptionHandler with get, set" Usage="JavaScriptCore.JSContext.ExceptionHandler" />
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="">
           <AttributeName>get: Foundation.Export("exceptionHandler")</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="">
           <AttributeName>set: Foundation.Export("setExceptionHandler:")</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+          <AttributeName>get: Foundation.Export("exceptionHandler", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+          <AttributeName>set: Foundation.Export("setExceptionHandler:", ObjCRuntime.ArgumentSemantic.Copy)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -577,22 +617,24 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
     <Member MemberName="FromJSGlobalContextRef">
       <MemberSignature Language="C#" Value="public static JavaScriptCore.JSContext FromJSGlobalContextRef (IntPtr nativeJsGlobalContextRef);" />
       <MemberSignature Language="ILAsm" Value=".method public static hidebysig class JavaScriptCore.JSContext FromJSGlobalContextRef(native int nativeJsGlobalContextRef) cil managed" />
+      <MemberSignature Language="DocId" Value="M:JavaScriptCore.JSContext.FromJSGlobalContextRef(System.IntPtr)" />
+      <MemberSignature Language="F#" Value="static member FromJSGlobalContextRef : nativeint -&gt; JavaScriptCore.JSContext" Usage="JavaScriptCore.JSContext.FromJSGlobalContextRef nativeJsGlobalContextRef" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>Foundation.Export("contextWithJSGlobalContextRef:")</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 9, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
@@ -612,16 +654,18 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
     <Member MemberName="GlobalObject">
       <MemberSignature Language="C#" Value="public virtual JavaScriptCore.JSValue GlobalObject { get; }" />
       <MemberSignature Language="ILAsm" Value=".property instance class JavaScriptCore.JSValue GlobalObject" />
+      <MemberSignature Language="DocId" Value="P:JavaScriptCore.JSContext.GlobalObject" />
+      <MemberSignature Language="F#" Value="member this.GlobalObject : JavaScriptCore.JSValue" Usage="JavaScriptCore.JSContext.GlobalObject" />
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>get: Foundation.Export("globalObject")</AttributeName>
         </Attribute>
       </Attributes>
@@ -637,6 +681,8 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
     <Member MemberName="Item">
       <MemberSignature Language="C#" Value="public JavaScriptCore.JSValue this[Foundation.NSObject key] { get; set; }" />
       <MemberSignature Language="ILAsm" Value=".property instance class JavaScriptCore.JSValue Item(class Foundation.NSObject)" />
+      <MemberSignature Language="DocId" Value="P:JavaScriptCore.JSContext.Item(Foundation.NSObject)" />
+      <MemberSignature Language="F#" Value="member this.Item(Foundation.NSObject) : JavaScriptCore.JSValue with get, set" Usage="JavaScriptCore.JSContext.Item" />
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -658,28 +704,30 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
     <Member MemberName="JSGlobalContextRefPtr">
       <MemberSignature Language="C#" Value="public virtual IntPtr JSGlobalContextRefPtr { get; }" />
       <MemberSignature Language="ILAsm" Value=".property instance native int JSGlobalContextRefPtr" />
+      <MemberSignature Language="DocId" Value="P:JavaScriptCore.JSContext.JSGlobalContextRefPtr" />
+      <MemberSignature Language="F#" Value="member this.JSGlobalContextRefPtr : nativeint" Usage="JavaScriptCore.JSContext.JSGlobalContextRefPtr" />
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 9, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>get: Foundation.Export("JSGlobalContextRef")</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 9, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 7, 0, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
@@ -695,37 +743,39 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
     <Member MemberName="Name">
       <MemberSignature Language="C#" Value="public virtual string Name { get; set; }" />
       <MemberSignature Language="ILAsm" Value=".property instance string Name" />
+      <MemberSignature Language="DocId" Value="P:JavaScriptCore.JSContext.Name" />
+      <MemberSignature Language="F#" Value="member this.Name : string with get, set" Usage="JavaScriptCore.JSContext.Name" />
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>get: Foundation.Export("name")</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>set: Foundation.Export("setName:")</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>set: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
@@ -744,17 +794,22 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
     <Member MemberName="VirtualMachine">
       <MemberSignature Language="C#" Value="public virtual JavaScriptCore.JSVirtualMachine VirtualMachine { get; }" />
       <MemberSignature Language="ILAsm" Value=".property instance class JavaScriptCore.JSVirtualMachine VirtualMachine" />
+      <MemberSignature Language="DocId" Value="P:JavaScriptCore.JSContext.VirtualMachine" />
+      <MemberSignature Language="F#" Value="member this.VirtualMachine : JavaScriptCore.JSVirtualMachine" Usage="JavaScriptCore.JSContext.VirtualMachine" />
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="">
           <AttributeName>get: Foundation.Export("virtualMachine")</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+          <AttributeName>get: Foundation.Export("virtualMachine", ObjCRuntime.ArgumentSemantic.Strong)</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
