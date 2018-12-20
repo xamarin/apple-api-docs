@@ -1,6 +1,9 @@
+<?xml version="1.0"?>
 <Type Name="BindAsAttribute" FullName="ObjCRuntime.BindAsAttribute">
-  <TypeSignature Language="C#" Value="public class BindAsAttribute : Attribute" />
-  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit BindAsAttribute extends System.Attribute" />
+  <TypeSignature Language="C#" Value="public class BindAsAttribute : Attribute"/>
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit BindAsAttribute extends System.Attribute"/>
+  <TypeSignature Language="DocId" Value="T:ObjCRuntime.BindAsAttribute"/>
+  <TypeSignature Language="F#" Value="type BindAsAttribute = class&#xA;    inherit Attribute"/>
   <AssemblyInfo>
     <AssemblyName>Xamarin.iOS</AssemblyName>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -8,61 +11,97 @@
   <Base>
     <BaseTypeName>System.Attribute</BaseTypeName>
   </Base>
-  <Interfaces />
+  <Interfaces/>
   <Attributes>
-    <Attribute>
+    <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
       <AttributeName>System.AttributeUsage(System.AttributeTargets.Property | System.AttributeTargets.Parameter | System.AttributeTargets.ReturnValue, AllowMultiple=false)</AttributeName>
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>To be added.</summary>
-    <remarks>To be added.</remarks>
+    <summary>The BindAsAttribute allows binding native NSNumber, NSValue and NSString (for enums) types into more accurate managed types.</summary>
+    <remarks>
+      <para>This attribute is typically used in binding projects, to indicate a special mapping between Objective-C and managed types:</para>
+      <example>
+        <code lang="C#"><![CDATA[
+// NSValue <-> CGRect (for the 'rect' parameter)
+// NSNumber <-> bool? (for the return value)
+[return: BindAs (typeof (bool?))]
+[Export ("shouldDrawAt:")]
+NSNumber ShouldDraw ([BindAs (typeof (CGRect))] NSValue rect);
+
+// NSString <-> CAScroll
+[BindAs (typeof (CAScroll []))]
+[Export ("supportedScrollModes")]
+NSString [] SupportedScrollModes { get; set; }
+          ]]></code>
+      </example>
+      <para>In this example, the <param name="rect"/> parameter will be bound as a managed <see cref="T:CoreGraphics.CGRect"/>, and the return value will be bound as <c>bool?</c>.</para>
+      <list type="table">
+        <listheader>
+          <term>Supported combinations:</term>
+        </listheader>
+        <item>
+          <term>Between NSNumber and bool, byte, sbyte, short, ushort, int, uint, long, ulong, nint, nuint, float, double, nfloat, any of the previous as a nullable type, or as an array</term>
+        </item>
+        <item><term>Between NSValue and NSRange, CGAffineTransform, CGPoint, CGRect, CGSize, CGVector, NSDirectionalEdgeInsets, CATransform3d, CLLocationCoordinate2d, CMTime, CMTimeMapping, CMTimeRange, MKCoordinateSpan, SCNMatrix4, SCNVector3, SCNVector4, UIEdgeInsets, UIOffset, any of the previous as a nullable type, or as an array.</term></item>
+        <item><term>Between NSString-backed enums and the corresponding managed enum.</term></item>
+      </list>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public BindAsAttribute (Type type);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Type type) cil managed" />
+      <MemberSignature Language="C#" Value="public BindAsAttribute (Type type);"/>
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Type type) cil managed"/>
+      <MemberSignature Language="DocId" Value="M:ObjCRuntime.BindAsAttribute.#ctor(System.Type)"/>
+      <MemberSignature Language="F#" Value="new ObjCRuntime.BindAsAttribute : Type -&gt; ObjCRuntime.BindAsAttribute" Usage="new ObjCRuntime.BindAsAttribute type"/>
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Parameters>
-        <Parameter Name="type" Type="System.Type" />
+        <Parameter Name="type" Type="System.Type"/>
       </Parameters>
       <Docs>
-        <param name="type">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="type">The managed type.</param>
+        <summary>Initializes a new BindAs attribute with the specified managed type.</summary>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="OriginalType">
-      <MemberSignature Language="C#" Value="public Type OriginalType;" />
-      <MemberSignature Language="ILAsm" Value=".field public class System.Type OriginalType" />
+      <MemberSignature Language="C#" Value="public Type OriginalType;"/>
+      <MemberSignature Language="ILAsm" Value=".field public class System.Type OriginalType"/>
+      <MemberSignature Language="DocId" Value="F:ObjCRuntime.BindAsAttribute.OriginalType"/>
+      <MemberSignature Language="F#" Value="val mutable OriginalType : Type" Usage="ObjCRuntime.BindAsAttribute.OriginalType"/>
       <MemberType>Field</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Type</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>The Objective-C type.</summary>
+        <remarks/>
       </Docs>
     </Member>
     <Member MemberName="Type">
-      <MemberSignature Language="C#" Value="public Type Type;" />
-      <MemberSignature Language="ILAsm" Value=".field public class System.Type Type" />
+      <MemberSignature Language="C#" Value="public Type Type;"/>
+      <MemberSignature Language="ILAsm" Value=".field public class System.Type Type"/>
+      <MemberSignature Language="DocId" Value="F:ObjCRuntime.BindAsAttribute.Type"/>
+      <MemberSignature Language="F#" Value="val mutable Type : Type" Usage="ObjCRuntime.BindAsAttribute.Type"/>
       <MemberType>Field</MemberType>
       <AssemblyInfo>
         <AssemblyVersion>0.0.0.0</AssemblyVersion>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Type</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>The managed type.</summary>
+        <remarks/>
       </Docs>
     </Member>
   </Members>
