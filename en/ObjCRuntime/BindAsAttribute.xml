@@ -17,8 +17,29 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>To be added.</summary>
-    <remarks>To be added.</remarks>
+    <summary>The BindAsAttribute allows binding native NSNumber, NSValue and NSString (for enums) types into more accurate managed types.</summary>
+    <remarks>
+      <para>This attribute is typically used in binding projects, to indicate a special mapping between Objective-C and managed types:</para>
+      <example>
+        <code lang="C#"><![CDATA[
+// NSValue <-> CGRect (for the 'rect' parameter)
+// NSNumber <-> bool? (for the return value)
+[return: BindAs (typeof (bool?))]
+[Export ("shouldDrawAt:")]
+NSNumber ShouldDraw ([BindAs (typeof (CGRect))] NSValue rect);
+
+// NSString <-> CAScroll
+[BindAs (typeof (CAScroll []))]
+[Export ("supportedScrollModes")]
+NSString [] SupportedScrollModes { get; set; }
+          ]]></code>
+      </example>
+      <para>In this example, the 'rect' parameter will be bound as a managed CGRect, and the return value will be bound as 'bool?'.</para>
+      <para>Supported combinations:</para>
+      <para>* Between NSNumber and bool, byte, sbyte, short, ushort, int, uint, long, ulong, nint, nuint, float, double, nfloat, any of the previous as a nullable type, or as an array.</para>
+      <para>* Between NSValue and NSRange, CGAffineTransform, CGPoint, CGRect, CGSize, CGVector, NSDirectionalEdgeInsets, CATransform3d, CLLocationCoordinate2d, CMTime, CMTimeMapping, CMTimeRange, MKCoordinateSpan, SCNMatrix4, SCNVector3, SCNVector4, UIEdgeInsets, UIOffset, any of the previous as a nullable type, or as an array.</para>
+      <para>* Between NSString-backed enums and the corresponding managed enum.</para>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -35,9 +56,9 @@
         <Parameter Name="type" Type="System.Type" />
       </Parameters>
       <Docs>
-        <param name="type">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="type">The managed type.</param>
+        <summary>Initializes a new BindAs attribute with the specified managed type.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="OriginalType">
@@ -54,8 +75,8 @@
         <ReturnType>System.Type</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>The Objective-C type.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Type">
@@ -72,8 +93,8 @@
         <ReturnType>System.Type</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>The managed type.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
   </Members>
