@@ -12,8 +12,8 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Provides information about the MonoTouch Runtime.</summary>
-    <remarks>To be added.</remarks>
+    <summary>Provides information about the Xamarin.iOS Runtime.</summary>
+    <remarks></remarks>
     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/SysSound/">SysSound</related>
   </Docs>
   <Members>
@@ -53,20 +53,12 @@
         <Parameter Name="selector" Type="ObjCRuntime.Selector" />
       </Parameters>
       <Docs>
-        <param name="method">Method to register with the runtime.</param>
-        <param name="selector">Selector that will we want to connect to.</param>
-        <summary>This call allows the specified method in this method to respond to message invocations on this selector.</summary>
+        <param name="method">Method that will be called when Objective-C sends a message to the specified selector.</param>
+        <param name="selector">Selector to connect to.</param>
+        <summary>This call allows the specified method in this method to respond to message invocations on the specified selector.</summary>
         <remarks>
-          <para>
-	    The method must be declared on an NSObject-derived class.    
-	  </para>
-          <para>
-
-	    You can use this method to dynamically reconfigure which
-	    methods on a class should respond to which Objective-C
-	    selectors.
-
-	  </para>
+          <para>The method must be declared on an NSObject-derived class.</para>
+          <para>Developers can use this method to dynamically reconfigure which methods on a class should respond to which Objective-C selectors.</para>
         </remarks>
       </Docs>
     </Member>
@@ -94,11 +86,14 @@
         <Parameter Name="export" Type="Foundation.ExportAttribute" />
       </Parameters>
       <Docs>
-        <param name="type">To be added.</param>
-        <param name="method">To be added.</param>
-        <param name="export">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="type">Connect to the selector on this type.</param>
+        <param name="method">Method that will be called when Objective-C sends a message to the specified selector.</param>
+        <param name="export">An export attribute that specifies the selector to connect to.</param>
+        <summary>This call allows the specified method in this method to respond to message invocations on the specified selector.</summary>
+        <remarks>
+          <para>The method must be declared on an NSObject-derived class.</para>
+          <para>Developers can use this method to dynamically reconfigure which methods on a class should respond to which Objective-C selectors.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ConnectMethod">
@@ -120,11 +115,14 @@
         <Parameter Name="selector" Type="ObjCRuntime.Selector" />
       </Parameters>
       <Docs>
-        <param name="type">To be added.</param>
-        <param name="method">To be added.</param>
-        <param name="selector">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="type">Connect to the selector on this type.</param>
+        <param name="method">Method that will be called when Objective-C sends a message to the specified selector.</param>
+        <param name="selector">Selector to connect to.</param>
+        <summary>This call allows the specified method in this method to respond to message invocations on the specified selector.</summary>
+        <remarks>
+          <para>The method must be declared on an NSObject-derived class.</para>
+          <para>Developers can use this method to dynamically reconfigure which methods on a class should respond to which Objective-C selectors.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="DynamicRegistrationSupported">
@@ -146,9 +144,10 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>If dynamic registration is supported.</summary>
+        <value>If dynamic registration is supported.</value>
+        <remarks>At build time the managed linker can in some cases determine whether dynamic registration is required or not, and if not, it can optimize away the code to support dynamic registration (to minimize app size). If support for dynamic registration has been removed by the linker, this property will return false.</remarks>
+        <related type="article" href="https://docs.microsoft.com/en-us/xamarin/cross-platform/macios/optimizations#remove-the-dynamic-registrar">Build optimizations (removal of the dynamic registrar)</related>
       </Docs>
     </Member>
     <Member MemberName="GetINativeObject&lt;T&gt;">
@@ -177,15 +176,13 @@
         <Parameter Name="owns" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <typeparam name="T">INativeObject type that will wrap the specified native object.</typeparam>
-        <param name="ptr">A pointer to an unmanaged object.</param>
+        <typeparam name="T">The type of the object to return. This can also be an interface corresponding to an Objective-C protocol.</typeparam>
+        <param name="ptr">A pointer to a native object.</param>
         <param name="owns">Pass true if the caller has a reference to the native object, and wants to give it to the managed wrapper instance. Otherwise pass false (and the native object will be retained).</param>
-        <summary>Wraps an unmanaged IntPtr into a wrapped INativeObject.</summary>
-        <returns>An instance of a class implementing the T interface.</returns>
+        <summary>Wraps an native IntPtr with a managed object of the specified type.</summary>
+        <returns>An instance of a class implementing the specified type.</returns>
         <remarks>
-          <para>Returns an instance of the T interface even if the native object is not in the class hierarchy of T (no type checks).</para>
-          <para>
-          </para>
+          <para>Returns an instance of the specified type even if the native object is not in the class hierarchy of type (there are no type checks).</para>
         </remarks>
       </Docs>
     </Member>
@@ -208,7 +205,7 @@
       <Docs>
         <param name="ptr">A pointer to an unmanaged NSObject or any class that derives from the Objective-C NSObject class.</param>
         <summary>Wraps an unmanaged IntPtr into a fully typed NSObject, or returns an existing wrapper object if one already exists.</summary>
-        <returns>An instance of a class that derives from MonoTouch.Foundation.NSObject.</returns>
+        <returns>An instance of a class that derives from Foundation.NSObject.</returns>
         <remarks>The runtime create an instance of the most derived class.</remarks>
       </Docs>
     </Member>
@@ -273,7 +270,7 @@
         <Parameter Name="owns" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <typeparam name="T">To be added.</typeparam>
+        <typeparam name="T">Type to wrap the native object as.</typeparam>
         <param name="ptr">A pointer to an unmanaged NSObject or any class that derives from the Objective-C NSObject class.</param>
         <param name="owns">Pass true if the caller has a reference to the native object, and wants to give it to the managed wrapper instance. Otherwise pass false (and the native object will be retained).</param>
         <summary>Wraps an unmanaged IntPtr into a fully typed NSObject, or returns an existing wrapper object if one already exists.</summary>
