@@ -25,7 +25,7 @@
     </Interface>
   </Interfaces>
   <Attributes>
-    <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+    <Attribute>
       <AttributeName>Foundation.Register("NSObject", true)</AttributeName>
     </Attribute>
   </Attributes>
@@ -38,7 +38,6 @@
 	class that can be passed to Objective-C.   
       </para>
       <para>
-
 	The C# NSObject class and their subclasses are managed
 	representations of the underlying Objective-C instances.  The
 	pointer to the unmanaged code Objective-C object is stored in
@@ -47,7 +46,6 @@
 
       </para>
       <para>
-	
 	It is important to note that currently, the compiler does not
 	support generic subclasses of NSObject.   
 
@@ -56,7 +54,6 @@
         <h2>Class Registration</h2>
       </format>
       <para>
-
 	When you create a subclass of NSObject this subclass is
 	registered with the Objective-C runtime with a name based on
 	the full .NET typename which is an implementation detail.  If
@@ -66,7 +63,6 @@
 
       </para>
       <para>
-
 	The above is typically used in cases where either you want to
 	reference the class by name on some Objective-C code, when
 	using Interface Builder XIB and Storyboard files or when you
@@ -89,7 +85,6 @@ public class _MySampleView : UIView {
         <h2>Objective-C Methods</h2>
       </format>
       <para>
-	
 	In general, MonoTouch classes map one to one to the underlying
 	Objective-C classes.  For example, the C# class
 	"MonoTouch.Foundation.NSObject" maps to the Objective-C
@@ -100,7 +95,6 @@ public class _MySampleView : UIView {
 
       </para>
       <para>
-
 	Objective-C methods are surfaced to C# as virtual methods that
 	have the special <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:ObjCRuntime.ExportAttribute&amp;scope=Xamarin" title="T:ObjCRuntime.ExportAttribute">T:ObjCRuntime.ExportAttribute</a></format> applied to
 	them.  This attribute is used by the compiler to map C# names
@@ -110,7 +104,6 @@ public class _MySampleView : UIView {
 
       </para>
       <para>
-	
 	To alter the behavior of a class you use the standard C#
 	idioms: create a subclass and override the methods that you
 	want to alter and use the "base." language feature to
@@ -134,7 +127,6 @@ public class MyView : UISlider {
 ]]></code>
       </example>
       <para>
-	
 	By default, only methods that have been overwritten will be
 	exposed to the Objective-C world.  If you want to expose an
 	arbitrary C# method to the Objective-C world, you need to
@@ -176,7 +168,6 @@ public class StringUtilities : NSObject {
 	operator or when an existing unmanaged object is surfaced to the C# world.
       </para>
       <para>
-
 	When you create an object from C# using the "new" operator,
 	the object will initially be owned by C#, and C# will retain a
 	reference to the object.  This reference will only be dropped
@@ -186,7 +177,6 @@ public class StringUtilities : NSObject {
 
       </para>
       <para>
-
 	C# NSObjects are also created on demand when you invoke a
 	method or a property that returns an NSObject.  At this point,
 	the runtime will look into an object cache and determine
@@ -198,7 +188,6 @@ public class StringUtilities : NSObject {
 
       </para>
       <para>
-
 	Pure "peers" to framework objects (those objects
 	that are merely C# representations of an Objective-C object
 	and have no extra managed associated state) can be recreated
@@ -206,7 +195,6 @@ public class StringUtilities : NSObject {
 
       </para>
       <para>
-
 	User-subclasses of NSObjects often contain C# state so
 	whenever the Objective-C runtime performs a "retain" operation
 	on one of these objects, the runtime creates a GCHandle that
@@ -217,7 +205,6 @@ public class StringUtilities : NSObject {
 
       </para>
       <para>
-
 	The Dispose operation on an NSObject will always drop the
 	reference to the underlying Objective-C object, but will not
 	destroy the managed state, this will only happen when both the
@@ -231,7 +218,6 @@ public class StringUtilities : NSObject {
         <h2>Adopting Protocols</h2>
       </format>
       <para>
-
 	In MonoTouch, most Objective-C protocols are mapped to classes
 	that have the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:ObjCRuntime.ModelAttribute&amp;scope=Xamarin" title="T:ObjCRuntime.ModelAttribute">T:ObjCRuntime.ModelAttribute</a></format> applied to
 	them.  And the way that you adopt a protocol is by subclassing
@@ -239,7 +225,6 @@ public class StringUtilities : NSObject {
 
       </para>
       <para>
-
 	There are some rare cases, where you want to adopt an ad-hoc
 	protocol on your own.  If you need to adopt an Objective-C
 	protocol, you should use the <see cref="T:ObjCRuntime.AdoptsAttribute" /> on your class
@@ -276,7 +261,6 @@ public class MyLockeingObject : NSObject {
 	them directly with a C# method.
       </para>
       <para>
-
 	To expose a C# property to the Key-Value coding system all you
 	need to do is add the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:ObjCRuntime.ExportAttribute&amp;scope=Xamarin" title="T:ObjCRuntime.ExportAttribute">T:ObjCRuntime.ExportAttribute</a></format> to your
 	property. The names must only contain ASCII characters, start
@@ -294,7 +278,6 @@ public class CircleLayer : CALayer {
 ]]></code>
       </example>
       <para>
-
 	You use the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:Foundation.ValueForKey(Foundation.NSString);*&amp;scope=Xamarin" title="M:Foundation.ValueForKey(Foundation.NSString);*">M:Foundation.ValueForKey(Foundation.NSString);*</a></format>
 	to lookup a property using a name, and you use the of
 	functions <see cref="M:Foundation.SetValueForKey(Foundation.NSObject,&#xA; Foundation.NSString);*" /> to set the value for the
@@ -304,7 +287,6 @@ public class CircleLayer : CALayer {
 
       </para>
       <para>
-
 	In addition, you can use Key Paths to have the runtime
 	repeatedly call the ValueForKey or SetValueForKey for you.
 	You separate the keys by using a dot.  For example the keypath
@@ -331,7 +313,6 @@ public class CircleLayer : CALayer {
 	through the Key Value Coding system.
       </para>
       <para>
-
 	For your class to observe a notification, you must override
 	the <see cref="M:Foundation.NSObject.ObserveValue(Foundation.NSString,Foundation.NSObject,Foundation.NSDictionary,System.IntPtr)" />
 	method which will be invoked with the information about the value changes for a specific keypath.   Then you use the <see cref="M:Foundation.NSObject.AddObserver(Foundation.NSObject,Foundation.NSString,Foundation.NSKeyValueObservingOptions,System.IntPtr)" /> to start observing changes and the <see cref="M:Foundation.NSObject.RemoveObserver(Foundation.NSObject,Foundation.NSString,System.IntPtr)" /> method to stop receiving notifications. 
@@ -351,7 +332,7 @@ public class CircleLayer : CALayer {
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("init")</AttributeName>
         </Attribute>
       </Attributes>
@@ -598,10 +579,10 @@ An IDisposable object.  Invoke the Dispose method on this object to remove the 
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("addObserver:forKeyPath:options:context:")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -682,7 +663,7 @@ Flags indicating which notifications you are interested in receiving (New, Old, 
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -769,10 +750,10 @@ Context data passed to
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("automaticallyNotifiesObserversForKey:")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -800,19 +781,19 @@ Context data passed to
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Advice("Overriding this method requires a call to the overriden method.")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("awakeFromNib")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.RequiresSuper</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
@@ -899,10 +880,10 @@ Context data passed to
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("cancelPreviousPerformRequestsWithTarget:")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -929,10 +910,10 @@ Context data passed to
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("cancelPreviousPerformRequestsWithTarget:selector:object:")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -967,7 +948,7 @@ Context data passed to
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Field("NSKeyValueChangeIndexesKey", "Foundation")</AttributeName>
         </Attribute>
       </Attributes>
@@ -992,7 +973,7 @@ Context data passed to
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Field("NSKeyValueChangeKindKey", "Foundation")</AttributeName>
         </Attribute>
       </Attributes>
@@ -1017,7 +998,7 @@ Context data passed to
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Field("NSKeyValueChangeNewKey", "Foundation")</AttributeName>
         </Attribute>
       </Attributes>
@@ -1042,7 +1023,7 @@ Context data passed to
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Field("NSKeyValueChangeNotificationIsPriorKey", "Foundation")</AttributeName>
         </Attribute>
       </Attributes>
@@ -1084,7 +1065,7 @@ void Setup ()
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Field("NSKeyValueChangeOldKey", "Foundation")</AttributeName>
         </Attribute>
       </Attributes>
@@ -1112,10 +1093,10 @@ void Setup ()
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>get: Foundation.Export("class")</AttributeName>
         </Attribute>
       </Attributes>
@@ -1161,13 +1142,13 @@ void Setup ()
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("conformsToProtocol:")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Preserve</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -1235,10 +1216,10 @@ public class EditableCoreTextView : UIView {
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("copy")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -1271,7 +1252,7 @@ public class EditableCoreTextView : UIView {
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
         </Attribute>
       </Attributes>
@@ -1299,7 +1280,7 @@ public class EditableCoreTextView : UIView {
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
         </Attribute>
       </Attributes>
@@ -1326,7 +1307,7 @@ public class EditableCoreTextView : UIView {
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
         </Attribute>
       </Attributes>
@@ -1351,10 +1332,10 @@ public class EditableCoreTextView : UIView {
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>get: Foundation.Export("debugDescription")</AttributeName>
         </Attribute>
       </Attributes>
@@ -1381,10 +1362,10 @@ public class EditableCoreTextView : UIView {
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>get: Foundation.Export("description")</AttributeName>
         </Attribute>
       </Attributes>
@@ -1410,10 +1391,10 @@ public class EditableCoreTextView : UIView {
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("didChange:valuesAtIndexes:forKey:")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -1444,10 +1425,10 @@ public class EditableCoreTextView : UIView {
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("didChangeValueForKey:withSetMutation:usingObjects:")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -1478,10 +1459,10 @@ public class EditableCoreTextView : UIView {
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("didChangeValueForKey:")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -1518,7 +1499,7 @@ public class EditableCoreTextView : UIView {
         <summary>Releases the resources used by the NSObject object.</summary>
         <remarks>
           <para>The Dispose method releases the resources used by the NSObject class.</para>
-          <para>Calling the Dispose method when the application is finished using the NSObject ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.  For more information on releasing resources see ``Cleaning up Unmananaged Resources'' at http://msdn.microsoft.com/en-us/library/498928w2.aspx</para>
+          <para>Calling the Dispose method when the application is finished using the NSObject ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.  For more information on releasing resources see ``Cleaning up Unmananaged Resources'' at https://msdn.microsoft.com/en-us/library/498928w2.aspx</para>
         </remarks>
       </Docs>
     </Member>
@@ -1547,7 +1528,7 @@ public class EditableCoreTextView : UIView {
           <para>This Dispose method releases the resources used by the NSObject class.</para>
           <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposing <paramref name="disposing" /> is set to <see langword="true" /> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false" />. </para>
           <para>Calling the Dispose method when the application is finished using the NSObject ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.</para>
-          <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at http://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
+          <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at https://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
         </remarks>
       </Docs>
     </Member>
@@ -1562,10 +1543,10 @@ public class EditableCoreTextView : UIView {
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("doesNotRecognizeSelector:")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -1710,10 +1691,10 @@ public class EditableCoreTextView : UIView {
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("dictionaryWithValuesForKeys:")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -1761,10 +1742,10 @@ public class EditableCoreTextView : UIView {
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("keyPathsForValuesAffectingValueForKey:")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -1792,10 +1773,10 @@ public class EditableCoreTextView : UIView {
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("methodForSelector:")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -1823,7 +1804,7 @@ public class EditableCoreTextView : UIView {
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>System.Obsolete("Do not use; this API does not properly retain/release existing/new values, so leaks and/or crashes may occur.")</AttributeName>
         </Attribute>
       </Attributes>
@@ -1854,13 +1835,13 @@ public class EditableCoreTextView : UIView {
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("hash")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
         </Attribute>
       </Attributes>
@@ -1923,7 +1904,7 @@ public class EditableCoreTextView : UIView {
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)</AttributeName>
         </Attribute>
       </Attributes>
@@ -1950,7 +1931,7 @@ public class EditableCoreTextView : UIView {
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)</AttributeName>
         </Attribute>
       </Attributes>
@@ -2133,13 +2114,13 @@ public class EditableCoreTextView : UIView {
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("isEqual:")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
         </Attribute>
       </Attributes>
@@ -2170,13 +2151,13 @@ public class EditableCoreTextView : UIView {
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("isKindOfClass:")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
         </Attribute>
       </Attributes>
@@ -2207,13 +2188,13 @@ public class EditableCoreTextView : UIView {
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("isMemberOfClass:")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
         </Attribute>
       </Attributes>
@@ -2264,10 +2245,10 @@ public class EditableCoreTextView : UIView {
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>get: Foundation.Export("isProxy")</AttributeName>
         </Attribute>
       </Attributes>
@@ -2316,7 +2297,7 @@ public class EditableCoreTextView : UIView {
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>System.Obsolete("Use 'PlatformAssembly' for easier code sharing across platforms.")</AttributeName>
         </Attribute>
       </Attributes>
@@ -2339,10 +2320,10 @@ public class EditableCoreTextView : UIView {
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("mutableCopy")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -2387,10 +2368,10 @@ public class EditableCoreTextView : UIView {
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("observeValueForKeyPath:ofObject:change:context:")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -2426,10 +2407,10 @@ public class EditableCoreTextView : UIView {
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("performSelector:")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -2460,10 +2441,10 @@ public class EditableCoreTextView : UIView {
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("performSelector:withObject:")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -2496,10 +2477,10 @@ public class EditableCoreTextView : UIView {
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("performSelector:withObject:withObject:")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -2531,10 +2512,10 @@ public class EditableCoreTextView : UIView {
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("performSelector:withObject:afterDelay:")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -2587,10 +2568,10 @@ void RunDemo (NSString arg)
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("performSelector:withObject:afterDelay:inModes:")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -2626,10 +2607,10 @@ void RunDemo (NSString arg)
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("performSelector:onThread:withObject:waitUntilDone:")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -2665,10 +2646,10 @@ void RunDemo (NSString arg)
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("performSelector:onThread:withObject:waitUntilDone:modes:")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -2724,19 +2705,19 @@ void RunDemo (NSString arg)
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("prepareForInterfaceBuilder")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.MacOSX, 10, 10, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
       </Attributes>
@@ -2760,10 +2741,10 @@ void RunDemo (NSString arg)
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("removeObserver:forKeyPath:")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -2813,7 +2794,7 @@ Key-path to use to perform the value lookup.   The keypath consists of a series 
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -2848,10 +2829,10 @@ Key-path to use to perform the value lookup. The keypath consists of a series of
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("removeObserver:forKeyPath:context:")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -2894,7 +2875,7 @@ The context key that was used when the observer was originally started.
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -2942,13 +2923,13 @@ The context key that was used when the observer was originally started.
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("respondsToSelector:")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
         </Attribute>
       </Attributes>
@@ -2980,10 +2961,10 @@ Class representing the selector.</param>
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>get: Foundation.Export("retainCount")</AttributeName>
         </Attribute>
       </Attributes>
@@ -3016,10 +2997,10 @@ Class representing the selector.</param>
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>get: Foundation.Export("self")</AttributeName>
         </Attribute>
       </Attributes>
@@ -3043,7 +3024,7 @@ Class representing the selector.</param>
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>System.Obsolete("Do not use; this API does not properly retain/release existing/new values, so leaks and/or crashes may occur.")</AttributeName>
         </Attribute>
       </Attributes>
@@ -3072,10 +3053,10 @@ Class representing the selector.</param>
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("setNilValueForKey:")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -3102,10 +3083,10 @@ Class representing the selector.</param>
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("setValue:forKey:")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -3135,10 +3116,10 @@ Class representing the selector.</param>
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("setValue:forKeyPath:")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -3214,10 +3195,10 @@ string SetMobilePhone (Order order, NSString phone)
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("setValue:forUndefinedKey:")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -3246,10 +3227,10 @@ string SetMobilePhone (Order order, NSString phone)
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("setValuesForKeysWithDictionary:")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -3279,10 +3260,10 @@ string SetMobilePhone (Order order, NSString phone)
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>get: Foundation.Export("superclass")</AttributeName>
         </Attribute>
       </Attributes>
@@ -3353,10 +3334,10 @@ string SetMobilePhone (Order order, NSString phone)
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("valueForKey:")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -3393,10 +3374,10 @@ string GetName (NSObject myObject)
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("valueForKeyPath:")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -3445,10 +3426,10 @@ string GetMobilePhone (Order order)
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("valueForUndefinedKey:")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -3476,10 +3457,10 @@ string GetMobilePhone (Order order)
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("willChange:valuesAtIndexes:forKey:")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -3510,10 +3491,10 @@ string GetMobilePhone (Order order)
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("willChangeValueForKey:withSetMutation:usingObjects:")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -3544,10 +3525,10 @@ string GetMobilePhone (Order order)
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>Foundation.Export("willChangeValueForKey:")</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
       </Attributes>
@@ -3577,10 +3558,10 @@ string GetMobilePhone (Order order)
         <AssemblyName>Xamarin.iOS</AssemblyName>
       </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="xamarin-ios-sdk-12">
+        <Attribute>
           <AttributeName>get: Foundation.Export("zone")</AttributeName>
         </Attribute>
       </Attributes>
