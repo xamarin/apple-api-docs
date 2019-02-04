@@ -19,7 +19,6 @@
     <summary>Managed representation for an Objective-C class.</summary>
     <remarks>
       <para>
-
 	You can use the <see cref="P:ObjCRuntime.Class.Handle" /> family of
 	methods to turn either types-by-name or .NET types that
 	subclass NSObject into a Class instance.  
@@ -39,7 +38,6 @@ Class GetClassForType (Type type)
 ]]></code>
       </example>
       <para>
-
 	  The following example shows how you can use the native
 	  handle to check whether the type subclasses NSObject, and
 	  thus whether obtaining an Objective-C class from a Type instance is valid:
@@ -81,7 +79,7 @@ Class GetClassForType (Type type)
       <Docs>
         <param name="handle">The pointer to the unmanaged Objective-C Class object.</param>
         <summary>Creates an instance from an unmanaged handle.</summary>
-        <remarks>To be added.</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -100,7 +98,7 @@ Class GetClassForType (Type type)
       <Docs>
         <param name="name">The name of the Objective-C class.</param>
         <summary>Creates a class from a name.</summary>
-        <remarks>MonoTouch will look up the class in the Objective-C space and return the instance or throw an ArgumentException if the class does not exist, or the library was not linked in.</remarks>
+        <remarks>Xamarin.iOS will look up the class in the Objective-C runtime and return the instance or throw an ArgumentException if the class could not be found.</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -117,9 +115,35 @@ Class GetClassForType (Type type)
         <Parameter Name="type" Type="System.Type" />
       </Parameters>
       <Docs>
-        <param name="type">A C# type.</param>
+        <param name="type">A managed type.</param>
         <summary>Creates a class from the specified Type.</summary>
-        <remarks>This will trigger the class regstration with the MonoTouch runtime.</remarks>
+        <remarks>This will trigger the class registration with the Xamarin.iOS runtime.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Class (IntPtr handle, bool owns);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(native int handle, bool owns) cil managed" />
+      <MemberSignature Language="DocId" Value="M:ObjCRuntime.Class.#ctor(System.IntPtr,System.Boolean)" />
+      <MemberSignature Language="F#" Value="new ObjCRuntime.Class : nativeint * bool -&gt; ObjCRuntime.Class" Usage="new ObjCRuntime.Class (handle, owns)" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>Xamarin.iOS</AssemblyName>
+        <AssemblyVersion>0.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>Foundation.Preserve(Conditional=true)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="handle" Type="System.IntPtr" />
+        <Parameter Name="owns" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="handle">The pointer to the unmanaged Objective-C Class object.</param>
+        <param name="owns">This parameter is ignored for this class.</param>
+        <summary>Creates an instance from an unmanaged handle.</summary>
+        <remarks>This constructor is required for the Xamarin.iOS runtime to be able to automatically create an instance of this class given a particular Objective-C class handle.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetHandle">
@@ -142,7 +166,7 @@ Class GetClassForType (Type type)
         <param name="name">The name of the class to lookup.</param>
         <summary>Returns the unmanaged handle to the Objective-C Class.</summary>
         <returns>The unmanaged handle for the specified Objective-C class.</returns>
-        <remarks>To be added.</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="GetHandle">
@@ -163,14 +187,13 @@ Class GetClassForType (Type type)
       </Parameters>
       <Docs>
         <param name="type">Type for an NSObject-derived class</param>
-        <summary>Gets the Objective-C handle to the given type.</summary>
+        <summary>Gets the Objective-C handle of the given type.</summary>
         <returns>The Objective-C handle to the object.</returns>
         <remarks>
           <para>
 	    This method looks up the Objective-C handle for the specified type, or registers the specified type with the Objective-C runtime if it was not previously registered.
 	  </para>
           <para>
-
 	    The class must be derived from NSObject.   If the class is flagged with the [Register] attribute, the name specified in this Register attribute is the name that will be used for looking up or register the class.
 
 	  </para>
@@ -243,10 +266,10 @@ Class GetClassForType (Type type)
         <Parameter Name="class" Type="ObjCRuntime.Class" />
       </Parameters>
       <Docs>
-        <param name="class">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="class">The Objective-C class.</param>
+        <summary>This method looks up the managed type for a given Objective-C class.</summary>
+        <returns>The managed type for the specified Objective-C class.</returns>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Name">
@@ -265,7 +288,7 @@ Class GetClassForType (Type type)
       <Docs>
         <summary>The Objective-C name for this class.</summary>
         <value />
-        <remarks>To be added.</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="SuperClass">
@@ -284,7 +307,7 @@ Class GetClassForType (Type type)
       <Docs>
         <summary>The Objective-C handle to the super class for this class.</summary>
         <value />
-        <remarks>To be added.</remarks>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="ThrowOnInitFailure">
@@ -301,10 +324,10 @@ Class GetClassForType (Type type)
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Determines whether MonoTouch will check in the NSObject constructor if the corresponding native object was successfully created (the default value is true).</summary>
+        <summary>Determines whether Xamarin.iOS will check in the NSObject constructor if the corresponding native object was successfully created (the default value is true).</summary>
         <remarks>
           <para>
-      Traditionally MonoTouch has allowed managed objects to be
+      Traditionally Xamarin.iOS has allowed managed objects to be
       created without a native peer. The behavior has however been
       inconsistent between types, and in the case of types from
       third-party libraries it would result in instances that would,
