@@ -34,37 +34,36 @@
 
 // Declare the signature of the method that users would have to provide
 public delegate void SetupHandlerCallback (double offset, int count);
-public delegate void SetupHandlerCallbackProxy (BlockLiteral *blockLiteral, double offset, int count);
+// Declare the signature of the method that the block will call
+delegate void SetupHandlerCallbackProxy (IntPtr blockLiteral, double offset, int count);
 // Static variable that points to our trampoline method
-private static readonly SetupHandlerCallback static_handler = TrampolineHandler;
+static readonly SetupHandlerCallback static_handler = TrampolineHandler;
 
 // Our trampoline method must be registered for reverse-callback with Mono
 // it takes one extra parameter than the signature, which is the pointer
 // to the block that was originally passed.
 [MonoPInvokeCallback (typeof (SetupHandlerCallbackProxy))]
-static void TrampolineHandler (BlockLiteral *block, double offset, int count)
+static void TrampolineHandler (IntPtr block, double offset, int count)
 {
-    var callback = (SetupHandlerCallback) (block->Target);
+    // Find the delegate for the block and call it
+    var callback = BlockLiteral.GetTarget<SetupHandlerCallback> (block);
     if (callback != null)
         callback (offset, count);
 }
 
 [DllImport ("YourLibrary")]
-void SetupHandler (BlockLiteral *block_ptr_handler);
+static extern void SetupHandler (ref BlockLiteral block);
 
 public void SetupHandler (SetupHandlerCallback callback)
 {
     if (callback == null)
-        throw new ArgumentNullException ("callback");
-    unsafe {
-        BlockLiteral *block_ptr_handler;
-        BlockLiteral block_handler;
-        block_handler = new BlockLiteral ();
-        block_ptr_handler = &block_handler;
-        block_handler.SetupBlock (static_handler, callback);
-        
-        SetupHandler (handle, block_ptr_handler);
-        block_ptr_handler->CleanupBlock ();
+        throw new ArgumentNullException (nameof (callback));
+    BlockLiteral block = new BlockLiteral ();
+    block.SetupBlock (static_handler, callback);
+    try {
+        SetupHandler (ref block);
+    } finally {
+        block.CleanupBlock ();
     }
 }
 ]]></code>
@@ -144,11 +143,11 @@ public void SetupHandler (SetupHandlerCallback callback)
         <Parameter Name="block" Type="System.IntPtr" />
       </Parameters>
       <Docs>
-        <typeparam name="T">To be added.</typeparam>
-        <param name="block">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <typeparam name="T">The type of the managed delegate to return.</typeparam>
+        <param name="block">The pointer to the native block.</param>
+        <summary>If this block represents a managed delegate, this method will return that managed delegate.</summary>
+        <returns>The managed delegate for this block.</returns>
+        <remarks>Behavior is undefined if this block does not represent a managed delegate.</remarks>
       </Docs>
     </Member>
     <Member MemberName="IsManagedBlock">
@@ -228,10 +227,10 @@ public void SetupHandler (SetupHandlerCallback callback)
         <Parameter Name="userDelegate" Type="System.Delegate" />
       </Parameters>
       <Docs>
-        <param name="trampoline">To be added.</param>
-        <param name="userDelegate">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="trampoline">The trampoline must be a static delegate. The developer's code must keep a reference to it.</param>
+        <param name="userDelegate">The user code to invoke.</param>
+        <summary>Sets up a block using a trampoline and a user delegate.</summary>
+        <remarks></remarks>
       </Docs>
     </Member>
     <Member MemberName="Target">
