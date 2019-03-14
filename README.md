@@ -22,8 +22,8 @@ API docs are divided between `summary` and `remarks` elements. Summaries are dis
 
 Summaries may contain tags, but should not wrap their content in another tag:
 
-- Right: `<summary>Foos the <param name="bar"/>.</summary>` 
-- Wrong: `<summary><para>Foos the <param name="bar"/>.</para></summary>`
+- Right: `<summary>Foos the <paramref name="bar"/>.</summary>` 
+- Wrong: `<summary><para>Foos the <paramref name="bar"/>.</para></summary>`
 
 ## Scripts included in the repository
 
