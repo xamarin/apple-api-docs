@@ -66,7 +66,7 @@
       <para>Prior to iOS 4, animations were specified as transactions: application developers would bracket the specification of their animations between calls to <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIView%20Begin%20Animations&amp;scope=Xamarin" title="M:UIKit.UIView.BeginAnimations*">M:UIKit.UIView.BeginAnimations*</a></format> and <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=UIKit%20UIView%20Commit%20Animations&amp;scope=Xamarin" title="M:UIKit.UIView.CommitAnimations*">M:UIKit.UIView.CommitAnimations*</a></format>. Reacting to animation events (such as continuation after the animation finishes) requires the use of a delegate object and custom selectors.  This technique is still available, but Apple recommends the use of "block-based" animations in modern apps. In C# terminology, these would be called "delegate-based" animations, where the delegate (or anonymous function) is of type <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=Foundation%20NSAction&amp;scope=Xamarin" title="T:Foundation.NSAction">T:Foundation.NSAction</a></format>. Additionally, Xamarin.iOS provides asynchronous wrappers for the commonly-used animation functions, so application developers can use C# 5+'s <c>async-await</c> facilities.</para>
       <para>The following example shows the different techniques:</para>
       <example>
-        <code lang="C#"><![CDATA[
+        <code lang="csharp lang-csharp"><![CDATA[
 //Transaction-based (recommended only for iOS < 4)
 UIView.BeginAnimations("transactional");
 UIView.SetAnimationDuration(2.0);
@@ -82,7 +82,7 @@ void SlideStopped ()
 }
           ]]></code>
         <para>Block-based</para>
-        <code lang="C#"><![CDATA[
+        <code lang="csharp lang-csharp"><![CDATA[
 //Block-based, with animations in lambda, continuation as delegate (either technique works in either position)
 UIView.Animate(2.0, () => imgView.Layer.Position = newPosition, SlideStopped);
 //...etc...
@@ -91,7 +91,7 @@ void SlideStopped() {
 }
           ]]></code>
         <para>Asynchronous</para>
-        <code lang="C#"><![CDATA[
+        <code lang="csharp lang-csharp"><![CDATA[
 async void MyAnimateAsync {
     await UIView.AnimateAsync(2.0, () => imgView.Layer.Position = newPosition);
     Console.WriteLine("Animation finished; logic continues here");
@@ -112,7 +112,7 @@ async void MyAnimateAsync {
 
       </para>
       <example>
-        <code lang="C#"><![CDATA[
+        <code lang="csharp lang-csharp"><![CDATA[
 //
 // The following method sets the opacity to zero on the image's Layer
 // and will trigger a 0.25 animation to vanish the image by setting the
@@ -143,7 +143,7 @@ void HideImage (UIImageView image)
 
       </para>
       <example>
-        <code lang="C#"><![CDATA[
+        <code lang="csharp lang-csharp"><![CDATA[
 //
 // Notice that we set the final position for the layer before we start
 // animating from 0 to 120 since this is an explicit animation and we
@@ -160,7 +160,7 @@ layer.AddAnimation (positionAnimation, "myAnimation");
       </block>
       <para>Layer-based animations are disabled by <see cref="T:UIKit.UIView" />s except within <see cref="T:UIKit.UIView" /> animation blocks. Layer-based animations within such blocks ignore the blocks' duration and operate at their own specified duration, either the implicit default of 0.25 seconds or an explicit length. This is shown in the following example, in which the <see cref="T:UIKit.UIView" /> animation block's duration is 1.0, but in actuality, the layer-based implicit opacity animation ends in 0.25 seconds and the re-positioning runs for 10 seconds.</para>
       <example>
-        <code lang="C#"><![CDATA[
+        <code lang="csharp lang-csharp"><![CDATA[
 UIView.AnimateAsync(1.0, () => {
 	imgView.Layer.Opacity = 0.0f;
 

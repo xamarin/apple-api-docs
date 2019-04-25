@@ -10,7 +10,7 @@
       <para>In addition, applications must have an Entitlements.plist that contains the key <c>com.apple.developer.healthkit</c> of type <c>Boolean</c> with a value of <c>true</c>.</para>
       <para>At runtime, the application must request access to the specific types of health data in which it is interested. The user will interact with a permissions dialog in the Health app that allows them fine-grained control over what health information they will allow. </para>
       <example>
-        <code lang="C#"><![CDATA[
+        <code lang="csharp lang-csharp"><![CDATA[
 var temperatureKey = HKQuantityTypeIdentifierKey.BodyTemperature;
 var tempQuantityType = HKObjectType.GetQuantityType (temperatureKey);
 
@@ -21,7 +21,7 @@ var success = await hks.RequestAuthorizationToShareAsync (new NSSet (new [] { te
       </example>
       <para>The result of the <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=T:HealthKit.HKHealthStore.RequestAuthorizationtoShareAsync&amp;scope=Xamarin" title="T:HealthKit.HKHealthStore.RequestAuthorizationtoShareAsync">T:HealthKit.HKHealthStore.RequestAuthorizationtoShareAsync</a></format> method indicates only that the user interacted with the permissions dialog, it does not indicate whether the user allowed any data sharing. For that, applications can use the <see cref="M:HealthKit.HKHealthStore.GetAuthorizationStatus*" /> method:</para>
       <example>
-        <code lang="C#"><![CDATA[
+        <code lang="csharp lang-csharp"><![CDATA[
 var access = healthKitStore.GetAuthorizationStatus (HKObjectType.GetQuantityType (HKQuantityTypeIdentifierKey.HeartRate));
 if (access.HasFlag (HKAuthorizationStatus.SharingAuthorized)) {
 //...etc...
@@ -37,7 +37,7 @@ if (access.HasFlag (HKAuthorizationStatus.SharingAuthorized)) {
       <para>Apple's philosophy regarding attempts to store or read non-permitted information is that such attempts should not cause runtime exceptions. Rather, methods such as <see cref="M:HealthKit.HKHealthStore.RequestAuthorizationToShare*" /> and <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:HealthKit.HKStore.SaveObject*&amp;scope=Xamarin" title="M:HealthKit.HKStore.SaveObject*">M:HealthKit.HKStore.SaveObject*</a></format> are defined with completion callback handlers that are passed a non-null <see cref="T:Foundation.NSError" /> argument in the case of an error. Application developers using such methods should take special care to check for success, as it is highly likely that users will be cautious about access to their health data.</para>
       <para>In contrast, Xamarin's asynchronous versions of such methods (such as <format type="text/html"><a href="https://docs.microsoft.com/en-us/search/index?search=M:HealthKit.HKHealthStore.RequestAutorizationToShareAsync*&amp;scope=Xamarin" title="M:HealthKit.HKHealthStore.RequestAutorizationToShareAsync*">M:HealthKit.HKHealthStore.RequestAutorizationToShareAsync*</a></format> and <see cref="M:HealthKit.HKHealthStore.SaveObjectAsync*" />) will throw an <see cref="T:Foundation.NSErrorException" /> on failure or if the method is not allowed by the end user.</para>
       <example>
-        <code lang="C#"><![CDATA[
+        <code lang="csharp lang-csharp"><![CDATA[
 //Apple's philosophy: no exception
 var myCurrentTemp = HKQuantity.FromQuantity (HKUnit.DegreeFahrenheit, 98.6);
 var tempSample = HKQuantitySample.FromType (tempQuantityType, myCurrentTemp, new NSDate (), new NSDate (), new NSDictionary());
@@ -49,7 +49,7 @@ hks.SaveObject(tempSample, (success, error) => {
           ]]></code>
       </example>
       <example>
-        <code lang="C#"><![CDATA[
+        <code lang="csharp lang-csharp"><![CDATA[
 //Xamarin's philosophy: Lack of permissions raises exception
 protected async void StoreAsync(HKHealthStore store, HKQuantitySample sample)
 {
@@ -82,7 +82,7 @@ protected async void StoreAsync(HKHealthStore store, HKQuantitySample sample)
       </format>
       <para>Health Kit supports units of measurement in the categories of mass, length, volume, and energy. This support includes conversion of values between measurement systems (for instance, if a user prefers Fahrenheit degrees but has a sensor that reports its data in Celsius). This is automatically supported within the Health app, but explicit conversions are also possible, as shown in the following example:</para>
       <example>
-        <code lang="C#"><![CDATA[
+        <code lang="csharp lang-csharp"><![CDATA[
 var myFahrenheitTemp = HKQuantity.FromQuantity (HKUnit.DegreeFahrenheit, 98.6);
 var myCelsiusTemp = myFahrenheitTemp.GetDoubleValue (HKUnit.DegreeCelsius);
           ]]></code>
