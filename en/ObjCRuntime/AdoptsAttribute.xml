@@ -32,9 +32,9 @@
       <para>
 	Unlike C# interfaces, Objective-C protocols have optional
 	components which means that they are not directly mapped to C#
-	constructs.  In both the Xamarin.iOS and Xamarin.Mac Framework bindings
-	protocols are inlined directly into the classes that adopt the
-	protocols which allow developers to invoke any methods adopted
+	constructs. In both the Xamarin.iOS and Xamarin.Mac Framework bindings,
+	protocols are usually inlined directly into the classes that adopt the
+	protocols. This allows developers to invoke any methods adopted
 	by the system classes.
 
       </para>
@@ -43,6 +43,33 @@
 	explicitly inform the Objective-C runtime that they adopt the
 	protocol.  This attribute is looked up by the
 	NSObject.ConformsToProtocol method.
+
+      </para>
+      <para>
+  An alternative method of specifying that a class adopts a specific
+  Objective-C protocol is to make the class implement the managed
+  interface for the protocol (usually the name of the protocol prefixed
+  by I).
+
+            <code lang="C#"><![CDATA[
+//
+// The following examples are both equivalent
+//
+
+[Adopts ("UITableViewDelegate")]
+class MyTableViewA : UITableView
+{
+}
+
+class MyTableViewB : UITableView, IUITableViewDelegate
+{
+}
+
+]]></code>
+
+This has the advantage that the managed compiler will enforce
+the implementation of required protocol members, and the IDE
+will show intellisense to implement any protocol member.
 
       </para>
     </remarks>
