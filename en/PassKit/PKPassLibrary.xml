@@ -83,7 +83,7 @@
           <para>In general, if the developer's constructor invokes the NSObjectFlag.Empty base implementation, then it should be calling an Objective-C init method.   If this is not the case, developers should instead chain to the proper constructor in their class. </para>
           <para>The argument value is ignored and merely ensures that the only code that is executed is the construction phase is the basic NSObject allocation and runtime type registration.  Typically the chaining would look like this:</para>
           <example>
-            <code lang="C#"><![CDATA[
+            <code lang="csharp lang-csharp"><![CDATA[
 //
 // The NSObjectFlag merely allocates the object and registers the
 // C# class with the Objective-C runtime if necessary, but no actual
@@ -207,6 +207,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         <Attribute>
           <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'ActivatePaymentPass (PKPaymentPass, NSData, Action&lt;bool, NSError&gt; completion)' instead.")</AttributeName>
+        </Attribute>
       </Attributes>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -290,6 +293,9 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
         </Attribute>
         <Attribute>
           <AttributeName>ObjCRuntime.Unavailable(ObjCRuntime.PlatformName.WatchOS, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, "Use 'ActivatePaymentPass (PKPaymentPass, NSData, Action&lt;bool, NSError&gt; completion)' instead.")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -541,7 +547,7 @@ public UIView (System.Drawing.RectangleF frame) : base (NSObjectFlag.Empty)
           <para id="tool-remark">If you want to subscribe to this notification, you can use the convenience <see cref="T:PassKit.PKPassLibrary.Notifications" />.<see cref="M:PassKit.PKPassLibrary.Notifications.ObserveDidChange*" /> method which offers strongly typed access to the parameters of the notification.</para>
           <para>The following example shows how to use the strongly typed Notifications class, to take the guesswork out of the available properties in the notification:</para>
           <example>
-            <code lang="C#"><![CDATA[
+            <code lang="csharp lang-csharp"><![CDATA[
 //
 // Lambda style
 //
@@ -577,7 +583,7 @@ void Teardown ()
           </example>
           <para>The following example shows how to use the notification with the DefaultCenter API:</para>
           <example>
-            <code lang="C#"><![CDATA[
+            <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
         PKPassLibrary.DidChangeNotification, (notification) => {Console.WriteLine ("Received the notification PKPassLibrary", notification); }
@@ -804,19 +810,19 @@ void Setup ()
           <AttributeName>ObjCRuntime.BindingImpl(ObjCRuntime.BindingImplOptions.GeneratedCode | ObjCRuntime.BindingImplOptions.Optimizable)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.All, "Use the library's instance 'IsLibraryPaymentPassActivationAvailable' property instead.")</AttributeName>
-        </Attribute>
-        <Attribute>
           <AttributeName>ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
           <AttributeName>get: Foundation.Export("isPaymentPassActivationAvailable")</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.All, "Use the library's instance 'IsLibraryPaymentPassActivationAvailable' property instead.")</AttributeName>
+          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>get: ObjCRuntime.Introduced(ObjCRuntime.PlatformName.iOS, 8, 0, ObjCRuntime.PlatformArchitecture.All, null)</AttributeName>
+          <AttributeName>ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, "Use the library's instance 'IsLibraryPaymentPassActivationAvailable' property instead.")</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>get: ObjCRuntime.Deprecated(ObjCRuntime.PlatformName.iOS, 9, 0, ObjCRuntime.PlatformArchitecture.None, "Use the library's instance 'IsLibraryPaymentPassActivationAvailable' property instead.")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1002,7 +1008,7 @@ void Setup ()
         <remarks>
           <para id="tool-remark">This constant can be used with the <see cref="T:Foundation.NSNotificationCenter" /> to register a listener for this notification.   This is an NSString instead of a string, because these values can be used as tokens in some native libraries instead of being used purely for their actual string content.    The 'notification' parameter to the callback contains extra information that is specific to the notification type.</para>
           <example>
-            <code lang="C#"><![CDATA[
+            <code lang="csharp lang-csharp"><![CDATA[
 // Lambda style
 NSNotificationCenter.DefaultCenter.AddObserver (
         PKPassLibrary.RemotePaymentPassesDidChangeNotification, (notification) => {Console.WriteLine ("Received the notification PKPassLibrary", notification); }
