@@ -31,23 +31,14 @@
       <para>The common way to use <see cref="T:UIKit.UIGraphicsPdfRenderer" /> is to call <see cref="M:UIKit.UIGraphicsPdfRenderer.CreatePdf(System.Action{UIKit.UIGraphicsPdfRendererContext})" />, which takes an <c>Action</c> as an argument, allowing the developer to either pass in drawing code or use a lambda expression:</para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
-var r = new UIGraphicsImageRenderer(new CGSize(100, 100));
+var pageRect = new CGRect (0, 0, width: 8.5 * 72, height: 11 * 72);
+var renderer = new UIGraphicsPdfRenderer (pageRect, new UIGraphicsPdfRendererFormat ());
 
-var img = r.CreateImage((UIGraphicsImageRendererContext ctxt) => 
-    {
-        var superRed = UIColor.FromDisplayP3(1.358f, -0.074f, -0.012f, 1.0f);
-        superRed.SetFill();
-
-        UIColor.Black.SetStroke();
-
-        var path = new UIBezierPath();
-        path.MoveTo(new CGPoint(10,10));
-        path.AddLineTo(new CGPoint(90, 10));
-        path.AddLineTo(new CGPoint(45, 90));
-        path.ClosePath();
-        path.Stroke();
-        path.Fill();
-    });
+var pdfData = renderer.CreatePdf (ctx => {
+    ctx.BeginPage ();
+    var text = new NSString ("Hello Wrold!");
+    text.DrawString (new CGPoint (0, 0), UIFont.BoldSystemFontOfSize (72));
+});
     ]]></code>
       </example>
       <para>The new drawing method is still based on manipulating the state of a "current context" but instead of a <see cref="T:CoreGraphics.CGContext" /> it is now a subclass of <see cref="T:UIKit.UIGraphicsRendererContext" /> (either <see cref="T:UIKit.UIGraphicsImageRendererContext" /> or <see cref="T:UIKit.UIGraphicsPdfRendererContext" />). If necessary, developers can retrieve the current context as a <see cref="T:CoreGraphics.CGContext" /> using <see cref="M:UIKit.UIGraphicsRenderer.GetContext(UIKit.UIGraphicsRendererFormat)" />.</para>
