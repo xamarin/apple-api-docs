@@ -7,7 +7,7 @@ This repository contains the source of the Xamarin API documentation for native 
 - tvOS
 - watchOS
 
-An example URL to start browsing is http://docs.microsoft.com/dotnet/api/uikit
+As an example, you can navigate to [UIKit Namespace](http://docs.microsoft.com/dotnet/api/uikit) to start browsing.
 
 ## Microsoft Open Source Code of Conduct
 
@@ -16,13 +16,13 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 
 ## Style guidelines
 
-All Xamarin Apple API docs are written in the [indicative mood](https://grammarist.com/grammar/english-moods/). For instance, instead of saying "You call this function to foo the bar," the docs should be "The developer calls this function to foo the bar." The agents we refer to are typically "the developer," "the method" (or "the object"), "the framework," and "the system" (meaning the underlying operating system or hardware services). The indicative mood often takes a little time to get used to, but it helps avoid ambiguity about responsibilities and cuts down on the temptation to use passive voice. 
+All Xamarin Apple API docs are written in the [indicative mood](https://grammarist.com/grammar/english-moods/). For instance, instead of saying "You call this function to foo the bar," the docs should be "The developer calls this function to foo the bar." The agents we refer to are typically "the developer," "the method" (or "the object"), "the framework," and "the system" (meaning the underlying operating system or hardware services). The indicative mood often takes a little time to get used to, but it helps avoid ambiguity about responsibilities and cuts down on the temptation to use passive voice.
 
-API docs are divided between `summary` and `remarks` elements. Summaries are displayed in IntelliSense and should be quite short (perhaps around 140 characters, certainly fewer than 250). If there is a numeric value with an underlying unit-of-measure, include the unit in the summary (e.g., "The angle, in radians," or "the distance, in meters"). 
+API docs are divided between `summary` and `remarks` elements. Summaries are displayed in IntelliSense and should be quite short (perhaps around 140 characters, certainly fewer than 250). If there is a numeric value with an underlying unit-of-measure, include the unit in the summary (e.g., "The angle, in radians," or "the distance, in meters").
 
 Summaries may contain tags, but should not wrap their content in another tag:
 
-- Right: `<summary>Foos the <paramref name="bar"/>.</summary>` 
+- Right: `<summary>Foos the <paramref name="bar"/>.</summary>`
 - Wrong: `<summary><para>Foos the <paramref name="bar"/>.</para></summary>`
 
 ## Scripts included in the repository
@@ -50,10 +50,10 @@ In case macdoc blows up when trying to load the documentation or you can't compi
 Run macdoc by passing the absolute path to the en/ directory
 (i.e. where the index.xml file is) preprended with the character '+'.
 
-    ./macdoc.app/Contents/MacOS/macdoc '+/path/to/ios-api-docs/en/'
+  `./macdoc.app/Contents/MacOS/macdoc '+/path/to/ios-api-docs/en/'`
 
 You need a recent macdoc. You can compile it yourself by cloning
-https://github.com/mono/monomac and running the build process
+[monomac](https://github.com/mono/monomac) and running the build process
 there. Macdoc is under the samples directory.
 
 This repository is also submoduled by XamarinVS to fetch the baseline docs from where MSXML docs are generated and later merged with iOS docs on the user's machine.
@@ -62,9 +62,9 @@ This repository is also submoduled by XamarinVS to fetch the baseline docs from 
 
 On January 22, 2018, commits 542f219f and ce6f06729 renamed the directories from, e.g., `en/MonoTouch.UIKit` to `en/UIKit`. In almost all cases `git log {type.xml}` will track back only to these commits. To track past those commits, use:
 
-    git log --follow --find-copies-harder --find-renames=40 {type.xml}
-    
-Lowering the `find-renames` threshold to around 40 seems to work   in almost all cases. You can try lower thresholds, although at some point you could presumably start triggering incorrect matches. 
+  `git log --follow --find-copies-harder --find-renames=40 {type.xml}`
+
+Lowering the `find-renames` threshold to around 40 seems to work   in almost all cases. You can try lower thresholds, although at some point you could presumably start triggering incorrect matches.
 
 ## Legal Notices
 
@@ -76,9 +76,9 @@ see the [LICENSE](LICENSE) file, and grant you a license to any code in the repo
 Microsoft, Windows, Microsoft Azure and/or other Microsoft products and services referenced in the documentation
 may be either trademarks or registered trademarks of Microsoft in the United States and/or other countries.
 The licenses for this project do not grant you rights to use any Microsoft names, logos, or trademarks.
-Microsoft's general trademark guidelines can be found at http://go.microsoft.com/fwlink/?LinkID=254653.
+For more information, see Microsoft's [general trademark guidelines](http://go.microsoft.com/fwlink/?LinkID=254653).
 
-Privacy information can be found at https://privacy.microsoft.com/en-us/
+For more information about privacy concerns, see [Privacy at Microsoft](https://privacy.microsoft.com).
 
 Microsoft and any contributors reserve all others rights, whether under their respective copyrights, patents,
 or trademarks, whether by implication, estoppel or otherwise.
