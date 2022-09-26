@@ -41,6 +41,9 @@
       <MemberValue>3</MemberValue>
       <Docs>
         <summary>Abort when a managed exception reaches native code.</summary>
+        <remarks>
+          <para>This may be useful during debugging to easily detect when managed exceptions reaches native code.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Default">
@@ -63,6 +66,10 @@
       <MemberValue>0</MemberValue>
       <Docs>
         <summary>The default mode; this depends on the platform.</summary>
+        <remarks>
+          <para>Due to backwards compatibility concerns, this is currently <see cref="F:ObjCRuntime.MarshalManagedExceptionMode.UnwindNativeCode" /> on macOS, iOS and tvOS, which is not recommended.</para>
+          <para>Instead of relying on the default mode, the recommended option is to select <see cref="F:ObjCRuntime.MarshalManagedExceptionMode.ThrowObjectiveCException" /> instead (which is already the default mode on watchOS).</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Disable">
@@ -85,6 +92,9 @@
       <MemberValue>4</MemberValue>
       <Docs>
         <summary>Disable marshalling managed exceptions.</summary>
+        <remarks>
+          <para>This is effectively the same as <see cref="F:ObjCRuntime.MarshalManagedExceptionMode.UnwindNativeCode" />, except that no events will be raised.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ThrowObjectiveCException">
@@ -107,6 +117,9 @@
       <MemberValue>2</MemberValue>
       <Docs>
         <summary>Convert the managed exception to an Objective-C exception.</summary>
+        <remarks>
+          <para>This is the recommended option.</para>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="UnwindNativeCode">
@@ -129,6 +142,9 @@
       <MemberValue>1</MemberValue>
       <Docs>
         <summary>Let the mono runtime unwind native frames.</summary>
+        <remarks>
+          <para>This option is not recommended, because it leads to undefined behavior (the app may crash, leak memory, deadlock, etc.) if managed exceptions reaches native code (the mono runtime does not know how to unwind native frames, so anything can happen). The recommended option is <see cref="F:ObjCRuntime.MarshalManagedExceptionMode.ThrowObjectiveCException" />.</para>
+        </remarks>
       </Docs>
     </Member>
   </Members>
